@@ -12,7 +12,8 @@
 @if($admin)
 <section class="card"><h2>Review decision</h2><p>Notes for published statuses are public. Rejection notes remain private. Reject reports that contain private information or need correction.</p>
 <form method="post" action="{{ route('issues.moderate', $record->id) }}">@csrf<input type="hidden" name="revision" value="{{ $record->revision }}">
-<p><label for="status">New status</label><select name="status" id="status">@foreach(['open' => 'Publish / reopen', 'in_progress' => 'In progress', 'resolved' => 'Resolved (admin reported)', 'rejected' => 'Reject / remove from public view'] as $value => $label)@if(in_array($value, $nextStatuses, true))<option value="{{ $value }}">{{ $label }}</option>@endif@endforeach</select></p>
+<p><label for="status">New status</label><select name="status" id="status">@foreach(['open' => 'Publish / reopen', 'in_progress' => 'In progress', 'resolved' => 'Resolved (admin reported)', 'rejected' => 'Reject / remove from public view'] as $value => $label)@if(in_array($value, $nextStatuses, true))<option value="{{ $value }}">{{ $label }}</option>@endif
+@endforeach</select></p>
 <p><label for="note">Reason and supporting information</label><textarea name="note" id="note" rows="4" minlength="15" maxlength="2000" required>{{ old('note') }}</textarea></p><button>Save decision</button></form></section>
 @endif
 @endsection
