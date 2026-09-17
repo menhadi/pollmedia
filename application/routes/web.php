@@ -12,10 +12,12 @@ use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\HistoricalElectionController;
 use App\Http\Controllers\HistoricalExtractionController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\OfficialHostController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ReportArchiveController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportScopeController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
@@ -37,7 +39,7 @@ Route::get('/india/ac/{slug}/history', [HistoricalElectionController::class, 'co
 Route::get('/india/district/pilibhit/census-1981', [CensusHistoryController::class, 'edition1981'])->name('census.1981');
 Route::get('/india/district/pilibhit/census-history', [CensusHistoryController::class, 'show'])->name('census.history');
 Route::get('/reports/pilibhit', [ReportController::class, 'show'])->name('reports.pilibhit');
-Route::get('/reports/coverage/{scope}', [CoverageReportController::class, 'show'])->whereIn('scope', ['india', 'uttar-pradesh'])->name('reports.coverage');
+Route::get('/reports/coverage/{scope}', [CoverageReportController::class, 'show'])->where('scope', '[a-z0-9-]+')->name('reports.coverage');
 Route::get('/reports/archive', [ReportArchiveController::class, 'index'])->name('reports.archive');
 Route::post('/reports/archive', [ReportArchiveController::class, 'store'])->middleware([AdminTransport::class, RequireAdministrator::class, 'throttle:10,1'])->name('reports.store');
 Route::get('/reports/archive/{report}/download', [ReportArchiveController::class, 'download'])->whereUlid('report')->name('reports.download');
@@ -74,6 +76,12 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/official-hosts', [OfficialHostController::class, 'index'])->name('official-hosts.index');
+    Route::post('/admin/official-hosts', [OfficialHostController::class, 'store'])->middleware('throttle:10,1')->name('official-hosts.store');
+    Route::post('/admin/official-hosts/{host}', [OfficialHostController::class, 'toggle'])->whereNumber('host')->middleware('throttle:10,1')->name('official-hosts.toggle');
+    Route::get('/admin/report-areas', [ReportScopeController::class, 'index'])->name('report-scopes.index');
+    Route::post('/admin/report-areas', [ReportScopeController::class, 'store'])->middleware('throttle:10,1')->name('report-scopes.store');
+    Route::post('/admin/report-areas/{key}/schedule', [ReportScopeController::class, 'schedule'])->middleware('throttle:10,1')->name('report-scopes.schedule');
     Route::get('/admin/authorities', [AuthorityReviewController::class, 'index'])->name('authorities.index');
     Route::get('/admin/authorities/history', [AuthorityReviewController::class, 'history'])->name('authorities.history');
     Route::post('/admin/authorities/replace', [AuthorityReviewController::class, 'replace'])->middleware('throttle:5,1')->name('authorities.replace');

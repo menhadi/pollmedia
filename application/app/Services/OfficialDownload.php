@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 use Symfony\Component\Process\Process;
@@ -12,11 +13,14 @@ class OfficialDownload
     {
         $parts = parse_url($url);
         $host = strtolower($parts['host'] ?? '');
+        $approved = collect(config('imports.official_host_suffixes', []))
+            ->contains(fn ($suffix) => $host === $suffix || str_ends_with($host, '.'.$suffix));
+        $approved = $approved || DB::table('official_source_hosts')->where('host', $host)->where('enabled', true)->exists();
         if (($parts['scheme'] ?? '') !== 'https' || isset($parts['user']) || isset($parts['pass']) || isset($parts['fragment'])
             || (isset($parts['port']) && $parts['port'] !== 443)
-            || ! preg_match('/(?:^|\.)(?:gov|nic)\.in$/', $host)
+            || ! $approved || filter_var($host, FILTER_VALIDATE_IP)
             || preg_match('/(?:api[_-]?key|token|password|secret)=/i', $parts['query'] ?? '')) {
-            throw new RuntimeException('Use a public HTTPS URL on an official gov.in or nic.in host, without credentials or API keys.');
+            throw new RuntimeException('Use a public HTTPS URL on an approved official source host, without credentials or API keys.');
         }
 
         return $host;

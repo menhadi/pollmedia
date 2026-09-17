@@ -6,11 +6,11 @@
 <button onclick="window.print()">Print / save PDF</button><a href="{{ route('reports.coverage', ['scope' => $scope, 'edition' => $edition, 'download' => 1]) }}">Download HTML</a>
 @if(auth()->user()?->is_admin)<form method="post" action="{{ route('reports.store') }}">@csrf<input type="hidden" name="scope" value="{{ $scope }}"><input type="hidden" name="edition" value="{{ $edition }}"><button>Save dated draft</button></form>@endif</nav>
 @endif
-<h1>{{ $scopeLabel }}<br>{{ $period }} · {{ ucfirst($edition) }} coverage report</h1><p>Generated {{ $generatedAt->format('d M Y, H:i') }} IST</p>
+<h1>{{ $scopeLabel }}<br>{{ $period }} · {{ ucfirst($edition) }} coverage report</h1><p>Generated {{ $generatedAt->format('d M Y, H:i T') }}</p>
 <p class="notice">Draft for review. This describes the records available in Pollmedia, not complete {{ $scopeLabel }} statistics or changes during this reporting period. Districts, parliamentary constituencies and assembly constituencies overlap and are not added into population or vote totals.</p>
 <section class="card"><h2>Geographic profiles in scope</h2><table><thead><tr><th>Geography</th><th>Recorded profiles</th></tr></thead><tbody>
 @foreach($coverage as $row)<tr><td>{{ ['pc' => 'Parliamentary constituency', 'ac' => 'Assembly constituency', 'district' => 'District'][$row->type] ?? ucfirst($row->type) }}</td><td>{{ number_format($row->total) }}</td></tr>@endforeach
-</tbody></table><p>Uttar Pradesh scope uses accepted geographic identifiers. India scope includes recorded places identified as Indian. These counts do not establish complete boundary coverage.</p></section>
+</tbody></table><p>Jurisdiction scopes use selected accepted geographic identifiers. Country scopes use recorded country codes. These counts do not establish complete boundary coverage.</p></section>
 <section class="card"><h2>Published election coverage</h2><table><thead><tr><th>Election year</th><th>Election type</th><th>Constituencies with accepted results</th></tr></thead><tbody>
 @forelse($elections as $row)<tr><td>{{ $row->year }}</td><td>{{ ucfirst(str_replace('_', ' ', $row->election_type)) }}</td><td>{{ number_format($row->constituencies) }}</td></tr>@empty<tr><td colspan="3">No published election results in this scope.</td></tr>@endforelse
 </tbody></table><p>Each constituency is counted once within its year and election type. Unpublished archive extractions are excluded. Results retain their original election year.</p></section>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ReportArchive;
+use App\Services\ReportScopes;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,20 +15,22 @@ class ReportArchiveController extends Controller
 {
     public function index(Request $request): View
     {
-        $input = $request->validate(['scope' => 'nullable|in:pilibhit,uttar-pradesh,india', 'edition' => 'nullable|in:quarterly,annual']);
+        $input = $request->validate(['scope' => 'nullable|exists:report_scopes,key', 'edition' => 'nullable|in:quarterly,annual']);
         $reports = DB::table('report_drafts')
             ->when($input['scope'] ?? null, fn ($query, $scope) => $query->where('scope', $scope))
             ->when($input['edition'] ?? null, fn ($query, $edition) => $query->where('edition', $edition))
             ->orderByDesc('id')->paginate(12)->withQueryString();
 
-        return view('report-archive', compact('reports'));
+        $scopes = DB::table('report_scopes')->orderBy('label')->get();
+
+        return view('report-archive', compact('reports', 'scopes'));
     }
 
     public function store(Request $request, ReportController $reports, ReportArchive $archive, CoverageReportController $coverage): RedirectResponse
     {
-        $input = $request->validate(['edition' => 'required|in:quarterly,annual', 'scope' => 'nullable|in:pilibhit,uttar-pradesh,india']);
+        $input = $request->validate(['edition' => 'required|in:quarterly,annual', 'scope' => 'nullable|exists:report_scopes,key']);
         $scope = $input['scope'] ?? 'pilibhit';
-        $archive->save($scope === 'pilibhit' ? $reports->draft($input['edition']) : $coverage->draft($input['edition'], $scope));
+        $archive->save(app(ReportScopes::class)->draft($scope, $input['edition']));
 
         return redirect()->route('reports.archive')->with('status', 'Dated draft saved. This copy will not change when source data changes.');
     }

@@ -23,14 +23,15 @@ class CoverageReportController extends Controller
 
     public function draft(string $edition, string $scope): View
     {
-        abort_unless(in_array($scope, ['india', 'uttar-pradesh']), 404);
-        $scopeLabel = $scope === 'india' ? 'India' : 'Uttar Pradesh';
-        $generatedAt = now('Asia/Kolkata');
+        $area = DB::table('report_scopes')->where('key', $scope)->where('adapter', 'coverage')->first();
+        abort_unless($area, 404);
+        $scopeLabel = $area->label;
+        $generatedAt = now($area->timezone);
         $period = $edition === 'annual' ? (string) $generatedAt->year : 'Q'.$generatedAt->quarter.' '.$generatedAt->year;
-        $places = DB::table('places')->where('country_code', 'IN');
-        if ($scope === 'uttar-pradesh') {
+        $places = DB::table('places')->where('country_code', $area->country_code);
+        if ($area->selection === 'identifiers') {
             $places->whereIn('id', DB::table('place_identifiers as i')->join('source_releases as r', 'r.id', '=', 'i.source_release_id')
-                ->where('r.status', 'accepted')->whereIn('i.namespace', ['electoral:IN:UP:pc', 'electoral:IN:UP:ac', 'census:district:IN:UP'])->select('i.place_id'));
+                ->where('r.status', 'accepted')->whereIn('i.namespace', json_decode($area->namespaces, true))->select('i.place_id'));
         }
         $placeIds = $places->pluck('id');
         abort_if($placeIds->isEmpty(), 503, 'No supported geographic records are available for this report.');
