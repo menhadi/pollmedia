@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Services\OfficialDownload;
 use App\Services\OfficialImport;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
@@ -31,6 +32,45 @@ class OfficialImportTest extends TestCase
         return DB::table('import_connectors')->insertGetId(['name' => 'Official test source', 'url' => 'https://data.gov.in/example.'.$format,
             'format' => $format, 'record_key' => 'code', 'options' => json_encode(['header_row' => 1]), 'automatic' => true,
             'created_at' => now(), 'updated_at' => now()]);
+    }
+
+    public function test_scheduler_registers_due_imports_without_overlapping(): void
+    {
+        $events = collect(app(Schedule::class)->events());
+        $event = $events->first(fn ($event) => str_contains($event->command ?? '', 'imports:refresh --due'));
+        $this->assertNotNull($event);
+        $this->assertSame('*/5 * * * *', $event->expression);
+        $this->assertTrue($event->withoutOverlapping);
+        $this->assertTrue($event->runInBackground);
+        $worker = $events->first(fn ($event) => str_contains($event->command ?? '', 'queue:work database --queue=imports'));
+        $this->assertNotNull($worker);
+        $this->assertSame('* * * * *', $worker->expression);
+        $this->assertTrue($worker->withoutOverlapping);
+        $this->assertTrue($worker->runInBackground);
+        $this->assertStringContainsString('--stop-when-empty', $worker->command);
+        $this->assertStringContainsString('--timeout=60', $worker->command);
+    }
+
+    public function test_due_imports_skip_disabled_and_future_sources_and_continue_after_failure(): void
+    {
+        $this->admin();
+        $failed = $this->connector();
+        $due = $this->connector();
+        $disabled = $this->connector();
+        $future = $this->connector();
+        DB::table('import_connectors')->where('id', $disabled)->update(['automatic' => false]);
+        DB::table('import_connectors')->where('id', $future)->update(['next_check_at' => now()->addDay()]);
+        $this->mock(OfficialDownload::class, function ($mock): void {
+            $mock->shouldReceive('get')->once()->ordered()->andThrow(new RuntimeException('Source unavailable'));
+            $mock->shouldReceive('get')->once()->ordered()->andReturn("code,name\n001,Official row\n");
+        });
+        $this->artisan('imports:refresh --due')->assertExitCode(1);
+        $this->assertDatabaseHas('import_runs', ['import_connector_id' => $failed, 'status' => 'failed']);
+        $this->assertDatabaseHas('import_runs', ['import_connector_id' => $due, 'status' => 'needs_review']);
+        $this->assertDatabaseCount('import_runs', 2);
+        $this->assertDatabaseCount('source_releases', 0);
+        $this->assertDatabaseHas('import_connectors', ['id' => $due, 'accepted_run_id' => null]);
+        $this->artisan('imports:refresh --due')->expectsOutput('No automatic sources are due.')->assertExitCode(0);
     }
 
     public function test_download_extract_compare_review_and_unchanged_preserve_public_data(): void
