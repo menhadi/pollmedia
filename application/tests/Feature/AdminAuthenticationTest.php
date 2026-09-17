@@ -65,7 +65,7 @@ class AdminAuthenticationTest extends TestCase
         $this->assertDatabaseHas('sessions', ['id' => 'other-device-'.$other->id]);
         $this->assertTrue(Hash::check('a-new-long-passphrase', $admin->fresh()->password));
         $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-long-test-passphrase'])->assertSessionHasErrors('email');
-        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-new-long-passphrase'])->assertRedirect(route('seo.index'));
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-new-long-passphrase'])->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_guests_and_regular_users_cannot_read_or_mutate_seo(): void
@@ -84,7 +84,7 @@ class AdminAuthenticationTest extends TestCase
     public function test_administrator_sign_in_sign_out_and_permission_revocation(): void
     {
         $admin = $this->administrator();
-        $this->post('/admin/login', ['email' => 'ADMIN@EXAMPLE.TEST', 'password' => 'a-long-test-passphrase'])->assertRedirect(route('seo.index'));
+        $this->post('/admin/login', ['email' => 'ADMIN@EXAMPLE.TEST', 'password' => 'a-long-test-passphrase'])->assertRedirect(route('admin.dashboard'));
         $this->assertAuthenticatedAs($admin);
         $this->get('/admin/seo')->assertOk()->assertSee('Sign out');
         $this->post('/admin/logout')->assertRedirect(route('admin.login'));
@@ -105,7 +105,7 @@ class AdminAuthenticationTest extends TestCase
         $this->post('/admin/login', ['email' => 'admin@example.test', 'password' => 'a-long-test-passphrase'])->assertSessionHasErrors(['email' => 'Too many attempts. Please wait one minute before trying again.']);
         $this->assertGuest();
         $this->travel(61)->seconds();
-        $this->post('/admin/login', ['email' => 'admin@example.test', 'password' => 'a-long-test-passphrase'])->assertRedirect(route('seo.index'));
+        $this->post('/admin/login', ['email' => 'admin@example.test', 'password' => 'a-long-test-passphrase'])->assertRedirect(route('admin.dashboard'));
         $this->assertAuthenticated();
         $this->travelBack();
     }
@@ -114,7 +114,7 @@ class AdminAuthenticationTest extends TestCase
     {
         $this->get('/admin/setup')->assertOk()->assertSee('Create administrator');
         $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'owner@example.test', 'password' => 'short', 'password_confirmation' => 'short'])->assertSessionHasErrors('password');
-        $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'OWNER@EXAMPLE.TEST', 'password' => 'a-private-test-passphrase', 'password_confirmation' => 'a-private-test-passphrase'])->assertRedirect(route('seo.index'));
+        $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'OWNER@EXAMPLE.TEST', 'password' => 'a-private-test-passphrase', 'password_confirmation' => 'a-private-test-passphrase'])->assertRedirect(route('admin.dashboard'));
         $admin = User::where('email', 'owner@example.test')->firstOrFail();
         $this->assertTrue($admin->is_admin);
         $this->assertTrue(Hash::check('a-private-test-passphrase', $admin->password));

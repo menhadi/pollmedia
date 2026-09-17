@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AiSettingsController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
@@ -70,6 +71,7 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/account', [AdminAuthController::class, 'account'])->name('admin.account');
     Route::post('/admin/account/password', [AdminAuthController::class, 'updatePassword'])->middleware('throttle:5,1')->name('admin.password');
     Route::get('/admin/ai-settings', [AiSettingsController::class, 'index'])->name('ai.settings');

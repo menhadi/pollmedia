@@ -45,7 +45,7 @@ class AdminAuthController extends Controller
     public function login(Request $request): View|RedirectResponse
     {
         if ($request->user()?->is_admin) {
-            return redirect()->route('seo.index');
+            return redirect()->route('admin.dashboard');
         }
         $canSetup = app()->environment('local')
             && in_array($request->server('REMOTE_ADDR'), ['127.0.0.1', '::1'], true)
@@ -70,7 +70,7 @@ class AdminAuthController extends Controller
         RateLimiter::clear($key);
         $request->session()->regenerate();
 
-        return redirect()->route('seo.index');
+        return redirect()->route('admin.dashboard');
     }
 
     public function logout(Request $request): RedirectResponse
@@ -106,6 +106,6 @@ class AdminAuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('seo.index')->with('status', 'Administrator account created. You are signed in.');
+        return redirect()->route('admin.dashboard')->with('status', 'Administrator account created. You are signed in.');
     }
 }
