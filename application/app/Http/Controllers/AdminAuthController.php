@@ -9,10 +9,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
 {
+    public function account(): View
+    {
+        return view('admin-account');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'current_password' => 'required|string|current_password',
+            'password' => 'required|string|min:12|max:128|confirmed|different:current_password',
+        ]);
+        $user = $request->user();
+        DB::transaction(function () use ($user, $input): void {
+            $user->password = $input['password'];
+            $user->setRememberToken(Str::random(60));
+            $user->save();
+            if (config('session.driver') === 'database') {
+                DB::connection(config('session.connection'))->table(config('session.table'))
+                    ->where('user_id', $user->id)->delete();
+            }
+        });
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login')->with('status', 'Password updated. Sign in with your new password.');
+    }
+
     public function login(Request $request): View|RedirectResponse
     {
         if ($request->user()?->is_admin) {

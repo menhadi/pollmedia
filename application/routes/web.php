@@ -70,6 +70,8 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/account', [AdminAuthController::class, 'account'])->name('admin.account');
+    Route::post('/admin/account/password', [AdminAuthController::class, 'updatePassword'])->middleware('throttle:5,1')->name('admin.password');
     Route::get('/admin/ai-settings', [AiSettingsController::class, 'index'])->name('ai.settings');
     Route::post('/admin/ai-settings/{provider}', [AiSettingsController::class, 'save'])->middleware('throttle:20,1')->name('ai.settings.save');
 });

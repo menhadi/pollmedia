@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -19,6 +20,52 @@ class AdminAuthenticationTest extends TestCase
         $user->save();
 
         return $user;
+    }
+
+    public function test_account_settings_require_an_administrator(): void
+    {
+        $this->get('/admin/account')->assertRedirect(route('admin.login'));
+        $this->post('/admin/account/password')->assertRedirect(route('admin.login'));
+        $this->actingAs(User::factory()->create())->get('/admin/account')->assertForbidden();
+        $this->post('/admin/account/password')->assertForbidden();
+    }
+
+    public function test_password_change_rejects_incorrect_current_password_and_confirmation(): void
+    {
+        $admin = $this->administrator();
+        $this->actingAs($admin)->get('/admin/account')->assertOk()->assertSee($admin->email);
+        $this->post('/admin/account/password', [
+            'current_password' => 'incorrect', 'password' => 'a-new-long-passphrase',
+            'password_confirmation' => 'a-new-long-passphrase',
+        ])->assertSessionHasErrors('current_password')->assertSessionMissing('_old_input.current_password');
+        $this->post('/admin/account/password', [
+            'current_password' => 'a-long-test-passphrase', 'password' => 'a-new-long-passphrase',
+            'password_confirmation' => 'different',
+        ])->assertSessionHasErrors('password')->assertSessionMissing('_old_input.password');
+        $this->assertTrue(Hash::check('a-long-test-passphrase', $admin->fresh()->password));
+    }
+
+    public function test_password_change_revokes_database_sessions_and_requires_new_credentials(): void
+    {
+        config(['session.driver' => 'database']);
+        $admin = $this->administrator();
+        $other = User::factory()->create();
+        foreach ([$admin->id, $other->id] as $id) {
+            DB::table('sessions')->insert([
+                'id' => 'other-device-'.$id, 'user_id' => $id,
+                'payload' => base64_encode(serialize([])), 'last_activity' => time(),
+            ]);
+        }
+        $this->actingAs($admin)->post('/admin/account/password', [
+            'current_password' => 'a-long-test-passphrase', 'password' => 'a-new-long-passphrase',
+            'password_confirmation' => 'a-new-long-passphrase',
+        ])->assertRedirect(route('admin.login'))->assertSessionHas('status');
+        $this->assertGuest();
+        $this->assertDatabaseMissing('sessions', ['user_id' => $admin->id]);
+        $this->assertDatabaseHas('sessions', ['id' => 'other-device-'.$other->id]);
+        $this->assertTrue(Hash::check('a-new-long-passphrase', $admin->fresh()->password));
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-long-test-passphrase'])->assertSessionHasErrors('email');
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-new-long-passphrase'])->assertRedirect(route('seo.index'));
     }
 
     public function test_guests_and_regular_users_cannot_read_or_mutate_seo(): void
