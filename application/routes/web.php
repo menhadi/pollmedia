@@ -73,6 +73,7 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
     Route::get('/admin/authorities', [AuthorityReviewController::class, 'index'])->name('authorities.index');
+    Route::get('/admin/authorities/history', [AuthorityReviewController::class, 'history'])->name('authorities.history');
     Route::post('/admin/authorities/replace', [AuthorityReviewController::class, 'replace'])->middleware('throttle:5,1')->name('authorities.replace');
     Route::post('/admin/authorities/{key}/check', [AuthorityReviewController::class, 'check'])->middleware('throttle:3,1')->name('authorities.check');
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');

@@ -1,6 +1,7 @@
 @extends('seo-layout')
 @section('content')
 <h1>Representatives and authorities</h1>
+<p><a href="{{ route('authorities.history') }}">Officeholder and review history</a></p>
 <p>Compare published officeholders with official directory evidence. A detected table change does not establish a transfer, appointment date or vacancy.</p>
 <section class="card"><h2>Published officeholders</h2>
 @forelse($assignments as $assignment)

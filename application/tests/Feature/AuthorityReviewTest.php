@@ -17,8 +17,10 @@ class AuthorityReviewTest extends TestCase
     {
         Http::preventStrayRequests();
         $this->get('/admin/authorities')->assertRedirect(route('admin.login'));
+        $this->get('/admin/authorities/history')->assertRedirect(route('admin.login'));
         $this->post('/admin/authorities/pilibhit-officers/check')->assertRedirect(route('admin.login'));
         $this->actingAs(User::factory()->create())->get('/admin/authorities')->assertForbidden();
+        $this->get('/admin/authorities/history')->assertForbidden();
         $this->post('/admin/authorities/pilibhit-officers/check')->assertForbidden();
         Http::assertNothingSent();
     }
@@ -75,6 +77,12 @@ class AuthorityReviewTest extends TestCase
         $this->assertNull($active->effective_from);
         $this->assertDatabaseHas('authority_reviews', ['office_assignment_id' => $active->id, 'reviewed_by' => $user->id]);
         $this->get('/india/district/pilibhit')->assertOk()->assertSee('Verified new officer');
+        $this->get('/admin/authorities/history?office='.$old->office_id)->assertOk()
+            ->assertSee('Historical observation')->assertSee('Currently published observation')
+            ->assertSee('Verified new officer')->assertSee($input['note'])
+            ->assertViewHas('history', fn ($history) => $history->total() === 2);
+        $this->get('/admin/authorities/history?office=999999')->assertSessionHasErrors('office');
+        $this->get('/india/district/pilibhit')->assertDontSee($input['note']);
         $this->post('/admin/authorities/replace', $input)->assertStatus(409);
         $this->assertDatabaseCount('authority_reviews', 1);
         DB::table('source_checks')->insert(['data_source_id' => $source->id, 'status' => 'failed', 'checked_at' => now()]);

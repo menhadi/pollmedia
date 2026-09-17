@@ -14,6 +14,24 @@ use InvalidArgumentException;
 
 class AuthorityReviewController extends Controller
 {
+    public function history(Request $request): View
+    {
+        $input = $request->validate(['office' => 'nullable|integer|exists:offices,id']);
+        $office = $input['office'] ?? null;
+        $offices = DB::table('offices')->orderBy('title')->orderBy('key')->get();
+        $history = DB::table('office_assignments as a')->join('offices as o', 'o.id', '=', 'a.office_id')
+            ->leftJoin('people as p', 'p.id', '=', 'a.person_id')
+            ->join('source_releases as r', 'r.id', '=', 'a.source_release_id')
+            ->leftJoin('authority_reviews as review', 'review.office_assignment_id', '=', 'a.id')
+            ->leftJoin('users as reviewer', 'reviewer.id', '=', 'review.reviewed_by')
+            ->when($office, fn ($query) => $query->where('a.office_id', $office))
+            ->select('a.*', 'o.title', 'o.key as office_key', 'p.display_name', 'r.url', 'r.sha256',
+                'review.note', 'review.created_at as reviewed_at', 'reviewer.name as reviewer_name')
+            ->orderByDesc('a.verified_at')->orderByDesc('a.id')->paginate(20)->withQueryString();
+
+        return view('authority-history', compact('history', 'offices', 'office'));
+    }
+
     public function index(): View
     {
         $sources = DB::table('data_sources')->whereIn('key', array_keys(config('source-monitor.sources', [])))->orderBy('key')->get();
