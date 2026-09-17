@@ -6,6 +6,7 @@ use App\Http\Controllers\AiSettingsController;
 use App\Http\Controllers\AuthorityReviewController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
+use App\Http\Controllers\CitizenIssueController;
 use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
@@ -30,6 +31,9 @@ use App\Http\Middleware\RequireAdministrator;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+Route::get('/issues', [CitizenIssueController::class, 'index'])->name('issues.index');
+Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('throttle:3,10')->name('issues.store');
+Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');
@@ -83,6 +87,9 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/issues', [CitizenIssueController::class, 'reviewIndex'])->name('issues.queue');
+    Route::get('/admin/issues/{issue}', [CitizenIssueController::class, 'review'])->whereUlid('issue')->name('issues.review');
+    Route::post('/admin/issues/{issue}', [CitizenIssueController::class, 'moderate'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.moderate');
     Route::get('/admin/official-hosts', [OfficialHostController::class, 'index'])->name('official-hosts.index');
     Route::post('/admin/official-hosts', [OfficialHostController::class, 'store'])->middleware('throttle:10,1')->name('official-hosts.store');
     Route::post('/admin/official-hosts/{host}', [OfficialHostController::class, 'toggle'])->whereNumber('host')->middleware('throttle:10,1')->name('official-hosts.toggle');
