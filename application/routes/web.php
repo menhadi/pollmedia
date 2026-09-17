@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AiSettingsController;
+use App\Http\Controllers\AuthorityReviewController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
 use App\Http\Controllers\ElectionBatchController;
@@ -71,6 +72,8 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/authorities', [AuthorityReviewController::class, 'index'])->name('authorities.index');
+    Route::post('/admin/authorities/{key}/check', [AuthorityReviewController::class, 'check'])->middleware('throttle:3,1')->name('authorities.check');
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/account', [AdminAuthController::class, 'account'])->name('admin.account');
     Route::post('/admin/account/password', [AdminAuthController::class, 'updatePassword'])->middleware('throttle:5,1')->name('admin.password');
