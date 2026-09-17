@@ -6,6 +6,7 @@ use App\Http\Controllers\AiSettingsController;
 use App\Http\Controllers\AuthorityReviewController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
+use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\HistoricalElectionController;
@@ -36,6 +37,7 @@ Route::get('/india/ac/{slug}/history', [HistoricalElectionController::class, 'co
 Route::get('/india/district/pilibhit/census-1981', [CensusHistoryController::class, 'edition1981'])->name('census.1981');
 Route::get('/india/district/pilibhit/census-history', [CensusHistoryController::class, 'show'])->name('census.history');
 Route::get('/reports/pilibhit', [ReportController::class, 'show'])->name('reports.pilibhit');
+Route::get('/reports/coverage/{scope}', [CoverageReportController::class, 'show'])->whereIn('scope', ['india', 'uttar-pradesh'])->name('reports.coverage');
 Route::get('/reports/archive', [ReportArchiveController::class, 'index'])->name('reports.archive');
 Route::post('/reports/archive', [ReportArchiveController::class, 'store'])->middleware([AdminTransport::class, RequireAdministrator::class, 'throttle:10,1'])->name('reports.store');
 Route::get('/reports/archive/{report}/download', [ReportArchiveController::class, 'download'])->whereUlid('report')->name('reports.download');

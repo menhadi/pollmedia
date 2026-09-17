@@ -42,12 +42,12 @@ class ReportArchiveTest extends TestCase
         $this->travelTo(Carbon::parse('2026-09-30 23:50', 'Asia/Kolkata'));
         $this->artisan('reports:archive-due')->assertExitCode(0);
         $this->artisan('reports:archive-due')->assertExitCode(0);
-        $this->assertDatabaseCount('report_drafts', 1);
+        $this->assertDatabaseCount('report_drafts', 3);
         $this->assertDatabaseHas('report_drafts', ['edition' => 'quarterly', 'period' => 'Q3 2026']);
         $this->travelTo(Carbon::parse('2026-12-31 23:50', 'Asia/Kolkata'));
         $this->artisan('reports:archive-due')->assertExitCode(0);
         $this->artisan('reports:archive-due')->assertExitCode(0);
-        $this->assertDatabaseCount('report_drafts', 3);
+        $this->assertDatabaseCount('report_drafts', 9);
         $this->assertDatabaseHas('report_drafts', ['edition' => 'annual', 'period' => '2026']);
         $this->travelBack();
     }

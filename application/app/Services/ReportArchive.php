@@ -24,6 +24,7 @@ class ReportArchive
         try {
             DB::table('report_drafts')->insert([
                 'id' => $id, 'edition' => $data['edition'], 'period' => $data['period'],
+                'scope' => $data['scope'] ?? 'pilibhit',
                 'generated_at' => $data['generatedAt']->copy()->utc(), 'created_at' => now(),
                 'path' => $path, 'sha256' => hash('sha256', $html), 'source_release_ids' => $sourceIds->toJson(),
             ]);
