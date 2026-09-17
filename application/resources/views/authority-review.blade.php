@@ -26,6 +26,22 @@
 </tbody></table></div>
 @empty<p>No captured table is available.</p>@endforelse
 </details>@endforeach
+@if($source->successful && $source->latest->id === $source->successful->id)
+<details class="card"><summary><strong>Publish a reviewed officeholder</strong></summary>
+<p>Use this only for an unambiguous, single-holder appointment in this directory. Confirm the person's name, office and jurisdiction against the captured table. Acting appointments, vacancies and conflicting evidence need separate review. The capture date is a verification date, not a tenure start date.</p>
+@forelse($source->offices as $office)
+<form method="post" action="{{ route('authorities.replace') }}" class="card">@csrf
+<h3>{{ $office->title }}</h3>
+<p>Linked jurisdiction: @foreach($office->places as $place){{ $place->name }} ({{ strtoupper($place->type) }}){{ $loop->last ? '' : ', ' }}@endforeach</p>
+<input type="hidden" name="check_id" value="{{ $source->successful->id }}"><input type="hidden" name="office_id" value="{{ $office->id }}"><input type="hidden" name="assignment_id" value="{{ $office->assignment_id }}">
+<div class="field"><label for="name-{{ $office->id }}">Exact name in the captured directory</label><input id="name-{{ $office->id }}" type="text" name="name" required maxlength="200"></div>
+<div class="field"><label for="note-{{ $office->id }}">Review evidence and jurisdiction</label><textarea id="note-{{ $office->id }}" name="note" required minlength="10" maxlength="2000"></textarea></div>
+<label><input type="checkbox" name="confirmed" value="1" required>I verified this person's identity, office and jurisdiction in the official evidence.</label>
+<p class="muted">A different name creates a separate person record; names alone are not used to merge identities. This publishes to linked place pages and records your review.</p><button>Publish reviewed officeholder</button>
+</form>
+@empty<p>No published office is linked to this source yet.</p>@endforelse
+</details>
+@endif
 </section>
 @empty<p>No official directories are configured.</p>@endforelse
 @endsection
