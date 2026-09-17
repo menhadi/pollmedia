@@ -17,7 +17,9 @@ class ExampleTest extends TestCase
     {
         $this->seed(PilibhitSeeder::class);
         $this->get('/')->assertOk()->assertSee('India,')->assertSee('/india/state/uttar-pradesh')->assertSee('/india/ac/puranpur');
-        $this->get('/?q=Puranpur&type=ac')->assertOk()->assertSee('1 available pages match')->assertSee('Puranpur AC')->assertDontSee('Baheri AC');
+        $this->get('/?q=Puranpur&type=ac')->assertOk()->assertSee('1 available pages match')->assertSee('Puranpur AC')
+            ->assertSee('<option value="pc"', false)
+            ->assertViewHas('places', fn ($places): bool => $places->pluck('slug')->all() === ['ac-puranpur']);
         $this->get('/?q=unknown')->assertOk()->assertSee('No imported pages match');
         $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('Uttar Pradesh,');
         $this->get('/india/state/unknown')->assertNotFound();

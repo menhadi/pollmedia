@@ -82,4 +82,3 @@
 
 
 <footer>Pollmedia · Local integrated pilot · Public launch and source-permission review pending.</footer></main><script>const input=document.getElementById('villagesearch');if(input)input.addEventListener('input',()=>{let visible=0;for(const row of document.querySelectorAll('#villagerows tr')){row.hidden=!row.textContent.toLowerCase().includes(input.value.trim().toLowerCase());if(!row.hidden)visible++}document.getElementById('villageempty').hidden=visible>0});</script></body></html>
-
