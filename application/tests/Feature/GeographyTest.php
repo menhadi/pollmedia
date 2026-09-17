@@ -11,6 +11,22 @@ class GeographyTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_india_browser_uses_accepted_links_and_cannot_be_switched_to_another_country(): void
+    {
+        $this->seed(PilibhitSeeder::class);
+        DB::table('places')->insert(['slug' => 'foreign-filter-test', 'name' => 'Foreign filter test', 'type' => 'borough', 'country_code' => 'GB']);
+        $district = DB::table('places')->where('slug', 'district-pilibhit')->value('id');
+        $pc = DB::table('places')->where('slug', 'pc-pilibhit')->value('id');
+        $this->get('/india/explore?country=GB')->assertOk()->assertSee('Explore India')->assertDontSee('Foreign filter test')
+            ->assertSee('Parliamentary constituency (PC)')->assertSee('Assembly constituency (AC)');
+        $this->get('/india/explore?area='.$district.'&type=ac')->assertOk()
+            ->assertViewHas('places', fn ($places) => $places->count() > 0 && $places->every(fn ($place) => $place->country_code === 'IN' && $place->type === 'ac'));
+        $this->get('/india/explore?area='.$pc.'&type=ac')->assertOk()
+            ->assertSee('direct source-backed links');
+        $foreign = DB::table('places')->where('slug', 'foreign-filter-test')->value('id');
+        $this->get('/india/explore?area='.$foreign)->assertNotFound();
+    }
+
     public function test_browser_filters_country_and_source_defined_types(): void
     {
         DB::table('places')->insert([

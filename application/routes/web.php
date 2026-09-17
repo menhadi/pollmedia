@@ -41,6 +41,7 @@ Route::get('/india/district/pilibhit/census-1981', [CensusHistoryController::cla
 Route::get('/india/district/pilibhit/census-history', [CensusHistoryController::class, 'show'])->name('census.history');
 Route::get('/reports/pilibhit', [ReportController::class, 'show'])->name('reports.pilibhit');
 Route::get('/explore', [GeographyController::class, 'index'])->name('geography.index');
+Route::get('/india/explore', [GeographyController::class, 'india'])->name('geography.india');
 Route::get('/explore/places/{slug}', [GeographyController::class, 'show'])->name('geography.show');
 Route::get('/reports/coverage/{scope}', [CoverageReportController::class, 'show'])->where('scope', '[a-z0-9-]+')->name('reports.coverage');
 Route::get('/reports/archive', [ReportArchiveController::class, 'index'])->name('reports.archive');

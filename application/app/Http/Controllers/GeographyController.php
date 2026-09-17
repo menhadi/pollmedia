@@ -8,18 +8,40 @@ use Illuminate\Support\Facades\DB;
 
 class GeographyController extends Controller
 {
+    public function india(Request $request): View
+    {
+        $request->merge(['country' => 'IN']);
+
+        return $this->index($request);
+    }
+
     public function index(Request $request): View
     {
-        $input = $request->validate(['country' => 'nullable|regex:/^[A-Z]{2}$/', 'type' => 'nullable|string|max:100']);
+        $input = $request->validate(['country' => 'nullable|regex:/^[A-Z]{2}$/', 'type' => 'nullable|string|max:100', 'area' => 'nullable|integer|exists:places,id']);
         $country = $input['country'] ?? '';
         $type = $input['type'] ?? '';
+        $area = $input['area'] ?? null;
+        $indiaContext = $request->routeIs('geography.india');
         $countries = DB::table('places')->select('country_code')->distinct()->orderBy('country_code')->pluck('country_code');
         $types = DB::table('places')->when($country, fn ($q) => $q->where('country_code', $country))
             ->select('type')->distinct()->orderBy('type')->pluck('type');
+        $links = DB::table('place_relationships as relation')->join('source_releases as r', 'r.id', '=', 'relation.source_release_id')
+            ->where('r.status', 'accepted')
+            ->where(fn ($q) => $q->whereNull('relation.valid_from')->orWhere('relation.valid_from', '<=', today()->toDateString()))
+            ->where(fn ($q) => $q->whereNull('relation.valid_to')->orWhere('relation.valid_to', '>', today()->toDateString()))
+            ->select('relation.from_place_id', 'relation.to_place_id');
+        $areas = DB::table('places')->where(fn ($q) => $q
+            ->whereIn('id', (clone $links)->select('relation.from_place_id'))
+            ->orWhereIn('id', (clone $links)->select('relation.to_place_id')))
+            ->when($country, fn ($q) => $q->where('country_code', $country))->orderBy('name')->get();
+        abort_if($area && ! $areas->contains('id', (int) $area), 404, 'No current source-backed links for this area.');
+        $related = $area ? (clone $links)->where(fn ($q) => $q->where('relation.from_place_id', $area)->orWhere('relation.to_place_id', $area))->get()
+            ->map(fn ($link) => $link->from_place_id === (int) $area ? $link->to_place_id : $link->from_place_id)->unique() : collect();
         $places = DB::table('places')->when($country, fn ($q) => $q->where('country_code', $country))
+            ->when($area, fn ($q) => $q->whereIn('id', $related))
             ->when($type, fn ($q) => $q->where('type', $type))->orderBy('name')->orderBy('id')->paginate(30)->withQueryString();
 
-        return view('geography-index', compact('countries', 'types', 'places', 'country', 'type'));
+        return view('geography-index', compact('countries', 'types', 'places', 'country', 'type', 'areas', 'area', 'indiaContext'));
     }
 
     public function show(string $slug): View
