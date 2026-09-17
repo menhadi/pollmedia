@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AiSettingsController;
 use App\Http\Controllers\AuthorityReviewController;
+use App\Http\Controllers\CensusCatalogueController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
 use App\Http\Controllers\CitizenIssueController;
@@ -35,6 +36,7 @@ Route::get('/issues', [CitizenIssueController::class, 'index'])->name('issues.in
 Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('throttle:3,10')->name('issues.store');
 Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/india/census', [CensusCatalogueController::class, 'index'])->name('census-catalogue.index');
 Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');
 Route::get('/sources', [SourceController::class, 'index'])->name('sources.index');
@@ -87,6 +89,10 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/census', [CensusCatalogueController::class, 'review'])->name('census-catalogue.review');
+    Route::post('/admin/census/prepare/{run}', [CensusCatalogueController::class, 'prepare'])->whereNumber('run')->middleware('throttle:5,1')->name('census-catalogue.prepare');
+    Route::post('/admin/census/{edition}/publish', [CensusCatalogueController::class, 'publish'])->whereNumber('edition')->middleware('throttle:5,1')->name('census-catalogue.publish');
+    Route::post('/admin/census/{edition}/withdraw', [CensusCatalogueController::class, 'withdraw'])->whereNumber('edition')->name('census-catalogue.withdraw');
     Route::get('/admin/issues', [CitizenIssueController::class, 'reviewIndex'])->name('issues.queue');
     Route::post('/admin/issues/{issue}/authority', [CitizenIssueController::class, 'authority'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.authority');
     Route::post('/admin/issues/{issue}/responses', [CitizenIssueController::class, 'response'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.response');

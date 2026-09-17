@@ -12,6 +12,7 @@
 <a class="button" href="{{ route('issues.queue') }}">Citizen issue moderation</a>
 <a class="button" href="{{ route('election-imports.index') }}">Election archives</a>
 <a class="button" href="{{ route('census.archive') }}">Census archives</a>
+<a class="button" href="{{ route('census-catalogue.review') }}">National Census publication</a>
 <a class="button" href="{{ route('authorities.index') }}">Representatives & authorities</a>
 <a class="button" href="{{ route('reports.archive') }}">Report drafts</a>
 <a href="{{ route('report-scopes.index') }}">Countries & report areas</a>

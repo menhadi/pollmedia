@@ -13,6 +13,9 @@
 <p class="notice">The source bytes have not changed since <a href="{{ route('imports.run',$summary['same_as_run']) }}">run #{{ $summary['same_as_run'] }}</a>. Any earlier pending review still applies.</p>
 @endif
 @if($data)
+@if($connector->record_key === 'source_record_key')
+<p><a href="{{ route('census-catalogue.review') }}">Open national Census publication previews</a></p>
+@endif
 @if($connector->record_key === 'Town/Village' && $connector->format === 'xlsx')
 <section class="card"><h2>Census publication</h2><p>Preview mapped village figures against the public Census 2011 edition, then publish reviewed changes.</p><a class="button" href="{{ route('imports.census', $record->id) }}">Preview Census publication</a></section>
 @endif

@@ -16,12 +16,14 @@ return [
         'boundary_basis' => 'Historical population adjusted to 2011 jurisdictions; preserve source footnotes.',
     ],
     'india-pca-2011' => [
+        'year' => 2011,
         'name' => 'India Census 2011 — country, state and district PCA',
         'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx',
         'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6191',
         'format' => 'xlsx',
     ],
     'india-basic-2011-total' => [
+        'year' => 2011,
         'name' => 'India Census 2011 — basic population figures (Total)',
         'sheet' => 'Data',
         'filter_column' => 'TRU', 'filter_value' => 'Total',
@@ -30,6 +32,7 @@ return [
         'format' => 'xlsx',
     ],
     'india-basic-2011-rural' => [
+        'year' => 2011,
         'name' => 'India Census 2011 — basic population figures (Rural)',
         'sheet' => 'Data',
         'filter_column' => 'TRU', 'filter_value' => 'Rural',
@@ -38,6 +41,7 @@ return [
         'format' => 'xlsx',
     ],
     'india-basic-2011-urban' => [
+        'year' => 2011,
         'name' => 'India Census 2011 — basic population figures (Urban)',
         'key_columns' => ['State', 'District', 'Subdistt', 'Town/Village', 'Ward', 'EB', 'Level', 'TRU', 'Name'],
         'scope_note' => 'Urban units with and without outgrowths can share Census codes. The full source unit name distinguishes records; overlapping units must not be summed.',
@@ -48,6 +52,7 @@ return [
         'format' => 'xlsx',
     ],
     'india-pca-2001' => [
+        'year' => 2001,
         'name' => 'India Census 2001 — primary census abstract',
         'key_columns' => ['STATE', 'DISTRICT', 'TAHSIL', 'TOWN_VILL', 'WARD', 'EB', 'LEVEL', 'TRU'],
         'url' => 'https://censusindia.gov.in/nada/index.php/catalog/20614/download/23746/PC01_PCA_TOT_00_00.xls',
