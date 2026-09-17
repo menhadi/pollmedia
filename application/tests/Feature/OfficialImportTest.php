@@ -51,6 +51,19 @@ class OfficialImportTest extends TestCase
         $this->assertStringContainsString('--timeout=60', $worker->command);
     }
 
+    public function test_changed_extraction_settings_reprocess_identical_source_bytes(): void
+    {
+        $this->admin();
+        $id = $this->connector();
+        $this->mock(OfficialDownload::class, fn ($mock) => $mock->shouldReceive('get')->twice()->andReturn("code,name\n001,First\n002,Second\n"));
+        app(OfficialImport::class)->run($id);
+        DB::table('import_connectors')->where('id', $id)->update(['options' => json_encode(['header_row' => 1, 'filter_column' => 'code', 'filter_value' => '002'])]);
+        $run = app(OfficialImport::class)->run($id);
+        $record = DB::table('import_runs')->find($run);
+        $this->assertSame('needs_review', $record->status);
+        $this->assertSame(['002'], array_column(json_decode($record->extracted, true)['rows'], 'code'));
+    }
+
     public function test_due_imports_skip_disabled_and_future_sources_and_continue_after_failure(): void
     {
         $this->admin();

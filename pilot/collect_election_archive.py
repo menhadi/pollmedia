@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 import subprocess
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse, urljoin, urldefrag
@@ -20,7 +21,7 @@ def fetch(url, path):
     if parsed.scheme != 'https' or parsed.hostname not in ['old.eci.gov.in','www.eci.gov.in']:
         raise ValueError('This adapter accepts only official ECI hosts.')
     path.parent.mkdir(parents=True, exist_ok=True)
-    result = subprocess.run(['curl.exe', '--silent', '--show-error', '--fail', '--location', '--proto', '=https', '--proto-redir', '=https', '--max-time', '50', '--max-filesize', '104857600', url, '-o', str(path)], capture_output=True)
+    result = subprocess.run([shutil.which('curl.exe') or 'curl', '--silent', '--show-error', '--fail', '--location', '--proto', '=https', '--proto-redir', '=https', '--max-time', '50', '--max-filesize', '104857600', url, '-o', str(path)], capture_output=True)
     if result.returncode:
         path.unlink(missing_ok=True)
         raise ValueError('Official download failed (curl code ' + str(result.returncode) + ').')
@@ -37,6 +38,75 @@ def save_manifest(path, record):
     temp.replace(path)
 
 
+def collect_modern(kind, label, url, folder, manifest, old, record):
+    if kind != 'pc' or int(label[:4]) != 2024:
+        record.update(status='adapter_required', errors=['No verified catalogue API mapping for this edition.'])
+        save_manifest(manifest, record)
+        return record
+    previous = {item['download_id']: item for item in old.get('files', [])}
+    def retain(item):
+        path = folder / item['file']
+        if Path(item['file']).name == item['file'] and path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == item['sha256']:
+            record['files'].append(item)
+    try:
+        catalogue_url = 'https://www.eci.gov.in/eci-backend/public/api/election-result?category_id=1'
+        body = fetch(catalogue_url, folder / 'modern-catalogue.json')
+        catalogue = json.loads(body)
+        entries = catalogue['results']
+        if not entries or len(entries) > 500:
+            raise ValueError('Empty or oversized official catalogue')
+        if 'totalResults' in catalogue and int(catalogue['totalResults']) != len(entries):
+            raise ValueError('Catalogue pagination is incomplete')
+        record.update(catalogue_url=catalogue_url, catalogue_sha256=hashlib.sha256(body).hexdigest(), report_count=len(entries))
+        seen = set()
+        expected = 0
+        for entry in entries:
+            for field in ['pdf_zip_url', 'xlsx_url']:
+                source = entry.get(field)
+                if not source or source in seen:
+                    continue
+                seen.add(source)
+                expected += 1
+                extension = Path(urlparse(source).path).suffix.lower()
+                title = entry['title'].strip()
+                download_id = key(source)
+                if field == 'pdf_zip_url' and title.startswith('32.'):
+                    download_id = key(url) + '-summary'
+                elif field == 'pdf_zip_url' and title.startswith('33.'):
+                    download_id = key(url) + '-saved'
+                temporary = folder / (download_id + '.part')
+                try:
+                    if extension not in ['.pdf', '.xls', '.xlsx', '.zip', '.csv']:
+                        raise ValueError('Unsupported file type in official catalogue')
+                    data = fetch(source, temporary)
+                    valid = (extension == '.pdf' and data.startswith(b'%PDF-')) or (extension in ['.xlsx', '.zip'] and data.startswith(b'PK')) or (extension == '.xls' and data.startswith(bytes.fromhex('d0cf11e0a1b11ae1')))
+                    if not valid:
+                        raise ValueError('File signature does not match the catalogue format')
+                    sha = hashlib.sha256(data).hexdigest()
+                    destination = folder / (download_id + extension)
+                    if destination.exists() and hashlib.sha256(destination.read_bytes()).hexdigest() != sha:
+                        backup = folder / (download_id + '-' + hashlib.sha256(destination.read_bytes()).hexdigest() + extension)
+                        if not backup.exists():
+                            backup.write_bytes(destination.read_bytes())
+                    temporary.replace(destination)
+                    record['files'].append(dict(download_id=download_id, name=title + extension, file=destination.name, bytes=len(data), sha256=sha, source_page=url, source_url=source))
+                except Exception as error:
+                    temporary.unlink(missing_ok=True)
+                    record['errors'].append(dict(name=title, source_url=source, reason=str(error)))
+                    if download_id in previous:
+                        retain(previous[download_id])
+                save_manifest(manifest, record)
+        record['expected_files'] = expected
+        record['status'] = 'collected' if expected and len(record['files']) == expected and not record['errors'] else 'partial' if record['files'] else 'failed'
+    except Exception as error:
+        record['errors'].append(str(error))
+        for item in previous.values():
+            retain(item)
+        record['status'] = 'partial' if record['files'] else 'failed'
+    save_manifest(manifest, record)
+    return record
+
+
 def collect(kind, label, url, root):
     folder = root / key(url)
     folder.mkdir(parents=True, exist_ok=True)
@@ -45,32 +115,7 @@ def collect(kind, label, url, root):
     record = dict(kind=kind, label=label, year=int(label[:4]), url=url, checked_at=datetime.now(timezone.utc).isoformat(), status='collecting', files=[], errors=[])
     save_manifest(manifest, record)
     if urlparse(url).hostname != 'old.eci.gov.in':
-        existing = Path(__file__).parent / 'raw/elections/2024-detailed.pdf'
-        if kind == 'pc' and int(label[:4]) == 2024 and existing.is_file() and existing.read_bytes().startswith(b'%PDF-'):
-            data = existing.read_bytes()
-            file = key(url) + '-saved.pdf'
-            (folder / file).write_bytes(data)
-            record['files'] = [dict(download_id=key(url)+'-saved', name='2024 saved official detailed results.pdf', file=file, bytes=len(data), sha256=hashlib.sha256(data).hexdigest(), source_page=url)]
-            try:
-                catalogue=json.loads(fetch('https://www.eci.gov.in/eci-backend/public/api/election-result?category_id=1',folder/'modern-catalogue.json'))
-                summaries=[r for r in catalogue['results'] if r['title'].strip().startswith('32.') and 'Summary' in r['title']]
-                if len(summaries)!=1:raise ValueError('Official summary catalogue entry missing or ambiguous')
-                source_url=summaries[0]['pdf_zip_url']
-                filename=key(url)+'-summary.pdf'
-                data=fetch(source_url,folder/(filename+'.part'))
-                if not data.startswith(b'%PDF-'):raise ValueError('Summary response is not a PDF')
-                (folder/(filename+'.part')).replace(folder/filename)
-                record['files'].append(dict(download_id=key(url)+'-summary',name='2024 Constituency Data Summary.pdf',file=filename,bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),source_page=url,source_url=source_url))
-                record.update(status='partial',errors=['Detailed and constituency-summary reports collected; other 2024 statistical reports remain outside this adapter.'])
-            except Exception as error:
-                for saved in old.get('files',[]):
-                    candidate=folder/saved['file']
-                    if saved['file']!=file and Path(saved['file']).name==saved['file'] and candidate.is_file() and hashlib.sha256(candidate.read_bytes()).hexdigest()==saved['sha256']:record['files'].append(saved)
-                record.update(status='partial',errors=['Saved detailed report retained; summary download failed: '+str(error)])
-        else:
-            record.update(status='adapter_required', errors=['Modern ECI catalogue needs a separate download adapter; existing published reports remain available.'])
-        save_manifest(manifest, record)
-        return record
+        return collect_modern(kind, label, url, folder, manifest, old, record)
     previous = {f['download_id']: f for f in old.get('files', [])}
     try:
         if '/files/category/' in url:

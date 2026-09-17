@@ -88,6 +88,9 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
     Route::get('/admin/issues', [CitizenIssueController::class, 'reviewIndex'])->name('issues.queue');
+    Route::post('/admin/issues/{issue}/authority', [CitizenIssueController::class, 'authority'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.authority');
+    Route::post('/admin/issues/{issue}/responses', [CitizenIssueController::class, 'response'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.response');
+    Route::post('/admin/issues/{issue}/responses/{response}/hide', [CitizenIssueController::class, 'hideResponse'])->whereUlid('issue')->whereNumber('response')->name('issues.response.hide');
     Route::get('/admin/issues/{issue}', [CitizenIssueController::class, 'review'])->whereUlid('issue')->name('issues.review');
     Route::post('/admin/issues/{issue}', [CitizenIssueController::class, 'moderate'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.moderate');
     Route::get('/admin/official-hosts', [OfficialHostController::class, 'index'])->name('official-hosts.index');
@@ -117,7 +120,7 @@ Route::prefix('admin/imports')->middleware([AdminTransport::class, RequireAdmini
     Route::post('/election-batches/{batch}/review/{code}', [ElectionBatchController::class, 'review'])->whereUlid('batch')->whereNumber('code')->middleware('throttle:10,1')->name('election-batches.review');
     Route::post('/election-archives/{archive}/extraction/{code}/review', [HistoricalExtractionController::class, 'review'])->where('archive', '[a-f0-9]{24}')->whereNumber('code')->middleware('throttle:20,1')->name('election-archives.review');
     Route::get('/election-archives/{archive}/extraction', [HistoricalExtractionController::class, 'show'])->where('archive', '[a-f0-9]{24}')->name('election-archives.extraction');
-    Route::get('/election-archives/{archive}/{file}', [ElectionPublicationController::class, 'archiveFile'])->where('archive', '[a-f0-9]{24}')->where('file', '[a-f0-9]{24}-[a-z0-9]+')->name('election-archives.file');
+    Route::get('/election-archives/{archive}/{file}', [ElectionPublicationController::class, 'archiveFile'])->where('archive', '[a-f0-9]{24}')->where('file', '[a-f0-9]{24}(?:-[a-z0-9]+)?')->name('election-archives.file');
     Route::get('/elections', [ElectionPublicationController::class, 'index'])->name('election-imports.index');
     Route::post('/elections', [ElectionPublicationController::class, 'store'])->middleware('throttle:10,1')->name('election-imports.store');
     Route::get('/elections/{draft}', [ElectionPublicationController::class, 'show'])->whereUlid('draft')->name('election-imports.show');

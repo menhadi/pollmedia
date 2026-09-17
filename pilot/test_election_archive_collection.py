@@ -13,19 +13,49 @@ class ArchiveCollectionTest(unittest.TestCase):
         summary_url='https://www.eci.gov.in/eci-backend/public/all_files/GE-2024-statistical-report/32-Constituency_data_summery_report.pdf'
         data=b'%PDF-1.7 summary fixture'
         def download(source,destination):
-            content=json.dumps({'results':[dict(title='32.Constituency Data Summary',pdf_zip_url=summary_url)]}).encode() if '/api/' in source else data
+            content=json.dumps({'totalResults':2,'results':[dict(title='33.Constituency Wise Detailed Result',pdf_zip_url=summary_url.replace('32-', '33-')),dict(title='32.Constituency Data Summary',pdf_zip_url=summary_url)]}).encode() if '/api/' in source else data
             destination.write_bytes(content)
             return content
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
             with patch('collect_election_archive.fetch',side_effect=download):result=collect('pc','2024',url,root)
             self.assertEqual(len(result['files']),2)
+            self.assertEqual(result['status'],'collected')
             summary=result['files'][1]
             self.assertEqual(summary['sha256'],hashlib.sha256(data).hexdigest())
             self.assertEqual(summary['source_url'],summary_url)
             with patch('collect_election_archive.fetch',side_effect=ValueError('Temporary download failure')):retried=collect('pc','2024',url,root)
             self.assertEqual(retried['files'][1],summary)
             self.assertEqual((root/key(url)/summary['file']).read_bytes(),data)
+
+    def test_collects_spreadsheets_and_rejects_html_without_losing_other_files(self):
+        url='https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports'
+        base='https://www.eci.gov.in/eci-backend/public/all_files/'
+        def download(source,destination):
+            if '/api/' in source:
+                content=json.dumps({'totalResults':2,'results':[dict(title='1.Schedule',pdf_zip_url=base+'schedule.pdf',xlsx_url=base+'schedule.xls'),dict(title='2.Highlights',pdf_zip_url=base+'bad.pdf')]}).encode()
+            elif source.endswith('.xls'):
+                content=bytes.fromhex('d0cf11e0a1b11ae1')+b'workbook'
+            elif source.endswith('bad.pdf'):
+                content=b'<html>Access check</html>'
+            else:
+                content=b'%PDF-1.7 report'
+            destination.write_bytes(content)
+            return content
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch('collect_election_archive.fetch',side_effect=download):
+                result=collect('pc','2024',url,Path(tmp))
+            self.assertEqual(result['status'],'partial')
+            self.assertEqual(result['expected_files'],3)
+            self.assertEqual(len(result['files']),2)
+            self.assertEqual(len(result['errors']),1)
+            self.assertTrue(any(f['file'].endswith('.xls') for f in result['files']))
+
+    def test_incomplete_catalogue_is_not_claimed_as_collected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch('collect_election_archive.fetch',return_value=json.dumps({'totalResults':2,'results':[{'title':'one'}]}).encode()):
+                result=collect('pc','2024','https://www.eci.gov.in/reports',Path(tmp))
+            self.assertEqual(result['status'],'failed')
 
     def test_category_excludes_global_recent_download_widgets(self):
         soup=BeautifulSoup('<div class="cDownloadsCategoryTable"><a title="View the file Result" href="https://old.eci.gov.in/files/file/1-report/">Result</a></div><div class="ipsWidget"><a title="View the file unrelated" href="https://old.eci.gov.in/files/file/2-other/">Other year</a></div>', 'html.parser')

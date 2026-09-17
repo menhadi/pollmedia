@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\IssueAuthorities;
+use App\Services\OfficialDownload;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CitizenIssueController extends Controller
@@ -94,7 +97,69 @@ class CitizenIssueController extends Controller
             ->when(! $admin, fn ($query) => $query->whereIn('to_status', self::PUBLIC_STATUSES))
             ->orderBy('id')->get();
 
-        return view('citizen-issue-detail', compact('record', 'admin', 'places', 'events') + ['nextStatuses' => $this->nextStatuses($record->status)]);
+        $availableOffices = app(IssueAuthorities::class)->available($record->id);
+        $authorities = DB::table('citizen_issue_authorities as a')->join('offices as o', 'o.id', '=', 'a.office_id')
+            ->where('a.issue_id', $record->id)->when(! $admin, fn ($q) => $q->where('a.active', true))
+            ->select('a.*', 'o.title')->get();
+        $holders = app(IssueAuthorities::class)->holders($authorities->pluck('office_id')->all());
+        $responses = DB::table('citizen_issue_responses as r')->join('citizen_issue_authorities as a', 'a.id', '=', 'r.authority_id')
+            ->join('offices as o', 'o.id', '=', 'a.office_id')->where('a.issue_id', $record->id)
+            ->when(! $admin, fn ($q) => $q->where('r.visible', true)->where('a.active', true))
+            ->select('r.*', 'o.title')->orderByDesc('r.responded_on')->get();
+
+        return view('citizen-issue-detail', compact('record', 'admin', 'places', 'events', 'availableOffices', 'authorities', 'holders', 'responses') + ['nextStatuses' => $this->nextStatuses($record->status)]);
+    }
+
+    public function authority(Request $request, string $issue): RedirectResponse
+    {
+        $data = $request->validate(['office_id' => 'required|integer|exists:offices,id', 'reason' => 'required|string|min:20|max:2000', 'active' => 'required|boolean', 'revision' => 'required|integer|min:0']);
+        DB::transaction(function () use ($request, $issue, $data): void {
+            $record = DB::table('citizen_issues')->where('id', $issue)->lockForUpdate()->first();
+            abort_unless($record, 404);
+            abort_unless($record->revision === (int) $data['revision'], 409, 'Report changed. Reload before saving.');
+            $existing = DB::table('citizen_issue_authorities')->where('issue_id', $issue)->where('office_id', $data['office_id'])->first();
+            abort_unless($data['active'] ? app(IssueAuthorities::class)->available($issue)->contains('id', (int) $data['office_id']) : $existing, 422, 'No accepted current jurisdiction for this office and report location.');
+            DB::table('citizen_issue_authorities')->updateOrInsert(['issue_id' => $issue, 'office_id' => $data['office_id']], [
+                'reason' => $data['reason'], 'active' => $data['active'], 'reviewed_by' => $request->user()->id,
+                'created_at' => $existing?->created_at ?? now(), 'updated_at' => now(),
+            ]);
+            DB::table('citizen_issues')->where('id', $issue)->update(['revision' => $record->revision + 1, 'updated_at' => now()]);
+        });
+
+        return redirect()->route('issues.review', $issue)->with('status', 'Office link updated. No message has been sent to the office.');
+    }
+
+    public function response(Request $request, string $issue): RedirectResponse
+    {
+        $data = $request->validate(['authority_id' => 'required|integer', 'summary' => 'required|string|min:20|max:3000', 'source_url' => 'required|url:https|max:2048', 'responded_on' => 'required|date_format:Y-m-d|before_or_equal:today', 'revision' => 'required|integer|min:0']);
+        try {
+            app(OfficialDownload::class)->validateUrl($data['source_url']);
+        } catch (\RuntimeException $error) {
+            throw ValidationException::withMessages(['source_url' => $error->getMessage()]);
+        }
+        DB::transaction(function () use ($request, $issue, $data): void {
+            $record = DB::table('citizen_issues')->where('id', $issue)->lockForUpdate()->first();
+            abort_unless($record, 404);
+            abort_unless($record->revision === (int) $data['revision'], 409, 'Report changed. Reload before saving.');
+            abort_unless(DB::table('citizen_issue_authorities')->where('id', $data['authority_id'])->where('issue_id', $issue)->where('active', true)->exists(), 422);
+            DB::table('citizen_issue_responses')->insert([
+                'authority_id' => $data['authority_id'], 'summary' => $data['summary'], 'source_url' => $data['source_url'],
+                'responded_on' => $data['responded_on'], 'reviewed_by' => $request->user()->id, 'created_at' => now(), 'updated_at' => now(),
+            ]);
+            DB::table('citizen_issues')->where('id', $issue)->update(['revision' => $record->revision + 1, 'updated_at' => now()]);
+        });
+
+        return redirect()->route('issues.review', $issue)->with('status', 'Response summary recorded. Issue status is unchanged.');
+    }
+
+    public function hideResponse(Request $request, string $issue, int $response): RedirectResponse
+    {
+        $row = DB::table('citizen_issue_responses as r')->join('citizen_issue_authorities as a', 'a.id', '=', 'r.authority_id')
+            ->where('r.id', $response)->where('a.issue_id', $issue)->first();
+        abort_unless($row, 404);
+        DB::table('citizen_issue_responses')->where('id', $response)->update(['visible' => false, 'hidden_by' => $request->user()->id, 'hidden_at' => now(), 'updated_at' => now()]);
+
+        return redirect()->route('issues.review', $issue)->with('status', 'Response removed from public view.');
     }
 
     private function nextStatuses(string $status): array

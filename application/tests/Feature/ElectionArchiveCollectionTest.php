@@ -12,6 +12,19 @@ class ElectionArchiveCollectionTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_modern_catalogue_file_ids_can_be_downloaded(): void
+    {
+        Storage::fake('local');
+        $entry = app(ElectionArchive::class)->entries('pc', 2024)[0];
+        $id = $entry['collection']['id'];
+        $file = str_repeat('b', 24);
+        $content = '%PDF-1.7 official catalogue test';
+        Storage::disk('local')->put('election-archive/'.$id.'/'.$file.'.pdf', $content);
+        Storage::disk('local')->put('election-archive/'.$id.'/manifest.json', json_encode(['url' => $entry['url'], 'status' => 'collected', 'files' => [['download_id' => $file, 'file' => $file.'.pdf', 'name' => 'Report.pdf', 'bytes' => strlen($content), 'sha256' => hash('sha256', $content)]], 'errors' => []]));
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $this->get('/admin/imports/election-archives/'.$id.'/'.$file)->assertOk()->assertDownload();
+    }
+
     public function test_archived_files_show_collection_status_and_require_admin_and_valid_checksums(): void
     {
         Storage::fake('local');

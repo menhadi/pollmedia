@@ -14,7 +14,7 @@ class OfficialImport
 {
     public function run(int $connectorId, ?string $upload = null): int
     {
-        $lock = Cache::lock('official-import:'.$connectorId, 150);
+        $lock = Cache::lock('official-import:'.$connectorId, 450);
         if (! $lock->get()) {
             throw new RuntimeException('This source is already being imported.');
         }
@@ -31,8 +31,11 @@ class OfficialImport
                     throw new RuntimeException('Input is unavailable or exceeds the 20 MB limit.');
                 }
                 $hash = hash('sha256', $body);
+                $options = json_decode($connector->options, true, 512, JSON_THROW_ON_ERROR);
+                $optionsHash = hash('sha256', json_encode($options, JSON_THROW_ON_ERROR));
                 $previous = DB::table('import_runs')->where('import_connector_id', $connectorId)->whereNotNull('extracted')->orderByDesc('id')->first();
                 if ($previous && $previous->sha256 === $hash
+                    && (json_decode($previous->summary ?? '{}', true)['extraction_options_sha256'] ?? null) === $optionsHash
                     && ($previous->base_run_id === $connector->accepted_run_id || $previous->id === $connector->accepted_run_id)) {
                     $values += ['sha256' => $hash, 'summary' => json_encode(['same_as_run' => $previous->id])];
                     $values['status'] = 'unchanged';
@@ -42,10 +45,10 @@ class OfficialImport
                         throw new RuntimeException('Could not archive the official file.');
                     }
                     $values += ['sha256' => $hash, 'raw_path' => $rawPath];
-                    $options = json_decode($connector->options, true, 512, JSON_THROW_ON_ERROR);
                     $extracted = $this->extract(Storage::disk('local')->path($rawPath), $connector->format, $options);
                     $base = $connector->accepted_run_id ? DB::table('import_runs')->find($connector->accepted_run_id) : null;
                     $summary = $this->compare($extracted, $base ? json_decode($base->extracted, true) : null, $connector->record_key);
+                    $summary['extraction_options_sha256'] = $optionsHash;
                     if (! empty($options['identifier'])) {
                         [$namespace, $version] = explode('|', $options['identifier'], 2);
                         $identifiers = DB::table('place_identifiers')->where('namespace', $namespace)->where('version', $version)->pluck('place_id', 'code');
@@ -70,11 +73,19 @@ class OfficialImport
 
     public function extract(string $path, string $format, array $options): array
     {
-        $process = new Process([config('imports.python'), config('imports.extractor'), $path, $format]);
+        $output = tempnam(storage_path('app/private'), 'extract-');
+        if ($output === false) {
+            throw new RuntimeException('Could not allocate extraction output.');
+        }
+        $process = new Process([config('imports.python'), config('imports.extractor'), $path, $format, $output]);
         $process->setInput(json_encode($options, JSON_THROW_ON_ERROR));
-        $process->setTimeout(75);
-        $process->run();
-        $data = json_decode($process->getOutput(), true);
+        $process->setTimeout(! empty($options['filter_column']) ? 300 : 75);
+        try {
+            $process->run();
+            $data = json_decode($process->isSuccessful() ? file_get_contents($output) : $process->getOutput(), true);
+        } finally {
+            unlink($output);
+        }
         if (! $process->isSuccessful() || ! is_array($data) || isset($data['error'])) {
             throw new RuntimeException($data['error'] ?? 'Extraction failed or exceeded its time limit. Check Python extraction dependencies.');
         }

@@ -1,0 +1,57 @@
+<?php
+
+return [
+    'india-decadal-1901-2011-xls' => [
+        'name' => 'India A-02 decadal population 1901–2011 (2011 jurisdictions)',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/43333/download/47001/00%20A%202-India.xls',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/43333',
+        'format' => 'xls', 'archive_only' => true,
+        'boundary_basis' => 'Historical population adjusted to 2011 jurisdictions; preserve source footnotes.',
+    ],
+    'india-decadal-1901-2011-pdf' => [
+        'name' => 'India A-02 decadal population 1901–2011 (2011 jurisdictions)',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/43333/download/47002/00%20A%202-India.pdf',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/43333',
+        'format' => 'pdf', 'archive_only' => true,
+        'boundary_basis' => 'Historical population adjusted to 2011 jurisdictions; preserve source footnotes.',
+    ],
+    'india-pca-2011' => [
+        'name' => 'India Census 2011 — country, state and district PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6191',
+        'format' => 'xlsx',
+    ],
+    'india-basic-2011-total' => [
+        'name' => 'India Census 2011 — basic population figures (Total)',
+        'sheet' => 'Data',
+        'filter_column' => 'TRU', 'filter_value' => 'Total',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/42559',
+        'format' => 'xlsx',
+    ],
+    'india-basic-2011-rural' => [
+        'name' => 'India Census 2011 — basic population figures (Rural)',
+        'sheet' => 'Data',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/42559',
+        'format' => 'xlsx',
+    ],
+    'india-basic-2011-urban' => [
+        'name' => 'India Census 2011 — basic population figures (Urban)',
+        'key_columns' => ['State', 'District', 'Subdistt', 'Town/Village', 'Ward', 'EB', 'Level', 'TRU', 'Name'],
+        'scope_note' => 'Urban units with and without outgrowths can share Census codes. The full source unit name distinguishes records; overlapping units must not be summed.',
+        'sheet' => 'Data',
+        'filter_column' => 'TRU', 'filter_value' => 'Urban',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/42559',
+        'format' => 'xlsx',
+    ],
+    'india-pca-2001' => [
+        'name' => 'India Census 2001 — primary census abstract',
+        'key_columns' => ['STATE', 'DISTRICT', 'TAHSIL', 'TOWN_VILL', 'WARD', 'EB', 'LEVEL', 'TRU'],
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/20614/download/23746/PC01_PCA_TOT_00_00.xls',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/20614',
+        'format' => 'xls',
+    ],
+];

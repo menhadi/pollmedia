@@ -21,10 +21,10 @@ class ImportController extends Controller
     {
         $connectors = DB::table('import_connectors')->orderByDesc('id')->get();
         foreach ($connectors as $connector) {
-            $connector->latest = DB::table('import_runs')->where('import_connector_id', $connector->id)->orderByDesc('id')->first();
+            $connector->latest = DB::table('import_runs')->where('import_connector_id', $connector->id)->orderByDesc('id')->first(['id', 'status', 'created_at']);
             $connector->pending = DB::table('import_runs')->where('import_connector_id', $connector->id)->where('status', 'needs_review')->count();
         }
-        $runs = DB::table('import_runs as r')->join('import_connectors as c', 'c.id', '=', 'r.import_connector_id')->select('r.*', 'c.name')->orderByDesc('r.id')->paginate(20);
+        $runs = DB::table('import_runs as r')->join('import_connectors as c', 'c.id', '=', 'r.import_connector_id')->select('r.id', 'r.status', 'r.created_at', 'c.name')->orderByDesc('r.id')->paginate(20);
         $identifiers = DB::table('place_identifiers')->select('namespace', 'version')->distinct()->get()->map(fn ($row) => $row->namespace.'|'.$row->version);
 
         return view('imports-index', compact('connectors', 'runs', 'identifiers'));
@@ -33,7 +33,7 @@ class ImportController extends Controller
     public function store(Request $request, OfficialDownload $download): RedirectResponse
     {
         $identifiers = DB::table('place_identifiers')->select('namespace', 'version')->distinct()->get()->map(fn ($row) => $row->namespace.'|'.$row->version)->all();
-        $input = $request->validate(['name' => 'required|string|max:150', 'url' => 'required|url|max:3000', 'format' => 'required|in:json,csv,xlsx,pdf',
+        $input = $request->validate(['name' => 'required|string|max:150', 'url' => 'required|url|max:3000', 'format' => 'required|in:json,csv,xls,xlsx,pdf',
             'record_key' => 'required|string|max:150', 'sheet' => 'nullable|string|max:100', 'json_path' => 'nullable|regex:/^[a-zA-Z0-9_.-]+$/|max:150',
             'header_row' => 'required|integer|min:1|max:100', 'table_index' => 'required|integer|min:1|max:20',
             'filter_column' => 'nullable|required_with:filter_value|string|max:150', 'filter_value' => 'nullable|required_with:filter_column|string|max:150',
