@@ -37,7 +37,7 @@ Route::get('/india/district/pilibhit/census-1981', [CensusHistoryController::cla
 Route::get('/india/district/pilibhit/census-history', [CensusHistoryController::class, 'show'])->name('census.history');
 Route::get('/reports/pilibhit', [ReportController::class, 'show'])->name('reports.pilibhit');
 Route::get('/reports/archive', [ReportArchiveController::class, 'index'])->name('reports.archive');
-Route::post('/reports/archive', [ReportArchiveController::class, 'store'])->middleware('throttle:10,1')->name('reports.store');
+Route::post('/reports/archive', [ReportArchiveController::class, 'store'])->middleware([AdminTransport::class, RequireAdministrator::class, 'throttle:10,1'])->name('reports.store');
 Route::get('/reports/archive/{report}/download', [ReportArchiveController::class, 'download'])->whereUlid('report')->name('reports.download');
 Route::get('/india/state/{state}', [OverviewController::class, 'index'])->name('states.show');
 Route::get('/india/villages', [VillageController::class, 'index'])->name('villages.index');
