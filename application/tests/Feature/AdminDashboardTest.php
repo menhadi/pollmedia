@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AdminDashboardTest extends TestCase
@@ -46,10 +47,40 @@ class AdminDashboardTest extends TestCase
             ]);
         }
         $this->actingAs($user)->get('/admin')->assertOk()->assertSee('Check failed — retry needed')
+            ->assertSee('An earlier detected change still needs review')
             ->assertDontSee('Changed — review needed')->assertSee('Not checked yet')
             ->assertSee('Test official data')->assertSee(route('ai.settings'))
             ->assertViewHas('counts', fn ($counts) => $counts['Imports awaiting review'] === 1)
+            ->assertViewHas('failedImports', fn ($runs) => $runs->count() === 1)
             ->assertViewHas('checks', fn ($checks) => $checks->count() === 2);
 
+        DB::table('import_runs')->insert([
+            'import_connector_id' => $connector, 'status' => 'unchanged', 'origin' => 'download',
+            'source_url' => 'https://example.gov.in/data.csv', 'created_at' => now(),
+        ]);
+        $this->get('/admin')->assertOk()->assertSee('No sources have a failed latest import.')
+            ->assertViewHas('failedImports', fn ($runs) => $runs->isEmpty());
+    }
+
+    public function test_election_batch_states_are_separate_from_source_import_review(): void
+    {
+        $user = User::factory()->create();
+        $user->is_admin = true;
+        $user->save();
+        foreach (['queued', 'processing', 'failed', 'needs_attention', 'ready'] as $status) {
+            DB::table('election_import_batches')->insert([
+                'id' => (string) Str::ulid(), 'fingerprint' => hash('sha256', $status),
+                'state' => 'Uttar Pradesh', 'year' => 2022, 'status' => $status,
+                'detail_path' => 'test-detail.pdf', 'summary_path' => 'test-summary.pdf',
+                'detail_sha256' => str_repeat('a', 64), 'summary_sha256' => str_repeat('b', 64),
+                'source_url' => 'https://www.eci.gov.in/', 'created_by' => $user->id,
+                'created_at' => now(), 'updated_at' => now(),
+            ]);
+        }
+        $this->actingAs($user)->get('/admin')->assertOk()->assertSee('Recent election batches')
+            ->assertSee(route('election-batches.index'))
+            ->assertViewHas('counts', fn ($counts) => $counts['Election batches queued or processing'] === 2
+                && $counts['Election batches needing attention'] === 2 && $counts['Imports awaiting review'] === 0)
+            ->assertViewHas('batches', fn ($batches) => $batches->count() === 5);
     }
 }
