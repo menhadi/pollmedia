@@ -1,0 +1,185 @@
+{
+  "file": "delimitation-1976.pdf",
+  "sha256": "de0ad7820164477d450d7abb0300935fa169ee696a9522e896ad1922743164e6",
+  "url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIrAKrpRHHl6YJ4Q5EEVH2zMUwwV41By7LxYIONuVC9Vr%2F%2BN7sXnVcBsMXgIVrEWgvCh1zBtwm72mAwODimlm7Nzk%2BznOQZFhtTvKNHJqeI%2BB",
+  "catalogue_url": "https://www.eci.gov.in/146-archive-delimitation-orders",
+  "pdf_page": 476,
+  "printed_page": 475,
+  "checked_on": "2026-09-17",
+  "segments": [
+    "57 Pilibhit",
+    "58 Barkhera (SC)",
+    "59 Bisalpur",
+    "60 Puranpur",
+    "61 Powayan (SC)"
+  ],
+  "records": [
+    {
+      "archive": "9a57af51e71e6ff194d3f409",
+      "year": 1951,
+      "code": 214,
+      "official_pc_code": 7,
+      "state_name": "Uttar Pradesh",
+      "constituency_name": "PILIBHIT DISTT CUM BAREILLY DISTT (EAST)",
+      "source_sha256": "ddc824406b6b49a01b0d9b73394827bd04945772471906d77c76addce5f197e2",
+      "boundary_source": "1951"
+    },
+    {
+      "archive": "a1b887ea9c50978fe4cf8e5c",
+      "year": 1957,
+      "code": 314,
+      "official_pc_code": 17,
+      "state_name": "Uttar Pradesh",
+      "constituency_name": "PILIBHIT",
+      "source_sha256": "71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02",
+      "boundary_source": "1956"
+    },
+    {
+      "archive": "02f72a2ef53a457f8e97e539",
+      "year": 1962,
+      "code": 371,
+      "official_pc_code": 12,
+      "state_name": "Uttar Pradesh",
+      "constituency_name": "PILIBHIT",
+      "source_sha256": "b5d39c92b655594bc4d7817b61c3a1cd31de41e6acd454d43d39acc371b977e1",
+      "boundary_source": "1961"
+    },
+    {
+      "archive": "d7365c7939cfc38b09eb9581",
+      "year": 1967,
+      "code": 364,
+      "official_pc_code": 12,
+      "state_name": "Uttar Pradesh",
+      "source_sha256": "f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946",
+      "boundary_source": "1967"
+    },
+    {
+      "archive": "a62b405d308af2536df91caa",
+      "year": 1971,
+      "code": 383,
+      "official_pc_code": 12,
+      "state_name": "Uttar Pradesh",
+      "source_sha256": "158fe67f9bd6b2f27d88db6b36adb03ca341fa863101edd6c6083eec8dda0d18",
+      "boundary_source": "1967"
+    },
+    {
+      "archive": "f536c924d1bedb6f02754d1d",
+      "year": 1977,
+      "code": 416,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "32ea1bcc14d115ecdf173213d5f9da89ec819ea00ec4b6a8bec13b8d8a32007a"
+    },
+    {
+      "archive": "e6e3a615a5fc51328d154069",
+      "year": 1980,
+      "code": 403,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "c739cb72c63c645b1a3e00b1c1ba125cc7dff2e897f5474a865da705b59f0f76"
+    },
+    {
+      "archive": "cce64acea4705d13e1065e5b",
+      "year": 1984,
+      "code": 388,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "e525e642637ccf5770b190ccb3c6c8ff6ab6ab4bbdc5b4684f14136c1e0fb9c3"
+    },
+    {
+      "archive": "92de082304013ee1f62be87a",
+      "year": 1989,
+      "code": 402,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "e67c8f9fa3058bbc51579dfe45c7665ea7eb5092378e412d85318d6350980b3b"
+    },
+    {
+      "archive": "20a9b690ba551149c638cd4f",
+      "year": 1991,
+      "code": 395,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "02f1f8d0a4c5efff83e880700dbfb39942cdec62911fd0dcfc6eeb0087c81130"
+    },
+    {
+      "archive": "35f16085183f0c8bd7ef6124",
+      "year": 1996,
+      "code": 416,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "80dd228547b7e338538aee60d76f559d5959a0df0b5b791e80b0c09e56afc177"
+    },
+    {
+      "archive": "f3bccf66ec1c16f1f9c1ffba",
+      "year": 1998,
+      "code": 416,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "aef81fcc3874bda0d621fed8fda79096d234d817038a079146c7eb2203a5ec20"
+    },
+    {
+      "archive": "b7045310e2d656801a7a8bfe",
+      "year": 1999,
+      "code": 416,
+      "official_pc_code": 13,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "f9f925bb151745d15b4e43e0ae99ef6bc8ed27a00425915bd54bcbf1a4b2d885"
+    },
+    {
+      "archive": "2855182c4a7e95dbef89777a",
+      "year": 2004,
+      "code": 387,
+      "official_pc_code": 9,
+      "state_name": "UTTAR PRADESH",
+      "source_sha256": "62e99a3a663c6c908a64bb27a5e7c6a58d297b3b6d14aa0ae88a8e61a7c9e917"
+    }
+  ],
+  "reorganisation": {
+    "file": "up-reorganisation-2000-official.pdf",
+    "sha256": "dd438d7b9252f95fa1707f02cbf52700440fc8c2d94572f852925b55407b365d",
+    "url": "https://cdnbbsr.s3waas.gov.in/s35314b9674c86e3f9d1ba25ef9bb32895/uploads/2025/01/202501251949683972.pdf",
+    "pdf_page": 34,
+    "printed_page": 29,
+    "reference": "Uttar Pradesh Reorganisation Act, 2000, Second Schedule, paragraph 1(i)",
+    "checked_on": "2026-09-17"
+  },
+  "older_orders": {
+    "1951": {
+      "file": "delimitation-1951.pdf",
+      "sha256": "db49d71c6183510c3fa718a4d63aa11417007894dcb1a738f36f97a7b94b35a0",
+      "url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIpEMiwVppWMhPv2LqXfNPEriPmxhfDfnhSMtjbY8VLu9Cs1WPKtf0d5Ve2sB6yVnFdJi%2BNzWVtvsh93UVF2ImjMdOaPJXihMlQNZ0fSSDAKT",
+      "pdf_page": 241,
+      "printed_page": 3,
+      "note": "The 1951 order describes Pilibhit District cum Bareilly District (East) as Pilibhit district and Nawabganj tahsil of Bareilly district. The election report uses this combined historical constituency name, not the present-day seat.",
+      "checked_on": "2026-09-17"
+    },
+    "1956": {
+      "file": "delimitation-1956.pdf",
+      "sha256": "a44f05a1a6499dda889782f2dcf3a4253e05368321514fab3a5913e82d7b17a4",
+      "url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIhwEi9sQWbt3vMjjOhEsQ%2B4sMJ0y8p%2F6ot8LdYiYZD%2BzulfjaLoZYBbV4YzQtLXtuwhbHOyxErbDTfcMnFCANOKULgnq3K%2B7WNJidpGWQo1Z",
+      "pdf_page": 80,
+      "printed_page": 73,
+      "note": "The 1956 order lists Pilibhit at national serial 314, including Pilibhit district, specified parganas in Nainital district and Nawabganj tahsil of Bareilly district. The 1957 election report numbers the seat 17 within Uttar Pradesh; the order serial and election code are different identifiers.",
+      "checked_on": "2026-09-17"
+    },
+    "1961": {
+      "file": "delimitation-1961.pdf",
+      "sha256": "41a96bd0007627c3f1c1a66536b9470c504f025542b9a17b326eaaba568141af",
+      "url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgItkPooCRaZcvrgUBFpKv6bdcr76FQDeo4Kbxo8pmzBdqn57Vkq%2BOs6XLNlp7ij%2BALC0VvUMtFnsvNH%2Ba3UdineGBntf08Jwr8por21kYpP4d",
+      "pdf_page": 503,
+      "printed_page": null,
+      "note": "The 1961 order, Schedule XIII, lists Pilibhit as PC 12, comprising Assembly segments 16 Tanakpur, 57 Nawabganj, 58 Pilibhit, 59 Puranpur and 60 Bisalpur. The 1962 report also identifies Pilibhit as PC 12. This differs from the segment list in the 1967 order.",
+      "checked_on": "2026-09-17"
+    },
+    "1967": {
+      "file": "delimitation-1967.pdf",
+      "sha256": "26140c7b8cec0216524713dc1fad88b665497a052c1ac5b4b11c0d82bcf6071f",
+      "url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIpX4%2B2ItOZHO3UNtpK%2BdwMQXN%2Boy2K%2B9vux4OJup1HWdoYJ5EtEiXJMh6qDBI2PZX%2BBuALwDWA7k2HneZfZ6n3%2FdUMKC1QeryeBeHtOZ9LKYydvnQSAbMKFJyhNygexDKg%3D%3D",
+      "pdf_page": 386,
+      "printed_page": 867,
+      "note": "The 1967 order lists Pilibhit as PC 12, comprising Assembly segments 57 Pilibhit, 58 Barkhera, 59 Bisalpur, 60 Puranpur and 61 Powayan. The linked 1967 and 1971 reports both identify Uttar Pradesh / Pilibhit as PC 12. Matching segment names do not establish unchanged segment boundaries.",
+      "checked_on": "2026-09-17"
+    }
+  }
+}

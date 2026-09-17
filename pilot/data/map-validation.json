@@ -1,0 +1,16 @@
+{
+  "source": "https://surveyofindia.gov.in/documents/UTTAR_PRADESH.zip",
+  "sha256": "e087410793d3bee408284988c86d4c92166dccd049b2da0083ccfd71b0caa6d4",
+  "source_crs": "PROJCRS[\"LCC_WGS84\",BASEGEOGCRS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]],ID[\"EPSG\",6326]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"Degree\",0.0174532925199433]]],CONVERSION[\"unnamed\",METHOD[\"Lambert Conic Conformal (2SP)\",ID[\"EPSG\",9802]],PARAMETER[\"Latitude of false origin\",24,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8821]],PARAMETER[\"Longitude of false origin\",80,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8822]],PARAMETER[\"Latitude of 1st standard parallel\",12.472944,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8823]],PARAMETER[\"Latitude of 2nd standard parallel\",35.172806,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8824]],PARAMETER[\"Easting at false origin\",4000000,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8826]],PARAMETER[\"Northing at false origin\",4000000,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8827]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]",
+  "output_crs": "EPSG:4326",
+  "simplification_metres": 15,
+  "accepted": 1446,
+  "rejected": [],
+  "bbox": [
+    79.62163600522477,
+    28.10084384734469,
+    80.44997077572621,
+    28.887806182036954
+  ],
+  "status": "Source village geometries; source edition and current LGD correspondence unverified. Not an official district or electoral outline."
+}

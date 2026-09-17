@@ -1,0 +1,373 @@
+{
+  "year": 2012,
+  "url": "https://old.eci.gov.in/files/file/3262-uttar-pradesh-2012/",
+  "sha256": "ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c",
+  "totals_sha256": "ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c",
+  "checked_on": "2026-09-16",
+  "name_variants": {
+    "6": {
+      "source": "Rampur Maniharan  (SC)",
+      "current": "Rampur Maniharan"
+    },
+    "13": {
+      "source": "Purqazi  (SC)",
+      "current": "Purqazi"
+    },
+    "18": {
+      "source": "Nagina  (SC)",
+      "current": "Nagina"
+    },
+    "21": {
+      "source": "Nehtaur  (SC)",
+      "current": "Nehtaur"
+    },
+    "31": {
+      "source": "Chandausi  (SC)",
+      "current": "Chandausi"
+    },
+    "38": {
+      "source": "Milak  (SC)",
+      "current": "Milak"
+    },
+    "39": {
+      "source": "Dhanaura  (SC)",
+      "current": "Dhanaura"
+    },
+    "45": {
+      "source": "Hastinapur  (SC)",
+      "current": "Hastinapur"
+    },
+    "58": {
+      "source": "Dholana",
+      "current": "Dhaulana"
+    },
+    "59": {
+      "source": "Hapur  (SC)",
+      "current": "Hapur"
+    },
+    "70": {
+      "source": "Khurja  (SC)",
+      "current": "Khurja"
+    },
+    "71": {
+      "source": "Khair  (SC)",
+      "current": "Khair"
+    },
+    "77": {
+      "source": "Iglas  (SC)",
+      "current": "Iglas"
+    },
+    "78": {
+      "source": "Hathras  (SC)",
+      "current": "Hathras"
+    },
+    "85": {
+      "source": "Baldev  (SC)",
+      "current": "Baldev"
+    },
+    "87": {
+      "source": "Agra Cantt.  (SC)",
+      "current": "Agra Cantt."
+    },
+    "90": {
+      "source": "Agra Rural  (SC)",
+      "current": "Agra Rural"
+    },
+    "95": {
+      "source": "Tundla  (SC)",
+      "current": "Tundla"
+    },
+    "106": {
+      "source": "Jalesar  (SC)",
+      "current": "Jalesar"
+    },
+    "109": {
+      "source": "Kishani  (SC)",
+      "current": "Kishni"
+    },
+    "112": {
+      "source": "Bisauli  (SC)",
+      "current": "Bisauli"
+    },
+    "122": {
+      "source": "Faridpur  (SC)",
+      "current": "Faridpur"
+    },
+    "129": {
+      "source": "Puranpur  (SC)",
+      "current": "Puranpur"
+    },
+    "134": {
+      "source": "Powayan  (SC)",
+      "current": "Powayan"
+    },
+    "140": {
+      "source": "Sri Nagar  (SC)",
+      "current": "Sri Nagar"
+    },
+    "143": {
+      "source": "Kasta  (SC)",
+      "current": "Kasta"
+    },
+    "147": {
+      "source": "Hargaon  (SC)",
+      "current": "Hargaon"
+    },
+    "152": {
+      "source": "Sidhauli  (SC)",
+      "current": "Sidhauli"
+    },
+    "153": {
+      "source": "Misrikh  (SC)",
+      "current": "Misrikh"
+    },
+    "154": {
+      "source": "Sawaijpur",
+      "current": "Sawayazpur"
+    },
+    "157": {
+      "source": "Gopamau  (SC)",
+      "current": "Gopamau"
+    },
+    "158": {
+      "source": "Sandi  (SC)",
+      "current": "Sandi"
+    },
+    "160": {
+      "source": "Balamau  (SC)",
+      "current": "Balamau"
+    },
+    "163": {
+      "source": "Safipur  (SC)",
+      "current": "Safipur"
+    },
+    "164": {
+      "source": "Mohan  (SC)",
+      "current": "Mohan"
+    },
+    "168": {
+      "source": "Malihabad  (SC)",
+      "current": "Malihabad"
+    },
+    "176": {
+      "source": "Mohanlalganj  (SC)",
+      "current": "Mohanlalganj"
+    },
+    "177": {
+      "source": "Bachhrawan  (SC)",
+      "current": "Bachhrawan"
+    },
+    "181": {
+      "source": "Salon  (SC)",
+      "current": "Salon"
+    },
+    "184": {
+      "source": "Jagdishpur  (SC)",
+      "current": "Jagdishpur"
+    },
+    "191": {
+      "source": "Kadipur  (SC)",
+      "current": "Kadipur"
+    },
+    "192": {
+      "source": "Kaimganj  (SC)",
+      "current": "Kaimganj"
+    },
+    "198": {
+      "source": "Kannauj  (SC)",
+      "current": "Kannauj"
+    },
+    "201": {
+      "source": "Bharthana  (SC)",
+      "current": "Bharthana"
+    },
+    "204": {
+      "source": "Auraiya  (SC)",
+      "current": "Auraiya"
+    },
+    "205": {
+      "source": "Rasulabad  (SC)",
+      "current": "Rasulabad"
+    },
+    "209": {
+      "source": "Bilhaur  (SC)",
+      "current": "Bilhaur"
+    },
+    "218": {
+      "source": "Ghatampur  (SC)",
+      "current": "Ghatampur"
+    },
+    "221": {
+      "source": "Orai  (SC)",
+      "current": "Orai"
+    },
+    "224": {
+      "source": "Mauranipur  (SC)",
+      "current": "Mauranipur"
+    },
+    "227": {
+      "source": "Mehroni  (SC)",
+      "current": "Mehroni"
+    },
+    "229": {
+      "source": "Rath  (SC)",
+      "current": "Rath"
+    },
+    "234": {
+      "source": "Naraini  (SC)",
+      "current": "Naraini"
+    },
+    "243": {
+      "source": "Khaga  (SC)",
+      "current": "Khaga"
+    },
+    "245": {
+      "source": "Babaganj  (SC)",
+      "current": "Babaganj"
+    },
+    "247": {
+      "source": "Bishwavnathganj",
+      "current": "Vishwanath Ganj"
+    },
+    "252": {
+      "source": "Manjhanpur  (SC)",
+      "current": "Manjhanpur"
+    },
+    "255": {
+      "source": "Soraon  (SC)",
+      "current": "Soraon"
+    },
+    "264": {
+      "source": "Bara  (SC)",
+      "current": "Bara"
+    },
+    "265": {
+      "source": "Koraon  (SC)",
+      "current": "Koraon"
+    },
+    "269": {
+      "source": "Zaidpur  (SC)",
+      "current": "Zaidpur"
+    },
+    "272": {
+      "source": "Haidergarh  (SC)",
+      "current": "Haidergarh"
+    },
+    "273": {
+      "source": "Milkipur  (SC)",
+      "current": "Milkipur"
+    },
+    "279": {
+      "source": "Alapur  (SC)",
+      "current": "Alapur"
+    },
+    "282": {
+      "source": "Balha  (SC)",
+      "current": "Balha"
+    },
+    "294": {
+      "source": "Balrampur  (SC)",
+      "current": "Balrampur"
+    },
+    "300": {
+      "source": "Mankapur  (SC)",
+      "current": "Mankapur"
+    },
+    "303": {
+      "source": "Kapilvastu  (SC)",
+      "current": "Kapilvastu"
+    },
+    "306": {
+      "source": "Doomariyaganj",
+      "current": "Domariyaganj"
+    },
+    "311": {
+      "source": "Mahadewa  (SC)",
+      "current": "Mahadewa"
+    },
+    "314": {
+      "source": "Dhanghata  (SC)",
+      "current": "Dhanghata"
+    },
+    "318": {
+      "source": "Maharajganj  (SC)",
+      "current": "Maharajganj"
+    },
+    "319": {
+      "source": "Paniyara",
+      "current": "Paniyra"
+    },
+    "325": {
+      "source": "Khajani  (SC)",
+      "current": "Khajani"
+    },
+    "327": {
+      "source": "Bansgaon  (SC)",
+      "current": "Bansgaon"
+    },
+    "335": {
+      "source": "Ramkola  (SC)",
+      "current": "Ramkola"
+    },
+    "341": {
+      "source": "Salempur  (SC)",
+      "current": "Salempur"
+    },
+    "349": {
+      "source": "Phoolpur Pawai",
+      "current": "Phoolpur-Pawai"
+    },
+    "351": {
+      "source": "Lalganj  (SC)",
+      "current": "Lalganj"
+    },
+    "352": {
+      "source": "Mehnagar  (SC)",
+      "current": "Mehnagar"
+    },
+    "355": {
+      "source": "Muhammadabad- Gohna (SC)  (SC)",
+      "current": "Muhammadabad-Gohna"
+    },
+    "357": {
+      "source": "Belthara Road  (SC)",
+      "current": "Belthara Road"
+    },
+    "369": {
+      "source": "Machhlishahr  (SC)",
+      "current": "Machhlishahr"
+    },
+    "372": {
+      "source": "Kerakat  (SC)",
+      "current": "Kerakat"
+    },
+    "373": {
+      "source": "Jakhanian  (SC)",
+      "current": "Jakhanian"
+    },
+    "374": {
+      "source": "Saidpur  (SC)",
+      "current": "Saidpur"
+    },
+    "383": {
+      "source": "Chakia  (SC)",
+      "current": "Chakia"
+    },
+    "385": {
+      "source": "Ajagara  (SC)",
+      "current": "Ajagara"
+    },
+    "394": {
+      "source": "Aurai  (SC)",
+      "current": "Aurai"
+    },
+    "395": {
+      "source": "Chhanbey  (SC)",
+      "current": "Chhanbey"
+    },
+    "403": {
+      "source": "Duddhi  (SC)",
+      "current": "Duddhi"
+    }
+  }
+}

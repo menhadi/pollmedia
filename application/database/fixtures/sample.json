@@ -1,0 +1,587 @@
+{
+  "sir": {
+    "title": "Uncollected enumeration forms",
+    "edition": "SIR enumeration material",
+    "generated_date": "17/12/2025",
+    "ac": "127",
+    "ac_name": "Pilibhit",
+    "pdf_pages": 1881,
+    "sample_parts": 20,
+    "parts": [
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 1,
+        "name": "J. H. SCHOOL FULAIYA",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "counts": {
+          "death": 24,
+          "already enrolled": 22,
+          "permanently shifted": 42,
+          "untraceable": 1
+        },
+        "listed_records": 89,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=1"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 2,
+        "name": "J. H. SCHOOL BAGNERA BAGNERI ROOM NO 1",
+        "pages": [
+          4,
+          5
+        ],
+        "counts": {
+          "permanently shifted": 27,
+          "death": 17,
+          "already enrolled": 6
+        },
+        "listed_records": 50,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=4"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 3,
+        "name": "J. H. SCHOOL BAGNERA BAGNERI ROOM NO 2",
+        "pages": [
+          6,
+          7
+        ],
+        "counts": {
+          "untraceable": 4,
+          "permanently shifted": 45,
+          "death": 20,
+          "already enrolled": 6
+        },
+        "listed_records": 75,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=6"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 4,
+        "name": "J. H. SCHOOL BANSKHERA ROOM NO 1",
+        "pages": [
+          8,
+          9,
+          10
+        ],
+        "counts": {
+          "permanently shifted": 69,
+          "death": 15,
+          "already enrolled": 2
+        },
+        "listed_records": 86,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=8"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 5,
+        "name": "J. H. SCHOOL BANSKHERA ROOM NO 2",
+        "pages": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "counts": {
+          "permanently shifted": 184,
+          "already enrolled": 43,
+          "death": 48,
+          "untraceable": 3
+        },
+        "listed_records": 278,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=11"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 6,
+        "name": "PR. SCHOOL BAKHSHPUR",
+        "pages": [
+          19,
+          20
+        ],
+        "counts": {
+          "permanently shifted": 31,
+          "death": 13,
+          "already enrolled": 16
+        },
+        "listed_records": 60,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=19"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 7,
+        "name": "J. H. SCHOOL NISABA NISAYIA",
+        "pages": [
+          21,
+          22,
+          23
+        ],
+        "counts": {
+          "permanently shifted": 73,
+          "untraceable": 7,
+          "death": 8
+        },
+        "listed_records": 88,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=21"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 8,
+        "name": "J. H. SCHOOL MUDALIYA GOSHU ROOM NO 1",
+        "pages": [
+          24,
+          25,
+          26,
+          27
+        ],
+        "counts": {
+          "permanently shifted": 89,
+          "death": 19,
+          "untraceable": 10,
+          "already enrolled": 25
+        },
+        "listed_records": 143,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=24"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 9,
+        "name": "J. H. SCHOOL MUDALIYA GOSHU ROOM NO 2",
+        "pages": [
+          28,
+          29,
+          30,
+          31
+        ],
+        "counts": {
+          "permanently shifted": 55,
+          "already enrolled": 34,
+          "death": 14,
+          "untraceable": 1
+        },
+        "listed_records": 104,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=28"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 10,
+        "name": "J. H. SCHOOL BALPUR MAFI",
+        "pages": [
+          32,
+          33
+        ],
+        "counts": {
+          "permanently shifted": 27,
+          "death": 12,
+          "untraceable": 2
+        },
+        "listed_records": 41,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=32"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 11,
+        "name": "J. H. SCHOOL BALLIA",
+        "pages": [
+          34,
+          35,
+          36
+        ],
+        "counts": {
+          "permanently shifted": 62,
+          "untraceable": 12,
+          "death": 28,
+          "already enrolled": 10,
+          "refused": 3
+        },
+        "listed_records": 115,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=34"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 12,
+        "name": "GOVIND I.C. BHADSARA",
+        "pages": [
+          37,
+          38
+        ],
+        "counts": {
+          "permanently shifted": 42,
+          "death": 9,
+          "untraceable": 12
+        },
+        "listed_records": 63,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=37"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 13,
+        "name": "PR. SCHOOL UNDRA",
+        "pages": [
+          39,
+          40
+        ],
+        "counts": {
+          "permanently shifted": 61,
+          "death": 8
+        },
+        "listed_records": 69,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=39"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 14,
+        "name": "PR. SCHOOL HARDASPUR",
+        "pages": [
+          41
+        ],
+        "counts": {
+          "death": 9,
+          "untraceable": 11,
+          "permanently shifted": 7,
+          "already enrolled": 3
+        },
+        "listed_records": 30,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=41"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 15,
+        "name": "J. H. SCHOOL BARHANI",
+        "pages": [
+          42,
+          43,
+          44
+        ],
+        "counts": {
+          "already enrolled": 2,
+          "permanently shifted": 55,
+          "death": 15,
+          "untraceable": 32
+        },
+        "listed_records": 104,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=42"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 16,
+        "name": "J. H. SCHOOL KATIA PANDRI",
+        "pages": [
+          45,
+          46,
+          47,
+          48,
+          49
+        ],
+        "counts": {
+          "death": 22,
+          "permanently shifted": 109,
+          "untraceable": 21,
+          "refused": 2,
+          "already enrolled": 1
+        },
+        "listed_records": 155,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=45"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 17,
+        "name": "PANCHAYAT GHAR KYULARA",
+        "pages": [
+          50
+        ],
+        "counts": {
+          "death": 13,
+          "permanently shifted": 16,
+          "already enrolled": 2,
+          "untraceable": 3
+        },
+        "listed_records": 34,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=50"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 18,
+        "name": "PR. SCHOOL GOPAL NAGAR",
+        "pages": [
+          51,
+          52
+        ],
+        "counts": {
+          "permanently shifted": 63,
+          "death": 2,
+          "untraceable": 4
+        },
+        "listed_records": 69,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=51"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 19,
+        "name": "PR. SCHOOL GULARBHOJ",
+        "pages": [
+          53,
+          54,
+          55
+        ],
+        "counts": {
+          "permanently shifted": 63,
+          "death": 10,
+          "already enrolled": 1,
+          "refused": 4
+        },
+        "listed_records": 78,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=53"
+      },
+      {
+        "ac": "127",
+        "ac_name": "Pilibhit",
+        "part": 20,
+        "name": "P. M. V. SIRSA",
+        "pages": [
+          56,
+          57
+        ],
+        "counts": {
+          "death": 7,
+          "permanently shifted": 42,
+          "untraceable": 4
+        },
+        "listed_records": 53,
+        "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf#page=56"
+      }
+    ],
+    "source_url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf",
+    "landing": "https://pilibhit.nic.in/meeting-blo-bla/",
+    "sha256": "19e941381285a91b13359532401535bedd80811f3b10f57d2ae7618cb9c720ed"
+  },
+  "census": {
+    "year": 2011,
+    "sheet": "EB-0920",
+    "levels": {
+      "DISTRICT": 3,
+      "SUB-DISTRICT": 9,
+      "VILLAGE": 1435,
+      "TOWN": 11,
+      "WARD": 146
+    },
+    "district_population": 2031007,
+    "villages": [
+      {
+        "code": "131191",
+        "name": "Bagnera Bagneri",
+        "subdistrict_code": "00790",
+        "population": 2498,
+        "households": 448,
+        "literate": 1380,
+        "population_0_6": 422
+      },
+      {
+        "code": "131192",
+        "name": "Phulaiya",
+        "subdistrict_code": "00790",
+        "population": 1448,
+        "households": 246,
+        "literate": 847,
+        "population_0_6": 202
+      },
+      {
+        "code": "131193",
+        "name": "Bilhara Mafi",
+        "subdistrict_code": "00790",
+        "population": 145,
+        "households": 28,
+        "literate": 89,
+        "population_0_6": 20
+      },
+      {
+        "code": "131194",
+        "name": "Balpur Mafi",
+        "subdistrict_code": "00790",
+        "population": 390,
+        "households": 66,
+        "literate": 259,
+        "population_0_6": 36
+      },
+      {
+        "code": "131195",
+        "name": "Jamgahan",
+        "subdistrict_code": "00790",
+        "population": 302,
+        "households": 55,
+        "literate": 187,
+        "population_0_6": 29
+      },
+      {
+        "code": "131196",
+        "name": "Faridpur Hasan",
+        "subdistrict_code": "00790",
+        "population": 250,
+        "households": 50,
+        "literate": 153,
+        "population_0_6": 21
+      },
+      {
+        "code": "131197",
+        "name": "Udara",
+        "subdistrict_code": "00790",
+        "population": 372,
+        "households": 74,
+        "literate": 218,
+        "population_0_6": 47
+      },
+      {
+        "code": "131198",
+        "name": "Barhaini",
+        "subdistrict_code": "00790",
+        "population": 773,
+        "households": 136,
+        "literate": 554,
+        "population_0_6": 87
+      },
+      {
+        "code": "131199",
+        "name": "Bhadsara",
+        "subdistrict_code": "00790",
+        "population": 290,
+        "households": 50,
+        "literate": 234,
+        "population_0_6": 24
+      },
+      {
+        "code": "131200",
+        "name": "Pandara Kishandas",
+        "subdistrict_code": "00790",
+        "population": 134,
+        "households": 35,
+        "literate": 89,
+        "population_0_6": 6
+      },
+      {
+        "code": "131201",
+        "name": "Pandara Ramdas",
+        "subdistrict_code": "00790",
+        "population": 182,
+        "households": 33,
+        "literate": 118,
+        "population_0_6": 23
+      },
+      {
+        "code": "131202",
+        "name": "Kesarpur",
+        "subdistrict_code": "00790",
+        "population": 255,
+        "households": 45,
+        "literate": 175,
+        "population_0_6": 26
+      },
+      {
+        "code": "131203",
+        "name": "Balliya",
+        "subdistrict_code": "00790",
+        "population": 1015,
+        "households": 169,
+        "literate": 528,
+        "population_0_6": 132
+      },
+      {
+        "code": "131204",
+        "name": "Mudlia Gausu",
+        "subdistrict_code": "00790",
+        "population": 2503,
+        "households": 445,
+        "literate": 1094,
+        "population_0_6": 397
+      },
+      {
+        "code": "131205",
+        "name": "Banskhera",
+        "subdistrict_code": "00790",
+        "population": 2895,
+        "households": 464,
+        "literate": 1191,
+        "population_0_6": 446
+      },
+      {
+        "code": "131206",
+        "name": "Nisawa Nisaiya",
+        "subdistrict_code": "00790",
+        "population": 1486,
+        "households": 236,
+        "literate": 781,
+        "population_0_6": 229
+      },
+      {
+        "code": "131207",
+        "name": "Bakhshpur",
+        "subdistrict_code": "00790",
+        "population": 766,
+        "households": 132,
+        "literate": 467,
+        "population_0_6": 78
+      },
+      {
+        "code": "131208",
+        "name": "Hetam Dandi",
+        "subdistrict_code": "00790",
+        "population": 212,
+        "households": 39,
+        "literate": 135,
+        "population_0_6": 22
+      },
+      {
+        "code": "131209",
+        "name": "Katmati",
+        "subdistrict_code": "00790",
+        "population": 173,
+        "households": 29,
+        "literate": 124,
+        "population_0_6": 11
+      },
+      {
+        "code": "131210",
+        "name": "Dabka",
+        "subdistrict_code": "00790",
+        "population": 448,
+        "households": 73,
+        "literate": 356,
+        "population_0_6": 29
+      }
+    ],
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6342/download/9419/DDW_PCA0920_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6342",
+    "sha256": "4163ee8a67efd90466e0f8254ccc8bfdf819147580d5a06de71b55f22436810e"
+  },
+  "checks": {
+    "sir_serial_sequences": "consecutive from 1 for each complete sampled part",
+    "sir_unclassified_rows": 0,
+    "census_sex_totals": "all sampled village rows reconcile"
+  }
+}

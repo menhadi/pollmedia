@@ -1,0 +1,43 @@
+[
+  {
+    "id": "census-pilibhit-2011",
+    "filename": "pilibhit-pca-2011.xlsx",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6342/download/9419/DDW_PCA0920_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6342",
+    "checked_at": "2026-09-15T15:22:41.007616+00:00",
+    "status": "unchanged",
+    "sha256": "4163ee8a67efd90466e0f8254ccc8bfdf819147580d5a06de71b55f22436810e",
+    "bytes": 756527,
+    "path": "raw\\4163ee8a67efd90466e0f8254ccc8bfdf819147580d5a06de71b55f22436810e\\pilibhit-pca-2011.xlsx",
+    "content_type": "application/octet-stream",
+    "last_modified": null
+  },
+  {
+    "id": "sir-pilibhit-uncollected",
+    "filename": "pilibhit-sir-partwise.pdf",
+    "url": "https://cdn.s3waas.gov.in/s30aa1883c6411f7873cb83dacb17b0afc/uploads/2025/12/17659662732831.pdf",
+    "landing": "https://pilibhit.nic.in/meeting-blo-bla/",
+    "checked_at": "2026-09-15T15:22:41.007616+00:00",
+    "status": "unchanged",
+    "sha256": "19e941381285a91b13359532401535bedd80811f3b10f57d2ae7618cb9c720ed",
+    "bytes": 6371886,
+    "path": "raw\\19e941381285a91b13359532401535bedd80811f3b10f57d2ae7618cb9c720ed\\pilibhit-sir-partwise.pdf",
+    "content_type": "application/pdf",
+    "last_modified": "Wed, 17 Dec 2025 10:11:14 GMT"
+  },
+  {
+    "id": "soi-up-villages",
+    "filename": "uttar-pradesh-villages.zip",
+    "url": "https://surveyofindia.gov.in/documents/UTTAR_PRADESH.zip",
+    "landing": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
+    "checked_at": "2026-09-15T15:19:00.153977+00:00",
+    "status": "validated",
+    "sha256": "e087410793d3bee408284988c86d4c92166dccd049b2da0083ccfd71b0caa6d4",
+    "bytes": 95532790,
+    "path": "raw\\e087410793d3bee408284988c86d4c92166dccd049b2da0083ccfd71b0caa6d4\\uttar-pradesh-villages.zip",
+    "content_type": "application/zip",
+    "last_modified": "Fri, 17 Apr 2026 10:56:26 GMT",
+    "previous_truncated_sha256": "eb42db134186ec5728aa5b52985a136cd87ca29b1f88cde45c49b69ad45145a3",
+    "etag": "\"5b1b6f6-64fa5ccefc2ab\""
+  }
+]

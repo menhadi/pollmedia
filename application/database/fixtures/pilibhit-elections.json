@@ -1,0 +1,254 @@
+[
+  {
+    "year": 2024,
+    "electors": 1833961,
+    "votes_polled": 1161235,
+    "valid_candidate_votes": 1154206,
+    "url": "https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports",
+    "source_locator": "Report 33, page 434",
+    "checked_on": "2026-09-15",
+    "sha256": "8c3e317c3922f4fe2a4e5ce7a7264dbffcfdd3cd547432283996d84dfa7244b9",
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "Jitin Prasada",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 605199,
+        "postal_votes": 1959,
+        "votes": 607158
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "Bhagwat Saran Gangwar",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 439735,
+        "postal_votes": 2488,
+        "votes": 442223
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "Anis Ahmed Khan (Phool Babu)",
+        "party_at_election": "BSP",
+        "is_nota": false,
+        "general_votes": 89252,
+        "postal_votes": 445,
+        "votes": 89697
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 6714,
+        "postal_votes": 27,
+        "votes": 6741
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "Rajeev Kumar Saxena",
+        "party_at_election": "BKrD",
+        "is_nota": false,
+        "general_votes": 3800,
+        "postal_votes": 9,
+        "votes": 3809
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "Sushil Kumar Shukla",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 2723,
+        "postal_votes": 4,
+        "votes": 2727
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "Ashish Kumar",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 1842,
+        "postal_votes": 8,
+        "votes": 1850
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "Mohmmad Shahid Husain",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 1842,
+        "postal_votes": 4,
+        "votes": 1846
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "Adarsh Pandey",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 1714,
+        "postal_votes": 12,
+        "votes": 1726
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "Sanjay Kumar Bharti",
+        "party_at_election": "RTSMJD",
+        "is_nota": false,
+        "general_votes": 1621,
+        "postal_votes": 10,
+        "votes": 1631
+      },
+      {
+        "source_row": 11,
+        "candidate_name": "Pramod Bhai Patel Alias P.k.",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 1525,
+        "postal_votes": 14,
+        "votes": 1539
+      }
+    ]
+  },
+  {
+    "year": 2019,
+    "electors": 1761207,
+    "votes_polled": 1187225,
+    "valid_candidate_votes": 1176616,
+    "url": "https://old.eci.gov.in/files/file/13539-33-constituency-wise-detailed-result/",
+    "source_locator": "Report 33, page 459; totals: Report 32, page 773",
+    "checked_on": "2026-09-15",
+    "sha256": "8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7",
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "Feroze Varun Gandhi",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 702755,
+        "postal_votes": 1794,
+        "votes": 704549
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "Hemraj Verma",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 447140,
+        "postal_votes": 1782,
+        "votes": 448922
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "Anita Tripathi",
+        "party_at_election": "SHS",
+        "is_nota": false,
+        "general_votes": 3961,
+        "postal_votes": 13,
+        "votes": 3974
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "Dr. Bharat",
+        "party_at_election": "JD(U)",
+        "is_nota": false,
+        "general_votes": 1606,
+        "postal_votes": 18,
+        "votes": 1624
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "Dr. Sita Ram Rajput",
+        "party_at_election": "SDU",
+        "is_nota": false,
+        "general_votes": 1097,
+        "postal_votes": 1,
+        "votes": 1098
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "Sanjay Kumar Bharti",
+        "party_at_election": "NAP",
+        "is_nota": false,
+        "general_votes": 689,
+        "postal_votes": 7,
+        "votes": 696
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "Md. Hanif",
+        "party_at_election": "PSPL",
+        "is_nota": false,
+        "general_votes": 1275,
+        "postal_votes": 1,
+        "votes": 1276
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "Urvashi Singh",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 861,
+        "postal_votes": 3,
+        "votes": 864
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "Kaif Raza Khan",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 924,
+        "postal_votes": 2,
+        "votes": 926
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "Jafri Begum",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 1627,
+        "postal_votes": 6,
+        "votes": 1633
+      },
+      {
+        "source_row": 11,
+        "candidate_name": "Munesh Singh",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 2128,
+        "postal_votes": 1,
+        "votes": 2129
+      },
+      {
+        "source_row": 12,
+        "candidate_name": "Varun Gandhi",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 4471,
+        "postal_votes": 12,
+        "votes": 4483
+      },
+      {
+        "source_row": 13,
+        "candidate_name": "Surendra Kumar Gupta",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 4440,
+        "postal_votes": 2,
+        "votes": 4442
+      },
+      {
+        "source_row": 14,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 9916,
+        "postal_votes": 57,
+        "votes": 9973
+      }
+    ],
+    "totals_url": "https://old.eci.gov.in/files/file/13541-32-constituency-data-summary-report/",
+    "totals_sha256": "113c3a35f5b912f189bed49037bb4492c0fc61b558fc1e8eda42c1140bc17d40",
+    "polled_basis": "1182890 EVM + 4335 postal counted, Report 32 p773. Participation uses 1186589 recorded candidate and NOTA votes, consistent with summary section III."
+  }
+]

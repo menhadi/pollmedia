@@ -1,0 +1,243 @@
+{
+  "title": "Pilibhit district population, 1901-2001",
+  "edition": 2001,
+  "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43939/download/47621/DH_09_2001_PIL.pdf",
+  "landing": "https://censusindia.gov.in/nada/index.php/catalog/43939",
+  "source_locator": "Statement 3, printed page xx, PDF page 20",
+  "checked_on": "2026-09-16",
+  "sha256": "a17abb56c300eb996512f9d0f7951dfe452420ff86dc19f0f3fdd9e6b60a50bd",
+  "scope": "Retrospective district series as presented in the 2001 District Census Handbook. Historical boundaries and rural/urban classification follow the source; not a reconstruction on present-day boundaries.",
+  "rows": [
+    {
+      "area": "total",
+      "year": 1901,
+      "population": 470273,
+      "male": 249580,
+      "female": 220693
+    },
+    {
+      "area": "total",
+      "year": 1911,
+      "population": 487548,
+      "male": 261965,
+      "female": 225583
+    },
+    {
+      "area": "total",
+      "year": 1921,
+      "population": 431540,
+      "male": 229098,
+      "female": 202442
+    },
+    {
+      "area": "total",
+      "year": 1931,
+      "population": 448775,
+      "male": 240756,
+      "female": 208019
+    },
+    {
+      "area": "total",
+      "year": 1941,
+      "population": 490649,
+      "male": 263596,
+      "female": 227053
+    },
+    {
+      "area": "total",
+      "year": 1951,
+      "population": 504357,
+      "male": 271465,
+      "female": 232892
+    },
+    {
+      "area": "total",
+      "year": 1961,
+      "population": 616225,
+      "male": 334599,
+      "female": 281626
+    },
+    {
+      "area": "total",
+      "year": 1971,
+      "population": 752114,
+      "male": 411559,
+      "female": 340555
+    },
+    {
+      "area": "total",
+      "year": 1981,
+      "population": 1008312,
+      "male": 546119,
+      "female": 462193
+    },
+    {
+      "area": "total",
+      "year": 1991,
+      "population": 1283103,
+      "male": 692361,
+      "female": 590742
+    },
+    {
+      "area": "total",
+      "year": 2001,
+      "population": 1645183,
+      "male": 876368,
+      "female": 768815
+    },
+    {
+      "area": "rural",
+      "year": 1901,
+      "population": 415453,
+      "male": 221510,
+      "female": 193943
+    },
+    {
+      "area": "rural",
+      "year": 1911,
+      "population": 436262,
+      "male": 234671,
+      "female": 201591
+    },
+    {
+      "area": "rural",
+      "year": 1921,
+      "population": 380456,
+      "male": 202125,
+      "female": 178331
+    },
+    {
+      "area": "rural",
+      "year": 1931,
+      "population": 385183,
+      "male": 206804,
+      "female": 178379
+    },
+    {
+      "area": "rural",
+      "year": 1941,
+      "population": 418609,
+      "male": 224701,
+      "female": 193908
+    },
+    {
+      "area": "rural",
+      "year": 1951,
+      "population": 429218,
+      "male": 230968,
+      "female": 198250
+    },
+    {
+      "area": "rural",
+      "year": 1961,
+      "population": 531888,
+      "male": 289056,
+      "female": 242832
+    },
+    {
+      "area": "rural",
+      "year": 1971,
+      "population": 649304,
+      "male": 355802,
+      "female": 293502
+    },
+    {
+      "area": "rural",
+      "year": 1981,
+      "population": 844720,
+      "male": 458255,
+      "female": 386465
+    },
+    {
+      "area": "rural",
+      "year": 1991,
+      "population": 1046247,
+      "male": 565685,
+      "female": 480562
+    },
+    {
+      "area": "rural",
+      "year": 2001,
+      "population": 1350959,
+      "male": 720322,
+      "female": 630637
+    },
+    {
+      "area": "urban",
+      "year": 1901,
+      "population": 54820,
+      "male": 28070,
+      "female": 26750
+    },
+    {
+      "area": "urban",
+      "year": 1911,
+      "population": 51286,
+      "male": 27294,
+      "female": 23992
+    },
+    {
+      "area": "urban",
+      "year": 1921,
+      "population": 51084,
+      "male": 26973,
+      "female": 24111
+    },
+    {
+      "area": "urban",
+      "year": 1931,
+      "population": 63592,
+      "male": 33952,
+      "female": 29640
+    },
+    {
+      "area": "urban",
+      "year": 1941,
+      "population": 72040,
+      "male": 38895,
+      "female": 33145
+    },
+    {
+      "area": "urban",
+      "year": 1951,
+      "population": 75139,
+      "male": 40497,
+      "female": 34642
+    },
+    {
+      "area": "urban",
+      "year": 1961,
+      "population": 84337,
+      "male": 45543,
+      "female": 38794
+    },
+    {
+      "area": "urban",
+      "year": 1971,
+      "population": 102810,
+      "male": 55757,
+      "female": 47053
+    },
+    {
+      "area": "urban",
+      "year": 1981,
+      "population": 163592,
+      "male": 87864,
+      "female": 75728
+    },
+    {
+      "area": "urban",
+      "year": 1991,
+      "population": 236856,
+      "male": 126676,
+      "female": 110180
+    },
+    {
+      "area": "urban",
+      "year": 2001,
+      "population": 294224,
+      "male": 156046,
+      "female": 138178
+    }
+  ]
+}

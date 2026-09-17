@@ -1,0 +1,608 @@
+[
+  {
+    "slug": "baheri",
+    "code": 118,
+    "year": 2022,
+    "url": "https://old.eci.gov.in/files/file/14185-uttar-pradesh-general-legislative-election-2022/",
+    "checked_on": "2026-09-15",
+    "sha256": "7f0fd9f28b6d69181ee115e509126787160e32a6d1ef3b70e4c591f0773c46d5",
+    "totals_sha256": "e3bf072abcbfd4a97a201aa8b6425eb7d6cb160373a287d1838883b80ff7887e",
+    "source_locator": "10-Detailed Results, Worksheet rows 1483\u20131494; Summary AC 118, F13/F22/F25/F28",
+    "electors": 366445,
+    "votes_polled": 266328,
+    "valid_candidate_votes": 264831,
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "ATAUR REHMAN",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 123639,
+        "postal_votes": 506,
+        "votes": 124145
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "CHHATRA PAL SINGH",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 120457,
+        "postal_votes": 333,
+        "votes": 120790
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "ASEY RAM",
+        "party_at_election": "BSP",
+        "is_nota": false,
+        "general_votes": 15775,
+        "postal_votes": 39,
+        "votes": 15814
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "SANTOSH",
+        "party_at_election": "INC",
+        "is_nota": false,
+        "general_votes": 1839,
+        "postal_votes": 6,
+        "votes": 1845
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 1172,
+        "postal_votes": 0,
+        "votes": 1172
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "ASIF RAZA",
+        "party_at_election": "AAAP",
+        "is_nota": false,
+        "general_votes": 517,
+        "postal_votes": 2,
+        "votes": 519
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "DUSHYANT KUMAR",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 503,
+        "postal_votes": 1,
+        "votes": 504
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "FARIDA REHMAN",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 338,
+        "postal_votes": 1,
+        "votes": 339
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "DHARM PAL",
+        "party_at_election": "BSRD",
+        "is_nota": false,
+        "general_votes": 256,
+        "postal_votes": 0,
+        "votes": 256
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "JITENDRA PAL SINGH",
+        "party_at_election": "ASPKR",
+        "is_nota": false,
+        "general_votes": 241,
+        "postal_votes": 0,
+        "votes": 241
+      },
+      {
+        "source_row": 11,
+        "candidate_name": "CHHATR PAL",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 216,
+        "postal_votes": 0,
+        "votes": 216
+      },
+      {
+        "source_row": 12,
+        "candidate_name": "AJAY GANGWAR",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 162,
+        "postal_votes": 0,
+        "votes": 162
+      }
+    ]
+  },
+  {
+    "slug": "pilibhit",
+    "code": 127,
+    "year": 2022,
+    "url": "https://old.eci.gov.in/files/file/14185-uttar-pradesh-general-legislative-election-2022/",
+    "checked_on": "2026-09-15",
+    "sha256": "7f0fd9f28b6d69181ee115e509126787160e32a6d1ef3b70e4c591f0773c46d5",
+    "totals_sha256": "e3bf072abcbfd4a97a201aa8b6425eb7d6cb160373a287d1838883b80ff7887e",
+    "source_locator": "10-Detailed Results, Worksheet rows 1598\u20131607; Summary AC 127, F13/F22/F25/F28",
+    "electors": 378862,
+    "votes_polled": 261009,
+    "valid_candidate_votes": 259821,
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "SANJAY SINGH GANGWAR",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 124782,
+        "postal_votes": 724,
+        "votes": 125506
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "SHAILENDRA SINGH GANGWAR",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 117152,
+        "postal_votes": 1384,
+        "votes": 118536
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "SHANE ALI",
+        "party_at_election": "BSP",
+        "is_nota": false,
+        "general_votes": 11961,
+        "postal_votes": 138,
+        "votes": 12099
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 1181,
+        "postal_votes": 7,
+        "votes": 1188
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "SHAKEEL AHMAD NOORI",
+        "party_at_election": "INC",
+        "is_nota": false,
+        "general_votes": 1038,
+        "postal_votes": 4,
+        "votes": 1042
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "ARVIND YADAV",
+        "party_at_election": "SVSAP",
+        "is_nota": false,
+        "general_votes": 915,
+        "postal_votes": 1,
+        "votes": 916
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "MOTI RAM RAJPOOT",
+        "party_at_election": "SDU",
+        "is_nota": false,
+        "general_votes": 547,
+        "postal_votes": 1,
+        "votes": 548
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "MOHD SHARIK",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 437,
+        "postal_votes": 2,
+        "votes": 439
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "IKRAR HUSAIN",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 412,
+        "postal_votes": 1,
+        "votes": 413
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "BELA MATI",
+        "party_at_election": "BSRD",
+        "is_nota": false,
+        "general_votes": 321,
+        "postal_votes": 1,
+        "votes": 322
+      }
+    ]
+  },
+  {
+    "slug": "barkhera",
+    "code": 128,
+    "year": 2022,
+    "url": "https://old.eci.gov.in/files/file/14185-uttar-pradesh-general-legislative-election-2022/",
+    "checked_on": "2026-09-15",
+    "sha256": "7f0fd9f28b6d69181ee115e509126787160e32a6d1ef3b70e4c591f0773c46d5",
+    "totals_sha256": "e3bf072abcbfd4a97a201aa8b6425eb7d6cb160373a287d1838883b80ff7887e",
+    "source_locator": "10-Detailed Results, Worksheet rows 1609\u20131618; Summary AC 128, F13/F22/F25/F28",
+    "electors": 323808,
+    "votes_polled": 237989,
+    "valid_candidate_votes": 236015,
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "JAYDRATH URF PRAVAKTANAND",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 151498,
+        "postal_votes": 273,
+        "votes": 151771
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "HEMRAJ VERMA",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 69660,
+        "postal_votes": 639,
+        "votes": 70299
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "MOHAN SWAROOP",
+        "party_at_election": "BSP",
+        "is_nota": false,
+        "general_votes": 9321,
+        "postal_votes": 62,
+        "votes": 9383
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "HARPREET PAL SINGH",
+        "party_at_election": "INC",
+        "is_nota": false,
+        "general_votes": 2695,
+        "postal_votes": 7,
+        "votes": 2702
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 1861,
+        "postal_votes": 2,
+        "votes": 1863
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "ASHISH GUPTA",
+        "party_at_election": "AAAP",
+        "is_nota": false,
+        "general_votes": 497,
+        "postal_votes": 0,
+        "votes": 497
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "SARVESH MUNI PATHRIYA",
+        "party_at_election": "BJJP",
+        "is_nota": false,
+        "general_votes": 490,
+        "postal_votes": 1,
+        "votes": 491
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "KISHAN LAL",
+        "party_at_election": "BSRD",
+        "is_nota": false,
+        "general_votes": 324,
+        "postal_votes": 3,
+        "votes": 327
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "RAM KUMAR",
+        "party_at_election": "SDU",
+        "is_nota": false,
+        "general_votes": 277,
+        "postal_votes": 1,
+        "votes": 278
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "BRIJ LAL",
+        "party_at_election": "BMUP",
+        "is_nota": false,
+        "general_votes": 267,
+        "postal_votes": 0,
+        "votes": 267
+      }
+    ]
+  },
+  {
+    "slug": "puranpur",
+    "code": 129,
+    "year": 2022,
+    "url": "https://old.eci.gov.in/files/file/14185-uttar-pradesh-general-legislative-election-2022/",
+    "checked_on": "2026-09-15",
+    "sha256": "7f0fd9f28b6d69181ee115e509126787160e32a6d1ef3b70e4c591f0773c46d5",
+    "totals_sha256": "e3bf072abcbfd4a97a201aa8b6425eb7d6cb160373a287d1838883b80ff7887e",
+    "source_locator": "10-Detailed Results, Worksheet rows 1620\u20131631; Summary AC 129, F13/F22/F25/F28",
+    "electors": 385107,
+    "votes_polled": 268312,
+    "valid_candidate_votes": 266634,
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "BABURAM",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 134204,
+        "postal_votes": 200,
+        "votes": 134404
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "ARTI",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 107387,
+        "postal_votes": 441,
+        "votes": 107828
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "ASHOK KUMAR RAJA",
+        "party_at_election": "BSP",
+        "is_nota": false,
+        "general_votes": 15994,
+        "postal_votes": 66,
+        "votes": 16060
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "DEEPTI VERMA",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 2511,
+        "postal_votes": 7,
+        "votes": 2518
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "ISHWAR DAYAL PASWAN",
+        "party_at_election": "INC",
+        "is_nota": false,
+        "general_votes": 2050,
+        "postal_votes": 4,
+        "votes": 2054
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 1542,
+        "postal_votes": 1,
+        "votes": 1543
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "KAMLESH KUMAR",
+        "party_at_election": "LGP",
+        "is_nota": false,
+        "general_votes": 1270,
+        "postal_votes": 1,
+        "votes": 1271
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "VINOD KUMAR BHARTI",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 717,
+        "postal_votes": 0,
+        "votes": 717
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "RAMPAL",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 681,
+        "postal_votes": 1,
+        "votes": 682
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "AMIT KUMAR",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 380,
+        "postal_votes": 0,
+        "votes": 380
+      },
+      {
+        "source_row": 11,
+        "candidate_name": "RAMESHWAR DAYAL",
+        "party_at_election": "BSRD",
+        "is_nota": false,
+        "general_votes": 369,
+        "postal_votes": 1,
+        "votes": 370
+      },
+      {
+        "source_row": 12,
+        "candidate_name": "RAKESH DAVID",
+        "party_at_election": "RTVP",
+        "is_nota": false,
+        "general_votes": 350,
+        "postal_votes": 0,
+        "votes": 350
+      }
+    ]
+  },
+  {
+    "slug": "bisalpur",
+    "code": 130,
+    "year": 2022,
+    "url": "https://old.eci.gov.in/files/file/14185-uttar-pradesh-general-legislative-election-2022/",
+    "checked_on": "2026-09-15",
+    "sha256": "7f0fd9f28b6d69181ee115e509126787160e32a6d1ef3b70e4c591f0773c46d5",
+    "totals_sha256": "e3bf072abcbfd4a97a201aa8b6425eb7d6cb160373a287d1838883b80ff7887e",
+    "source_locator": "10-Detailed Results, Worksheet rows 1633\u20131647; Summary AC 130, F13/F22/F25/F28",
+    "electors": 360883,
+    "votes_polled": 239946,
+    "valid_candidate_votes": 238387,
+    "candidates": [
+      {
+        "source_row": 1,
+        "candidate_name": "VIVEK KUMAR VERMA",
+        "party_at_election": "BJP",
+        "is_nota": false,
+        "general_votes": 120787,
+        "postal_votes": 355,
+        "votes": 121142
+      },
+      {
+        "source_row": 2,
+        "candidate_name": "DIVYA GANGWAR",
+        "party_at_election": "SP",
+        "is_nota": false,
+        "general_votes": 69913,
+        "postal_votes": 820,
+        "votes": 70733
+      },
+      {
+        "source_row": 3,
+        "candidate_name": "ANIS AHMED KHAN PHOOL BABU",
+        "party_at_election": "BSP",
+        "is_nota": false,
+        "general_votes": 35841,
+        "postal_votes": 142,
+        "votes": 35983
+      },
+      {
+        "source_row": 4,
+        "candidate_name": "NITIN PATHAK",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 2869,
+        "postal_votes": 11,
+        "votes": 2880
+      },
+      {
+        "source_row": 5,
+        "candidate_name": "BHEEMSEN SHARMA",
+        "party_at_election": "CPI",
+        "is_nota": false,
+        "general_votes": 1770,
+        "postal_votes": 4,
+        "votes": 1774
+      },
+      {
+        "source_row": 6,
+        "candidate_name": "SHIKHA PANDEY",
+        "party_at_election": "INC",
+        "is_nota": false,
+        "general_votes": 1376,
+        "postal_votes": 6,
+        "votes": 1382
+      },
+      {
+        "source_row": 7,
+        "candidate_name": "NOTA",
+        "party_at_election": "NOTA",
+        "is_nota": true,
+        "general_votes": 1236,
+        "postal_votes": 2,
+        "votes": 1238
+      },
+      {
+        "source_row": 8,
+        "candidate_name": "PRADEEP KUMAR",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 801,
+        "postal_votes": 2,
+        "votes": 803
+      },
+      {
+        "source_row": 9,
+        "candidate_name": "DHARAMPAL GANGWAR",
+        "party_at_election": "AAAP",
+        "is_nota": false,
+        "general_votes": 647,
+        "postal_votes": 5,
+        "votes": 652
+      },
+      {
+        "source_row": 10,
+        "candidate_name": "SUSHIL KUMAR SHUKLA",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 635,
+        "postal_votes": 0,
+        "votes": 635
+      },
+      {
+        "source_row": 11,
+        "candidate_name": "RAJARAM MATHUR",
+        "party_at_election": "ASPKR",
+        "is_nota": false,
+        "general_votes": 527,
+        "postal_votes": 4,
+        "votes": 531
+      },
+      {
+        "source_row": 12,
+        "candidate_name": "RAJESH CHANDRA ARVIND",
+        "party_at_election": "IND",
+        "is_nota": false,
+        "general_votes": 528,
+        "postal_votes": 1,
+        "votes": 529
+      },
+      {
+        "source_row": 13,
+        "candidate_name": "RAJESH KUMAR",
+        "party_at_election": "SDU",
+        "is_nota": false,
+        "general_votes": 505,
+        "postal_votes": 3,
+        "votes": 508
+      },
+      {
+        "source_row": 14,
+        "candidate_name": "MANOJ SINGH KUSHWAHA",
+        "party_at_election": "JANADIP",
+        "is_nota": false,
+        "general_votes": 472,
+        "postal_votes": 1,
+        "votes": 473
+      },
+      {
+        "source_row": 15,
+        "candidate_name": "GIRISH SHRIVASTAVA",
+        "party_at_election": "NAP",
+        "is_nota": false,
+        "general_votes": 362,
+        "postal_votes": 0,
+        "votes": 362
+      }
+    ]
+  }
+]

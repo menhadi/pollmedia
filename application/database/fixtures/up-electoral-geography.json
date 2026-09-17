@@ -1,0 +1,3474 @@
+{
+  "pc_sha256": "f590eaf977b2dbb1ac4a00d353aedaf3b2ade3ae4ba8c0f6bb2cb8b7c290c1e8",
+  "district_sha256": "b4fd3459772574dbae751a7a9937e0be3a2f66bdfeb8ad035f3bf90f9a680d61",
+  "pc_source_date": "2006-12-18",
+  "district_source_date": "2023-10-06",
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Saharanpur",
+      "ac_codes": [
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "page": 42,
+      "source_text": "1-Behat, 3-Saharanpur Nagar, 4-Saharanpur, 5-Deoband & 6-Rampur Maniharan (SC)."
+    },
+    {
+      "code": 2,
+      "name": "Kairana",
+      "ac_codes": [
+        2,
+        7,
+        8,
+        9,
+        10
+      ],
+      "page": 42,
+      "source_text": "2-Nakur, 7-Gangoh, 8-Kairana, 9-Thana Bhawan & 10- Shamli."
+    },
+    {
+      "code": 3,
+      "name": "Muzaffarnagar",
+      "ac_codes": [
+        11,
+        12,
+        14,
+        15,
+        44
+      ],
+      "page": 42,
+      "source_text": "11-Budhana, 12-Charthawal, 14-Muzaffar Nagar, 15- Khatauli & 44-Sardhana."
+    },
+    {
+      "code": 4,
+      "name": "Bijnor",
+      "ac_codes": [
+        13,
+        16,
+        22,
+        23,
+        45
+      ],
+      "page": 42,
+      "source_text": "13-Purqazi (SC), 16-Meerapur, 22-Bijnor, 23-Chandpur & 45-Hastinapur (SC)."
+    },
+    {
+      "code": 5,
+      "name": "Nagina",
+      "ac_codes": [
+        17,
+        18,
+        20,
+        21,
+        24
+      ],
+      "page": 42,
+      "source_text": "17-Najibabad, 18-Nagina (SC), 20-Dhampur, 21-Nehtaur (SC) & 24-Noorpur."
+    },
+    {
+      "code": 6,
+      "name": "Moradabad",
+      "ac_codes": [
+        19,
+        25,
+        26,
+        27,
+        28
+      ],
+      "page": 42,
+      "source_text": "19-Barhapur, 25-Kanth, 26-Thakurdwara, 27-Moradabad Rural & 28-Moradabad Nagar."
+    },
+    {
+      "code": 7,
+      "name": "Rampur",
+      "ac_codes": [
+        34,
+        35,
+        36,
+        37,
+        38
+      ],
+      "page": 42,
+      "source_text": "34-Suar, 35-Chamraua, 36-Bilaspur, 37-Rampur & 38-Milak (SC)."
+    },
+    {
+      "code": 8,
+      "name": "Sambhal",
+      "ac_codes": [
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "page": 42,
+      "source_text": "29-Kundarki, 30-Bilari, 31-Chandausi (SC), 32-Asmoli & 33- Sambhal."
+    },
+    {
+      "code": 9,
+      "name": "Amroha",
+      "ac_codes": [
+        39,
+        40,
+        41,
+        42,
+        60
+      ],
+      "page": 42,
+      "source_text": "39-Dhanaura (SC), 40-Naugawan Sadat, 41-Amroha, 42- Hasanpur & 60-Garhmukteshwar."
+    },
+    {
+      "code": 10,
+      "name": "Meerut",
+      "ac_codes": [
+        46,
+        47,
+        48,
+        49,
+        59
+      ],
+      "page": 42,
+      "source_text": "46-Kithore, 47-Meerut Cant., 48-Meerut, 49-Meerut South & 59-Hapur (SC)."
+    },
+    {
+      "code": 11,
+      "name": "Baghpat",
+      "ac_codes": [
+        43,
+        50,
+        51,
+        52,
+        57
+      ],
+      "page": 42,
+      "source_text": "43-Siwalkhas, 50-Chhaprauli, 51-Baraut, 52-Baghpat & 57- Modi Nagar."
+    },
+    {
+      "code": 12,
+      "name": "Ghaziabad",
+      "ac_codes": [
+        53,
+        54,
+        55,
+        56,
+        58
+      ],
+      "page": 43,
+      "source_text": "53-Loni, 54-Muradnagar, 55-Sahibabad, 56-Ghaziabad & 58-Dholana."
+    },
+    {
+      "code": 13,
+      "name": "Gautam Buddha Nagar",
+      "ac_codes": [
+        61,
+        62,
+        63,
+        64,
+        70
+      ],
+      "page": 43,
+      "source_text": "61-Noida, 62-Dadri, 63-Jewar, 64-Sikandrabad & 70-Khurja (SC)."
+    },
+    {
+      "code": 14,
+      "name": "Bulandshahr",
+      "ac_codes": [
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "page": 43,
+      "source_text": "65-Bulandshahr, 66-Syana, 67-Anupshahr, 68-Debai & 69- Shikarpur."
+    },
+    {
+      "code": 15,
+      "name": "Aligarh",
+      "ac_codes": [
+        71,
+        72,
+        73,
+        75,
+        76
+      ],
+      "page": 43,
+      "source_text": "71 Khair (SC), 72 Baroli, 73-Atrauli, 75 Koil & 76-Aligarh"
+    },
+    {
+      "code": 16,
+      "name": "Hathras",
+      "ac_codes": [
+        74,
+        77,
+        78,
+        79,
+        80
+      ],
+      "page": 43,
+      "source_text": "74-Chharra, 77-Iglas (SC), 78-Hathras (SC), 79-Sadabad & 80-Sikandra Rao."
+    },
+    {
+      "code": 17,
+      "name": "Mathura",
+      "ac_codes": [
+        81,
+        82,
+        83,
+        84,
+        85
+      ],
+      "page": 43,
+      "source_text": "81-Chhata, 82-Mant, 83-Goverdhan, 84-Mathura & 85- Baldev (SC)."
+    },
+    {
+      "code": 18,
+      "name": "Agra",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        89,
+        106
+      ],
+      "page": 43,
+      "source_text": "86-Etmadpur, 87-Agra Cantt. (SC), 88-Agra South, 89-Agra North & 106-Jalesar (SC)."
+    },
+    {
+      "code": 19,
+      "name": "Fatehpur Sikri",
+      "ac_codes": [
+        90,
+        91,
+        92,
+        93,
+        94
+      ],
+      "page": 43,
+      "source_text": "90-Agra Rural (SC), 91-Fatehpur Sikri, 92-Kheragarh, 93- Fatehabad & 94-Bah."
+    },
+    {
+      "code": 20,
+      "name": "Firozabad",
+      "ac_codes": [
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "page": 43,
+      "source_text": "95-Tundla (SC), 96-Jasrana, 97-Firozabad, 98-Shikohabad & 99-Sirsaganj."
+    },
+    {
+      "code": 21,
+      "name": "Mainpuri",
+      "ac_codes": [
+        107,
+        108,
+        109,
+        110,
+        199
+      ],
+      "page": 43,
+      "source_text": "107-Mainpuri, 108-Bhongaon, 109-Kishani (SC), 110- Karhal & 199-Jaswantnagar."
+    },
+    {
+      "code": 22,
+      "name": "Etah",
+      "ac_codes": [
+        100,
+        101,
+        102,
+        104,
+        105
+      ],
+      "page": 43,
+      "source_text": "100-Kasganj, 101-Amanpur, 102-Patiyali, 104-Etah & 105- Marhara."
+    },
+    {
+      "code": 23,
+      "name": "Badaun",
+      "ac_codes": [
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "page": 43,
+      "source_text": "111-Gunnaur, 112-Bisauli (SC), 113-Sahaswan, 114-Bilsi & 115-Badaun."
+    },
+    {
+      "code": 24,
+      "name": "Aonla",
+      "ac_codes": [
+        116,
+        117,
+        122,
+        123,
+        126
+      ],
+      "page": 43,
+      "source_text": "116-Shekhupur, 117-Dataganj, 122-Faridpur (SC), 123- Bithari Chainpur & 126-Aonla."
+    },
+    {
+      "code": 25,
+      "name": "Bareilly",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        124,
+        125
+      ],
+      "page": 43,
+      "source_text": "119-Meerganj, 120-Bhojipura, 121-Nawabganj, 124-Bareilly & 125-Bareilly Cantt."
+    },
+    {
+      "code": 26,
+      "name": "Pilibhit",
+      "ac_codes": [
+        118,
+        127,
+        128,
+        129,
+        130
+      ],
+      "page": 43,
+      "source_text": "118-Baheri, 127-Pilibhit, 128-Barkhera, 129-Puranpur (SC) & 130-Bisalpur."
+    },
+    {
+      "code": 27,
+      "name": "Shahjahanpur",
+      "ac_codes": [
+        131,
+        132,
+        133,
+        134,
+        135,
+        136
+      ],
+      "page": 43,
+      "source_text": "131-Katra, 132-Jalalabad, 133-Tilhar, 134-Powayan (SC), 135-Shahjahanpur & 136-Dadral."
+    },
+    {
+      "code": 28,
+      "name": "Kheri",
+      "ac_codes": [
+        137,
+        138,
+        139,
+        140,
+        142
+      ],
+      "page": 43,
+      "source_text": "137-Palia, 138-Nighasan, 139-Gola Gokrannath, 140-Sri Nagar (SC) & 142-Lakhimpur."
+    },
+    {
+      "code": 29,
+      "name": "Dhaurahra",
+      "ac_codes": [
+        141,
+        143,
+        144,
+        145,
+        147
+      ],
+      "page": 43,
+      "source_text": "141-Dhaurahra, 143-Kasta (SC), 144-Mohammdi, 145- Mohali & 147-Hargaon (SC)."
+    },
+    {
+      "code": 30,
+      "name": "Sitapur",
+      "ac_codes": [
+        146,
+        148,
+        149,
+        150,
+        151
+      ],
+      "page": 43,
+      "source_text": "146-Sitapur, 148-Laharpur, 149-Biswan, 150-Sevata & 151- Mahmoodabad."
+    },
+    {
+      "code": 31,
+      "name": "Hardoi",
+      "ac_codes": [
+        154,
+        155,
+        156,
+        157,
+        158
+      ],
+      "page": 43,
+      "source_text": "154-Sawaijpur, 155-Shahabad, 156-Hardoi, 157-Gopamau (SC) & 158-Sandi (SC)."
+    },
+    {
+      "code": 32,
+      "name": "Misrikh",
+      "ac_codes": [
+        153,
+        159,
+        160,
+        161,
+        209
+      ],
+      "page": 43,
+      "source_text": "153-Misrikh (SC), 159-Bilgram-Mallanwan, 160-Balamau (SC), 161-Sandila & 209-Bilhaur (SC)."
+    },
+    {
+      "code": 33,
+      "name": "Unnao",
+      "ac_codes": [
+        162,
+        163,
+        164,
+        165,
+        166,
+        167
+      ],
+      "page": 43,
+      "source_text": "162-Bangermau, 163-Safipur (SC), 164-Mohan (SC), 165- Unnao, 166-Bhagwantnagar & 167-Purwa."
+    },
+    {
+      "code": 34,
+      "name": "Mohanlalganj",
+      "ac_codes": [
+        152,
+        168,
+        169,
+        170,
+        176
+      ],
+      "page": 44,
+      "source_text": "152-Sidhauli (SC), 168-Malihabad (SC), 169-Bakshi Kaa Talab, 170-Sarojini Nagar & 176-Mohanlalganj (SC)."
+    },
+    {
+      "code": 35,
+      "name": "Lucknow",
+      "ac_codes": [
+        171,
+        172,
+        173,
+        174,
+        175
+      ],
+      "page": 44,
+      "source_text": "171-Lucknow West, 172-Lucknow North, 173-Lucknow East, 174-Lucknow Central & 175-Lucknow Cantt."
+    },
+    {
+      "code": 36,
+      "name": "Rae Bareli",
+      "ac_codes": [
+        177,
+        179,
+        180,
+        182,
+        183
+      ],
+      "page": 44,
+      "source_text": "177-Bachhrawan (SC), 179-Harchandpur, 180-Rae Bareli, 182-Sareni & 183-Unchahar."
+    },
+    {
+      "code": 37,
+      "name": "Amethi",
+      "ac_codes": [
+        178,
+        181,
+        184,
+        185,
+        186
+      ],
+      "page": 44,
+      "source_text": "178-Tiloi, 181-Salon (SC), 184-Jagdishpur (SC), 185- Gauriganj & 186-Amethi,"
+    },
+    {
+      "code": 38,
+      "name": "Sultanpur",
+      "ac_codes": [
+        187,
+        188,
+        189,
+        190,
+        191
+      ],
+      "page": 44,
+      "source_text": "187-Isauli, 188-Sultanpur, 189-Sadar, 190-Lambhua &191- Kadipur (SC),"
+    },
+    {
+      "code": 39,
+      "name": "Pratapgarh",
+      "ac_codes": [
+        244,
+        247,
+        248,
+        249,
+        250
+      ],
+      "page": 44,
+      "source_text": "244-Rampur Khas, 247-Bishwavnathganj, 248-Pratapgarh, 249-Patti & 250-Raniganj."
+    },
+    {
+      "code": 40,
+      "name": "Farrukhabad",
+      "ac_codes": [
+        103,
+        192,
+        193,
+        194,
+        195
+      ],
+      "page": 44,
+      "source_text": "103-Aliganj, 192-Kaimganj (SC), 193-Amritpur, 194- Farrukhabad & 195-Bhojpur."
+    },
+    {
+      "code": 41,
+      "name": "Etawah",
+      "ac_codes": [
+        200,
+        201,
+        203,
+        204,
+        207
+      ],
+      "page": 44,
+      "source_text": "200-Etawah, 201-Bharthana (SC), 203-Dibiyapur, 204- Auraiya (SC) & 207-Sikandra."
+    },
+    {
+      "code": 42,
+      "name": "Kannauj",
+      "ac_codes": [
+        196,
+        197,
+        198,
+        202,
+        205
+      ],
+      "page": 44,
+      "source_text": "196-Chhibramau, 197-Tirwa, 198-Kannauj (SC), 202- Bidhuna & 205-Rasulabad (SC)."
+    },
+    {
+      "code": 43,
+      "name": "Kanpur",
+      "ac_codes": [
+        212,
+        213,
+        214,
+        215,
+        216
+      ],
+      "page": 44,
+      "source_text": "212-Govindnagar, 213-Sishamau, 214-Arya Nagar, 215- Kidwai Nagar & 216-Kanpur Cantt."
+    },
+    {
+      "code": 44,
+      "name": "Akbarpur",
+      "ac_codes": [
+        206,
+        210,
+        211,
+        217,
+        218
+      ],
+      "page": 44,
+      "source_text": "206-Akbarpur-Raniya, 210-Bithoor, 211-Kalyanpur, 217- Maharajpur & 218-Ghatampur (SC)."
+    },
+    {
+      "code": 45,
+      "name": "Jalaun",
+      "ac_codes": [
+        208,
+        219,
+        220,
+        221,
+        225
+      ],
+      "page": 44,
+      "source_text": "208-Bhognipur, 219-Madhaugarh, 220-Kalpi, 221-Orai (SC) & 225-Garautha."
+    },
+    {
+      "code": 46,
+      "name": "Jhansi",
+      "ac_codes": [
+        222,
+        223,
+        224,
+        226,
+        227
+      ],
+      "page": 44,
+      "source_text": "222-Babina, 223-Jhansi Nagar, 224-Mauranipur (SC), 226- Lalitpur & 227-Mehroni (SC)."
+    },
+    {
+      "code": 47,
+      "name": "Hamirpur",
+      "ac_codes": [
+        228,
+        229,
+        230,
+        231,
+        232
+      ],
+      "page": 44,
+      "source_text": "228-Hamirpur, 229-Rath (SC), 230-Mahoba, 231-Charkhari & 232-Tindwari."
+    },
+    {
+      "code": 48,
+      "name": "Banda",
+      "ac_codes": [
+        233,
+        234,
+        235,
+        236,
+        237
+      ],
+      "page": 44,
+      "source_text": "233-Baberu, 234-Naraini (SC), 235-Banda, 236-Chitrakoot & 237-Manikpur."
+    },
+    {
+      "code": 49,
+      "name": "Fatehpur",
+      "ac_codes": [
+        238,
+        239,
+        240,
+        241,
+        242,
+        243
+      ],
+      "page": 44,
+      "source_text": "238-Jahanabad, 239-Bindki, 240-Fatehpur, 241-Ayah Shah, 242-Husainganj & 243-Khaga (SC)."
+    },
+    {
+      "code": 50,
+      "name": "Kaushambi",
+      "ac_codes": [
+        245,
+        246,
+        251,
+        252,
+        253
+      ],
+      "page": 44,
+      "source_text": "245-Babaganj (SC), 246-Kunda, 251-Sirathu, 252- Manjhanpur (SC) & 253-Chail."
+    },
+    {
+      "code": 51,
+      "name": "Phulpur",
+      "ac_codes": [
+        254,
+        255,
+        256,
+        261,
+        262
+      ],
+      "page": 44,
+      "source_text": "254-Phaphamau, 255-Soraon (SC), 256-Phulpur, 261- Allahabad West & 262-Allahabad North."
+    },
+    {
+      "code": 52,
+      "name": "Allahabad",
+      "ac_codes": [
+        259,
+        260,
+        263,
+        264,
+        265
+      ],
+      "page": 44,
+      "source_text": "259-Meja, 260-Karachhana, 263-Allahabad South, 264-Bara (SC) & 265-Koraon (SC)."
+    },
+    {
+      "code": 53,
+      "name": "Barabanki",
+      "ac_codes": [
+        266,
+        267,
+        268,
+        269,
+        272
+      ],
+      "page": 44,
+      "source_text": "266-Kursi, 267-Ram Nagar, 268-Barabanki, 269-Zaidpur (SC) & 272-Haidergarh (SC)."
+    },
+    {
+      "code": 54,
+      "name": "Faizabad",
+      "ac_codes": [
+        270,
+        271,
+        273,
+        274,
+        275
+      ],
+      "page": 44,
+      "source_text": "270-Dariyabad, 271-Rudauli, 273-Milkipur (SC), 274- Bikapur & 275-Ayodhya."
+    },
+    {
+      "code": 55,
+      "name": "Ambedkar Nagar",
+      "ac_codes": [
+        276,
+        277,
+        278,
+        280,
+        281
+      ],
+      "page": 44,
+      "source_text": "276-Goshainganj, 277-Katehari, 278-Tanda, 280-Jalalpur & 281-Akbarpur."
+    },
+    {
+      "code": 56,
+      "name": "Bahraich",
+      "ac_codes": [
+        282,
+        283,
+        284,
+        285,
+        286
+      ],
+      "page": 45,
+      "source_text": "282-Balha (SC), 283-Nanpara, 284-Matera, 285-Mahasi & 286-Bahraich."
+    },
+    {
+      "code": 57,
+      "name": "Kaiserganj",
+      "ac_codes": [
+        287,
+        288,
+        297,
+        298,
+        299
+      ],
+      "page": 45,
+      "source_text": "287-Payagpur, 288-Kaiserganj, 297-Katra Bazar, 298- Colonelganj & 299-Tarabganj."
+    },
+    {
+      "code": 58,
+      "name": "Shrawasti",
+      "ac_codes": [
+        289,
+        290,
+        291,
+        292,
+        294
+      ],
+      "page": 45,
+      "source_text": "289-Bhinga, 290- Shrawasti, 291- Tulsipur, 292-Gainsari & 294-Balrampur (SC)."
+    },
+    {
+      "code": 59,
+      "name": "Gonda",
+      "ac_codes": [
+        293,
+        295,
+        296,
+        300,
+        301
+      ],
+      "page": 45,
+      "source_text": "293-Utraula, 295-Mehnaun, 296-Gonda, 300-Mankapur (SC) & 301-Gaura."
+    },
+    {
+      "code": 60,
+      "name": "Domariyaganj",
+      "ac_codes": [
+        302,
+        303,
+        304,
+        305,
+        306
+      ],
+      "page": 45,
+      "source_text": "302-Shohratgarh, 303- Kapilvastu (SC), 304-Bansi, 305-Itwa & 306-Domariyaganj."
+    },
+    {
+      "code": 61,
+      "name": "Basti",
+      "ac_codes": [
+        307,
+        308,
+        309,
+        310,
+        311
+      ],
+      "page": 45,
+      "source_text": "307-Harraiya, 308-Kaptanganj, 309-Rudhauli, 310-Basti Sadar & 311-Mahadewa (SC)."
+    },
+    {
+      "code": 62,
+      "name": "Sant Kabir Nagar",
+      "ac_codes": [
+        279,
+        312,
+        313,
+        314,
+        325
+      ],
+      "page": 45,
+      "source_text": "279-Alapur (SC), 312-Menhdawal, 313-Khalilabad, 314- Dhanghata (SC) & 325-Khajani (SC)."
+    },
+    {
+      "code": 63,
+      "name": "Maharajganj",
+      "ac_codes": [
+        315,
+        316,
+        317,
+        318,
+        319
+      ],
+      "page": 45,
+      "source_text": "315-Pharenda, 316-Nautanwa, 317-Siswa, 318-Maharajganj (SC) & 319-Paniyara."
+    },
+    {
+      "code": 64,
+      "name": "Gorakhpur",
+      "ac_codes": [
+        320,
+        321,
+        322,
+        323,
+        324
+      ],
+      "page": 45,
+      "source_text": "320-Caimpiyarganj, 321-Pipraich, 322-Gorakhpur Urban, 323-Gorakhpur Rural & 324-Sahajanwa."
+    },
+    {
+      "code": 65,
+      "name": "Kushi Nagar",
+      "ac_codes": [
+        329,
+        330,
+        333,
+        334,
+        335
+      ],
+      "page": 45,
+      "source_text": "329-Khadda, 330-Padrauna, 333-Kushinagar, 334-Hata & 335-Ramkola (SC)."
+    },
+    {
+      "code": 66,
+      "name": "Deoria",
+      "ac_codes": [
+        331,
+        332,
+        337,
+        338,
+        339
+      ],
+      "page": 45,
+      "source_text": "331-Tamkuhi Raj, 332-Fazilnagar, 337-Deoria, 338- Pathardeva & 339-Rampur Karkhana."
+    },
+    {
+      "code": 67,
+      "name": "Bansgaon",
+      "ac_codes": [
+        326,
+        327,
+        328,
+        336,
+        342
+      ],
+      "page": 45,
+      "source_text": "326-Chauri-Chaura, 327-Bansgaon (SC), 328-Chillupar, 336- Rudrapur & 342-Barhaj."
+    },
+    {
+      "code": 68,
+      "name": "Lalganj",
+      "ac_codes": [
+        343,
+        348,
+        349,
+        350,
+        351
+      ],
+      "page": 45,
+      "source_text": "343-Atrauliya, 348-Nizamabad, 349-Phoolpur-Pawai, 350- Didarganj & 351-Lalganj (SC)."
+    },
+    {
+      "code": 69,
+      "name": "Azamgarh",
+      "ac_codes": [
+        344,
+        345,
+        346,
+        347,
+        352
+      ],
+      "page": 45,
+      "source_text": "344-Gopalpur, 345-Sagri, 346-Mubarakpur, 347- Azamgarh & 352-Mehnagar (SC)."
+    },
+    {
+      "code": 70,
+      "name": "Ghosi",
+      "ac_codes": [
+        353,
+        354,
+        355,
+        356,
+        358
+      ],
+      "page": 45,
+      "source_text": "353-Madhuban, 354-Ghosi, 355-Muhammadabad-Gohna (SC), 356-Mau & 358-Rasara."
+    },
+    {
+      "code": 71,
+      "name": "Salempur",
+      "ac_codes": [
+        340,
+        341,
+        357,
+        359,
+        362
+      ],
+      "page": 45,
+      "source_text": "340-Bhatpar Rani, 341-Salempur (SC), 357-Belthara Road (SC), 359-Sikanderpur & 362-Bansdih"
+    },
+    {
+      "code": 72,
+      "name": "Ballia",
+      "ac_codes": [
+        360,
+        361,
+        363,
+        377,
+        378
+      ],
+      "page": 45,
+      "source_text": "360-Phephana, 361-Ballia Nagar, 363-Bairia. 377- Zahoorabad & 378-Mohammadabad."
+    },
+    {
+      "code": 73,
+      "name": "Jaunpur",
+      "ac_codes": [
+        364,
+        365,
+        366,
+        367,
+        368
+      ],
+      "page": 45,
+      "source_text": "364-Badlapur, 365-Shahganj, 366-Jaunpur, 367-Malhani & 368-Mungra Badshahpur."
+    },
+    {
+      "code": 74,
+      "name": "Machhlishahr",
+      "ac_codes": [
+        369,
+        370,
+        371,
+        372,
+        384
+      ],
+      "page": 45,
+      "source_text": "369-Machhlishahr (SC), 370-Mariyahu, 371-Zafrabad, 372- Kerakat (SC) & 384-Pindra."
+    },
+    {
+      "code": 75,
+      "name": "Ghazipur",
+      "ac_codes": [
+        373,
+        374,
+        375,
+        376,
+        379
+      ],
+      "page": 45,
+      "source_text": "373-Jakhanian, 374-Saidpur (SC), 375-Ghazipur, 376- Jangipur (SC) & 379-Zamania."
+    },
+    {
+      "code": 76,
+      "name": "Chandauli",
+      "ac_codes": [
+        380,
+        381,
+        382,
+        385,
+        386
+      ],
+      "page": 45,
+      "source_text": "380-Mughalsarai, 381-Sakaldiha, 382-Saiyadraja, 385- Ajagara (SC) & 386-Shivpur."
+    },
+    {
+      "code": 77,
+      "name": "Varanasi",
+      "ac_codes": [
+        387,
+        388,
+        389,
+        390,
+        391
+      ],
+      "page": 46,
+      "source_text": "387-Rohaniya, 388-Varanasi North, 389-Varanasi South, 390-Varanasi Cantt. & 391-Sevapuri."
+    },
+    {
+      "code": 78,
+      "name": "Bhadohi",
+      "ac_codes": [
+        257,
+        258,
+        392,
+        393,
+        394
+      ],
+      "page": 46,
+      "source_text": "257-Pratappur, 258-Handia, 392-Bhadohi, 393-Gyanpur & 394-Aurai (SC)."
+    },
+    {
+      "code": 79,
+      "name": "Mirzapur",
+      "ac_codes": [
+        395,
+        396,
+        397,
+        398,
+        399
+      ],
+      "page": 46,
+      "source_text": "395-Chhanbey (SC), 396-Mirzapur, 397-Majhawan, 398- Chunar & 399-Marihan."
+    },
+    {
+      "code": 80,
+      "name": "Robertsganj",
+      "ac_codes": [
+        383,
+        400,
+        401,
+        402,
+        403
+      ],
+      "page": 46,
+      "source_text": "383-Chakia (SC), 400-Ghorawal, 401-Robertsganj, 402-Obra & 403-Duddhi (SC)."
+    }
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Behat",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 2,
+      "name": "Nakur",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 3,
+      "name": "Saharanpur Nagar",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 4,
+      "name": "Saharanpur",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 5,
+      "name": "Deoband",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 6,
+      "name": "Rampur Maniharan (SC)",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 7,
+      "name": "Gangoh",
+      "district": "Saharanpur",
+      "page": 12
+    },
+    {
+      "code": 8,
+      "name": "Kairana",
+      "district": "Shamli",
+      "page": 12
+    },
+    {
+      "code": 9,
+      "name": "Thana Bhawan",
+      "district": "Shamli",
+      "page": 12
+    },
+    {
+      "code": 10,
+      "name": "Shamli",
+      "district": "Shamli",
+      "page": 12
+    },
+    {
+      "code": 11,
+      "name": "Budhana",
+      "district": "Muzaffarnagar",
+      "page": 12
+    },
+    {
+      "code": 12,
+      "name": "Charthawal",
+      "district": "Muzaffarnagar",
+      "page": 12
+    },
+    {
+      "code": 13,
+      "name": "Purqazi (SC)",
+      "district": "Muzaffarnagar",
+      "page": 12
+    },
+    {
+      "code": 14,
+      "name": "Muzaffar Nagar",
+      "district": "Muzaffarnagar",
+      "page": 12
+    },
+    {
+      "code": 15,
+      "name": "Khatauli",
+      "district": "Muzaffarnagar",
+      "page": 12
+    },
+    {
+      "code": 16,
+      "name": "Meerapur",
+      "district": "Muzaffarnagar",
+      "page": 12
+    },
+    {
+      "code": 17,
+      "name": "Najibabad",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 18,
+      "name": "Nagina (SC)",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 19,
+      "name": "Barhapur",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 20,
+      "name": "Dhampur",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 21,
+      "name": "Nehtaur (SC)",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 22,
+      "name": "Bijnor",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 23,
+      "name": "Chandpur",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 24,
+      "name": "Noorpur",
+      "district": "Bijnor",
+      "page": 12
+    },
+    {
+      "code": 25,
+      "name": "Kanth",
+      "district": "Moradabad",
+      "page": 12
+    },
+    {
+      "code": 26,
+      "name": "Thakurdwara",
+      "district": "Moradabad",
+      "page": 12
+    },
+    {
+      "code": 27,
+      "name": "Moradabad Rural",
+      "district": "Moradabad",
+      "page": 12
+    },
+    {
+      "code": 28,
+      "name": "Moradabad Nagar",
+      "district": "Moradabad",
+      "page": 12
+    },
+    {
+      "code": 29,
+      "name": "Kundarki",
+      "district": "Moradabad",
+      "page": 12
+    },
+    {
+      "code": 30,
+      "name": "Bilari",
+      "district": "Moradabad",
+      "page": 12
+    },
+    {
+      "code": 31,
+      "name": "Chandausi (SC)",
+      "district": "Sambhal",
+      "page": 12
+    },
+    {
+      "code": 32,
+      "name": "Asmoli",
+      "district": "Sambhal",
+      "page": 12
+    },
+    {
+      "code": 33,
+      "name": "Sambhal",
+      "district": "Sambhal",
+      "page": 12
+    },
+    {
+      "code": 111,
+      "name": "Gunnaur",
+      "district": "Sambhal",
+      "page": 13
+    },
+    {
+      "code": 34,
+      "name": "Suar",
+      "district": "Rampur",
+      "page": 13
+    },
+    {
+      "code": 35,
+      "name": "Chamraua",
+      "district": "Rampur",
+      "page": 13
+    },
+    {
+      "code": 36,
+      "name": "Bilaspur",
+      "district": "Rampur",
+      "page": 13
+    },
+    {
+      "code": 37,
+      "name": "Rampur",
+      "district": "Rampur",
+      "page": 13
+    },
+    {
+      "code": 38,
+      "name": "Milak (SC)",
+      "district": "Rampur",
+      "page": 13
+    },
+    {
+      "code": 39,
+      "name": "Dhanaura (SC)",
+      "district": "Amroha",
+      "page": 13
+    },
+    {
+      "code": 40,
+      "name": "Naugawan Sadat",
+      "district": "Amroha",
+      "page": 13
+    },
+    {
+      "code": 41,
+      "name": "Amroha",
+      "district": "Amroha",
+      "page": 13
+    },
+    {
+      "code": 42,
+      "name": "Hasanpur",
+      "district": "Amroha",
+      "page": 13
+    },
+    {
+      "code": 43,
+      "name": "Siwalkhas",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 44,
+      "name": "Sardhana",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 45,
+      "name": "Hastinapur (SC)",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 46,
+      "name": "Kithore",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 47,
+      "name": "Meerut Cantt.",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 48,
+      "name": "Meerut",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 49,
+      "name": "Meerut South",
+      "district": "Meerut",
+      "page": 13
+    },
+    {
+      "code": 50,
+      "name": "Chhaprauli",
+      "district": "Baghpat",
+      "page": 13
+    },
+    {
+      "code": 51,
+      "name": "Baraut",
+      "district": "Baghpat",
+      "page": 13
+    },
+    {
+      "code": 52,
+      "name": "Baghpat",
+      "district": "Baghpat",
+      "page": 13
+    },
+    {
+      "code": 53,
+      "name": "Loni",
+      "district": "Ghaziabad",
+      "page": 13
+    },
+    {
+      "code": 54,
+      "name": "Muradnagar",
+      "district": "Ghaziabad",
+      "page": 13
+    },
+    {
+      "code": 55,
+      "name": "Sahibabad",
+      "district": "Ghaziabad",
+      "page": 13
+    },
+    {
+      "code": 56,
+      "name": "Ghaziabad",
+      "district": "Ghaziabad",
+      "page": 13
+    },
+    {
+      "code": 57,
+      "name": "Modi Nagar",
+      "district": "Ghaziabad",
+      "page": 13
+    },
+    {
+      "code": 58,
+      "name": "Dhaulana",
+      "district": "Hapur",
+      "page": 13
+    },
+    {
+      "code": 59,
+      "name": "Hapur (SC)",
+      "district": "Hapur",
+      "page": 13
+    },
+    {
+      "code": 60,
+      "name": "Garhmukteshwar",
+      "district": "Hapur",
+      "page": 13
+    },
+    {
+      "code": 61,
+      "name": "Noida",
+      "district": "Gautam Buddha Nagar",
+      "page": 13
+    },
+    {
+      "code": 62,
+      "name": "Dadri",
+      "district": "Gautam Buddha Nagar",
+      "page": 13
+    },
+    {
+      "code": 63,
+      "name": "Jewar",
+      "district": "Gautam Buddha Nagar",
+      "page": 13
+    },
+    {
+      "code": 64,
+      "name": "Sikandrabad",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 65,
+      "name": "Bulandshahr",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 66,
+      "name": "Syana",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 67,
+      "name": "Anupshahr",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 68,
+      "name": "Debai",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 69,
+      "name": "Shikarpur",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 70,
+      "name": "Khurja (SC)",
+      "district": "Bulandshahar",
+      "page": 13
+    },
+    {
+      "code": 71,
+      "name": "Khair (SC)",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 72,
+      "name": "Barauli",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 73,
+      "name": "Atrauli",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 74,
+      "name": "Chharra",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 75,
+      "name": "Koil",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 76,
+      "name": "Aligarh",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 77,
+      "name": "Iglas (SC)",
+      "district": "Aligarh",
+      "page": 14
+    },
+    {
+      "code": 78,
+      "name": "Hathras (SC)",
+      "district": "Hathras",
+      "page": 14
+    },
+    {
+      "code": 79,
+      "name": "Sadabad",
+      "district": "Hathras",
+      "page": 14
+    },
+    {
+      "code": 80,
+      "name": "Sikandra Rao",
+      "district": "Hathras",
+      "page": 14
+    },
+    {
+      "code": 81,
+      "name": "Chhata",
+      "district": "Mathura",
+      "page": 14
+    },
+    {
+      "code": 82,
+      "name": "Mant",
+      "district": "Mathura",
+      "page": 14
+    },
+    {
+      "code": 83,
+      "name": "Goverdhan",
+      "district": "Mathura",
+      "page": 14
+    },
+    {
+      "code": 84,
+      "name": "Mathura",
+      "district": "Mathura",
+      "page": 14
+    },
+    {
+      "code": 85,
+      "name": "Baldev (SC)",
+      "district": "Mathura",
+      "page": 14
+    },
+    {
+      "code": 86,
+      "name": "Etmadpur",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 87,
+      "name": "Agra Cantt. (SC)",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 88,
+      "name": "Agra South",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 89,
+      "name": "Agra North",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 90,
+      "name": "Agra Rural (SC)",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 91,
+      "name": "Fatehpur Sikri",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 92,
+      "name": "Kheragarh",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 93,
+      "name": "Fatehabad",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 94,
+      "name": "Bah",
+      "district": "Agra",
+      "page": 14
+    },
+    {
+      "code": 95,
+      "name": "Tundla (SC)",
+      "district": "Firozabad",
+      "page": 14
+    },
+    {
+      "code": 96,
+      "name": "Jasrana",
+      "district": "Firozabad",
+      "page": 14
+    },
+    {
+      "code": 97,
+      "name": "Firozabad",
+      "district": "Firozabad",
+      "page": 14
+    },
+    {
+      "code": 98,
+      "name": "Shikohabad",
+      "district": "Firozabad",
+      "page": 14
+    },
+    {
+      "code": 99,
+      "name": "Sirsaganj",
+      "district": "Firozabad",
+      "page": 14
+    },
+    {
+      "code": 100,
+      "name": "Kasganj",
+      "district": "Kasganj",
+      "page": 14
+    },
+    {
+      "code": 101,
+      "name": "Amanpur",
+      "district": "Kasganj",
+      "page": 14
+    },
+    {
+      "code": 102,
+      "name": "Patiyali",
+      "district": "Kasganj",
+      "page": 14
+    },
+    {
+      "code": 103,
+      "name": "Aliganj",
+      "district": "Etah",
+      "page": 14
+    },
+    {
+      "code": 104,
+      "name": "Etah",
+      "district": "Etah",
+      "page": 14
+    },
+    {
+      "code": 105,
+      "name": "Marhara",
+      "district": "Etah",
+      "page": 14
+    },
+    {
+      "code": 106,
+      "name": "Jalesar (SC)",
+      "district": "Etah",
+      "page": 14
+    },
+    {
+      "code": 107,
+      "name": "Mainpuri",
+      "district": "Mainpuri",
+      "page": 14
+    },
+    {
+      "code": 108,
+      "name": "Bhongaon",
+      "district": "Mainpuri",
+      "page": 14
+    },
+    {
+      "code": 109,
+      "name": "Kishni (SC)",
+      "district": "Mainpuri",
+      "page": 15
+    },
+    {
+      "code": 110,
+      "name": "Karhal",
+      "district": "Mainpuri",
+      "page": 15
+    },
+    {
+      "code": 112,
+      "name": "Bisauli (SC)",
+      "district": "Badaun",
+      "page": 15
+    },
+    {
+      "code": 113,
+      "name": "Sahaswan",
+      "district": "Badaun",
+      "page": 15
+    },
+    {
+      "code": 114,
+      "name": "Bilsi",
+      "district": "Badaun",
+      "page": 15
+    },
+    {
+      "code": 115,
+      "name": "Badaun",
+      "district": "Badaun",
+      "page": 15
+    },
+    {
+      "code": 116,
+      "name": "Shekhupur",
+      "district": "Badaun",
+      "page": 15
+    },
+    {
+      "code": 117,
+      "name": "Dataganj",
+      "district": "Badaun",
+      "page": 15
+    },
+    {
+      "code": 118,
+      "name": "Baheri",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 119,
+      "name": "Meerganj",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 120,
+      "name": "Bhojipura",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 121,
+      "name": "Nawabganj",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 122,
+      "name": "Faridpur (SC)",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 123,
+      "name": "Bithari Chainpur",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 124,
+      "name": "Bareilly",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 125,
+      "name": "Bareilly Cantt.",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 126,
+      "name": "Aonla",
+      "district": "Bareilly",
+      "page": 15
+    },
+    {
+      "code": 127,
+      "name": "Pilibhit",
+      "district": "Pilibhit",
+      "page": 15
+    },
+    {
+      "code": 128,
+      "name": "Barkhera",
+      "district": "Pilibhit",
+      "page": 15
+    },
+    {
+      "code": 129,
+      "name": "Puranpur (SC)",
+      "district": "Pilibhit",
+      "page": 15
+    },
+    {
+      "code": 130,
+      "name": "Bisalpur",
+      "district": "Pilibhit",
+      "page": 15
+    },
+    {
+      "code": 131,
+      "name": "Katra",
+      "district": "Shahjahanpur",
+      "page": 15
+    },
+    {
+      "code": 132,
+      "name": "Jalalabad",
+      "district": "Shahjahanpur",
+      "page": 15
+    },
+    {
+      "code": 133,
+      "name": "Tilhar",
+      "district": "Shahjahanpur",
+      "page": 15
+    },
+    {
+      "code": 134,
+      "name": "Powayan (SC)",
+      "district": "Shahjahanpur",
+      "page": 15
+    },
+    {
+      "code": 135,
+      "name": "Shahjahanpur",
+      "district": "Shahjahanpur",
+      "page": 15
+    },
+    {
+      "code": 136,
+      "name": "Dadraul",
+      "district": "Shahjahanpur",
+      "page": 15
+    },
+    {
+      "code": 137,
+      "name": "Palia",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 138,
+      "name": "Nighasan",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 139,
+      "name": "Gola Gokrannath",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 140,
+      "name": "Sri Nagar (SC)",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 141,
+      "name": "Dhaurahra",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 142,
+      "name": "Lakhimpur",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 143,
+      "name": "Kasta (SC)",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 144,
+      "name": "Mohammdi",
+      "district": "Kheri",
+      "page": 15
+    },
+    {
+      "code": 145,
+      "name": "Maholi",
+      "district": "Sitapur",
+      "page": 15
+    },
+    {
+      "code": 146,
+      "name": "Sitapur",
+      "district": "Sitapur",
+      "page": 15
+    },
+    {
+      "code": 147,
+      "name": "Hargaon (SC)",
+      "district": "Sitapur",
+      "page": 15
+    },
+    {
+      "code": 148,
+      "name": "Laharpur",
+      "district": "Sitapur",
+      "page": 16
+    },
+    {
+      "code": 149,
+      "name": "Biswan",
+      "district": "Sitapur",
+      "page": 16
+    },
+    {
+      "code": 150,
+      "name": "Sevata",
+      "district": "Sitapur",
+      "page": 16
+    },
+    {
+      "code": 151,
+      "name": "Mahmoodabad",
+      "district": "Sitapur",
+      "page": 16
+    },
+    {
+      "code": 152,
+      "name": "Sidhauli (SC)",
+      "district": "Sitapur",
+      "page": 16
+    },
+    {
+      "code": 153,
+      "name": "Misrikh (SC)",
+      "district": "Sitapur",
+      "page": 16
+    },
+    {
+      "code": 154,
+      "name": "Sawayazpur",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 155,
+      "name": "Shahabad",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 156,
+      "name": "Hardoi",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 157,
+      "name": "Gopamau (SC)",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 158,
+      "name": "Sandi (SC)",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 159,
+      "name": "Bilgram-Mallanwan",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 160,
+      "name": "Balamau (SC)",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 161,
+      "name": "Sandila",
+      "district": "Hardoi",
+      "page": 16
+    },
+    {
+      "code": 162,
+      "name": "Bangermau",
+      "district": "Unnao",
+      "page": 16
+    },
+    {
+      "code": 163,
+      "name": "Safipur (SC)",
+      "district": "Unnao",
+      "page": 16
+    },
+    {
+      "code": 164,
+      "name": "Mohan (SC)",
+      "district": "Unnao",
+      "page": 16
+    },
+    {
+      "code": 165,
+      "name": "Unnao",
+      "district": "Unnao",
+      "page": 16
+    },
+    {
+      "code": 166,
+      "name": "Bhagwantnagar",
+      "district": "Unnao",
+      "page": 16
+    },
+    {
+      "code": 167,
+      "name": "Purwa",
+      "district": "Unnao",
+      "page": 16
+    },
+    {
+      "code": 168,
+      "name": "Malihabad (SC)",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 169,
+      "name": "Bakshi Kaa Talab",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 170,
+      "name": "Sarojini Nagar",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 171,
+      "name": "Lucknow West",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 172,
+      "name": "Lucknow North",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 173,
+      "name": "Lucknow East",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 174,
+      "name": "Lucknow Central",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 175,
+      "name": "Lucknow Cantt.",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 176,
+      "name": "Mohanlalganj (SC)",
+      "district": "Lucknow",
+      "page": 16
+    },
+    {
+      "code": 178,
+      "name": "Tiloi",
+      "district": "Amethi",
+      "page": 16
+    },
+    {
+      "code": 184,
+      "name": "Jagdishpur (SC)",
+      "district": "Amethi",
+      "page": 16
+    },
+    {
+      "code": 185,
+      "name": "Gauriganj",
+      "district": "Amethi",
+      "page": 16
+    },
+    {
+      "code": 186,
+      "name": "Amethi",
+      "district": "Amethi",
+      "page": 16
+    },
+    {
+      "code": 177,
+      "name": "Bachhrawan (SC)",
+      "district": "Rae Bareli",
+      "page": 16
+    },
+    {
+      "code": 179,
+      "name": "Harchandpur",
+      "district": "Rae Bareli",
+      "page": 16
+    },
+    {
+      "code": 180,
+      "name": "Rae Bareli",
+      "district": "Rae Bareli",
+      "page": 16
+    },
+    {
+      "code": 181,
+      "name": "Salon (SC)",
+      "district": "Rae Bareli",
+      "page": 16
+    },
+    {
+      "code": 182,
+      "name": "Sareni",
+      "district": "Rae Bareli",
+      "page": 16
+    },
+    {
+      "code": 183,
+      "name": "Unchahar",
+      "district": "Rae Bareli",
+      "page": 17
+    },
+    {
+      "code": 187,
+      "name": "Isauli",
+      "district": "Sultanpur",
+      "page": 17
+    },
+    {
+      "code": 188,
+      "name": "Sultanpur",
+      "district": "Sultanpur",
+      "page": 17
+    },
+    {
+      "code": 189,
+      "name": "Sadar",
+      "district": "Sultanpur",
+      "page": 17
+    },
+    {
+      "code": 190,
+      "name": "Lambhua",
+      "district": "Sultanpur",
+      "page": 17
+    },
+    {
+      "code": 191,
+      "name": "Kadipur (SC)",
+      "district": "Sultanpur",
+      "page": 17
+    },
+    {
+      "code": 192,
+      "name": "Kaimganj (SC)",
+      "district": "Farrukhabad",
+      "page": 17
+    },
+    {
+      "code": 193,
+      "name": "Amritpur",
+      "district": "Farrukhabad",
+      "page": 17
+    },
+    {
+      "code": 194,
+      "name": "Farrukhabad",
+      "district": "Farrukhabad",
+      "page": 17
+    },
+    {
+      "code": 195,
+      "name": "Bhojpur",
+      "district": "Farrukhabad",
+      "page": 17
+    },
+    {
+      "code": 196,
+      "name": "Chhibramau",
+      "district": "Kannauj",
+      "page": 17
+    },
+    {
+      "code": 197,
+      "name": "Tirwa",
+      "district": "Kannauj",
+      "page": 17
+    },
+    {
+      "code": 198,
+      "name": "Kannauj (SC)",
+      "district": "Kannauj",
+      "page": 17
+    },
+    {
+      "code": 199,
+      "name": "Jaswantnagar",
+      "district": "Etawah",
+      "page": 17
+    },
+    {
+      "code": 200,
+      "name": "Etawah",
+      "district": "Etawah",
+      "page": 17
+    },
+    {
+      "code": 201,
+      "name": "Bharthana (SC)",
+      "district": "Etawah",
+      "page": 17
+    },
+    {
+      "code": 202,
+      "name": "Bidhuna",
+      "district": "Auraiya",
+      "page": 17
+    },
+    {
+      "code": 203,
+      "name": "Dibiyapur",
+      "district": "Auraiya",
+      "page": 17
+    },
+    {
+      "code": 204,
+      "name": "Auraiya (SC)",
+      "district": "Auraiya",
+      "page": 17
+    },
+    {
+      "code": 205,
+      "name": "Rasulabad (SC)",
+      "district": "Kanpur Dehat",
+      "page": 17
+    },
+    {
+      "code": 206,
+      "name": "Akbarpur - Raniya",
+      "district": "Kanpur Dehat",
+      "page": 17
+    },
+    {
+      "code": 207,
+      "name": "Sikandra",
+      "district": "Kanpur Dehat",
+      "page": 17
+    },
+    {
+      "code": 208,
+      "name": "Bhognipur",
+      "district": "Kanpur Dehat",
+      "page": 17
+    },
+    {
+      "code": 209,
+      "name": "Bilhaur (SC)",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 210,
+      "name": "Bithoor",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 211,
+      "name": "Kalyanpur",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 212,
+      "name": "Govindnagar",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 213,
+      "name": "Sishamau",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 214,
+      "name": "Arya Nagar",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 215,
+      "name": "Kidwai Nagar",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 216,
+      "name": "Kanpur Cantt.",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 217,
+      "name": "Maharajpur",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 218,
+      "name": "Ghatampur (SC)",
+      "district": "Kanpur Nagar",
+      "page": 17
+    },
+    {
+      "code": 219,
+      "name": "Madhaugarh",
+      "district": "Jalaun",
+      "page": 17
+    },
+    {
+      "code": 220,
+      "name": "Kalpi",
+      "district": "Jalaun",
+      "page": 17
+    },
+    {
+      "code": 221,
+      "name": "Orai (SC)",
+      "district": "Jalaun",
+      "page": 17
+    },
+    {
+      "code": 222,
+      "name": "Babina",
+      "district": "Jhansi",
+      "page": 17
+    },
+    {
+      "code": 223,
+      "name": "Jhansi Nagar",
+      "district": "Jhansi",
+      "page": 17
+    },
+    {
+      "code": 224,
+      "name": "Mauranipur (SC)",
+      "district": "Jhansi",
+      "page": 18
+    },
+    {
+      "code": 225,
+      "name": "Garautha",
+      "district": "Jhansi",
+      "page": 18
+    },
+    {
+      "code": 226,
+      "name": "Lalitpur",
+      "district": "Lalitpur",
+      "page": 18
+    },
+    {
+      "code": 227,
+      "name": "Mehroni (SC)",
+      "district": "Lalitpur",
+      "page": 18
+    },
+    {
+      "code": 228,
+      "name": "Hamirpur",
+      "district": "Hamirpur",
+      "page": 18
+    },
+    {
+      "code": 229,
+      "name": "Rath (SC)",
+      "district": "Hamirpur",
+      "page": 18
+    },
+    {
+      "code": 230,
+      "name": "Mahoba",
+      "district": "Mahoba",
+      "page": 18
+    },
+    {
+      "code": 231,
+      "name": "Charkhari",
+      "district": "Mahoba",
+      "page": 18
+    },
+    {
+      "code": 232,
+      "name": "Tindwari",
+      "district": "Banda",
+      "page": 18
+    },
+    {
+      "code": 233,
+      "name": "Baberu",
+      "district": "Banda",
+      "page": 18
+    },
+    {
+      "code": 234,
+      "name": "Naraini (SC)",
+      "district": "Banda",
+      "page": 18
+    },
+    {
+      "code": 235,
+      "name": "Banda",
+      "district": "Banda",
+      "page": 18
+    },
+    {
+      "code": 236,
+      "name": "Chitrakoot",
+      "district": "Chitrakoot",
+      "page": 18
+    },
+    {
+      "code": 237,
+      "name": "Manikpur",
+      "district": "Chitrakoot",
+      "page": 18
+    },
+    {
+      "code": 238,
+      "name": "Jahanabad",
+      "district": "Fatehpur",
+      "page": 18
+    },
+    {
+      "code": 239,
+      "name": "Bindki",
+      "district": "Fatehpur",
+      "page": 18
+    },
+    {
+      "code": 240,
+      "name": "Fatehpur",
+      "district": "Fatehpur",
+      "page": 18
+    },
+    {
+      "code": 241,
+      "name": "Ayah Shah",
+      "district": "Fatehpur",
+      "page": 18
+    },
+    {
+      "code": 242,
+      "name": "Husainganj",
+      "district": "Fatehpur",
+      "page": 18
+    },
+    {
+      "code": 243,
+      "name": "Khaga (SC)",
+      "district": "Fatehpur",
+      "page": 18
+    },
+    {
+      "code": 244,
+      "name": "Rampur Khas",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 245,
+      "name": "Babaganj (SC)",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 246,
+      "name": "Kunda",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 247,
+      "name": "Vishwanath Ganj",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 248,
+      "name": "Pratapgarh",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 249,
+      "name": "Patti",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 250,
+      "name": "Raniganj",
+      "district": "Pratapgarh",
+      "page": 18
+    },
+    {
+      "code": 251,
+      "name": "Sirathu",
+      "district": "Kaushambi",
+      "page": 18
+    },
+    {
+      "code": 252,
+      "name": "Manjhanpur (SC)",
+      "district": "Kaushambi",
+      "page": 18
+    },
+    {
+      "code": 253,
+      "name": "Chail",
+      "district": "Kaushambi",
+      "page": 18
+    },
+    {
+      "code": 254,
+      "name": "Phaphamau",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 255,
+      "name": "Soraon (SC)",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 256,
+      "name": "Phulpur",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 257,
+      "name": "Pratappur",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 258,
+      "name": "Handia",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 259,
+      "name": "Meja",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 260,
+      "name": "Karachhana",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 261,
+      "name": "Allahabad West",
+      "district": "Prayagraj",
+      "page": 18
+    },
+    {
+      "code": 262,
+      "name": "Allahabad North",
+      "district": "Prayagraj",
+      "page": 19
+    },
+    {
+      "code": 263,
+      "name": "Allahabad South",
+      "district": "Prayagraj",
+      "page": 19
+    },
+    {
+      "code": 264,
+      "name": "Bara (SC)",
+      "district": "Prayagraj",
+      "page": 19
+    },
+    {
+      "code": 265,
+      "name": "Koraon (SC)",
+      "district": "Prayagraj",
+      "page": 19
+    },
+    {
+      "code": 266,
+      "name": "Kursi",
+      "district": "Barabanki",
+      "page": 19
+    },
+    {
+      "code": 267,
+      "name": "Ram Nagar",
+      "district": "Barabanki",
+      "page": 19
+    },
+    {
+      "code": 268,
+      "name": "Barabanki",
+      "district": "Barabanki",
+      "page": 19
+    },
+    {
+      "code": 269,
+      "name": "Zaidpur (SC)",
+      "district": "Barabanki",
+      "page": 19
+    },
+    {
+      "code": 270,
+      "name": "Dariyabad",
+      "district": "Barabanki",
+      "page": 19
+    },
+    {
+      "code": 272,
+      "name": "Haidergarh (SC)",
+      "district": "Barabanki",
+      "page": 19
+    },
+    {
+      "code": 271,
+      "name": "Rudauli",
+      "district": "Ayodhya",
+      "page": 19
+    },
+    {
+      "code": 273,
+      "name": "Milkipur (SC)",
+      "district": "Ayodhya",
+      "page": 19
+    },
+    {
+      "code": 274,
+      "name": "Bikapur",
+      "district": "Ayodhya",
+      "page": 19
+    },
+    {
+      "code": 275,
+      "name": "Ayodhya",
+      "district": "Ayodhya",
+      "page": 19
+    },
+    {
+      "code": 276,
+      "name": "Goshainganj",
+      "district": "Ayodhya",
+      "page": 19
+    },
+    {
+      "code": 277,
+      "name": "Katehari",
+      "district": "Ambedkar Nagar",
+      "page": 19
+    },
+    {
+      "code": 278,
+      "name": "Tanda",
+      "district": "Ambedkar Nagar",
+      "page": 19
+    },
+    {
+      "code": 279,
+      "name": "Alapur (SC)",
+      "district": "Ambedkar Nagar",
+      "page": 19
+    },
+    {
+      "code": 280,
+      "name": "Jalalpur",
+      "district": "Ambedkar Nagar",
+      "page": 19
+    },
+    {
+      "code": 281,
+      "name": "Akbarpur",
+      "district": "Ambedkar Nagar",
+      "page": 19
+    },
+    {
+      "code": 282,
+      "name": "Balha (SC)",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 283,
+      "name": "Nanpara",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 284,
+      "name": "Matera",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 285,
+      "name": "Mahasi",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 286,
+      "name": "Bahraich",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 287,
+      "name": "Payagpur",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 288,
+      "name": "Kaiserganj",
+      "district": "Bahraich",
+      "page": 19
+    },
+    {
+      "code": 289,
+      "name": "Bhinga",
+      "district": "Shrawasti",
+      "page": 19
+    },
+    {
+      "code": 290,
+      "name": "Shrawasti",
+      "district": "Shrawasti",
+      "page": 19
+    },
+    {
+      "code": 291,
+      "name": "Tulsipur",
+      "district": "Balrampur",
+      "page": 19
+    },
+    {
+      "code": 292,
+      "name": "Gainsari",
+      "district": "Balrampur",
+      "page": 19
+    },
+    {
+      "code": 293,
+      "name": "Utraula",
+      "district": "Balrampur",
+      "page": 19
+    },
+    {
+      "code": 294,
+      "name": "Balrampur (SC)",
+      "district": "Balrampur",
+      "page": 19
+    },
+    {
+      "code": 295,
+      "name": "Mehnaun",
+      "district": "Gonda",
+      "page": 19
+    },
+    {
+      "code": 296,
+      "name": "Gonda",
+      "district": "Gonda",
+      "page": 19
+    },
+    {
+      "code": 297,
+      "name": "Katra Bazar",
+      "district": "Gonda",
+      "page": 19
+    },
+    {
+      "code": 298,
+      "name": "Colonelganj",
+      "district": "Gonda",
+      "page": 19
+    },
+    {
+      "code": 299,
+      "name": "Tarabganj",
+      "district": "Gonda",
+      "page": 19
+    },
+    {
+      "code": 300,
+      "name": "Mankapur (SC)",
+      "district": "Gonda",
+      "page": 20
+    },
+    {
+      "code": 301,
+      "name": "Gaura",
+      "district": "Gonda",
+      "page": 20
+    },
+    {
+      "code": 302,
+      "name": "Shohratgarh",
+      "district": "Siddharthnagar",
+      "page": 20
+    },
+    {
+      "code": 303,
+      "name": "Kapilvastu (SC)",
+      "district": "Siddharthnagar",
+      "page": 20
+    },
+    {
+      "code": 304,
+      "name": "Bansi",
+      "district": "Siddharthnagar",
+      "page": 20
+    },
+    {
+      "code": 305,
+      "name": "Itwa",
+      "district": "Siddharthnagar",
+      "page": 20
+    },
+    {
+      "code": 306,
+      "name": "Doomariyaganj",
+      "district": "Siddharthnagar",
+      "page": 20
+    },
+    {
+      "code": 307,
+      "name": "Harraiya",
+      "district": "Basti",
+      "page": 20
+    },
+    {
+      "code": 308,
+      "name": "Kaptanganj",
+      "district": "Basti",
+      "page": 20
+    },
+    {
+      "code": 309,
+      "name": "Rudhauli",
+      "district": "Basti",
+      "page": 20
+    },
+    {
+      "code": 310,
+      "name": "Basti Sadar",
+      "district": "Basti",
+      "page": 20
+    },
+    {
+      "code": 311,
+      "name": "Mahadewa (SC)",
+      "district": "Basti",
+      "page": 20
+    },
+    {
+      "code": 312,
+      "name": "Menhdawal",
+      "district": "Sant Kabir Nagar",
+      "page": 20
+    },
+    {
+      "code": 313,
+      "name": "Khalilabad",
+      "district": "Sant Kabir Nagar",
+      "page": 20
+    },
+    {
+      "code": 314,
+      "name": "Dhanghata (SC)",
+      "district": "Sant Kabir Nagar",
+      "page": 20
+    },
+    {
+      "code": 315,
+      "name": "Pharenda",
+      "district": "Maharajganj",
+      "page": 20
+    },
+    {
+      "code": 316,
+      "name": "Nautanwa",
+      "district": "Maharajganj",
+      "page": 20
+    },
+    {
+      "code": 317,
+      "name": "Siswa",
+      "district": "Maharajganj",
+      "page": 20
+    },
+    {
+      "code": 318,
+      "name": "Maharajganj (SC)",
+      "district": "Maharajganj",
+      "page": 20
+    },
+    {
+      "code": 319,
+      "name": "Paniyara",
+      "district": "Maharajganj",
+      "page": 20
+    },
+    {
+      "code": 320,
+      "name": "Caimpiyarganj",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 321,
+      "name": "Pipraich",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 322,
+      "name": "Gorakhpur Urban",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 323,
+      "name": "Gorakhpur Rural",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 324,
+      "name": "Sahajanwa",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 325,
+      "name": "Khajani (SC)",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 326,
+      "name": "Chauri-Chaura",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 327,
+      "name": "Bansgaon (SC)",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 328,
+      "name": "Chillupar",
+      "district": "Gorakhpur",
+      "page": 20
+    },
+    {
+      "code": 329,
+      "name": "Khadda",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 330,
+      "name": "Padrauna",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 331,
+      "name": "Tamkuhi Raj",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 332,
+      "name": "Fazilnagar",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 333,
+      "name": "Kushi Nagar",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 334,
+      "name": "Hata",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 335,
+      "name": "Ramkola (SC)",
+      "district": "Kushi Nagar",
+      "page": 20
+    },
+    {
+      "code": 336,
+      "name": "Rudrapur",
+      "district": "Deoria",
+      "page": 20
+    },
+    {
+      "code": 337,
+      "name": "Deoria",
+      "district": "Deoria",
+      "page": 20
+    },
+    {
+      "code": 338,
+      "name": "Pathardeva",
+      "district": "Deoria",
+      "page": 21
+    },
+    {
+      "code": 339,
+      "name": "Rampur Karkhana",
+      "district": "Deoria",
+      "page": 21
+    },
+    {
+      "code": 340,
+      "name": "Bhatpar Rani",
+      "district": "Deoria",
+      "page": 21
+    },
+    {
+      "code": 341,
+      "name": "Salempur (SC)",
+      "district": "Deoria",
+      "page": 21
+    },
+    {
+      "code": 342,
+      "name": "Barhaj",
+      "district": "Deoria",
+      "page": 21
+    },
+    {
+      "code": 343,
+      "name": "Atrauliya",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 344,
+      "name": "Gopalpur",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 345,
+      "name": "Sagri",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 346,
+      "name": "Mubarakpur",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 347,
+      "name": "Azamgarh",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 348,
+      "name": "Nizamabad",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 349,
+      "name": "Phoolpur-Pawai",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 350,
+      "name": "Didarganj",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 351,
+      "name": "Lalganj (SC)",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 352,
+      "name": "Mehnagar (SC)",
+      "district": "Azamgarh",
+      "page": 21
+    },
+    {
+      "code": 353,
+      "name": "Madhuban",
+      "district": "Mau",
+      "page": 21
+    },
+    {
+      "code": 354,
+      "name": "Ghosi",
+      "district": "Mau",
+      "page": 21
+    },
+    {
+      "code": 355,
+      "name": "Muhammadabad- Gohna (SC)",
+      "district": "Mau",
+      "page": 21
+    },
+    {
+      "code": 356,
+      "name": "Mau",
+      "district": "Mau",
+      "page": 21
+    },
+    {
+      "code": 357,
+      "name": "Belthara Road (SC)",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 358,
+      "name": "Rasara",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 359,
+      "name": "Sikanderpur",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 360,
+      "name": "Phephana",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 361,
+      "name": "Ballia Nagar",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 362,
+      "name": "Bansdih",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 363,
+      "name": "Bairia",
+      "district": "Ballia",
+      "page": 21
+    },
+    {
+      "code": 364,
+      "name": "Badlapur",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 365,
+      "name": "Shahganj",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 366,
+      "name": "Jaunpur",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 367,
+      "name": "Malhani",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 368,
+      "name": "Mungra Badshahpur",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 369,
+      "name": "Machhlishahr (SC)",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 370,
+      "name": "Mariyahu",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 371,
+      "name": "Zafrabad",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 372,
+      "name": "Kerakat (SC)",
+      "district": "Jaunpur",
+      "page": 21
+    },
+    {
+      "code": 373,
+      "name": "Jakhanian (SC)",
+      "district": "Ghazipur",
+      "page": 21
+    },
+    {
+      "code": 374,
+      "name": "Saidpur (SC)",
+      "district": "Ghazipur",
+      "page": 21
+    },
+    {
+      "code": 375,
+      "name": "Ghazipur",
+      "district": "Ghazipur",
+      "page": 21
+    },
+    {
+      "code": 376,
+      "name": "Jangipur",
+      "district": "Ghazipur",
+      "page": 22
+    },
+    {
+      "code": 377,
+      "name": "Zahoorabad",
+      "district": "Ghazipur",
+      "page": 22
+    },
+    {
+      "code": 378,
+      "name": "Mohammadabad",
+      "district": "Ghazipur",
+      "page": 22
+    },
+    {
+      "code": 379,
+      "name": "Zamania",
+      "district": "Ghazipur",
+      "page": 22
+    },
+    {
+      "code": 380,
+      "name": "Mughalsarai",
+      "district": "Chandauli",
+      "page": 22
+    },
+    {
+      "code": 381,
+      "name": "Sakaldiha",
+      "district": "Chandauli",
+      "page": 22
+    },
+    {
+      "code": 382,
+      "name": "Saiyadraja",
+      "district": "Chandauli",
+      "page": 22
+    },
+    {
+      "code": 383,
+      "name": "Chakia (SC)",
+      "district": "Chandauli",
+      "page": 22
+    },
+    {
+      "code": 384,
+      "name": "Pindra",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 385,
+      "name": "Ajagara (SC)",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 386,
+      "name": "Shivpur",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 387,
+      "name": "Rohaniya",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 388,
+      "name": "Varanasi North",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 389,
+      "name": "Varanasi South",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 390,
+      "name": "Varanasi Cantt.",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 391,
+      "name": "Sevapuri",
+      "district": "Varanasi",
+      "page": 22
+    },
+    {
+      "code": 392,
+      "name": "Bhadohi",
+      "district": "Bhadohi",
+      "page": 22
+    },
+    {
+      "code": 393,
+      "name": "Gyanpur",
+      "district": "Bhadohi",
+      "page": 22
+    },
+    {
+      "code": 394,
+      "name": "Aurai (SC)",
+      "district": "Bhadohi",
+      "page": 22
+    },
+    {
+      "code": 395,
+      "name": "Chhanbey (SC)",
+      "district": "Mirzapur",
+      "page": 22
+    },
+    {
+      "code": 396,
+      "name": "Mirzapur",
+      "district": "Mirzapur",
+      "page": 22
+    },
+    {
+      "code": 397,
+      "name": "Majhawan",
+      "district": "Mirzapur",
+      "page": 22
+    },
+    {
+      "code": 398,
+      "name": "Chunar",
+      "district": "Mirzapur",
+      "page": 22
+    },
+    {
+      "code": 399,
+      "name": "Marihan",
+      "district": "Mirzapur",
+      "page": 22
+    },
+    {
+      "code": 400,
+      "name": "Ghorawal",
+      "district": "Sonbhadra",
+      "page": 22
+    },
+    {
+      "code": 401,
+      "name": "Robertsganj",
+      "district": "Sonbhadra",
+      "page": 22
+    },
+    {
+      "code": 402,
+      "name": "Obra (ST)",
+      "district": "Sonbhadra",
+      "page": 22
+    },
+    {
+      "code": 403,
+      "name": "Duddhi (ST)",
+      "district": "Sonbhadra",
+      "page": 22
+    }
+  ],
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIhDdiug%2BcfNuyNw18VbQyX4ytYYT1mZfnv91aSRW9dyU35NzLWOLO770pAfWh4kL0t2DL6R6ejFIaHyi4sj1oGpt6ybm3x8d7llFBKReV90%2BdOFtn933icz0MOeiesxvsQ%3D%3D",
+  "district_url": "https://egazette.gov.in/WriteReadData/2023/249449.pdf",
+  "checked_on": "2026-09-16"
+}

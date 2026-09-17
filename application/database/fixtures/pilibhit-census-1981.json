@@ -1,0 +1,138 @@
+{
+  "year": 1981,
+  "landing": "https://censusindia.gov.in/nada/index.php/catalog/29728",
+  "source_url": "https://censusindia.gov.in/nada/index.php/catalog/29728/download/32909/27296_1981_PIL.pdf",
+  "sha256": "f82f8a634bd271646e059df291e623965279c35cf683a60c0de9603085515d18",
+  "checked_on": "2026-09-16",
+  "source_locator": "District Primary Census Abstract, printed page 10 / PDF page 36",
+  "extraction_method": "Manually transcribed and visually checked against the printed table; OCR text was not accepted as verified data.",
+  "scope": "1981 district and tahsil boundaries and rural/urban classification. These historical tahsils are not present-day administrative areas, ACs or PCs.",
+  "geographies": [
+    {
+      "key": "district",
+      "name": "Pilibhit district",
+      "code": "19"
+    },
+    {
+      "key": "pilibhit",
+      "name": "Pilibhit tahsil",
+      "code": "1",
+      "index_page": 56,
+      "table_page": 61
+    },
+    {
+      "key": "bisalpur",
+      "name": "Bisalpur tahsil",
+      "code": "2",
+      "index_page": 113,
+      "table_page": 118
+    },
+    {
+      "key": "puranpur",
+      "name": "Puranpur tahsil",
+      "code": "3",
+      "index_page": 163,
+      "table_page": 167
+    }
+  ],
+  "rows": [
+    {
+      "geography": "district",
+      "area": "total",
+      "population": 1008312,
+      "male": 546119,
+      "female": 462193,
+      "households": 175781
+    },
+    {
+      "geography": "district",
+      "area": "rural",
+      "population": 844720,
+      "male": 458255,
+      "female": null,
+      "households": 147958,
+      "quality_note": "Female count withheld: the printed district rural cell reads 366,455, which does not reconcile with the printed population and male counts or the tahsil totals. No corrected value has been substituted.",
+      "source_printed_female": 366455
+    },
+    {
+      "geography": "district",
+      "area": "urban",
+      "population": 163592,
+      "male": 87864,
+      "female": 75728,
+      "households": 27823
+    },
+    {
+      "geography": "pilibhit",
+      "area": "total",
+      "population": 428241,
+      "male": 230200,
+      "female": 198041,
+      "households": 72633
+    },
+    {
+      "geography": "pilibhit",
+      "area": "rural",
+      "population": 322838,
+      "male": 173432,
+      "female": 149406,
+      "households": 54457
+    },
+    {
+      "geography": "pilibhit",
+      "area": "urban",
+      "population": 105403,
+      "male": 56768,
+      "female": 48635,
+      "households": 18176
+    },
+    {
+      "geography": "bisalpur",
+      "area": "total",
+      "population": 336535,
+      "male": 184573,
+      "female": 151962,
+      "households": 59910
+    },
+    {
+      "geography": "bisalpur",
+      "area": "rural",
+      "population": 301013,
+      "male": 165565,
+      "female": 135448,
+      "households": 54052
+    },
+    {
+      "geography": "bisalpur",
+      "area": "urban",
+      "population": 35522,
+      "male": 19008,
+      "female": 16514,
+      "households": 5858
+    },
+    {
+      "geography": "puranpur",
+      "area": "total",
+      "population": 243536,
+      "male": 131346,
+      "female": 112190,
+      "households": 43238
+    },
+    {
+      "geography": "puranpur",
+      "area": "rural",
+      "population": 220869,
+      "male": 119258,
+      "female": 101611,
+      "households": 39449
+    },
+    {
+      "geography": "puranpur",
+      "area": "urban",
+      "population": 22667,
+      "male": 12088,
+      "female": 10579,
+      "households": 3789
+    }
+  ]
+}

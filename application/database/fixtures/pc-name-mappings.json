@@ -1,0 +1,30 @@
+[
+  {
+    "archive": "e5346f9160ad32fb68a34578",
+    "year": 2009,
+    "state_code": "S24",
+    "official_pc_code": 13,
+    "source_name": "Gautam buddh Nagar",
+    "mapped_name": "Gautam Buddha Nagar",
+    "source_sha256": "0689cff95684502c78b00a751184fc08a74fda9dd8ea33aef2aeb87ba20ae6a2",
+    "summary_sha256": "f12b58ceb4be0aa5fa98353ddf8718b5625cb61c98ca6a26654318ab3a246761",
+    "detail_page": 145,
+    "summary_page": 391,
+    "checked_on": "2026-09-17",
+    "note": "The official 2009 report spells this constituency 'Gautam buddh Nagar'. State S24 and PC 13 match 'Gautam Buddha Nagar' in the official delimitation table. Original report wording is retained."
+  },
+  {
+    "archive": "349e04305ee4652986f79497",
+    "year": 2024,
+    "state_code": "S24",
+    "official_pc_code": 56,
+    "source_name": "Baharaich",
+    "mapped_name": "Bahraich",
+    "source_sha256": "8c3e317c3922f4fe2a4e5ce7a7264dbffcfdd3cd547432283996d84dfa7244b9",
+    "summary_sha256": "d45b5166d7dff589357bcae597648b965ba88f5bd37a0cd2eea11a220db46edf",
+    "detail_page": 465,
+    "summary_page": 819,
+    "checked_on": "2026-09-17",
+    "note": "The official 2024 report spells this constituency 'Baharaich'. State S24 and PC 56 match 'Bahraich' in the official delimitation table. Original report wording is retained."
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "census_places": 1446,
+  "geometry_records": 1446,
+  "unique_code_matches": 1444,
+  "unmatched": 2,
+  "ambiguous": 0,
+  "subdistrict_changes": 375,
+  "status": "Candidate code crosswalk; current LGD export and geometry validity not verified"
+}

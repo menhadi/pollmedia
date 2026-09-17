@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\ConstituencyHistory;
+use App\Services\ElectionArchive;
+use App\Services\HistoricalElectionArchive;
+use App\Services\HistoricalElectionReview;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+class HistoricalElectionController extends Controller
+{
+    public function compare(string $slug, ConstituencyHistory $history): View
+    {
+        $place = DB::table('places')->where('slug', 'pc-'.$slug)->where('type', 'pc')->first();
+        abort_unless($place, 404);
+        $comparison = $history->forPlace($place);
+
+        return view('constituency-history', compact('place', 'comparison'));
+    }
+
+    public function compareAssembly(string $slug, ConstituencyHistory $history): View
+    {
+        $place = DB::table('places')->where('slug', 'ac-'.$slug)->where('type', 'ac')->first();
+        abort_unless($place, 404);
+        $comparison = $history->forAssembly($place);
+
+        return view('constituency-history', compact('place', 'comparison'));
+    }
+
+    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|StreamedResponse
+    {
+        $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:1000', 'format' => 'nullable|in:csv']);
+        $download = ($input['format'] ?? null) === 'csv';
+        abort_if($download && (! isset($input['edition'], $input['state'])), 404);
+        $kind = $request->routeIs('elections.assembly') ? 'ac' : 'pc';
+        $archiveRoute = $kind === 'ac' ? 'elections.assembly' : 'elections.history';
+        $archiveTitle = $kind === 'ac' ? 'Uttar Pradesh Assembly' : 'Lok Sabha';
+        $editions = $history->editions($kind);
+        $edition = $input['edition'] ?? ($editions[0]['id'] ?? null);
+        $data = null;
+        $selected = null;
+        $relatedPlace = null;
+        $states = collect();
+        $coverage = collect();
+        $stateResults = collect();
+        $constituencies = collect();
+        $state = $input['state'] ?? null;
+        if ($edition) {
+            abort_unless(collect($editions)->contains('id', $edition), 404);
+            [$data] = $history->load($edition, $archives);
+            abort_unless($data['kind'] === $kind, 404);
+            $records = collect($data['records']);
+            $stateLabel = fn (array $record): string => $record['state_name'] ?? $record['state_code'] ?? ($kind === 'ac' ? 'Uttar Pradesh' : '');
+            $states = $records->map($stateLabel)->filter()->unique()->sort()->values();
+            $coverage = $records->groupBy($stateLabel)->sortKeys()->map(function ($group, string $label): array {
+                return [
+                    'state' => $label,
+                    'tables' => $group->count(),
+                    'rows' => $group->sum(fn (array $record): int => count($record['candidates'] ?? [])),
+                ];
+            })->values();
+            abort_if($state && ! $states->contains($state), 404);
+            $constituencies = $state ? $records->filter(fn (array $record): bool => $stateLabel($record) === $state)->sortBy(fn (array $record): string => $record['constituency_name'] ?? $record['name'])->values() : collect();
+            if (isset($input['code'])) {
+                $selected = $constituencies->firstWhere('code', (int) $input['code']);
+                abort_unless($selected, 404);
+                $original = $selected;
+                $selected = $reviews->apply($edition, $selected, $data['source_sha256']);
+                if ($download) {
+                    return $this->download($data, [$selected], $state, $kind, $edition, (string) $selected['code']);
+                }
+                $relatedPlace = app(ConstituencyHistory::class)->relatedPlace($edition, $original);
+            } elseif ($state) {
+                $stateResults = $constituencies->map(function (array $original) use ($reviews, $edition, $data): array {
+                    $record = $reviews->apply($edition, $original, $data['source_sha256']);
+                    $record['winner_party'] = null;
+                    if (! $record['has_warning'] && ($record['number_of_seats'] ?? 1) === 1 && isset($record['winner'], $record['margin'])) {
+                        $winner = collect($record['candidates'])->first(fn (array $candidate): bool => ! ($candidate['is_nota'] ?? false) && strtoupper($candidate['party_at_election']) !== 'NOTA' && $candidate['candidate_name'] === $record['winner']);
+                        $record['winner_party'] = $winner['party_at_election'] ?? null;
+                    }
+
+                    return $record;
+                });
+            }
+        }
+
+        if ($download) {
+            return $this->download($data, $stateResults->all(), $state, $kind, $edition, 'state-'.Str::slug($state));
+        }
+
+        $established = $stateResults->filter(fn (array $record): bool => $record['winner_party'] !== null);
+        $partySummary = [
+            'counted' => $established->count(),
+            'under_review' => $stateResults->where('has_warning', true)->count(),
+            'other' => $stateResults->where('has_warning', false)->whereNull('winner_party')->count(),
+            'parties' => $established->countBy('winner_party')->sortDesc(),
+        ];
+
+        return view('historical-elections', compact('editions', 'edition', 'data', 'states', 'state', 'constituencies', 'selected', 'relatedPlace', 'coverage', 'stateResults', 'partySummary', 'kind', 'archiveRoute', 'archiveTitle'));
+    }
+
+    private function download(array $data, array $records, string $state, string $kind, string $edition, string $scope): StreamedResponse
+    {
+        return response()->streamDownload(function () use ($data, $records, $state, $kind, $edition): void {
+            $stream = fopen('php://output', 'w');
+            fwrite($stream, "\xEF\xBB\xBF");
+            $write = function (array $cells) use ($stream): void {
+                $safe = array_map(fn ($value) => is_string($value) && preg_match('/^[\s]*[=+@-]|^[\t\r\n]/u', $value) ? "'".$value : $value, $cells);
+                fputcsv($stream, $safe, ',', '"', '', "\r\n");
+            };
+            $write(['year', 'election_type', 'edition_id', 'state_as_recorded', 'archive_record_code', 'official_constituency_code', 'constituency', 'row_type', 'candidate', 'party_at_election', 'general_evm_votes', 'postal_votes', 'total_votes', 'electors', 'votes_polled', 'valid_candidate_votes', 'status', 'data_note', 'official_source', 'additional_official_sources', 'source_locator', 'detail_pdf_page', 'summary_pdf_page']);
+            foreach ($records as $record) {
+                foreach ($record['candidates'] ?: [null] as $candidate) {
+                    $write([$data['year'], $kind, $edition, $state, $record['code'], $record['official_pc_code'] ?? ($kind === 'ac' ? $record['code'] : null), $record['name'], $candidate ? 'candidate' : 'no_candidate_rows', $candidate['candidate_name'] ?? null, $candidate['party_at_election'] ?? null, $candidate['general_votes'] ?? null, $candidate['postal_votes'] ?? null, $candidate['votes'] ?? null, $record['electors'] ?? null, $record['votes_polled'] ?? null, $record['valid_candidate_votes'] ?? null, $record['status'], $record['has_warning'] ? '† '.($record['error'] ?? 'This record requires review.') : '', $data['source_url'], collect($data['additional_sources'] ?? [])->pluck('source_url')->filter()->implode(' | '), $record['source_locator'] ?? '', $record['detail_page'] ?? null, $record['summary_page'] ?? null]);
+                }
+            }
+            fclose($stream);
+        }, 'pollmedia-'.$kind.'-'.$data['year'].'-'.$scope.'.csv', ['Content-Type' => 'text/csv; charset=UTF-8', 'Cache-Control' => 'no-store']);
+    }
+}

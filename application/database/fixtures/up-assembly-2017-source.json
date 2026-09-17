@@ -1,0 +1,62 @@
+{
+  "year": 2017,
+  "url": "https://old.eci.gov.in/files/file/3471-uttar-pradesh-general-legislative-election-2017/",
+  "sha256": "9a8b1ff1fba238062ed09b44d8719d6b88281eb70129da0d223c3559142cdfa4",
+  "totals_sha256": "ea8e568d27d20415597ce426fb35c4753d24808a929cac67ad2e287b73c57899",
+  "summary_pdf_sha256": "bed0004ee58b6d118973d65b6e2f63bf2033f50e4723ed63b884a70194d1c865",
+  "checked_on": "2026-09-16",
+  "name_variants": {
+    "58": {
+      "source": "Dholana",
+      "current": "Dhaulana"
+    },
+    "109": {
+      "source": "Kishani (SC)",
+      "current": "Kishni"
+    },
+    "154": {
+      "source": "Sawaijpur",
+      "current": "Sawayazpur"
+    },
+    "175": {
+      "source": "175-LUCKNOW CANTT.",
+      "current": "Lucknow Cantt."
+    },
+    "247": {
+      "source": "Vishwanathganj",
+      "current": "Vishwanath Ganj"
+    },
+    "282": {
+      "source": "BALHA (S.C.)",
+      "current": "Balha"
+    },
+    "306": {
+      "source": "Doomariyaganj",
+      "current": "Domariyaganj"
+    },
+    "311": {
+      "source": "Mahadewa S.C",
+      "current": "Mahadewa"
+    },
+    "319": {
+      "source": "Paniyara",
+      "current": "Paniyra"
+    },
+    "349": {
+      "source": "Phoolpur Pawai",
+      "current": "Phoolpur-Pawai"
+    },
+    "355": {
+      "source": "Muhammadabad- Gohna (SC)",
+      "current": "Muhammadabad-Gohna"
+    },
+    "369": {
+      "source": "Machhlishahr S.C.",
+      "current": "Machhlishahr"
+    },
+    "372": {
+      "source": "Kerakat S.C.",
+      "current": "Kerakat"
+    }
+  }
+}

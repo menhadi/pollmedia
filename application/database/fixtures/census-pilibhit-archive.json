@@ -1,0 +1,9 @@
+[
+ {"year":2011,"title":"District Census Handbook, Part B: Primary Census Abstract","url":"https://censusindia.gov.in/nada/index.php/catalog/1273","coverage":"Village and town Census tables; 2011 village profiles already available from the official PCA workbook."},
+ {"year":2001,"title":"District Census Handbook, Parts A and B","url":"https://censusindia.gov.in/nada/index.php/catalog/43939","coverage":"Village/town directory and PCA; retrospective district population table for 1901-2001 extracted separately."},
+ {"year":1981,"title":"District Census Handbook, Part XIII-B: Primary Census Abstract","url":"https://censusindia.gov.in/nada/index.php/catalog/29728","coverage":"District and village/town population tables listed; extraction and historical village mapping pending."},
+ {"year":1981,"title":"District Census Handbook, Part XIII-A: Village and Town Directory","url":"https://censusindia.gov.in/nada/index.php/catalog/29729","coverage":"Historical village/town amenities and directory; extraction pending."},
+ {"year":1971,"title":"District Census Handbook, Part X-A: Town and Village Directory","url":"https://censusindia.gov.in/nada/index.php/catalog/29730","coverage":"Historical village/town directory and amenities; extraction pending."},
+ {"year":1961,"title":"Village survey monograph: Daulatpur Hira, Bisalpur tahsil","url":"https://censusindia.gov.in/nada/index.php/catalog/32881","coverage":"One-village survey only; not district-wide village coverage. Extraction and identity mapping pending."},
+ {"year":1951,"title":"District Census Handbook, 16-Pilibhit","url":"https://censusindia.gov.in/nada/index.php/catalog/28494","coverage":"Population, economic and village/town statistics listed; extraction and historical mapping pending."}
+]

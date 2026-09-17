@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+
+class OverviewController extends Controller
+{
+    public function index(Request $request, ?string $state = null): View
+    {
+        abort_if($state !== null && $state !== 'uttar-pradesh', 404);
+        $input = $request->validate(['q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000']);
+        $query = trim($input['q'] ?? '');
+        $type = $input['type'] ?? '';
+        $available = DB::table('places')->where(function ($query): void {
+            $query->whereIn('slug', ['pc-pilibhit', 'district-pilibhit', 'district-bareilly', 'ac-pilibhit', 'ac-baheri', 'ac-barkhera', 'ac-puranpur', 'ac-bisalpur'])
+                ->orWhereIn('id', DB::table('place_identifiers')->where('namespace', 'electoral:IN:UP:ac')->where('version', 'eci-election-2022')->select('place_id'))
+                ->orWhereIn('id', DB::table('place_identifiers')->where('namespace', 'electoral:IN:UP:pc')->where('version', 'delimitation-order-34')->select('place_id'))
+                ->orWhereIn('id', DB::table('place_relationships as r')->join('source_releases as s', 's.id', '=', 'r.source_release_id')->join('data_sources as d', 'd.id', '=', 's.data_source_id')->where('d.key', 'up-statewide-district-geography')->where('s.status', 'accepted')->select('r.to_place_id'));
+        })->orderBy('name')->get();
+        $coverage = $available->countBy('type');
+        $options = $available;
+        $selected = $input['place'] ?? '';
+        $filtered = $available->filter(fn ($place) => ($type === '' || $place->type === $type) && ($selected === '' || $place->slug === $selected) && ($query === '' || str_contains(mb_strtolower($place->name), mb_strtolower($query))));
+        $page = (int) ($input['page'] ?? 1);
+        $places = new LengthAwarePaginator($filtered->forPage($page, 24)->values(), $filtered->count(), 24, $page, ['path' => $request->url(), 'query' => $request->query(), 'fragment' => 'politics']);
+        $years = DB::table('election_contests as e')->join('source_releases as r', 'r.id', '=', 'e.source_release_id')->where('e.active', true)->where('r.status', 'accepted')->select('e.place_id', 'e.year')->get()->groupBy('place_id');
+        $title = $state === null ? 'India' : 'Uttar Pradesh';
+
+        return view('overview', compact('title', 'state', 'query', 'type', 'places', 'coverage', 'years', 'options', 'selected'));
+    }
+}
