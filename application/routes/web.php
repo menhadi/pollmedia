@@ -9,6 +9,7 @@ use App\Http\Controllers\CensusPublicationController;
 use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
+use App\Http\Controllers\GeographyController;
 use App\Http\Controllers\HistoricalElectionController;
 use App\Http\Controllers\HistoricalExtractionController;
 use App\Http\Controllers\ImportController;
@@ -39,6 +40,8 @@ Route::get('/india/ac/{slug}/history', [HistoricalElectionController::class, 'co
 Route::get('/india/district/pilibhit/census-1981', [CensusHistoryController::class, 'edition1981'])->name('census.1981');
 Route::get('/india/district/pilibhit/census-history', [CensusHistoryController::class, 'show'])->name('census.history');
 Route::get('/reports/pilibhit', [ReportController::class, 'show'])->name('reports.pilibhit');
+Route::get('/explore', [GeographyController::class, 'index'])->name('geography.index');
+Route::get('/explore/places/{slug}', [GeographyController::class, 'show'])->name('geography.show');
 Route::get('/reports/coverage/{scope}', [CoverageReportController::class, 'show'])->where('scope', '[a-z0-9-]+')->name('reports.coverage');
 Route::get('/reports/archive', [ReportArchiveController::class, 'index'])->name('reports.archive');
 Route::post('/reports/archive', [ReportArchiveController::class, 'store'])->middleware([AdminTransport::class, RequireAdministrator::class, 'throttle:10,1'])->name('reports.store');

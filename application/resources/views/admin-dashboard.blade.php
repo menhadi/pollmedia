@@ -15,6 +15,7 @@
 <a class="button" href="{{ route('reports.archive') }}">Report drafts</a>
 <a href="{{ route('report-scopes.index') }}">Countries & report areas</a>
 <a href="{{ route('official-hosts.index') }}">Official source hosts</a>
+<a href="{{ route('geography.index') }}">Global geography browser</a>
 <a href="{{ route('seo.index') }}">Page SEO</a><a href="{{ route('ai.settings') }}">AI settings</a><a href="{{ route('admin.account') }}">Your account</a>
 </div></section>
 <section class="card"><h2>Sources with a failed latest import</h2>
