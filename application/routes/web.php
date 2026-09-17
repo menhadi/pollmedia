@@ -13,6 +13,7 @@ use App\Http\Controllers\GeographyController;
 use App\Http\Controllers\HistoricalElectionController;
 use App\Http\Controllers\HistoricalExtractionController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\OfficialHostController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\PlaceController;
@@ -41,6 +42,8 @@ Route::get('/india/district/pilibhit/census-1981', [CensusHistoryController::cla
 Route::get('/india/district/pilibhit/census-history', [CensusHistoryController::class, 'show'])->name('census.history');
 Route::get('/reports/pilibhit', [ReportController::class, 'show'])->name('reports.pilibhit');
 Route::get('/explore', [GeographyController::class, 'index'])->name('geography.index');
+Route::get('/data', [IndicatorController::class, 'index'])->name('indicators.index');
+Route::get('/india/data', [IndicatorController::class, 'index'])->name('indicators.india');
 Route::get('/india/explore', [GeographyController::class, 'india'])->name('geography.india');
 Route::get('/explore/places/{slug}', [GeographyController::class, 'show'])->name('geography.show');
 Route::get('/reports/coverage/{scope}', [CoverageReportController::class, 'show'])->where('scope', '[a-z0-9-]+')->name('reports.coverage');

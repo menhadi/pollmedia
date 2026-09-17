@@ -3,6 +3,7 @@
 @section('content')
 <p class="muted">{{ $place->country_code }} · {{ \Illuminate\Support\Str::headline($place->type) }}</p><h1>{{ $place->name }}</h1>
 <p class="notice">This profile contains available accepted evidence for this place. Missing records do not mean zero activity or no responsible authority.</p>
+<p><a href="{{ route('indicators.index', ['country' => $place->country_code, 'place' => $place->id]) }}">Browse this place's historical measurements</a></p>
 <section class="card"><h2>Election evidence</h2>@forelse($elections as $election)<p>{{ $election->year }} · {{ \Illuminate\Support\Str::headline($election->election_type) }} · <a href="{{ $election->url }}">Official results</a> · {{ $election->source_locator }}</p>@empty<p>No accepted election results are linked to this place.</p>@endforelse</section>
 <section class="card"><h2>Representatives and authorities</h2>@forelse($people as $person)<div class="row"><h3>{{ $person->title }}</h3><p>{{ $person->display_name ?? 'No named officeholder' }} · {{ \Illuminate\Support\Str::headline($person->status) }}</p><p>Verified {{ $person->verified_at }} UTC · <a href="{{ $person->url }}">Official evidence</a></p></div>@empty<p>No verified officeholder assignments are linked to this place.</p>@endforelse</section>
 <section class="card"><h2>Development and historical measurements</h2><p>Periods and units come from each dataset. These values are not summed across overlapping areas.</p><div class="scroll"><table><thead><tr><th>Indicator</th><th>Period</th><th>Value</th><th>Evidence</th></tr></thead><tbody>
