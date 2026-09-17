@@ -11,7 +11,7 @@ class IndicatorBrowserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_india_filters_use_only_accepted_measurements_and_available_periods(): void
+    public function test_india_filters_include_pending_measurements_with_notes_and_available_periods(): void
     {
         $this->seed(PilibhitSeeder::class);
         $observation = DB::table('observations')->first();
@@ -21,8 +21,21 @@ class IndicatorBrowserTest extends TestCase
             ->assertOk()->assertViewHas('measurements', fn ($rows) => $rows->total() === 1)
             ->assertSee('Official evidence')->assertSee('Definition');
         DB::table('source_releases')->where('id', $observation->source_release_id)->update(['status' => 'pending']);
-        $this->get('/india/data')->assertOk()->assertSee('No accepted measurements match')
-            ->assertViewHas('periods', fn ($periods) => $periods->isEmpty());
+        $this->get('/india/data')->assertOk()->assertSee('Source edition awaiting review')
+            ->assertViewHas('measurements', fn ($rows) => $rows->total() === 3)
+            ->assertViewHas('periods', fn ($periods) => $periods->isNotEmpty());
+    }
+
+    public function test_historical_editions_are_visible_but_rejected_and_withdrawn_values_are_excluded(): void
+    {
+        $this->seed(PilibhitSeeder::class);
+        $row = DB::table('observations')->first();
+        DB::table('source_releases')->where('id', $row->source_release_id)->update(['status' => 'superseded']);
+        $this->get('/india/data')->assertOk()->assertSee('Earlier source edition');
+        foreach (['rejected', 'withdrawn'] as $status) {
+            DB::table('source_releases')->where('id', $row->source_release_id)->update(['status' => $status]);
+            $this->get('/india/data')->assertOk()->assertViewHas('measurements', fn ($rows) => $rows->total() === 0);
+        }
     }
 
     public function test_missing_and_zero_values_remain_distinct_and_foreign_data_stays_out_of_india(): void

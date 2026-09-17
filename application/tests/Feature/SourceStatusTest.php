@@ -19,7 +19,7 @@ class SourceStatusTest extends TestCase
         $release = DB::table('source_releases')->where('data_source_id', $source->id)->first();
         DB::table('source_releases')->insert(['data_source_id' => $source->id, 'version_key' => 'pending-test', 'url' => $source->url, 'retrieved_at' => '2026-09-19', 'status' => 'pending', 'payload' => json_encode(['private_test_value' => 'never-render-payload'])]);
         $this->get('/sources')->assertOk()->assertSee('Updates are currently manual.')
-            ->assertSee('4 days since import')->assertSee('other edition(s) not accepted')->assertDontSee('never-render-payload')
+            ->assertSee('4 days since import')->assertSee('recorded source editions')->assertSee('Awaiting review')->assertDontSee('never-render-payload')
             ->assertViewHas('sources', fn ($sources) => $sources->firstWhere('key', 'lgd-pilibhit-electoral')->release->id === $release->id);
         $this->get('/sources?publisher='.urlencode($source->publisher))->assertOk()
             ->assertViewHas('sources', fn ($sources) => $sources->every(fn ($item) => $item->publisher === $source->publisher));

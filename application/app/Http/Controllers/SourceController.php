@@ -22,6 +22,7 @@ class SourceController extends Controller
         foreach ($sources as $source) {
             $editions = $releases->get($source->id, collect());
             $source->release = $editions->firstWhere('status', 'accepted');
+            $source->editions = $editions;
             $source->other_editions = $editions->where('status', '!=', 'accepted')->count();
             $source->label = Str::headline($source->key);
             $source->import_age = $source->release ? (int) Carbon::parse($source->release->retrieved_at)->startOfDay()->diffInDays(today()) : null;
