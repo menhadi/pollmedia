@@ -9,6 +9,20 @@ use Illuminate\Validation\Rule;
 
 class CensusHistoryController extends Controller
 {
+    public function national(Request $request): View
+    {
+        $data = json_decode(file_get_contents(database_path('fixtures/census-india-decadal.json')), true, 512, JSON_THROW_ON_ERROR);
+        $all = collect($data['records']);
+        $years = $all->pluck('year')->unique()->sort()->values();
+        $states = $all->unique('state_code')->sortBy('state_code')->values();
+        $input = $request->validate(['year' => ['nullable', 'integer', Rule::in($years->all())], 'state' => ['nullable', Rule::in($states->pluck('state_code')->all())]]);
+        $year = isset($input['year']) ? (int) $input['year'] : null;
+        $state = $input['state'] ?? null;
+        $rows = $all->filter(fn ($row) => ($year === null || $row['year'] === $year) && ($state === null || $row['state_code'] === $state));
+
+        return view('census-national-history', compact('data', 'years', 'states', 'year', 'state', 'rows'));
+    }
+
     public function show(Request $request, CensusHistory $service): View
     {
         $data = $service->population();

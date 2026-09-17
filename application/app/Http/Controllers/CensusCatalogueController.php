@@ -23,7 +23,7 @@ class CensusCatalogueController extends Controller
     private function browse(Request $request, bool $admin): View
     {
         $input = $request->validate(['edition' => 'nullable|integer', 'state' => 'nullable|regex:/^\d{2}$/', 'district' => 'nullable|regex:/^\d{2,3}$/', 'level' => 'nullable|string|max:30', 'residence' => 'nullable|in:Total,Rural,Urban', 'field' => 'nullable|string|max:100']);
-        $editions = DB::table('census_editions')->when(! $admin, fn ($q) => $q->where('status', 'published'))->orderByDesc('year')->orderByDesc('id')->get();
+        $editions = DB::table('census_editions')->when(! $admin, fn ($q) => $q->whereIn('status', ['published', 'superseded']))->orderByDesc('year')->orderByDesc('id')->get();
         $edition = isset($input['edition']) ? $editions->firstWhere('id', (int) $input['edition']) : $editions->first();
         abort_if(isset($input['edition']) && ! $edition, 404);
         $fields = $edition ? json_decode($edition->fields, true) : [];

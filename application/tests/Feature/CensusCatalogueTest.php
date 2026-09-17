@@ -53,11 +53,11 @@ class CensusCatalogueTest extends TestCase
         $this->assertDatabaseCount('census_catalogue_reviews', 2);
     }
 
-    public function test_baseline_review_integrity_and_admin_access_are_required(): void
+    public function test_unreviewed_data_can_be_published_but_integrity_and_admin_access_are_required(): void
     {
         $run = $this->source(false, false);
         $edition = app(CensusCatalogue::class)->prepare($run);
-        $this->post('/admin/census/'.$edition.'/publish', ['current' => 0, 'reviewed' => 1])->assertStatus(422);
+        $this->post('/admin/census/'.$edition.'/publish', ['current' => 0, 'reviewed' => 1])->assertRedirect();
         $this->actingAs(User::factory()->create());
         $this->get('/admin/census')->assertForbidden();
         $this->post('/admin/census/'.$edition.'/publish', ['current' => 0, 'reviewed' => 1])->assertForbidden();
@@ -92,10 +92,24 @@ class CensusCatalogueTest extends TestCase
         $second = $service->prepare($next);
         $this->post('/admin/census/'.$second.'/publish', ['current' => 0, 'reviewed' => 1])->assertStatus(409);
         $this->post('/admin/census/'.$second.'/publish', ['current' => $first, 'reviewed' => 1])->assertRedirect();
-        $this->get('/india/census?edition='.$first)->assertNotFound();
-        $this->get('/india/census')->assertOk()->assertViewHas('editions', fn ($rows) => $rows->count() === 1);
+        $this->get('/india/census?edition='.$first)->assertOk()->assertSee('earlier published snapshot');
+        $this->get('/india/census')->assertOk()->assertViewHas('editions', fn ($rows) => $rows->count() === 2);
         $this->assertDatabaseHas('census_editions', ['id' => $first, 'status' => 'superseded']);
         $this->assertDatabaseCount('census_catalogue_rows', 4);
+    }
+
+    public function test_cli_publishes_flagged_data_idempotently_without_claiming_human_review(): void
+    {
+        $run = $this->source(false, false);
+        $data = json_decode(DB::table('import_runs')->where('id', $run)->value('extracted'), true);
+        $data['rows'][0]['TOT_P'] = '120';
+        DB::table('import_runs')->where('id', $run)->update(['extracted' => json_encode($data)]);
+        $this->artisan('census:prepare', ['run' => $run, '--publish' => true])->assertSuccessful();
+        $this->artisan('census:prepare', ['run' => $run, '--publish' => true])->assertSuccessful();
+        $this->assertDatabaseCount('census_catalogue_reviews', 1);
+        $this->assertDatabaseHas('census_catalogue_reviews', ['user_id' => null, 'action' => 'publish_with_notes_cli']);
+        $this->assertDatabaseHas('import_runs', ['id' => $run, 'status' => 'needs_review']);
+        $this->get('/india/census')->assertOk()->assertSee('†')->assertSee('Population does not equal');
     }
 
     public function test_duplicate_complete_geography_rolls_back_preparation(): void

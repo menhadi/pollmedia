@@ -96,7 +96,7 @@ class CensusCatalogue
         abort_unless($path && is_file($path) && hash_equals($run->sha256 ?? '', hash_file('sha256', $path)), 422, 'Archived source is missing or its checksum changed.');
     }
 
-    public function publish(int $editionId, int $userId, int $expectedCurrent): void
+    public function publish(int $editionId, ?int $userId, int $expectedCurrent): void
     {
         DB::transaction(function () use ($editionId, $userId, $expectedCurrent): void {
             $edition = DB::table('census_editions')->find($editionId);
@@ -106,13 +106,12 @@ class CensusCatalogue
             $pointer = DB::table('census_publications')->where('source_key', $edition->source_key)->lockForUpdate()->first();
             $current = $pointer->edition_id ?? 0;
             abort_unless((int) $current === $expectedCurrent, 409, 'Published edition changed. Reload the preview.');
-            abort_unless($edition->status === 'draft' && $run->status === 'accepted'
-                && DB::table('import_connectors')->where('id', $run->import_connector_id)->value('accepted_run_id') === $run->id, 422, 'Accept this import as the current reviewed baseline first.');
+            abort_unless($edition->status === 'draft' && in_array($run->status, ['needs_review', 'accepted'], true), 422, 'Only successfully extracted, non-rejected imports can be published.');
             $this->verifyArchive($run);
             DB::table('census_editions')->where('id', $current)->update(['status' => 'superseded', 'updated_at' => now()]);
             DB::table('census_editions')->where('id', $editionId)->update(['status' => 'published', 'updated_at' => now()]);
             DB::table('census_publications')->where('source_key', $edition->source_key)->update(['edition_id' => $editionId]);
-            DB::table('census_catalogue_reviews')->insert(['edition_id' => $editionId, 'user_id' => $userId, 'action' => 'publish', 'created_at' => now()]);
+            DB::table('census_catalogue_reviews')->insert(['edition_id' => $editionId, 'user_id' => $userId, 'action' => $userId === null ? 'publish_with_notes_cli' : 'publish', 'created_at' => now()]);
         });
     }
 

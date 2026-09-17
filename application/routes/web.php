@@ -36,6 +36,7 @@ Route::get('/issues', [CitizenIssueController::class, 'index'])->name('issues.in
 Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('throttle:3,10')->name('issues.store');
 Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/india/census/history', [CensusHistoryController::class, 'national'])->name('census.national-history');
 Route::get('/india/census', [CensusCatalogueController::class, 'index'])->name('census-catalogue.index');
 Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');
