@@ -12,6 +12,7 @@ use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\GeographyController;
+use App\Http\Controllers\HistoricalCensusTableController;
 use App\Http\Controllers\HistoricalElectionController;
 use App\Http\Controllers\HistoricalExtractionController;
 use App\Http\Controllers\ImportController;
@@ -37,6 +38,7 @@ Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('th
 Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/india/census/history', [CensusHistoryController::class, 'national'])->name('census.national-history');
+Route::get('/india/census/source-tables', [HistoricalCensusTableController::class, 'index'])->name('census.source-tables');
 Route::get('/india/census', [CensusCatalogueController::class, 'index'])->name('census-catalogue.index');
 Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');

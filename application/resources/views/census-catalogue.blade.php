@@ -3,6 +3,7 @@
 @section('content')
 <h1>India Census data</h1><p>Explore recorded population and household figures using official Census geography. Census boundaries and names can differ between years and from today's administrative areas.</p>
 <p><a href="{{ route('census.national-history') }}">Historical population: 1901 to 2011, with original source notes</a></p>
+<p><a href="{{ route('census.source-tables') }}">Historical Census source tables: original columns, definitions and district filters</a></p>
 @if($admin)
 <details class="card"><summary>Prepare an imported table</summary><p>Preparation creates a private preview. Publish extracted data with any discrepancy notes; baseline acceptance is a separate review action. Large tables can also be prepared with <code>php -d memory_limit=512M artisan census:prepare --publish</code>.</p>
 @forelse($runs as $run)<form method="post" action="{{ route('census-catalogue.prepare', $run->id) }}" class="row">@csrf<p>#{{ $run->id }} · {{ $run->name }} · {{ $run->status }} · <a href="{{ route('imports.run', $run->id) }}">Review source import</a></p><button>Prepare preview</button></form>@empty<p>No supported extracted imports are ready.</p>@endforelse
