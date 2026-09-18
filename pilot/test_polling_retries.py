@@ -5,10 +5,27 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
-from collect_polling_sources import crawl
+from collect_polling_sources import crawl, navigation_exclusion
 
 
 class PollingRetryTest(unittest.TestCase):
+    def test_adjacent_news_is_retained_without_expanding_result_crawl(self):
+        news = {'url': 'https://old.eci.gov.in/files/file/12-media-coverage/', 'label': 'Previous File Media coverage of general election'}
+        self.assertIsNotNone(navigation_exclusion(news))
+        self.assertIsNone(navigation_exclusion(news | {'label': 'Previous File Statistical results of general election'}))
+        self.assertIsNone(navigation_exclusion(news | {'label': 'Media coverage of general election'}))
+        entry = {'id': 'source', 'state': 'TEST', 'url': 'https://example.gov.in/results'}
+        with TemporaryDirectory() as directory, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(directory); folder = root/'source'; folder.mkdir()
+            (folder/'manifest.json').write_text(json.dumps({'pending_pages': [news]}))
+            with patch('collect_polling_sources.fetch') as fetch:
+                crawl(entry, root, 5)
+                fetch.assert_not_called()
+            data = json.loads((folder/'manifest.json').read_text())
+            self.assertEqual(data['deferred_navigation'][0]['url'], news['url'])
+            self.assertIn('reason', data['deferred_navigation'][0])
+            self.assertEqual(data['pending_pages'], [])
+
     def test_file_retry_limit_preserves_failure_and_allows_explicit_recovery(self):
         entry = {'id': 'source', 'state': 'TEST', 'url': 'https://example.gov.in/results'}
         url = 'https://example.gov.in/Form20/report.pdf'

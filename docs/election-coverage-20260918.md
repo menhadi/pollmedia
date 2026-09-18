@@ -131,3 +131,8 @@ The latest completed index checkpoint has 16,528 document entries, 6,352 extract
 Repeated file download failures now also stop automatic retry after three failed passes, preserving the URL, error, count and retry-exhausted marker. Explicit rediscovery can retry them; successful recovery clears stale error markers and preserves the recovered original. Regression tests cover page and document exhaustion, evidence retention and explicit recovery. This changes retry behaviour, not the definition of completed coverage.
 
 The last completed public index contained 16,682 document entries, 7,060 extracted documents and 415,878 polling rows. Bihar OCR reached 361 pages; Madhya Pradesh reached 139 preserved reports. Both the national extraction and remaining discovery queues are still active.
+
+
+## Keep result discovery out of adjacent news navigation
+
+The old ECI archive was expanding the queue through Previous/Next File links into media-coverage notices, election schedules and observer briefings. The polling collector now defers these specifically identified adjacent notices unless their labels identify results, statistics or Form 20. Directly linked result archives remain eligible. Deferred URLs, labels, referring pages and reasons remain preserved in the manifest; no source files are deleted. Tests cover preserved deferred evidence and continued eligibility of result/statistical links. National extraction, Bihar OCR and remaining result discovery continue.

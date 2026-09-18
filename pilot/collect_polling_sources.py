@@ -17,6 +17,14 @@ FORM = re.compile(r'form[\s_().-]*20\b|form20|final[\s_-]*result[\s_-]*sheet|pol
 PAGE = re.compile(r'form.?20|result|statisti|archive|past.?election|election.?histor|lok.?sabha|vidhan.?sabha|bye.?election|assembly.?election|parliamentary.?election|general.?election', re.I)
 
 
+def navigation_exclusion(item):
+    label = item.get('label', '')
+    if urlparse(item['url']).hostname == 'old.eci.gov.in' and re.match(r'^(Previous|Next) File\b', label, re.I):
+        if not re.search(r'form.?20|result|statisti', label, re.I) and re.search(r'press|schedule|media coverage|observer|briefing', label, re.I):
+            return 'Adjacent news/administrative notice, outside result-report discovery; link retained for review.'
+    return None
+
+
 def official(url):
     parsed = urlparse(url)
     host = (parsed.hostname or '').lower()
@@ -121,6 +129,7 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
     previous = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {}
     pages = {p['url']: p for p in previous.get('pages', [])}
     documents = {d['url']: d for d in previous.get('documents', [])}
+    deferred = {p['url']: p for p in previous.get('deferred_navigation', [])}
     page_failures = {} if rediscover else previous.get('page_failures', {})
     pending = previous.get('pending_pages', []) or [{'url': entry['url'], 'label': entry['state']}]
     if rediscover:
@@ -136,7 +145,8 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
 
     def checkpoint():
         result = entry | {'checked_at': datetime.now(timezone.utc).isoformat(), 'pages': list(pages.values()), 'documents': list(documents.values()), 'api_responses':previous.get('api_responses', []),
-                          'pending_pages': list(pending), 'errors': list(errors), 'page_failures': page_failures, 'status': 'discovery_incomplete',
+                          'pending_pages': list(pending), 'errors': list(errors), 'page_failures': page_failures,
+                          'deferred_navigation': list(deferred.values()), 'status': 'discovery_incomplete',
                           'note': 'Website discovery does not establish all-year or all-polling-station coverage. Missing links, dynamic pages and historical files require further review.'}
         temporary = folder/'manifest.tmp'
         temporary.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
@@ -146,6 +156,10 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
     while pending and len(visited) < max_pages:
         current = pending.pop(0)
         url = current['url']
+        reason = navigation_exclusion(current)
+        if reason:
+            deferred[url] = current | {'reason': reason}
+            continue
         if url in visited or page_failures.get(url, 0) >= 3:
             continue
         visited.add(url)
@@ -166,6 +180,14 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
                 (folder/name).write_bytes(body)
                 pages[url] = current | {'file': name, 'sha256': digest, 'final_url': final}
             found, links = discover_links(body, final)
+            relevant_links = []
+            for link in links:
+                reason = navigation_exclusion(link)
+                if reason:
+                    deferred[link['url']] = link | {'reason': reason}
+                else:
+                    relevant_links.append(link)
+            links = relevant_links
             for document in found:
                 documents.setdefault(document['url'], document)
             page_failures.pop(url, None)
