@@ -63,7 +63,7 @@ def discover_links(body, current):
         raw = a.get('href', a.get('value', '')).strip().replace('\\', '/')
         if not raw or raw.startswith(('#', 'javascript:')):
             continue
-        if a.name == 'option' and raw.isdigit():
+        if a.name == 'option' and (raw.isdigit() or re.fullmatch(r'-*\s*select\b[^/.:?]*', raw, re.I)):
             continue
         url = quote(urldefrag(urljoin(current, raw))[0], safe=':/?=&%')
         if not official(url):

@@ -10,6 +10,12 @@ from collect_haryana_polling import report
 
 
 class DropdownTest(unittest.TestCase):
+    def test_dropdown_prompts_are_not_crawled_as_election_pages(self):
+        body = b'<select><option value=" -- Select Assembly -- ">-- Select Assembly --</option><option value="/Form20/1.pdf">One</option></select>'
+        documents, pages = discover_links(body, 'https://ceoelection.mp.gov.in/ASSEMBLYELECTION.aspx')
+        self.assertEqual(pages, [])
+        self.assertEqual([d['url'] for d in documents], ['https://ceoelection.mp.gov.in/Form20/1.pdf'])
+
     def test_haryana_historical_report_retains_source_metadata(self):
         row = {'Id': 541, 'FileName': 'lok sabha\\Result 2019-Boothwise\\1.pdf', 'YearName': '2019',
                'ElectionTypeName': 'LOK SABHA', 'ElectionSubTypeName': 'General Election', 'DistrictName': 'AMBALA(SC)', 'AssemblyConstituencyName': 'KALKA'}
