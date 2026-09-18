@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ArchiveFiles;
 use App\Services\ElectionArchive;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
 class ExtractLokSabhaArchive extends Command
@@ -27,7 +27,7 @@ class ExtractLokSabhaArchive extends Command
             $editionYear = (int) substr($entry[0], 0, 4);
             $this->info($entry[0]);
             $id = substr(hash('sha256', $entry[1]), 0, 24);
-            $manifest = Storage::disk('local')->path('election-archive/'.$id.'/manifest.json');
+            $manifest = app(ArchiveFiles::class)->path('election-archive/'.$id.'/manifest.json');
             if (! is_file($manifest)) {
                 $this->error('Collect the official source reports first.');
 
@@ -38,9 +38,9 @@ class ExtractLokSabhaArchive extends Command
             $adapter = $editionYear <= 1999 ? 'legacy' : ($editionYear >= 2014 ? 'modern' : (string) $editionYear);
             $process = new Process([config('imports.python'), base_path('../pilot/extract_pc_'.$adapter.'.py'), $manifest]);
             $process->setTimeout(300);
-            $process->run(function (string $type, string $buffer): void {
+            app(ArchiveFiles::class)->withDirectory('election-archive/'.$id, fn () => $process->run(function (string $type, string $buffer): void {
                 $this->output->write($buffer);
-            });
+            }));
 
             $failed = ! $process->isSuccessful() || $failed;
         }

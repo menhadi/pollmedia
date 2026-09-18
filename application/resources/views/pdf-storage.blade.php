@@ -1,0 +1,30 @@
+@extends('seo-layout')
+@section('content')
+<h1>PDF storage</h1>
+@if(\Illuminate\Support\Facades\Cache::get('pdf-inventory-status'))<p class="notice" role="status">{{ \Illuminate\Support\Facades\Cache::get('pdf-inventory-status') }}</p>@endif
+<p>Move application PDFs between this server, Cloudflare R2 and Amazon S3. Existing page links and source references stay the same. Copies are checked by size and SHA-256 before the active location changes.</p>
+<p class="notice">Keep buckets private. Credentials are encrypted and never displayed. Moving a PDF needs temporary working space and network access. Research files outside the application archive and exported ZIP backups are not included.</p>
+<div class="dashboard-grid"><section class="card"><h2>Local location</h2>{{ number_format($localBytes / 1048576, 1) }} MB</section><section class="card"><h2>Bucket location</h2>{{ number_format($cloudBytes / 1048576, 1) }} MB</section></div>
+<p class="muted">These totals count the active location. Retained copies and temporary extraction files may use additional space.</p>
+<section class="card"><h2>Add a bucket</h2><form method="post" action="{{ route('pdf-storage.save') }}">@csrf
+<div class="field"><label for="name">Profile name</label><input id="name" name="name" required maxlength="100" value="{{ old('name') }}"></div>
+<div class="filters"><div><label for="provider">Provider</label><select id="provider" name="provider"><option value="r2">Cloudflare R2</option><option value="s3" @selected(old('provider')==='s3')>Amazon S3</option></select></div><div><label for="bucket">Bucket</label><input id="bucket" name="bucket" required value="{{ old('bucket') }}"></div><div><label for="region">Region</label><input id="region" name="region" required value="{{ old('region', 'auto') }}"><small>R2: auto. S3: your bucket region.</small></div></div>
+<div class="field"><label for="endpoint">R2 S3 API endpoint</label><input id="endpoint" name="endpoint" type="url" placeholder="https://ACCOUNT_ID.r2.cloudflarestorage.com" value="{{ old('endpoint') }}"><small>Leave empty for Amazon S3.</small></div>
+<div class="field"><label for="prefix">Folder prefix</label><input id="prefix" name="prefix" value="{{ old('prefix', 'pollmedia') }}" required></div>
+<div class="field"><label for="access-key">Access key ID</label><input id="access-key" name="access_key" type="password" autocomplete="new-password" required></div>
+<div class="field"><label for="secret-key">Secret access key</label><input id="secret-key" name="secret_key" type="password" autocomplete="new-password" required></div><button>Save bucket profile</button></form></section>
+@foreach($profiles as $profile)
+<section class="card"><h2>{{ $profile->name }}</h2><p>{{ strtoupper($profile->provider) }} / {{ $profile->bucket }} / {{ $profile->prefix }}</p><p>{{ $profile->tested_at ? 'Connection tested: '.$profile->tested_at : 'Connection not yet verified' }}</p>
+<form method="post" action="{{ route('pdf-storage.test', $profile->id) }}">@csrf<button>Test read, write and delete</button></form>
+<details><summary>Replace credentials</summary><p>Bucket and folder are fixed for this profile. Add a new profile to change destinations; existing PDFs keep their original profile.</p><form method="post" action="{{ route('pdf-storage.credentials', $profile->id) }}">@csrf<label>New access key ID<input name="access_key" type="password" autocomplete="new-password" required></label><label>New secret key<input name="secret_key" type="password" autocomplete="new-password" required></label><button>Replace credentials</button></form></details></section>
+@endforeach
+<section class="card"><h2>Archived PDFs</h2><form method="post" action="{{ route('pdf-storage.scan') }}">@csrf<button>Find local PDFs</button></form><p>Scan registers new PDFs. Nothing is moved until you select files and queue a transfer.</p>
+<form method="get" class="filters"><label>Location<select name="location"><option value="">All locations</option><option value="local" @selected(request('location')==='local')>Local</option><option value="cloud" @selected(request('location')==='cloud')>Bucket</option></select></label><button>Filter</button></form>
+<form method="post" action="{{ route('pdf-storage.move') }}">@csrf
+<p><label><input type="checkbox" id="select-page">Select all files on this page</label></p>
+@forelse($files as $file)<div class="row"><label class="url"><input type="checkbox" name="files[]" value="{{ $file->id }}">{{ $file->path }}</label><small>{{ number_format($file->bytes / 1048576, 2) }} MB · {{ $file->profile_id ? ($profiles->firstWhere('id', $file->profile_id)?->name ?? 'Bucket') : 'Local' }}</small></div>@empty<p>No registered PDFs in this view.</p>@endforelse
+<div class="field"><label for="target">Destination</label><select name="target" id="target"><option value="0">Local server</option>@foreach($profiles->whereNotNull('tested_at') as $profile)<option value="{{ $profile->id }}">{{ $profile->name }}</option>@endforeach</select></div>
+<p><label><input type="checkbox" name="remove_source" value="1" checked>Remove source copy only after the destination is verified</label></p><button @disabled($files->isEmpty())>Queue selected transfers</button></form>{{ $files->links() }}</section>
+<section class="card"><h2>Recent transfers</h2><p>Refresh to see progress. Failed transfers can be retried by selecting the same files again.</p><p class="muted">Server worker: <code>php artisan queue:work pdf_storage --queue=pdf-storage --timeout=1200 --tries=1</code>. Use a supervised worker for continuing operation.</p>@forelse($transfers as $transfer)<div class="row">#{{ $transfer->id }} / PDF #{{ $transfer->file_id }} — <strong>{{ $transfer->status }}</strong><p>{{ $transfer->message }}</p></div>@empty<p>No transfers yet.</p>@endforelse</section>
+<script>document.getElementById('select-page').addEventListener('change', function () { document.querySelectorAll('input[name="files[]"]').forEach(input => input.checked = this.checked); });</script>
+@endsection

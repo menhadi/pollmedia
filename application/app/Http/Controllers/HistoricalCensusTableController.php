@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -17,7 +17,7 @@ class HistoricalCensusTableController extends Controller
             'sheet' => 'nullable|integer|min:0|max:100', 'district' => 'nullable|regex:/^[a-f0-9]{16}$/',
             'page' => 'nullable|integer|min:1|max:100000', 'format' => 'nullable|in:csv',
         ]);
-        $disk = Storage::disk('local');
+        $disk = app(ArchiveFiles::class);
         $index = $disk->exists('census-source-tables/index.json')
             ? json_decode($disk->get('census-source-tables/index.json'), true, 512, JSON_THROW_ON_ERROR)
             : ['sources' => [], 'pending' => [], 'scope_note' => 'Historical source tables have not been prepared on this installation.'];
@@ -99,7 +99,7 @@ class HistoricalCensusTableController extends Controller
 
     private function verifiedJson(string $path, string $sha256): array
     {
-        $body = Storage::disk('local')->get($path);
+        $body = app(ArchiveFiles::class)->get($path);
         abort_unless($body !== null && hash_equals($sha256, hash('sha256', $body)), 503, 'This prepared source table needs to be checked before it can be displayed.');
 
         return json_decode($body, true, 512, JSON_THROW_ON_ERROR);

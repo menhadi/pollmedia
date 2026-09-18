@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use App\Services\ConstituencyHistory;
 use App\Services\ElectionArchive;
 use App\Services\HistoricalElectionArchive;
@@ -9,7 +10,6 @@ use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -27,7 +27,7 @@ class HistoricalElectionController extends Controller
             $input = $request->validate(['file' => ['required', 'string', 'max:120', 'regex:/^[a-z0-9-]+\.(pdf|xlsx|xls|zip|csv)$/']]);
             $file = collect($collection['files'])->firstWhere('file', $input['file']);
             abort_unless($file, 404);
-            $path = Storage::disk('local')->path('election-archive/'.$archive.'/'.$file['file']);
+            $path = app(ArchiveFiles::class)->path('election-archive/'.$archive.'/'.$file['file']);
             abort_unless(is_file($path) && hash_equals($file['sha256'], hash_file('sha256', $path)), 409, 'Archived source checksum differs. Use the official reference while this copy is checked.');
 
             return response()->download($path, basename($file['name']), ['X-Content-Type-Options' => 'nosniff']);

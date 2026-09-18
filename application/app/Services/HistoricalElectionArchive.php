@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Storage;
-
 class HistoricalElectionArchive
 {
     private function entries(string $kind): array
@@ -24,7 +22,7 @@ class HistoricalElectionArchive
     {
         return collect($this->entries($kind))
             ->map(fn (array $entry): array => ['id' => substr(hash('sha256', $entry[1]), 0, 24), 'label' => $entry[0], 'year' => (int) substr($entry[0], 0, 4)])
-            ->filter(fn (array $entry): bool => Storage::disk('local')->exists('election-archive/'.$entry['id'].'/extraction.json'))
+            ->filter(fn (array $entry): bool => app(ArchiveFiles::class)->exists('election-archive/'.$entry['id'].'/extraction.json'))
             ->sortByDesc('year')->values()->all();
     }
 
@@ -34,7 +32,7 @@ class HistoricalElectionArchive
         $entry = collect($entries)->first(fn (array $row): bool => substr(hash('sha256', $row[1]), 0, 24) === $archive);
         abort_unless($entry, 404);
         $collection = $service->collection($entry[1]);
-        $disk = Storage::disk('local');
+        $disk = app(ArchiveFiles::class);
         $root = 'election-archive/'.$archive.'/';
         abort_unless($disk->exists($root.'extraction.json'), 404);
         $data = json_decode($disk->get($root.'extraction.json'), true, 512, JSON_THROW_ON_ERROR);
@@ -42,14 +40,12 @@ class HistoricalElectionArchive
         abort_unless(($data['year'] ?? null) === (int) substr($entry[0], 0, 4), 409);
         $source = collect($collection['files'])->firstWhere('file', $data['source_file']);
         abort_unless($source && basename($source['file']) === $source['file'], 409);
-        $path = $disk->path($root.$source['file']);
-        abort_unless(is_file($path) && hash_equals($source['sha256'], $data['source_sha256']) && hash_equals($source['sha256'], hash_file('sha256', $path)), 409, 'Extraction source integrity check failed.');
+        abort_unless(hash_equals($source['sha256'], $data['source_sha256']) && $disk->verify($root.$source['file'], $source['sha256']), 409, 'Extraction source integrity check failed.');
 
         foreach ($data['additional_sources'] ?? [] as $additional) {
             $official = collect($collection['files'])->firstWhere('file', $additional['file']);
             abort_unless($official && basename($official['file']) === $official['file'], 409);
-            $extraPath = $disk->path($root.$official['file']);
-            abort_unless(is_file($extraPath) && hash_equals($official['sha256'], $additional['sha256']) && hash_equals($official['sha256'], hash_file('sha256', $extraPath)), 409, 'Additional source integrity check failed.');
+            abort_unless(hash_equals($official['sha256'], $additional['sha256']) && $disk->verify($root.$official['file'], $official['sha256']), 409, 'Additional source integrity check failed.');
         }
 
         return [$data, $source];

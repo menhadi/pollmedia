@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -12,7 +12,7 @@ class PollingSourceController extends Controller
 {
     public function index(Request $request): View|BinaryFileResponse
     {
-        $disk = Storage::disk('local');
+        $disk = app(ArchiveFiles::class);
         $root = 'polling-station-sources/';
         $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['states' => [], 'sources' => []];
         $states = collect($index['states'])->sortBy('state')->values();

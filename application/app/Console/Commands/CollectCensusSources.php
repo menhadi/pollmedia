@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ArchiveFiles;
 use App\Services\OfficialDownload;
 use App\Services\OfficialImport;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class CollectCensusSources extends Command
@@ -39,9 +39,9 @@ class CollectCensusSources extends Command
                     if ($source['archive_only'] ?? false) {
                         $manifestPath = 'census-archive/'.$key.'/manifest.json';
                         if ($this->option('saved')) {
-                            $manifest = json_decode(Storage::disk('local')->get($manifestPath) ?? '{}', true);
+                            $manifest = json_decode(app(ArchiveFiles::class)->get($manifestPath) ?? '{}', true);
                             $path = $manifest['path'] ?? '';
-                            if (! $path || ! Storage::disk('local')->exists($path) || hash('sha256', Storage::disk('local')->get($path)) !== $manifest['sha256']) {
+                            if (! $path || ! app(ArchiveFiles::class)->exists($path) || hash('sha256', app(ArchiveFiles::class)->get($path)) !== $manifest['sha256']) {
                                 throw new \RuntimeException('No intact archived file available. Collect the source first.');
                             }
                         } else {
@@ -52,7 +52,7 @@ class CollectCensusSources extends Command
                             }
                             $hash = hash('sha256', $body);
                             $path = 'census-archive/'.$key.'/'.$hash.'.'.$source['format'];
-                            if (! Storage::disk('local')->put($path, $body) || ! Storage::disk('local')->put($manifestPath, json_encode($source + ['path' => $path, 'sha256' => $hash, 'bytes' => strlen($body), 'retrieved_at' => now()->toIso8601String(), 'status' => 'archived_requires_mapping'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES))) {
+                            if (! app(ArchiveFiles::class)->put($path, $body) || ! app(ArchiveFiles::class)->put($manifestPath, json_encode($source + ['path' => $path, 'sha256' => $hash, 'bytes' => strlen($body), 'retrieved_at' => now()->toIso8601String(), 'status' => 'archived_requires_mapping'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES))) {
                                 throw new \RuntimeException('Could not save archived source.');
                             }
                         }
@@ -78,7 +78,7 @@ class CollectCensusSources extends Command
                     $saved = null;
                     if ($this->option('saved')) {
                         $previous = DB::table('import_runs')->where('source_url', $source['url'])->whereNotNull('raw_path')->orderByDesc('id')->first();
-                        $saved = $previous ? Storage::disk('local')->path($previous->raw_path) : null;
+                        $saved = $previous ? app(ArchiveFiles::class)->path($previous->raw_path) : null;
                         if (! $saved || ! is_file($saved) || ! hash_equals($previous->sha256, hash_file('sha256', $saved))) {
                             throw new \RuntimeException('No intact archived file available. Collect the source first.');
                         }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use App\Services\ElectionArchive;
 use App\Services\ElectionPublication;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -36,10 +36,10 @@ class ElectionPublicationController extends Controller
         $collection = $service->collection($entry[1]);
         $record = collect($collection['files'])->firstWhere('download_id', $file);
         abort_unless($record && basename($record['file']) === $record['file'], 404);
-        $path = Storage::disk('local')->path('election-archive/'.$archive.'/'.$record['file']);
+        $path = app(ArchiveFiles::class)->path('election-archive/'.$archive.'/'.$record['file']);
         abort_unless(is_file($path) && hash_equals($record['sha256'], hash_file('sha256', $path)), 409, 'Archived file integrity check failed.');
 
-        return response()->download($path);
+        return response()->download($path, basename($record['file']));
     }
 
     public function store(Request $request, ElectionPublication $service): RedirectResponse
@@ -91,8 +91,8 @@ class ElectionPublicationController extends Controller
         abort_unless(in_array($file, ['detail', 'totals'], true), 404);
         $record = DB::table('election_publications')->find($draft);
         $path = $record ? ($file === 'detail' ? $record->detail_path : $record->totals_path) : null;
-        abort_unless($path && Storage::disk('local')->exists($path), 404);
+        abort_unless($path && app(ArchiveFiles::class)->exists($path), 404);
 
-        return Storage::disk('local')->download($path, 'eci-'.$file.'.'.pathinfo($path, PATHINFO_EXTENSION), ['X-Content-Type-Options' => 'nosniff']);
+        return app(ArchiveFiles::class)->download($path, 'eci-'.$file.'.'.pathinfo($path, PATHINFO_EXTENSION), ['X-Content-Type-Options' => 'nosniff']);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ArchiveFiles;
 use App\Services\ElectionArchive;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
 class ExtractHistoricalElection extends Command
@@ -32,7 +32,7 @@ class ExtractHistoricalElection extends Command
         }
         $entry = collect($archive->catalogue()['ac'])->first(fn (array $row): bool => substr($row[0], 0, 4) === $year);
         $id = substr(hash('sha256', $entry[1]), 0, 24);
-        $manifest = Storage::disk('local')->path('election-archive/'.$id.'/manifest.json');
+        $manifest = app(ArchiveFiles::class)->path('election-archive/'.$id.'/manifest.json');
         if (! is_file($manifest)) {
             $this->error('Collect the official edition before extraction.');
 
@@ -40,9 +40,9 @@ class ExtractHistoricalElection extends Command
         }
         $process = new Process([config('imports.python'), base_path('../pilot/extract_historical_elections.py'), $manifest]);
         $process->setTimeout(300);
-        $process->run(function (string $type, string $buffer): void {
+        app(ArchiveFiles::class)->withDirectory('election-archive/'.$id, fn () => $process->run(function (string $type, string $buffer): void {
             $this->output->write($buffer);
-        });
+        }));
 
         return $process->isSuccessful() ? self::SUCCESS : self::FAILURE;
     }

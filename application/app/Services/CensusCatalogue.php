@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class CensusCatalogue
 {
@@ -92,7 +91,7 @@ class CensusCatalogue
 
     public function verifyArchive(object $run): void
     {
-        $path = $run->raw_path ? Storage::disk('local')->path($run->raw_path) : null;
+        $path = $run->raw_path ? app(ArchiveFiles::class)->path($run->raw_path) : null;
         abort_unless($path && is_file($path) && hash_equals($run->sha256 ?? '', hash_file('sha256', $path)), 422, 'Archived source is missing or its checksum changed.');
     }
 

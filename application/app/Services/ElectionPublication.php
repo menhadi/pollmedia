@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
@@ -42,12 +41,12 @@ class ElectionPublication
             abort_if(filesize($input) > 50_000_000, 422, 'Each election report must be under 50 MB.');
             $stream = fopen($input, 'rb');
             try {
-                abort_unless(Storage::disk('local')->put($path, $stream), 500, 'Report could not be archived.');
+                abort_unless(app(ArchiveFiles::class)->put($path, $stream), 500, 'Report could not be archived.');
             } finally {
                 fclose($stream);
             }
         }
-        $data = $this->extract(Storage::disk('local')->path($detailPath), $totalsPath ? Storage::disk('local')->path($totalsPath) : null, $scope);
+        $data = $this->extract(app(ArchiveFiles::class)->path($detailPath), $totalsPath ? app(ArchiveFiles::class)->path($totalsPath) : null, $scope);
         abort_unless(($data['year'] ?? null) === $scope['year'] && ($data['code'] ?? null) === $scope['code'], 422, 'Extracted election scope does not match the selected edition.');
         $payload = array_replace($old, $data, ['checked_on' => now()->toDateString(), 'publication_mapping' => 'eci-pilot-v1']);
         if (isset($payload['polled_basis'])) {
@@ -168,7 +167,7 @@ class ElectionPublication
             $data = $preview['data'];
             $this->validate($data);
             foreach ([$draft->detail_path => $data['sha256'], ...($draft->totals_path ? [$draft->totals_path => $data['totals_sha256']] : [])] as $path => $hash) {
-                abort_unless(Storage::disk('local')->exists($path) && hash_equals($hash, hash_file('sha256', Storage::disk('local')->path($path))), 422, 'Archived report integrity check failed.');
+                abort_unless(app(ArchiveFiles::class)->exists($path) && hash_equals($hash, hash_file('sha256', app(ArchiveFiles::class)->path($path))), 422, 'Archived report integrity check failed.');
             }
             if (! $preview['changes']) {
                 DB::table('election_publications')->where('id', $id)->update(['status' => 'verified', 'published_by' => $user, 'published_at' => now()]);

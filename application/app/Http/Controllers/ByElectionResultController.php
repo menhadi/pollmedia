@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ByElectionResultController extends Controller
 {
     public function index(Request $request): View
     {
-        $disk = Storage::disk('local');
+        $disk = app(ArchiveFiles::class);
         $root = 'election-by-elections/structured/';
         $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['records' => [], 'unmapped_tables' => 0];
         $all = collect($index['records']);

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CensusPublication
@@ -37,7 +36,7 @@ class CensusPublication
         if (! in_array($record->status, ['needs_review', 'accepted'], true)) {
             $errors[] = 'Only a successfully extracted, non-rejected snapshot can be mapped.';
         }
-        if (! $record->raw_path || ! Storage::disk('local')->exists($record->raw_path) || ! hash_equals($record->sha256 ?? '', hash_file('sha256', Storage::disk('local')->path($record->raw_path)))) {
+        if (! $record->raw_path || ! app(ArchiveFiles::class)->exists($record->raw_path) || ! hash_equals($record->sha256 ?? '', hash_file('sha256', app(ArchiveFiles::class)->path($record->raw_path)))) {
             $errors[] = 'The archived workbook is missing or its integrity check failed.';
         }
         $data = json_decode($record->extracted ?? '{}', true);

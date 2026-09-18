@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Process\Process;
@@ -41,11 +40,11 @@ class OfficialImport
                     $values['status'] = 'unchanged';
                 } else {
                     $rawPath = 'official-imports/'.Str::ulid().'.'.$connector->format;
-                    if (! Storage::disk('local')->put($rawPath, $body)) {
+                    if (! app(ArchiveFiles::class)->put($rawPath, $body)) {
                         throw new RuntimeException('Could not archive the official file.');
                     }
                     $values += ['sha256' => $hash, 'raw_path' => $rawPath];
-                    $extracted = $this->extract(Storage::disk('local')->path($rawPath), $connector->format, $options);
+                    $extracted = $this->extract(app(ArchiveFiles::class)->path($rawPath), $connector->format, $options);
                     $base = $connector->accepted_run_id ? DB::table('import_runs')->find($connector->accepted_run_id) : null;
                     $summary = $this->compare($extracted, $base ? json_decode($base->extracted, true) : null, $connector->record_key);
                     $summary['extraction_options_sha256'] = $optionsHash;

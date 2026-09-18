@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ArchiveFiles;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
 class ExtractModernAssembly extends Command
@@ -19,7 +19,7 @@ class ExtractModernAssembly extends Command
 
             return self::FAILURE;
         }
-        $process = new Process([config('imports.python'), base_path('../pilot/extract_assembly_modern.py'), database_path('fixtures/eci-assembly-national.json'), Storage::disk('local')->path('election-archive'), '--year', $this->option('year')]);
+        $process = new Process([config('imports.python'), base_path('../pilot/extract_assembly_modern.py'), database_path('fixtures/eci-assembly-national.json'), app(ArchiveFiles::class)->path('election-archive'), '--year', $this->option('year')]);
         $process->setTimeout(900);
         $process->run(fn ($type, $buffer) => $this->output->write($buffer));
 

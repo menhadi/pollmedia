@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ElectionArchive
 {
@@ -16,13 +15,13 @@ class ElectionArchive
     {
         $id = substr(hash('sha256', $url), 0, 24);
         $path = 'election-archive/'.$id.'/manifest.json';
-        if (! Storage::disk('local')->exists($path)) {
+        if (! app(ArchiveFiles::class)->exists($path)) {
             return ['id' => $id, 'status' => 'not_collected', 'files' => [], 'errors' => []];
         }
-        $data = json_decode(Storage::disk('local')->get($path), true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode(app(ArchiveFiles::class)->get($path), true, 512, JSON_THROW_ON_ERROR);
         abort_unless(($data['url'] ?? null) === $url, 500, 'Archive manifest identity differs.');
 
-        return ['id' => $id, 'has_extraction' => Storage::disk('local')->exists('election-archive/'.$id.'/extraction.json')] + $data;
+        return ['id' => $id, 'has_extraction' => app(ArchiveFiles::class)->exists('election-archive/'.$id.'/extraction.json')] + $data;
     }
 
     public function entries(string $type, ?int $year = null): array

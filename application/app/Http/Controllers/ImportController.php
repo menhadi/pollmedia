@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use App\Services\OfficialDownload;
 use App\Services\OfficialImport;
 use Illuminate\Contracts\View\View;
@@ -9,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use RuntimeException;
@@ -122,8 +122,8 @@ class ImportController extends Controller
     public function download(int $run): StreamedResponse
     {
         $record = DB::table('import_runs')->find($run);
-        abort_unless($record && $record->raw_path && Storage::disk('local')->exists($record->raw_path), 404);
+        abort_unless($record && $record->raw_path && app(ArchiveFiles::class)->exists($record->raw_path), 404);
 
-        return Storage::disk('local')->download($record->raw_path, 'official-source-'.$record->id.'.'.pathinfo($record->raw_path, PATHINFO_EXTENSION), ['X-Content-Type-Options' => 'nosniff']);
+        return app(ArchiveFiles::class)->download($record->raw_path, 'official-source-'.$record->id.'.'.pathinfo($record->raw_path, PATHINFO_EXTENSION), ['X-Content-Type-Options' => 'nosniff']);
     }
 }

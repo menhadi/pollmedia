@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Jobs\ProcessElectionBatch;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\Process\Process;
@@ -42,7 +41,7 @@ class ElectionBatch
             foreach ([$detailPath => $detail, $summaryPath => $summary] as $destination => $source) {
                 $stream = fopen($source, 'rb');
                 try {
-                    abort_unless(Storage::disk('local')->put($destination, $stream), 500, 'Could not archive the official workbook.');
+                    abort_unless(app(ArchiveFiles::class)->put($destination, $stream), 500, 'Could not archive the official workbook.');
                 } finally {
                     fclose($stream);
                 }
@@ -58,7 +57,7 @@ class ElectionBatch
     {
         $process = new Process([config('imports.python'), base_path(match ($batch->year) {
             2012 => '../pilot/extract_state_election_2012.py', 2017 => '../pilot/extract_state_election_2017.py', default => '../pilot/extract_state_election.py'
-        }), Storage::disk('local')->path($batch->detail_path), Storage::disk('local')->path($batch->summary_path)]);
+        }), app(ArchiveFiles::class)->path($batch->detail_path), app(ArchiveFiles::class)->path($batch->summary_path)]);
         $process->setTimeout(45);
         $process->run();
         $result = json_decode($process->getOutput(), true);
@@ -72,7 +71,7 @@ class ElectionBatch
     public function verifyFiles(object $batch): void
     {
         foreach ([$batch->detail_path => $batch->detail_sha256, $batch->summary_path => $batch->summary_sha256] as $path => $hash) {
-            abort_unless(Storage::disk('local')->exists($path) && hash_equals($hash, hash_file('sha256', Storage::disk('local')->path($path))), 422, 'Archived workbook integrity check failed.');
+            abort_unless(app(ArchiveFiles::class)->exists($path) && hash_equals($hash, hash_file('sha256', app(ArchiveFiles::class)->path($path))), 422, 'Archived workbook integrity check failed.');
         }
     }
 

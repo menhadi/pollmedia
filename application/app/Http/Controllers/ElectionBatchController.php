@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use App\Services\ElectionBatch;
 use App\Services\ElectionPublication;
 use App\Services\StateElectionPublication;
@@ -9,7 +10,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ElectionBatchController extends Controller
 {
@@ -66,7 +66,7 @@ class ElectionBatchController extends Controller
         $contest = $this->existingContest($record, $code);
         abort_unless($contest, 422, 'A verified constituency mapping is required before publication review.');
         $service->verifyFiles($record);
-        $id = $publication->stage($contest->id, Storage::disk('local')->path($record->detail_path), Storage::disk('local')->path($record->summary_path), $request->user()->id);
+        $id = $publication->stage($contest->id, app(ArchiveFiles::class)->path($record->detail_path), app(ArchiveFiles::class)->path($record->summary_path), $request->user()->id);
 
         return redirect()->route('election-imports.show', $id);
     }

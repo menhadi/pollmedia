@@ -21,6 +21,7 @@ use App\Http\Controllers\ImportController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\OfficialHostController;
 use App\Http\Controllers\OverviewController;
+use App\Http\Controllers\PdfStorageController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\PollingSourceController;
 use App\Http\Controllers\ReportArchiveController;
@@ -100,6 +101,12 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/pdf-storage', [PdfStorageController::class, 'index'])->name('pdf-storage.index');
+    Route::post('/admin/pdf-storage/profiles', [PdfStorageController::class, 'save'])->middleware('throttle:10,1')->name('pdf-storage.save');
+    Route::post('/admin/pdf-storage/profiles/{profile}/credentials', [PdfStorageController::class, 'credentials'])->whereNumber('profile')->middleware('throttle:10,1')->name('pdf-storage.credentials');
+    Route::post('/admin/pdf-storage/profiles/{profile}/test', [PdfStorageController::class, 'test'])->whereNumber('profile')->middleware('throttle:5,1')->name('pdf-storage.test');
+    Route::post('/admin/pdf-storage/scan', [PdfStorageController::class, 'scan'])->middleware('throttle:2,1')->name('pdf-storage.scan');
+    Route::post('/admin/pdf-storage/transfers', [PdfStorageController::class, 'move'])->middleware('throttle:10,1')->name('pdf-storage.move');
     Route::get('/admin/census', [CensusCatalogueController::class, 'review'])->name('census-catalogue.review');
     Route::post('/admin/census/prepare/{run}', [CensusCatalogueController::class, 'prepare'])->whereNumber('run')->middleware('throttle:5,1')->name('census-catalogue.prepare');
     Route::post('/admin/census/{edition}/publish', [CensusCatalogueController::class, 'publish'])->whereNumber('edition')->middleware('throttle:5,1')->name('census-catalogue.publish');

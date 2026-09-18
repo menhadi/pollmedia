@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ArchiveFiles;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
 class CollectElectionArchive extends Command
@@ -25,7 +25,7 @@ class CollectElectionArchive extends Command
             return self::FAILURE;
         }
         $catalogue = $this->option('state') ? 'eci-assembly-national.json' : 'eci-election-archive.json';
-        $args = [config('imports.python'), base_path('../pilot/collect_election_archive.py'), database_path('fixtures/'.$catalogue), Storage::disk('local')->path('election-archive'), '--kind', $this->option('kind')];
+        $args = [config('imports.python'), base_path('../pilot/collect_election_archive.py'), database_path('fixtures/'.$catalogue), app(ArchiveFiles::class)->path('election-archive'), '--kind', $this->option('kind')];
         if ($this->option('year') !== null) {
             if (! preg_match('/^(19|20)\d{2}$/', (string) $this->option('year'))) {
                 $this->error('Use a four-digit year.');

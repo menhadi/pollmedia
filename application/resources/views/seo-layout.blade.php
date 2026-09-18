@@ -5,6 +5,7 @@
 .dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}.dashboard-grid .card{margin-bottom:0}header{flex-wrap:wrap}</style></head><body><header><strong>pollmedia. / Administration</strong><div class="actions"><a href="{{ route('home') }}">View website</a>
 @auth
 <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+<a href="{{ route('pdf-storage.index') }}">PDF storage</a>
 <a href="{{ route('imports.index') }}">Data imports</a><a href="{{ route('seo.index') }}">SEO</a><a href="{{ route('admin.account') }}">Your account</a><span>{{ auth()->user()->name }}</span><form method="post" action="{{ route('admin.logout') }}">@csrf<button class="secondary">Sign out</button></form>
 @endauth
 </div></header><main>

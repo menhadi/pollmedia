@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Services\ArchiveFiles;
 use App\Services\CensusCatalogue;
 use App\Services\OfficialImport;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 use ZipArchive;
 
@@ -76,7 +76,7 @@ class ImportCensusPackage extends Command
                             'record_key' => 'source_record_key', 'options' => json_encode($item['options']), 'created_at' => now(), 'updated_at' => now(),
                         ]);
                         $rawPath = 'official-imports/census-package/'.$item['sha256'].'.'.$source['format'];
-                        abort_unless(Storage::disk('local')->put($rawPath, $this->member($zip, $key.'.'.$source['format'], 20000000)), 500, 'Could not preserve original file.');
+                        abort_unless(app(ArchiveFiles::class)->put($rawPath, $this->member($zip, $key.'.'.$source['format'], 20000000)), 500, 'Could not preserve original file.');
                         $data = json_decode($extracted, true, 512, JSON_THROW_ON_ERROR);
                         $summary = json_encode($importer->compare($data, null, 'source_record_key'));
                         unset($data);

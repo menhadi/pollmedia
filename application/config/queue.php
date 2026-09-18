@@ -30,6 +30,13 @@ return [
     */
 
     'connections' => [
+        'pdf_storage' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'pdf-storage',
+            'retry_after' => 1900,
+            'after_commit' => true,
+        ],
 
         'sync' => [
             'driver' => 'sync',

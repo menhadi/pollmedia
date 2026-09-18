@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArchiveFiles;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -12,7 +12,7 @@ class ByElectionArchiveController extends Controller
 {
     public function index(Request $request): View|BinaryFileResponse
     {
-        $disk = Storage::disk('local');
+        $disk = app(ArchiveFiles::class);
         $catalogue = $disk->exists('election-by-elections/catalogue.json')
             ? json_decode($disk->get('election-by-elections/catalogue.json'), true, 512, JSON_THROW_ON_ERROR) : ['entries' => []];
         $entries = collect($catalogue['entries']);

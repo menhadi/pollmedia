@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Throwable;
@@ -18,7 +17,7 @@ class ReportArchive
         $path = 'report-drafts/'.$id.'.html';
         $html = $view->with('standalone', true)->render();
         $sourceIds = collect($data['references'])->pluck('id')->merge($data['contests']->map(fn ($entry) => $entry['result']->source_release_id))->unique()->values();
-        if (! Storage::disk('local')->put($path, $html)) {
+        if (! app(ArchiveFiles::class)->put($path, $html)) {
             throw new RuntimeException('Report snapshot could not be stored.');
         }
         try {
@@ -29,7 +28,7 @@ class ReportArchive
                 'path' => $path, 'sha256' => hash('sha256', $html), 'source_release_ids' => $sourceIds->toJson(),
             ]);
         } catch (Throwable $error) {
-            Storage::disk('local')->delete($path);
+            app(ArchiveFiles::class)->delete($path);
             throw $error;
         }
 
