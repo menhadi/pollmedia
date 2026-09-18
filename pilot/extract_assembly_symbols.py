@@ -23,6 +23,7 @@ def candidate(values):
 def finish(record):
     issues=['Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.']+record.pop('issues')
     cs=record['candidates'];totals=record.get('detail_totals')
+    if record['electors'] is None: issues.append('Elector total is missing in the source heading.')
     if not cs: issues.append('No candidate rows were parsed.')
     if [c['source_row'] for c in cs]!=list(range(1,len(cs)+1)): issues.append('Candidate serial numbers are incomplete or duplicated.')
     if any(not c['candidate_name'] or not c['party_at_election'] or None in [c['general_votes'],c['postal_votes'],c['votes']] for c in cs): issues.append('One or more candidate cells are missing or unreadable; original cells are retained.')
@@ -31,7 +32,7 @@ def finish(record):
         if totals and all(totals[k] is not None for k in ['general_votes','postal_votes','votes']):
             if any(sum(c[k] for c in cs)!=totals[k] for k in totals): issues.append('Candidate and NOTA sums differ from detailed totals.')
             else: record['valid_candidate_votes']=sum(c['votes'] for c in cs if not c['is_nota'])
-        if sum(c['votes'] for c in cs)>record['electors']: issues.append('Candidate and NOTA votes exceed electors.')
+        if record['electors'] is not None and sum(c['votes'] for c in cs)>record['electors']: issues.append('Candidate and NOTA votes exceed electors.')
     if totals is None or any(v is None for v in totals.values()): issues.append('Detailed totals are missing or unreadable.')
     record.update(status='needs_review',error='; '.join(dict.fromkeys(issues)))
     return record
@@ -67,12 +68,12 @@ def extract(path,state):
                 if kind=='grand_total': continue
                 if kind=='identity':
                     line=' '.join(w[4] for w in sorted([w for w in band if abs(w[1]-y)<2],key=lambda w:w[0]))
-                    match=re.fullmatch(r'Constituency\s+(\d+)\.\s*(.+?)\s+TOTAL ELECTORS\s*:\s*(\d+)',line)
+                    match=re.fullmatch(r'Constituency\s+(\d+)\.\s*(.+?)\s+TOTAL ELECTORS\s*:\s*(\d+)?',line)
                     if not match: raise ValueError('Unsupported constituency heading: '+line)
                     code=int(match[1])
                     if code in codes: raise ValueError('Repeated constituency identity')
                     codes.add(code)
-                    current=dict(code=code,name=match[2],state_name=state,electors=int(match[3]),number_of_seats=1,detail_page=page_index+1,candidates=[],issues=[])
+                    current=dict(code=code,name=match[2],state_name=state,electors=integer(match[3] or ''),number_of_seats=1,detail_page=page_index+1,candidates=[],issues=[])
                     records.append(current)
                 elif current is None: raise ValueError('Candidate rows precede constituency identity')
                 elif kind=='candidate':

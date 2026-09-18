@@ -41,6 +41,17 @@ class SymbolTests(unittest.TestCase):
         self.assertNotIn('valid_candidate_votes',r)
         self.assertIn('unreadable',r['error'])
 
+    def test_missing_elector_total_does_not_hide_candidate_rows(self):
+        class MissingElectorPage(SymbolPage):
+            def get_text(self,mode=None):
+                result=super().get_text(mode)
+                return [w for w in result if not (w[1]==130 and w[4]=='100')] if mode=='words' else result
+        with patch('extract_assembly_symbols.fitz.open',return_value=Document([MissingElectorPage()])):
+            r=extract('source.pdf','Example')[0]
+        self.assertIsNone(r['electors'])
+        self.assertEqual(r['candidates'][0]['votes'],60)
+        self.assertIn('Elector total is missing',r['error'])
+
     def test_grand_total_does_not_replace_constituency_total(self):
         class TotalPage(SymbolPage):
             def get_text(self,mode=None):

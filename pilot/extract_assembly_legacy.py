@@ -76,15 +76,22 @@ def extract(path, state):
     return records
 
 
-def run(entry, root, extractor=extract):
+def select_source(manifest, source_format='pdf'):
+    suffixes = ('.xls', '.xlsx') if source_format == 'workbook' else ('.pdf',)
+    files = [f for f in manifest['files'] if f['file'].endswith(suffixes)]
+    if len(files) == 1: return files[0]
+    details = [f for f in files if re.search(r'detailed\s+resul(?:ts|sts|t)\b', f['name'], re.I)]
+    if len(details) != 1: raise ValueError('No unique detailed-results source file')
+    return details[0]
+
+
+def run(entry, root, extractor=extract, source_format='pdf'):
     folder = root / hashlib.sha256(entry['url'].encode()).hexdigest()[:24]
     output = folder/'extraction.json'
     if output.exists(): return None
     manifest = json.loads((folder/'manifest.json').read_text(encoding='utf-8'))
     if manifest['url'] != entry['url'] or manifest['year'] != entry['year']: raise ValueError('Manifest identity differs')
-    files = [f for f in manifest['files'] if f['file'].endswith('.pdf')]
-    if len(files) != 1: raise ValueError('Requires one combined PDF report')
-    source = files[0]; path = folder/source['file']
+    source = select_source(manifest, source_format); path = folder/source['file']
     if Path(source['file']).name != source['file'] or hashlib.sha256(path.read_bytes()).hexdigest() != source['sha256']: raise ValueError('Source integrity failed')
     records = extractor(path, entry['state'])
     data = dict(kind='ac', year=entry['year'], source_url=entry['url'], source_file=source['file'], source_sha256=source['sha256'], extracted_at=datetime.now(timezone.utc).isoformat(), records=records)
@@ -94,17 +101,19 @@ def run(entry, root, extractor=extract):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components','symbols'],default='legacy'); args=parser.parse_args()
+    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components','symbols','flat'],default='legacy'); args=parser.parse_args()
     extractor = extract
     if args.layout == 'components':
         from extract_assembly_components import extract as extractor
     if args.layout == 'symbols':
         from extract_assembly_symbols import extract as extractor
+    if args.layout == 'flat':
+        from extract_assembly_flat import extract as extractor
     results=[]; remaining=[]
     for entry in json.loads(args.catalogue.read_text(encoding='utf-8'))['entries']:
         if args.year is not None and entry['year'] != args.year: continue
         try:
-            result=run(entry,args.root,extractor)
+            result=run(entry,args.root,extractor,'workbook' if args.layout == 'flat' else 'pdf')
             if result: results.append(result); print(json.dumps(result),flush=True)
         except Exception as error:
             remaining.append(dict(state=entry['state'],year=entry['year'],source_url=entry['url'],reason=str(error)))
