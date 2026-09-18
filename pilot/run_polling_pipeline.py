@@ -59,9 +59,19 @@ def main(args):
         status['phases'].append({'script':script,'finished_at':datetime.now(timezone.utc).isoformat()})
 
     try:
+        if args.defer_state:
+            catalogue = json.loads((store/'catalogue.json').read_text(encoding='utf-8'))
+            available = {entry['state'] for entry in catalogue['entries']}
+            if set(args.defer_state) - available:
+                raise ValueError('Deferred state is not in the preserved source directory')
+            ready = sorted(available - set(args.defer_state))
+            if ready:
+                state_arguments = [value for state in ready for value in ['--state', state]]
+                run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover',*state_arguments)
         save('waiting_for_existing_collection_jobs')
         wait_for_processes(args.wait_pid)
-        run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover')
+        deferred_arguments = [value for state in args.defer_state for value in ['--state', state]]
+        run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover',*deferred_arguments)
         seen_queues = set()
         while True:
             pending = []
@@ -101,5 +111,6 @@ def main(args):
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--wait-pid',type=int,action='append',default=[])
     parser.add_argument('--wait-extraction-pid',type=int,action='append',default=[])
+    parser.add_argument('--defer-state',action='append',default=[],help='Collect other states before waiting for existing state collectors; name every state still being written by those jobs')
     parser.add_argument('--pages',type=int,default=120);parser.add_argument('--output',type=Path)
     main(parser.parse_args())

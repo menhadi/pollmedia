@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import zipfile
+from polling_manifest import load_manifest
 
 
 def preserve(root, output):
@@ -29,8 +30,10 @@ def preserve(root, output):
         if not path.exists():
             continue
         body = path.read_bytes()
-        record = json.loads(body)
+        record = load_manifest(path)
         metadata[path] = body
+        for supplement in path.parent.glob('*-supplement.json'):
+            metadata[supplement] = supplement.read_bytes()
         for item in record.get('pages', [])+record.get('api_responses', [])+record.get('documents', []):
             if item.get('file'):
                 required[path.parent/item['file']] = item['sha256']

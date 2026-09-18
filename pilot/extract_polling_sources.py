@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import re
 import fitz
+from polling_manifest import load_manifest
 
 
 def normalized(value):
@@ -175,7 +176,7 @@ if __name__=='__main__':
     root=Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources'
     jobs=[]
     for path in root.glob('*/manifest.json'):
-        manifest=json.loads(path.read_text(encoding='utf-8'));seen=set()
+        manifest=load_manifest(path);seen=set()
         if args.state and manifest['state'] not in args.state:
             continue
         for item in manifest['documents']:

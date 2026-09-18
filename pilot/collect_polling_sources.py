@@ -27,7 +27,7 @@ def fetch(url, target, form=None):
         raise ValueError('Non-official source URL')
     if shutil.disk_usage(target.parent).free < 2_000_000_000:
         raise ValueError('Local archive disk has less than 2 GB free; source download deferred')
-    timeout = '120' if target.name == 'document.part' else '25'
+    timeout = '120' if target.name.startswith('document') and target.suffix == '.part' else '25'
     command = ['curl.exe', '--silent', '--show-error', '--fail', '--location', '--max-redirs', '5', '--connect-timeout', '15', '--max-time', timeout,
                '--max-filesize', '100000000', '--write-out', '%{url_effective}', url, '-o', str(target)]
     if shutil.which('curl.exe') is None:

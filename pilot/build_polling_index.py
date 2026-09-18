@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 from urllib.parse import unquote, urlparse
+from polling_manifest import load_manifest
 
 
 def build(root):
@@ -14,7 +15,7 @@ def build(root):
         if not path.exists():
             states.append(entry | {'status':'discovery_pending','documents':0,'errors':[],'pending_pages':0})
             continue
-        manifest=json.loads(path.read_text(encoding='utf-8'));seen=set()
+        manifest=load_manifest(path);seen=set()
         for document in manifest['documents']:
             if not document.get('file') or document['file'] in seen:
                 continue

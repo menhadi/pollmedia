@@ -33,3 +33,11 @@ The polling extractor now reads XLS/XLSX worksheets alongside PDFs. It retains s
 Discovery now handles official links containing backslashes and file-download endpoints without PDF extensions. Verified supplementary entry points include the migrated West Bengal and Himachal Pradesh domains. The Himachal Pradesh 2022 Form 20 page exposes 68 constituency documents. Failed certificate checks remain recorded rather than bypassed.
 
 After the first discovery pass, the pipeline drains remaining page queues while they make progress and archive disk space stays above its reserve. All extracted tables, outstanding URLs and access failures remain part of the final coverage review. Tests cover numeric/blank/formula distinctions, centered headings, named polling stations, exclusion of aggregate rows, source download integrity and worksheet labels.
+
+## Space cleared and additional historical sources
+
+After the user freed space, D: had approximately 22 GB available. The pipeline now supports deferring a state whose earlier collector is still active while collecting other states immediately. Bihar's earlier collection and the existing Tamil Nadu extraction continue independently.
+
+Goa's public ASP.NET election dropdown exposes 20 election selections, including PC, AC and by-elections, spanning 1967–2024. Submitting the source's “all constituencies” option returned 149 distinct report-viewer URLs. Each returned election selection was checked against the requested dropdown value. Downloads are ongoing; a dropdown option alone is not proof of a complete historical dataset. The PDFs are returned directly by viewer URLs without a `.pdf` extension.
+
+The Goa collector preserves its HTML responses, selection labels, original PDFs, hashes and failures in an independent supplemental manifest. The public index, extractor and preservation exporter merge that manifest with ordinary discovery without overwriting its source files or the active crawl manifest. Live deployment remains pending completion and coverage review.
