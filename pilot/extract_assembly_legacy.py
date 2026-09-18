@@ -94,10 +94,12 @@ def run(entry, root, extractor=extract):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components'],default='legacy'); args=parser.parse_args()
+    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components','symbols'],default='legacy'); args=parser.parse_args()
     extractor = extract
     if args.layout == 'components':
         from extract_assembly_components import extract as extractor
+    if args.layout == 'symbols':
+        from extract_assembly_symbols import extract as extractor
     results=[]; remaining=[]
     for entry in json.loads(args.catalogue.read_text(encoding='utf-8'))['entries']:
         if args.year is not None and entry['year'] != args.year: continue

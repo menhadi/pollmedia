@@ -68,7 +68,30 @@
 @endif
 @if(!$selected['has_warning'] && isset($selected['winner'], $selected['margin']))<p><strong>Winner: {{ $selected['winner'] }}</strong> · Margin: {{ number_format($selected['margin']) }} votes</p>@endif
 <div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>'Valid candidate votes'] as $key=>$label)<div class="stat"><span>{{ $label }}</span><strong>{{ isset($selected[$key]) ? number_format($selected[$key]) : '—' }}</strong></div>@endforeach</div>
-<div class="table"><table><caption>Candidate votes as recorded in this edition @if($selected['has_warning'])†@endif</caption><thead><tr><th scope="col">Candidate</th><th scope="col">Party at election</th><th scope="col">General / EVM votes</th><th scope="col">Postal votes</th><th scope="col">Total votes</th></tr></thead><tbody>@forelse($selected['candidates'] as $candidate)<tr><td>{{ $candidate['candidate_name'] }}</td><td>{{ $candidate['party_at_election'] }}</td>@foreach(['general_votes','postal_votes','votes'] as $key)<td>{{ isset($candidate[$key]) ? number_format($candidate[$key]) : 'Not reported' }}</td>@endforeach</tr>@empty<tr><td colspan="5">Candidate rows could not be extracted reliably. See the official source.</td></tr>@endforelse</tbody></table></div>
+@php
+    $showSymbols = collect($selected['candidates'])->contains(fn ($row) => !empty($row['election_symbol']));
+@endphp
+<div class="table"><table>
+<caption>Candidate votes as recorded in this edition @if($selected['has_warning'])†@endif</caption>
+<thead><tr><th scope="col">Candidate</th><th scope="col">Party at election</th>
+@if($showSymbols)
+<th scope="col">Election symbol</th>
+@endif
+<th scope="col">General / EVM votes</th><th scope="col">Postal votes</th><th scope="col">Total votes</th></tr></thead>
+<tbody>
+@forelse($selected['candidates'] as $candidate)
+<tr><td>{{ $candidate['candidate_name'] }}</td><td>{{ $candidate['party_at_election'] }}</td>
+@if($showSymbols)
+<td>{{ $candidate['election_symbol'] ?? 'Not reported' }}</td>
+@endif
+@foreach(['general_votes','postal_votes','votes'] as $key)
+<td>{{ isset($candidate[$key]) ? number_format($candidate[$key]) : 'Not reported' }}</td>
+@endforeach
+</tr>
+@empty
+<tr><td colspan="{{ $showSymbols ? 6 : 5 }}">Candidate rows could not be extracted reliably. See the official source.</td></tr>
+@endforelse
+</tbody></table></div>
 @foreach($selected['edition_notes'] ?? [] as $note)<p class="notice">{{ $note }}</p>@endforeach
 @if($selected['has_warning'])<p class="notice" id="data-note"><strong>† Data note:</strong> {{ $selected['error'] ?? 'This record requires review.' }} Displayed rows may be incomplete. Figures remain as extracted until an administrator corrects or accepts the record.</p>
 @if(isset($selected['summary_totals']))<details><summary>Compare the report’s summary totals</summary>@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>'Valid candidate votes'] as $key=>$label)<p>{{ $label }}: {{ isset($selected['summary_totals'][$key]) ? number_format($selected['summary_totals'][$key]) : 'Not reported' }}</p>@endforeach</details>@endif

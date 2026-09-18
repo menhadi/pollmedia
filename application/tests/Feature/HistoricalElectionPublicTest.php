@@ -167,6 +167,26 @@ class HistoricalElectionPublicTest extends TestCase
         $this->get(route('elections.assembly', ['edition' => $ac, 'state' => 'Other state', 'code' => 1]))->assertNotFound();
     }
 
+    public function test_symbols_and_nota_are_preserved_in_public_tables_and_csv(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition();
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0]['candidates'][0]['election_symbol'] = 'Example symbol';
+        $data['records'][0]['candidates'][0]['source_page'] = 161;
+        $data['records'][0]['candidates'][] = ['candidate_name' => 'None of the Above', 'party_at_election' => 'NOTA', 'is_nota' => true, 'votes' => 20];
+        Storage::disk('local')->put($path, json_encode($data));
+        $filters = ['edition' => $id, 'state' => 'S24', 'code' => 451];
+        $this->get(route('elections.history', $filters))->assertOk()->assertSee('Election symbol')->assertSee('Example symbol')->assertSee('None of the Above');
+        $csv = $this->get(route('elections.history', $filters + ['format' => 'csv']))->assertOk()->streamedContent();
+        $lines = array_map(fn ($line) => str_getcsv($line, ',', '"', ''), explode("\r\n", trim($csv)));
+        $headers = $lines[0];
+        $this->assertSame('Example symbol', $lines[1][array_search('election_symbol', $headers)]);
+        $this->assertSame('161', $lines[1][array_search('candidate_pdf_page', $headers)]);
+        $this->assertSame('nota', $lines[2][array_search('row_type', $headers)]);
+    }
+
     public function test_csv_preserves_notes_sources_scope_and_safe_spreadsheet_cells(): void
     {
         Storage::fake('local');
