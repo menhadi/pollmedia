@@ -104,7 +104,8 @@ def extract(job):
     folder, item = job
     folder = Path(folder)
     source = folder/item['file']
-    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    with source.open('rb') as stream:
+        digest = hashlib.file_digest(stream, 'sha256').hexdigest()
     if digest != item['sha256']:
         return {'source_file': item['file'], 'error':'Source checksum changed'}
     destination = folder/(digest+'-tables')

@@ -61,3 +61,11 @@ The archive serves files through POST forms containing source record IDs. The co
 The Punjab site exposes its archive through an “Elections” menu and numeric year dropdown values. The collector now follows the menu, recognises Vidhan Sabha/by-election navigation, and resolves that site's dropdown IDs using the official page's `electiondetails?id=…&fltr=…` routing. Numeric option values are no longer mistaken for standalone document URLs.
 
 A fresh Punjab discovery pass is running. The 2024 PC selection exposes a “Part Wise Result- Form 20” page alongside constituency and assembly-segment results; further year selections remain queued. Discovery regression tests passed. This is additional source discovery, not a declaration of completed Punjab or national coverage.
+
+## Large-file recovery
+
+The failure audit found eight reports rejected by the ordinary downloader's 100 MB cap. A separate, single-process recovery pass now streams those PDFs to disk with a 512 MiB cap and a 15-minute request timeout. The first recovered Odisha report is 107,395,606 bytes. Remaining oversized downloads are still in progress and retain failure notes if unsuccessful.
+
+Extraction checksum verification and ZIP preservation now stream source files rather than reading whole large PDFs into memory. Preserved files remain hash-verified, and corrupted existing copies are rejected. Focused download, preservation and parser tests passed.
+
+Before deployment, review public-index memory use as the national archive grows: the current index embeds page metadata for every document. Completion and live deployment remain pending.

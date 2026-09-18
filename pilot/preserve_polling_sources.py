@@ -46,13 +46,22 @@ def preserve(root, output):
         for path in sorted(set(required)|set(metadata)):
             if not path.resolve().is_relative_to(folder.resolve()):
                 raise ValueError('Unsafe snapshot source path')
-            body = metadata[path] if path in metadata else path.read_bytes()
-            digest = hashlib.sha256(body).hexdigest()
+            if path in metadata:
+                body = metadata[path]
+                digest = hashlib.sha256(body).hexdigest()
+                size = len(body)
+            else:
+                with path.open('rb') as stream:
+                    digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+                size = path.stat().st_size
             if path in required and digest != required[path]:
                 raise ValueError('Source checksum changed: '+str(path))
             name = path.relative_to(root).as_posix()
-            archive.writestr(name,body)
-            entries.append({'path':name,'sha256':digest,'bytes':len(body)})
+            if path in metadata:
+                archive.writestr(name,body)
+            else:
+                archive.write(path,name)
+            entries.append({'path':name,'sha256':digest,'bytes':size})
         archive.writestr('manifest.json',json.dumps({'scope':'Partial national polling-source snapshot. The indexed coverage note and unresolved discovery/extraction issues remain applicable.', 'files':entries},indent=2))
     with zipfile.ZipFile(temporary) as archive:
         for item in entries:
