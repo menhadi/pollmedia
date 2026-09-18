@@ -69,3 +69,10 @@ The failure audit found eight reports rejected by the ordinary downloader's 100 
 Extraction checksum verification and ZIP preservation now stream source files rather than reading whole large PDFs into memory. Preserved files remain hash-verified, and corrupted existing copies are rejected. Focused download, preservation and parser tests passed.
 
 The public index now keeps per-document page metadata in separate immutable, hash-verified files and loads only the selected report. At the checkpoint of 14,198 document entries, 3,253 extracted documents and 176,014 polling rows, the root index decreased from 15,318,551 to 8,487,197 bytes (about 45%). There were still 738 queued discovery pages. Older inline page metadata remains supported. Preservation packages include and verify the new metadata files. Three application tests (28 assertions), the archive preservation test and a local HTTP 200 check passed. Completion and live deployment remain pending.
+
+
+## Sikkim dynamic archive
+
+The official 2019 and 2024 Form 20 pages use an election-type dropdown backed by an AJAX endpoint. The collector now reads the supplied endpoint and election IDs, follows both assembly and parliamentary choices, and sends the required XMLHttpRequest header. The working non-www official domain replaces the certificate-failing www entry point.
+
+All 15 linked report PDFs were preserved: eight files linked from the 2019 selections (including three named AC by-election reports) and seven from the 2024 selections. Original source URLs and SHA-256 checksums remain attached. Extraction is queued behind the active batch. Historical coverage outside these linked selections is not established. Four dropdown tests and thirteen existing parser/discovery tests passed.

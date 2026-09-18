@@ -22,7 +22,7 @@ def official(url):
     return parsed.scheme in ['https', 'http'] and (host.endswith('.gov.in') or host.endswith('.nic.in'))
 
 
-def fetch(url, target, form=None, cookies=None, referer=None):
+def fetch(url, target, form=None, cookies=None, referer=None, ajax=False):
     if not official(url):
         raise ValueError('Non-official source URL')
     if shutil.disk_usage(target.parent).free < 2_000_000_000:
@@ -32,6 +32,8 @@ def fetch(url, target, form=None, cookies=None, referer=None):
                '--max-filesize', '100000000', '--write-out', '%{url_effective}', url, '-o', str(target)]
     if shutil.which('curl.exe') is None:
         command[0] = 'curl'
+    if ajax:
+        command.extend(['--header', 'X-Requested-With: XMLHttpRequest'])
     if cookies is not None:
         command.extend(['--cookie', str(cookies), '--cookie-jar', str(cookies)])
     if referer is not None:
@@ -86,6 +88,12 @@ def discover_links(body, current):
             if value.isdigit() and int(value) > 0:
                 pages.append({'url': urljoin(current, '/electiondetails')+'?'+urlencode({'id': election_id, 'fltr': value}),
                               'label': option.get_text(' ', strip=True), 'discovered_on': current})
+    if urlparse(current).hostname == 'ceo.sikkim.gov.in' and soup.select_one('select#Type'):
+        scripts = ' '.join(script.get_text() for script in soup.select('script:not([src])'))
+        if '/Election/Form20Details' in scripts:
+            for election_id, kind in re.findall(r"EID:\s*'([0-9]+)',\s*Type:\s*\"(Assembly|Parlimentary)\"", scripts):
+                pages.append({'url': urljoin(current, '/Election/Form20Details')+'?'+urlencode({'EID': election_id, 'Type': kind}),
+                              'label': kind+' Form 20', 'discovered_on': current})
     for meta in soup.select('meta[http-equiv]'):
         if meta.get('http-equiv', '').lower() == 'refresh':
             match = re.search(r'url\s*=\s*[\"\']?([^\"\']+)', meta.get('content', ''), re.I)
@@ -134,7 +142,8 @@ def crawl(entry, root, max_pages, rediscover=False):
                 if hashlib.sha256(body).hexdigest() != pages[url]['sha256']:
                     raise ValueError('Saved page checksum changed')
             else:
-                body, final = fetch(url, folder/'page.part')
+                ajax = urlparse(url).hostname == 'ceo.sikkim.gov.in' and urlparse(url).path == '/Election/Form20Details'
+                body, final = fetch(url, folder/'page.part', ajax=ajax)
                 if body.startswith(b'%PDF-'):
                     documents[url] = current
                     continue
