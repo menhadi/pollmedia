@@ -38,6 +38,34 @@ class HistoricalElectionPublicTest extends TestCase
         return [$id, $record, $hash, $entry['url']];
     }
 
+    public function test_national_assembly_editions_keep_state_identity_notes_and_csv(): void
+    {
+        Storage::fake('local');
+        [$old, , $hash] = $this->edition(2022, 'ac');
+        $url = 'https://www.eci.gov.in/statistical-report/ae/2024/6';
+        $id = substr(hash('sha256', $url), 0, 24);
+        $root = 'election-archive/'.$id.'/';
+        foreach (['detail.pdf', 'summary.pdf', 'manifest.json', 'extraction.json'] as $file) {
+            Storage::disk('local')->put($root.$file, Storage::disk('local')->get('election-archive/'.$old.'/'.$file));
+        }
+        $manifest = json_decode(Storage::disk('local')->get($root.'manifest.json'), true);
+        $manifest['url'] = $url;
+        Storage::disk('local')->put($root.'manifest.json', json_encode($manifest));
+        $data = json_decode(Storage::disk('local')->get($root.'extraction.json'), true);
+        $data['source_url'] = $url;
+        $data['year'] = 2024;
+        foreach ($data['records'] as &$row) {
+            $row['state_name'] = 'Haryana';
+            $row['edition_notes'] = ['Original source coverage note'];
+        }
+        unset($row);
+        Storage::disk('local')->put($root.'extraction.json', json_encode($data));
+        $this->get(route('elections.assembly', ['edition' => $id, 'state' => 'Haryana', 'code' => 1]))
+            ->assertOk()->assertSee('Original source coverage note')->assertSee('Source totals differ');
+        $this->get(route('elections.assembly', ['edition' => $id, 'state' => 'Uttar Pradesh', 'code' => 1]))->assertNotFound();
+        $this->get(route('elections.assembly', ['edition' => $id, 'state' => 'Haryana', 'format' => 'csv']))->assertOk()->assertDownload();
+    }
+
     public function test_guests_browse_scoped_historical_records_and_official_sources(): void
     {
         Storage::fake('local');
@@ -129,7 +157,7 @@ class HistoricalElectionPublicTest extends TestCase
         Storage::fake('local');
         [$pc] = $this->edition();
         [$ac] = $this->edition(2007, 'ac');
-        $this->get(route('elections.assembly'))->assertOk()->assertSee('Uttar Pradesh Assembly election archive')->assertViewHas('edition', $ac);
+        $this->get(route('elections.assembly'))->assertOk()->assertSee('India Assembly election archive')->assertViewHas('edition', $ac);
         $state = route('elections.assembly', ['edition' => $ac, 'state' => 'Uttar Pradesh']);
         $record = route('elections.assembly', ['edition' => $ac, 'state' => 'Uttar Pradesh', 'code' => 1]);
         $this->get($state)->assertOk()->assertSee('SEOHARA')->assertSee($record)->assertSee('id="state-note-1"', false);

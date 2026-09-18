@@ -28,7 +28,7 @@ class HistoricalElectionController extends Controller
             ->map(function ($entry) use ($archives): array {
                 $collection = $archives->collection($entry['url']);
 
-                return $entry + ['collected' => count($collection['files']), 'status' => $collection['status']];
+                return $entry + ['collected' => count($collection['files']), 'status' => $collection['status'], 'extraction' => ($collection['has_extraction'] ?? false) ? $collection['id'] : null];
             });
 
         return view('assembly-sources', compact('catalogue', 'entries', 'states', 'years', 'state', 'year'));
@@ -59,7 +59,7 @@ class HistoricalElectionController extends Controller
         abort_if($download && (! isset($input['edition'], $input['state'])), 404);
         $kind = $request->routeIs('elections.assembly') ? 'ac' : 'pc';
         $archiveRoute = $kind === 'ac' ? 'elections.assembly' : 'elections.history';
-        $archiveTitle = $kind === 'ac' ? 'Uttar Pradesh Assembly' : 'Lok Sabha';
+        $archiveTitle = $kind === 'ac' ? 'India Assembly' : 'Lok Sabha';
         $editions = $history->editions($kind);
         $edition = $input['edition'] ?? ($editions[0]['id'] ?? null);
         $data = null;
