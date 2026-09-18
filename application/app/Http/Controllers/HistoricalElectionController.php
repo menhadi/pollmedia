@@ -75,7 +75,7 @@ class HistoricalElectionController extends Controller
 
     public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|StreamedResponse
     {
-        $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:1000', 'format' => 'nullable|in:csv']);
+        $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:999999', 'format' => 'nullable|in:csv']);
         $download = ($input['format'] ?? null) === 'csv';
         abort_if($download && (! isset($input['edition'], $input['state'])), 404);
         $kind = $request->routeIs('elections.assembly') ? 'ac' : 'pc';
@@ -154,10 +154,10 @@ class HistoricalElectionController extends Controller
                 $safe = array_map(fn ($value) => is_string($value) && preg_match('/^[\s]*[=+@-]|^[\t\r\n]/u', $value) ? "'".$value : $value, $cells);
                 fputcsv($stream, $safe, ',', '"', '', "\r\n");
             };
-            $write(['year', 'election_type', 'edition_id', 'state_as_recorded', 'archive_record_code', 'official_constituency_code', 'constituency', 'row_type', 'candidate', 'party_at_election', 'general_evm_votes', 'postal_votes', 'total_votes', 'electors', 'votes_polled', 'valid_candidate_votes', 'status', 'data_note', 'official_source', 'additional_official_sources', 'source_locator', 'detail_pdf_page', 'summary_pdf_page', 'election_symbol', 'candidate_pdf_page']);
+            $write(['year', 'election_type', 'edition_id', 'state_as_recorded', 'archive_record_code', 'official_constituency_code', 'constituency', 'row_type', 'candidate', 'party_at_election', 'general_evm_votes', 'postal_votes', 'total_votes', 'electors', 'votes_polled', 'valid_candidate_votes', 'status', 'data_note', 'official_source', 'additional_official_sources', 'source_locator', 'detail_pdf_page', 'summary_pdf_page', 'election_symbol', 'candidate_pdf_page', 'election_round', 'source_document']);
             foreach ($records as $record) {
                 foreach ($record['candidates'] ?: [null] as $candidate) {
-                    $write([$data['year'], $kind, $edition, $state, $record['code'], $record['official_pc_code'] ?? ($kind === 'ac' ? $record['code'] : null), $record['name'], $candidate ? (($candidate['is_nota'] ?? false) ? 'nota' : 'candidate') : 'no_candidate_rows', $candidate['candidate_name'] ?? null, $candidate['party_at_election'] ?? null, $candidate['general_votes'] ?? null, $candidate['postal_votes'] ?? null, $candidate['votes'] ?? null, $record['electors'] ?? null, $record['votes_polled'] ?? null, $record['valid_candidate_votes'] ?? null, $record['status'], $record['has_warning'] ? '† '.($record['error'] ?? 'This record requires review.') : '', $data['source_url'], collect($data['additional_sources'] ?? [])->pluck('source_url')->filter()->implode(' | '), $record['source_locator'] ?? '', $record['detail_page'] ?? null, $record['summary_page'] ?? null, $candidate['election_symbol'] ?? null, $candidate['source_page'] ?? null]);
+                    $write([$data['year'], $kind, $edition, $state, $record['code'], $record['official_pc_code'] ?? $record['official_ac_code'] ?? ($kind === 'ac' ? $record['code'] : null), $record['name'], $candidate ? (($candidate['is_nota'] ?? false) ? 'nota' : 'candidate') : 'no_candidate_rows', $candidate['candidate_name'] ?? null, $candidate['party_at_election'] ?? null, $candidate['general_votes'] ?? null, $candidate['postal_votes'] ?? null, $candidate['votes'] ?? null, $record['electors'] ?? null, $record['votes_polled'] ?? null, $record['valid_candidate_votes'] ?? null, $record['status'], $record['has_warning'] ? '† '.($record['error'] ?? 'This record requires review.') : '', $data['source_url'], collect($data['additional_sources'] ?? [])->pluck('source_url')->filter()->implode(' | '), $record['source_locator'] ?? '', $record['detail_page'] ?? null, $record['summary_page'] ?? null, $candidate['election_symbol'] ?? null, $candidate['source_page'] ?? null, $record['election_round'] ?? null, $record['source_document'] ?? null]);
                 }
             }
             fclose($stream);

@@ -14,7 +14,7 @@ class HistoricalExtractionController extends Controller
 {
     public function show(Request $request, string $archive, ElectionArchive $service): View
     {
-        $input = $request->validate(['code' => 'nullable|integer|min:1|max:1000']);
+        $input = $request->validate(['code' => 'nullable|integer|min:1|max:999999']);
         [$data, $source] = app(HistoricalElectionArchive::class)->load($archive, $service);
         $reviews = app(HistoricalElectionReview::class);
         $data['records'] = array_map(fn (array $record): array => $reviews->apply($archive, $record, $data['source_sha256']), $data['records']);

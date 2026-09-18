@@ -56,6 +56,27 @@ class LegacyAssemblyTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'duplicated'):
                 extract('report.pdf','Example')
 
+    def test_serial_first_and_serial_after_name_layouts(self):
+        for rows in ['1 . ONE\nM\nAAA\n60\n60.00%\n2 . TWO\nF\nBBB\n40\n40.00%\n','. ONE\n1\nM\nAAA\n60\n60.00%\n. TWO\n2\nF\nBBB\n40\n40.00%\n']:
+            r=parse_body(rows+TOTAL)
+            self.assertEqual([c['votes'] for c in r['candidates']],[60,40])
+            self.assertEqual([c['candidate_name'] for c in r['candidates']],['ONE','TWO'])
+
+    def test_uncontested_candidate_keeps_missing_votes_blank(self):
+        for row in ['. ONE\nM\nAAA\n1\nUncontested\n','. ONE\nM\nAAA\nUNCONTESTED\n1\n']:
+            r=parse_body(row+'ELECTORS :\n100\nVOTERS :')
+            self.assertEqual(r['candidates'][0]['candidate_name'],'ONE')
+            self.assertIsNone(r['candidates'][0]['votes'])
+
+    def test_column_ordered_rows_preserve_name_sex_party_votes(self):
+        r=parse_body('1 .\n2 .\nONE\nTWO\nM\nF\nAAA\nBBB\n60\n40\n60.00%\n40.00%\n'+TOTAL)
+        self.assertEqual([(c['candidate_name'],c['party_at_election'],c['votes']) for c in r['candidates']],[('ONE','AAA',60),('TWO','BBB',40)])
+
+    def test_invalid_reported_percentage_does_not_hide_zero_vote_candidate(self):
+        r=parse_body('1 . ONE\nM\nAAA\n0\n#Num!\n'+TOTAL)
+        self.assertEqual(r['candidates'][0]['votes'],0)
+        self.assertIsNone(r['candidates'][0]['reported_vote_percent'])
+
     def test_other_layout_rejected(self):
         with patch('extract_assembly_legacy.fitz.open', return_value=Document([Page('VALID VOTES POLLED\nrptDetailedResults - Page 1 of 1')])):
             with self.assertRaisesRegex(ValueError, 'Different'):

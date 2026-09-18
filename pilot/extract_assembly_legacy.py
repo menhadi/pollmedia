@@ -8,7 +8,7 @@ from pathlib import Path
 
 import fitz
 
-IDENTITY = re.compile(r'^Constituency[ \t]*:?[ \t]*\n?(\d+)(?:[ \t]*\.[ \t]*|[ \t]*\n)([^\n]+)\n', re.M)
+IDENTITY = re.compile(r'^Constituency[ \t]*:?[ \t]*\n?(\d+)(?:[ \t]*\.[ \t]*|[ \t]*\n|[ \t]+)([^\n]+)\n', re.M)
 TOTAL = re.compile(r'ELECTORS\s*:\s*(\d+)\s*([\d.]+)%\s*VALID VOTES\s*:?\s*(\d+)\s*VOTERS\s*:\s*(\d+)\s*POLL PERCENTAGE\s*:\s*$')
 CANDIDATE = re.compile(r'(.+?)\n([MF])\n([^\n]+)\n(\d+)\n([\d.]+%|#Num!)\n(\d+)\s*', re.S)
 
@@ -20,14 +20,35 @@ def parse_body(body):
     if seats: body = body[seats.end():]
     if result['number_of_seats'] > 1:
         issues.append('Multi-member constituency; no single winner or margin is inferred.')
+    old_total = re.search(r'ELECTORS\s*:\s*(\d+)\s*VOTERS\s*:\s*(\d+)\s*POLL PERCENTAGE\s*:\s*([\d.]+)%\s*VALID VOTES\s*:\s*(\d+)\s*$',body)
+    if old_total:
+        body=body[:old_total.start()]+f'ELECTORS :\n{old_total[1]}\n{old_total[3]}%\nVALID VOTES :\n{old_total[4]}\nVOTERS :\n{old_total[2]}\nPOLL PERCENTAGE :'
     total = TOTAL.search(body)
-    rows = body[:total.start()].strip() if total else body
+    rows = body[:total.start()].strip() if total else body.split('ELECTORS')[0].strip()
+    rows=re.sub(r'(?m)^\.\n(\d+)\n',r'\1 . ',rows)
+    lines=rows.splitlines();column_count=0
+    while column_count<len(lines) and re.fullmatch(r'\d+[ \t]*\.',lines[column_count]):column_count+=1
+    if column_count and len(lines)==6*column_count and all(v in ['M','F'] for v in lines[2*column_count:3*column_count]):
+        rows='\n'.join(f'. {lines[column_count+i]}\n{lines[2*column_count+i]}\n{lines[3*column_count+i]}\n{lines[4*column_count+i]}\n{lines[5*column_count+i]}\n{int(lines[i].split()[0])}' for i in range(column_count))
     if total:
         result.update(electors=int(total[1]), valid_candidate_votes=int(total[3]), votes_polled=int(total[4]))
     else: issues.append('Detailed totals are missing or use an unsupported layout.')
-    for block in re.split(r'(?m)^\.\s+', rows):
+    for block in re.split(r'(?m)(?=^\.[ \t]+|^\d+[ \t]*\.[ \t]+)', rows):
         if not block.strip(): continue
-        match = CANDIDATE.fullmatch(block)
+        clean=re.sub(r'^\.\s+','',block)
+        clean=re.sub(r'(.+?)\n([MF])\n([^\n]+)\nUNCONTESTED\n(\d+)',r'\1\n\2\n\3\n\4\nUncontested',clean,flags=re.S)
+        uncontested=re.match(r'(.+?)\n([MF])\n([^\n]+)\n(\d+)\nUncontested(?:\n|$)',clean,re.S)
+        if uncontested:
+            result['candidates'].append(dict(candidate_name=' '.join(uncontested[1].split()),sex=uncontested[2],party_at_election=uncontested[3],source_row=int(uncontested[4]),votes=None,general_votes=None,postal_votes=None,reported_contest_status='uncontested'))
+            issues.append('The source reports an uncontested candidate without vote totals.')
+            continue
+        match=CANDIDATE.fullmatch(clean)
+        if not match:
+            leading=re.fullmatch(r'(\d+)\s*\.\s+(.+?)\n([MF])\n([^\n]+)\n(\d+)\n([\d.]+|#Num!)%?\s*',block,re.S)
+            middle=re.fullmatch(r'(.+?)\n(\d+)\n([MF])\n([^\n]+)\n(\d+)\n([\d.]+)%\s*',clean,re.S)
+            if leading: clean=f"{leading[2]}\n{leading[3]}\n{leading[4]}\n{leading[5]}\n{leading[6] if leading[6]=='#Num!' else leading[6]+'%'}\n{leading[1]}"
+            elif middle: clean=f'{middle[1]}\n{middle[3]}\n{middle[4]}\n{middle[5]}\n{middle[6]}%\n{middle[2]}'
+            match=CANDIDATE.fullmatch(clean)
         if not match:
             issues.append('Some candidate text could not be parsed; see the original PDF.')
             continue
@@ -35,7 +56,7 @@ def parse_body(body):
     candidates = result['candidates']
     if sorted(c['source_row'] for c in candidates) != list(range(1, len(candidates)+1)):
         issues.append('Candidate serial numbers are incomplete or duplicated.')
-    if total:
+    if total and all(c['votes'] is not None for c in candidates):
         if sum(c['votes'] for c in candidates) != result['valid_candidate_votes']:
             issues.append('Extracted candidate votes do not match the reported valid votes.')
         if result['number_of_seats'] == 1 and not 0 < result['valid_candidate_votes'] <= result['votes_polled'] <= result['electors']:
@@ -49,7 +70,8 @@ def extract(path, state):
     with fitz.open(path) as doc:
         for index, page in enumerate(doc):
             text = page.get_text()
-            footer = re.search(r'rptDetailedResults - Page (\d+) of\s+(\d+)\b', text)
+            if 'DETAILED RESULTS' not in text and 'rptDetailedResults' not in text and 'ECI-REPORT-ID-VS11' not in text: continue
+            footer = re.search(r'(?:rptDetailedResults - |ECI-REPORT-ID[^\n]*\s*)?Page (\d+) of\s+(\d+)\b', text)
             if not footer: continue
             # Other PDF layouts include age, addresses and postal columns. Do not reinterpret them.
             if 'VALID VOTES POLLED' in text or 'GENERAL POSTAL' in text:
@@ -58,13 +80,19 @@ def extract(path, state):
             text = text[:footer.start()]
             lines = [line.strip() for line in text.splitlines() if line.strip() and line.strip() not in {'DETAILED RESULTS','No.','CANDIDATE','SEX','PARTY','VOTES','%'} and not line.startswith('Election Commission of India')]
             cleaned = re.sub(r'[ \t]+NUMBER OF SEATS', '\nNUMBER OF SEATS', '\n'.join(lines)) + '\n'
+            cleaned=re.sub(r'Constituency[ \t]*:?[ \t]*\n(\d+)[ \t]*\.\n(\d+)[ \t]*\.[ \t]+([^\n]+)\n',r'Constituency :\n\2 . \3\n\1 . ',cleaned)
             for match in IDENTITY.finditer(cleaned): pages[int(match[1])] = index+1
             chunks.append(cleaned)
-    if len(expected) != 1: raise ValueError('No unambiguous supported detailed report')
+    if not expected: raise ValueError('No supported detailed report pages')
     text = '\n'.join(chunks); identities = list(IDENTITY.finditer(text))
+    for i in range(len(identities)-1,0,-1):
+        previous,current=identities[i-1],identities[i]
+        if previous.group(1,2)==current.group(1,2) and 'ELECTORS' not in text[previous.end():current.start()]:
+            text=text[:current.start()]+text[current.end():]
+    identities=list(IDENTITY.finditer(text))
     codes = [int(m[1]) for m in identities]
     if not codes or len(codes) != len(set(codes)): raise ValueError('Missing or duplicated constituency identities')
-    complete_pages = page_numbers == list(range(1, next(iter(expected))+1))
+    complete_pages = len(expected)==1 and page_numbers == list(range(1, max(expected)+1))
     records = []
     for i, match in enumerate(identities):
         body = text[match.end():identities[i+1].start() if i+1 < len(identities) else len(text)].strip()
@@ -80,7 +108,7 @@ def select_source(manifest, source_format='pdf'):
     suffixes = ('.xls', '.xlsx') if source_format == 'workbook' else ('.pdf',)
     files = [f for f in manifest['files'] if f['file'].endswith(suffixes)]
     if len(files) == 1: return files[0]
-    details = [f for f in files if re.search(r'detailed\s+resul(?:ts|sts|t)\b', f['name'], re.I)]
+    details = [f for f in files if re.search(r'de(?:ta|a)iled\s+resul(?:ts|sts|t)\b', f['name'], re.I)]
     if len(details) != 1: raise ValueError('No unique detailed-results source file')
     return details[0]
 
@@ -101,7 +129,7 @@ def run(entry, root, extractor=extract, source_format='pdf'):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components','symbols','flat'],default='legacy'); args=parser.parse_args()
+    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components','symbols','flat','dot'],default='legacy'); args=parser.parse_args()
     extractor = extract
     if args.layout == 'components':
         from extract_assembly_components import extract as extractor
@@ -109,6 +137,8 @@ if __name__ == '__main__':
         from extract_assembly_symbols import extract as extractor
     if args.layout == 'flat':
         from extract_assembly_flat import extract as extractor
+    if args.layout == 'dot':
+        from extract_assembly_2000s import extract as extractor
     results=[]; remaining=[]
     for entry in json.loads(args.catalogue.read_text(encoding='utf-8'))['entries']:
         if args.year is not None and entry['year'] != args.year: continue

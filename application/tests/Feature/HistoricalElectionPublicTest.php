@@ -187,6 +187,31 @@ class HistoricalElectionPublicTest extends TestCase
         $this->assertSame('nota', $lines[2][array_search('row_type', $headers)]);
     }
 
+    public function test_separate_election_rounds_keep_official_codes_and_distinct_public_records(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition(2007, 'ac');
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        foreach ($data['records'] as $index => &$record) {
+            $record['code'] = ($index + 1) * 100000 + 1;
+            $record['official_ac_code'] = 1;
+            $record['name'] = $index === 0 ? 'Sample / February' : 'Sample / October';
+            $record['election_round'] = $index === 0 ? 'February' : 'October';
+            $record['source_document'] = $record['election_round'].'.pdf';
+        }
+        unset($record);
+        Storage::disk('local')->put($path, json_encode($data));
+        $filters = ['edition' => $id, 'state' => 'Uttar Pradesh', 'code' => 100001];
+        $this->get(route('elections.assembly', $filters))->assertOk()->assertSee('Official constituency code: 1')->assertSee('Sample / February');
+        $this->get(route('elections.assembly', array_replace($filters, ['code' => 200001])))->assertOk()->assertSee('Sample / October');
+        $csv = $this->get(route('elections.assembly', $filters + ['format' => 'csv']))->assertOk()->streamedContent();
+        $lines = array_map(fn ($line) => str_getcsv($line, ',', '"', ''), explode("\r\n", trim($csv)));
+        $this->assertSame('1', $lines[1][array_search('official_constituency_code', $lines[0])]);
+        $this->assertSame('February', $lines[1][array_search('election_round', $lines[0])]);
+        $this->assertSame('February.pdf', $lines[1][array_search('source_document', $lines[0])]);
+    }
+
     public function test_csv_preserves_notes_sources_scope_and_safe_spreadsheet_cells(): void
     {
         Storage::fake('local');
