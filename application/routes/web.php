@@ -42,6 +42,7 @@ Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');
 Route::get('/sources', [SourceController::class, 'index'])->name('sources.index');
 Route::get('/india/elections/lok-sabha', [HistoricalElectionController::class, 'index'])->name('elections.history');
+Route::get('/india/elections/assembly/sources', [HistoricalElectionController::class, 'sources'])->name('elections.assembly-sources');
 Route::get('/india/elections/assembly', [HistoricalElectionController::class, 'index'])->name('elections.assembly');
 Route::get('/india/pc/{slug}/history', [HistoricalElectionController::class, 'compare'])->name('elections.compare');
 Route::get('/india/ac/{slug}/history', [HistoricalElectionController::class, 'compareAssembly'])->name('elections.compare-assembly');

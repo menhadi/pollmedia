@@ -14,6 +14,7 @@
 <p class="lead">Explore candidate results from the available official election reports. Choose an edition, then a state and constituency.</p>
 <p><a href="{{ route('elections.history') }}">Lok Sabha archive</a> · <a href="{{ route('elections.assembly') }}">Uttar Pradesh Assembly archive</a></p>
 @if($kind === 'ac')<p class="small">Assembly coverage currently includes extracted Uttar Pradesh report editions. Historical state and constituency boundaries belong to each edition.</p>@endif
+<p><a href="{{ route('elections.assembly-sources') }}">Assembly source reports: all listed states and historical years</a></p>
 <p class="notice">Names, codes and boundaries belong to the selected election edition. A matching name does not establish unchanged boundaries or a connection to a present-day constituency. Special editions may cover only part of India.</p>
 @if(!$data)<section class="card"><p>No extracted editions are available yet.</p></section>@else
 <section class="card" aria-label="Election filters">

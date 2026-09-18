@@ -1,0 +1,2570 @@
+{
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/get-election-data?page_seo_name=statistical-reports",
+  "landing_url": "https://www.eci.gov.in/statistical-reports",
+  "retrieved_at": "2026-09-18T00:37:58.652871+00:00",
+  "sha256": "08354902406541b6ba131faf44cf7b588775a63936b3d19f98b7f3d0ee1b9ae3",
+  "entries": [
+    {
+      "state": "Andhra Pradesh",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/2"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11673-andhra-pradesh-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/4055-andhra-pradesh-2014/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/4054-andhra-pradesh-2009/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 2004,
+      "label": "2004",
+      "url": "https://old.eci.gov.in/files/file/4053-andhra-pradesh-2004/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1999,
+      "label": "1999",
+      "url": "https://old.eci.gov.in/files/file/4052-andhra-pradesh-1999/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1994,
+      "label": "1994",
+      "url": "https://old.eci.gov.in/files/file/4051-andhra-pradesh-1994/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/4050-andhra-pradesh-1989/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/4049-andhra-pradesh-1985/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/4048-andhra-pradesh-1983/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/4047-andhra-pradesh-1978/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/4045-andhra-pradesh-1967/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/4043-andhra-pradesh-1957/"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "year": 1955,
+      "label": "1955",
+      "url": "https://old.eci.gov.in/files/file/4042-andhra-pradesh-1955/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/3"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11675-arunachal-pradesh-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/4039-arunachal-pradesh-2009/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 2004,
+      "label": "2004",
+      "url": "https://old.eci.gov.in/files/file/4038-arunachal-pradesh-2004/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 1999,
+      "label": "1999",
+      "url": "https://old.eci.gov.in/files/file/4036-arunachal-pradesh-1999/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 1995,
+      "label": "1995",
+      "url": "https://old.eci.gov.in/files/file/4035-arunachal-pradesh-1995/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/4032-arunachal-pradesh-1990/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 1984,
+      "label": "1984",
+      "url": "https://old.eci.gov.in/files/file/4030-arunachal-pradesh-1984/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/4028-arunachal-pradesh-1980/"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/4025-arunachal-pradesh-1978/"
+    },
+    {
+      "state": "Assam",
+      "year": 2026,
+      "label": "2026",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2026/23"
+    },
+    {
+      "state": "Assam",
+      "year": 2021,
+      "label": "2021",
+      "url": "https://old.eci.gov.in/files/file/13620-assam-general-legislative-election-2021/"
+    },
+    {
+      "state": "Assam",
+      "year": 2016,
+      "label": "2016",
+      "url": "https://old.eci.gov.in/files/file/4017-assam-general-legislative-election-2016/"
+    },
+    {
+      "state": "Assam",
+      "year": 2011,
+      "label": "2011",
+      "url": "https://old.eci.gov.in/files/file/4010-assam-2011/"
+    },
+    {
+      "state": "Assam",
+      "year": 2006,
+      "label": "2006",
+      "url": "https://old.eci.gov.in/files/file/4009-assam-2006/"
+    },
+    {
+      "state": "Assam",
+      "year": 2001,
+      "label": "2001",
+      "url": "https://old.eci.gov.in/files/file/4007-assam-2001/"
+    },
+    {
+      "state": "Assam",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/4004-assam-1996/"
+    },
+    {
+      "state": "Assam",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/4003-assam-1991/"
+    },
+    {
+      "state": "Assam",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/4000-assam-1985/"
+    },
+    {
+      "state": "Assam",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/3998-assam-1983/"
+    },
+    {
+      "state": "Assam",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/3996-assam-1978/"
+    },
+    {
+      "state": "Assam",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3995-assam-1972/"
+    },
+    {
+      "state": "Assam",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3994-assam-1967/"
+    },
+    {
+      "state": "Assam",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3992-assam-1962/"
+    },
+    {
+      "state": "Assam",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3991-assam-1957/"
+    },
+    {
+      "state": "Assam",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3989-assam-general-legislative-election-1951/"
+    },
+    {
+      "state": "Bihar",
+      "year": 2025,
+      "label": "2025",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2025/16"
+    },
+    {
+      "state": "Bihar",
+      "year": 2020,
+      "label": "2020",
+      "url": "https://old.eci.gov.in/files/file/12787-bihar-legislative-election-2020/"
+    },
+    {
+      "state": "Bihar",
+      "year": 2015,
+      "label": "2015",
+      "url": "https://old.eci.gov.in/files/file/3904-bihar-2015/"
+    },
+    {
+      "state": "Bihar",
+      "year": 2010,
+      "label": "2010",
+      "url": "https://old.eci.gov.in/files/file/3903-bihar-2010/"
+    },
+    {
+      "state": "Bihar",
+      "year": 2005,
+      "label": "2005",
+      "url": "https://old.eci.gov.in/files/file/3901-bihar-2005/"
+    },
+    {
+      "state": "Bihar",
+      "year": 2000,
+      "label": "2000",
+      "url": "https://old.eci.gov.in/files/file/3900-bihar-2000/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1995,
+      "label": "1995",
+      "url": "https://old.eci.gov.in/files/file/3899-bihar-1995/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3897-bihar-1990/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3896-bihar-1985/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3894-bihar-1980/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3893-bihar-1977/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3892-bihar-1972/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1969,
+      "label": "1969",
+      "url": "https://old.eci.gov.in/files/file/3890-bihar-1969/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3889-bihar-1967/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3888-bihar-1962/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3887-bihar-1957/"
+    },
+    {
+      "state": "Bihar",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3886-bihar-1951/"
+    },
+    {
+      "state": "Chhattisgarh",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://www.eci.gov.in/chhattisgarh-legislative-election-2023-statistical-report"
+    },
+    {
+      "state": "Chhattisgarh",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/9643-statistical-data-of-general-election-to-chhatisgarh-assembly-2018/"
+    },
+    {
+      "state": "Chhattisgarh",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3884-chhattisgarh-2013/"
+    },
+    {
+      "state": "Chhattisgarh",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3883-chhattisgarh-2008/"
+    },
+    {
+      "state": "Chhattisgarh",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3882-chhattisgarh-2003/"
+    },
+    {
+      "state": "Delhi",
+      "year": 2025,
+      "label": "2025",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2025/10"
+    },
+    {
+      "state": "Delhi",
+      "year": 2020,
+      "label": "2020",
+      "url": "https://old.eci.gov.in/files/file/12027-general-legislative-election-2020/"
+    },
+    {
+      "state": "Delhi",
+      "year": 2015,
+      "label": "2015",
+      "url": "https://old.eci.gov.in/files/file/3878-delhi-2015/"
+    },
+    {
+      "state": "Delhi",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3877-delhi-2013/"
+    },
+    {
+      "state": "Delhi",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3876-delhi-2008/"
+    },
+    {
+      "state": "Delhi",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3875-delhi-2003/"
+    },
+    {
+      "state": "Delhi",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3873-delhi-1998/"
+    },
+    {
+      "state": "Delhi",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3872-delhi-1993/"
+    },
+    {
+      "state": "Delhi",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/3871-delhi-1983/"
+    },
+    {
+      "state": "Delhi",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3868-delhi-1977/"
+    },
+    {
+      "state": "Delhi",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3867-delhi-1972/"
+    },
+    {
+      "state": "Delhi",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3865-delhi-1951/"
+    },
+    {
+      "state": "Goa",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14168-goa-general-legislative-election-2022/"
+    },
+    {
+      "state": "Goa",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3862-goa-general-legislative-election-2017/"
+    },
+    {
+      "state": "Goa",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3856-goa-2012/"
+    },
+    {
+      "state": "Goa",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3855-goa-2007/"
+    },
+    {
+      "state": "Goa",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3853-goa-2002/"
+    },
+    {
+      "state": "Goa",
+      "year": 1999,
+      "label": "1999",
+      "url": "https://old.eci.gov.in/files/file/3852-goa-1999/"
+    },
+    {
+      "state": "Goa",
+      "year": 1994,
+      "label": "1994",
+      "url": "https://old.eci.gov.in/files/file/3850-goa-1994/"
+    },
+    {
+      "state": "Goa",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3849-goa-1989/"
+    },
+    {
+      "state": "Goa",
+      "year": 1984,
+      "label": "1984",
+      "url": "https://old.eci.gov.in/files/file/3847-goa-1984/"
+    },
+    {
+      "state": "Goa",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3845-goa-1980/"
+    },
+    {
+      "state": "Goa",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3844-goa-1977/"
+    },
+    {
+      "state": "Goa",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3843-goa-1972/"
+    },
+    {
+      "state": "Goa",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3842-goa-1967/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14750-gujarat-general-legislative-election-2022/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3841-gujarat-general-legislative-election-2017/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3840-gujarat-2012/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3839-gujarat-2007/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3838-gujarat-2002/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3837-gujarat-1998/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1995,
+      "label": "1995",
+      "url": "https://old.eci.gov.in/files/file/3836-gujarat-1995/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3835-gujarat-1990/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3834-gujarat-1985/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3832-gujarat-1980/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1975,
+      "label": "1975",
+      "url": "https://old.eci.gov.in/files/file/3831-gujarat-1975/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3830-gujarat-1972/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3829-gujarat-1967/"
+    },
+    {
+      "state": "Gujarat",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3828-gujarat-1962/"
+    },
+    {
+      "state": "Haryana",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/6"
+    },
+    {
+      "state": "Haryana",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11697-haryana-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Haryana",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/3827-haryana-2014/"
+    },
+    {
+      "state": "Haryana",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/3826-haryana-2009/"
+    },
+    {
+      "state": "Haryana",
+      "year": 2005,
+      "label": "2005",
+      "url": "https://old.eci.gov.in/files/file/3825-haryana-2005/"
+    },
+    {
+      "state": "Haryana",
+      "year": 2000,
+      "label": "2000",
+      "url": "https://old.eci.gov.in/files/file/3824-haryana-2000/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3823-haryana-1996/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/3822-haryana-1991/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1987,
+      "label": "1987",
+      "url": "https://old.eci.gov.in/files/file/3821-haryana-1987/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1982,
+      "label": "1982",
+      "url": "https://old.eci.gov.in/files/file/3820-haryana-1982/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3819-haryana-1977/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3818-haryana-1972/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1968,
+      "label": "1968",
+      "url": "https://old.eci.gov.in/files/file/3817-haryana1968/"
+    },
+    {
+      "state": "Haryana",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3816-haryana-1967/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14751-himachal-pradesh-general-legislative-election-2022/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3815-himachal-pradesh-general-legislative-election-2017/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3812-himachal-pradesh-2012/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3811-himachal-pradesh-2007/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3810-himachal-pradesh-2003/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3809-himachal-pradesh-1998/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3808-himachal-pradesh-1993/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3807-himachal-pradesh-1990/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3806-himachal-pradesh-1985/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1982,
+      "label": "1982",
+      "url": "https://old.eci.gov.in/files/file/3805-himachal-pradesh-1982/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3803-himachal-pradesh-1977/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3802-himachal-pradesh-1972/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3801-himachal-pradesh-1967/"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3799-himachal-pradesh-1951/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/7"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/3797-jammu-kashmir-2014/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3796-jammu-kashmir-2008/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3795-jammu-kashmir-2002/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3794-jammu-kashmir-1996/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1987,
+      "label": "1987",
+      "url": "https://old.eci.gov.in/files/file/3793-jammu-kashmir-1987/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/3792-jammu-kashmir-1983/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3791-jammu-kashmir-1977/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3790-jammu-kashmir-1972/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/"
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/"
+    },
+    {
+      "state": "Jharkhand",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/9"
+    },
+    {
+      "state": "Jharkhand",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11813-jharkhand-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Jharkhand",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/3787-jharkhand-2014/"
+    },
+    {
+      "state": "Jharkhand",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/3786-jharkhand-2009/"
+    },
+    {
+      "state": "Jharkhand",
+      "year": 2005,
+      "label": "2005",
+      "url": "https://old.eci.gov.in/files/file/3785-jharkhand-2005/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://old.eci.gov.in/files/file/15163-karnataka-2023/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/6933-karnataka-2018/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3784-karnataka-2013/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3783-karnataka-2008/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 2004,
+      "label": "2004",
+      "url": "https://old.eci.gov.in/files/file/3782-karnataka-2004/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1999,
+      "label": "1999",
+      "url": "https://old.eci.gov.in/files/file/3781-karnataka-1999/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1994,
+      "label": "1994",
+      "url": "https://old.eci.gov.in/files/file/3780-karnataka-1994/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3779-karnataka-1989/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3778-karnataka-1985/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/3777-karnataka-1983/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/3776-karnataka-1978/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3775-karnataka-1972/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3774-karnataka-1967/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3773-karnataka-1962/"
+    },
+    {
+      "state": "Karnataka",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/"
+    },
+    {
+      "state": "Kerala",
+      "year": 2026,
+      "label": "2026",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2026/24"
+    },
+    {
+      "state": "Kerala",
+      "year": 2021,
+      "label": "2021",
+      "url": "https://old.eci.gov.in/files/file/13827-kerala-general-legislative-election-2021/"
+    },
+    {
+      "state": "Kerala",
+      "year": 2016,
+      "label": "2016",
+      "url": "https://old.eci.gov.in/files/file/3767-kerala-general-legislative-election-2016/"
+    },
+    {
+      "state": "Kerala",
+      "year": 2011,
+      "label": "2011",
+      "url": "https://old.eci.gov.in/files/file/3763-kerala-2011/"
+    },
+    {
+      "state": "Kerala",
+      "year": 2006,
+      "label": "2006",
+      "url": "https://old.eci.gov.in/files/file/3762-kerala-2006/"
+    },
+    {
+      "state": "Kerala",
+      "year": 2001,
+      "label": "2001",
+      "url": "https://old.eci.gov.in/files/file/3760-kerala-2001/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3759-kerala-1996/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/3758-kerala-1991/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1987,
+      "label": "1987",
+      "url": "https://old.eci.gov.in/files/file/3756-kerala-1987/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1982,
+      "label": "1982",
+      "url": "https://old.eci.gov.in/files/file/3755-kerala-1982/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3754-kerala-1980/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3753-kerala-1977/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1970,
+      "label": "1970",
+      "url": "https://old.eci.gov.in/files/file/3752-kerala-1970/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3751-kerala-1967/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1965,
+      "label": "1965",
+      "url": "https://old.eci.gov.in/files/file/3749-kerala-1965/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1960,
+      "label": "1960",
+      "url": "https://old.eci.gov.in/files/file/3748-kerala-1960/"
+    },
+    {
+      "state": "Kerala",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3746-kerala-1957/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://www.eci.gov.in/mp-legislative-election-2023-statistical-report"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/9685-madhya-pradesh-legislative-election-2018-statistical-report/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3740-madhya-pradesh-2013/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3739-madhya-pradesh-2008/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3738-madhya-pradesh-2003/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3737-madhya-pradesh-1998/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3736-madhya-pradesh-1993/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3735-madhya-pradesh-1990/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3734-madhya-pradesh-1985/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3733-madhya-pradesh-1980/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3732-madhya-pradesh-1977/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3731-madhya-pradesh-1972/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3730-madhya-pradesh-1967/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3729-madhya-pradesh-1962/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3727-madhya-pradesh-1951/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/8"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11699-maharashtra-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/3726-maharashtra-2014/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/3724-maharashtra-2009/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 2004,
+      "label": "2004",
+      "url": "https://old.eci.gov.in/files/file/3723-maharashtra-2004/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1999,
+      "label": "1999",
+      "url": "https://old.eci.gov.in/files/file/3722-maharashtra-1999/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1995,
+      "label": "1995",
+      "url": "https://old.eci.gov.in/files/file/3721-maharashtra-1995/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3720-maharashtra-1990/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3719-maharashtra-1985/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3718-maharashtra-1980/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/3717-maharashtra-1978/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3716-maharashtra-1972/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3715-maharashtra-1967/"
+    },
+    {
+      "state": "Maharashtra",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3714-maharashtra-1962/"
+    },
+    {
+      "state": "Manipur",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14166-manipur-general-legislative-election-2022/"
+    },
+    {
+      "state": "Manipur",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3713-manipur-general-legislative-election-2017/"
+    },
+    {
+      "state": "Manipur",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3712-manipur-2012/"
+    },
+    {
+      "state": "Manipur",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3711-manipur-2007/"
+    },
+    {
+      "state": "Manipur",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3710-manipur-2002/"
+    },
+    {
+      "state": "Manipur",
+      "year": 2000,
+      "label": "2000",
+      "url": "https://old.eci.gov.in/files/file/3709-manipur-2000/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1995,
+      "label": "1995",
+      "url": "https://old.eci.gov.in/files/file/3708-manipur-1995/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3707-manipur-1990/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1984,
+      "label": "1984",
+      "url": "https://old.eci.gov.in/files/file/3706-manipur-1984/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3705-manipur-1980/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1974,
+      "label": "1974",
+      "url": "https://old.eci.gov.in/files/file/3704-manipur-1974/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3703-manipur-1972/"
+    },
+    {
+      "state": "Manipur",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3702-manipur-1967/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 2023,
+      "label": "2023(Including AC-23)",
+      "url": "https://old.eci.gov.in/files/file/15053-meghalaya-general-legislative-election-2023-including-ac-23/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 2023,
+      "label": "2023(Excluding Ac-23)",
+      "url": "https://old.eci.gov.in/files/file/14873-meghalayaexcluding-ac-23/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/3694-meghalaya-general-legislative-election-2018/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3690-meghalaya-2013/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3688-meghalaya-2008/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3687-meghalaya-2003/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3686-meghalaya-1998/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3684-meghalaya-1993/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 1988,
+      "label": "1988",
+      "url": "https://old.eci.gov.in/files/file/3674-meghalaya-1988/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/3672-meghalaya-1983/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/3670-meghalaya-1978/"
+    },
+    {
+      "state": "Meghalaya",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3669-meghalaya-1972/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://www.eci.gov.in/mizoram-legislative-election-2023-statistical-report"
+    },
+    {
+      "state": "Mizoram",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/9687-mizoram-legislative-election-2018-statistical-report/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3667-mizoram-2013/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3666-mizoram-2008/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3664-mizoram-2003/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3663-mizoram-1998/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3662-mizoram-1993/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3661-mizoram-1989/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1987,
+      "label": "1987",
+      "url": "https://old.eci.gov.in/files/file/3659-mizoram-1987/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1984,
+      "label": "1984",
+      "url": "https://old.eci.gov.in/files/file/3658-mizoram-1984/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1979,
+      "label": "1979",
+      "url": "https://old.eci.gov.in/files/file/3657-mizoram-1979/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1978,
+      "label": "1978",
+      "url": "https://old.eci.gov.in/files/file/3655-mizoram-1978/"
+    },
+    {
+      "state": "Mizoram",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3654-mizoram-1972/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://old.eci.gov.in/files/file/14874-nagaland-general-legislative-election-2023/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/3652-nagaland-general-legislative-election-2018/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3646-nagaland-2013/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3644-nagaland-2008/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3642-nagaland-2003/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3639-nagaland-1993/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3638-nagaland-1989/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1987,
+      "label": "1987",
+      "url": "https://old.eci.gov.in/files/file/3637-nagaland-1987/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1982,
+      "label": "1982",
+      "url": "https://old.eci.gov.in/files/file/3636-nagaland-1982/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3635-nagaland-1977/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1974,
+      "label": "1974",
+      "url": "https://old.eci.gov.in/files/file/3634-nagaland-1974/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1969,
+      "label": "1969",
+      "url": "https://old.eci.gov.in/files/file/3633-nagaland-1969/"
+    },
+    {
+      "state": "Nagaland",
+      "year": 1964,
+      "label": "1964",
+      "url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/"
+    },
+    {
+      "state": "Odisha",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/4"
+    },
+    {
+      "state": "Odisha",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11679-odisha-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Odisha",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/3631-orissa-2014/"
+    },
+    {
+      "state": "Odisha",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/3630-orissa-2009/"
+    },
+    {
+      "state": "Odisha",
+      "year": 2004,
+      "label": "2004",
+      "url": "https://old.eci.gov.in/files/file/3629-orissa-2004/"
+    },
+    {
+      "state": "Odisha",
+      "year": 2000,
+      "label": "2000",
+      "url": "https://old.eci.gov.in/files/file/3628-orissa-2000/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1995,
+      "label": "1995",
+      "url": "https://old.eci.gov.in/files/file/3627-orissa-1995/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3626-orissa-1990/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3625-orissa-1985/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3624-orissa-1980/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3623-orissa-1977/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1974,
+      "label": "1974",
+      "url": "https://old.eci.gov.in/files/file/3622-orissa-1974/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1971,
+      "label": "1971",
+      "url": "https://old.eci.gov.in/files/file/3621-orissa-1971/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3620-orissa-1967/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1961,
+      "label": "1961",
+      "url": "https://old.eci.gov.in/files/file/3619-orissa-1961/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3618-orissa-1957/"
+    },
+    {
+      "state": "Odisha",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3617-orissa-1951/"
+    },
+    {
+      "state": "Punjab",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14165-punjab-general-legislative-election-2022/"
+    },
+    {
+      "state": "Punjab",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3614-punjab-general-legislative-election-2017/"
+    },
+    {
+      "state": "Punjab",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3455-punjab-2012/"
+    },
+    {
+      "state": "Punjab",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3454-punjab-2007/"
+    },
+    {
+      "state": "Punjab",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3453-punjab-2002/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1997,
+      "label": "1997",
+      "url": "https://old.eci.gov.in/files/file/3452-punjab-1997/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1992,
+      "label": "1992",
+      "url": "https://old.eci.gov.in/files/file/3451-punjab-1992/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3450-punjab-1985/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3449-punjab-1980/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3448-punjab-1977/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3447-punjab-1972/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1969,
+      "label": "1969",
+      "url": "https://old.eci.gov.in/files/file/3446-punjab-1969/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3445-punjab-1967/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3444-punjab-1962/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3443-punjab-1957/"
+    },
+    {
+      "state": "Punjab",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3442-punjab-1951/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 2026,
+      "label": "2026",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2026/25"
+    },
+    {
+      "state": "Puducherry",
+      "year": 2021,
+      "label": "2021",
+      "url": "https://old.eci.gov.in/files/file/13417-puducherry-general-legislative-election-2021/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 2016,
+      "label": "2016",
+      "url": "https://old.eci.gov.in/files/file/3474-puducherry-general-legislative-election-2016/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 2011,
+      "label": "2011",
+      "url": "https://old.eci.gov.in/files/file/3438-puducherry-2011/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 2006,
+      "label": "2006",
+      "url": "https://old.eci.gov.in/files/file/3437-puducherry-2006/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 2001,
+      "label": "2001",
+      "url": "https://old.eci.gov.in/files/file/3436-puducherry-2001/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3434-puducherry-1996/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/3433-puducherry-1991/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3431-puducherry-1990/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3430-puducherry-1985/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3428-puducherry-1980/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3426-puducherry-1977/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1974,
+      "label": "1974",
+      "url": "https://old.eci.gov.in/files/file/3425-puducherry-1974/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1969,
+      "label": "1969",
+      "url": "https://old.eci.gov.in/files/file/3423-puducherry-1969/"
+    },
+    {
+      "state": "Puducherry",
+      "year": 1964,
+      "label": "1964",
+      "url": "https://old.eci.gov.in/files/file/3421-puducherry-1964/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 2023,
+      "label": "2023(Including AC-03)",
+      "url": "https://www.eci.gov.in/rajasthan-legislative-election-2023-including-statistical-report"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 2023,
+      "label": "2023(Excluding Ac-03)",
+      "url": "https://www.eci.gov.in/rajasthan-legislative-election-2023-statistical-report"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/9645-statistical-data-of-rajasthan-la-2018/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3411-rajasthan-2013/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3407-rajasthan-2008/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3403-rajasthan-2003/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3400-rajasthan-1998/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3394-rajasthan-1993/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1990,
+      "label": "1990",
+      "url": "https://old.eci.gov.in/files/file/3392-rajasthan-1990/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3389-rajasthan-1985/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3387-rajasthan-1980/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3385-rajasthan-1977/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3383-rajasthan-1972/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3382-rajasthan-1967/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3380-rajasthan-1962/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3379-rajasthan-1957/"
+    },
+    {
+      "state": "Rajasthan",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3378-rajasthan-1951/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 2024,
+      "label": "2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/5"
+    },
+    {
+      "state": "Sikkim",
+      "year": 2019,
+      "label": "2019",
+      "url": "https://old.eci.gov.in/files/file/11677-sikkim-legislative-assembly-election-2019/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 2014,
+      "label": "2014",
+      "url": "https://old.eci.gov.in/files/file/3365-sikkim-2014/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 2009,
+      "label": "2009",
+      "url": "https://old.eci.gov.in/files/file/3364-sikkim-2009/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 2004,
+      "label": "2004",
+      "url": "https://old.eci.gov.in/files/file/3363-sikkim-2004/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 1999,
+      "label": "1999",
+      "url": "https://old.eci.gov.in/files/file/3361-sikkim-1999/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 1994,
+      "label": "1994",
+      "url": "https://old.eci.gov.in/files/file/3360-sikkim-1994/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3358-sikkim-1989/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3356-sikkim-1985/"
+    },
+    {
+      "state": "Sikkim",
+      "year": 1979,
+      "label": "1979",
+      "url": "https://old.eci.gov.in/files/file/3354-sikkim-1979/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 2026,
+      "label": "2026",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2026/26"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 2021,
+      "label": "2021",
+      "url": "https://old.eci.gov.in/files/file/13680-tamil-nadu-general-legislative-election-2021/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 2016,
+      "label": "2016",
+      "url": "https://old.eci.gov.in/files/file/3473-tamil-nadu-general-legislative-election-2016/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 2011,
+      "label": "2011",
+      "url": "https://old.eci.gov.in/files/file/3340-tamil-nadu-2011/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 2006,
+      "label": "2006",
+      "url": "https://old.eci.gov.in/files/file/3339-tamil-nadu-2006/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 2001,
+      "label": "2001",
+      "url": "https://old.eci.gov.in/files/file/3338-tamil-nadu-2001/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3336-tamil-nadu-1996/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/3335-tamil-nadu-1991/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3333-tamil-nadu-1989/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1984,
+      "label": "1984",
+      "url": "https://old.eci.gov.in/files/file/3331-tamil-nadu-1984/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3328-tamil-nadu-1980/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3327-tamil-nadu-1977/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1971,
+      "label": "1971",
+      "url": "https://old.eci.gov.in/files/file/3326-tamil-nadu-1971/"
+    },
+    {
+      "state": "Tamil Nadu",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3325-tamil-nadu-1967/"
+    },
+    {
+      "state": "Telangana",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://www.eci.gov.in/telangana-legislative-election-2023-statistical-report"
+    },
+    {
+      "state": "Telangana",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/9691-telangana-general-legislative-election-2018-statistical-report/"
+    },
+    {
+      "state": "Tripura",
+      "year": 2023,
+      "label": "2023",
+      "url": "https://old.eci.gov.in/files/file/14875-tripura-general-legislative-election-2023/"
+    },
+    {
+      "state": "Tripura",
+      "year": 2018,
+      "label": "2018",
+      "url": "https://old.eci.gov.in/files/file/3472-tripura-general-legislative-election-2018/"
+    },
+    {
+      "state": "Tripura",
+      "year": 2013,
+      "label": "2013",
+      "url": "https://old.eci.gov.in/files/file/3313-tripura-2013/"
+    },
+    {
+      "state": "Tripura",
+      "year": 2008,
+      "label": "2008",
+      "url": "https://old.eci.gov.in/files/file/3309-tripura-2008/"
+    },
+    {
+      "state": "Tripura",
+      "year": 2003,
+      "label": "2003",
+      "url": "https://old.eci.gov.in/files/file/3306-tripura-2003/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1998,
+      "label": "1998",
+      "url": "https://old.eci.gov.in/files/file/3302-tripura-1998/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3299-tripura-1993/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1988,
+      "label": "1988",
+      "url": "https://old.eci.gov.in/files/file/3296-tripura-1988/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1983,
+      "label": "1983",
+      "url": "https://old.eci.gov.in/files/file/3292-tripura-1983/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3288-tripura-1977/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3284-tripura-1972/"
+    },
+    {
+      "state": "Tripura",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3278-tripura-1967/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14185-uttar-pradesh-general-legislative-election-2022/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3471-uttar-pradesh-general-legislative-election-2017/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3262-uttar-pradesh-2012/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3261-uttar-pradesh-2007/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3260-uttar-pradesh-2002/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3259-uttar-pradesh-1996/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1993,
+      "label": "1993",
+      "url": "https://old.eci.gov.in/files/file/3258-uttar-pradesh-1993/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/3257-uttar-pradesh-1991/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1989,
+      "label": "1989",
+      "url": "https://old.eci.gov.in/files/file/3256-uttar-pradesh-1989/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1985,
+      "label": "1985",
+      "url": "https://old.eci.gov.in/files/file/3255-uttar-pradesh-1985/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1980,
+      "label": "1980",
+      "url": "https://old.eci.gov.in/files/file/3254-uttar-pradesh-1980/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3253-uttar-pradesh-1977/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1974,
+      "label": "1974",
+      "url": "https://old.eci.gov.in/files/file/3249-uttar-pradesh-1974/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1969,
+      "label": "1969",
+      "url": "https://old.eci.gov.in/files/file/3247-uttar-pradesh-1969/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3246-uttar-pradesh-1967/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3244-uttar-pradesh-1962/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3241-uttar-pradesh-1951/"
+    },
+    {
+      "state": "Uttarakhand",
+      "year": 2022,
+      "label": "2022",
+      "url": "https://old.eci.gov.in/files/file/14169-uttarakhand-general-legislative-election-2022/"
+    },
+    {
+      "state": "Uttarakhand",
+      "year": 2017,
+      "label": "2017",
+      "url": "https://old.eci.gov.in/files/file/3470-uttarakhand-general-legislative-election-2017/"
+    },
+    {
+      "state": "Uttarakhand",
+      "year": 2012,
+      "label": "2012",
+      "url": "https://old.eci.gov.in/files/file/3231-uttarakhand%092012/"
+    },
+    {
+      "state": "Uttarakhand",
+      "year": 2007,
+      "label": "2007",
+      "url": "https://old.eci.gov.in/files/file/3228-uttarakhand-2007/"
+    },
+    {
+      "state": "Uttarakhand",
+      "year": 2002,
+      "label": "2002",
+      "url": "https://old.eci.gov.in/files/file/3226-uttarakhand%092002/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2026,
+      "label": "2026(Including AC-144)",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2026/28"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2026,
+      "label": "2026(Excluding AC-144)",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2026/27"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2021,
+      "label": "2021 (Including AC 56 & 58)",
+      "url": "https://old.eci.gov.in/files/file/14106-west-bengal-general-legislative-election-2021-including-ac-56-58/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2021,
+      "label": "2021 (Excluding AC 56 & 58)",
+      "url": "https://old.eci.gov.in/files/file/13605-west-bengal-general-legislative-election-2021-excluding-ac-56-58/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2016,
+      "label": "2016",
+      "url": "https://old.eci.gov.in/files/file/3469-west-bengal-general-legislative-election-2016/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2011,
+      "label": "2011",
+      "url": "https://old.eci.gov.in/files/file/3195-west-bengal-2011/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2006,
+      "label": "2006",
+      "url": "https://old.eci.gov.in/files/file/3194-west-bengal-2006/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 2001,
+      "label": "2001",
+      "url": "https://old.eci.gov.in/files/file/3193-west-bengal-2001/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1996,
+      "label": "1996",
+      "url": "https://old.eci.gov.in/files/file/3192-west-bengal-1996/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1991,
+      "label": "1991",
+      "url": "https://old.eci.gov.in/files/file/3191-west-bengal-1991/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1987,
+      "label": "1987",
+      "url": "https://old.eci.gov.in/files/file/3190-west-bengal-1987/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1982,
+      "label": "1982",
+      "url": "https://old.eci.gov.in/files/file/3189-west-bengal-1982/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1977,
+      "label": "1977",
+      "url": "https://old.eci.gov.in/files/file/3188-west-bengal-1977/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1972,
+      "label": "1972",
+      "url": "https://old.eci.gov.in/files/file/3187-west-bengal-1972/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1971,
+      "label": "1971",
+      "url": "https://old.eci.gov.in/files/file/3186-west-bengal-general-legislative-election-1971/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1969,
+      "label": "1969",
+      "url": "https://old.eci.gov.in/files/file/3185-west-bengal-general-legislative-election-1969/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/3184-west-bengal-1967/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/3183-west-bengal-1962/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/3182-west-bengal-1957/"
+    },
+    {
+      "state": "West Bengal",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/3181-west-bengal-general-legislative-election-1951/"
+    },
+    {
+      "state": "Ajmer",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4110-ajmer-1951/"
+    },
+    {
+      "state": "Bhopal",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4109-bhopal-1951/"
+    },
+    {
+      "state": "Bombay",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/4108-bombay-1957/"
+    },
+    {
+      "state": "Bombay",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4107-bombay-1951/"
+    },
+    {
+      "state": "Coorg",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4106-coorg-1951/"
+    },
+    {
+      "state": "Hyderabad",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4105-hyderabad-1951/"
+    },
+    {
+      "state": "Madhya Bharat",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4104-madhya-bharat-1951/"
+    },
+    {
+      "state": "Madras",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/4103-madras-1967/"
+    },
+    {
+      "state": "Madras",
+      "year": 1962,
+      "label": "1962",
+      "url": "https://old.eci.gov.in/files/file/4102-madras-1962/"
+    },
+    {
+      "state": "Madras",
+      "year": 1957,
+      "label": "1957",
+      "url": "https://old.eci.gov.in/files/file/4101-madras-1957/"
+    },
+    {
+      "state": "Madras",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4100-madras-1951/"
+    },
+    {
+      "state": "Mysore",
+      "year": 1967,
+      "label": "1967",
+      "url": "https://old.eci.gov.in/files/file/4099-mysore-1967/"
+    },
+    {
+      "state": "Mysore",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4098-mysore-1951/"
+    },
+    {
+      "state": "Patiala & East Punjab States Union",
+      "year": 1954,
+      "label": "1954",
+      "url": "https://old.eci.gov.in/files/file/4097-patiala-east-punjab-states-union-1954/"
+    },
+    {
+      "state": "Patiala & East Punjab States Union",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4096-patiala-east-punjab-states-union-1951/"
+    },
+    {
+      "state": "Sourastra",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4095-sourastra-1951/"
+    },
+    {
+      "state": "Travancore Cochin",
+      "year": 1954,
+      "label": "1954",
+      "url": "https://old.eci.gov.in/files/file/4094-travancore-cochin-1954/"
+    },
+    {
+      "state": "Travancore Cochin",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4093-travancore-cochin-1951/"
+    },
+    {
+      "state": "Vindhya Pradesh",
+      "year": 1951,
+      "label": "1951",
+      "url": "https://old.eci.gov.in/files/file/4092-vindhya-pradesh-1951/"
+    }
+  ]
+}

@@ -39,7 +39,8 @@ def save_manifest(path, record):
 
 
 def collect_modern(kind, label, url, folder, manifest, old, record):
-    if kind != 'pc' or int(label[:4]) != 2024:
+    modern_ac = re.fullmatch(r'/statistical-report/ae/(20\d{2})/(\d+)', urlparse(url).path) if kind == 'ac' else None
+    if not modern_ac and (kind != 'pc' or int(label[:4]) != 2024):
         record.update(status='adapter_required', errors=['No verified catalogue API mapping for this edition.'])
         save_manifest(manifest, record)
         return record
@@ -49,7 +50,8 @@ def collect_modern(kind, label, url, folder, manifest, old, record):
         if Path(item['file']).name == item['file'] and path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == item['sha256']:
             record['files'].append(item)
     try:
-        catalogue_url = 'https://www.eci.gov.in/eci-backend/public/api/election-result?category_id=1'
+        category = modern_ac.group(2) if modern_ac else '1'
+        catalogue_url = 'https://www.eci.gov.in/eci-backend/public/api/election-result?category_id=' + category
         body = fetch(catalogue_url, folder / 'modern-catalogue.json')
         catalogue = json.loads(body)
         entries = catalogue['results']
@@ -70,9 +72,9 @@ def collect_modern(kind, label, url, folder, manifest, old, record):
                 extension = Path(urlparse(source).path).suffix.lower()
                 title = entry['title'].strip()
                 download_id = key(source)
-                if field == 'pdf_zip_url' and title.startswith('32.'):
+                if kind == 'pc' and field == 'pdf_zip_url' and title.startswith('32.'):
                     download_id = key(url) + '-summary'
-                elif field == 'pdf_zip_url' and title.startswith('33.'):
+                elif kind == 'pc' and field == 'pdf_zip_url' and title.startswith('33.'):
                     download_id = key(url) + '-saved'
                 temporary = folder / (download_id + '.part')
                 try:
@@ -201,8 +203,13 @@ if __name__ == '__main__':
     parser.add_argument('destination')
     parser.add_argument('--kind', choices=['ac','pc','all'], default='all')
     parser.add_argument('--year', type=int)
+    parser.add_argument('--state', help='State as recorded, or all; use a national Assembly catalogue')
     args = parser.parse_args()
     catalogue = json.loads(Path(args.catalogue).read_text(encoding='utf-8'))
+    if args.state:
+        catalogue = {'ac': [[e.get('label', str(e['year'])) + ' ' + e['state'], e['url']] for e in catalogue['entries'] if args.state == 'all' or e['state'] == args.state], 'pc': []}
+        if not catalogue['ac']:
+            parser.error('No matching Assembly state')
     jobs = [(kind,label,url,Path(args.destination)) for kind in ['ac','pc'] if args.kind in [kind,'all'] for label,url in catalogue[kind] if args.year is None or int(label[:4]) == args.year]
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         futures = [pool.submit(collect,*job) for job in jobs]

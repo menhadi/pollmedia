@@ -57,6 +57,32 @@ class ArchiveCollectionTest(unittest.TestCase):
                 result=collect('pc','2024','https://www.eci.gov.in/reports',Path(tmp))
             self.assertEqual(result['status'],'failed')
 
+    def test_assembly_uses_its_own_category_and_keeps_state_provenance(self):
+        url = 'https://www.eci.gov.in/statistical-report/ae/2024/6'
+        def download(source, destination):
+            if '/api/' in source:
+                self.assertTrue(source.endswith('category_id=6'))
+                content = json.dumps({'totalResults': 1, 'results': [{'title': '32. Report', 'pdf_zip_url': 'https://www.eci.gov.in/report.pdf'}]}).encode()
+            else:
+                content = b'%PDF-1.7 fixture'
+            destination.write_bytes(content)
+            return content
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch('collect_election_archive.fetch', side_effect=download):
+                result = collect('ac', '2024 Haryana', url, Path(tmp))
+            self.assertEqual(result['status'], 'collected')
+            self.assertEqual(result['files'][0]['source_page'], url)
+            self.assertNotIn('-summary', result['files'][0]['file'])
+
+    def test_discovery_preserves_special_editions_and_historical_state_names(self):
+        from discover_assembly_archive import parse
+        page = '<table><tr><td>Bombay</td><td><a href="https://old.eci.gov.in/files/file/1-report/">1951</a></td></tr><tr><td>West Bengal</td><td><a href="statistical-report/ae/2026/28">2026(Including AC-144)</a></td></tr></table>'
+        result = parse(json.dumps({'cmsPagesData': {'page_content': page}}).encode())
+        self.assertEqual(len(result['entries']), 2)
+        self.assertEqual(result['entries'][0]['state'], 'Bombay')
+        self.assertEqual(result['entries'][1]['label'], '2026(Including AC-144)')
+        self.assertEqual(result['entries'][1]['year'], 2026)
+
     def test_category_excludes_global_recent_download_widgets(self):
         soup=BeautifulSoup('<div class="cDownloadsCategoryTable"><a title="View the file Result" href="https://old.eci.gov.in/files/file/1-report/">Result</a></div><div class="ipsWidget"><a title="View the file unrelated" href="https://old.eci.gov.in/files/file/2-other/">Other year</a></div>', 'html.parser')
         self.assertEqual(['https://old.eci.gov.in/files/file/1-report/'],report_pages(soup))

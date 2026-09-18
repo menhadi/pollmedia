@@ -10,10 +10,30 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class HistoricalElectionController extends Controller
 {
+    public function sources(Request $request, ElectionArchive $archives): View
+    {
+        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
+        $entries = collect($catalogue['entries']);
+        $states = $entries->pluck('state')->unique()->sort()->values();
+        $years = $entries->pluck('year')->unique()->sortDesc()->values();
+        $input = $request->validate(['state' => ['nullable', Rule::in($states->all())], 'year' => ['nullable', 'integer', Rule::in($years->all())]]);
+        $state = $input['state'] ?? null;
+        $year = isset($input['year']) ? (int) $input['year'] : null;
+        $entries = $entries->filter(fn ($entry) => ($state === null || $entry['state'] === $state) && ($year === null || $entry['year'] === $year))
+            ->map(function ($entry) use ($archives): array {
+                $collection = $archives->collection($entry['url']);
+
+                return $entry + ['collected' => count($collection['files']), 'status' => $collection['status']];
+            });
+
+        return view('assembly-sources', compact('catalogue', 'entries', 'states', 'years', 'state', 'year'));
+    }
+
     public function compare(string $slug, ConstituencyHistory $history): View
     {
         $place = DB::table('places')->where('slug', 'pc-'.$slug)->where('type', 'pc')->first();
