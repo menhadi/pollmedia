@@ -110,3 +110,10 @@ The latest public index checkpoint contains 16,390 preserved document entries, 4
 The Sikkim OCR pass finished all 81 pages marked scanned or empty by the table extractor. Fifty-five pages are labelled unverified_ocr and 26 need closer visual review; neither label means verified election results. Original files and OCR word coordinates, engine/model hashes and page warnings are preserved. A Goa OCR pass has now started against its extracted scanned pages, while the national table extraction batch continues.
 
 The additional oversized Rajasthan report (Form20-19.pdf from the 2023 Assembly archive, discovered through the Delhi directory) was recovered: 108,064,920 bytes. Daman still fails certificate verification and remains a source gap. Madhya Pradesh discovery/downloads remain active; this checkpoint is not national completeness.
+
+
+## Goa OCR completion and Bihar continuation
+
+Goa OCR completed 489 scanned pages: 298 labelled unverified_ocr and 191 needing visual review. These are OCR quality labels, not verification of election results. Original files, word positions and quality warnings remain preserved. Bihar English/Hindi OCR started after the Goa process exited; its initial checkpoint is 91 pages. Only one OCR batch is running alongside the two-worker national table extraction batch.
+
+The last completed index rebuild counted 16,522 document entries, 5,805 extracted documents and 317,002 polling rows. Madhya Pradesh has 137 preserved reports out of 167 discovered document records, with further discovery pages queued. Collection and extraction are still incomplete, and no live deployment has been performed.
