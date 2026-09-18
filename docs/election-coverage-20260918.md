@@ -103,3 +103,10 @@ ECI CEO contact details identify https://ceoelection.mp.gov.in/ as the current M
 The next Nagaland retry recovered all 18 remaining reports. All 295 report records exposed by the preserved dropdown responses now have original files. This completes that discovered download set, not every historical election or constituency. Earlier sparse selections and extraction/OCR limitations still apply.
 
 The latest public index checkpoint contains 16,390 preserved document entries, 4,536 extracted documents and 229,971 mapped polling rows. There are 1,251 queued discovery pages, including newly discovered archive links. Madhya Pradesh discovery, national extraction and Sikkim OCR remain active. No live deployment has been performed.
+
+
+## Sikkim OCR pass completed
+
+The Sikkim OCR pass finished all 81 pages marked scanned or empty by the table extractor. Fifty-five pages are labelled unverified_ocr and 26 need closer visual review; neither label means verified election results. Original files and OCR word coordinates, engine/model hashes and page warnings are preserved. A Goa OCR pass has now started against its extracted scanned pages, while the national table extraction batch continues.
+
+The additional oversized Rajasthan report (Form20-19.pdf from the 2023 Assembly archive, discovered through the Delhi directory) was recovered: 108,064,920 bytes. Daman still fails certificate verification and remains a source gap. Madhya Pradesh discovery/downloads remain active; this checkpoint is not national completeness.
