@@ -9,6 +9,16 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_historical_dates_do_not_inherit_the_previous_year(self):
+        rows = [[]]*5
+        for label, name in [(1956, 'First'), ('9.3.57', 'Second'), ('24.1158', 'Unclear'), ('4.12.58', 'Fourth')]:
+            rows.append(['ASSAM', 1, label, name, 'P', 100, 'Winner', 'Q', 80, 'Other'])
+        records = historical_summary(table(rows, 'Lok sabha'))
+        self.assertEqual([r['year'] for r in records], [1956, 1957, None, 1958])
+        self.assertEqual(records[1]['source_date'], '1957-03-09')
+        self.assertEqual(records[2]['source_year_text'], '24.1158')
+        self.assertTrue(any('unclear' in note for note in records[2]['notes']))
+
     def test_uncontested_source_without_candidate_name_stays_visible_with_note(self):
         result = index_card([table([['Legislative Assembly of- Andhra Pradesh'],
                                    ['Number and name Assembly Constituency - 248-Pulivendla'],

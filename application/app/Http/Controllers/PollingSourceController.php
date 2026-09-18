@@ -6,20 +6,28 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PollingSourceController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|BinaryFileResponse
     {
         $disk = Storage::disk('local');
         $root = 'polling-station-sources/';
         $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['states' => [], 'sources' => []];
         $states = collect($index['states'])->sortBy('state')->values();
         $all = collect($index['sources']);
-        $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())], 'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1']]);
+        $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())], 'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'], 'download' => ['nullable', 'boolean']]);
         $choices = $all->filter(fn ($source) => ! isset($input['state']) || $source['state'] === $input['state'])->values();
         $source = isset($input['source']) ? $choices->firstWhere('id', $input['source']) : ($choices->first(fn ($entry) => count($entry['pages']) > 0) ?? $choices->first());
         abort_if(isset($input['source']) && ! $source, 404);
+        if ($input['download'] ?? false) {
+            abort_unless($source && isset($input['source']) && preg_match('/^[a-f0-9]{24}$/', $source['folder']) && preg_match('/^[a-f0-9]{64}\.(pdf|xlsx|xls|zip|csv)$/', $source['file']), 404);
+            $originalPath = $disk->path($root.$source['folder'].'/'.$source['file']);
+            abort_unless(is_file($originalPath) && hash_equals($source['sha256'], hash_file('sha256', $originalPath)), 503, 'Preserved original integrity check failed.');
+
+            return response()->download($originalPath, $source['file'], ['X-Content-Type-Options' => 'nosniff', 'Content-Security-Policy' => 'sandbox']);
+        }
         $page = (int) ($input['page'] ?? 1);
         $data = null;
         $ocr = null;

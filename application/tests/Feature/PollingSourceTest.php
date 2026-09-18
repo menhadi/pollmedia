@@ -7,6 +7,24 @@ use Tests\TestCase;
 
 class PollingSourceTest extends TestCase
 {
+    public function test_preserved_original_is_public_while_table_extraction_is_pending(): void
+    {
+        Storage::fake('local');
+        $id = str_repeat('a', 24);
+        $body = '%PDF-preserved official source';
+        $sha = hash('sha256', $body);
+        $root = 'polling-station-sources/';
+        $source = ['id' => $id, 'folder' => $id, 'file' => $sha.'.pdf', 'sha256' => $sha, 'state' => 'Example',
+            'name' => 'Official results', 'source_url' => 'https://eci.gov.in/source.pdf', 'discovered_on' => 'https://eci.gov.in/', 'pages' => [], 'polling_rows' => 0];
+        Storage::disk('local')->put($root.$id.'/'.$source['file'], $body);
+        Storage::disk('local')->put($root.'index.json', json_encode(['states' => [], 'sources' => [$source]]));
+        $this->get('/india/elections/polling-stations')->assertOk()->assertSee('published with warnings')->assertSee('Page extraction is still pending.')->assertSee('Download preserved original');
+        $url = '/india/elections/polling-stations?source='.$id.'&download=1';
+        $this->get($url)->assertOk()->assertDownload($sha.'.pdf')->assertHeader('X-Content-Type-Options', 'nosniff');
+        Storage::disk('local')->put($root.$id.'/'.$source['file'], 'changed');
+        $this->get($url)->assertStatus(503);
+    }
+
     /**
      * A basic feature test example.
      */

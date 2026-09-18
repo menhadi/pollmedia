@@ -1,5 +1,5 @@
 """Map preserved ECI by-election cells into source-linked constituency results."""
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -132,13 +132,31 @@ def index_card(tables, year):
 def historical_summary(table):
     kind = 'pc' if 'lok' in table['name'].lower() else 'ac'
     records, current, state, year = [], None, None, None
+    source_date, source_year_text, date_warning = None, None, None
     for row in table['rows']:
         cells = row['cells']+[None]*13
+        if row['row'] <= 5:
+            continue
         new_year = number(cells[2])
         if new_year and 1950 <= new_year <= 1995:
             year = new_year
-        if row['row'] <= 5 or year is None:
-            continue
+            source_year_text, source_date, date_warning = text(cells[2]), None, None
+        else:
+            date_text = text(cells[2])
+            match = re.fullmatch(r'(\d{1,2})[./-](\d{1,2})[./-](\d{2}|\d{4})', date_text)
+            if match:
+                source_year_text = date_text
+                try:
+                    date_year = int(match[3])+(1900 if len(match[3]) == 2 else 0)
+                    if not 1952 <= date_year <= 1995:
+                        raise ValueError('Outside the source period')
+                    parsed = date(date_year,int(match[2]),int(match[1]))
+                    year, source_date, date_warning = parsed.year, parsed.isoformat(), None
+                except ValueError:
+                    year, source_date, date_warning = None, None, 'The source date is invalid; its election year has not been inferred.'
+            elif re.match(r'^\d{1,2}[./-]\d', date_text):
+                source_year_text = date_text
+                year, source_date, date_warning = None, None, 'The source date format is unclear; its election year has not been inferred.'
         if text(cells[0]):
             state = text(cells[0])
         if text(cells[3]) and text(cells[3]) != '-':
@@ -146,7 +164,9 @@ def historical_summary(table):
                 records.append(finish(current))
             current = {'kind': kind, 'year': year, 'state': state, 'constituency': text(cells[3]), 'source_row': row['row'],
                        'candidates': [], 'notes': ['Historical winner/runner summary; complete candidate coverage is not established. State labels and constituency names remain as recorded.'],
-                       'reason': text(cells[10]), 'table': table['name']}
+                       'reason': text(cells[10]), 'table': table['name'], 'source_date':source_date, 'source_year_text':source_year_text}
+            if date_warning:
+                current['notes'].append(date_warning)
         if current is None:
             continue
         if text(cells[3]) == '-':

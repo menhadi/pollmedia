@@ -61,6 +61,8 @@ def main(args):
         save('waiting_for_existing_collection_jobs')
         wait_for_processes(args.wait_pid)
         run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover')
+        save('waiting_for_existing_extraction_jobs')
+        wait_for_processes(args.wait_extraction_pid)
         run('extract_polling_sources.py','--workers','2')
         run('remap_polling_tables.py')
         run('build_polling_index.py')
@@ -81,5 +83,6 @@ def main(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--wait-pid',type=int,action='append',default=[])
+    parser.add_argument('--wait-extraction-pid',type=int,action='append',default=[])
     parser.add_argument('--pages',type=int,default=120);parser.add_argument('--output',type=Path)
     main(parser.parse_args())

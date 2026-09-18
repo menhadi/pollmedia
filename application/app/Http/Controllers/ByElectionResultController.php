@@ -15,7 +15,7 @@ class ByElectionResultController extends Controller
         $root = 'election-by-elections/structured/';
         $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['records' => [], 'unmapped_tables' => 0];
         $all = collect($index['records']);
-        $years = $all->pluck('year')->unique()->sortDesc()->values();
+        $years = $all->map(fn ($record) => (int) ($record['year'] ?? 0))->unique()->sortDesc()->values();
         $states = $all->pluck('state')->filter()->unique()->sort()->values();
         $input = $request->validate([
             'year' => ['nullable', 'integer', Rule::in($years->all())],
@@ -23,7 +23,7 @@ class ByElectionResultController extends Controller
             'record' => ['nullable', 'regex:/^[a-f0-9]{24}$/'],
         ]);
         $year = (int) ($input['year'] ?? $years->first());
-        $choices = $all->filter(fn ($record) => $record['year'] === $year
+        $choices = $all->filter(fn ($record) => (int) ($record['year'] ?? 0) === $year
             && (! isset($input['state']) || $record['state'] === $input['state'])
             && (! isset($input['kind']) || $record['kind'] === $input['kind']))->values();
         $selected = isset($input['record']) ? $choices->firstWhere('id', $input['record']) : $choices->first();
