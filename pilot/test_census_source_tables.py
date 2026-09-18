@@ -43,6 +43,7 @@ class CensusSourceTablesTest(unittest.TestCase):
             self.assertEqual(index, build(archive, output))
             exported = root / 'prepared.zip'
             bundle(output, exported)
+            self.assertNotIn(b'\r', exported.with_suffix('.sha256').read_bytes())
             with zipfile.ZipFile(exported) as packed:
                 self.assertIsNone(packed.testzip())
                 self.assertEqual(1, json.loads(packed.read('manifest.json'))['pending'])

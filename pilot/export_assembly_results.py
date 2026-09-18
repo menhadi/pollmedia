@@ -41,7 +41,7 @@ def export(root,output):
     with zipfile.ZipFile(partial,'a',compression=zipfile.ZIP_DEFLATED) as archive:archive.writestr('manifest.json',json.dumps(metadata,indent=2))
     with zipfile.ZipFile(partial) as archive:
         if archive.testzip() is not None:raise ValueError('ZIP integrity failed')
-    partial.rename(output);digest=hashlib.sha256(output.read_bytes()).hexdigest();output.with_suffix('.sha256').write_text(digest+'  '+output.name+'\n',encoding='ascii');print(json.dumps({k:v for k,v in metadata.items() if k not in ['snapshots','note']}),flush=True)
+    partial.rename(output);digest=hashlib.sha256(output.read_bytes()).hexdigest();output.with_suffix('.sha256').write_bytes((digest+'  '+output.name+'\n').encode('ascii'));print(json.dumps({k:v for k,v in metadata.items() if k not in ['snapshots','note']}),flush=True)
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args();export(Path(__file__).resolve().parents[1],a.output.resolve())

@@ -205,7 +205,7 @@ def run(root, output, saved=False):
         for name, digest in hashes.items():
             if hashlib.sha256(archive.read(name)).hexdigest() != digest:
                 raise ValueError('Export checksum mismatch')
-    output.with_suffix('.sha256').write_text(hashlib.sha256(output.read_bytes()).hexdigest() + '  ' + output.name + '\n', encoding='ascii')
+    output.with_suffix('.sha256').write_bytes((hashlib.sha256(output.read_bytes()).hexdigest() + '  ' + output.name + '\n').encode('ascii'))
     print(json.dumps(summary), flush=True)
 
 

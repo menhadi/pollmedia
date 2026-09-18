@@ -46,7 +46,7 @@ def preserve(root, output):
     digest=hashlib.sha256()
     with output.open('rb') as source:
         while block:=source.read(1024*1024):digest.update(block)
-    output.with_suffix('.sha256').write_text(digest.hexdigest()+'  '+output.name+'\n',encoding='ascii')
+    output.with_suffix('.sha256').write_bytes((digest.hexdigest()+'  '+output.name+'\n').encode('ascii'))
     output.with_suffix('.manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     print(json.dumps({'archive':str(output),'bytes':output.stat().st_size,'verified_files':len(entries),'editions':len(data['entries'])}),flush=True)
 

@@ -113,7 +113,7 @@ def export(root, destination):
     with destination.open("rb") as source:
         while chunk := source.read(1024 * 1024):
             digest.update(chunk)
-    destination.with_suffix(".sha256").write_text(digest.hexdigest() + "  " + destination.name + "\n", encoding="ascii")
+    destination.with_suffix(".sha256").write_bytes((digest.hexdigest() + "  " + destination.name + "\n").encode("ascii"))
     destination.with_suffix(".manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     print(json.dumps({"archive": str(destination), "bytes": destination.stat().st_size, "files_verified": len(entries), "table_rows": sum(counts.values()), "source_link_locations": len(links), "sha256": digest.hexdigest()}))
 

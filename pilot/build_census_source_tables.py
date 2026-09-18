@@ -128,7 +128,7 @@ def bundle(destination, output):
             if check.hexdigest() != digest:
                 raise ValueError('Bundle verification failed')
     temporary.rename(output)
-    output.with_suffix('.sha256').write_text(checksum(output) + '  ' + output.name + '\n', encoding='ascii')
+    output.with_suffix('.sha256').write_bytes((checksum(output) + '  ' + output.name + '\n').encode('ascii'))
     print(json.dumps({'bundle': str(output), 'verified_files': len(hashes), 'workbooks': len(index['sources'])}), flush=True)
 
 
