@@ -76,3 +76,14 @@ The public index now keeps per-document page metadata in separate immutable, has
 The official 2019 and 2024 Form 20 pages use an election-type dropdown backed by an AJAX endpoint. The collector now reads the supplied endpoint and election IDs, follows both assembly and parliamentary choices, and sends the required XMLHttpRequest header. The working non-www official domain replaces the certificate-failing www entry point.
 
 All 15 linked report PDFs were preserved: eight files linked from the 2019 selections (including three named AC by-election reports) and seven from the 2024 selections. Original source URLs and SHA-256 checksums remain attached. Extraction is queued behind the active batch. Historical coverage outside these linked selections is not established. Four dropdown tests and thirteen existing parser/discovery tests passed.
+
+
+## Haryana historical archive and remaining source gaps
+
+The Haryana public booth-result page exposes POST endpoints for election types, available years and source file records. A dedicated collector preserves the raw responses, request fields, record IDs, labels and source metadata independently of the ordinary crawl. Discovery returned 724 records: 90 reports for each of the PC and AC selections in 2009, 2014, 2019 and 2024, plus four by-election reports from 2020, 2021, 2022 and 2024. Downloads are running. The listed 2004 PC and 2005 AC API selections failed with HTTP errors and remain recorded gaps.
+
+The ordinary Haryana crawl now recognises constituency-named PDFs on pages whose title identifies Form 20; it preserved 94 files. These counts may overlap the historical API and do not imply unique reports. Seven focused dropdown tests and thirteen existing parser/discovery tests passed during this change.
+
+Arunachal Pradesh links its 60 assembly reports through a numeric server address. The collector now accepts only the verified server and report path; all 60 linked downloads failed with HTTP errors in this pass (the checked first link returned 404). The links remain in the manifest for review. Parliamentary-election navigation is also followed.
+
+All eight oversized reports in the recovery pass were preserved. The Nagaland retry recovered 15 additional reports, reaching 277 of 295 records; 18 records still have no preserved file. National collection and extraction continue, with live deployment pending.

@@ -13,13 +13,15 @@ from bs4 import BeautifulSoup
 
 DIRECTORY = 'https://www.eci.gov.in/eci-backend/public/api/get-election-data?page_seo_name=links-to-ceos'
 FORM = re.compile(r'form[\s_().-]*20\b|form20|final[\s_-]*result[\s_-]*sheet|polling[\s_-]*station[\s_-]*wise.*result|booth[\s_-]*wise.*result', re.I)
-PAGE = re.compile(r'form.?20|result|statisti|archive|past.?election|election.?histor|lok.?sabha|vidhan.?sabha|bye.?election|assembly.?election|general.?election', re.I)
+PAGE = re.compile(r'form.?20|result|statisti|archive|past.?election|election.?histor|lok.?sabha|vidhan.?sabha|bye.?election|assembly.?election|parliamentary.?election|general.?election', re.I)
 
 
 def official(url):
     parsed = urlparse(url)
     host = (parsed.hostname or '').lower()
-    return parsed.scheme in ['https', 'http'] and (host.endswith('.gov.in') or host.endswith('.nic.in'))
+    # These files are linked by https://ceoarunachal.nic.in/form20ae2024.
+    arunachal_archive = host == '164.100.149.171' and parsed.port is None and bool(re.fullmatch(r'/form20ae2024/[0-9]+\.pdf', parsed.path))
+    return parsed.scheme in ['https', 'http'] and (host.endswith('.gov.in') or host.endswith('.nic.in') or arunachal_archive)
 
 
 def fetch(url, target, form=None, cookies=None, referer=None, ajax=False):
@@ -56,6 +58,7 @@ def fetch(url, target, form=None, cookies=None, referer=None, ajax=False):
 def discover_links(body, current):
     soup = BeautifulSoup(body, 'html.parser')
     documents, pages = [], []
+    result_page = bool(FORM.search(current) or (soup.title and FORM.search(soup.title.get_text(' ', strip=True))))
     for a in soup.select('a[href], option[value]'):
         raw = a.get('href', a.get('value', '')).strip().replace('\\', '/')
         if not raw or raw.startswith(('#', 'javascript:')):
@@ -75,7 +78,7 @@ def discover_links(body, current):
             context += ' '+' '.join(h.get_text(' ', strip=True) for h in table.parent.find_all(['h1','h2','h3','h4'], recursive=False))
         suffix = Path(urlparse(url).path).suffix.lower()
         document_link = suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip'] or bool(re.search(r'/(?:ViewCMSFile|CMSFileView)$', urlparse(url).path, re.I))
-        if FORM.search(context) or (FORM.search(current) and suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip']):
+        if FORM.search(context) or (result_page and suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip']):
             item = {'url': url, 'label': label, 'discovered_on': current}
             (documents if document_link else pages).append(item)
         elif (PAGE.search(context) or label.strip().lower() in ['election', 'elections']) and suffix not in ['.pdf', '.xls', '.xlsx', '.zip', '.jpg', '.png', '.doc', '.docx'] and urlparse(url).hostname == urlparse(current).hostname:
