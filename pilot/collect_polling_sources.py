@@ -22,7 +22,7 @@ def official(url):
     return parsed.scheme in ['https', 'http'] and (host.endswith('.gov.in') or host.endswith('.nic.in'))
 
 
-def fetch(url, target, form=None):
+def fetch(url, target, form=None, cookies=None, referer=None):
     if not official(url):
         raise ValueError('Non-official source URL')
     if shutil.disk_usage(target.parent).free < 2_000_000_000:
@@ -32,6 +32,12 @@ def fetch(url, target, form=None):
                '--max-filesize', '100000000', '--write-out', '%{url_effective}', url, '-o', str(target)]
     if shutil.which('curl.exe') is None:
         command[0] = 'curl'
+    if cookies is not None:
+        command.extend(['--cookie', str(cookies), '--cookie-jar', str(cookies)])
+    if referer is not None:
+        if not official(referer):
+            raise ValueError('Non-official referring page')
+        command.extend(['--referer', referer])
     for key, value in (form or {}).items():
         command.extend(['--data-urlencode', key+'='+str(value)])
     result = subprocess.run(command, capture_output=True)

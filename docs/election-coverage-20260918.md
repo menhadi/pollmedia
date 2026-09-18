@@ -49,3 +49,9 @@ The Goa dropdown collection finished with all 149 linked report files preserved.
 At the latest index rebuild there were 13,316 preserved document entries, 2,087 extracted documents and 168,692 mapped polling rows, with 670 discovery pages still queued. Source-directory overlap means these are not unique national reports or stations. Coverage is not yet complete.
 
 Extraction batches now share an operating-system-held lock so a queued full batch waits for any active extraction to finish. Process exit releases the lock automatically. A concurrency test verifies waiting and release. Scanned, rotated or garbled source text remains flagged rather than being interpreted as reliable votes.
+
+## Nagaland dropdown archive
+
+The official Nagaland archive exposes 16 PC/AC general-election and by-election selections spanning 2003–2026. Reading the actual public dropdown responses discovered 295 source report records, including final result sheets and supporting reports. Downloading these records is in progress. Some election selections expose only a small number of reports; these remain coverage gaps rather than complete constituency sets.
+
+The archive serves files through POST forms containing source record IDs. The collector preserves the selection responses, record IDs, request fields, original PDFs and hashes. Supplemental manifest merging now keeps separate POST records even when their public source-page URL is identical. Downloads use the operating system's normal certificate verification and public session cookies; authentication is not required.

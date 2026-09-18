@@ -7,10 +7,11 @@ def load_manifest(path):
     for supplement in sorted(path.parent.glob('*-supplement.json')):
         extra = json.loads(supplement.read_text(encoding='utf-8'))
         for field, key in [('documents', 'url'), ('api_responses', 'request_id')]:
-            items = {item[key]: item for item in record.get(field, [])}
+            identity = lambda item: item.get('request_id', item.get(key))
+            items = {identity(item): item for item in record.get(field, [])}
             for item in extra.get(field, []):
-                if item.get('file') or item[key] not in items:
-                    items[item[key]] = item
+                if item.get('file') or identity(item) not in items:
+                    items[identity(item)] = item
             record[field] = list(items.values())
         record['errors'] = record.get('errors', []) + extra.get('errors', [])
     return record
