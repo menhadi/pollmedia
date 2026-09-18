@@ -9,6 +9,15 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_uncontested_source_without_candidate_name_stays_visible_with_note(self):
+        result = index_card([table([['Legislative Assembly of- Andhra Pradesh'],
+                                   ['Number and name Assembly Constituency - 248-Pulivendla'],
+                                   ['DATES','UNCONTESTED AS PER ORDER DATED 05.12.2009']])],2009)
+        self.assertEqual(result['state'],'Andhra Pradesh')
+        self.assertEqual(result['election_status'],'reported_uncontested')
+        self.assertEqual(result['candidates'],[])
+        self.assertEqual(result['status'],'needs_review')
+
     def test_legacy_html_identity_and_condensed_total(self):
         result = index_card([table([['23-Akabarpur (Uttar Pradesh)'], ['Candidates','Valid Votes in PC'],
                                    ['Sl no.', 'Name', 'Party', 'Number', 'Percentage'], [1,'A','P',10,'100'],
@@ -20,6 +29,9 @@ class ResultsTest(unittest.TestCase):
         result = index_card([table([['House of the People of Orissa'], ['Parliament Constituency - 10 Aska'],
                                    ['Sl no.', 'Name', 'Party', 'Number'], [1,'A','P',10]])], 2000)
         self.assertEqual((result['kind'],result['state'],result['constituency']),('pc','Orissa','Aska'))
+        result = index_card([table([['Punjab State Code - S-19'], ['Parliamentary Constituency - 7 Ropar'],
+                                   ['Sl no.', 'Name', 'Party', 'Number'], [1,'A','P',10]])], 1997)
+        self.assertEqual((result['kind'],result['state'],result['constituency']),('pc','Punjab','Ropar'))
 
     def test_polling_rows_reconcile_votes_and_keep_zero_distinct_from_missing(self):
         cells = [['Serial No Of Polling Station', None, 'No of Valid Votes Cast in favour of', None, 'Total of Valid Votes', 'No of Rejected Votes', 'Votes for NOTA', 'Total'],

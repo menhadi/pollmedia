@@ -16,6 +16,7 @@
 <h3>Original page tables <sup>†</sup></h3><p>Includes headings, postal ballots and totals where extracted. These rows are retained separately from identified polling-station rows.</p>
 @foreach($data['tables'] as $table)<details class="card"><summary>Source table {{ $table['number'] }}</summary><div class="scroll"><table><tbody>@foreach($table['cells'] as $cells)<tr>@foreach($cells as $cell)<td>{{ $cell === null || $cell === '' ? '—' : $cell }}</td>@endforeach</tr>@endforeach</tbody></table></div></details>@endforeach
 @if(!empty($data['text']))<details class="card"><summary>Extracted page text †</summary><p>Reading order and characters may differ from the PDF. This text is retained for checking the extracted tables.</p><pre style="white-space: pre-wrap; overflow-wrap: anywhere">{{ $data['text'] }}</pre></details>@endif
+@if($ocr)<details class="card"><summary>Text read from the scanned page †</summary>@foreach($ocr['notes'] as $note)<p class="notice">† {{ $note }}</p>@endforeach<pre style="white-space: pre-wrap; overflow-wrap: anywhere">{{ $ocr['text'] }}</pre></details>@endif
 <p class="notice">† Extracted text and table boundaries require review against the official PDF. Missing cells remain —, not zero. Historical polling-station numbers are scoped to this source document and are not mapped automatically to current stations.</p>
 @else<p class="notice">The original file is preserved. Page extraction is still pending.</p>@endif
 </section>

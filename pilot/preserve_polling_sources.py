@@ -18,6 +18,8 @@ def preserve(root, output):
         required[base/source['file']] = source['sha256']
         for page in source['pages']:
             required[base/(source['sha256']+'-tables')/page['file']] = page['sha256']
+            if page.get('ocr'):
+                required[base/(source['sha256']+'-ocr')/page['ocr']['file']] = page['ocr']['sha256']
     metadata = {folder/'index.json':index_body}
     for name in ['catalogue.json','summary.json']:
         if (folder/name).exists():

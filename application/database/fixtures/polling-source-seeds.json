@@ -38,6 +38,18 @@
     ],
     "PUDUCHERRY": [
       "https://ceopuducherry.py.gov.in/stationwise_votes_polled.php"
+    ],
+    "PUNJAB": [
+      "https://www.ceopunjab.gov.in/index"
+    ],
+    "JHARKHAND": [
+      "https://ceo.jharkhand.gov.in/GE2024.aspx",
+      "https://ceojh.jharkhand.gov.in/linkinfo/Past_election.aspx",
+      "https://ceojh.jharkhand.gov.in/linkinfo/Past_Bye_election.aspx"
+    ],
+    "GUJARAT": [
+      "https://ceo.gujarat.gov.in/Home/StatisticalInformation",
+      "https://ceo.gujarat.gov.in/Home/ElectionResult"
     ]
   }
 }

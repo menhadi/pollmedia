@@ -22,14 +22,22 @@ class PollingSourceController extends Controller
         abort_if(isset($input['source']) && ! $source, 404);
         $page = (int) ($input['page'] ?? 1);
         $data = null;
+        $ocr = null;
         if ($source && $source['pages']) {
             $metadata = collect($source['pages'])->firstWhere('page', $page);
             abort_unless($metadata && preg_match('/^[a-f0-9]{24}$/', $source['folder']) && preg_match('/^[a-f0-9]{64}$/', $source['sha256']) && preg_match('/^\d+(?:-[a-f0-9]{16})?\.json$/', $metadata['file']), 404);
             $path = $disk->path($root.$source['folder'].'/'.$source['sha256'].'-tables/'.$metadata['file']);
             abort_unless(is_file($path) && filesize($path) <= 16000000 && hash_equals($metadata['sha256'], hash_file('sha256', $path)), 503, 'Extracted page integrity check failed.');
             $data = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+            if (isset($metadata['ocr'])) {
+                $ocrMetadata = $metadata['ocr'];
+                abort_unless(preg_match('/^\d+-[a-f0-9]{16}\.json$/', $ocrMetadata['file']), 404);
+                $ocrPath = $disk->path($root.$source['folder'].'/'.$source['sha256'].'-ocr/'.$ocrMetadata['file']);
+                abort_unless(is_file($ocrPath) && filesize($ocrPath) <= 16000000 && hash_equals($ocrMetadata['sha256'], hash_file('sha256', $ocrPath)), 503, 'OCR page integrity check failed.');
+                $ocr = json_decode(file_get_contents($ocrPath), true, 512, JSON_THROW_ON_ERROR);
+            }
         }
 
-        return view('polling-source-tables', compact('index', 'states', 'all', 'choices', 'source', 'input', 'page', 'data'));
+        return view('polling-source-tables', compact('index', 'states', 'all', 'choices', 'source', 'input', 'page', 'data', 'ocr'));
     }
 }

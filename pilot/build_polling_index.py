@@ -21,6 +21,13 @@ def build(root):
             seen.add(document['file'])
             index_path=folder/(document['sha256']+'-tables')/'index.json'
             extraction=json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else None
+            ocr_path=folder/(document['sha256']+'-ocr')/'index.json'
+            ocr=json.loads(ocr_path.read_text(encoding='utf-8')) if ocr_path.exists() else {'pages':[]}
+            if extraction:
+                by_page={p['page']:p for p in ocr['pages']}
+                for page in extraction['pages']:
+                    if page['page'] in by_page:
+                        page['ocr']=by_page[page['page']]
             sources.append({'id':hashlib.sha256((entry['id']+document['sha256']).encode()).hexdigest()[:24],
                             'state':entry['state'],'folder':entry['id'],'file':document['file'],'sha256':document['sha256'],
                             'name':document.get('label') or unquote(Path(urlparse(document['url']).path).name),

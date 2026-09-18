@@ -57,7 +57,12 @@ def index_card(tables, year):
         house = re.fullmatch(r'House of the People of\s+(.+)', line, re.I)
         if house:
             record.update(kind='pc',state=house[1].strip())
-        state = re.search(r'^(?:(?:Bye Election of|Election to)\s+)?(Assembly\s+Con\w+|Legislative\s+Assembly|Par\w*\s+Con\w+)\s+(?:of\s+)?(.+?)(?:,\s*District\b.*)?$', line, re.I)
+        state_code = re.fullmatch(r'(.+?)\s+State Code\s*[-:]\s*([SU]\s*[-]?\s*\d+)', line, re.I)
+        if state_code and record['state'] is None:
+            record.update(state=state_code[1].strip(),source_state_code=state_code[2])
+        if record['kind'] is None and re.match(r'^(?:Parliament(?:ary)?|Assembly)\s+Constituency\b', line, re.I):
+            record['kind'] = 'pc' if line.lower().startswith('parliament') else 'ac'
+        state = re.search(r'^(?:(?:Bye Election of|Election to)\s+)?(Assembly\s+Con\w+|Legislative\s+Assembly|Par\w*\s+Con\w+)\s+(?:of\s*[-:]?\s*|[-:]\s*)?(.+?)(?:,\s*District\b.*)?$', line, re.I)
         if state and record['state'] is None and len(state[2]) < 100 and not re.match(r'[-\d]', state[2]):
             record.update(kind='pc' if state[1].lower().startswith('par') else 'ac', state=state[2].strip())
         identity = re.search(r'Cons\w+\s*(?:of\s+)?[-:]?\s*(\d+)\s*[-.]?\s*(.+)$', line, re.I)
@@ -95,6 +100,12 @@ def index_card(tables, year):
                 vote_col += 2
             break
     if header_index is None:
+        uncontested = [row for row in rows if any('UNCONTESTED' in text(v).upper() for v in row['cells'])]
+        if uncontested and record['constituency']:
+            record['notes'].append('The source reports an uncontested election but does not name the elected candidate in this table. No winner or vote total is inferred.')
+            record['metadata_rows'].extend(uncontested)
+            record['election_status'] = 'reported_uncontested'
+            return finish(record)
         return None
     for row in rows[header_index+1:]:
         cells = row['cells']
