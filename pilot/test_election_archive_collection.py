@@ -8,6 +8,22 @@ import json
 import hashlib
 
 class ArchiveCollectionTest(unittest.TestCase):
+    def test_modern_by_election_uses_its_category(self):
+        url = 'https://www.eci.gov.in/statistical-report/be/2026/37'
+        def download(source, destination):
+            if '/api/' in source:
+                self.assertTrue(source.endswith('category_id=37'))
+                body = json.dumps({'totalResults': 1, 'results': [{'title': 'Index card', 'pdf_zip_url': 'https://www.eci.gov.in/report.pdf'}]}).encode()
+            else:
+                body = b'%PDF-1.7 fixture'
+            destination.write_bytes(body)
+            return body
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch('collect_election_archive.fetch', side_effect=download):
+                result = collect('be', '2026 July', url, Path(tmp))
+            self.assertEqual(result['status'], 'collected')
+            self.assertEqual(result['kind'], 'be')
+
     def test_modern_summary_is_archived_and_retained_after_download_failure(self):
         url='https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports'
         summary_url='https://www.eci.gov.in/eci-backend/public/all_files/GE-2024-statistical-report/32-Constituency_data_summery_report.pdf'

@@ -39,7 +39,7 @@ def save_manifest(path, record):
 
 
 def collect_modern(kind, label, url, folder, manifest, old, record):
-    modern_ac = re.fullmatch(r'/statistical-report/ae/(20\d{2})/(\d+)', urlparse(url).path) if kind == 'ac' else None
+    modern_ac = re.fullmatch(r'/statistical-report/'+('be' if kind == 'be' else 'ae')+r'/(20\d{2})/(\d+)', urlparse(url).path) if kind in ['ac', 'be'] else None
     static_path = Path(__file__).resolve().parents[1] / 'application/database/fixtures/eci-assembly-static.json'
     static = json.loads(static_path.read_text(encoding='utf-8')) if static_path.exists() else {'editions': {}}
     static_entries = static['editions'].get(url) if kind == 'ac' else None

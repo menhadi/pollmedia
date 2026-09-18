@@ -12,7 +12,7 @@ import subprocess
 import zipfile
 
 TABLES = """authority_reviews census_catalogue_reviews census_catalogue_rows census_editions census_publications data_sources election_candidate_results election_contests election_import_batch_rows election_import_batches election_publications historical_election_reviews import_connectors import_publications import_runs indicators observations office_assignments office_jurisdictions offices official_source_hosts organizations people place_identifiers place_relationships places public_profiles report_drafts report_scopes source_checks source_releases""".split()
-ROOTS = ["application/database/fixtures", "application/storage/app/private/census-archive", "application/storage/app/private/census-source-tables", "application/storage/app/private/election-archive", "application/storage/app/private/election-batches", "application/storage/app/private/election-imports", "application/storage/app/private/official-imports", "application/storage/app/private/report-drafts", "application/storage/app/maps", "pilot/raw", "pilot/data"]
+ROOTS = ["application/database/fixtures", "application/storage/app/private/census-archive", "application/storage/app/private/census-source-tables", "application/storage/app/private/election-archive", "application/storage/app/private/election-by-elections", "application/storage/app/private/election-batches", "application/storage/app/private/election-imports", "application/storage/app/private/official-imports", "application/storage/app/private/report-drafts", "application/storage/app/maps", "pilot/raw", "pilot/data"]
 
 
 def export(root, destination):
