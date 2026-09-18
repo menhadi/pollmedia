@@ -2,6 +2,7 @@
 @section('title', 'By-election official source archive')
 @section('content')
 <h1>By-election official source archive</h1>
+<p><a href="{{ route('elections.by-election-results') }}">Browse candidate results by year, state and PC/AC</a></p>
 <p>Browse collected ECI reports and their original tables. <a href="{{ route('elections.assembly') }}">Assembly general elections</a> · <a href="{{ route('elections.history') }}">Lok Sabha general elections</a>.</p>
 <p class="notice">{{ $entries->count() }} catalogue entries. Coverage follows the official reporting periods, including multi-year archives. Polling-station results are a separate collection and are not implied by these reports.</p>
 @if($coverage->isNotEmpty())<p>Source collections: {{ $coverage->get('collected', 0) }} collected; {{ $coverage->get('partial', 0) }} partial; {{ $coverage->get('missing_official_link', 0) }} without a usable official link; {{ $coverage->get('failed', 0) + $coverage->get('pending', 0) }} pending. Extracted tables still require structured validation.</p>@endif

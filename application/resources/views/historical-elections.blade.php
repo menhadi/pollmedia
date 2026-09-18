@@ -9,7 +9,7 @@
 @endphp
 @include('seo-metadata')
 <link rel="stylesheet" href="/css/villages.css"></head>
-<body><header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="#sources">Official sources</a></nav></header><main>
+<body><header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><main>
 <div class="kicker">Politics & elections / Historical results</div><h1>{{ $archiveTitle }} election archive</h1>
 <p class="lead">Explore candidate results from the available official election reports. Choose an edition, then a state and constituency.</p>
 <p><a href="{{ route('elections.history') }}">Lok Sabha archive</a> · <a href="{{ route('elections.assembly') }}">India Assembly archive</a></p>

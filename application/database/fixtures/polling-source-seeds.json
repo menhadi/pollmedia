@@ -1,0 +1,43 @@
+{
+  "scope": "Supplementary official source entry points verified during discovery; these do not imply complete year or polling-station coverage.",
+  "states": {
+    "BIHAR": [
+      "https://ceoelection.bihar.gov.in/"
+    ],
+    "ODISHA": [
+      "https://ceoodisha.nic.in/en/simultaneous-general-elections-2024/"
+    ],
+    "RAJASTHAN": [
+      "https://election.rajasthan.gov.in/Lok_Sabha_Election_2024/Loksabha_Elections_2024.aspx"
+    ],
+    "SIKKIM": [
+      "https://www.ceo.sikkim.gov.in/Election/ElectionDetails?EleID=3&Election=Form+20"
+    ],
+    "HIMACHAL PRADESH": [
+      "https://ceohimachal.gov.in/"
+    ],
+    "LADAKH": [
+      "https://ceo.ladakh.gov.in/"
+    ],
+    "KERALA": [
+      "https://www.ceo.kerala.gov.in/election-history/byeelection098-2023"
+    ],
+    "NCT OF DELHI": [
+      "https://www.ceodelhi.gov.in/LokSabhaElection2024.aspx",
+      "https://ceodelhi.gov.in/DelhiLegislativeAssemblyElection2025.aspx"
+    ],
+    "MAHARASHTRA": [
+      "https://ceoelection.maharashtra.gov.in/ceo/",
+      "https://raigad.gov.in/en/notice/loksabha-general-election-2024-form-20/",
+      "https://pune.gov.in/en/document-category/assembly-election-form-20/",
+      "https://nanded.gov.in/en/maharashtra-assembly-election-2024-form-20-2/"
+    ],
+    "ANDHRA PRADESH": [
+      "https://ceoandhra.nic.in/ceoap_new/ceo/Form20_PC%20-%202024.html",
+      "https://ceoandhra.nic.in/ceoap_new/ceo/Form20_AC%20-%202024.html"
+    ],
+    "PUDUCHERRY": [
+      "https://ceopuducherry.py.gov.in/stationwise_votes_polled.php"
+    ]
+  }
+}

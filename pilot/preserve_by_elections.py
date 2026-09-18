@@ -17,6 +17,12 @@ def preserve(root, output):
             if source.parent != path.parent or hashlib.sha256(source.read_bytes()).hexdigest() != item['sha256']:
                 raise ValueError('File checksum changed: '+str(source))
     files = []
+    index_path = folder/'structured/index.json'
+    if index_path.exists():
+        for item in json.loads(index_path.read_text(encoding='utf-8'))['records']:
+            source = index_path.parent/item['file']
+            if source.parent != index_path.parent or hashlib.sha256(source.read_bytes()).hexdigest() != item['sha256']:
+                raise ValueError('Structured result checksum changed: '+str(source))
     with zipfile.ZipFile(output, 'x', zipfile.ZIP_DEFLATED, compresslevel=1) as archive:
         for path in sorted(folder.rglob('*')):
             if not path.is_file() or path.suffix in ['.part', '.tmp']:
@@ -25,7 +31,7 @@ def preserve(root, output):
             body = path.read_bytes()
             archive.writestr(name, body)
             files.append({'path': name, 'sha256': hashlib.sha256(body).hexdigest(), 'bytes': len(body)})
-        archive.writestr('manifest.json', json.dumps({'scope': 'By-election source collection and raw tables; structured validation and missing source recovery remain pending.', 'files': files}, indent=2))
+        archive.writestr('manifest.json', json.dumps({'scope': 'By-election originals, raw tables and structured results. Source discrepancies, missing-source recovery and historical identity review remain pending; editions may overlap.', 'files': files}, indent=2))
     with zipfile.ZipFile(output) as archive:
         for item in files:
             if hashlib.sha256(archive.read(item['path'])).hexdigest() != item['sha256']:

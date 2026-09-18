@@ -26,16 +26,22 @@ def audit(root):
     bye = root/'application/storage/app/private/election-by-elections'
     catalogue = json.loads((bye/'catalogue.json').read_text(encoding='utf-8'))
     by_entries = []
+    structured_path = bye/'structured/index.json'
+    structured = json.loads(structured_path.read_text(encoding='utf-8')).get('records', []) if structured_path.exists() else []
     for entry in catalogue['entries']:
         path = bye/entry['id']/'manifest.json'
         record = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
         by_entries.append(entry | {'status': record.get('status', entry['status']), 'files': len(record.get('files', [])),
                                   'raw_rows': sum(e['nonempty_rows'] for e in record.get('extractions', [])),
-                                  'structured_results': 'pending_mapping', 'errors': record.get('errors', [])+record.get('extraction_errors', [])})
+                                  'structured_results': sum(r.get('edition') == entry['id'] for r in structured), 'errors': record.get('errors', [])+record.get('extraction_errors', [])})
+    polling_path = root/'application/storage/app/private/polling-station-sources/index.json'
+    polling = json.loads(polling_path.read_text(encoding='utf-8')) if polling_path.exists() else {}
     output = {'checked_at': datetime.now(timezone.utc).isoformat(),
               'scope': 'Saved official catalogue editions, including overlapping and replacement editions. Counts must not be summed as unique elections. Collected sources are not a claim that every data field is extracted or verified.',
               'general_elections': entries, 'by_elections': by_entries,
-              'polling_station_results': {'status': 'not_collected_nationally', 'note': 'PC/AC reports do not establish polling-station coverage. Separate official Form 20 and state/CEO archives require discovery and extraction.'}}
+              'polling_station_results': {'status': 'discovery_and_extraction_incomplete',
+                  'documents':len(polling.get('sources', [])), 'source_rows':sum(s['polling_rows'] for s in polling.get('sources', [])),
+                  'note':polling.get('scope_note', 'PC/AC reports do not establish polling-station coverage. Separate official Form 20 and state/CEO archives require discovery and extraction.')}}
     destination = bye/'coverage.json'
     destination.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding='utf-8')
     (bye/'summary.json').write_text(json.dumps({'checked_at': output['checked_at'], 'entries': by_entries}, ensure_ascii=False, indent=2), encoding='utf-8')
