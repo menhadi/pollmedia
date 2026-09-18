@@ -40,7 +40,10 @@ def save_manifest(path, record):
 
 def collect_modern(kind, label, url, folder, manifest, old, record):
     modern_ac = re.fullmatch(r'/statistical-report/ae/(20\d{2})/(\d+)', urlparse(url).path) if kind == 'ac' else None
-    if not modern_ac and (kind != 'pc' or int(label[:4]) != 2024):
+    static_path = Path(__file__).resolve().parents[1] / 'application/database/fixtures/eci-assembly-static.json'
+    static = json.loads(static_path.read_text(encoding='utf-8')) if static_path.exists() else {'editions': {}}
+    static_entries = static['editions'].get(url) if kind == 'ac' else None
+    if not static_entries and not modern_ac and (kind != 'pc' or int(label[:4]) != 2024):
         record.update(status='adapter_required', errors=['No verified catalogue API mapping for this edition.'])
         save_manifest(manifest, record)
         return record
@@ -52,8 +55,14 @@ def collect_modern(kind, label, url, folder, manifest, old, record):
     try:
         category = modern_ac.group(2) if modern_ac else '1'
         catalogue_url = 'https://www.eci.gov.in/eci-backend/public/api/election-result?category_id=' + category
-        body = fetch(catalogue_url, folder / 'modern-catalogue.json')
-        catalogue = json.loads(body)
+        if static_entries:
+            catalogue_url = static['source_url']
+            catalogue = {'results': static_entries, 'totalResults': len(static_entries), 'source_sha256': static['source_sha256']}
+            body = json.dumps(catalogue).encode('utf-8')
+            (folder / 'modern-catalogue.json').write_bytes(body)
+        else:
+            body = fetch(catalogue_url, folder / 'modern-catalogue.json')
+            catalogue = json.loads(body)
         entries = catalogue['results']
         if not entries or len(entries) > 500:
             raise ValueError('Empty or oversized official catalogue')
@@ -109,11 +118,24 @@ def collect_modern(kind, label, url, folder, manifest, old, record):
     return record
 
 
+def intact_collection(url, root):
+    folder = root / key(url)
+    try:
+        record = json.loads((folder / 'manifest.json').read_text(encoding='utf-8'))
+        return record.get('url') == url and record.get('status') == 'collected' and bool(record.get('files')) and all(Path(f['file']).name == f['file'] and (folder / f['file']).is_file() and hashlib.sha256((folder / f['file']).read_bytes()).hexdigest() == f['sha256'] for f in record['files'])
+    except (OSError, ValueError, KeyError):
+        return False
+
+
 def collect(kind, label, url, root):
     folder = root / key(url)
     folder.mkdir(parents=True, exist_ok=True)
     manifest = folder / 'manifest.json'
     old = json.loads(manifest.read_text(encoding='utf-8')) if manifest.exists() else {}
+    if manifest.exists():
+        body = manifest.read_bytes()
+        backup = folder / ('manifest-' + hashlib.sha256(body).hexdigest() + '.json')
+        if not backup.exists(): backup.write_bytes(body)
     record = dict(kind=kind, label=label, year=int(label[:4]), url=url, checked_at=datetime.now(timezone.utc).isoformat(), status='collecting', files=[], errors=[])
     save_manifest(manifest, record)
     if urlparse(url).hostname != 'old.eci.gov.in':
@@ -153,7 +175,13 @@ def collect(kind, label, url, root):
                     if html.startswith(b'%PDF-') or html.startswith(b'PK'):
                         extension = '.pdf' if html.startswith(b'%PDF-') else '.zip'
                         file = key(page) + '-direct' + extension
-                        (folder / file).write_bytes(html)
+                        destination = folder / file
+                        if destination.exists():
+                            previous_body = destination.read_bytes()
+                            if previous_body != html:
+                                backup = folder / (destination.stem + '-' + hashlib.sha256(previous_body).hexdigest() + destination.suffix)
+                                if not backup.exists(): backup.write_bytes(previous_body)
+                        destination.write_bytes(html)
                         record['files'].append(dict(download_id=key(page)+'-direct', name=report_title+extension, file=file, bytes=len(html), sha256=hashlib.sha256(html).hexdigest(), source_page=page))
                         save_manifest(manifest,record)
                         continue
@@ -203,6 +231,9 @@ if __name__ == '__main__':
     parser.add_argument('destination')
     parser.add_argument('--kind', choices=['ac','pc','all'], default='all')
     parser.add_argument('--year', type=int)
+    parser.add_argument('--before-year', type=int)
+    parser.add_argument('--missing', action='store_true', help='Skip complete collections after verifying every checksum')
+    parser.add_argument('--workers', type=int, choices=range(1,5), default=4)
     parser.add_argument('--state', help='State as recorded, or all; use a national Assembly catalogue')
     args = parser.parse_args()
     catalogue = json.loads(Path(args.catalogue).read_text(encoding='utf-8'))
@@ -211,8 +242,17 @@ if __name__ == '__main__':
         if not catalogue['ac']:
             parser.error('No matching Assembly state')
     jobs = [(kind,label,url,Path(args.destination)) for kind in ['ac','pc'] if args.kind in [kind,'all'] for label,url in catalogue[kind] if args.year is None or int(label[:4]) == args.year]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+    jobs = [j for j in jobs if args.before_year is None or int(j[1][:4]) < args.before_year]
+    if args.missing:
+        jobs = [j for j in jobs if not intact_collection(j[2], j[3])]
+    print(str(len(jobs)) + ' editions to collect', flush=True)
+    failures = 0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = [pool.submit(collect,*job) for job in jobs]
         for future in concurrent.futures.as_completed(futures):
             result = future.result()
+            failures += result["status"] != "collected"
             print(f"{result['kind']} {result['label']}: {result['status']}; {len(result['files'])} files; {len(result['errors'])} issues", flush=True)
+
+    if failures:
+        raise SystemExit(1)

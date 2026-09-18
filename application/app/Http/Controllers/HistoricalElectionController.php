@@ -9,12 +9,33 @@ use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class HistoricalElectionController extends Controller
 {
+    public function sourceFiles(Request $request, string $archive, ElectionArchive $archives): View|BinaryFileResponse
+    {
+        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
+        $edition = collect($catalogue['entries'])->first(fn ($entry) => substr(hash('sha256', $entry['url']), 0, 24) === $archive);
+        abort_unless($edition, 404);
+        $collection = $archives->collection($edition['url']);
+        if ($request->has('file')) {
+            $input = $request->validate(['file' => ['required', 'string', 'max:120', 'regex:/^[a-z0-9-]+\.(pdf|xlsx|xls|zip|csv)$/']]);
+            $file = collect($collection['files'])->firstWhere('file', $input['file']);
+            abort_unless($file, 404);
+            $path = Storage::disk('local')->path('election-archive/'.$archive.'/'.$file['file']);
+            abort_unless(is_file($path) && hash_equals($file['sha256'], hash_file('sha256', $path)), 409, 'Archived source checksum differs. Use the official reference while this copy is checked.');
+
+            return response()->download($path, basename($file['name']), ['X-Content-Type-Options' => 'nosniff']);
+        }
+
+        return view('assembly-source-files', compact('edition', 'collection', 'archive'));
+    }
+
     public function sources(Request $request, ElectionArchive $archives): View
     {
         $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
@@ -28,7 +49,7 @@ class HistoricalElectionController extends Controller
             ->map(function ($entry) use ($archives): array {
                 $collection = $archives->collection($entry['url']);
 
-                return $entry + ['collected' => count($collection['files']), 'status' => $collection['status'], 'extraction' => ($collection['has_extraction'] ?? false) ? $collection['id'] : null];
+                return $entry + ['collected' => count($collection['files']), 'status' => $collection['status'], 'archive' => $collection['id'], 'extraction' => ($collection['has_extraction'] ?? false) ? $collection['id'] : null];
             });
 
         return view('assembly-sources', compact('catalogue', 'entries', 'states', 'years', 'state', 'year'));

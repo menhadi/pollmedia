@@ -31,6 +31,52 @@ class AssemblyExtractionTest(unittest.TestCase):
         self.assertEqual(row['margin'],30)
         self.assertTrue(row['candidates'][2]['is_nota'])
 
+    def test_legacy_fourteen_columns_and_unparenthesized_reservation(self):
+        books = self.books()
+        rows = books[0].active.values
+        rows[3] = rows[3][:4] + ['SEX'] + rows[3][5:12] + ['% VOTES POLLED','TOTAL ELECTORS']
+        for i in range(4,len(rows)):
+            rows[i] = rows[i][:13] + [rows[i][14]]
+        books[1].active.values[1][3] = '1-KALKA-GEN'
+        with patch('extract_assembly_modern.openpyxl.load_workbook',side_effect=books):
+            row=extract('detail','summary','Haryana')[0]
+        self.assertEqual(row['status'],'validated')
+        self.assertEqual(row['electors'],100)
+
+    def test_older_summary_uses_explicit_sheet_code_and_section_totals(self):
+        books = self.books()
+        sheet = books[1].active
+        sheet.title = 'S07-1'
+        sheet.values = [[None]*7, ['State/UT & Code','S07','Constituency Name & Code','KALKA-GEN',None,None,None]]
+        for section, label, value in [('ELECTORS','Total',100),('VOTERS','Total',92),('VOTES','Total Valid Votes Polled',90)]:
+            sheet.values.extend([[section,None,None,None,None,None,None], [None,label,None,None,None,None,value]])
+        sheet.values.extend([[None,'Winner',None,'Party','One',60,None], [None,'Margin',None,30,None,None,None]])
+        with patch('extract_assembly_modern.openpyxl.load_workbook',side_effect=books):
+            row=extract('detail','summary','Haryana')[0]
+        self.assertEqual(row['status'],'validated')
+        self.assertEqual(row['valid_candidate_votes'],90)
+        self.assertEqual(row['electors'],100)
+
+    def test_corrupt_formatting_fallback_preserves_zero_blank_and_formula_cells(self):
+        import tempfile, zipfile
+        from pathlib import Path
+        from extract_assembly_modern import load_cells
+        ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp)/'source.xlsx'
+            with zipfile.ZipFile(p,'w') as z:
+                z.writestr('xl/workbook.xml', '<workbook xmlns="'+ns+'" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Data" r:id="rId1"/></sheets></workbook>')
+                z.writestr('xl/_rels/workbook.xml.rels','<Relationships><Relationship Id="rId1" Target="worksheets/sheet1.xml"/></Relationships>')
+                z.writestr('xl/worksheets/sheet1.xml','<worksheet xmlns="'+ns+'"><sheetData><row r="1"><c r="A1"><v>0</v></c><c r="C1"><f>1+2</f><v>3</v></c></row></sheetData></worksheet>')
+            with patch('extract_assembly_modern.openpyxl.load_workbook',side_effect=ValueError('stylesheet')):
+                book=load_cells(p)
+            self.assertEqual(book.active.values[0],[0.0,None,'=1+2'])
+
+    def test_delhi_alias_does_not_allow_a_different_state(self):
+        from extract_assembly_modern import state_matches
+        self.assertTrue(state_matches('NCT of Delhi','Delhi'))
+        self.assertFalse(state_matches('Haryana','Delhi'))
+
     def test_source_difference_is_retained_with_note(self):
         with patch('extract_assembly_modern.openpyxl.load_workbook', side_effect=self.books(discrepancy=True)):
             row=extract('detail','summary','Haryana')[0]

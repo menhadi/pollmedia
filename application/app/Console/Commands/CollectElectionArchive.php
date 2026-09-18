@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 
 class CollectElectionArchive extends Command
 {
-    protected $signature = 'imports:collect-election-archive {--kind=all : ac, pc or all} {--year= : Optional catalogue year} {--state= : Assembly state as recorded, or all for the national catalogue}';
+    protected $signature = 'imports:collect-election-archive {--kind=all : ac, pc or all} {--year= : Optional catalogue year} {--state= : Assembly state as recorded, or all for the national catalogue} {--missing : Collect only absent or damaged source collections}';
 
     protected $description = 'Collect and checksum official historical election report files for every catalogue edition';
 
@@ -36,6 +36,9 @@ class CollectElectionArchive extends Command
         }
         if ($this->option('state')) {
             array_push($args, '--state', $this->option('state'));
+        }
+        if ($this->option('missing')) {
+            $args[] = '--missing';
         }
         $process = new Process($args);
         $process->setTimeout(3600);

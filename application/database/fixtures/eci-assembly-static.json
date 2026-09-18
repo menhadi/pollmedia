@@ -1,0 +1,438 @@
+{
+  "source_url": "https://www.eci.gov.in/static/js/main.472419a5.js",
+  "source_sha256": "400e264ced57de409a4adc854cd62c43c85d377a638561fe2f738e862cf57508",
+  "editions": {
+    "https://www.eci.gov.in/chhattisgarh-legislative-election-2023-statistical-report": [
+      {
+        "title": "AC Wise Candidate data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/AC_Wise_Candidate_data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/AC_Wise_Candidate_data_Summary.xlsx"
+      },
+      {
+        "title": "AC Wise Number Of Electors",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/AC_Wise_Number_Of_Electors.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/AC_Wise_Number_Of_Electors.xlsx"
+      },
+      {
+        "title": "AC Wise Voters Information",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/AC_Wise_Voters_Information.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/AC_Wise_Voters_Information.xlsx"
+      },
+      {
+        "title": "Candidate Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Candidate_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Candidate_Data_Summary.xlsx"
+      },
+      {
+        "title": "8-Constituency Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Constituency_Data_Summery_Report.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Constituency_Data_Summery_Report.xlsx"
+      },
+      {
+        "title": "10-Detailed Results",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Detailed_Results.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Detailed_Results.xlsx"
+      },
+      {
+        "title": "Electors Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Electors_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Electors_Data_Summary.xlsx"
+      },
+      {
+        "title": "Electors Data Summary Annxure-1",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Electors_Data_Summary_Annxure-1.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Electors_Data_Summary_Annxure-1.xlsx"
+      },
+      {
+        "title": "Highlight",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Highlight.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Highlight.xlsx"
+      },
+      {
+        "title": "Individual Performance Of Women Candidate",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Individual_Performance_Of_Women_Candidate.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Individual_Performance_Of_Women_Candidate.xlsx"
+      },
+      {
+        "title": "List Of Political Parties Participated",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/List_Of_Political_Parties_Participated.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/List_Of_Political_Parties_Participated.xlsx"
+      },
+      {
+        "title": "List of Successful Candidates",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/List_of_Successful_Candidates.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/List_of_Successful_Candidates.xlsx"
+      },
+      {
+        "title": "Other Abbreviations And Description",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Other_Abbreviations_And_Description.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Other_Abbreviations_And_Description.xlsx"
+      },
+      {
+        "title": "Performance of Political Parties",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Performance_of_Political_Parties.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/chhattisgarh/2023/Performance_of_Political_Parties.xlsx"
+      }
+    ],
+    "https://www.eci.gov.in/mp-legislative-election-2023-statistical-report": [
+      {
+        "title": "AC Wise Candidate data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/AC_Wise_Candidate_data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/AC_Wise_Candidate_data_Summary.xlsx"
+      },
+      {
+        "title": "AC Wise Number Of Electors",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/AC_Wise_Number_Of_Electors.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/AC_Wise_Number_Of_Electors.xlsx"
+      },
+      {
+        "title": "AC Wise Voters Information",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/AC_Wise_Voters_Information.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/AC_Wise_Voters_Information.xlsx"
+      },
+      {
+        "title": "Candidate Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Candidate_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Candidate_Data_Summary.xlsx"
+      },
+      {
+        "title": "8-Constituency Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Constituency_Data_Summery_Report.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Constituency_Data_Summery_Report.xlsx"
+      },
+      {
+        "title": "10-Detailed Results",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Detailed_Results.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Detailed_Results.xlsx"
+      },
+      {
+        "title": "Electors Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Electors_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Electors_Data_Summary.xlsx"
+      },
+      {
+        "title": "Electors Data Summary Annxure-1",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Electors_Data_Summary_Annxure-1.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Electors_Data_Summary_Annxure-1.xlsx"
+      },
+      {
+        "title": "Highlight",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Highlight.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Highlight.xlsx"
+      },
+      {
+        "title": "Individual Performance Of Women Candidate",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Individual_Performance_Of_Women_Candidate.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Individual_Performance_Of_Women_Candidate.xlsx"
+      },
+      {
+        "title": "List Of Political Parties Participated",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/List_Of_Political_Parties_Participated.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/List_Of_Political_Parties_Participated.xlsx"
+      },
+      {
+        "title": "List of Successful Candidates",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/List_of_Successful_Candidates.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/List_of_Successful_Candidates.xlsx"
+      },
+      {
+        "title": "Other Abbreviations And Description",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Other_Abbreviations_And_Description.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Other_Abbreviations_And_Description.xlsx"
+      },
+      {
+        "title": "Performance of Political Parties",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Performance_of_Political_Parties.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mp/2023/Performance_of_Political_Parties.xlsx"
+      }
+    ],
+    "https://www.eci.gov.in/mizoram-legislative-election-2023-statistical-report": [
+      {
+        "title": "AC Wise Candidate data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/AC_Wise_Candidate_data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/AC_Wise_Candidate_data_Summary.xlsx"
+      },
+      {
+        "title": "AC Wise Number Of Electors",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/AC_Wise_Number_Of_Electors.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/AC_Wise_Number_Of_Electors.xlsx"
+      },
+      {
+        "title": "AC Wise Voters Information",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/AC_Wise_Voters_Information.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/AC_Wise_Voters_Information.xlsx"
+      },
+      {
+        "title": "Candidate Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Candidate_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Candidate_Data_Summary.xlsx"
+      },
+      {
+        "title": "8-Constituency Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Constituency_Data_Summery_Report.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Constituency_Data_Summery_Report.xlsx"
+      },
+      {
+        "title": "10-Detailed Results",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Detailed_Results.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Detailed_Results.xlsx"
+      },
+      {
+        "title": "Electors Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Electors_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Electors_Data_Summary.xlsx"
+      },
+      {
+        "title": "Electors Data Summary Annxure-1",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Electors_Data_Summary_Annxure-1.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Electors_Data_Summary_Annxure-1.xlsx"
+      },
+      {
+        "title": "Highlight",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Highlight.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Highlight.xlsx"
+      },
+      {
+        "title": "Individual Performance Of Women Candidate",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Individual_Performance_Of_Women_Candidate.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Individual_Performance_Of_Women_Candidate.xlsx"
+      },
+      {
+        "title": "List Of Political Parties Participated",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/List_Of_Political_Parties_Participated.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/List_Of_Political_Parties_Participated.xlsx"
+      },
+      {
+        "title": "List of Successful Candidates",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/List_of_Successful_Candidates.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/List_of_Successful_Candidates.xlsx"
+      },
+      {
+        "title": "Other Abbreviations And Description",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Other_Abbreviations_And_Description.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Other_Abbreviations_And_Description.xlsx"
+      },
+      {
+        "title": "Performance of Political Parties",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Performance_of_Political_Parties.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/mizoram/2023/Performance_of_Political_Parties.xlsx"
+      }
+    ],
+    "https://www.eci.gov.in/rajasthan-legislative-election-2023-including-statistical-report": [
+      {
+        "title": "AC Wise Candidate data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/AC_Wise_Candidate_data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/AC_Wise_Candidate_data_Summary.xlsx"
+      },
+      {
+        "title": "AC Wise Number Of Electors",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/AC_Wise_Number_Of_Electors.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/AC_Wise_Number_Of_Electors.xlsx"
+      },
+      {
+        "title": "AC Wise Voters Information",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/AC_Wise_Voters_Information.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/AC_Wise_Voters_Information.xlsx"
+      },
+      {
+        "title": "Candidate Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Candidate_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Candidate_Data_Summary.xlsx"
+      },
+      {
+        "title": "8-Constituency Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Constituency_Data_Summery_Report.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Constituency_Data_Summery_Report.xlsx"
+      },
+      {
+        "title": "10-Detailed Results",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Detailed_Results.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Detailed_Results.xlsx"
+      },
+      {
+        "title": "Electors Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Electors_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Electors_Data_Summary.xlsx"
+      },
+      {
+        "title": "Electors Data Summary Annxure-1",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Electors_Data_Summary_Annxure-1.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Electors_Data_Summary_Annxure-1.xlsx"
+      },
+      {
+        "title": "Highlight",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Highlight.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Highlight.xlsx"
+      },
+      {
+        "title": "Individual Performance Of Women Candidate",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Individual_Performance_Of_Women_Candidate.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Individual_Performance_Of_Women_Candidate.xlsx"
+      },
+      {
+        "title": "List Of Political Parties Participated",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/List_Of_Political_Parties_Participated.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/List_Of_Political_Parties_Participated.xlsx"
+      },
+      {
+        "title": "List of Successful Candidates",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/List_of_Successful_Candidates.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/List_of_Successful_Candidates.xlsx"
+      },
+      {
+        "title": "Other Abbreviations And Description",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Other_Abbreviations_And_Description.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Other_Abbreviations_And_Description.xlsx"
+      },
+      {
+        "title": "Performance of Political Parties",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Performance_of_Political_Parties.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023_Including/Performance_of_Political_Parties.xlsx"
+      }
+    ],
+    "https://www.eci.gov.in/rajasthan-legislative-election-2023-statistical-report": [
+      {
+        "title": "AC Wise Candidate data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/AC_Wise_Candidate_data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/AC_Wise_Candidate_data_Summary.xlsx"
+      },
+      {
+        "title": "AC Wise Number Of Electors",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/AC_Wise_Number_Of_Electors.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/AC_Wise_Number_Of_Electors.xlsx"
+      },
+      {
+        "title": "AC Wise Voters Information",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/AC_Wise_Voters_Information.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/AC_Wise_Voters_Information.xlsx"
+      },
+      {
+        "title": "Candidate Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Candidate_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Candidate_Data_Summary.xlsx"
+      },
+      {
+        "title": "8-Constituency Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Constituency_Data_Summery_Report.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Constituency_Data_Summery_Report.xlsx"
+      },
+      {
+        "title": "10-Detailed Results",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Detailed_Results.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Detailed_Results.xlsx"
+      },
+      {
+        "title": "Electors Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Electors_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Electors_Data_Summary.xlsx"
+      },
+      {
+        "title": "Electors Data Summary Annxure-1",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Electors_Data_Summary_Annxure-1.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Electors_Data_Summary_Annxure-1.xlsx"
+      },
+      {
+        "title": "Highlight",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Highlight.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Highlight.xlsx"
+      },
+      {
+        "title": "Individual Performance Of Women Candidate",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Individual_Performance_Of_Women_Candidate.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Individual_Performance_Of_Women_Candidate.xlsx"
+      },
+      {
+        "title": "List Of Political Parties Participated",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/List_Of_Political_Parties_Participated.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/List_Of_Political_Parties_Participated.xlsx"
+      },
+      {
+        "title": "List of Successful Candidates",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/List_of_Successful_Candidates.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/List_of_Successful_Candidates.xlsx"
+      },
+      {
+        "title": "Other Abbreviations And Description",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Other_Abbreviations_And_Description.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Other_Abbreviations_And_Description.xlsx"
+      },
+      {
+        "title": "Performance of Political Parties",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Performance_of_Political_Parties.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/rajasthan/2023/Performance_of_Political_Parties.xlsx"
+      }
+    ],
+    "https://www.eci.gov.in/telangana-legislative-election-2023-statistical-report": [
+      {
+        "title": "AC Wise Candidate data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/AC_Wise_Candidate_data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/AC_Wise_Candidate_data_Summary.xlsx"
+      },
+      {
+        "title": "AC Wise Number Of Electors",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/AC_Wise_Number_Of_Electors.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/AC_Wise_Number_Of_Electors.xlsx"
+      },
+      {
+        "title": "AC Wise Voters Information",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/AC_Wise_Voters_Information.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/AC_Wise_Voters_Information.xlsx"
+      },
+      {
+        "title": "Candidate Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Candidate_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Candidate_Data_Summary.xlsx"
+      },
+      {
+        "title": "8-Constituency Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Constituency_Data_Summery_Report.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Constituency_Data_Summery_Report.xlsx"
+      },
+      {
+        "title": "10-Detailed Results",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Detailed_Results.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Detailed_Results.xlsx"
+      },
+      {
+        "title": "Electors Data Summary",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Electors_Data_Summary.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Electors_Data_Summary.xlsx"
+      },
+      {
+        "title": "Electors Data Summary Annxure-1",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Electors_Data_Summary_Annxure-1.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Electors_Data_Summary_Annxure-1.xlsx"
+      },
+      {
+        "title": "Highlight",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Highlight.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Highlight.xlsx"
+      },
+      {
+        "title": "Individual Performance Of Women Candidate",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Individual_Performance_Of_Women_Candidate.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Individual_Performance_Of_Women_Candidate.xlsx"
+      },
+      {
+        "title": "List Of Political Parties Participated",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/List_Of_Political_Parties_Participated.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/List_Of_Political_Parties_Participated.xlsx"
+      },
+      {
+        "title": "List of Successful Candidates",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/List_of_Successful_Candidates.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/List_of_Successful_Candidates.xlsx"
+      },
+      {
+        "title": "Other Abbreviations And Description",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Other_Abbreviations_And_Description.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Other_Abbreviations_And_Description.xlsx"
+      },
+      {
+        "title": "Performance of Political Parties",
+        "pdf_zip_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Performance_of_Political_Parties.pdf",
+        "xlsx_url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2023/Performance_of_Political_Parties.xlsx"
+      }
+    ]
+  }
+}

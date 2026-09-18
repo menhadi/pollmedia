@@ -83,6 +83,27 @@ class ArchiveCollectionTest(unittest.TestCase):
         self.assertEqual(result['entries'][1]['label'], '2026(Including AC-144)')
         self.assertEqual(result['entries'][1]['year'], 2026)
 
+    def test_missing_mode_rechecks_checksums_and_does_not_trust_status_alone(self):
+        from collect_election_archive import intact_collection
+        url = 'https://www.eci.gov.in/statistical-report/ae/2024/6'
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); folder = root/key(url); folder.mkdir()
+            (folder/'source.pdf').write_bytes(b'%PDF-source')
+            manifest = {'url': url, 'status': 'collected', 'files': [{'file':'source.pdf','sha256':hashlib.sha256(b'%PDF-source').hexdigest()}]}
+            (folder/'manifest.json').write_text(json.dumps(manifest))
+            self.assertTrue(intact_collection(url, root))
+            (folder/'source.pdf').write_bytes(b'changed')
+            self.assertFalse(intact_collection(url, root))
+
+    def test_static_assembly_sources_keep_distinct_rajasthan_variants(self):
+        fixture = json.loads((Path(__file__).resolve().parents[1]/'application/database/fixtures/eci-assembly-static.json').read_text())
+        editions = fixture['editions']
+        including = editions['https://www.eci.gov.in/rajasthan-legislative-election-2023-including-statistical-report']
+        excluding = editions['https://www.eci.gov.in/rajasthan-legislative-election-2023-statistical-report']
+        self.assertEqual(len(including),14)
+        self.assertTrue(all('/2023_Including/' in r['pdf_zip_url'] for r in including))
+        self.assertTrue(all('/2023/' in r['pdf_zip_url'] for r in excluding))
+
     def test_category_excludes_global_recent_download_widgets(self):
         soup=BeautifulSoup('<div class="cDownloadsCategoryTable"><a title="View the file Result" href="https://old.eci.gov.in/files/file/1-report/">Result</a></div><div class="ipsWidget"><a title="View the file unrelated" href="https://old.eci.gov.in/files/file/2-other/">Other year</a></div>', 'html.parser')
         self.assertEqual(['https://old.eci.gov.in/files/file/1-report/'],report_pages(soup))
