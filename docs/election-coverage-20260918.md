@@ -117,3 +117,10 @@ The additional oversized Rajasthan report (Form20-19.pdf from the 2023 Assembly 
 Goa OCR completed 489 scanned pages: 298 labelled unverified_ocr and 191 needing visual review. These are OCR quality labels, not verification of election results. Original files, word positions and quality warnings remain preserved. Bihar English/Hindi OCR started after the Goa process exited; its initial checkpoint is 91 pages. Only one OCR batch is running alongside the two-worker national table extraction batch.
 
 The last completed index rebuild counted 16,522 document entries, 5,805 extracted documents and 317,002 polling rows. Madhya Pradesh has 137 preserved reports out of 167 discovered document records, with further discovery pages queued. Collection and extraction are still incomplete, and no live deployment has been performed.
+
+
+## Bounded retries for unavailable archive pages
+
+Automatic page discovery now stops retrying a URL after three failed passes. Its URL, final error, attempt count and exhausted status remain in the manifest and source warnings; failed pages are not reclassified as complete or silently discarded. An explicit rediscovery pass can retry them and clears the failure record only after recovery. Original manifest snapshots remain preserved. A regression test covers exhaustion, retained evidence and successful explicit recovery.
+
+The latest completed index checkpoint has 16,528 document entries, 6,352 extracted documents and 363,366 polling rows. National extraction and Bihar OCR remain active. Queued discovery and unavailable official sources still prevent a final completeness claim or deployment package.

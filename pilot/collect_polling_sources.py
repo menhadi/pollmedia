@@ -121,12 +121,14 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
     previous = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {}
     pages = {p['url']: p for p in previous.get('pages', [])}
     documents = {d['url']: d for d in previous.get('documents', [])}
+    page_failures = {} if rediscover else previous.get('page_failures', {})
     pending = previous.get('pending_pages', []) or [{'url': entry['url'], 'label': entry['state']}]
     if rediscover:
         pending.extend(p for p in previous.get('pages', []) if not any(q['url'] == p['url'] for q in pending))
     pending.extend(e for e in previous.get('errors', []) if e.get('url') and not any(p['url'] == e['url'] for p in pending))
     pending.extend({'url':url,'label':'Verified supplementary official entry point'} for url in entry.get('seed_urls', []) if url not in pages and not any(p['url']==url for p in pending))
-    errors = []
+    pending = [p for p in pending if page_failures.get(p['url'], 0) < 3]
+    errors = [e for e in previous.get('errors', []) if page_failures.get(e.get('url'), 0) >= 3]
     visited = set()
     if manifest_path.exists():
         old = manifest_path.read_bytes()
@@ -134,7 +136,7 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
 
     def checkpoint():
         result = entry | {'checked_at': datetime.now(timezone.utc).isoformat(), 'pages': list(pages.values()), 'documents': list(documents.values()), 'api_responses':previous.get('api_responses', []),
-                          'pending_pages': list(pending), 'errors': list(errors), 'status': 'discovery_incomplete',
+                          'pending_pages': list(pending), 'errors': list(errors), 'page_failures': page_failures, 'status': 'discovery_incomplete',
                           'note': 'Website discovery does not establish all-year or all-polling-station coverage. Missing links, dynamic pages and historical files require further review.'}
         temporary = folder/'manifest.tmp'
         temporary.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
@@ -144,7 +146,7 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
     while pending and len(visited) < max_pages:
         current = pending.pop(0)
         url = current['url']
-        if url in visited:
+        if url in visited or page_failures.get(url, 0) >= 3:
             continue
         visited.add(url)
         try:
@@ -166,9 +168,12 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
             found, links = discover_links(body, final)
             for document in found:
                 documents.setdefault(document['url'], document)
-            pending.extend(link for link in links if link['url'] not in visited and link['url'] not in pages and not any(p['url']==link['url'] for p in pending))
+            page_failures.pop(url, None)
+            pending.extend(link for link in links if link['url'] not in visited and link['url'] not in pages and page_failures.get(link['url'], 0) < 3 and not any(p['url']==link['url'] for p in pending))
         except Exception as error:
-            errors.append({'url': url, 'error': str(error)})
+            page_failures[url] = page_failures.get(url, 0) + 1
+            errors.append({'url': url, 'error': str(error), 'attempts': page_failures[url],
+                           'retry_exhausted': page_failures[url] >= 3})
         finally:
             (folder/'page.part').unlink(missing_ok=True)
             checkpoint()
