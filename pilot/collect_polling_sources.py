@@ -8,12 +8,12 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
-from urllib.parse import urljoin, urlparse, urldefrag, quote
+from urllib.parse import urljoin, urlparse, urldefrag, quote, parse_qs, urlencode
 from bs4 import BeautifulSoup
 
 DIRECTORY = 'https://www.eci.gov.in/eci-backend/public/api/get-election-data?page_seo_name=links-to-ceos'
 FORM = re.compile(r'form[\s_().-]*20\b|form20|final[\s_-]*result[\s_-]*sheet|polling[\s_-]*station[\s_-]*wise.*result|booth[\s_-]*wise.*result', re.I)
-PAGE = re.compile(r'form.?20|result|statisti|archive|past.?election|election.?histor|lok.?sabha|assembly.?election|general.?election', re.I)
+PAGE = re.compile(r'form.?20|result|statisti|archive|past.?election|election.?histor|lok.?sabha|vidhan.?sabha|bye.?election|assembly.?election|general.?election', re.I)
 
 
 def official(url):
@@ -58,6 +58,8 @@ def discover_links(body, current):
         raw = a.get('href', a.get('value', '')).strip().replace('\\', '/')
         if not raw or raw.startswith(('#', 'javascript:')):
             continue
+        if a.name == 'option' and raw.isdigit():
+            continue
         url = quote(urldefrag(urljoin(current, raw))[0], safe=':/?=&%')
         if not official(url):
             continue
@@ -74,8 +76,16 @@ def discover_links(body, current):
         if FORM.search(context) or (FORM.search(current) and suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip']):
             item = {'url': url, 'label': label, 'discovered_on': current}
             (documents if document_link else pages).append(item)
-        elif PAGE.search(context) and suffix not in ['.pdf', '.xls', '.xlsx', '.zip', '.jpg', '.png', '.doc', '.docx'] and urlparse(url).hostname == urlparse(current).hostname:
+        elif (PAGE.search(context) or label.strip().lower() in ['election', 'elections']) and suffix not in ['.pdf', '.xls', '.xlsx', '.zip', '.jpg', '.png', '.doc', '.docx'] and urlparse(url).hostname == urlparse(current).hostname:
             pages.append({'url': url, 'label': label, 'discovered_on': current})
+    election_filter = soup.select_one('select#OCEO_ElectionDetails_ElectionFilterId')
+    election_id = parse_qs(urlparse(current).query).get('id', [''])[0]
+    if election_filter and election_id in ['1', '2'] and urlparse(current).path.lower() == '/electiondetails':
+        for option in election_filter.select('option[value]'):
+            value = option['value']
+            if value.isdigit() and int(value) > 0:
+                pages.append({'url': urljoin(current, '/electiondetails')+'?'+urlencode({'id': election_id, 'fltr': value}),
+                              'label': option.get_text(' ', strip=True), 'discovered_on': current})
     for meta in soup.select('meta[http-equiv]'):
         if meta.get('http-equiv', '').lower() == 'refresh':
             match = re.search(r'url\s*=\s*[\"\']?([^\"\']+)', meta.get('content', ''), re.I)

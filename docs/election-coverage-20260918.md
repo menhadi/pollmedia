@@ -55,3 +55,9 @@ Extraction batches now share an operating-system-held lock so a queued full batc
 The official Nagaland archive exposes 16 PC/AC general-election and by-election selections spanning 2003–2026. Reading the actual public dropdown responses discovered 295 source report records, including final result sheets and supporting reports. Downloading these records is in progress. Some election selections expose only a small number of reports; these remain coverage gaps rather than complete constituency sets.
 
 The archive serves files through POST forms containing source record IDs. The collector preserves the selection responses, record IDs, request fields, original PDFs and hashes. Supplemental manifest merging now keeps separate POST records even when their public source-page URL is identical. Downloads use the operating system's normal certificate verification and public session cookies; authentication is not required.
+
+## Punjab archive discovery
+
+The Punjab site exposes its archive through an “Elections” menu and numeric year dropdown values. The collector now follows the menu, recognises Vidhan Sabha/by-election navigation, and resolves that site's dropdown IDs using the official page's `electiondetails?id=…&fltr=…` routing. Numeric option values are no longer mistaken for standalone document URLs.
+
+A fresh Punjab discovery pass is running. The 2024 PC selection exposes a “Part Wise Result- Form 20” page alongside constituency and assembly-segment results; further year selections remain queued. Discovery regression tests passed. This is additional source discovery, not a declaration of completed Punjab or national coverage.

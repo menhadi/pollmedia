@@ -142,6 +142,14 @@ class ResultsTest(unittest.TestCase):
         docs, pages = discover_links(html, 'https://ceo.example.gov.in/')
         self.assertEqual(len(docs), 1)
         self.assertEqual(len(pages), 1)
+        _, pages = discover_links(b'<a href="election">Elections</a><a href="login">Official Login</a>', 'https://ceo.example.gov.in/index')
+        self.assertEqual([p['url'] for p in pages], ['https://ceo.example.gov.in/election'])
+
+    def test_election_dropdown_ids_are_resolved_using_the_source_query(self):
+        html = b'<select id="OCEO_ElectionDetails_ElectionFilterId"><option value="0">Select Election Year</option><option value="46">Lok Sabha Elections 2024</option></select>'
+        docs, pages = discover_links(html, 'https://www.ceopunjab.gov.in/electiondetails?id=1&fltr=0')
+        self.assertEqual(docs, [])
+        self.assertEqual([p['url'] for p in pages], ['https://www.ceopunjab.gov.in/electiondetails?id=1&fltr=46'])
 
     def test_discovery_reads_official_redirects_and_form20_download_tables(self):
         html = b'<meta http-equiv="refresh" content="0;url=https://new.example.gov.in/"><table><tr><td>Form 20 - 2024</td><td><a href="/uploads/01.pdf">View</a></td></tr></table><select><option value="/Form20/2023.pdf">2023</option></select>'
