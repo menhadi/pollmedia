@@ -23,3 +23,13 @@ National completeness has not been established. Gaps include two clipped 1967 De
 The local pipeline waits for existing collection jobs, rediscovers official sources, waits for existing extraction, extracts remaining PDFs, remaps tables, rebuilds the public index, audits coverage and creates a verified ZIP. Its status is in `application/storage/app/private/polling-station-sources/pipeline-status.json`. A completed batch does not establish national completeness.
 
 Deployment remains user-controlled: code is pushed to Git; packages are staged separately. No live import or deployment is performed by this batch.
+
+## Continued collection and spreadsheet extraction
+
+The user will deploy only after the remaining work is complete. The current batch is still running and is not a deployment-ready completion declaration.
+
+The polling extractor now reads XLS/XLSX worksheets alongside PDFs. It retains sheet names and original row positions, preserves formula text when available, and warns that legacy XLS stored results may be stale. Centered headings and numbered station names are supported; assembly-segment totals and postal-ballot rows stay in the raw tables instead of becoming polling-station rows. The v4 mapper recovered 10,463 rows in 20 Jammu & Kashmir source documents; overlapping reports are not deduplicated elections.
+
+Discovery now handles official links containing backslashes and file-download endpoints without PDF extensions. Verified supplementary entry points include the migrated West Bengal and Himachal Pradesh domains. The Himachal Pradesh 2022 Form 20 page exposes 68 constituency documents. Failed certificate checks remain recorded rather than bypassed.
+
+After the first discovery pass, the pipeline drains remaining page queues while they make progress and archive disk space stays above its reserve. All extracted tables, outstanding URLs and access failures remain part of the final coverage review. Tests cover numeric/blank/formula distinctions, centered headings, named polling stations, exclusion of aggregate rows, source download integrity and worksheet labels.

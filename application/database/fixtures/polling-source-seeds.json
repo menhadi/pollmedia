@@ -14,7 +14,9 @@
       "https://www.ceo.sikkim.gov.in/Election/ElectionDetails?EleID=3&Election=Form+20"
     ],
     "HIMACHAL PRADESH": [
-      "https://ceohimachal.gov.in/"
+      "https://ceohimachal.gov.in/",
+      "https://ceohimachal.hp.gov.in/",
+      "https://ceohimachal.hp.gov.in/CommonControls/ViewCMSHtmlPage?qs=LdEF%2BAuYkB6tz4PfdjAIOA%3D%3D"
     ],
     "LADAKH": [
       "https://ceo.ladakh.gov.in/"
@@ -50,6 +52,14 @@
     "GUJARAT": [
       "https://ceo.gujarat.gov.in/Home/StatisticalInformation",
       "https://ceo.gujarat.gov.in/Home/ElectionResult"
+    ],
+    "WEST BENGAL": [
+      "https://ceowestbengal.wb.gov.in/",
+      "https://ceowestbengal.wb.gov.in/Candidate/614",
+      "https://ceowestbengal.wb.gov.in/Election_current/3213"
+    ],
+    "DAMAN & DIU": [
+      "https://ceodaman.nic.in/Form20.aspx"
     ]
   }
 }

@@ -18,7 +18,7 @@ class PollingSourceTest extends TestCase
             'name' => 'Official results', 'source_url' => 'https://eci.gov.in/source.pdf', 'discovered_on' => 'https://eci.gov.in/', 'pages' => [], 'polling_rows' => 0];
         Storage::disk('local')->put($root.$id.'/'.$source['file'], $body);
         Storage::disk('local')->put($root.'index.json', json_encode(['states' => [], 'sources' => [$source]]));
-        $this->get('/india/elections/polling-stations')->assertOk()->assertSee('published with warnings')->assertSee('Page extraction is still pending.')->assertSee('Download preserved original');
+        $this->get('/india/elections/polling-stations')->assertOk()->assertSee('published with warnings')->assertSee('Table extraction is still pending.')->assertSee('Download preserved original');
         $url = '/india/elections/polling-stations?source='.$id.'&download=1';
         $this->get($url)->assertOk()->assertDownload($sha.'.pdf')->assertHeader('X-Content-Type-Options', 'nosniff');
         Storage::disk('local')->put($root.$id.'/'.$source['file'], 'changed');
@@ -57,12 +57,12 @@ class PollingSourceTest extends TestCase
             'states' => [['state' => 'Example', 'url' => 'https://eci.gov.in/', 'documents' => 1, 'pending_pages' => 0, 'errors' => []]],
             'sources' => [['id' => $id, 'folder' => $id, 'sha256' => $sha, 'state' => 'Example', 'name' => 'Form 20',
                 'source_url' => 'https://eci.gov.in/source.pdf', 'discovered_on' => 'https://eci.gov.in/', 'polling_rows' => 1,
-                'pages' => [['page' => 1, 'file' => '1.json', 'sha256' => hash('sha256', $body), 'polling_rows' => 1,
+                'pages' => [['page' => 1, 'sheet' => 'Source worksheet', 'file' => '1.json', 'sha256' => hash('sha256', $body), 'polling_rows' => 1,
                     'ocr' => ['file' => $ocrName, 'sha256' => hash('sha256', $ocrBody)]]]]],
         ]));
         $this->get('/india/elections/polling-stations')->assertOk()->assertSee('Polling station 2(A)')
             ->assertSee('>0<', false)->assertSee('Not read †')->assertSee('Review source totals.')
-            ->assertSee('https://eci.gov.in/source.pdf', false);
+            ->assertSee('https://eci.gov.in/source.pdf', false)->assertSee('Source worksheet');
         $this->get('/india/elections/polling-stations')->assertSee('Unverified scanned text')->assertSee('OCR needs visual review.');
         $this->get('/india/elections/polling-stations?page=2')->assertNotFound();
         $this->get('/india/elections/polling-stations?source='.str_repeat('c', 24))->assertNotFound();

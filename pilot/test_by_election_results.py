@@ -1,7 +1,9 @@
 import unittest
 from extract_by_elections import index_card, historical_summary
 from collect_polling_sources import discover_links
-from extract_polling_sources import map_table
+from extract_polling_sources import map_table, spreadsheet_pages, numeric
+from unittest.mock import patch
+from types import SimpleNamespace
 
 
 def table(cells, name='Worksheet'):
@@ -9,6 +11,48 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_spreadsheet_preserves_row_positions_formulas_and_zero(self):
+        cells = [[None]*6,
+                 ['Serial No Of Polling Station', None, 'Votes Cast In Favour Of', None, 'Total Valid Votes', 'Total'],
+                 [None, None, 'A', 'B', None, None],
+                 [1.0, 1.0, 10.0, 0.0, 10.0, 10.0],
+                 [2.0, 2.0, '=SUM(A1:A2)', None, None, None]]
+        class Book(list):
+            closed = False
+            def close(self):
+                self.closed = True
+        book = Book([SimpleNamespace(title='Form 20', values=cells)])
+        with patch('extract_assembly_modern.load_cells', return_value=book):
+            pages = list(spreadsheet_pages('source.xlsx'))
+        self.assertTrue(book.closed)
+        self.assertEqual(pages[0]['sheet'], 'Form 20')
+        self.assertEqual(pages[0]['tables'][0]['cells'], cells)
+        self.assertEqual(len(pages[0]['polling_rows']), 2)
+        self.assertEqual(pages[0]['polling_rows'][0]['candidate_votes'][1]['votes'], 0)
+        self.assertEqual(pages[0]['polling_rows'][0]['source_table_row'], 4)
+        self.assertIsNone(pages[0]['polling_rows'][1]['candidate_votes'][0]['votes'])
+        self.assertTrue(pages[0]['polling_rows'][1]['notes'])
+        self.assertEqual(numeric(10.0), 10)
+        self.assertIsNone(numeric(10.5))
+
+    def test_centered_workbook_header_does_not_drop_first_candidates(self):
+        cells = [[None]*7]*10 + [
+            ['S. No.', 'No. and Name of Polling Station', None, 'Number of valid votes cast in favour of', None, 'Total Number of valid votes', 'Total'],
+            [None, None, 'A', 'B', 'C', None, None],
+            [1, 1, 3, 4, 5, 12, 12]]
+        rows = map_table(cells)
+        self.assertEqual([r['votes'] for r in rows[0]['candidate_votes']], [3, 4, 5])
+        cells[12][1] = '1-Nachiyan Balla'
+        cells[12][5] = '=SUM(C13:E13)'
+        rows = map_table(cells)
+        self.assertEqual(rows[0]['polling_station'], '1-Nachiyan Balla')
+        self.assertIsNone(rows[0]['valid_votes'])
+        self.assertTrue(rows[0]['notes'])
+        cells[12][1] = 'POSTAL BALLOTS'
+        self.assertEqual(map_table(cells), [])
+        cells[10][1] = 'No. and Name of Assembly Segment'
+        self.assertEqual(map_table(cells), [])
+
     def test_historical_dates_do_not_inherit_the_previous_year(self):
         rows = [[]]*5
         for label, name in [(1956, 'First'), ('9.3.57', 'Second'), ('24.1158', 'Unclear'), ('4.12.58', 'Fourth')]:
@@ -105,6 +149,10 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual(len(docs), 2)
         self.assertEqual(pages[0]['url'], 'https://new.example.gov.in/')
         docs, _ = discover_links(b'<a href="/uploads/02.pdf">Constituency 2</a>', 'https://ceo.example.gov.in/Form20_2024.html')
+        self.assertEqual(len(docs), 1)
+        docs, _ = discover_links(b'<a href="\\Downloads\\Form20\\01.pdf">Result</a>', 'https://ceo.example.gov.in/Candidate/614')
+        self.assertEqual(docs[0]['url'], 'https://ceo.example.gov.in/Downloads/Form20/01.pdf')
+        docs, _ = discover_links(b'<div><h4>Form-20 Election Result 2022</h4><table><tr><td><a href="/CommonControls/ViewCMSFile?qs=abc">1 Example</a></td></tr></table></div>', 'https://ceo.example.gov.in/')
         self.assertEqual(len(docs), 1)
 
 

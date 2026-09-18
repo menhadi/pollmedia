@@ -4,6 +4,7 @@ import ctypes
 from datetime import datetime, timezone
 import json
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -61,6 +62,22 @@ def main(args):
         save('waiting_for_existing_collection_jobs')
         wait_for_processes(args.wait_pid)
         run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover')
+        seen_queues = set()
+        while True:
+            pending = []
+            for path in sorted(store.glob('*/manifest.json')):
+                manifest = json.loads(path.read_text(encoding='utf-8'))
+                if manifest.get('pending_pages'):
+                    pending.append((manifest['state'], sorted({p['url'] for p in manifest['pending_pages']})))
+            signature = json.dumps(pending, sort_keys=True)
+            if not pending or signature in seen_queues:
+                break
+            if shutil.disk_usage(store).free < 2_000_000_000:
+                status['collection_note'] = 'Collection paused at the archive disk reserve; outstanding URLs remain queued.'
+                break
+            seen_queues.add(signature)
+            state_arguments = [value for state, urls in pending for value in ['--state', state]]
+            run('collect_polling_sources.py','--pages',args.pages,'--workers','2',*state_arguments)
         save('waiting_for_existing_extraction_jobs')
         wait_for_processes(args.wait_extraction_pid)
         run('extract_polling_sources.py','--workers','2')

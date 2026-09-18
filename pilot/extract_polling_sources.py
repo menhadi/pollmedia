@@ -13,6 +13,8 @@ def normalized(value):
 
 
 def numeric(value):
+    if isinstance(value, float) and value.is_integer() and value >= 0:
+        return int(value)
     cleaned = str('' if value is None else value).replace(',', '').strip()
     return int(cleaned) if re.fullmatch(r'\d+', cleaned) else None
 
@@ -20,12 +22,16 @@ def numeric(value):
 def map_table(cells):
     if len(cells) < 3:
         return []
-    header = next((i for i,row in enumerate(cells[:8]) if any('pollingstation' in normalized(v) for v in row)
+    header = next((i for i,row in enumerate(cells[:32]) if any('pollingstation' in normalized(v) for v in row)
                    and any('votescastinfavour' in normalized(v) or 'votescastinfavor' in normalized(v) for v in row)), None)
     if header is None or header+2 >= len(cells):
         return []
     first = [normalized(v) for v in cells[header]]
     start = next((i for i,v in enumerate(first) if 'votescastinfavourof' in v or 'votescastinfavorof' in v), None)
+    station_column = next((i for i,v in enumerate(first) if 'pollingstation' in v), None)
+    if (start is not None and station_column is not None and station_column < start
+            and all(str(v or '').strip() for v in cells[header+1][station_column+1:start])):
+        start = station_column + 1
     valid_labels = ['totalofvalidvotes','totalvalidvotes','totalnoofvalidvotes','totalnumberofvalidvotes']
     end = next((i for i,v in enumerate(first) if v in valid_labels), None)
     if start is None or end is None or start >= end or start < 1:
@@ -45,12 +51,19 @@ def map_table(cells):
         if len(row) != len(first):
             continue
         serial = numeric(row[0])
-        station = ' '.join(str(row[start-1] or '').split())
-        if serial is None or not re.fullmatch(r'\d+(?:\s*[-/]?\s*[A-Za-z]|\([A-Za-z]\))?', station):
+        station_value = row[start-1]
+        if isinstance(station_value, float) and station_value.is_integer():
+            station_value = int(station_value)
+        station = ' '.join(str(station_value if station_value is not None else '').split())
+        numbered_station = re.fullmatch(r'\d+(?:\s*[-/]?\s*[A-Za-z]|\([A-Za-z]\))?', station)
+        named_station = re.fullmatch(r'\d+[A-Za-z]?(?:\s*[-–:]\s*|\s+)[^\d\s].*', station)
+        if serial is None or not (numbered_station or named_station):
             continue
         votes = [numeric(v) for v in row[start:end]]
         values = {k:numeric(row[i]) if i is not None else None for k,i in totals.items()}
         notes = []
+        if any(column is not None and values[key] is None and str(row[column] or '').strip() for key,column in totals.items()):
+            notes.append('One or more source totals contain a formula or unreadable value; no total has been inferred.')
         if any(v is None for v in votes):
             notes.append('One or more candidate vote cells could not be read as a whole number.')
         elif values['valid_votes'] is not None and sum(votes) != values['valid_votes']:
@@ -61,6 +74,28 @@ def map_table(cells):
                        'candidate_votes':[{'name':name,'votes':vote} for name,vote in zip(names,votes)], **values,
                        'notes':notes, 'source_cells':row})
     return output
+
+
+def spreadsheet_pages(source):
+    from extract_assembly_modern import load_cells
+    from datetime import date, datetime
+    book = load_cells(source)
+    try:
+        for index, sheet in enumerate(book, 1):
+            cells = []
+            for row in sheet.values:
+                if len(cells) >= 20000 or len(row) > 100:
+                    raise ValueError('Worksheet dimensions exceed extraction limits')
+                cells.append([v.isoformat() if isinstance(v, (date, datetime)) else v for v in row])
+            notes = list(getattr(book, 'reader_notes', []))
+            notes.append('Worksheet cells are preserved in source order. Formulas are not recalculated; stored XLS results may be stale. Check the original workbook.')
+            mapped = [r | {'table': 1} for r in map_table(cells)]
+            if not mapped:
+                notes.append('Source tables extracted; polling-row layout still requires mapping.')
+            yield {'page': index, 'sheet': sheet.title, 'text': '', 'tables': [{'number': 1, 'cells': cells}],
+                   'polling_rows': mapped, 'notes': notes}
+    finally:
+        book.close()
 
 
 def extract(job):
@@ -80,12 +115,19 @@ def extract(job):
             if path.parent != destination or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != page['sha256']:
                 return {'source_file':item['file'], 'error':'Saved page checksum failed; preserved extraction requires repair'}
         return saved
-    document = fitz.open(source)
+    spreadsheet = source.suffix.lower() in ['.xls', '.xlsx']
+    document = spreadsheet_pages(source) if spreadsheet else fitz.open(source)
     pages = []
     for index,page in enumerate(document):
         output_path = destination/(str(index+1)+'.json')
         if output_path.exists():
             body = output_path.read_bytes(); data = json.loads(body)
+        elif spreadsheet:
+            data = page
+            body = json.dumps(data, ensure_ascii=False).encode('utf-8')
+            temporary = output_path.with_suffix('.tmp')
+            temporary.write_bytes(body)
+            temporary.replace(output_path)
         else:
             content = page.get_text()
             data = {'page':index+1, 'text':content, 'tables':[], 'polling_rows':[], 'notes':[]}
@@ -107,11 +149,11 @@ def extract(job):
             temporary = output_path.with_suffix('.tmp')
             temporary.write_bytes(body)
             temporary.replace(output_path)
-        pages.append({'page':index+1,'file':output_path.name,'sha256':hashlib.sha256(body).hexdigest(),
+        pages.append({'page':index+1,'sheet':data.get('sheet'),'file':output_path.name,'sha256':hashlib.sha256(body).hexdigest(),
                       'tables':len(data['tables']),'polling_rows':len(data['polling_rows']),
                       'flagged_rows':sum(bool(r['notes']) for r in data['polling_rows']), 'notes':data['notes']})
     document.close()
-    result = {'adapter':'form20-grid-v2', 'source_url':item['url'],'source_file':item['file'],'source_sha256':digest,
+    result = {'adapter':'form20-grid-v4', 'source_url':item['url'],'source_file':item['file'],'source_sha256':digest,
               'pages':pages,'page_count':len(pages),'polling_rows':sum(p['polling_rows'] for p in pages),
               'scope_note':'Counts are extracted source rows, not unique national polling stations. Postal, aggregate and unrecognised rows remain in original tables; no current geography mapping is implied.'}
     temporary = manifest_path.with_suffix('.tmp')
@@ -137,7 +179,7 @@ if __name__=='__main__':
         if args.state and manifest['state'] not in args.state:
             continue
         for item in manifest['documents']:
-            if item.get('file','').endswith('.pdf') and item['file'] not in seen:
+            if item.get('file','').endswith(('.pdf', '.xls', '.xlsx')) and item['file'] not in seen:
                 jobs.append((str(path.parent),item));seen.add(item['file'])
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
         results=list(pool.map(extract_safely,jobs))

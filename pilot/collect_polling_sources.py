@@ -49,7 +49,7 @@ def discover_links(body, current):
     soup = BeautifulSoup(body, 'html.parser')
     documents, pages = [], []
     for a in soup.select('a[href], option[value]'):
-        raw = a.get('href', a.get('value', '')).strip()
+        raw = a.get('href', a.get('value', '')).strip().replace('\\', '/')
         if not raw or raw.startswith(('#', 'javascript:')):
             continue
         url = quote(urldefrag(urljoin(current, raw))[0], safe=':/?=&%')
@@ -60,10 +60,14 @@ def discover_links(body, current):
         row = a.find_parent('tr')
         if row:
             context += ' '+row.get_text(' ', strip=True)
+        table = a.find_parent('table')
+        if table and table.parent:
+            context += ' '+' '.join(h.get_text(' ', strip=True) for h in table.parent.find_all(['h1','h2','h3','h4'], recursive=False))
         suffix = Path(urlparse(url).path).suffix.lower()
+        document_link = suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip'] or bool(re.search(r'/(?:ViewCMSFile|CMSFileView)$', urlparse(url).path, re.I))
         if FORM.search(context) or (FORM.search(current) and suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip']):
             item = {'url': url, 'label': label, 'discovered_on': current}
-            (documents if suffix in ['.pdf', '.xls', '.xlsx', '.csv', '.zip'] else pages).append(item)
+            (documents if document_link else pages).append(item)
         elif PAGE.search(context) and suffix not in ['.pdf', '.xls', '.xlsx', '.zip', '.jpg', '.png', '.doc', '.docx'] and urlparse(url).hostname == urlparse(current).hostname:
             pages.append({'url': url, 'label': label, 'discovered_on': current})
     for meta in soup.select('meta[http-equiv]'):
