@@ -19,7 +19,7 @@ class PollingSourceController extends Controller
         $all = collect($index['sources']);
         $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())], 'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'], 'download' => ['nullable', 'boolean']]);
         $choices = $all->filter(fn ($source) => ! isset($input['state']) || $source['state'] === $input['state'])->values();
-        $source = isset($input['source']) ? $choices->firstWhere('id', $input['source']) : ($choices->first(fn ($entry) => count($entry['pages']) > 0) ?? $choices->first());
+        $source = isset($input['source']) ? $choices->firstWhere('id', $input['source']) : ($choices->first(fn ($entry) => ($entry['page_count'] ?? count($entry['pages'])) > 0) ?? $choices->first());
         abort_if(isset($input['source']) && ! $source, 404);
         if ($input['download'] ?? false) {
             abort_unless($source && isset($input['source']) && preg_match('/^[a-f0-9]{24}$/', $source['folder']) && preg_match('/^[a-f0-9]{64}\.(pdf|xlsx|xls|zip|csv)$/', $source['file']), 404);
@@ -31,6 +31,13 @@ class PollingSourceController extends Controller
         $page = (int) ($input['page'] ?? 1);
         $data = null;
         $ocr = null;
+        if ($source && ! empty($source['page_manifest'])) {
+            $reference = $source['page_manifest'];
+            abort_unless(preg_match('/^[a-f0-9]{24}$/', $source['folder']) && preg_match('/^[a-f0-9]{64}-pages-[a-f0-9]{16}\.json$/', $reference['file']), 503);
+            $manifestPath = $disk->path($root.$source['folder'].'/'.$reference['file']);
+            abort_unless(is_file($manifestPath) && filesize($manifestPath) <= 16000000 && hash_equals($reference['sha256'], hash_file('sha256', $manifestPath)), 503, 'Page manifest integrity check failed.');
+            $source['pages'] = json_decode(file_get_contents($manifestPath), true, 512, JSON_THROW_ON_ERROR)['pages'];
+        }
         if ($source && $source['pages']) {
             $metadata = collect($source['pages'])->firstWhere('page', $page);
             abort_unless($metadata && preg_match('/^[a-f0-9]{24}$/', $source['folder']) && preg_match('/^[a-f0-9]{64}$/', $source['sha256']) && preg_match('/^\d+(?:-[a-f0-9]{16})?\.json$/', $metadata['file']), 404);

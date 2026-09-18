@@ -64,6 +64,19 @@ class PollingSourceTest extends TestCase
             ->assertSee('>0<', false)->assertSee('Not read †')->assertSee('Review source totals.')
             ->assertSee('https://eci.gov.in/source.pdf', false)->assertSee('Source worksheet');
         $this->get('/india/elections/polling-stations')->assertSee('Unverified scanned text')->assertSee('OCR needs visual review.');
+        $index = json_decode(Storage::disk('local')->get($root.'index.json'), true);
+        $pageManifestBody = json_encode(['pages' => $index['sources'][0]['pages']]);
+        $pageManifestName = $sha.'-pages-'.substr(hash('sha256', $pageManifestBody), 0, 16).'.json';
+        $pageManifestPath = $root.$id.'/'.$pageManifestName;
+        Storage::disk('local')->put($pageManifestPath, $pageManifestBody);
+        $index['sources'][0]['pages'] = [];
+        $index['sources'][0]['page_count'] = 1;
+        $index['sources'][0]['page_manifest'] = ['file' => $pageManifestName, 'sha256' => hash('sha256', $pageManifestBody)];
+        Storage::disk('local')->put($root.'index.json', json_encode($index));
+        $this->get('/india/elections/polling-stations')->assertOk()->assertSee('Polling station 2(A)')->assertSee('Unverified scanned text');
+        Storage::disk('local')->put($pageManifestPath, '{}');
+        $this->get('/india/elections/polling-stations')->assertStatus(503);
+        Storage::disk('local')->put($pageManifestPath, $pageManifestBody);
         $this->get('/india/elections/polling-stations?page=2')->assertNotFound();
         $this->get('/india/elections/polling-stations?source='.str_repeat('c', 24))->assertNotFound();
         Storage::disk('local')->put($path, '{}');

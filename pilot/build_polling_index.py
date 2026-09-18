@@ -29,11 +29,22 @@ def build(root):
                 for page in extraction['pages']:
                     if page['page'] in by_page:
                         page['ocr']=by_page[page['page']]
+            page_manifest = None
+            if extraction:
+                page_body = json.dumps({'pages': extraction['pages']}, ensure_ascii=False).encode('utf-8')
+                page_digest = hashlib.sha256(page_body).hexdigest()
+                page_file = document['sha256']+'-pages-'+page_digest[:16]+'.json'
+                if not (folder/page_file).exists():
+                    page_temporary = folder/(page_file+'.tmp')
+                    page_temporary.write_bytes(page_body)
+                    page_temporary.replace(folder/page_file)
+                page_manifest = {'file': page_file, 'sha256': page_digest}
             sources.append({'id':hashlib.sha256((entry['id']+document['sha256']).encode()).hexdigest()[:24],
                             'state':entry['state'],'folder':entry['id'],'file':document['file'],'sha256':document['sha256'],
                             'name':document.get('label') or unquote(Path(urlparse(document['url']).path).name),
                             'source_url':document['url'],'discovered_on':document.get('discovered_on',entry['url']),
-                            'pages':extraction['pages'] if extraction else [],'polling_rows':extraction['polling_rows'] if extraction else 0,
+                            'pages':[], 'page_count':len(extraction['pages']) if extraction else 0, 'page_manifest':page_manifest,
+                            'polling_rows':extraction['polling_rows'] if extraction else 0,
                             'status':'extracted_with_notes' if extraction else 'awaiting_extraction'})
         states.append(entry | {'status':'discovery_incomplete','documents':len(seen),'errors':manifest['errors'],
                               'failed_documents':sum(d.get('status')=='download_failed' for d in manifest['documents']),
@@ -41,7 +52,7 @@ def build(root):
     data={'built_at':datetime.now(timezone.utc).isoformat(),'states':states,'sources':sources,
           'scope_note':'Official source discovery is incomplete. Documents can overlap, and not every state/year or polling station is represented. Counts are extracted source rows, not unique polling stations. Blank, unreadable, postal and aggregate rows are retained in the original tables.'}
     temporary=root/'index.tmp';temporary.write_text(json.dumps(data,ensure_ascii=False),encoding='utf-8');temporary.replace(root/'index.json')
-    print(json.dumps({'state_directory_entries':len(states),'documents':len(sources),'extracted_documents':sum(bool(s['pages']) for s in sources),
+    print(json.dumps({'state_directory_entries':len(states),'documents':len(sources),'extracted_documents':sum(bool(s['page_count']) for s in sources),
                       'polling_rows':sum(s['polling_rows'] for s in sources),'pending_pages':sum(s['pending_pages'] for s in states)}))
 
 

@@ -52,7 +52,7 @@ Extraction batches now share an operating-system-held lock so a queued full batc
 
 ## Nagaland dropdown archive
 
-The official Nagaland archive exposes 16 PC/AC general-election and by-election selections spanning 2003–2026. Reading the actual public dropdown responses discovered 295 source report records, including final result sheets and supporting reports. Downloading these records is in progress. Some election selections expose only a small number of reports; these remain coverage gaps rather than complete constituency sets.
+The official Nagaland archive exposes 16 PC/AC general-election and by-election selections spanning 2003–2026. Reading the actual public dropdown responses discovered 295 source report records, including final result sheets and supporting reports. The first pass preserved 262 of 295 report records. The remaining 33 downloads timed out; a retry pass is running and skips verified preserved files. Some election selections expose only a small number of reports; these remain coverage gaps rather than complete constituency sets.
 
 The archive serves files through POST forms containing source record IDs. The collector preserves the selection responses, record IDs, request fields, original PDFs and hashes. Supplemental manifest merging now keeps separate POST records even when their public source-page URL is identical. Downloads use the operating system's normal certificate verification and public session cookies; authentication is not required.
 
@@ -68,4 +68,4 @@ The failure audit found eight reports rejected by the ordinary downloader's 100 
 
 Extraction checksum verification and ZIP preservation now stream source files rather than reading whole large PDFs into memory. Preserved files remain hash-verified, and corrupted existing copies are rejected. Focused download, preservation and parser tests passed.
 
-Before deployment, review public-index memory use as the national archive grows: the current index embeds page metadata for every document. Completion and live deployment remain pending.
+The public index now keeps per-document page metadata in separate immutable, hash-verified files and loads only the selected report. At the checkpoint of 14,198 document entries, 3,253 extracted documents and 176,014 polling rows, the root index decreased from 15,318,551 to 8,487,197 bytes (about 45%). There were still 738 queued discovery pages. Older inline page metadata remains supported. Preservation packages include and verify the new metadata files. Three application tests (28 assertions), the archive preservation test and a local HTTP 200 check passed. Completion and live deployment remain pending.

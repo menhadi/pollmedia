@@ -17,7 +17,18 @@ def preserve(root, output):
     for source in index['sources']:
         base = folder/source['folder']
         required[base/source['file']] = source['sha256']
-        for page in source['pages']:
+        pages = source.get('pages', [])
+        if source.get('page_manifest'):
+            reference = source['page_manifest']
+            page_path = base/reference['file']
+            if page_path.parent != base:
+                raise ValueError('Unsafe page manifest path')
+            body = page_path.read_bytes()
+            if hashlib.sha256(body).hexdigest() != reference['sha256']:
+                raise ValueError('Page manifest checksum changed')
+            required[page_path] = reference['sha256']
+            pages = json.loads(body)['pages']
+        for page in pages:
             required[base/(source['sha256']+'-tables')/page['file']] = page['sha256']
             if page.get('ocr'):
                 required[base/(source['sha256']+'-ocr')/page['ocr']['file']] = page['ocr']['sha256']

@@ -32,6 +32,21 @@ class PreservationTest(unittest.TestCase):
                 self.assertIn('Partial',manifest['scope'])
                 self.assertEqual(archive.read((tables/'1.json').relative_to(root).as_posix()),page)
             self.assertNotIn(b'\r',output.with_suffix('.sha256').read_bytes())
+            index = json.loads((folder/'index.json').read_text())
+            page_body = json.dumps({'pages': index['sources'][0]['pages']}).encode()
+            page_hash = hashlib.sha256(page_body).hexdigest()
+            page_file = digest+'-pages-'+page_hash[:16]+'.json'
+            (base/page_file).write_bytes(page_body)
+            index['sources'][0].update(pages=[], page_count=1, page_manifest={'file':page_file,'sha256':page_hash})
+            (folder/'index.json').write_text(json.dumps(index))
+            preserve(root,root/'compact.zip')
+            with zipfile.ZipFile(root/'compact.zip') as archive:
+                self.assertEqual(archive.read((base/page_file).relative_to(root).as_posix()), page_body)
+                self.assertEqual(archive.read((tables/'1.json').relative_to(root).as_posix()), page)
+            (base/page_file).write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError, 'manifest checksum changed'):
+                preserve(root,root/'bad-manifest.zip')
+            (base/page_file).write_bytes(page_body)
             (tables/'1.json').write_bytes(b'changed')
             with self.assertRaisesRegex(ValueError,'checksum changed'):
                 preserve(root,root/'changed.zip')
