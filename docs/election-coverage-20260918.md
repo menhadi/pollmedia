@@ -124,3 +124,10 @@ The last completed index rebuild counted 16,522 document entries, 5,805 extracte
 Automatic page discovery now stops retrying a URL after three failed passes. Its URL, final error, attempt count and exhausted status remain in the manifest and source warnings; failed pages are not reclassified as complete or silently discarded. An explicit rediscovery pass can retry them and clears the failure record only after recovery. Original manifest snapshots remain preserved. A regression test covers exhaustion, retained evidence and successful explicit recovery.
 
 The latest completed index checkpoint has 16,528 document entries, 6,352 extracted documents and 363,366 polling rows. National extraction and Bihar OCR remain active. Queued discovery and unavailable official sources still prevent a final completeness claim or deployment package.
+
+
+## Bounded failed-document retries
+
+Repeated file download failures now also stop automatic retry after three failed passes, preserving the URL, error, count and retry-exhausted marker. Explicit rediscovery can retry them; successful recovery clears stale error markers and preserves the recovered original. Regression tests cover page and document exhaustion, evidence retention and explicit recovery. This changes retry behaviour, not the definition of completed coverage.
+
+The last completed public index contained 16,682 document entries, 7,060 extracted documents and 415,878 polling rows. Bihar OCR reached 361 pages; Madhya Pradesh reached 139 preserved reports. Both the national extraction and remaining discovery queues are still active.

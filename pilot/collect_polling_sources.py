@@ -180,6 +180,10 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
     for url, doc in documents.items():
         if doc.get('file') and (folder/doc['file']).is_file() and hashlib.sha256((folder/doc['file']).read_bytes()).hexdigest() == doc['sha256']:
             continue
+        if rediscover:
+            doc['download_failures'] = 0
+        if doc.get('download_failures', 0) >= 3:
+            continue
         try:
             body, final = fetch(url, folder/'document.part')
             suffix = '.pdf' if body.startswith(b'%PDF-') else '.xlsx' if body.startswith(b'PK') and urlparse(final).path.lower().endswith('.xlsx') else '.zip' if body.startswith(b'PK') else '.xls' if body.startswith(bytes.fromhex('d0cf11e0a1b11ae1')) else None
@@ -188,8 +192,11 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
             digest = hashlib.sha256(body).hexdigest(); name = digest+suffix
             (folder/name).write_bytes(body)
             doc.update(file=name, sha256=digest, bytes=len(body), final_url=final, status='archived_requires_extraction')
+            for key in ['error', 'download_failures', 'retry_exhausted']:
+                doc.pop(key, None)
         except Exception as error:
-            doc.update(status='download_failed', error=str(error))
+            failures = doc.get('download_failures', 0) + 1
+            doc.update(status='download_failed', error=str(error), download_failures=failures, retry_exhausted=failures >= 3)
         finally:
             (folder/'document.part').unlink(missing_ok=True)
             checkpoint()
