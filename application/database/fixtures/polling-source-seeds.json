@@ -1,6 +1,9 @@
 {
   "scope": "Supplementary official source entry points verified during discovery; these do not imply complete year or polling-station coverage.",
   "states": {
+    "MADHYA PRADESH": [
+      "https://ceoelection.mp.gov.in/"
+    ],
     "BIHAR": [
       "https://ceoelection.bihar.gov.in/"
     ],

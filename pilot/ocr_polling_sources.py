@@ -11,6 +11,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import pytesseract
+from polling_manifest import load_manifest
 
 
 def words_from_data(data):
@@ -41,7 +42,7 @@ def run(root, args):
     config = ''
     completed = 0
     for path in root.glob('*/manifest.json'):
-        manifest = json.loads(path.read_text(encoding='utf-8'))
+        manifest = load_manifest(path)
         if args.state and manifest['state'] not in args.state:
             continue
         seen = set()
@@ -57,8 +58,9 @@ def run(root, args):
             if not candidates:
                 continue
             original = path.parent/source['file']
-            if hashlib.sha256(original.read_bytes()).hexdigest() != digest:
-                raise ValueError('Original source checksum changed')
+            with original.open('rb') as stream:
+                if hashlib.file_digest(stream, 'sha256').hexdigest() != digest:
+                    raise ValueError('Original source checksum changed')
             destination = path.parent/(digest+'-ocr')
             destination.mkdir(exist_ok=True)
             index_path = destination/'index.json'

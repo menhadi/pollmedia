@@ -87,3 +87,12 @@ The ordinary Haryana crawl now recognises constituency-named PDFs on pages whose
 Arunachal Pradesh links its 60 assembly reports through a numeric server address. The collector now accepts only the verified server and report path; all 60 linked downloads failed with HTTP errors in this pass (the checked first link returned 404). The links remain in the manifest for review. Parliamentary-election navigation is also followed.
 
 All eight oversized reports in the recovery pass were preserved. The Nagaland retry recovered 15 additional reports, reaching 277 of 295 records; 18 records still have no preserved file. National collection and extraction continue, with live deployment pending.
+
+
+## Historical download completion and scan extraction
+
+Haryana historical collection finished with all 724 discovered report records preserved. The separate 2004 PC and 2005 AC selection failures remain unresolved; this is not all-year completeness. Goa/Bihar extraction and the initial Sikkim extraction pass finished. A full national extraction batch is running.
+
+The 15 Sikkim files yielded no mapped polling rows in the initial pass. Visual review confirmed that the first report is an image scan. An English OCR pass is running over the scanned pages, preserving original PDFs and recording word coordinates, confidence, and review warnings. The first checked page contains recognition errors and is marked needs_visual_review; OCR text is not being treated as verified vote totals. OCR now also reads supplemental dropdown manifests and streams original-file checksums, covering the newer archive collectors without loading large PDFs wholly into memory.
+
+ECI CEO contact details identify https://ceoelection.mp.gov.in/ as the current Madhya Pradesh website, while the earlier directory URL no longer resolves. This verified entry point has been added to the collector. Discovery is running and has exposed historical report links including 2009 PC reports; preservation and coverage checks are still pending.
