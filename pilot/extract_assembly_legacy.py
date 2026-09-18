@@ -8,7 +8,7 @@ from pathlib import Path
 
 import fitz
 
-IDENTITY = re.compile(r'Constituency\s*:\s*(\d+)\s*\.\s*([^\n]+)\n')
+IDENTITY = re.compile(r'^Constituency[ \t]*:?[ \t]*\n?(\d+)(?:[ \t]*\.[ \t]*|[ \t]*\n)([^\n]+)\n', re.M)
 TOTAL = re.compile(r'ELECTORS\s*:\s*(\d+)\s*([\d.]+)%\s*VALID VOTES\s*:?\s*(\d+)\s*VOTERS\s*:\s*(\d+)\s*POLL PERCENTAGE\s*:\s*$')
 CANDIDATE = re.compile(r'(.+?)\n([MF])\n([^\n]+)\n(\d+)\n([\d.]+%|#Num!)\n(\d+)\s*', re.S)
 
@@ -76,7 +76,7 @@ def extract(path, state):
     return records
 
 
-def run(entry, root):
+def run(entry, root, extractor=extract):
     folder = root / hashlib.sha256(entry['url'].encode()).hexdigest()[:24]
     output = folder/'extraction.json'
     if output.exists(): return None
@@ -86,7 +86,7 @@ def run(entry, root):
     if len(files) != 1: raise ValueError('Requires one combined PDF report')
     source = files[0]; path = folder/source['file']
     if Path(source['file']).name != source['file'] or hashlib.sha256(path.read_bytes()).hexdigest() != source['sha256']: raise ValueError('Source integrity failed')
-    records = extract(path, entry['state'])
+    records = extractor(path, entry['state'])
     data = dict(kind='ac', year=entry['year'], source_url=entry['url'], source_file=source['file'], source_sha256=source['sha256'], extracted_at=datetime.now(timezone.utc).isoformat(), records=records)
     temporary = folder/'extraction.tmp'
     temporary.write_text(json.dumps(data,indent=2,ensure_ascii=False),encoding='utf-8'); temporary.replace(output)
@@ -94,12 +94,15 @@ def run(entry, root):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); args=parser.parse_args()
+    parser=argparse.ArgumentParser(); parser.add_argument('catalogue',type=Path); parser.add_argument('root',type=Path); parser.add_argument('--year',type=int); parser.add_argument('--report',type=Path); parser.add_argument('--layout',choices=['legacy','components'],default='legacy'); args=parser.parse_args()
+    extractor = extract
+    if args.layout == 'components':
+        from extract_assembly_components import extract as extractor
     results=[]; remaining=[]
     for entry in json.loads(args.catalogue.read_text(encoding='utf-8'))['entries']:
         if args.year is not None and entry['year'] != args.year: continue
         try:
-            result=run(entry,args.root)
+            result=run(entry,args.root,extractor)
             if result: results.append(result); print(json.dumps(result),flush=True)
         except Exception as error:
             remaining.append(dict(state=entry['state'],year=entry['year'],source_url=entry['url'],reason=str(error)))

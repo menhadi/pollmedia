@@ -43,6 +43,19 @@ class LegacyAssemblyTest(unittest.TestCase):
         self.assertEqual(record['valid_candidate_votes'], 100)
         self.assertIn('pages are missing', record['error'])
 
+    def test_old_identity_without_punctuation_preserves_multi_member_seats(self):
+        page = Page('DETAILED RESULTS\nConstituency\n3\nKOLAR GOLD FIELDS\nNUMBER OF SEATS\n2\n' + ROW + TOTAL + '\nrptDetailedResults - Page 1 of 1')
+        with patch('extract_assembly_legacy.fitz.open', return_value=Document([page])):
+            record = extract('report.pdf', 'Mysore')[0]
+        self.assertEqual((record['code'],record['name'],record['number_of_seats']), (3,'KOLAR GOLD FIELDS',2))
+        self.assertNotIn('winner',record)
+
+    def test_duplicate_constituency_identity_is_rejected(self):
+        body = 'Constituency :\n1\nSAMPLE\n' + ROW + TOTAL + '\n'
+        with patch('extract_assembly_legacy.fitz.open', return_value=Document([Page(body+body+'rptDetailedResults - Page 1 of 1')])):
+            with self.assertRaisesRegex(ValueError,'duplicated'):
+                extract('report.pdf','Example')
+
     def test_other_layout_rejected(self):
         with patch('extract_assembly_legacy.fitz.open', return_value=Document([Page('VALID VOTES POLLED\nrptDetailedResults - Page 1 of 1')])):
             with self.assertRaisesRegex(ValueError, 'Different'):
