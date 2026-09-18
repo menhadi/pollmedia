@@ -41,3 +41,11 @@ After the user freed space, D: had approximately 22 GB available. The pipeline n
 Goa's public ASP.NET election dropdown exposes 20 election selections, including PC, AC and by-elections, spanning 1967–2024. Submitting the source's “all constituencies” option returned 149 distinct report-viewer URLs. Each returned election selection was checked against the requested dropdown value. Downloads are ongoing; a dropdown option alone is not proof of a complete historical dataset. The PDFs are returned directly by viewer URLs without a `.pdf` extension.
 
 The Goa collector preserves its HTML responses, selection labels, original PDFs, hashes and failures in an independent supplemental manifest. The public index, extractor and preservation exporter merge that manifest with ordinary discovery without overwriting its source files or the active crawl manifest. Live deployment remains pending completion and coverage review.
+
+## Latest extraction checkpoint
+
+The Goa dropdown collection finished with all 149 linked report files preserved. The earlier Bihar crawl finished with 2,379 documents, and the earlier Tamil Nadu extraction batch finished. A new Goa/Bihar extraction batch is running alongside national source discovery.
+
+At the latest index rebuild there were 13,316 preserved document entries, 2,087 extracted documents and 168,692 mapped polling rows, with 670 discovery pages still queued. Source-directory overlap means these are not unique national reports or stations. Coverage is not yet complete.
+
+Extraction batches now share an operating-system-held lock so a queued full batch waits for any active extraction to finish. Process exit releases the lock automatically. A concurrency test verifies waiting and release. Scanned, rotated or garbled source text remains flagged rather than being interpreted as reliable votes.

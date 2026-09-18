@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import fitz
 from polling_manifest import load_manifest
+from polling_job_lock import extraction_lock
 
 
 def normalized(value):
@@ -171,9 +172,7 @@ def extract_safely(job):
         return {'source_file':job[1]['file'], 'error':str(error)}
 
 
-if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--workers',type=int,choices=[1,2,3,4],default=2);parser.add_argument('--state',action='append');args=parser.parse_args()
-    root=Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources'
+def run_batch(root, args):
     jobs=[]
     for path in root.glob('*/manifest.json'):
         manifest=load_manifest(path);seen=set()
@@ -187,3 +186,11 @@ if __name__=='__main__':
     summary_name='extraction-summary-'+hashlib.sha256('|'.join(sorted(args.state or [])).encode()).hexdigest()[:12]+'.json' if args.state else 'extraction-summary.json'
     (root/summary_name).write_text(json.dumps({'documents':len(results),'pages':sum(r.get('page_count',0) for r in results),'polling_rows':sum(r.get('polling_rows',0) for r in results),
          'errors':[r for r in results if 'error' in r]},indent=2),encoding='utf-8')
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--workers',type=int,choices=[1,2,3,4],default=2);parser.add_argument('--state',action='append');args=parser.parse_args()
+    root=Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources'
+    print('Waiting for the extraction slot, if another batch is active.', flush=True)
+    with extraction_lock(root/'extraction-job.lock'):
+        run_batch(root, args)
