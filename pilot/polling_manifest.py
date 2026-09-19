@@ -1,5 +1,18 @@
 """Combine independently preserved dropdown sources with the ordinary crawl manifest."""
 import json
+import time
+
+
+def replace_checkpoint(temporary, destination):
+    """Keep atomic replacement while allowing brief Windows reader/antivirus locks."""
+    for attempt in range(8):
+        try:
+            temporary.replace(destination)
+            return
+        except PermissionError:
+            if attempt == 7:
+                raise
+            time.sleep(0.1 * (attempt + 1))
 
 
 def load_manifest(path):

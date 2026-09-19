@@ -1,4 +1,5 @@
 import contextlib
+from argparse import Namespace
 import io
 import json
 from pathlib import Path
@@ -6,9 +7,52 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 from collect_polling_sources import crawl, navigation_exclusion
+from polling_manifest import replace_checkpoint
+import run_polling_pipeline
 
 
 class PollingRetryTest(unittest.TestCase):
+    def test_pipeline_resume_preserves_pending_retry_state(self):
+        with TemporaryDirectory() as directory, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(directory)
+            store = root/'application/storage/app/private/polling-station-sources'
+            folder = store/'source'; folder.mkdir(parents=True)
+            manifest = {'state': 'TEST', 'pending_pages': [{'url': 'https://example.gov.in/results'}], 'page_failures': {'https://example.gov.in/results': 2}}
+            (folder/'manifest.json').write_text(json.dumps(manifest))
+            (store/'index.json').write_text(json.dumps({'sources': [], 'states': [{'pending_pages': 1}]}))
+            args = Namespace(resume=True, defer_state=[], wait_pid=[], wait_extraction_pid=[], pages=120, output=None)
+            with patch.object(run_polling_pipeline, '__file__', str(root/'pilot/run_polling_pipeline.py')), patch.object(run_polling_pipeline.subprocess, 'run') as run:
+                run_polling_pipeline.main(args)
+            commands = [call.args[0] for call in run.call_args_list]
+            collection = [command for command in commands if command[1].endswith('collect_polling_sources.py')]
+            self.assertEqual(len(collection), 1)
+            self.assertNotIn('--rediscover', collection[0])
+            self.assertEqual(json.loads((folder/'manifest.json').read_text()), manifest)
+            self.assertTrue(any(command[1].endswith('extract_polling_sources.py') for command in commands))
+
+    def test_checkpoint_retries_transient_lock_without_removing_previous_data(self):
+        with TemporaryDirectory() as directory:
+            target = Path(directory)/'manifest.json'; target.write_text('previous')
+            temporary = Path(directory)/'manifest.tmp'; temporary.write_text('new')
+            original_replace = Path.replace
+            attempts = []
+            def locked_replace(path, destination):
+                attempts.append(path)
+                self.assertEqual(target.read_text(), 'previous')
+                if len(attempts) < 3:
+                    raise PermissionError('Temporary reader lock')
+                return original_replace(path, destination)
+            with patch.object(Path, 'replace', locked_replace), patch('polling_manifest.time.sleep'):
+                replace_checkpoint(temporary, target)
+            self.assertEqual(target.read_text(), 'new')
+            temporary.write_text('next')
+            with patch.object(Path, 'replace', side_effect=PermissionError('Permanent denial')) as replace, patch('polling_manifest.time.sleep'):
+                with self.assertRaises(PermissionError):
+                    replace_checkpoint(temporary, target)
+                self.assertEqual(replace.call_count, 8)
+            self.assertEqual(target.read_text(), 'new')
+            self.assertEqual(temporary.read_text(), 'next')
+
     def test_adjacent_news_is_retained_without_expanding_result_crawl(self):
         news = {'url': 'https://old.eci.gov.in/files/file/12-media-coverage/', 'label': 'Previous File Media coverage of general election'}
         self.assertIsNotNone(navigation_exclusion(news))

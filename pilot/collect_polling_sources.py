@@ -11,6 +11,7 @@ import subprocess
 from urllib.parse import urljoin, urlparse, urldefrag, quote, parse_qs, urlencode
 from bs4 import BeautifulSoup
 from polling_job_lock import extraction_lock
+from polling_manifest import replace_checkpoint
 
 DIRECTORY = 'https://www.eci.gov.in/eci-backend/public/api/get-election-data?page_seo_name=links-to-ceos'
 FORM = re.compile(r'form[\s_().-]*20\b|form20|final[\s_-]*result[\s_-]*sheet|polling[\s_-]*station[\s_-]*wise.*result|booth[\s_-]*wise.*result', re.I)
@@ -150,7 +151,7 @@ def crawl_locked(entry, root, max_pages, rediscover=False):
                           'note': 'Website discovery does not establish all-year or all-polling-station coverage. Missing links, dynamic pages and historical files require further review.'}
         temporary = folder/'manifest.tmp'
         temporary.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
-        temporary.replace(manifest_path)
+        replace_checkpoint(temporary, manifest_path)
         return result
 
     while pending and len(visited) < max_pages:

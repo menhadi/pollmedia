@@ -59,7 +59,7 @@ def main(args):
         status['phases'].append({'script':script,'finished_at':datetime.now(timezone.utc).isoformat()})
 
     try:
-        if args.defer_state:
+        if args.defer_state and not args.resume:
             catalogue = json.loads((store/'catalogue.json').read_text(encoding='utf-8'))
             available = {entry['state'] for entry in catalogue['entries']}
             if set(args.defer_state) - available:
@@ -71,7 +71,8 @@ def main(args):
         save('waiting_for_existing_collection_jobs')
         wait_for_processes(args.wait_pid)
         deferred_arguments = [value for state in args.defer_state for value in ['--state', state]]
-        run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover',*deferred_arguments)
+        if not args.resume:
+            run('collect_polling_sources.py','--pages',args.pages,'--workers','2','--rediscover',*deferred_arguments)
         seen_queues = set()
         while True:
             pending = []
@@ -113,4 +114,5 @@ if __name__=='__main__':
     parser.add_argument('--wait-extraction-pid',type=int,action='append',default=[])
     parser.add_argument('--defer-state',action='append',default=[],help='Collect other states before waiting for existing state collectors; name every state still being written by those jobs')
     parser.add_argument('--pages',type=int,default=120);parser.add_argument('--output',type=Path)
+    parser.add_argument('--resume',action='store_true',help='Continue saved pending queues without rediscovery or resetting failed-source retry counts')
     main(parser.parse_args())
