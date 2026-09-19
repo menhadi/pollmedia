@@ -11,7 +11,19 @@ import cv2
 import numpy as np
 from PIL import Image
 import pytesseract
-from polling_manifest import load_manifest
+from polling_manifest import load_manifest, replace_checkpoint
+
+
+def read_ocr_page(bitmap, language, config):
+    errors = []
+    for attempt in range(2):
+        try:
+            data = pytesseract.image_to_data(bitmap, lang=language, config=config+' --psm 11',
+                                           output_type=pytesseract.Output.DICT, timeout=120)
+            return data, errors, None
+        except (RuntimeError, pytesseract.TesseractError) as error:
+            errors.append(str(error))
+    return {'text': []}, errors, errors[-1]
 
 
 def words_from_data(data):
@@ -70,7 +82,8 @@ def run(root, args):
                 for page in candidates:
                     if page['page'] in pages:
                         saved = pages[page['page']]
-                        if saved.get('profile') == profile and hashlib.sha256((destination/saved['file']).read_bytes()).hexdigest() == saved['sha256']:
+                        if (not (args.retry_failed and saved.get('ocr_error')) and saved.get('profile') == profile
+                                and hashlib.sha256((destination/saved['file']).read_bytes()).hexdigest() == saved['sha256']):
                             continue
                     image = document[page['page']-1].get_pixmap(dpi=200,colorspace=fitz.csGRAY)
                     bitmap = Image.frombytes('L',[image.width,image.height],image.samples)
@@ -91,7 +104,9 @@ def run(root, args):
                     horizontal = cv2.morphologyEx(binary,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(max(40,bitmap.width//40),1)))
                     vertical = cv2.morphologyEx(binary,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(1,max(40,bitmap.height//40))))
                     pixels[cv2.bitwise_or(horizontal,vertical)>0] = 255
-                    data = pytesseract.image_to_data(Image.fromarray(pixels),lang=args.language,config=config+' --psm 11',output_type=pytesseract.Output.DICT,timeout=120)
+                    data, attempt_errors, ocr_error = read_ocr_page(Image.fromarray(pixels), args.language, config)
+                    if ocr_error:
+                        notes.append('OCR failed after two attempts: '+ocr_error+'. Original page retained for review or an explicit retry.')
                     words = words_from_data(data)
                     low_confidence = sum(word['confidence'] < 60 for word in words)
                     quality = 'needs_visual_review' if not words or low_confidence > len(words)/3 else 'unverified_ocr'
@@ -104,17 +119,18 @@ def run(root, args):
                     result = {'source_sha256':digest,'source_url':source['url'],'page':page['page'],
                               'engine':engine,'model_sha256':model_hashes,'language':args.language,'dpi':200,
                               'rotation_clockwise':rotation,'image_width':bitmap.width,'image_height':bitmap.height,'preprocessing':'Long grid lines removed from OCR image only; original PDF preserved.',
-                              'text':'\n'.join(' '.join(line) for line in lines.values()),'words':words,'notes':notes,'quality':quality}
+                              'text':'\n'.join(' '.join(line) for line in lines.values()),'words':words,'notes':notes,'quality':quality,
+                              'ocr_error':ocr_error,'attempt_errors':attempt_errors}
                     body = json.dumps(result,ensure_ascii=False).encode('utf-8')
                     content_hash = hashlib.sha256(body).hexdigest()
                     filename = str(page['page'])+'-'+content_hash[:16]+'.json'
                     (destination/filename).write_bytes(body)
                     pages[page['page']] = {'page':page['page'],'file':filename,'sha256':content_hash,'profile':profile,
-                                           'words':len(words),'low_confidence_words':low_confidence,'quality':quality}
+                                           'words':len(words),'low_confidence_words':low_confidence,'quality':quality,'ocr_error':ocr_error}
                     index.update(pages=list(pages.values()),source_sha256=digest,source_url=source['url'])
                     temporary = index_path.with_suffix('.tmp')
                     temporary.write_text(json.dumps(index,ensure_ascii=False,indent=2),encoding='utf-8')
-                    temporary.replace(index_path)
+                    replace_checkpoint(temporary, index_path)
                     completed += 1
                     print(manifest['state']+' '+digest[:12]+' page '+str(page['page'])+': '+str(len(words))+' OCR words',flush=True)
                     if args.limit and completed >= args.limit:
@@ -123,5 +139,6 @@ def run(root, args):
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--state',action='append');parser.add_argument('--limit',type=int,default=0)
+    parser.add_argument('--retry-failed',action='store_true',help='Retry recorded engine failures while retaining earlier page files')
     parser.add_argument('--language',required=True);parser.add_argument('--tessdata',type=Path,required=True);parser.add_argument('--rotation',type=int,choices=[0,90,180,270]);args=parser.parse_args()
     run(Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources',args)
