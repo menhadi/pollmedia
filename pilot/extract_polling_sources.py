@@ -81,14 +81,19 @@ def map_table(cells):
 def spreadsheet_pages(source):
     from extract_assembly_modern import load_cells
     from datetime import date, datetime
-    book = load_cells(source)
+    from openpyxl.worksheet.formula import ArrayFormula, DataTableFormula
+    def preserved_value(value):
+        if isinstance(value, (ArrayFormula, DataTableFormula)):
+            return {'formula_type': value.t, 'attributes': dict(value), 'text': getattr(value, 'text', None)}
+        return value.isoformat() if isinstance(value, (date, datetime)) else value
+    book = load_cells(source, max_columns=256)
     try:
         for index, sheet in enumerate(book, 1):
             cells = []
             for row in sheet.values:
-                if len(cells) >= 20000 or len(row) > 100:
+                if len(cells) >= 20000 or len(row) > 256:
                     raise ValueError('Worksheet dimensions exceed extraction limits')
-                cells.append([v.isoformat() if isinstance(v, (date, datetime)) else v for v in row])
+                cells.append([preserved_value(v) for v in row])
             notes = list(getattr(book, 'reader_notes', []))
             notes.append('Worksheet cells are preserved in source order. Formulas are not recalculated; stored XLS results may be stale. Check the original workbook.')
             mapped = [r | {'table': 1} for r in map_table(cells)]

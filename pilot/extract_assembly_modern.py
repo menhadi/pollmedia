@@ -20,7 +20,7 @@ class CellWorkbook(list):
     def close(self): pass
 
 
-def load_cells(path):
+def load_cells(path, max_columns=100):
     if Path(path).suffix.lower() == '.xls':
         try:
             import xlrd
@@ -37,7 +37,7 @@ def load_cells(path):
             result = CellWorkbook()
             result.reader_notes = source_notes
             for sheet in source.sheets():
-                if sheet.nrows > 20000 or sheet.ncols > 100: raise ValueError('XLS dimensions exceed limits')
+                if sheet.nrows > 20000 or sheet.ncols > max_columns: raise ValueError('XLS dimensions exceed limits')
                 rows = [[None if c.ctype in [xlrd.XL_CELL_EMPTY, xlrd.XL_CELL_BLANK] else c.value for c in sheet.row(i)] for i in range(sheet.nrows)]
                 result.append(SimpleNamespace(title=sheet.name, values=rows))
             return result
