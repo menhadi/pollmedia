@@ -3,10 +3,11 @@ from argparse import Namespace
 import io
 import json
 from pathlib import Path
+import subprocess
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
-from collect_polling_sources import crawl, navigation_exclusion
+from collect_polling_sources import crawl, fetch, navigation_exclusion
 from polling_manifest import replace_checkpoint
 import run_polling_pipeline
 
@@ -119,6 +120,41 @@ class PollingRetryTest(unittest.TestCase):
             self.assertEqual(data['page_failures'], {})
             self.assertEqual(len(data['pages']), 1)
             self.assertTrue(list((root/'source').glob('manifest-*.json')))
+
+    def test_retired_http_link_is_recovered_over_https(self):
+        requested = 'http://ceo.example.gov.in/uploads/form202014.pdf'
+        secured = 'https://ceo.example.gov.in/uploads/form202014.pdf'
+        with TemporaryDirectory() as directory:
+            target = Path(directory)/'document.part'
+            attempts = []
+            def download(command, capture_output):
+                url = command[command.index('%{url_effective}')+1]
+                attempts.append(url)
+                if url == requested:
+                    return subprocess.CompletedProcess(command, 22, b'')
+                Path(command[command.index('-o')+1]).write_bytes(b'%PDF-preserved original')
+                return subprocess.CompletedProcess(command, 0, url.encode())
+            with patch('collect_polling_sources.subprocess.run', download):
+                body, final = fetch(requested, target)
+            self.assertEqual(body, b'%PDF-preserved original')
+            self.assertEqual(final, secured)
+            self.assertEqual(attempts, [requested, secured])
+            self.assertEqual(target.read_bytes(), b'%PDF-preserved original')
+
+    def test_failed_https_link_is_not_retried_or_left_behind(self):
+        url = 'https://ceo.example.gov.in/uploads/form202014.pdf'
+        with TemporaryDirectory() as directory:
+            target = Path(directory)/'document.part'
+            attempts = []
+            def download(command, capture_output):
+                attempts.append(command[command.index('%{url_effective}')+1])
+                return subprocess.CompletedProcess(command, 22, b'')
+            with patch('collect_polling_sources.subprocess.run', download):
+                with self.assertRaises(ValueError) as error:
+                    fetch(url, target)
+            self.assertEqual(str(error.exception), 'Official download failed; curl 22')
+            self.assertEqual(attempts, [url])
+            self.assertFalse(target.exists())
 
 
 if __name__ == '__main__':

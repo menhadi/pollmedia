@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import patch
 from openpyxl.worksheet.formula import ArrayFormula, DataTableFormula
 from extract_assembly_modern import CellWorkbook
-from extract_polling_sources import spreadsheet_pages, numeric
+from extract_polling_sources import spreadsheet_pages, numeric, readable_text_share, UNRELIABLE_TEXT_SHARE
 
 
 class PollingSpreadsheetTest(unittest.TestCase):
@@ -32,6 +32,13 @@ class PollingSpreadsheetTest(unittest.TestCase):
         with patch('extract_assembly_modern.load_cells', return_value=book):
             with self.assertRaisesRegex(ValueError, 'dimensions'):
                 list(spreadsheet_pages(Path('source.xls')))
+
+    def test_garbled_embedded_text_falls_below_the_unreliable_share(self):
+        garbled = '.\n_\n- -\n-\nFORM 20 \n~--, -11--~i~- I .. 11 p-- u,, I ! 11-~1~ \n~ \n~ I \n~ \n. ~ \n~ \n~-, \nI \n~ \n~-\n'
+        readable = 'FINAL RESULT SHEET Total No of Electors in Assembly Constituency NUMBER OF VALID VOTES CAST IN FAVOUR OF candidate'
+        self.assertLess(readable_text_share(garbled), UNRELIABLE_TEXT_SHARE)
+        self.assertGreaterEqual(readable_text_share(readable), UNRELIABLE_TEXT_SHARE)
+        self.assertEqual(readable_text_share(''), 0.0)
 
 
 if __name__ == '__main__':

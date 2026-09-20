@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from ocr_polling_sources import words_from_data, read_ocr_page
+from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates
 
 
 class OcrPreservationTest(unittest.TestCase):
@@ -28,6 +28,14 @@ class OcrPreservationTest(unittest.TestCase):
         self.assertEqual(words[0]['text'],'0')
         self.assertEqual((words[0]['left'],words[0]['top']),(14,33))
         self.assertEqual(words[1]['confidence'],31)
+
+    def test_only_pages_needing_ocr_are_selected(self):
+        pages = [{'page': 1, 'notes': ['Scanned or empty page; OCR and visual checking are required.']},
+                 {'page': 2, 'notes': ['Embedded text layer is unreliable; OCR and visual checking are required.']},
+                 {'page': 3, 'notes': ['Source tables extracted; polling-row layout still requires mapping.']},
+                 {'page': 4, 'notes': ['Page text was extracted, but no table grid was recognised; layout review or OCR is required.']},
+                 {'page': 5, 'notes': []}]
+        self.assertEqual([page['page'] for page in ocr_candidates(pages)], [1, 2])
 
 
 if __name__=='__main__':

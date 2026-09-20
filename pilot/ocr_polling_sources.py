@@ -13,6 +13,12 @@ from PIL import Image
 import pytesseract
 from polling_manifest import load_manifest, replace_checkpoint
 
+OCR_REQUIRED = 'OCR and visual checking are required.'
+
+
+def ocr_candidates(pages):
+    return [page for page in pages if any(OCR_REQUIRED in note for note in page['notes'])]
+
 
 def read_ocr_page(bitmap, language, config):
     errors = []
@@ -66,7 +72,7 @@ def run(root, args):
             extracted = path.parent/(digest+'-tables')/'index.json'
             if not extracted.exists():
                 continue
-            candidates = [p for p in json.loads(extracted.read_text(encoding='utf-8'))['pages'] if any('Scanned or empty' in note for note in p['notes'])]
+            candidates = ocr_candidates(json.loads(extracted.read_text(encoding='utf-8'))['pages'])
             if not candidates:
                 continue
             original = path.parent/source['file']

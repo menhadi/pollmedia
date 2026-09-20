@@ -21,6 +21,15 @@ def numeric(value):
     return int(cleaned) if re.fullmatch(r'\d+', cleaned) else None
 
 
+UNRELIABLE_TEXT_SHARE = 0.6
+
+
+def readable_text_share(text):
+    words = re.findall(r'[A-Za-z]{3,}', text)
+    letters = [character for character in text if character.isalpha()]
+    return sum(len(word) for word in words)/len(letters) if letters else 0.0
+
+
 def map_table(cells):
     if len(cells) < 3:
         return []
@@ -153,6 +162,8 @@ def extract(job):
                         data['notes'].append('Page text was extracted, but no table grid was recognised; layout review or OCR is required.')
                 except Exception as error:
                     data['notes'].append('Table extraction failed: '+str(error))
+                if not data['polling_rows'] and readable_text_share(content) < UNRELIABLE_TEXT_SHARE:
+                    data['notes'].append('Embedded text layer is unreliable; OCR and visual checking are required.')
             body = json.dumps(data,ensure_ascii=False).encode('utf-8')
             temporary = output_path.with_suffix('.tmp')
             temporary.write_bytes(body)

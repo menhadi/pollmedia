@@ -40,29 +40,37 @@ def fetch(url, target, form=None, cookies=None, referer=None, ajax=False):
     if shutil.disk_usage(target.parent).free < 2_000_000_000:
         raise ValueError('Local archive disk has less than 2 GB free; source download deferred')
     timeout = '120' if target.name.startswith('document') and target.suffix == '.part' else '25'
-    command = ['curl.exe', '--silent', '--show-error', '--fail', '--location', '--max-redirs', '5', '--connect-timeout', '15', '--max-time', timeout,
-               '--max-filesize', '100000000', '--write-out', '%{url_effective}', url, '-o', str(target)]
-    if shutil.which('curl.exe') is None:
-        command[0] = 'curl'
-    if ajax:
-        command.extend(['--header', 'X-Requested-With: XMLHttpRequest'])
-    if cookies is not None:
-        command.extend(['--cookie', str(cookies), '--cookie-jar', str(cookies)])
-    if referer is not None:
-        if not official(referer):
-            raise ValueError('Non-official referring page')
-        command.extend(['--referer', referer])
-    for key, value in (form or {}).items():
-        command.extend(['--data-urlencode', key+'='+str(value)])
-    result = subprocess.run(command, capture_output=True)
-    if result.returncode:
-        target.unlink(missing_ok=True)
-        raise ValueError('Official download failed; curl '+str(result.returncode))
-    final = result.stdout.decode().strip()
-    if not official(final):
-        target.unlink(missing_ok=True)
-        raise ValueError('Source redirected outside official government domains')
-    return target.read_bytes(), final
+    # Some official sites retired plain HTTP while their pages still publish http links.
+    candidates = [url]
+    if urlparse(url).scheme == 'http':
+        candidates.append('https'+url[len('http'):])
+    status = None
+    for candidate in candidates:
+        command = ['curl.exe', '--silent', '--show-error', '--fail', '--location', '--max-redirs', '5', '--connect-timeout', '15', '--max-time', timeout,
+                   '--max-filesize', '100000000', '--write-out', '%{url_effective}', candidate, '-o', str(target)]
+        if shutil.which('curl.exe') is None:
+            command[0] = 'curl'
+        if ajax:
+            command.extend(['--header', 'X-Requested-With: XMLHttpRequest'])
+        if cookies is not None:
+            command.extend(['--cookie', str(cookies), '--cookie-jar', str(cookies)])
+        if referer is not None:
+            if not official(referer):
+                raise ValueError('Non-official referring page')
+            command.extend(['--referer', referer])
+        for key, value in (form or {}).items():
+            command.extend(['--data-urlencode', key+'='+str(value)])
+        result = subprocess.run(command, capture_output=True)
+        if result.returncode:
+            target.unlink(missing_ok=True)
+            status = result.returncode
+            continue
+        final = result.stdout.decode().strip()
+        if not official(final):
+            target.unlink(missing_ok=True)
+            raise ValueError('Source redirected outside official government domains')
+        return target.read_bytes(), final
+    raise ValueError('Official download failed; curl '+str(status))
 
 
 def discover_links(body, current):
