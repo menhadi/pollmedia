@@ -1,7 +1,8 @@
 import unittest
 from extract_by_elections import index_card, historical_summary
 from collect_polling_sources import discover_links
-from extract_polling_sources import map_table, spreadsheet_pages, numeric
+from extract_polling_sources import (map_table, spreadsheet_pages, numeric, table_header, map_rows,
+                                     continues_table, CARRIED_HEADER_NOTE)
 from unittest.mock import patch
 from types import SimpleNamespace
 
@@ -104,6 +105,31 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual(prefixed[0]['valid_votes'], 10)
         self.assertEqual(prefixed[0]['source_table_row'], 4)
         self.assertEqual(len(prefixed), 2)
+
+    def test_headerless_continuation_page_uses_the_document_header(self):
+        cells = [['Serial No Of Polling Station', None, 'No of Valid Votes Cast in favour of', None, 'Total of Valid Votes', 'No of Rejected Votes', 'Total'],
+                 [None, None, 'A', 'B', None, None, None],
+                 ['1', '1', '10', '5', '15', '0', '15']]
+        header = table_header(cells)
+        self.assertEqual(len(map_table(cells)), 1)
+        continuation = [['2', '2', '7', '8', '15', '0', '15'],
+                        ['3', '3', '4', '1', '5', '0', '5']]
+        self.assertTrue(continues_table(continuation, header))
+        rows = map_rows(continuation, header, 0, CARRIED_HEADER_NOTE)
+        self.assertEqual([row['polling_station'] for row in rows], ['2', '3'])
+        self.assertEqual([candidate['name'] for candidate in rows[0]['candidate_votes']], ['A', 'B'])
+        self.assertEqual([candidate['votes'] for candidate in rows[0]['candidate_votes']], [7, 8])
+        self.assertEqual(rows[0]['valid_votes'], 15)
+        self.assertEqual(rows[0]['notes'][0], CARRIED_HEADER_NOTE)
+
+    def test_continuation_requires_a_resolved_header_and_the_same_width(self):
+        cells = [['Serial No Of Polling Station', None, 'No of Valid Votes Cast in favour of', None, 'Total of Valid Votes'],
+                 [None, None, 'A', 'B', None],
+                 ['1', '1', '10', '5', '15']]
+        header = table_header(cells)
+        self.assertFalse(continues_table([['2', '2', '7', '8', '15', '0']], header))
+        self.assertFalse(continues_table([['2', '2']], header))
+        self.assertEqual(map_table([['2', '2', '7', '8', '15'], ['3', '3', '1', '2', '3']]), [])
 
     def test_modern_pc_uses_total_not_first_assembly_segment(self):
         source = table([

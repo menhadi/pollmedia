@@ -30,13 +30,19 @@ def readable_text_share(text):
     return sum(len(word) for word in words)/len(letters) if letters else 0.0
 
 
-def map_table(cells):
+ADAPTER = 'form20-grid-v5'
+CARRIED_HEADER_NOTE = 'Column headers carried forward from the previous page of the same document.'
+MAPPING_NOTE = 'Source tables extracted; polling-row layout still requires mapping.'
+
+
+def table_header(cells):
+    """Resolve the column layout of one table, or None when no Form 20 header is present."""
     if len(cells) < 3:
-        return []
+        return None
     header = next((i for i,row in enumerate(cells[:32]) if any('pollingstation' in normalized(v) for v in row)
                    and any('votescastinfavour' in normalized(v) or 'votescastinfavor' in normalized(v) for v in row)), None)
     if header is None or header+2 >= len(cells):
-        return []
+        return None
     first = [normalized(v) for v in cells[header]]
     start = next((i for i,v in enumerate(first) if 'votescastinfavourof' in v or 'votescastinfavorof' in v), None)
     station_column = next((i for i,v in enumerate(first) if 'pollingstation' in v), None)
@@ -46,10 +52,10 @@ def map_table(cells):
     valid_labels = ['totalofvalidvotes','totalvalidvotes','totalnoofvalidvotes','totalnumberofvalidvotes']
     end = next((i for i,v in enumerate(first) if v in valid_labels), None)
     if start is None or end is None or start >= end or start < 1:
-        return []
+        return None
     names = [' '.join(str(v or '').split()) for v in cells[header+1][start:end]]
     if not all(names) or any(numeric(name) is not None for name in names) or len(names) != end-start:
-        return []
+        return None
     totals = {k: next((i for i,v in enumerate(first) if test(v)), None) for k,test in {
         'valid_votes': lambda v: v in valid_labels,
         'rejected_votes': lambda v: 'rejectedvotes' in v,
@@ -57,12 +63,21 @@ def map_table(cells):
         'total_votes': lambda v: v == 'total',
         'tendered_votes': lambda v: 'tenderedvotes' in v,
     }.items()}
+    return {'header':header, 'columns':len(cells[header]), 'start':start, 'end':end, 'names':names, 'totals':totals}
+
+
+def continues_table(cells, header):
+    """A headerless table can continue the previous page's Form 20 grid only at the same width."""
+    return bool(cells) and bool(cells[0]) and len(cells[0]) == header['columns']
+
+
+def map_rows(cells, header, first_row, carried_note=None):
     output = []
-    for index,row in enumerate(cells[header+2:], header+3):
-        if len(row) != len(first):
+    for index,row in enumerate(cells[first_row:], first_row+1):
+        if len(row) != header['columns']:
             continue
         serial = numeric(row[0])
-        station_value = row[start-1]
+        station_value = row[header['start']-1]
         if isinstance(station_value, float) and station_value.is_integer():
             station_value = int(station_value)
         station = ' '.join(str(station_value if station_value is not None else '').split())
@@ -70,10 +85,10 @@ def map_table(cells):
         named_station = re.fullmatch(r'\d+[A-Za-z]?(?:\s*[-–:]\s*|\s+)[^\d\s].*', station)
         if serial is None or not (numbered_station or named_station):
             continue
-        votes = [numeric(v) for v in row[start:end]]
-        values = {k:numeric(row[i]) if i is not None else None for k,i in totals.items()}
-        notes = []
-        if any(column is not None and values[key] is None and str(row[column] or '').strip() for key,column in totals.items()):
+        votes = [numeric(v) for v in row[header['start']:header['end']]]
+        values = {k:numeric(row[i]) if i is not None else None for k,i in header['totals'].items()}
+        notes = [carried_note] if carried_note else []
+        if any(column is not None and values[key] is None and str(row[column] or '').strip() for key,column in header['totals'].items()):
             notes.append('One or more source totals contain a formula or unreadable value; no total has been inferred.')
         if any(v is None for v in votes):
             notes.append('One or more candidate vote cells could not be read as a whole number.')
@@ -82,9 +97,14 @@ def map_table(cells):
         if all(values[k] is not None for k in ['valid_votes','rejected_votes','nota','total_votes']) and values['valid_votes']+values['rejected_votes']+values['nota'] != values['total_votes']:
             notes.append('Valid, rejected and NOTA votes do not reconcile with the source total.')
         output.append({'source_table_row':index, 'serial':serial, 'polling_station':station,
-                       'candidate_votes':[{'name':name,'votes':vote} for name,vote in zip(names,votes)], **values,
+                       'candidate_votes':[{'name':name,'votes':vote} for name,vote in zip(header['names'],votes)], **values,
                        'notes':notes, 'source_cells':row})
     return output
+
+
+def map_table(cells):
+    header = table_header(cells)
+    return map_rows(cells, header, header['header']+2) if header else []
 
 
 def spreadsheet_pages(source):
@@ -135,6 +155,7 @@ def extract(job):
     spreadsheet = source.suffix.lower() in ['.xls', '.xlsx']
     document = spreadsheet_pages(source) if spreadsheet else fitz.open(source)
     pages = []
+    header_context = None
     for index,page in enumerate(document):
         output_path = destination/(str(index+1)+'.json')
         if output_path.exists():
@@ -152,12 +173,24 @@ def extract(job):
                 data['notes'].append('Scanned or empty page; OCR and visual checking are required.')
             else:
                 try:
+                    carried = False
                     for table_number,table in enumerate(page.find_tables().tables, 1):
                         cells = table.extract()
                         data['tables'].append({'number':table_number,'cells':cells})
-                        data['polling_rows'].extend(row | {'table':table_number} for row in map_table(cells))
+                        context = table_header(cells)
+                        if context is not None:
+                            header_context = context
+                            rows = map_rows(cells, context, context['header']+2)
+                        elif header_context is not None and continues_table(cells, header_context):
+                            carried = True
+                            rows = map_rows(cells, header_context, 0, CARRIED_HEADER_NOTE)
+                        else:
+                            rows = []
+                        data['polling_rows'].extend(row | {'table':table_number} for row in rows)
                     if data['tables'] and not data['polling_rows']:
-                        data['notes'].append('Source tables extracted; polling-row layout still requires mapping.')
+                        data['notes'].append(MAPPING_NOTE)
+                    if carried:
+                        data['notes'].append(CARRIED_HEADER_NOTE)
                     if not data['tables']:
                         data['notes'].append('Page text was extracted, but no table grid was recognised; layout review or OCR is required.')
                 except Exception as error:
@@ -172,7 +205,7 @@ def extract(job):
                       'tables':len(data['tables']),'polling_rows':len(data['polling_rows']),
                       'flagged_rows':sum(bool(r['notes']) for r in data['polling_rows']), 'notes':data['notes']})
     document.close()
-    result = {'adapter':'form20-grid-v4', 'source_url':item['url'],'source_file':item['file'],'source_sha256':digest,
+    result = {'adapter':ADAPTER, 'source_url':item['url'],'source_file':item['file'],'source_sha256':digest,
               'pages':pages,'page_count':len(pages),'polling_rows':sum(p['polling_rows'] for p in pages),
               'scope_note':'Counts are extracted source rows, not unique national polling stations. Postal, aggregate and unrecognised rows remain in original tables; no current geography mapping is implied.'}
     temporary = manifest_path.with_suffix('.tmp')
