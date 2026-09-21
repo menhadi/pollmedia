@@ -158,3 +158,14 @@ Form 20 tables that span several pages repeat the header only on the first page,
 The remap of preserved cells processed 14,436 documents. Gujarat, which maps only partially, gained 6,614 rows (45,885 to 52,499) across 532 carried-header pages, with a warning profile close to that of its normally mapped rows. Nationally the public index now reports 1,925,054 polling rows, up from 1,552,923. Mapping stays resumable: documents already on the current mapper are skipped, and a document whose pages all map is never rewritten.
 
 The same pass showed a second layout that still maps nothing: Punjab's `Final Result as Per ENCORE` sheets carry no Form 20 grid header at all, so continuation cannot help them and they need a separate adapter. A `--state` remap now resolves its folders from the preserved catalogue instead of reading every manifest.
+
+
+## Discovery reopened for the largest recorded failure sets
+
+Rediscovery was rerun for the source directories holding the most recorded failures: Madhya Pradesh, Delhi, West Bengal, Odisha, Assam and Bihar. The queues were exhausted again rather than abandoned, and the pass preserved 534 further documents — 254 in Madhya Pradesh, 269 in Delhi, seven in West Bengal and four in Assam. The public index now publishes 30,837 document entries, 30,835 extracted documents and 1,960,084 polling rows with no queued discovery pages.
+
+Failures remain recorded rather than hidden: 884 documents in Madhya Pradesh and 873 in Delhi still carry download failures, alongside 154 in Odisha and 339 in West Bengal. A completed queue means the discovered links were attempted, not that those states or years are complete.
+
+OCR is now the largest remaining extraction task. 100,574 flagged pages have no OCR text, and a bounded Madhya Pradesh pass of 300 pages (five documents, English and Hindi) measured roughly ten seconds per page on this workstation, which puts the remaining scanned pages in the order of weeks of continuous single-machine work. The pages that are OCR'd keep their unverified labels and word coordinates.
+
+The verified export is still not produced: packaging the preserved corpus would write roughly 50 GB, close to the free space on the archive volume, so it stays deferred until coverage settles. National completeness is not established and no deployment has been performed.
