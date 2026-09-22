@@ -29,6 +29,11 @@ def state_folders(root, states):
     return folders
 
 
+def progress_due(completed, every):
+    """Keep long OCR runs observable without emitting one line per page."""
+    return completed == 1 or completed % every == 0
+
+
 def read_ocr_page(bitmap, language, config):
     errors = []
     for attempt in range(2):
@@ -68,6 +73,14 @@ def run(root, args):
     os.environ['TESSDATA_PREFIX'] = str(args.tessdata.resolve())
     config = ''
     completed = 0
+    quality_counts = {'unverified_ocr': 0, 'needs_visual_review': 0}
+    failed = 0
+
+    def finish():
+        summary = {'processed_pages': completed, 'quality': quality_counts, 'ocr_failures': failed}
+        print(json.dumps(summary), flush=True)
+        return summary
+
     folders = state_folders(root, set(args.state)) if args.state else None
     for path in root.glob('*/manifest.json'):
         if folders is not None and path.parent.name not in folders:
@@ -150,13 +163,20 @@ def run(root, args):
                     temporary.write_text(json.dumps(index,ensure_ascii=False,indent=2),encoding='utf-8')
                     replace_checkpoint(temporary, index_path)
                     completed += 1
-                    print(manifest['state']+' '+digest[:12]+' page '+str(page['page'])+': '+str(len(words))+' OCR words',flush=True)
+                    quality_counts[quality] += 1
+                    failed += bool(ocr_error)
+                    if progress_due(completed, args.progress_every):
+                        print(json.dumps({'processed_pages': completed, 'state': manifest['state'],
+                                          'source': digest[:12], 'page': page['page']}), flush=True)
                     if args.limit and completed >= args.limit:
-                        return
+                        return finish()
+    return finish()
 
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--state',action='append');parser.add_argument('--limit',type=int,default=0)
     parser.add_argument('--retry-failed',action='store_true',help='Retry recorded engine failures while retaining earlier page files')
+    parser.add_argument('--progress-every',type=int,default=100,choices=range(1,10001),metavar='PAGES',
+                        help='Write one compact progress record after this many processed pages (default: 100)')
     parser.add_argument('--language',required=True);parser.add_argument('--tessdata',type=Path,required=True);parser.add_argument('--rotation',type=int,choices=[0,90,180,270]);args=parser.parse_args()
     run(Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources',args)

@@ -211,7 +211,6 @@ def extract(job):
     temporary = manifest_path.with_suffix('.tmp')
     temporary.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     temporary.replace(manifest_path)
-    print(item['file'][:12]+': '+str(len(pages))+' pages; '+str(result['polling_rows'])+' polling rows',flush=True)
     return result
 
 
@@ -232,14 +231,25 @@ def run_batch(root, args):
             if item.get('file','').endswith(('.pdf', '.xls', '.xlsx')) and item['file'] not in seen:
                 jobs.append((str(path.parent),item));seen.add(item['file'])
     with ProcessPoolExecutor(max_workers=args.workers) as pool:
-        results=list(pool.map(extract_safely,jobs))
+        results=[]
+        for result in pool.map(extract_safely,jobs):
+            results.append(result)
+            if len(results) == 1 or len(results) % args.progress_every == 0:
+                print(json.dumps({'processed_documents':len(results), 'total_documents':len(jobs),
+                                  'errors':sum('error' in item for item in results)}), flush=True)
     summary_name='extraction-summary-'+hashlib.sha256('|'.join(sorted(args.state or [])).encode()).hexdigest()[:12]+'.json' if args.state else 'extraction-summary.json'
-    (root/summary_name).write_text(json.dumps({'documents':len(results),'pages':sum(r.get('page_count',0) for r in results),'polling_rows':sum(r.get('polling_rows',0) for r in results),
-         'errors':[r for r in results if 'error' in r]},indent=2),encoding='utf-8')
+    summary={'documents':len(results),'pages':sum(r.get('page_count',0) for r in results),'polling_rows':sum(r.get('polling_rows',0) for r in results),
+             'errors':[r for r in results if 'error' in r]}
+    (root/summary_name).write_text(json.dumps(summary,indent=2),encoding='utf-8')
+    print(json.dumps({'documents':summary['documents'],'pages':summary['pages'],
+                      'polling_rows':summary['polling_rows'],'errors':len(summary['errors'])}),flush=True)
 
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--workers',type=int,choices=[1,2,3,4],default=2);parser.add_argument('--state',action='append');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--workers',type=int,choices=[1,2,3,4],default=2);parser.add_argument('--state',action='append')
+    parser.add_argument('--progress-every',type=int,default=100,choices=range(1,10001),metavar='DOCUMENTS',
+                        help='Write one compact progress record after this many processed documents (default: 100)')
+    args=parser.parse_args()
     root=Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources'
     print('Waiting for the extraction slot, if another batch is active.', flush=True)
     with extraction_lock(root/'extraction-job.lock'):

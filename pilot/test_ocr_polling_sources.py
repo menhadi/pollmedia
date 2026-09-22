@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
-from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders
+from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due
 
 
 class OcrPreservationTest(unittest.TestCase):
@@ -49,6 +49,12 @@ class OcrPreservationTest(unittest.TestCase):
             self.assertEqual(state_folders(root, {'SIKKIM', 'BIHAR'}), {'folder-a', 'folder-b'})
             with self.assertRaisesRegex(ValueError, 'preserved source directory'):
                 state_folders(root, {'KARNATAKA'})
+
+    def test_progress_is_compact_but_reports_start_and_checkpoints(self):
+        self.assertTrue(progress_due(1, 100))
+        self.assertFalse(progress_due(99, 100))
+        self.assertTrue(progress_due(100, 100))
+        self.assertTrue(progress_due(300, 100))
 
 
 if __name__=='__main__':
