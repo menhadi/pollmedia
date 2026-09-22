@@ -49,6 +49,27 @@ class PlaceController extends Controller
 
                 return $other;
             })->unique('id')->sortBy('name')->values();
+        $crossBoundaryLinks = collect();
+        if ($type === 'district') {
+            $crossBoundaryLinks = DB::table('place_relationships as district_link')
+                ->join('place_relationships as pc_link', 'pc_link.from_place_id', '=', 'district_link.from_place_id')
+                ->join('places as p', 'p.id', '=', 'pc_link.to_place_id')
+                ->where('district_link.to_place_id', $place->id)->where('district_link.type', 'district_directory_lists')
+                ->where('pc_link.type', 'assembly_segment_of')->whereNull('district_link.valid_to')->whereNull('pc_link.valid_to')
+                ->select('p.id', 'p.name', 'p.slug', 'p.type', DB::raw('count(distinct district_link.from_place_id) as shared_acs'))
+                ->groupBy('p.id', 'p.name', 'p.slug', 'p.type')->orderBy('p.name')->get();
+        } elseif ($type === 'pc') {
+            $crossBoundaryLinks = DB::table('place_relationships as pc_link')
+                ->join('place_relationships as district_link', 'district_link.from_place_id', '=', 'pc_link.from_place_id')
+                ->join('places as p', 'p.id', '=', 'district_link.to_place_id')
+                ->where('pc_link.to_place_id', $place->id)->where('pc_link.type', 'assembly_segment_of')
+                ->where('district_link.type', 'district_directory_lists')->whereNull('district_link.valid_to')->whereNull('pc_link.valid_to')
+                ->select('p.id', 'p.name', 'p.slug', 'p.type', DB::raw('count(distinct pc_link.from_place_id) as shared_acs'))
+                ->groupBy('p.id', 'p.name', 'p.slug', 'p.type')->orderBy('p.name')->get();
+        }
+        $crossBoundaryLinks->each(function (object $related): void {
+            $related->url = route('places.show', ['type' => $related->type, 'slug' => substr($related->slug, strlen($related->type) + 1)]);
+        });
         $input = $request->validate(['year' => 'nullable|integer|min:1951|max:2100']);
         $elections = app(ElectionResults::class)->forPlace($place->id);
         $withheldElections = collect();
@@ -65,7 +86,7 @@ class PlaceController extends Controller
         $villageCoverage = $this->villageCoverage($type, $slug);
         $populationHistoryAvailable = $place->slug === 'district-pilibhit' && app(CensusHistory::class)->population() !== null;
 
-        return view('place', compact('place', 'type', 'people', 'observations', 'census', 'elections', 'selectedElection', 'pageTitle', 'code', 'relations', 'villageCoverage', 'populationHistoryAvailable', 'withheldElections'));
+        return view('place', compact('place', 'type', 'people', 'observations', 'census', 'elections', 'selectedElection', 'pageTitle', 'code', 'relations', 'crossBoundaryLinks', 'villageCoverage', 'populationHistoryAvailable', 'withheldElections'));
     }
 
     private function villageCoverage(string $type, string $slug): array

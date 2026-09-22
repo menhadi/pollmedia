@@ -42,7 +42,8 @@ class ElectionResults
                 $contest->margin = $contest->winner->votes - $contest->runner->votes;
                 $contest->margin_pp = 100 * $contest->margin / $contest->votes_polled;
                 $contest->counted_votes = $contest->rows->sum('votes');
-                $contest->turnout = 100 * $contest->counted_votes / $contest->electors;
+                $contest->turnout = 100 * $contest->votes_polled / $contest->electors;
+                $contest->recorded_participation = 100 * $contest->counted_votes / $contest->electors;
                 $contest->totals_url = json_decode($contest->payload, true)['totals_url'] ?? null;
                 $contest->nota = $contest->rows->where('is_nota', true)->sum('votes');
                 $contest->unallocated = $contest->votes_polled - $contest->rows->sum('votes');

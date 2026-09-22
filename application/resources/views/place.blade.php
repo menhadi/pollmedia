@@ -24,7 +24,7 @@
 
 </style></head><body><header><a class="brand" href="/">pollmedia.</a><nav><a href="/">Places</a><a href="/india/sir">SIR explorer</a><a href="#sources">Sources</a><a href="{{ route('sources.index') }}">Data status</a></nav></header><main>
 
-<div class="crumb">India / Uttar Pradesh / {{ $type === 'district' ? 'Administrative geography' : 'Electoral geography' }}</div>
+<div class="crumb"><a href="{{ route('india') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / {{ $type === 'district' ? 'Administrative geography' : 'Electoral geography' }}</div>
 
 <div class="hero"><h1>{{ $pageTitle }}</h1><p class="lead">Explore election results, public representatives, development and citizen participation.</p><p class="small">{{ strtoupper($type) }} {{ $code }} · India pilot</p></div>
 
@@ -41,6 +41,8 @@
 @endif
 
 <section id="related-places"><div class="kicker">Connected places</div><h2>{{ $type === 'ac' ? 'Parliamentary constituency & district' : 'Assembly constituencies' }}</h2><p class="small">Electoral and administrative relationships are kept separately. Links below follow the cited official source editions. District and electoral boundaries are different; these links do not assert that historical boundaries are unchanged today.</p><div class="grid3">@foreach($relations as $related)<article class="card"><span class="label">{{ strtoupper($related->type) }}</span><h3><a href="{{ $related->url }}">{{ $related->name }} {{ strtoupper($related->type) }} →</a></h3><a class="small" href="{{ $related->source_url }}" target="_blank" rel="noreferrer">Official relationship source ↗</a><p class="small">Source checked {{ $related->checked_on }}@if($related->reference_date)<br>Source edition: {{ $related->reference_date }} · {{ $related->source_locator }}@endif</p></article>@endforeach</div>@if($relations->isEmpty())<p>Verified parliamentary constituency and district links have not been imported for this seat.</p>@endif</section>
+
+@if($crossBoundaryLinks->isNotEmpty())<section class="card" aria-labelledby="cross-boundary-heading"><div class="kicker">District and parliamentary connections</div><h2 id="cross-boundary-heading">{{ $type === 'district' ? 'Related parliamentary constituencies' : 'Related administrative districts' }}</h2><p class="small">These areas share one or more verified Assembly constituency links. This describes an overlap; it does not treat a district and a parliamentary constituency as the same boundary.</p><div class="grid3">@foreach($crossBoundaryLinks as $related)<article><span class="label">{{ strtoupper($related->type) }}</span><h3><a href="{{ $related->url }}">{{ $related->name }} {{ strtoupper($related->type) }} →</a></h3><p class="small">Connected through {{ $related->shared_acs }} linked AC{{ $related->shared_acs === 1 ? '' : 's' }}.</p></article>@endforeach</div></section>@endif
 
 @if($place->slug==='district-pilibhit')
 
