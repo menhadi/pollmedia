@@ -1,6 +1,9 @@
 import unittest
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
-from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates
+from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders
 
 
 class OcrPreservationTest(unittest.TestCase):
@@ -36,6 +39,16 @@ class OcrPreservationTest(unittest.TestCase):
                  {'page': 4, 'notes': ['Page text was extracted, but no table grid was recognised; layout review or OCR is required.']},
                  {'page': 5, 'notes': []}]
         self.assertEqual([page['page'] for page in ocr_candidates(pages)], [1, 2])
+
+    def test_requested_states_resolve_to_source_folders_without_every_manifest(self):
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'catalogue.json').write_text(json.dumps({'entries': [
+                {'id': 'folder-a', 'state': 'BIHAR'}, {'id': 'folder-b', 'state': 'SIKKIM'}]}))
+            self.assertEqual(state_folders(root, {'SIKKIM'}), {'folder-b'})
+            self.assertEqual(state_folders(root, {'SIKKIM', 'BIHAR'}), {'folder-a', 'folder-b'})
+            with self.assertRaisesRegex(ValueError, 'preserved source directory'):
+                state_folders(root, {'KARNATAKA'})
 
 
 if __name__=='__main__':

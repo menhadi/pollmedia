@@ -20,6 +20,15 @@ def ocr_candidates(pages):
     return [page for page in pages if any(OCR_REQUIRED in note for note in page['notes'])]
 
 
+def state_folders(root, states):
+    """Resolve requested state names to source folders without reading every manifest."""
+    catalogue = json.loads((root/'catalogue.json').read_text(encoding='utf-8'))
+    folders = {entry['id'] for entry in catalogue['entries'] if entry['state'] in states}
+    if not folders:
+        raise ValueError('No requested state is in the preserved source directory')
+    return folders
+
+
 def read_ocr_page(bitmap, language, config):
     errors = []
     for attempt in range(2):
@@ -59,7 +68,10 @@ def run(root, args):
     os.environ['TESSDATA_PREFIX'] = str(args.tessdata.resolve())
     config = ''
     completed = 0
+    folders = state_folders(root, set(args.state)) if args.state else None
     for path in root.glob('*/manifest.json'):
+        if folders is not None and path.parent.name not in folders:
+            continue
         manifest = load_manifest(path)
         if args.state and manifest['state'] not in args.state:
             continue
