@@ -12,6 +12,7 @@ import numpy as np
 from PIL import Image
 import pytesseract
 from polling_manifest import load_manifest, replace_checkpoint
+from polling_ocr_mapping import propose_rows
 
 OCR_REQUIRED = 'OCR and visual checking are required.'
 NON_RESULT_TITLE = re.compile(r'^(?:presentation on evm|manual on evm(?: and vvpat)?|(?:legal|ligal) history of evms? and vvpats?)$', re.I)
@@ -81,10 +82,12 @@ def run(root, args):
     completed = 0
     quality_counts = {'unverified_ocr': 0, 'needs_visual_review': 0}
     failed = 0
+    proposed_rows = 0
     skipped_non_results = 0
 
     def finish():
         summary = {'processed_pages': completed, 'quality': quality_counts, 'ocr_failures': failed,
+                   'proposed_polling_rows': proposed_rows,
                    'skipped_non_result_documents': skipped_non_results}
         print(json.dumps(summary), flush=True)
         return summary
@@ -163,12 +166,16 @@ def run(root, args):
                               'rotation_clockwise':rotation,'image_width':bitmap.width,'image_height':bitmap.height,'preprocessing':'Long grid lines removed from OCR image only; original PDF preserved.',
                               'text':'\n'.join(' '.join(line) for line in lines.values()),'words':words,'notes':notes,'quality':quality,
                               'ocr_error':ocr_error,'attempt_errors':attempt_errors}
+                    result['proposed_polling_rows'] = propose_rows(result)
+                    if result['proposed_polling_rows']:
+                        notes.append('Some OCR rows reconcile arithmetically but remain unverified; check the official PDF before publishing them as results.')
                     body = json.dumps(result,ensure_ascii=False).encode('utf-8')
                     content_hash = hashlib.sha256(body).hexdigest()
                     filename = str(page['page'])+'-'+content_hash[:16]+'.json'
                     (destination/filename).write_bytes(body)
                     pages[page['page']] = {'page':page['page'],'file':filename,'sha256':content_hash,'profile':profile,
-                                           'words':len(words),'low_confidence_words':low_confidence,'quality':quality,'ocr_error':ocr_error}
+                                           'words':len(words),'low_confidence_words':low_confidence,'quality':quality,'ocr_error':ocr_error,
+                                           'proposed_polling_rows':len(result['proposed_polling_rows'])}
                     index.update(pages=list(pages.values()),source_sha256=digest,source_url=source['url'])
                     temporary = index_path.with_suffix('.tmp')
                     temporary.write_text(json.dumps(index,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -176,6 +183,7 @@ def run(root, args):
                     completed += 1
                     quality_counts[quality] += 1
                     failed += bool(ocr_error)
+                    proposed_rows += len(result['proposed_polling_rows'])
                     if progress_due(completed, args.progress_every):
                         print(json.dumps({'processed_pages': completed, 'state': manifest['state'],
                                           'source': digest[:12], 'page': page['page']}), flush=True)
