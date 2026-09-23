@@ -21,7 +21,7 @@ def _peaks(values, minimum):
     for i, value in enumerate(values):
         if value < minimum:
             continue
-        if not groups or i > groups[-1][-1] + 1:
+        if not groups or i > groups[-1][-1] + 3:
             groups.append([])
         groups[-1].append(i)
     return [round(sum(group) / len(group)) for group in groups]
@@ -36,7 +36,7 @@ def grid_lines(gray):
     vertical = cv2.morphologyEx(binary, cv2.MORPH_OPEN,
                                cv2.getStructuringElement(cv2.MORPH_RECT, (1, max(35, height // 27))))
     xs = _peaks(np.count_nonzero(vertical, axis=0), max(150, round(height * .30)))
-    ys = _peaks(np.count_nonzero(horizontal, axis=1), max(250, round(width * .55)))
+    ys = _peaks(np.count_nonzero(horizontal, axis=1), max(250, round(width * .35)))
     if len(xs) < 10 or len(ys) < 6 or any(b - a < 20 for a, b in zip(xs, xs[1:])):
         return None
     gaps = [b - a for a, b in zip(ys, ys[1:])]
@@ -46,7 +46,7 @@ def grid_lines(gray):
         return None
     rows = [(a, b) for a, b in zip(ys[header + 1:-1], ys[header + 2:])
             if 16 <= b - a <= 65]
-    return (xs, ys[header], ys[header + 1], rows) if len(rows) >= 3 else None
+    return (xs, ys[max(0, header - 1)], ys[header + 1], rows) if len(rows) >= 3 else None
 
 
 def _crop(gray, x1, y1, x2, y2, scale=2):
@@ -87,9 +87,9 @@ def _header_layout(gray, xs, top, bottom):
     return valid, names
 
 
-def _read_cells(gray, xs, rows, columns):
+def _read_cells(gray, xs, rows, columns, scale=2):
     """Batch isolated cells in small montages, keeping each crop's slot."""
-    cells = [(r, c, _crop(gray, xs[c], y1, xs[c + 1], y2))
+    cells = [(r, c, _crop(gray, xs[c], y1, xs[c + 1], y2, scale))
              for r, (y1, y2) in enumerate(rows) for c in columns]
     values = {}
     for start in range(0, len(cells), 50):
@@ -147,27 +147,27 @@ def reconciled_rows(values, rows, valid, names, page, source_sha256, source_url,
     return proposals
 
 
-def extract_page(pdf, page_number, source_url, expected_sha256=None):
+def extract_page(pdf, page_number, source_url, expected_sha256=None, dpi=130):
     with pdf.open('rb') as stream:
         digest = hashlib.file_digest(stream, 'sha256').hexdigest()
     if expected_sha256 is not None and digest != expected_sha256:
         raise ValueError('Preserved PDF checksum changed')
     with fitz.open(pdf) as document:
-        pix = document[page_number - 1].get_pixmap(dpi=130, colorspace=fitz.csGRAY)
+        pix = document[page_number - 1].get_pixmap(dpi=dpi, colorspace=fitz.csGRAY)
         gray = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width).copy()
     grid = grid_lines(gray)
     if grid is None:
-        return {'source_sha256': digest, 'source_url': source_url, 'page': page_number,
+        return {'source_sha256': digest, 'source_url': source_url, 'page': page_number, 'dpi': dpi,
                 'quality': 'needs_visual_review', 'proposed_polling_rows': []}
     xs, header_top, data_top, rows = grid
     layout = _header_layout(gray, xs, header_top, data_top)
     if layout is None:
-        return {'source_sha256': digest, 'source_url': source_url, 'page': page_number,
+        return {'source_sha256': digest, 'source_url': source_url, 'page': page_number, 'dpi': dpi,
                 'quality': 'needs_visual_review', 'proposed_polling_rows': []}
     valid, names = layout
     values = _read_cells(gray, xs, rows, range(1, valid + 5))
     proposals = reconciled_rows(values, rows, valid, names, page_number, digest, source_url, xs)
-    return {'source_sha256': digest, 'source_url': source_url, 'page': page_number,
+    return {'source_sha256': digest, 'source_url': source_url, 'page': page_number, 'dpi': dpi,
             'adapter': 'form20-cell-grid-v1', 'quality': 'unverified_cell_ocr',
             'candidate_names_ocr': names, 'detected_rows': len(rows),
             'candidate_header_cells': [{'column': column, 'bbox': [xs[column], header_top,
@@ -183,9 +183,10 @@ if __name__ == '__main__':
     parser.add_argument('--page', type=int, required=True)
     parser.add_argument('--source-url', required=True)
     parser.add_argument('--expected-sha256', required=True)
+    parser.add_argument('--dpi', type=int, choices=[130, 200], default=130)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    result = extract_page(args.pdf, args.page, args.source_url, args.expected_sha256)
+    result = extract_page(args.pdf, args.page, args.source_url, args.expected_sha256, args.dpi)
     body = json.dumps(result, ensure_ascii=False, indent=2).encode('utf-8')
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(args.output.suffix + '.partial')
