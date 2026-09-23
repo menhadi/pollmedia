@@ -14,10 +14,16 @@ import pytesseract
 from polling_manifest import load_manifest, replace_checkpoint
 
 OCR_REQUIRED = 'OCR and visual checking are required.'
+NON_RESULT_TITLE = re.compile(r'^(?:presentation on evm|manual on evm(?: and vvpat)?|(?:legal|ligal) history of evms? and vvpats?)$', re.I)
 
 
 def ocr_candidates(pages):
     return [page for page in pages if any(OCR_REQUIRED in note for note in page['notes'])]
+
+
+def result_source(source):
+    """Keep obvious training/reference PDFs archived without spending OCR on them."""
+    return not NON_RESULT_TITLE.fullmatch(source.get('label', '').strip())
 
 
 def state_folders(root, states):
@@ -75,9 +81,11 @@ def run(root, args):
     completed = 0
     quality_counts = {'unverified_ocr': 0, 'needs_visual_review': 0}
     failed = 0
+    skipped_non_results = 0
 
     def finish():
-        summary = {'processed_pages': completed, 'quality': quality_counts, 'ocr_failures': failed}
+        summary = {'processed_pages': completed, 'quality': quality_counts, 'ocr_failures': failed,
+                   'skipped_non_result_documents': skipped_non_results}
         print(json.dumps(summary), flush=True)
         return summary
 
@@ -90,6 +98,9 @@ def run(root, args):
             continue
         seen = set()
         for source in manifest['documents']:
+            if not result_source(source):
+                skipped_non_results += 1
+                continue
             digest = source.get('sha256')
             if not source.get('file','').endswith('.pdf') or digest in seen:
                 continue

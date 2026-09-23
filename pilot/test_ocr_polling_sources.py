@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
-from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due
+from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due, result_source
 
 
 class OcrPreservationTest(unittest.TestCase):
@@ -39,6 +39,13 @@ class OcrPreservationTest(unittest.TestCase):
                  {'page': 4, 'notes': ['Page text was extracted, but no table grid was recognised; layout review or OCR is required.']},
                  {'page': 5, 'notes': []}]
         self.assertEqual([page['page'] for page in ocr_candidates(pages)], [1, 2])
+
+    def test_unrelated_training_pdfs_are_preserved_without_ocr(self):
+        self.assertFalse(result_source({'label': 'Presentation on EVM'}))
+        self.assertFalse(result_source({'label': 'Manual on EVM and VVPAT'}))
+        self.assertFalse(result_source({'label': 'Ligal History of EVMs and VVPATs'}))
+        self.assertTrue(result_source({'label': 'Form-20'}))
+        self.assertTrue(result_source({'label': 'EVM votes in Form 20'}))
 
     def test_requested_states_resolve_to_source_folders_without_every_manifest(self):
         with TemporaryDirectory() as directory:
