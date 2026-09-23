@@ -40,6 +40,29 @@ class Bucket:
 
 
 class SyncPollingPdfsTest(unittest.TestCase):
+    def test_parallel_upload_writes_one_verified_receipt_per_source(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            folder = root / ('a' * 24)
+            folder.mkdir()
+            sources = []
+            for number in range(12):
+                data = f'%PDF-verified original {number}'.encode()
+                digest = hashlib.sha256(data).hexdigest()
+                (folder / (digest + '.pdf')).write_bytes(data)
+                sources.append({'id': f'{number:024x}', 'folder': 'a' * 24, 'file': digest + '.pdf',
+                                'sha256': digest, 'state': 'EXAMPLE',
+                                'source_url': 'https://eci.gov.in/source.pdf', 'discovered_on': 'https://eci.gov.in/'})
+            receipts = root / 'receipts.jsonl'
+            bucket = Bucket()
+            self.assertEqual(upload({'sources': sources}, root, receipts, bucket, 'test-bucket', 'pollmedia',
+                                    workers=4), len(sources))
+            records = [json.loads(line) for line in receipts.read_text(encoding='utf-8').splitlines()]
+            self.assertEqual({record['source_id'] for record in records}, {source['id'] for source in sources})
+            self.assertEqual(bucket.uploads, len(sources))
+            self.assertEqual(upload({'sources': sources}, root, receipts, bucket, 'test-bucket', 'pollmedia',
+                                    workers=4), 0)
+
     def test_verified_upload_receipt_and_resume(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
