@@ -13,6 +13,34 @@ class PollingSourceDatabaseImportTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_large_state_document_choices_are_paginated(): void
+    {
+        Storage::fake('local');
+        Cache::forget('polling-source-summary');
+        DB::table('polling_source_states')->insert(['name' => 'EXAMPLE',
+            'metadata' => json_encode(['state' => 'EXAMPLE', 'url' => 'https://eci.gov.in/',
+                'documents' => 201, 'pending_pages' => 0, 'errors' => []]),
+            'created_at' => now(), 'updated_at' => now()]);
+        $documents = [];
+        for ($number = 1; $number <= 201; $number++) {
+            $id = sprintf('%024x', $number);
+            $metadata = ['id' => $id, 'state' => 'EXAMPLE', 'name' => 'Report '.$number,
+                'folder' => str_repeat('c', 24), 'file' => str_repeat('d', 64).'.pdf',
+                'sha256' => str_repeat('d', 64), 'source_url' => 'https://eci.gov.in/source.pdf',
+                'discovered_on' => 'https://eci.gov.in/', 'polling_rows' => 0];
+            $documents[] = ['id' => $id, 'state' => 'EXAMPLE', 'sha256' => $metadata['sha256'],
+                'metadata' => json_encode($metadata), 'created_at' => now(), 'updated_at' => now()];
+        }
+        DB::table('polling_source_documents')->insert($documents);
+
+        $this->get('/india/elections/polling-stations?state=EXAMPLE')->assertOk()
+            ->assertSee('Documents 1–200 of 201')->assertSee('Next documents')->assertDontSee('Report 201');
+        $this->get('/india/elections/polling-stations?state=EXAMPLE&source_page=2')->assertOk()
+            ->assertSee('Documents 201–201 of 201')->assertSee('Previous documents')->assertSee('Report 201');
+        $this->get('/india/elections/polling-stations?source='.sprintf('%024x', 201))->assertOk()
+            ->assertSee('Report 201');
+    }
+
     public function test_database_document_choices_are_scoped_to_the_selected_state(): void
     {
         Storage::fake('local');

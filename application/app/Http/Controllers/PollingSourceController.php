@@ -41,6 +41,7 @@ class PollingSourceController extends Controller
         $page = (int) ($input['page'] ?? 1);
         $data = null;
         $ocr = null;
+        $sourcePages = null;
         if ($source && ! empty($source['page_manifest'])) {
             $reference = $source['page_manifest'];
             abort_unless(preg_match('/^[a-f0-9]{24}$/', $source['folder']) && preg_match('/^[a-f0-9]{64}-pages-[a-f0-9]{16}\.json$/', $reference['file']), 503);
@@ -67,7 +68,7 @@ class PollingSourceController extends Controller
             $source['has_preserved_original'] = isset($source['file']) && $disk->exists($root.$source['folder'].'/'.$source['file']);
         }
 
-        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount'));
+        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount', 'sourcePages'));
     }
 
     private function databaseIndex(Request $request): View|StreamedResponse
@@ -76,16 +77,20 @@ class PollingSourceController extends Controller
         $states = DB::table('polling_source_states')->orderBy('name')->get()->map(fn ($row) => json_decode($row->metadata, true));
         $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())],
             'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'],
-            'download' => ['nullable', 'boolean']]);
+            'source_page' => ['nullable', 'integer', 'min:1'], 'download' => ['nullable', 'boolean']]);
         $selected = isset($input['source']) ? DB::table('polling_source_documents')->where('id', $input['source'])->first() : null;
         abort_if(isset($input['source']) && (! $selected || (isset($input['state']) && $selected->state !== $input['state'])), 404);
         $selectedState = $input['state'] ?? $selected?->state ?? DB::table('polling_source_documents')->orderBy('state')->value('state');
         if ($selectedState !== null) {
             $input['state'] = $selectedState;
         }
-        $choices = $selectedState === null ? collect() : DB::table('polling_source_documents')->where('state', $selectedState)
-            ->orderBy('id')->get(['metadata'])->map(fn ($row) => json_decode($row->metadata, true));
+        $sourcePages = $selectedState === null ? null : DB::table('polling_source_documents')->where('state', $selectedState)
+            ->orderBy('id')->paginate(200, ['metadata'], 'source_page', (int) ($input['source_page'] ?? 1));
+        $choices = $sourcePages === null ? collect() : $sourcePages->getCollection()->map(fn ($row) => json_decode($row->metadata, true));
         $source = $selected ? json_decode($selected->metadata, true) : $choices->first();
+        if ($source && ! $choices->contains('id', $source['id'])) {
+            $choices->prepend($source);
+        }
         $summary = Cache::remember('polling-source-summary', now()->addHour(), function (): array {
             $rows = 0;
             foreach (DB::table('polling_source_documents')->select('metadata')->cursor() as $document) {
@@ -124,6 +129,6 @@ class PollingSourceController extends Controller
         }
         $index = ['scope_note' => 'Imported official source records retain warnings and links to their original publication.'];
 
-        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount'));
+        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount', 'sourcePages'));
     }
 }
