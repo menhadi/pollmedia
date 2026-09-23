@@ -12,7 +12,9 @@ import os
 from pathlib import Path
 import re
 import time
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
+
+from bs4 import BeautifulSoup
 
 from sync_polling_pdfs_r2 import append_receipt, verify_remote
 
@@ -22,6 +24,7 @@ PRIVATE = ROOT / 'application/storage/app/private'
 CATEGORIES = ('election-archive', 'election-by-elections', 'census-archive')
 HEX24 = re.compile(r'^[a-f0-9]{24}$')
 OFFICIAL_HOSTS = {'eci.gov.in', 'www.eci.gov.in', 'old.eci.gov.in', 'censusindia.gov.in', 'www.censusindia.gov.in'}
+UNLISTED_NAME = re.compile(r'^([a-f0-9]{24})-(\d+)\.pdf$')
 
 
 def _item(private, category, path, digest, url):
@@ -37,6 +40,67 @@ def _item(private, category, path, digest, url):
             'sha256': digest, 'source_url': url, 'bytes': path.stat().st_size}
 
 
+def recover_unlisted(folder, private, manifest, listed):
+    """Recover only PDFs tied to preserved official page and download-link HTML."""
+    unlisted = [path for path in folder.glob('*.pdf') if path.name not in listed]
+    if not unlisted:
+        return []
+    source_pages = {}
+    category_evidence = {}
+    for category_html in folder.glob('category-*.html'):
+        body = category_html.read_bytes()
+        soup = BeautifulSoup(body, 'html.parser')
+        for link in soup.select('a[href]'):
+            page = urljoin(manifest['url'], link['href'])
+            parsed = urlparse(page)
+            if parsed.scheme != 'https' or parsed.hostname not in OFFICIAL_HOSTS or '/files/file/' not in parsed.path:
+                continue
+            page_id = hashlib.sha256(page.encode()).hexdigest()[:24]
+            source_pages.setdefault(page_id, set()).add(page)
+            category_evidence.setdefault(page_id, set()).add((category_html.name, hashlib.sha256(body).hexdigest()))
+    recovered = []
+    download_pages = {}
+    for path in unlisted:
+        match = UNLISTED_NAME.fullmatch(path.name)
+        if not match:
+            raise ValueError('Unlisted PDF lacks recoverable filename: ' + path.name)
+        page_id, download_number = match.groups()
+        pages = source_pages.get(page_id, set())
+        if len(pages) != 1:
+            raise ValueError('Unlisted PDF lacks a unique official catalogue page: ' + path.name)
+        page = next(iter(pages))
+        page_html = folder / ('page-' + page_id + '.html')
+        if not page_html.is_file():
+            raise ValueError('Unlisted PDF lacks preserved download page: ' + path.name)
+        if page_id not in download_pages:
+            body = page_html.read_bytes()
+            links = {}
+            soup = BeautifulSoup(body, 'html.parser')
+            for link in soup.select('a[data-action="download"][href]'):
+                parsed = urlparse(urljoin(page, link['href']))
+                if parsed.scheme == 'https' and parsed.hostname in OFFICIAL_HOSTS and parsed.path == urlparse(page).path:
+                    for number in parse_qs(parsed.query).get('r', []):
+                        links[number] = links.get(number, 0) + 1
+            download_pages[page_id] = (links, hashlib.sha256(body).hexdigest())
+        links, page_digest = download_pages[page_id]
+        if links.get(download_number) != 1:
+            raise ValueError('Unlisted PDF lacks a unique official download link: ' + path.name)
+        with path.open('rb') as stream:
+            if stream.read(5) != b'%PDF-':
+                raise ValueError('Unlisted source is not a PDF: ' + path.name)
+            stream.seek(0)
+            digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+        item = _item(private, 'election-archive', path, digest, page)
+        item['recovery_evidence'] = {
+            'category_html': sorted(category_evidence[page_id]),
+            'download_page_html': page_html.name,
+            'download_page_sha256': page_digest,
+            'download_number': download_number,
+        }
+        recovered.append(item)
+    return recovered
+
+
 def discover(private=PRIVATE):
     """Use preserved manifests, never an unaudited directory-wide upload."""
     items = []
@@ -47,14 +111,18 @@ def discover(private=PRIVATE):
             if not HEX24.fullmatch(folder.name):
                 raise ValueError('Unexpected archive folder identifier')
             manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            listed = set()
             for entry in manifest.get('files', []):
                 name = entry.get('file', '')
                 if not name.lower().endswith('.pdf'):
                     continue
+                listed.add(name)
                 if Path(name).name != name or '\\' in name:
                     raise ValueError('Unsafe archived PDF filename')
                 items.append(_item(private, category, folder / name, entry['sha256'],
                                    entry.get('source_url') or entry.get('source_page') or manifest.get('url')))
+            if category == 'election-archive':
+                items.extend(recover_unlisted(folder, private, manifest, listed))
     category = 'census-archive'
     for manifest_path in sorted((private / category).rglob('manifest.json')):
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
@@ -104,7 +172,8 @@ def verify_one(item, client, bucket, prefix, endpoint):
             time.sleep(min(2 ** attempt, 8))
     return {'source_id': item['relative'], 'category': item['category'], 'sha256': digest,
             'bytes': item['bytes'], 'bucket': bucket, 'object_key': key,
-            'source_url': item['source_url'], 'endpoint': endpoint}
+            'source_url': item['source_url'], 'endpoint': endpoint,
+            'recovery_evidence': item.get('recovery_evidence')}
 
 
 def upload(items, receipts_path, client, bucket, prefix, endpoint, workers=4, progress_every=100):

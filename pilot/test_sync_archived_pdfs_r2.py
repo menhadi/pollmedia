@@ -27,11 +27,13 @@ class ArchivedPdfUploadTest(unittest.TestCase):
         self.manifest.write_text(json.dumps(data), encoding='utf-8')
 
     def test_discovers_only_manifested_pdfs_with_source(self):
-        (self.folder / 'orphan.pdf').write_bytes(self.data)
         items = discover(self.private)
         self.assertEqual(len(items), 1)
         self.assertEqual(items[0]['relative'], 'election-archive/' + 'a' * 24 + '/report.pdf')
         self.assertEqual(items[0]['source_url'], 'https://eci.gov.in/report')
+        (self.folder / 'orphan.pdf').write_bytes(self.data)
+        with self.assertRaisesRegex(ValueError, 'recoverable filename'):
+            discover(self.private)
 
     def test_rejects_traversal_and_missing_source(self):
         self._manifest({'files': [{'file': '../report.pdf', 'sha256': self.digest,
@@ -72,6 +74,27 @@ class ArchivedPdfUploadTest(unittest.TestCase):
         }), encoding='utf-8')
         items = discover(self.private)
         self.assertEqual({item['category'] for item in items}, {'election-archive', 'census-archive'})
+
+    def test_recovers_unlisted_pdf_only_from_preserved_eci_links(self):
+        page = 'https://old.eci.gov.in/files/file/123-report/'
+        page_id = hashlib.sha256(page.encode()).hexdigest()[:24]
+        extra = self.folder / (page_id + '-42.pdf')
+        extra.write_bytes(self.data)
+        self._manifest({'url': 'https://old.eci.gov.in/files/category/1/', 'files': [
+            {'file': 'report.pdf', 'sha256': self.digest, 'source_page': 'https://eci.gov.in/report'}]})
+        (self.folder / 'category-saved.html').write_text(
+            '<a href="/files/file/123-report/">Report</a>', encoding='utf-8')
+        download_page = self.folder / ('page-' + page_id + '.html')
+        download_page.write_text(
+            '<a data-action="download" href="?do=download&r=42">PDF</a>', encoding='utf-8')
+        recovered = [item for item in discover(self.private) if 'recovery_evidence' in item]
+        self.assertEqual(len(recovered), 1)
+        self.assertEqual(recovered[0]['source_url'], page)
+        self.assertEqual(recovered[0]['recovery_evidence']['download_number'], '42')
+        download_page.write_text('<a data-action="download" href="?do=download&r=43">Other</a>',
+                                 encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'download link'):
+            discover(self.private)
 
 
 if __name__ == '__main__':
