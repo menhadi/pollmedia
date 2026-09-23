@@ -54,6 +54,7 @@ class PdfStorageTest extends TestCase
         $file = DB::table('pdf_storage_files')->first();
         $service->transfer($this->transfer($file, $this->profile()));
         Storage::disk('local')->assertMissing($path);
+        $this->assertStringStartsWith('pollmedia/election-archive/', DB::table('pdf_storage_files')->value('object_key'));
         $this->get(route('elections.assembly-source-files', ['archive' => $id, 'file' => 'source.pdf']))
             ->assertOk()->assertDownload('official-report.pdf');
     }

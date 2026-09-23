@@ -116,7 +116,7 @@ class PdfStorage
             $sourceKey = $file->profile_id ? $file->object_key : $file->path;
             $targetDisk = $transfer->target_profile_id ? $this->remote($transfer->target_profile_id) : $local;
             $targetKey = $transfer->target_profile_id
-                ? DB::table('pdf_storage_profiles')->where('id', $transfer->target_profile_id)->value('prefix').'/pdf/'.Str::uuid().'.pdf'
+                ? DB::table('pdf_storage_profiles')->where('id', $transfer->target_profile_id)->value('prefix').'/'.explode('/', $file->path)[0].'/'.Str::uuid().'.pdf'
                 : 'pdf-working-transfers/'.Str::uuid().'.pdf';
             DB::table('pdf_storage_transfers')->where('id', $transfer->id)->update(['source_profile_id' => $file->profile_id,
                 'source_key' => $sourceKey, 'target_key' => $targetKey]);
