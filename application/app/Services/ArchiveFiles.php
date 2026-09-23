@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -25,9 +26,21 @@ class ArchiveFiles
         return $this->pdfs->allowed($path) ? DB::table('pdf_storage_files')->where('path_hash', hash('sha256', $path))->first() : null;
     }
 
+    private function jsonRecord(string $path): ?object
+    {
+        if (str_contains($path, '..') || str_contains($path, '\\') || str_contains($path, "\0")
+            || ! preg_match('~^(election-archive|election-by-elections)/[a-zA-Z0-9_./-]+\.json$~', $path)
+            || ! Schema::hasTable('archive_json_files')) {
+            return null;
+        }
+
+        return DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))->first();
+    }
+
     public function exists(string $path): bool
     {
-        return Storage::disk('local')->exists($path) || ($this->record($path)?->profile_id !== null);
+        return Storage::disk('local')->exists($path) || ($this->record($path)?->profile_id !== null)
+            || $this->jsonRecord($path) !== null;
     }
 
     public function readStream(string $path): mixed
@@ -35,6 +48,18 @@ class ArchiveFiles
         $local = Storage::disk('local');
         if ($local->exists($path)) {
             return $local->readStream($path);
+        }
+        $json = $this->jsonRecord($path);
+        if ($json) {
+            if ($json->path !== $path || (int) $json->bytes !== strlen($json->body)
+                || ! hash_equals($json->sha256, hash('sha256', $json->body))) {
+                throw new RuntimeException('Archived JSON checksum differs.');
+            }
+            $stream = fopen('php://temp/maxmemory:1048576', 'w+b');
+            fwrite($stream, $json->body);
+            rewind($stream);
+
+            return $stream;
         }
         $record = $this->record($path);
         if (! $record?->profile_id) {
@@ -60,13 +85,17 @@ class ArchiveFiles
     public function path(string $path): string
     {
         $local = Storage::disk('local');
-        if ($local->exists($path) || ! $this->record($path)?->profile_id) {
+        if ($local->exists($path)) {
+            return $local->path($path);
+        }
+        $json = $this->jsonRecord($path);
+        if (! $json && ! $this->record($path)?->profile_id) {
             return $local->path($path);
         }
         if (isset($this->temporary[$path]) && is_file($this->temporary[$path])) {
             return $this->temporary[$path];
         }
-        $record = $this->record($path);
+        $record = $json ?: $this->record($path);
         $directory = storage_path('app/pdf-working');
         if (! is_dir($directory)) {
             mkdir($directory, 0700, true);

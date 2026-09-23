@@ -1,0 +1,9 @@
+# Historical election JSON database package — 24 September 2026
+
+The local election and by-election archives contain 5,867 JSON files: 999 under `election-archive` and 4,868 under `election-by-elections`. They include collected-source manifests, extracted historical PC/AC candidate records, by-election raw tables, summaries and structured results. Original PDFs remain in private R2; source HTML and Excel files remain separately preserved locally and are not included in this JSON package.
+
+`pilot/preserve_archive_json.py` split the exact JSON bytes into eight deterministic buckets per category. All **16** ZIPs passed SHA-256 and `archive:import-json --check` validation, covering all 5,867 files. Total compressed size is about **49.2 MiB**. `exports/pollmedia-archive-json-20260924.sha256` uses Unix line endings so `sha256sum -c` works on Linux. The exporter refuses to overwrite an existing package.
+
+After the user pulls the application code and runs its new migration, transfer the 16 ZIPs and checksum list as data-only files. Verify them on the server with `sha256sum -c`, then import one package at a time with `php8.4 application/artisan archive:import-json PACKAGE --sha256=EXPECTED_HASH`. The command verifies each entry's path, bucket, length, SHA-256 and JSON syntax, stores exact bytes in `archive_json_files`, and rejects a conflicting replacement. `ArchiveFiles` can read those records when local JSON is absent. No application code or schema migration was deployed during preparation.
+
+This package does **not** populate `election_contests` or mark results accepted. It preserves raw and extracted archive evidence for the existing historical pages. Those pages still verify their source PDFs, so their live use also requires a tested R2 profile and linked archive PDF receipts. This package alone does not establish complete national election coverage; inaccessible official sources, unmapped layouts and unverified OCR remain recorded gaps.
