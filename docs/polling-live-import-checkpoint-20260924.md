@@ -1,0 +1,9 @@
+# Live polling-source import checkpoint — 24 September 2026
+
+The live PostgreSQL database contains all locally preserved polling-source documents: **30,837 documents, 382,464 pages and 1,960,084 indexed polling rows**. These counts match `application/storage/app/private/polling-station-sources/extraction-summary.json`. Odisha was the final state-scoped import: 1,337 documents, 14,332 pages and 120,376 indexed rows. Its verified package SHA-256 is `4ba16cc59c1193f69addf0dce964ac0c77ea4fb80517e6b3fd30e7304b763183`.
+
+The pre-import PostgreSQL backup remains at `/home/pollmedia/backups/polling-preimport-20260923T1705Z.dump`. The server had 19 GiB free after the Odisha import, above the import script's 10 GiB reserve. All 30,563 polling PDFs and 2,090 election/by-election/census archive PDFs have verified R2 upload receipts. A tested live R2 profile and PDF-to-record linking are still pending; the receipt file is staged at `/home/pollmedia/tmp/polling-r2-receipts.jsonl`.
+
+OCR continues on other states. New OCR evidence written after a state's data package was built is not in that live import and must be reimported with verified checksums. OCR proposals remain unverified and do not increase the structured polling-row count automatically. The collected batch has historical source gaps; these numbers describe locally preserved polling sources, not complete national election coverage.
+
+Historical PC, AC and by-election extraction is a separate outstanding database task. Local file-backed election archive data includes 448 `extraction.json` files (about 323 MiB) and by-election data includes 4,868 JSON files (about 153 MiB). Those archive directories are absent from live application storage. The live `election_contests` and `election_candidate_results` tables currently contain 7 and 84 rows respectively, so polling-source import must not be presented as publication of the historical results archive.

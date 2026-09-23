@@ -2,7 +2,7 @@
 
 The data-only PostgreSQL imports preserve document metadata, raw tables, rows and OCR evidence. They do not register R2 objects in `pdf_storage_files`. The source PDFs remain private in R2 under `pollmedia/polling-station-sources/`.
 
-The 23 September upload has 30,563 verified, unique PDF receipts. All receipt source IDs, hashes, states and object keys match the preserved polling index. The index has 30,837 source documents; 274 are not PDFs. As of 24 September, the live database has 29,500 imported polling documents, with 1,337 Odisha PDF documents awaiting import while Odisha OCR runs. A pre-import database backup is at `/home/pollmedia/backups/polling-preimport-20260923T1705Z.dump`.
+The 23 September upload has 30,563 verified, unique PDF receipts. All receipt source IDs, hashes, states and object keys match the preserved polling index. The index has 30,837 source documents; 274 are not PDFs. On 24 September, all 30,837 locally preserved polling documents were imported into the live database, including Odisha. The database holds 382,464 source pages and 1,960,084 indexed polling rows, matching the local extraction summary. OCR evidence added after a state's import still needs a verified reimport of that state. A pre-import database backup is at `/home/pollmedia/backups/polling-preimport-20260923T1705Z.dump`.
 
 After the application code containing `polling:link-r2` is pulled on live, create and test a Cloudflare R2 profile at `/admin/pdf-storage`. Use bucket `pollmedia`, region `auto`, endpoint `https://9c3a111cd1c8101060111b18f9dda444.r2.cloudflarestorage.com`, and prefix `pollmedia`. Enter the R2 keys privately in the admin form; never place them in a shell command, Git, a receipt file or this document. The live database currently has no tested profile. The test button writes, reads and removes a temporary object before marking the profile tested.
 
@@ -15,4 +15,4 @@ php8.4 application/artisan polling:link-r2 \
   --profile=PROFILE_ID
 ```
 
-Replace `PROFILE_ID` with the tested profile's numeric ID. The command checks each imported document's hash, state, file path, object key, bucket and endpoint against its receipt. It links matching PDFs without reimporting pages, is safe to rerun, rolls back on a conflict, and reports receipts whose documents have not yet been imported. Rerun it after Odisha is imported. Do not claim live PDF access until a tested profile and this link pass are both verified.
+Replace `PROFILE_ID` with the tested profile's numeric ID. The command checks each imported document's hash, state, file path, object key, bucket and endpoint against its receipt. It links matching PDFs without reimporting pages, is safe to rerun, rolls back on a conflict, and reports receipts whose documents have not yet been imported. Do not claim live PDF access until a tested profile and this link pass are both verified.
