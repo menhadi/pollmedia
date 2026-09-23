@@ -1,5 +1,7 @@
 param(
-    [switch] $CheckOnly
+    [switch] $CheckOnly,
+    [ValidateSet('primary', 'secondary')]
+    [string] $Lane = 'primary'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -9,11 +11,11 @@ $logPath = Join-Path $archiveRoot 'background-ocr.log'
 $python = Join-Path $env:LOCALAPPDATA 'Programs\Python\Python311\python.exe'
 $ocrScript = Join-Path $PSScriptRoot 'ocr_polling_sources.py'
 $tessdata = 'C:\Program Files\Tesseract-OCR\tessdata'
-$states = @(
-    'TAMIL NADU', 'HARYANA', 'ASSAM', 'CHHATTISGARH', 'ODISHA',
-    'UTTARAKHAND', 'ANDHRA PRADESH', 'BIHAR', 'WEST BENGAL',
-    'NCT OF DELHI', 'MADHYA PRADESH'
-)
+$states = if ($Lane -eq 'primary') {
+    @('TAMIL NADU', 'ASSAM', 'ODISHA', 'ANDHRA PRADESH', 'WEST BENGAL', 'MADHYA PRADESH')
+} else {
+    @('HARYANA', 'CHHATTISGARH', 'UTTARAKHAND', 'BIHAR', 'NCT OF DELHI')
+}
 
 function Write-Checkpoint([string] $message) {
     Add-Content -LiteralPath $logPath -Encoding UTF8 -Value ((Get-Date).ToString('o') + ' ' + $message)
@@ -27,6 +29,7 @@ function Get-OtherOcrProcess {
 if ($CheckOnly) {
     [pscustomobject]@{
         project = $projectRoot
+        lane = $Lane
         python = Test-Path -LiteralPath $python
         ocr_script = Test-Path -LiteralPath $ocrScript
         tessdata = Test-Path -LiteralPath $tessdata
@@ -36,7 +39,7 @@ if ($CheckOnly) {
     exit 0
 }
 
-$mutex = New-Object System.Threading.Mutex($false, 'Local\PollmediaOcrWorker')
+$mutex = New-Object System.Threading.Mutex($false, ('Local\PollmediaOcrWorker' + $Lane))
 $acquired = $false
 try {
     try {
@@ -49,14 +52,15 @@ try {
         throw 'Python or the OCR script is missing.'
     }
 
-    Write-Checkpoint 'Background OCR worker started.'
+    Write-Checkpoint "Background OCR worker started: $Lane."
     foreach ($state in $states) {
         while ($true) {
             if (Test-Path -LiteralPath (Join-Path $archiveRoot 'stop-background-ocr.txt')) {
                 Write-Checkpoint 'Stop marker found; worker exited.'
                 exit 0
             }
-            if (@(Get-OtherOcrProcess).Count -gt 0) {
+            $otherWorkers = @(Get-OtherOcrProcess).Count
+            if ($otherWorkers -ge 2) {
                 Start-Sleep -Seconds 60
                 continue
             }
@@ -64,23 +68,24 @@ try {
             $projectDrive = [System.IO.Path]::GetPathRoot($projectRoot)
             $freeBytes = (New-Object System.IO.DriveInfo($projectDrive)).AvailableFreeSpace
             $freeMemoryKb = (Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory
-            if ($freeBytes -lt 10GB -or $freeMemoryKb -lt 1310720) {
-                Write-Checkpoint "Waiting for resources: disk=$freeBytes bytes; memory=$freeMemoryKb KiB."
+            $requiredMemoryKb = if ($Lane -eq 'secondary' -or $otherWorkers -gt 0) { 3145728 } else { 1310720 }
+            if ($freeBytes -lt 10GB -or $freeMemoryKb -lt $requiredMemoryKb) {
+                Write-Checkpoint "Lane=$Lane waiting for resources: disk=$freeBytes bytes; memory=$freeMemoryKb KiB; other_ocr=$otherWorkers."
                 Start-Sleep -Seconds 300
                 continue
             }
 
             $output = @(& $python $ocrScript --state $state --limit 500 --language eng --tessdata $tessdata --progress-every 500 2>&1)
             if ($LASTEXITCODE -ne 0) {
-                Write-Checkpoint "OCR failed for $state with exit code $LASTEXITCODE; $($output[-1])"
+                Write-Checkpoint "Lane=$Lane OCR failed for $state with exit code $LASTEXITCODE; $($output[-1])"
                 exit 1
             }
             $summary = $output[-1] | ConvertFrom-Json
-            Write-Checkpoint "State=$state processed=$($summary.processed_pages) failures=$($summary.ocr_failures)."
+            Write-Checkpoint "Lane=$Lane state=$state processed=$($summary.processed_pages) failures=$($summary.ocr_failures)."
             if ($summary.processed_pages -eq 0) { break }
         }
     }
-    Write-Checkpoint 'All configured state OCR batches finished.'
+    Write-Checkpoint "All configured state OCR batches finished: $Lane."
 } catch {
     Write-Checkpoint "Worker stopped: $($_.Exception.Message)"
     exit 1

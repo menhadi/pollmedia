@@ -7,10 +7,18 @@ import zipfile
 from polling_manifest import load_manifest
 
 
-def preserve(root, output):
+def preserve(root, output, states=None):
     folder = root/'application/storage/app/private/polling-station-sources'
     index_body = (folder/'index.json').read_bytes()
     index = json.loads(index_body)
+    if states:
+        selected = set(states)
+        available = {state.get('state') for state in index['states']}
+        if not selected <= available:
+            raise ValueError('Requested state is not in the preserved index')
+        index['states'] = [state for state in index['states'] if state.get('state') in selected]
+        index['sources'] = [source for source in index['sources'] if source.get('state') in selected]
+        index_body = json.dumps(index, ensure_ascii=False).encode('utf-8')
     if output.exists():
         raise ValueError('Choose a new snapshot filename')
     required = {}
@@ -32,10 +40,25 @@ def preserve(root, output):
             required[base/(source['sha256']+'-tables')/page['file']] = page['sha256']
             if page.get('ocr'):
                 required[base/(source['sha256']+'-ocr')/page['ocr']['file']] = page['ocr']['sha256']
+        ocr_index = base/(source['sha256']+'-ocr')/'index.json'
+        if ocr_index.exists():
+            ocr_body = ocr_index.read_bytes()
+            required[ocr_index] = hashlib.sha256(ocr_body).hexdigest()
+            for page in json.loads(ocr_body).get('pages', []):
+                if Path(page['file']).name != page['file']:
+                    raise ValueError('Unsafe OCR page path')
+                required[ocr_index.parent/page['file']] = page['sha256']
     metadata = {folder/'index.json':index_body}
     for name in ['catalogue.json','summary.json']:
         if (folder/name).exists():
-            metadata[folder/name] = (folder/name).read_bytes()
+            if states and name == 'summary.json':
+                continue
+            body = (folder/name).read_bytes()
+            if states and name == 'catalogue.json':
+                catalogue = json.loads(body)
+                catalogue['entries'] = [entry for entry in catalogue['entries'] if entry['state'] in selected]
+                body = json.dumps(catalogue, ensure_ascii=False).encode('utf-8')
+            metadata[folder/name] = body
     for state in index['states']:
         path = folder/state['id']/'manifest.json'
         if not path.exists():
@@ -73,7 +96,8 @@ def preserve(root, output):
             else:
                 archive.write(path,name)
             entries.append({'path':name,'sha256':digest,'bytes':size})
-        archive.writestr('manifest.json',json.dumps({'scope':'Partial national polling-source snapshot. The indexed coverage note and unresolved discovery/extraction issues remain applicable.', 'files':entries},indent=2))
+        scope = ('State polling-source snapshot: '+', '.join(sorted(selected)) if states else 'Partial national polling-source snapshot')
+        archive.writestr('manifest.json',json.dumps({'scope':scope+'. The indexed coverage note and unresolved discovery/extraction issues remain applicable.', 'files':entries},indent=2))
     with zipfile.ZipFile(temporary) as archive:
         for item in entries:
             with archive.open(item['path']) as stream:
@@ -87,5 +111,5 @@ def preserve(root, output):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('output',type=Path);args=parser.parse_args()
-    preserve(Path(__file__).resolve().parents[1],args.output)
+    parser=argparse.ArgumentParser();parser.add_argument('output',type=Path);parser.add_argument('--state',action='append');args=parser.parse_args()
+    preserve(Path(__file__).resolve().parents[1],args.output,args.state)
