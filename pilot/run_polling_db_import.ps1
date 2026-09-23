@@ -96,8 +96,13 @@ try {
             $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
             if ($expected -ne $actual) { throw "Package checksum differs for $state" }
 
-            $remoteDisk = @(& ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target 'df -Pk /home/pollmedia | tail -n 1')
-            if ($LASTEXITCODE -ne 0) { throw 'Could not check server disk reserve.' }
+            $remoteDisk = @()
+            for ($attempt = 1; $attempt -le 3; $attempt++) {
+                $remoteDisk = @(& ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 -o ConnectionAttempts=1 $target 'df -Pk /home/pollmedia | tail -n 1' 2>&1)
+                if ($LASTEXITCODE -eq 0 -and $remoteDisk.Count -gt 0) { break }
+                if ($attempt -eq 3) { throw 'Could not check server disk reserve after three SSH attempts.' }
+                Start-Sleep -Seconds (5 * $attempt)
+            }
             $fields = ($remoteDisk[-1].Trim() -split '\s+')
             if (([int64]$fields[3] * 1024) -lt 10GB) { throw 'Server disk reserve fell below 10 GiB.' }
             & ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target "mkdir -p -m 700 $remoteStage"
