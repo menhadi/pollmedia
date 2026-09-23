@@ -33,7 +33,7 @@ def read_receipts(path):
     return receipts
 
 
-def upload(index, folder, receipts_path, client, bucket, prefix, states=None, limit=None, endpoint=None):
+def upload(index, folder, receipts_path, client, bucket, prefix, states=None, limit=None, endpoint=None, progress_every=1):
     receipts = read_receipts(receipts_path)
     count = 0
     for source in index['sources']:
@@ -93,7 +93,8 @@ def upload(index, folder, receipts_path, client, bucket, prefix, states=None, li
             os.fsync(stream.fileno())
         receipts[source['id']] = record
         count += 1
-        print(json.dumps({'uploaded_or_verified': count, 'source_id': source['id'], 'bytes': size}), flush=True)
+        if count == 1 or count % progress_every == 0:
+            print(json.dumps({'uploaded_or_verified': count, 'source_id': source['id'], 'bytes': size}), flush=True)
         if limit and count >= limit:
             break
     return count
@@ -103,10 +104,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--state', action='append')
     parser.add_argument('--limit', type=int)
+    parser.add_argument('--progress-every', type=int, default=1)
     parser.add_argument('--receipts', type=Path, default=ROOT / 'exports/polling-r2-receipts.jsonl')
     args = parser.parse_args()
     if args.limit is not None and args.limit < 1:
         parser.error('--limit must be positive')
+    if args.progress_every < 1:
+        parser.error('--progress-every must be positive')
     names = ['POLLMEDIA_R2_ENDPOINT', 'POLLMEDIA_R2_BUCKET', 'POLLMEDIA_R2_ACCESS_KEY_ID', 'POLLMEDIA_R2_SECRET_ACCESS_KEY']
     values = {name: os.environ.get(name) for name in names}
     if not all(values.values()):
@@ -121,8 +125,10 @@ def main():
                           aws_secret_access_key=values['POLLMEDIA_R2_SECRET_ACCESS_KEY'],
                           config=Config(retries={'max_attempts': 3, 'mode': 'standard'}))
     index = json.loads((SOURCE_ROOT / 'index.json').read_text(encoding='utf-8'))
-    count = upload(index, SOURCE_ROOT, args.receipts, client, values['POLLMEDIA_R2_BUCKET'], prefix,
-                   set(args.state or []), args.limit, values['POLLMEDIA_R2_ENDPOINT'].rstrip('/'))
+    from polling_job_lock import extraction_lock
+    with extraction_lock(ROOT / 'exports/polling-r2-upload.lock'):
+        count = upload(index, SOURCE_ROOT, args.receipts, client, values['POLLMEDIA_R2_BUCKET'], prefix,
+                       set(args.state or []), args.limit, values['POLLMEDIA_R2_ENDPOINT'].rstrip('/'), args.progress_every)
     print(json.dumps({'verified_this_run': count, 'receipt_file': str(args.receipts)}))
 
 
