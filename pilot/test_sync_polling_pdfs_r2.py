@@ -4,8 +4,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError, IncompleteReadError
 from sync_polling_pdfs_r2 import upload
 
 
@@ -40,6 +41,42 @@ class Bucket:
 
 
 class SyncPollingPdfsTest(unittest.TestCase):
+    def test_incomplete_r2_read_is_retried_without_reupload(self):
+        class FlakyBucket(Bucket):
+            def __init__(self):
+                super().__init__()
+                self.reads = 0
+
+            def get_object(self, Bucket, Key):
+                self.reads += 1
+                if self.reads == 1:
+                    class IncompleteBody:
+                        def iter_chunks(self, chunk_size):
+                            raise IncompleteReadError(actual_bytes=1, expected_bytes=2)
+
+                        def close(self):
+                            pass
+
+                    return {'Body': IncompleteBody()}
+                return super().get_object(Bucket, Key)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            folder = root / ('a' * 24)
+            folder.mkdir()
+            data = b'%PDF-verified original'
+            digest = hashlib.sha256(data).hexdigest()
+            (folder / (digest + '.pdf')).write_bytes(data)
+            source = {'id': 'b' * 24, 'folder': 'a' * 24, 'file': digest + '.pdf', 'sha256': digest,
+                      'state': 'EXAMPLE', 'source_url': 'https://eci.gov.in/source.pdf',
+                      'discovered_on': 'https://eci.gov.in/'}
+            bucket = FlakyBucket()
+            with patch('sync_polling_pdfs_r2.time.sleep'):
+                self.assertEqual(upload({'sources': [source]}, root, root / 'receipts.jsonl', bucket,
+                                        'test-bucket', 'pollmedia'), 1)
+            self.assertEqual(bucket.uploads, 1)
+            self.assertEqual(bucket.reads, 2)
+
     def test_parallel_upload_writes_one_verified_receipt_per_source(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

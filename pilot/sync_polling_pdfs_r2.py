@@ -46,6 +46,25 @@ def verify_source(source, folder, client, bucket, prefix, endpoint):
     if not path.is_file() or sha256(path) != expected:
         raise ValueError('Preserved PDF is missing or changed: ' + source['id'])
     size = path.stat().st_size
+    from botocore.exceptions import BotoCoreError, ClientError
+    for attempt in range(5):
+        try:
+            verify_remote(client, bucket, key, path, source['id'], expected, size)
+            break
+        except (BotoCoreError, ClientError, OSError) as error:
+            if isinstance(error, ClientError):
+                status = error.response.get('ResponseMetadata', {}).get('HTTPStatusCode')
+                if status is not None and status < 500 and status not in (408, 429):
+                    raise
+            if attempt == 4:
+                raise
+            time.sleep(min(2 ** attempt, 8))
+    return {'source_id': source['id'], 'state': source['state'], 'sha256': expected,
+            'bytes': size, 'bucket': bucket, 'object_key': key,
+            'source_url': source['source_url'], 'discovered_on': source['discovered_on'], 'endpoint': endpoint}
+
+
+def verify_remote(client, bucket, key, path, source_id, expected, size):
     try:
         head = client.head_object(Bucket=bucket, Key=key)
     except Exception as error:
@@ -59,7 +78,7 @@ def verify_source(source, folder, client, bucket, prefix, endpoint):
             raise ValueError('An R2 object already exists with different metadata: ' + key)
     else:
         client.upload_file(str(path), bucket, key, ExtraArgs={
-            'ContentType': 'application/pdf', 'Metadata': {'sha256': expected, 'source-id': source['id']},
+            'ContentType': 'application/pdf', 'Metadata': {'sha256': expected, 'source-id': source_id},
         })
         head = client.head_object(Bucket=bucket, Key=key)
         if head['ContentLength'] != size or head.get('Metadata', {}).get('sha256') != expected:
@@ -73,9 +92,6 @@ def verify_source(source, folder, client, bucket, prefix, endpoint):
         body.close()
     if remote_hash.hexdigest() != expected:
         raise ValueError('R2 download checksum differs: ' + key)
-    return {'source_id': source['id'], 'state': source['state'], 'sha256': expected,
-            'bytes': size, 'bucket': bucket, 'object_key': key,
-            'source_url': source['source_url'], 'discovered_on': source['discovered_on'], 'endpoint': endpoint}
 
 
 def append_receipt(path, record):
