@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
-from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due, result_source
+from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due, result_source, ocr_quality
 
 
 class OcrPreservationTest(unittest.TestCase):
@@ -46,6 +46,14 @@ class OcrPreservationTest(unittest.TestCase):
         self.assertFalse(result_source({'label': 'Ligal History of EVMs and VVPATs'}))
         self.assertTrue(result_source({'label': 'Form-20'}))
         self.assertTrue(result_source({'label': 'EVM votes in Form 20'}))
+        self.assertFalse(result_source({'label': 'MPs from Tamil Nadu to Rajya Sabha'}))
+        self.assertTrue(result_source({'label': 'Assembly Form 20 result'}))
+
+    def test_sparse_ocr_is_not_called_readable(self):
+        self.assertEqual(ocr_quality([{'confidence': 96}]), 'needs_visual_review')
+        self.assertEqual(ocr_quality([{'confidence': 96}] * 20), 'unverified_ocr')
+        self.assertEqual(ocr_quality([{'confidence': 40}] * 7 + [{'confidence': 96}] * 13),
+                         'needs_visual_review')
 
     def test_requested_states_resolve_to_source_folders_without_every_manifest(self):
         with TemporaryDirectory() as directory:

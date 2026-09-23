@@ -16,6 +16,7 @@ from polling_ocr_mapping import propose_rows
 
 OCR_REQUIRED = 'OCR and visual checking are required.'
 NON_RESULT_TITLE = re.compile(r'^(?:presentation on evm|manual on evm(?: and vvpat)?|(?:legal|ligal) history of evms? and vvpats?)$', re.I)
+OUT_OF_SCOPE_TITLE = re.compile(r'\b(?:rajya\s+sabha|council\s+of\s+states)\b', re.I)
 
 
 def ocr_candidates(pages):
@@ -24,7 +25,15 @@ def ocr_candidates(pages):
 
 def result_source(source):
     """Keep obvious training/reference PDFs archived without spending OCR on them."""
-    return not NON_RESULT_TITLE.fullmatch(source.get('label', '').strip())
+    label = source.get('label', '').strip()
+    return not (NON_RESULT_TITLE.fullmatch(label) or OUT_OF_SCOPE_TITLE.search(label))
+
+
+def ocr_quality(words):
+    """A few confident tokens do not make an election table readable."""
+    if len(words) < 20 or sum(word['confidence'] < 60 for word in words) > len(words) / 3:
+        return 'needs_visual_review'
+    return 'unverified_ocr'
 
 
 def state_folders(root, states):
@@ -154,7 +163,7 @@ def run(root, args):
                         notes.append('OCR failed after two attempts: '+ocr_error+'. Original page retained for review or an explicit retry.')
                     words = words_from_data(data)
                     low_confidence = sum(word['confidence'] < 60 for word in words)
-                    quality = 'needs_visual_review' if not words or low_confidence > len(words)/3 else 'unverified_ocr'
+                    quality = ocr_quality(words)
                     if quality == 'needs_visual_review':
                         notes.append('OCR could not reliably read much of this page. A clearer official copy or manual transcription is required; do not use this text as election results.')
                     lines = {}

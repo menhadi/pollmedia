@@ -52,7 +52,7 @@ def propose_rows(page):
     and arithmetic discrepancies yield no row. No value is inferred as zero.
     """
     words = page.get('words', [])
-    if page.get('ocr_error') or page.get('quality') != 'unverified_ocr':
+    if page.get('ocr_error') or page.get('quality') != 'unverified_ocr' or len(words) < 20:
         return []
     rejected = _anchor(words, 'rejected')
     nota = _anchor(words, 'nota', rejected['top'] if rejected else None)
