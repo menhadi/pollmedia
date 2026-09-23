@@ -25,6 +25,13 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "R2 uploader exited with code $LASTEXITCODE. See $log."
     }
+
+    # The archive phase starts only after the polling phase exits successfully.
+    $archiveLog = Join-Path $root 'exports\archived-r2-upload.log'
+    & $settings.python (Join-Path $PSScriptRoot 'sync_archived_pdfs_r2.py') --progress-every 100 *>> $archiveLog
+    if ($LASTEXITCODE -ne 0) {
+        throw "Archived R2 uploader exited with code $LASTEXITCODE. See $archiveLog."
+    }
 } finally {
     Remove-Item Env:\POLLMEDIA_R2_ACCESS_KEY_ID -ErrorAction SilentlyContinue
     Remove-Item Env:\POLLMEDIA_R2_SECRET_ACCESS_KEY -ErrorAction SilentlyContinue
