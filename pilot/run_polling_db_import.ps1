@@ -107,11 +107,29 @@ try {
             if (([int64]$fields[3] * 1024) -lt 10GB) { throw 'Server disk reserve fell below 10 GiB.' }
             & ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target "mkdir -p -m 700 $remoteStage"
             if ($LASTEXITCODE -ne 0) { throw 'Could not prepare the server staging directory.' }
-            & scp -q -i $key -o IdentitiesOnly=yes -o BatchMode=yes "exports/$base.zip" "exports/$base.sha256" "${target}:$remoteStage/"
-            if ($LASTEXITCODE -ne 0) { throw "Could not transfer $base to the server." }
+            $remoteVerified = @(& ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target "cd '$remoteStage' && sha256sum -c '$base.sha256' >/dev/null 2>&1" 2>&1)
+            if ($LASTEXITCODE -ne 0) {
+                $transferred = $false
+                for ($attempt = 1; $attempt -le 3; $attempt++) {
+                    Write-Output "Transferring $base (attempt $attempt of 3)."
+                    & scp -q -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=5 "exports/$base.zip" "${target}:$remoteStage/$base.zip.part"
+                    if ($LASTEXITCODE -eq 0) {
+                        $remoteHash = @(& ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target "sha256sum '$remoteStage/$base.zip.part'" 2>&1)
+                        if ($LASTEXITCODE -eq 0 -and $remoteHash.Count -gt 0 -and ($remoteHash[-1].Trim() -split '\s+')[0] -eq $actual) {
+                            & scp -q -i $key -o IdentitiesOnly=yes -o BatchMode=yes "exports/$base.sha256" "${target}:$remoteStage/$base.sha256"
+                            if ($LASTEXITCODE -eq 0) {
+                                & ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target "mv -f '$remoteStage/$base.zip.part' '$remoteStage/$base.zip'"
+                                if ($LASTEXITCODE -eq 0) { $transferred = $true; break }
+                            }
+                        }
+                    }
+                    if ($attempt -lt 3) { Start-Sleep -Seconds (5 * $attempt) }
+                }
+                if (-not $transferred) { throw "Could not transfer and verify $base after three attempts." }
+            }
 
             $remoteCommand = 'set -eu; stage={0}; cd "$stage"; sha256sum -c {1}.sha256; mkdir -p -m 700 "$stage/{2}"; unzip -qn {1}.zip -d "$stage/{2}"; cd /home/pollmedia/app; git merge-base --is-ancestor 22fa20c HEAD; if php8.4 application/artisan polling:import --root="$stage/{2}/application/storage/app/private/polling-station-sources" --no-interaction > "$stage/{2}-import.log" 2>&1; then tail -n 1 "$stage/{2}-import.log"; else tail -n 12 "$stage/{2}-import.log"; exit 1; fi' -f $remoteStage, $base, $slug
-            $result = & ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 $target $remoteCommand 2>&1
+            $result = & ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=8 $target $remoteCommand 2>&1
             if ($LASTEXITCODE -ne 0) {
                 $result | Select-Object -Last 12 | ForEach-Object { Write-Output $_ }
                 throw "Server import failed for $state"
