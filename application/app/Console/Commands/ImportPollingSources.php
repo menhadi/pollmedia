@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
@@ -138,6 +139,7 @@ class ImportPollingSources extends Command
                 break;
             }
         }
+        Cache::forget('polling-source-summary');
         $this->info("Imported {$documents} documents, {$pages} pages, {$rows} indexed polling rows into the database.");
 
         return self::SUCCESS;

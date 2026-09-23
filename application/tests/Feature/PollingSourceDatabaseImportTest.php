@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -11,6 +12,34 @@ use Tests\TestCase;
 class PollingSourceDatabaseImportTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_database_document_choices_are_scoped_to_the_selected_state(): void
+    {
+        Storage::fake('local');
+        Cache::forget('polling-source-summary');
+        foreach (['EXAMPLE', 'OTHER'] as $state) {
+            DB::table('polling_source_states')->insert(['name' => $state,
+                'metadata' => json_encode(['state' => $state, 'url' => 'https://eci.gov.in/',
+                    'documents' => 1, 'pending_pages' => 0, 'errors' => []]),
+                'created_at' => now(), 'updated_at' => now()]);
+        }
+        foreach (['EXAMPLE' => 'A report', 'OTHER' => 'B report'] as $state => $name) {
+            $id = $state === 'EXAMPLE' ? str_repeat('a', 24) : str_repeat('b', 24);
+            $metadata = ['id' => $id, 'state' => $state, 'name' => $name, 'folder' => str_repeat('c', 24),
+                'file' => str_repeat('d', 64).'.pdf', 'sha256' => str_repeat('d', 64),
+                'source_url' => 'https://eci.gov.in/source.pdf', 'discovered_on' => 'https://eci.gov.in/',
+                'polling_rows' => 0];
+            DB::table('polling_source_documents')->insert(['id' => $id, 'state' => $state,
+                'sha256' => $metadata['sha256'], 'metadata' => json_encode($metadata),
+                'created_at' => now(), 'updated_at' => now()]);
+        }
+
+        $this->get('/india/elections/polling-stations?state=EXAMPLE')->assertOk()
+            ->assertSee('2 preserved source documents')->assertSee('A report')->assertDontSee('B report');
+        $this->get('/india/elections/polling-stations?source='.str_repeat('b', 24))->assertOk()
+            ->assertSee('B report')->assertDontSee('A report');
+        $this->get('/india/elections/polling-stations?state=EXAMPLE&source='.str_repeat('b', 24))->assertNotFound();
+    }
 
     public function test_verified_tables_and_ocr_are_imported_and_served_from_database(): void
     {

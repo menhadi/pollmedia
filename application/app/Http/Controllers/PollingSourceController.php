@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ArchiveFiles;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
@@ -24,6 +25,8 @@ class PollingSourceController extends Controller
         $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['states' => [], 'sources' => []];
         $states = collect($index['states'])->sortBy('state')->values();
         $all = collect($index['sources']);
+        $documentCount = $all->count();
+        $pollingRowCount = $all->sum('polling_rows');
         $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())], 'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'], 'download' => ['nullable', 'boolean']]);
         $choices = $all->filter(fn ($source) => ! isset($input['state']) || $source['state'] === $input['state'])->values();
         $source = isset($input['source']) ? $choices->firstWhere('id', $input['source']) : ($choices->first(fn ($entry) => ($entry['page_count'] ?? count($entry['pages'])) > 0) ?? $choices->first());
@@ -64,21 +67,35 @@ class PollingSourceController extends Controller
             $source['has_preserved_original'] = isset($source['file']) && $disk->exists($root.$source['folder'].'/'.$source['file']);
         }
 
-        return view('polling-source-tables', compact('index', 'states', 'all', 'choices', 'source', 'input', 'page', 'data', 'ocr'));
+        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount'));
     }
 
     private function databaseIndex(Request $request): View|StreamedResponse
     {
         $disk = app(ArchiveFiles::class);
         $states = DB::table('polling_source_states')->orderBy('name')->get()->map(fn ($row) => json_decode($row->metadata, true));
-        $all = DB::table('polling_source_documents')->orderBy('state')->orderBy('id')->get()
-            ->map(fn ($row) => json_decode($row->metadata, true));
         $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())],
             'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'],
             'download' => ['nullable', 'boolean']]);
-        $choices = $all->filter(fn ($entry) => ! isset($input['state']) || $entry['state'] === $input['state'])->values();
-        $source = isset($input['source']) ? $choices->firstWhere('id', $input['source']) : $choices->first();
-        abort_if(isset($input['source']) && ! $source, 404);
+        $selected = isset($input['source']) ? DB::table('polling_source_documents')->where('id', $input['source'])->first() : null;
+        abort_if(isset($input['source']) && (! $selected || (isset($input['state']) && $selected->state !== $input['state'])), 404);
+        $selectedState = $input['state'] ?? $selected?->state ?? DB::table('polling_source_documents')->orderBy('state')->value('state');
+        if ($selectedState !== null) {
+            $input['state'] = $selectedState;
+        }
+        $choices = $selectedState === null ? collect() : DB::table('polling_source_documents')->where('state', $selectedState)
+            ->orderBy('id')->get(['metadata'])->map(fn ($row) => json_decode($row->metadata, true));
+        $source = $selected ? json_decode($selected->metadata, true) : $choices->first();
+        $summary = Cache::remember('polling-source-summary', now()->addHour(), function (): array {
+            $rows = 0;
+            foreach (DB::table('polling_source_documents')->select('metadata')->cursor() as $document) {
+                $rows += (int) (json_decode($document->metadata, true)['polling_rows'] ?? 0);
+            }
+
+            return ['documents' => DB::table('polling_source_documents')->count(), 'rows' => $rows];
+        });
+        $documentCount = $summary['documents'];
+        $pollingRowCount = $summary['rows'];
         if ($input['download'] ?? false) {
             abort_unless($source && isset($input['source']), 404);
             $path = 'polling-station-sources/'.$source['folder'].'/'.$source['file'];
@@ -107,6 +124,6 @@ class PollingSourceController extends Controller
         }
         $index = ['scope_note' => 'Imported official source records retain warnings and links to their original publication.'];
 
-        return view('polling-source-tables', compact('index', 'states', 'all', 'choices', 'source', 'input', 'page', 'data', 'ocr'));
+        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount'));
     }
 }
