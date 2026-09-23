@@ -7,7 +7,7 @@ import zipfile
 from polling_manifest import load_manifest
 
 
-def preserve(root, output, states=None):
+def preserve(root, output, states=None, data_only=False):
     folder = root/'application/storage/app/private/polling-station-sources'
     index_body = (folder/'index.json').read_bytes()
     index = json.loads(index_body)
@@ -24,7 +24,8 @@ def preserve(root, output, states=None):
     required = {}
     for source in index['sources']:
         base = folder/source['folder']
-        required[base/source['file']] = source['sha256']
+        if not data_only:
+            required[base/source['file']] = source['sha256']
         pages = source.get('pages', [])
         if source.get('page_manifest'):
             reference = source['page_manifest']
@@ -69,7 +70,7 @@ def preserve(root, output, states=None):
         for supplement in path.parent.glob('*-supplement.json'):
             metadata[supplement] = supplement.read_bytes()
         for item in record.get('pages', [])+record.get('api_responses', [])+record.get('documents', []):
-            if item.get('file'):
+            if item.get('file') and not data_only:
                 required[path.parent/item['file']] = item['sha256']
     temporary = output.with_suffix('.partial')
     if temporary.exists():
@@ -97,6 +98,8 @@ def preserve(root, output, states=None):
                 archive.write(path,name)
             entries.append({'path':name,'sha256':digest,'bytes':size})
         scope = ('State polling-source snapshot: '+', '.join(sorted(selected)) if states else 'Partial national polling-source snapshot')
+        if data_only:
+            scope += '. Database import data only; original documents are held separately in R2'
         archive.writestr('manifest.json',json.dumps({'scope':scope+'. The indexed coverage note and unresolved discovery/extraction issues remain applicable.', 'files':entries},indent=2))
     with zipfile.ZipFile(temporary) as archive:
         for item in entries:
@@ -111,5 +114,5 @@ def preserve(root, output, states=None):
 
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('output',type=Path);parser.add_argument('--state',action='append');args=parser.parse_args()
-    preserve(Path(__file__).resolve().parents[1],args.output,args.state)
+    parser=argparse.ArgumentParser();parser.add_argument('output',type=Path);parser.add_argument('--state',action='append');parser.add_argument('--data-only',action='store_true');args=parser.parse_args()
+    preserve(Path(__file__).resolve().parents[1],args.output,args.state,args.data_only)

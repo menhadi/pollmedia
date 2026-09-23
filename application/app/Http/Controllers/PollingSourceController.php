@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use App\Services\ArchiveFiles;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PollingSourceController extends Controller
 {
-    public function index(Request $request): View|BinaryFileResponse
+    public function index(Request $request): View|BinaryFileResponse|StreamedResponse
     {
+        if (Schema::hasTable('polling_source_documents') && DB::table('polling_source_documents')->exists()) {
+            return $this->databaseIndex($request);
+        }
+
         $disk = app(ArchiveFiles::class);
         $root = 'polling-station-sources/';
         $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['states' => [], 'sources' => []];
@@ -52,6 +59,53 @@ class PollingSourceController extends Controller
                 $ocr = json_decode(file_get_contents($ocrPath), true, 512, JSON_THROW_ON_ERROR);
             }
         }
+
+        if ($source) {
+            $source['has_preserved_original'] = isset($source['file']) && $disk->exists($root.$source['folder'].'/'.$source['file']);
+        }
+
+        return view('polling-source-tables', compact('index', 'states', 'all', 'choices', 'source', 'input', 'page', 'data', 'ocr'));
+    }
+
+    private function databaseIndex(Request $request): View|StreamedResponse
+    {
+        $disk = app(ArchiveFiles::class);
+        $states = DB::table('polling_source_states')->orderBy('name')->get()->map(fn ($row) => json_decode($row->metadata, true));
+        $all = DB::table('polling_source_documents')->orderBy('state')->orderBy('id')->get()
+            ->map(fn ($row) => json_decode($row->metadata, true));
+        $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())],
+            'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'],
+            'download' => ['nullable', 'boolean']]);
+        $choices = $all->filter(fn ($entry) => ! isset($input['state']) || $entry['state'] === $input['state'])->values();
+        $source = isset($input['source']) ? $choices->firstWhere('id', $input['source']) : $choices->first();
+        abort_if(isset($input['source']) && ! $source, 404);
+        if ($input['download'] ?? false) {
+            abort_unless($source && isset($input['source']), 404);
+            $path = 'polling-station-sources/'.$source['folder'].'/'.$source['file'];
+            $file = DB::table('pdf_storage_files')->where('path_hash', hash('sha256', $path))->first();
+            if ($file) {
+                abort_unless(hash_equals($source['sha256'], $file->sha256), 503, 'Preserved original integrity check failed.');
+            } else {
+                abort_unless($disk->verify($path, $source['sha256']), 503, 'Preserved original integrity check failed.');
+            }
+
+            return $disk->download($path, $source['file'], ['X-Content-Type-Options' => 'nosniff', 'Content-Security-Policy' => 'sandbox']);
+        }
+        $page = (int) ($input['page'] ?? 1);
+        $data = null;
+        $ocr = null;
+        if ($source) {
+            $source['has_preserved_original'] = $disk->exists('polling-station-sources/'.$source['folder'].'/'.$source['file']);
+            $source['pages'] = DB::table('polling_source_pages')->where('source_id', $source['id'])
+                ->orderBy('page')->get(['metadata'])->map(fn ($row) => json_decode($row->metadata, true))->all();
+            if ($source['pages']) {
+                $record = DB::table('polling_source_pages')->where('source_id', $source['id'])->where('page', $page)->first();
+                abort_unless($record, 404);
+                $data = json_decode($record->payload, true);
+                $ocr = $record->ocr_payload === null ? null : json_decode($record->ocr_payload, true);
+            }
+        }
+        $index = ['scope_note' => 'Imported official source records retain warnings and links to their original publication.'];
 
         return view('polling-source-tables', compact('index', 'states', 'all', 'choices', 'source', 'input', 'page', 'data', 'ocr'));
     }

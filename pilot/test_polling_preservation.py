@@ -45,6 +45,13 @@ class PreservationTest(unittest.TestCase):
                 self.assertEqual([source['state'] for source in indexed['sources']], ['CHANDIGARH'])
                 catalogue = json.loads(archive.read('application/storage/app/private/polling-station-sources/catalogue.json'))
                 self.assertEqual([entry['state'] for entry in catalogue['entries']], ['CHANDIGARH'])
+            data_only = root/'chandigarh-data.zip'
+            preserve(root,data_only,['CHANDIGARH'],data_only=True)
+            with zipfile.ZipFile(data_only) as archive:
+                names = archive.namelist()
+                self.assertFalse(any(name.endswith('.pdf') for name in names))
+                self.assertTrue(any(name.endswith('-ocr/1.json') for name in names))
+                self.assertIn('Database import data only',json.loads(archive.read('manifest.json'))['scope'])
 
     def test_snapshot_contains_original_and_page_and_rejects_changed_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
