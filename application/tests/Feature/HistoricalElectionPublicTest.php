@@ -164,7 +164,7 @@ class HistoricalElectionPublicTest extends TestCase
     public function test_empty_archive_and_editions_remain_separate(): void
     {
         Storage::fake('local');
-        $this->get(route('elections.history'))->assertOk()->assertSee('No extracted editions');
+        $this->get(route('elections.history'))->assertOk()->assertSee('Election results are not available here yet.');
         [$older] = $this->edition(2009);
         [$newer] = $this->edition(2014);
         $this->get(route('elections.history', ['edition' => $older]))->assertOk()->assertViewHas('data', fn (array $data): bool => $data['year'] === 2009);

@@ -26,6 +26,10 @@
             list.append(term, detail);
         }
         details.append(list);
+        const pageLink = document.createElement('a');
+        pageLink.href = '/search?' + new URLSearchParams({q: p.name, kind: 'village'});
+        pageLink.textContent = 'Find matching village pages →';
+        details.append(pageLink);
         const note = document.createElement('p'); note.textContent = 'Census figures, MP/MLA and service responsibilities: village mapping pending verification.'; details.append(note);
         if (map?.getSource('villages')) {
             if (selectedId !== undefined) map.setFeatureState({source: 'villages', id: selectedId}, {selected: false});

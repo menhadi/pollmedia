@@ -30,4 +30,4 @@
     <noscript><p class="notice">Enable JavaScript for the interactive map. Official source links and district information remain available below.</p></noscript>
 </section>
 <script src="/vendor/maplibre/maplibre-gl.js" defer></script>
-<script src="/js/place-map.js" defer></script>
+<script src="/js/place-map.js?v={{ substr(hash_file('sha256',public_path('js/place-map.js')),0,12) }}" defer></script>

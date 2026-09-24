@@ -16,9 +16,9 @@
 
 @include('seo-metadata', ['seoTitle' => $__env->yieldContent('title').' · Pollmedia', 'seoDescription' => $__env->yieldContent('description')])
 
-<link rel="stylesheet" href="/css/villages.css"></head>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"></head>
 
-<body><header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('villages.index',['year'=>$census['year']]) }}">Villages</a><a href="#sources">Sources</a><a href="{{ route('sources.index') }}">Data status</a></nav></header><main>
+<body>@include('public-header')<main>
 
 <nav class="crumb" aria-label="Breadcrumb"><a href="{{ route('india') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / <a href="{{ route('places.show',['type'=>'district','slug'=>'pilibhit']) }}">Pilibhit district</a> / <a href="{{ route('villages.index',['year'=>$census['year']]) }}">Census villages</a></nav>
 
