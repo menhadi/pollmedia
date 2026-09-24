@@ -54,9 +54,9 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->seed(PilibhitSeeder::class);
         $summary = app(HistoricalElectionAnalytics::class)->summarize([$this->record(1, 100, 80, 50, 30)]) + ['id' => str_repeat('a', 24), 'year' => 2022, 'label' => '2022 report', 'source_url' => 'https://www.eci.gov.in/report', 'state' => 'Uttar Pradesh'];
         $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
-            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn([$summary]);
+            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertSee('Browse 1 constituency tables')->assertSee('2022 report');
-        $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b',24))->assertNotFound();
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertSee('Browse 1 constituency tables')->assertSee('2022 report')->assertSee('data-sortable', false)->assertDontSee('trend-chart')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
     }
 }

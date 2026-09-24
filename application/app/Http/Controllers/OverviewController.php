@@ -35,7 +35,7 @@ class OverviewController extends Controller
         $nationalSummary = $summary->importedSummary();
 
         if ($stateSummary) {
-            $kind = $input['election'] ?? 'ac';
+            $kind = $input['election'] ?? 'pc';
             $history = app(HistoricalElectionAnalytics::class)->forState($title, $kind);
             $edition = $input['edition'] ?? ($history[0]['id'] ?? null);
             $election = collect($history)->firstWhere('id', $edition);
