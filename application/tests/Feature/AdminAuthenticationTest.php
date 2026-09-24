@@ -57,15 +57,15 @@ class AdminAuthenticationTest extends TestCase
             ]);
         }
         $this->actingAs($admin)->post('/admin/account/password', [
-            'current_password' => 'a-long-test-passphrase', 'password' => 'a-new-long-passphrase',
-            'password_confirmation' => 'a-new-long-passphrase',
+            'current_password' => 'a-long-test-passphrase', 'password' => 'brief',
+            'password_confirmation' => 'brief',
         ])->assertRedirect(route('admin.login'))->assertSessionHas('status');
         $this->assertGuest();
         $this->assertDatabaseMissing('sessions', ['user_id' => $admin->id]);
         $this->assertDatabaseHas('sessions', ['id' => 'other-device-'.$other->id]);
-        $this->assertTrue(Hash::check('a-new-long-passphrase', $admin->fresh()->password));
+        $this->assertTrue(Hash::check('brief', $admin->fresh()->password));
         $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-long-test-passphrase'])->assertSessionHasErrors('email');
-        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'a-new-long-passphrase'])->assertRedirect(route('admin.dashboard'));
+        $this->post('/admin/login', ['email' => $admin->email, 'password' => 'brief'])->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_guests_and_regular_users_cannot_read_or_mutate_seo(): void
@@ -113,11 +113,11 @@ class AdminAuthenticationTest extends TestCase
     public function test_first_account_setup_is_local_single_use_and_hashes_password(): void
     {
         $this->get('/admin/setup')->assertOk()->assertSee('Create administrator');
-        $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'owner@example.test', 'password' => 'short', 'password_confirmation' => 'short'])->assertSessionHasErrors('password');
-        $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'OWNER@EXAMPLE.TEST', 'password' => 'a-private-test-passphrase', 'password_confirmation' => 'a-private-test-passphrase'])->assertRedirect(route('admin.dashboard'));
+        $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'owner@example.test', 'password' => '', 'password_confirmation' => ''])->assertSessionHasErrors('password');
+        $this->post('/admin/setup', ['name' => 'Owner', 'email' => 'OWNER@EXAMPLE.TEST', 'password' => 'short', 'password_confirmation' => 'short'])->assertRedirect(route('admin.dashboard'));
         $admin = User::where('email', 'owner@example.test')->firstOrFail();
         $this->assertTrue($admin->is_admin);
-        $this->assertTrue(Hash::check('a-private-test-passphrase', $admin->password));
+        $this->assertTrue(Hash::check('short', $admin->password));
         $this->assertAuthenticatedAs($admin);
         $this->get('/admin/setup')->assertNotFound();
         $this->post('/admin/setup', [])->assertNotFound();
@@ -139,10 +139,10 @@ class AdminAuthenticationTest extends TestCase
     public function test_console_creation_uses_validation_and_does_not_promote_existing_users(): void
     {
         $this->artisan('admin:create')->expectsQuestion('Name', 'Owner')->expectsQuestion('Email', 'owner@example.test')
-            ->expectsQuestion('Password (at least 12 characters)', 'a-long-test-passphrase')->expectsQuestion('Confirm password', 'a-long-test-passphrase')->assertExitCode(0);
+            ->expectsQuestion('Password', 'brief')->expectsQuestion('Confirm password', 'brief')->assertExitCode(0);
         $this->assertTrue(User::where('email', 'owner@example.test')->firstOrFail()->is_admin);
         $this->artisan('admin:create')->expectsQuestion('Name', 'Another')->expectsQuestion('Email', 'owner@example.test')
-            ->expectsQuestion('Password (at least 12 characters)', 'a-different-passphrase')->expectsQuestion('Confirm password', 'a-different-passphrase')->assertExitCode(1);
+            ->expectsQuestion('Password', 'another')->expectsQuestion('Confirm password', 'another')->assertExitCode(1);
         $this->assertDatabaseCount('users', 1);
     }
 }

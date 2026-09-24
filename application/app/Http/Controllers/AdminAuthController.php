@@ -23,7 +23,7 @@ class AdminAuthController extends Controller
     {
         $input = $request->validate([
             'current_password' => 'required|string|current_password',
-            'password' => 'required|string|min:12|max:128|confirmed|different:current_password',
+            'password' => 'required|string|confirmed',
         ]);
         $user = $request->user();
         DB::transaction(function () use ($user, $input): void {
@@ -57,7 +57,7 @@ class AdminAuthController extends Controller
 
     public function authenticate(Request $request): RedirectResponse
     {
-        $input = $request->validate(['email' => 'required|email|max:255', 'password' => 'required|string|max:128']);
+        $input = $request->validate(['email' => 'required|email|max:255', 'password' => 'required|string']);
         $input['email'] = mb_strtolower(trim($input['email']));
         $key = 'admin-login:'.hash('sha256', $input['email'].'|'.$request->ip());
         if (RateLimiter::tooManyAttempts($key, 5)) {
@@ -94,7 +94,7 @@ class AdminAuthController extends Controller
         abort_if(User::where('is_admin', true)->exists(), 404);
         $request->merge(['email' => mb_strtolower(trim((string) $request->input('email')))]);
         $input = $request->validate(['name' => 'required|string|max:100', 'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:12|max:128|confirmed']);
+            'password' => 'required|string|confirmed']);
         $user = DB::transaction(function () use ($input): User {
             abort_if(User::where('is_admin', true)->lockForUpdate()->exists(), 404);
             $user = new User($input);
