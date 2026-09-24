@@ -24,7 +24,13 @@ class ByElectionResultTest extends TestCase
         Storage::disk('local')->put($root.$file, $body);
         Storage::disk('local')->put($root.'index.json', json_encode(['records' => [$record + ['file' => $file, 'sha256' => hash('sha256', $body)]]]));
         $this->get('/india/elections/by-elections/results')->assertOk()->assertSee('Source votes require review.')
-            ->assertSee('Not available †')->assertSee('>0<', false)->assertSee('https://old.eci.gov.in/report.xls', false);
+            ->assertSee('Not available †')->assertSee('>0<', false)->assertSee('https://old.eci.gov.in/report.xls', false)
+            ->assertSee('Open printable by-election result report');
+        $this->get('/india/elections/by-elections/results?year=2000&record='.$id.'&format=report')
+            ->assertOk()->assertSee('Example')->assertSee('Source votes require review.')
+            ->assertSee('Not available †')->assertSee('>0<', false)
+            ->assertSee(hash('sha256', $body))->assertSee('https://old.eci.gov.in/report.xls', false);
+        $this->get('/india/elections/by-elections/results?format=report')->assertNotFound();
         $this->get('/india/elections/by-elections/results?record='.str_repeat('c', 24))->assertNotFound();
         $record['year'] = null;
         $record['source_year_text'] = '24.1158';

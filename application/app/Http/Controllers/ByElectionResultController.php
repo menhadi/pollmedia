@@ -21,7 +21,9 @@ class ByElectionResultController extends Controller
             'year' => ['nullable', 'integer', Rule::in($years->all())],
             'state' => ['nullable', Rule::in($states->all())], 'kind' => ['nullable', Rule::in(['ac', 'pc'])],
             'record' => ['nullable', 'regex:/^[a-f0-9]{24}$/'],
+            'format' => ['nullable', Rule::in(['report'])],
         ]);
+        abort_if(isset($input['format']) && (! isset($input['record']) || ! array_key_exists('year', $input)), 404);
         $year = (int) ($input['year'] ?? $years->first());
         $choices = $all->filter(fn ($record) => (int) ($record['year'] ?? 0) === $year
             && (! isset($input['state']) || $record['state'] === $input['state'])
@@ -34,6 +36,12 @@ class ByElectionResultController extends Controller
             $path = $disk->path($root.$selected['file']);
             abort_unless(is_file($path) && filesize($path) <= 4000000 && hash_equals($selected['sha256'], hash_file('sha256', $path)), 503, 'Result source integrity check failed.');
             $record = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        if (isset($input['format'])) {
+            abort_unless($record && $record['id'] === $selected['id'], 404);
+
+            return view('by-election-result-report', compact('record', 'selected'));
         }
 
         return view('by-election-results', compact('all', 'years', 'states', 'year', 'input', 'choices', 'record'));
