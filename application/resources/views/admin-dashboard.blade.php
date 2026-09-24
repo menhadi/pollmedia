@@ -1,8 +1,8 @@
 @extends('seo-layout')
 @section('content')
-<p class="muted">POLLMEDIA ADMINISTRATION</p><h1>Dashboard</h1>
+<section class="admin-welcome"><p class="muted">POLLMEDIA ADMINISTRATION</p><h1>Dashboard</h1>
 <p>Manage official data, review updates and maintain your public pages.</p>
-<div class="dashboard-grid">
+</section><div class="dashboard-grid">
 @foreach($counts as $label => $count)
 <section class="card"><h2>{{ number_format($count) }}</h2><p>{{ $label }}</p></section>
 @endforeach
