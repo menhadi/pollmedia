@@ -84,10 +84,27 @@ class PollingSourceController extends Controller
         if ($selectedState !== null) {
             $input['state'] = $selectedState;
         }
-        $sourcePages = $selectedState === null ? null : DB::table('polling_source_documents')->where('state', $selectedState)
-            ->orderBy('id')->paginate(200, ['metadata'], 'source_page', (int) ($input['source_page'] ?? 1));
+        $documents = $selectedState === null ? null : DB::table('polling_source_documents')->where('state', $selectedState)->orderBy('id');
+        $sourcePages = $documents === null ? null : (clone $documents)->paginate(200, ['metadata'], 'source_page', (int) ($input['source_page'] ?? 1));
         $choices = $sourcePages === null ? collect() : $sourcePages->getCollection()->map(fn ($row) => json_decode($row->metadata, true));
-        $source = $selected ? json_decode($selected->metadata, true) : $choices->first();
+        if (! $selected && $documents !== null && ! isset($input['source_page'])
+            && ! $choices->contains(fn (array $choice): bool => (int) ($choice['polling_rows'] ?? 0) > 0)) {
+            $position = 0;
+            $mappedPage = null;
+            foreach ((clone $documents)->cursor(['metadata']) as $document) {
+                if ((int) (json_decode($document->metadata, true)['polling_rows'] ?? 0) > 0) {
+                    $mappedPage = intdiv($position, 200) + 1;
+                    break;
+                }
+                $position++;
+            }
+            if ($mappedPage !== null && $mappedPage > 1) {
+                $sourcePages = (clone $documents)->paginate(200, ['metadata'], 'source_page', $mappedPage);
+                $choices = $sourcePages->getCollection()->map(fn ($row) => json_decode($row->metadata, true));
+            }
+        }
+        $source = $selected ? json_decode($selected->metadata, true)
+            : ($choices->first(fn (array $choice): bool => (int) ($choice['polling_rows'] ?? 0) > 0) ?? $choices->first());
         if ($source && ! $choices->contains('id', $source['id'])) {
             $choices->prepend($source);
         }
@@ -121,6 +138,10 @@ class PollingSourceController extends Controller
             $source['pages'] = DB::table('polling_source_pages')->where('source_id', $source['id'])
                 ->orderBy('page')->get(['metadata'])->map(fn ($row) => json_decode($row->metadata, true))->all();
             if ($source['pages']) {
+                if (! isset($input['page'])) {
+                    $firstMappedPage = collect($source['pages'])->first(fn (array $item): bool => (int) ($item['polling_rows'] ?? 0) > 0);
+                    $page = (int) ($firstMappedPage['page'] ?? 1);
+                }
                 $record = DB::table('polling_source_pages')->where('source_id', $source['id'])->where('page', $page)->first();
                 abort_unless($record, 404);
                 $data = json_decode($record->payload, true);

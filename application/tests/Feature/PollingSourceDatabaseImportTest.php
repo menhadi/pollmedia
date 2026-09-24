@@ -13,6 +13,46 @@ class PollingSourceDatabaseImportTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_default_database_view_opens_a_document_and_page_with_extracted_rows(): void
+    {
+        Storage::fake('local');
+        Cache::forget('polling-source-summary');
+        DB::table('polling_source_states')->insert(['name' => 'EXAMPLE',
+            'metadata' => json_encode(['state' => 'EXAMPLE', 'url' => 'https://eci.gov.in/',
+                'documents' => 2, 'pending_pages' => 0, 'errors' => []]),
+            'created_at' => now(), 'updated_at' => now()]);
+        $emptyId = str_repeat('a', 24);
+        $mappedId = str_repeat('b', 24);
+        foreach ([$emptyId => 0, $mappedId => 1] as $id => $rowCount) {
+            $metadata = ['id' => $id, 'state' => 'EXAMPLE', 'name' => 'Report '.$rowCount,
+                'folder' => str_repeat('c', 24), 'file' => str_repeat('d', 64).'.pdf',
+                'sha256' => str_repeat('d', 64), 'source_url' => 'https://eci.gov.in/source.pdf',
+                'discovered_on' => 'https://eci.gov.in/', 'polling_rows' => $rowCount];
+            DB::table('polling_source_documents')->insert(['id' => $id, 'state' => 'EXAMPLE',
+                'sha256' => $metadata['sha256'], 'metadata' => json_encode($metadata),
+                'created_at' => now(), 'updated_at' => now()]);
+        }
+        foreach ([1 => [], 2 => [['polling_station' => 'Station One', 'valid_votes' => 5,
+            'nota' => null, 'rejected_votes' => null, 'total_votes' => null,
+            'notes' => [], 'candidate_votes' => []]]] as $page => $rows) {
+            DB::table('polling_source_pages')->insert(['source_id' => $mappedId, 'page' => $page,
+                'sha256' => str_repeat('e', 64),
+                'metadata' => json_encode(['page' => $page, 'polling_rows' => count($rows), 'sheet' => null]),
+                'payload' => json_encode(['polling_rows' => $rows, 'tables' => [], 'notes' => []]),
+                'created_at' => now(), 'updated_at' => now()]);
+        }
+
+        $this->get('/india/elections/polling-stations?state=EXAMPLE')->assertOk()
+            ->assertSee('Polling station Station One')
+            ->assertViewHas('source', fn (array $source): bool => $source['id'] === $mappedId)
+            ->assertViewHas('page', 2);
+        $this->get('/india/elections/polling-stations?state=EXAMPLE&source='.$emptyId)->assertOk()
+            ->assertDontSee('Polling station Station One')
+            ->assertViewHas('source', fn (array $source): bool => $source['id'] === $emptyId);
+        $this->get('/india/elections/polling-stations?state=EXAMPLE&source='.$mappedId.'&page=1')->assertOk()
+            ->assertDontSee('Polling station Station One')->assertViewHas('page', 1);
+    }
+
     public function test_large_state_document_choices_are_paginated(): void
     {
         Storage::fake('local');
@@ -39,6 +79,40 @@ class PollingSourceDatabaseImportTest extends TestCase
             ->assertSee('Documents 201–201 of 201')->assertSee('Previous documents')->assertSee('Report 201');
         $this->get('/india/elections/polling-stations?source='.sprintf('%024x', 201))->assertOk()
             ->assertSee('Report 201');
+    }
+
+    public function test_default_state_view_finds_mapped_rows_beyond_the_first_document_page(): void
+    {
+        Storage::fake('local');
+        Cache::forget('polling-source-summary');
+        DB::table('polling_source_states')->insert(['name' => 'EXAMPLE',
+            'metadata' => json_encode(['state' => 'EXAMPLE', 'url' => 'https://eci.gov.in/',
+                'documents' => 201, 'pending_pages' => 0, 'errors' => []]),
+            'created_at' => now(), 'updated_at' => now()]);
+        $documents = [];
+        for ($number = 1; $number <= 201; $number++) {
+            $id = sprintf('%024x', $number);
+            $metadata = ['id' => $id, 'state' => 'EXAMPLE', 'name' => 'Report '.$number,
+                'folder' => str_repeat('c', 24), 'file' => str_repeat('d', 64).'.pdf',
+                'sha256' => str_repeat('d', 64), 'source_url' => 'https://eci.gov.in/source.pdf',
+                'discovered_on' => 'https://eci.gov.in/', 'polling_rows' => $number === 201 ? 1 : 0];
+            $documents[] = ['id' => $id, 'state' => 'EXAMPLE', 'sha256' => $metadata['sha256'],
+                'metadata' => json_encode($metadata), 'created_at' => now(), 'updated_at' => now()];
+        }
+        DB::table('polling_source_documents')->insert($documents);
+        DB::table('polling_source_pages')->insert(['source_id' => sprintf('%024x', 201), 'page' => 1,
+            'sha256' => str_repeat('e', 64),
+            'metadata' => json_encode(['page' => 1, 'polling_rows' => 1, 'sheet' => null]),
+            'payload' => json_encode(['polling_rows' => [['polling_station' => 'Station 201',
+                'valid_votes' => null, 'nota' => null, 'rejected_votes' => null, 'total_votes' => null,
+                'notes' => [], 'candidate_votes' => []]], 'tables' => [], 'notes' => []]),
+            'created_at' => now(), 'updated_at' => now()]);
+
+        $this->get('/india/elections/polling-stations?state=EXAMPLE')->assertOk()
+            ->assertSee('Documents 201–201 of 201')->assertSee('Polling station Station 201')
+            ->assertViewHas('source', fn (array $source): bool => $source['id'] === sprintf('%024x', 201));
+        $this->get('/india/elections/polling-stations?state=EXAMPLE&source_page=1')->assertOk()
+            ->assertSee('Documents 1–200 of 201')->assertDontSee('Polling station Station 201');
     }
 
     public function test_database_document_choices_are_scoped_to_the_selected_state(): void
