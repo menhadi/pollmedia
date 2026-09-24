@@ -9,7 +9,7 @@
 @endphp
 @include('seo-metadata')
 <link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"></head>
-<body class="election-ui"><header class="topbar"><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><div class="dashboard-shell"><main class="dashboard-main">
+<body class="election-ui"><header class="topbar"><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><div class="dashboard-shell {{ $selected ? '' : 'page-without-sidebar' }}"><main class="dashboard-main">
 <div class="kicker">Politics & elections / Historical results</div><h1>{{ $archiveTitle }} election archive</h1>
 <p class="lead">Explore candidate results from the available official election reports. Choose an edition, then a state and constituency.</p>
 <p><a href="{{ route('elections.constituencies') }}">Search historical PC and AC constituencies across editions →</a></p>
@@ -109,4 +109,4 @@
 @if(!empty($data['coverage']['unmatched_summaries']))<p>{{ count($data['coverage']['unmatched_summaries']) }} summary entries have no matched detailed candidate table.</p>@endif
 <p>Coverage includes extracted tables only. † marks unresolved extraction or source differences. Historical results do not identify the current office-holder.</p></section>
 @endif
-<footer>Pollmedia · Research pilot · Official sources and dated election results.</footer></main>@include('election-context-nav')</div><script>const menu=document.querySelector(".dashboard-sidebar details");const wide=matchMedia("(min-width:1100px)");menu.open=wide.matches;wide.addEventListener("change",event=>{menu.open=event.matches;});</script></body></html>
+<footer>Pollmedia · Research pilot · Official sources and dated election results.</footer></main>@if($selected)@include('election-context-nav')@endif</div><script>const menu=document.querySelector(".dashboard-sidebar details");const wide=matchMedia("(min-width:1100px)");if(menu){menu.open=wide.matches;wide.addEventListener("change",event=>{menu.open=event.matches;});}</script></body></html>
