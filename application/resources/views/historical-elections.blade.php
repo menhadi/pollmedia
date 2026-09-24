@@ -8,7 +8,7 @@
     $breadcrumbs = ['India' => route('home'), $archiveTitle.' archive' => route($archiveRoute)];
 @endphp
 @include('seo-metadata')
-<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css"></head>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"></head>
 <body class="election-ui"><header class="topbar"><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><div class="dashboard-shell"><main class="dashboard-main">
 <div class="kicker">Politics & elections / Historical results</div><h1>{{ $archiveTitle }} election archive</h1>
 <p class="lead">Explore candidate results from the available official election reports. Choose an edition, then a state and constituency.</p>

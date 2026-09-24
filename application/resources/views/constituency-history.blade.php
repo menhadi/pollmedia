@@ -12,7 +12,7 @@
     $maxMargin = $chartRows->max(fn ($row) => $row['record']['margin']) ?: 1;
 @endphp
 @include('seo-metadata')
-<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css"></head><body class="election-ui">
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"></head><body class="election-ui">
 <header class="topbar"><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ $placeUrl }}">Constituency profile</a><a href="{{ route($archiveRoute) }}">All election years</a></nav></header><main>
 <div class="kicker">{{ $isAssembly ? 'Assembly' : 'Lok Sabha' }} / Election comparisons</div><h1>{{ $place->name }} across elections</h1>
 @if(!$comparison['mapping'])<section class="card"><h2>Historical links need verification</h2><p>This constituency does not yet have a verified connection to the supported historical editions.</p><a href="{{ route($archiveRoute) }}">Browse official historical tables →</a></section>
