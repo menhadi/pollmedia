@@ -4,7 +4,7 @@
     $colourValues = $chartRows->pluck($metric)->filter(fn($value) => $value !== null);
     $colourMin = $colourValues->min();
     $colourMax = $colourValues->max();
-    $palette = [[250, 204, 21], [163, 230, 53], [34, 197, 94], [13, 148, 136]];
+    $palette = [[202, 138, 4], [101, 163, 13], [21, 128, 61], [15, 94, 89]];
 @endphp
 <p class="small">Bar length uses 0–{{ number_format($chartMax) }}{{ $suffix ?? '' }}. Colour uses this chart's displayed minimum and maximum: yellow → lime → green → teal as values increase. Colours are relative to this chart, not party labels or performance ratings. Coverage is shown beside each year; missing values have no bar.</p>
 @if($colourMin !== null)<div class="value-colour-legend"><span>{{ number_format($colourMin, $decimals ?? 1) }}{{ $suffix ?? '' }} · lowest</span><span class="value-colour-ramp" aria-hidden="true"></span><span>{{ number_format($colourMax, $decimals ?? 1) }}{{ $suffix ?? '' }} · highest</span></div>@endif
