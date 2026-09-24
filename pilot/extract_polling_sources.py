@@ -30,7 +30,7 @@ def readable_text_share(text):
     return sum(len(word) for word in words)/len(letters) if letters else 0.0
 
 
-ADAPTER = 'form20-grid-v5'
+ADAPTER = 'form20-grid-v6'
 CARRIED_HEADER_NOTE = 'Column headers carried forward from the previous page of the same document.'
 MAPPING_NOTE = 'Source tables extracted; polling-row layout still requires mapping.'
 
@@ -63,7 +63,15 @@ def table_header(cells):
         'total_votes': lambda v: v == 'total',
         'tendered_votes': lambda v: 'tenderedvotes' in v,
     }.items()}
-    return {'header':header, 'columns':len(cells[header]), 'start':start, 'end':end, 'names':names, 'totals':totals}
+    # Some official Form 20 grids put the station number and its name in
+    # separate columns. Require both labels in the printed subheader before
+    # joining those cells; an arbitrary text cell is not a station name.
+    subheader = [normalized(v) for v in cells[header+2]]
+    named_station = (start >= 2 and len(subheader) > start-1
+                     and subheader[start-2] in ('no', 'number')
+                     and subheader[start-1] == 'name')
+    return {'header':header, 'columns':len(cells[header]), 'start':start, 'end':end,
+            'names':names, 'totals':totals, 'named_station':named_station}
 
 
 def continues_table(cells, header):
@@ -83,11 +91,22 @@ def map_rows(cells, header, first_row, carried_note=None):
         station = ' '.join(str(station_value if station_value is not None else '').split())
         numbered_station = re.fullmatch(r'\d+(?:\s*[-/]?\s*[A-Za-z]|\([A-Za-z]\))?', station)
         named_station = re.fullmatch(r'\d+[A-Za-z]?(?:\s*[-–:]\s*|\s+)[^\d\s].*', station)
-        if serial is None or not (numbered_station or named_station):
+        if header.get('named_station'):
+            station_number = numeric(row[header['start']-2])
+            if (serial is None or station_number is None or station_number < 1
+                    or not re.search(r'[A-Za-z]', station)
+                    or normalized(station) in ('total', 'subtotal')):
+                continue
+            station = f'{station_number} {station}'
+        elif serial is None or not (numbered_station or named_station):
             continue
         votes = [numeric(v) for v in row[header['start']:header['end']]]
         values = {k:numeric(row[i]) if i is not None else None for k,i in header['totals'].items()}
         notes = [carried_note] if carried_note else []
+        if header.get('named_station') and any(i is None or not str(row[i] or '').strip()
+                                               for k,i in header['totals'].items()
+                                               if k != 'tendered_votes'):
+            notes.append('One or more source vote totals are absent; no value has been inferred.')
         if any(column is not None and values[key] is None and str(row[column] or '').strip() for key,column in header['totals'].items()):
             notes.append('One or more source totals contain a formula or unreadable value; no total has been inferred.')
         if any(v is None for v in votes):

@@ -7,10 +7,13 @@ import hashlib
 import argparse
 import json
 from pathlib import Path
+import re
 from extract_polling_sources import ADAPTER, CARRIED_HEADER_NOTE, MAPPING_NOTE, table_header, map_rows, continues_table
 
 
-def remap(root, state=None):
+def remap(root, state=None, source_sha256=None):
+    if source_sha256 is not None and not re.fullmatch(r'[0-9a-f]{64}', source_sha256):
+        raise ValueError('Source SHA-256 must be 64 lowercase hexadecimal characters')
     folders = None
     if state:
         catalogue = json.loads((root/'catalogue.json').read_text(encoding='utf-8'))
@@ -19,6 +22,8 @@ def remap(root, state=None):
             raise ValueError('State is not in the preserved source directory: '+state)
     changed = rows = 0
     for path in root.glob('*/*-tables/index.json'):
+        if source_sha256 is not None and path.parent.name != source_sha256+'-tables':
+            continue
         if folders is not None and path.parent.parent.name not in folders:
             continue
         original = path.read_bytes()
@@ -75,5 +80,7 @@ def remap(root, state=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--state')
+    parser.add_argument('--source-sha256')
     args = parser.parse_args()
-    remap(Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources', args.state)
+    remap(Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources',
+          args.state, args.source_sha256)

@@ -122,6 +122,39 @@ class ResultsTest(unittest.TestCase):
         self.assertEqual(rows[0]['valid_votes'], 15)
         self.assertEqual(rows[0]['notes'][0], CARRIED_HEADER_NOTE)
 
+    def test_form20_separate_station_number_and_name_columns(self):
+        cells = [
+            ['Sl. No.', 'Name of the Polling Station', None, 'No. of valid votes cast in favour of', None,
+             'Total of Valid Votes', 'No. of rejected votes', 'Total'],
+            [None, None, None, 'Candidate A', 'Candidate B', None, None, None],
+            [None, 'No.', 'Name', 'P1', 'P2', None, None, None],
+            ['1', '7', 'Kamargaon LP School', '4', '6', '10', '', '10'],
+            ['2', '8', 'Another School', '3', '5', '9', '0', '9'],
+            ['Total', None, None, '7', '11', '19', '0', '19'],
+        ]
+        rows = map_table(cells)
+        self.assertEqual([row['polling_station'] for row in rows],
+                         ['7 Kamargaon LP School', '8 Another School'])
+        self.assertEqual(rows[0]['candidate_votes'],
+                         [{'name': 'Candidate A', 'votes': 4}, {'name': 'Candidate B', 'votes': 6}])
+        self.assertIsNone(rows[0]['rejected_votes'])
+        self.assertTrue(any('absent' in note for note in rows[0]['notes']))
+        self.assertTrue(any('do not equal' in note for note in rows[1]['notes']))
+        self.assertEqual(rows[0]['source_cells'], cells[3])
+
+    def test_form20_named_station_requires_printed_no_and_name_subheaders(self):
+        cells = [
+            ['Name of the Polling Station', None, 'No. of valid votes cast in favour of', None,
+             'Total of Valid Votes', 'No. of rejected votes', 'NOTA', 'Total'],
+            [None, None, 'Candidate A', 'Candidate B', None, None, None, None],
+            ['No.', 'Name', 'P1', 'P2', None, None, None, None],
+            ['1', 'Suffry Bagan School', '2', '3', '5', '0', '1', '6'],
+        ]
+        self.assertEqual(map_table(cells)[0]['polling_station'], '1 Suffry Bagan School')
+        self.assertEqual(map_table(cells)[0]['notes'], [])
+        cells[2][1] = 'Other'
+        self.assertEqual(map_table(cells), [])
+
     def test_continuation_requires_a_resolved_header_and_the_same_width(self):
         cells = [['Serial No Of Polling Station', None, 'No of Valid Votes Cast in favour of', None, 'Total of Valid Votes'],
                  [None, None, 'A', 'B', None],
