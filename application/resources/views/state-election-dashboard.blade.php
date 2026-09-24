@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 @include('seo-metadata', ['breadcrumbs'=>['India'=>route('home'),$title=>route('states.show',['state'=>$state])], 'canonical'=>route('states.show',['state'=>$state]), 'seoTitle'=>$title.' election results & historical trends · Pollmedia', 'seoDescription'=>'Explore available turnout, party vote shares and winning margins with constituency results and official sources.'])
-<link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"></head><body class="election-ui">
+<link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script></head><body class="election-ui">
 @include('public-header')
 <div class="dashboard-shell page-without-sidebar">
 <main class="dashboard-main"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ route('home') }}">India</a><span>/</span><span>{{ $title }}</span></nav><p class="eyebrow">{{ $stateSummary['kind'] }} / Election analysis</p><h1>{{ $title }},<br>election by election.</h1><p>Follow the vote over time, then open a constituency for its candidates, figures and sources.</p>
