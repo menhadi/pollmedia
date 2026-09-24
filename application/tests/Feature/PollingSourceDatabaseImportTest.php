@@ -63,7 +63,7 @@ class PollingSourceDatabaseImportTest extends TestCase
         }
 
         $this->get('/india/elections/polling-stations?state=EXAMPLE')->assertOk()
-            ->assertSee('2 preserved source documents')->assertSee('A report')->assertDontSee('B report');
+            ->assertSee('2 preserved source-document references')->assertSee('A report')->assertDontSee('B report');
         $this->get('/india/elections/polling-stations?source='.str_repeat('b', 24))->assertOk()
             ->assertSee('B report')->assertDontSee('A report');
         $this->get('/india/elections/polling-stations?state=EXAMPLE&source='.str_repeat('b', 24))->assertNotFound();

@@ -127,7 +127,7 @@ class PollingSourceController extends Controller
                 $ocr = $record->ocr_payload === null ? null : json_decode($record->ocr_payload, true);
             }
         }
-        $index = ['scope_note' => 'Imported official source records retain warnings and links to their original publication.'];
+        $index = ['scope_note' => 'Imported official source records retain warnings and links to their original publication. State directory labels identify collection paths, not verified document jurisdiction.'];
 
         return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount', 'sourcePages'));
     }
