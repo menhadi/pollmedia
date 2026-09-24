@@ -2,6 +2,7 @@ param(
     [string[]] $States = @('CHHATTISGARH', 'UTTARAKHAND', 'HARYANA', 'WEST BENGAL',
         'ANDHRA PRADESH', 'ODISHA', 'NCT OF DELHI', 'MADHYA PRADESH', 'ASSAM'),
     [string] $PackageDate = (Get-Date -Format 'yyyyMMdd'),
+    [string] $Revision = '',
     [string] $Target = 'pollmedia@94.136.186.150',
     [string] $KeyPath = (Join-Path $env:USERPROFILE '.ssh\pollmedia_ed25519'),
     [switch] $CheckOnly
@@ -10,6 +11,9 @@ param(
 $ErrorActionPreference = 'Stop'
 if ($PackageDate -notmatch '^20[0-9]{6}$') {
     throw 'PackageDate must be YYYYMMDD.'
+}
+if ($Revision -and $Revision -notmatch '^[a-z0-9][a-z0-9-]{0,39}$') {
+    throw 'Revision must be a short lowercase slug.'
 }
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $sourceRoot = Join-Path $projectRoot 'application\storage\app\private\polling-station-sources'
@@ -65,6 +69,7 @@ try {
                 throw "Unsafe state slug: $state"
             }
             $base = "pollmedia-polling-$slug-db-$PackageDate"
+            if ($Revision) { $base += "-$Revision" }
             $receiptKey = "$state|$base.zip"
             if ($completed.ContainsKey($receiptKey)) {
                 Write-Output "Already imported: $state"
