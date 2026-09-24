@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use App\Services\CensusHistory;
 use App\Services\ElectionResults;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class PlaceController extends Controller
 {
-    public function show(Request $request, string $type, string $slug): View
+    public function show(Request $request, string $type, string $slug): View|RedirectResponse
     {
         abort_unless(in_array($type, ['district', 'pc', 'ac']), 404);
         $place = DB::table('places')->where('slug', $type.'-'.$slug)->first();
         abort_unless($place, 404);
+        if (in_array($type, ['pc', 'ac']) && Schema::hasTable('historical_constituency_index') && DB::table('place_identifiers')->where('place_id', $place->id)->where('namespace', 'electoral:IN:UP:'.$type)->exists()) {
+            $entry = DB::table('historical_constituency_index')->where('kind', $type)->where('state_label', 'Uttar Pradesh')->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
+            if ($entry) {
+                return redirect()->route('constituency.overview', ['kind' => $type, 'state' => 'Uttar Pradesh', 'name' => $entry->constituency_name]);
+            }
+        }
         $scope = [$place->id];
         if ($type === 'district') {
             $scope = array_merge($scope, DB::table('place_relationships')->where('to_place_id', $place->id)->where('type', 'district_directory_lists')->pluck('from_place_id')->all());

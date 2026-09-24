@@ -41,6 +41,7 @@ class ConstituencyOverviewController extends Controller
         $chosen = isset($input['edition']) ? $rows->first(fn ($row) => $row['entry']->edition_id === $input['edition']) : null;
         abort_if(isset($input['edition']) && ! $chosen, 404);
         $latest = $rows->first();
+        $chosen ??= $latest;
 
         return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest'));
     }

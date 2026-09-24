@@ -8,8 +8,10 @@ use App\Services\ElectionArchive;
 use App\Services\HistoricalElectionArchive;
 use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -73,9 +75,15 @@ class HistoricalElectionController extends Controller
         return view('constituency-history', compact('place', 'comparison'));
     }
 
-    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|StreamedResponse
+    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|StreamedResponse|RedirectResponse
     {
         $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:999999', 'format' => 'nullable|in:csv,report']);
+        if (! isset($input['format']) && isset($input['edition'], $input['state'], $input['code']) && Schema::hasTable('historical_constituency_index')) {
+            $indexed = DB::table('historical_constituency_index')->where('edition_id', $input['edition'])->where('state_label', $input['state'])->where('record_code', $input['code'])->where('kind', $request->routeIs('elections.assembly') ? 'ac' : 'pc')->first();
+            if ($indexed) {
+                return redirect()->route('constituency.overview', ['kind' => $indexed->kind, 'state' => $indexed->state_label, 'name' => $indexed->constituency_name, 'edition' => $indexed->edition_id]);
+            }
+        }
         $download = ($input['format'] ?? null) === 'csv';
         $report = ($input['format'] ?? null) === 'report';
         abort_if($download && (! isset($input['edition'], $input['state'])), 404);
