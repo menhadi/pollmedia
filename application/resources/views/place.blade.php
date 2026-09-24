@@ -26,6 +26,7 @@
 
 <div class="crumb"><a href="{{ route('india') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / {{ $type === 'district' ? 'Administrative geography' : 'Electoral geography' }}</div>
 
+@if(in_array($type,['pc','ac']))<nav class="tabs" aria-label="Electoral navigation"><a href="{{ route('home') }}#states">India / States</a><a href="{{ route('states.show',['state'=>'uttar-pradesh','election'=>$type]) }}">Uttar Pradesh results</a><a href="#related-places">{{ $type==='pc'?'Explore linked Assembly seats':'View linked Parliament seat' }}</a></nav>@endif
 <div class="hero"><h1>{{ $pageTitle }}</h1><p class="lead">Explore election results, public representatives, development and citizen participation.</p><p class="small">{{ strtoupper($type) }} {{ $code }} · India pilot</p></div>
 
 @if(in_array($place->slug, ['district-pilibhit','pc-pilibhit']))

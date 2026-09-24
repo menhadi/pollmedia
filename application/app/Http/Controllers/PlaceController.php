@@ -43,6 +43,7 @@ class PlaceController extends Controller
                 $other = DB::table('places')->find($r->from_place_id === $place->id ? $r->to_place_id : $r->from_place_id);
                 $other->url = route('places.show', ['type' => $other->type, 'slug' => substr($other->slug, strlen($other->type) + 1)]);
                 $other->source_url = $r->url;
+                $other->relationship_type = $r->type;
                 $other->checked_on = substr($r->retrieved_at, 0, 10);
                 $other->source_locator = $r->source_locator;
                 $other->reference_date = $r->reference_date;
