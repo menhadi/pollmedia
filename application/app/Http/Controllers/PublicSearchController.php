@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ElectionPlaceIdentity;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -28,8 +29,13 @@ class PublicSearchController extends Controller
             if (in_array($kind, ['', 'pc', 'ac']) && Schema::hasTable('historical_constituency_index')) {
                 $results = DB::table('historical_constituency_index')->whereNotNull('state_label')->where('state_label', '!=', '')->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($q).'%'])
                     ->when($kind !== '', fn ($query) => $query->where('kind', $kind))
-                    ->select('kind', 'state_label', DB::raw('LOWER(constituency_name) as constituency_name'))
-                    ->groupBy('kind', 'state_label', DB::raw('LOWER(constituency_name)'))->orderBy('constituency_name')->orderBy('state_label')->paginate(20)->withQueryString();
+                    ->select('kind', DB::raw(ElectionPlaceIdentity::stateSql().' as state_label'), DB::raw('LOWER(constituency_name) as constituency_name'))
+                    ->groupBy('kind', DB::raw(ElectionPlaceIdentity::stateSql()), DB::raw('LOWER(constituency_name)'))->orderBy('constituency_name')->orderBy('state_label')->paginate(20)->withQueryString();
+                $results->through(function ($row) {
+                    $row->state_label = ElectionPlaceIdentity::state($row->state_label);
+
+                    return $row;
+                });
             }
             if (in_array($kind, ['', 'village'])) {
                 $release = DB::table('source_releases as r')->join('data_sources as s', 's.id', '=', 'r.data_source_id')

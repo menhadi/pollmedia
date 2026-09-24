@@ -47,8 +47,8 @@ class HistoricalConstituencyIndexTest extends TestCase
             'edition_id' => $edition, 'record_code' => 452, 'has_warning' => true,
         ]);
 
-        $this->get(route('elections.constituencies', ['q' => 'pIlIbHiT', 'kind' => 'pc']))
-            ->assertOk()->assertSee('1 indexed constituency tables match')
+        $this->get(route('elections.constituencies', ['q' => 'pIlIbHiT', 'kind' => 'pc', 'state' => 'UTTAR PRADESH']))
+            ->assertOk()->assertSee('1 election records match')
             ->assertSee('Pilibhit')->assertDontSee('Bareilly')
             ->assertSee(route('elections.history', ['edition' => $edition, 'state' => 'S24', 'code' => 451]));
         $this->get(route('elections.constituencies', ['q' => 'Bareilly']))
@@ -72,7 +72,7 @@ class HistoricalConstituencyIndexTest extends TestCase
     public function test_finder_without_built_index_keeps_archive_links_available(): void
     {
         $this->get(route('elections.constituencies'))->assertOk()
-            ->assertSee('No indexed constituency tables match this selection')
+            ->assertSee('No election records match this selection')
             ->assertSee(route('elections.history'))
             ->assertSee(route('elections.assembly'));
     }

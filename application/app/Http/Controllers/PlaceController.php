@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CensusHistory;
+use App\Services\ElectionPlaceIdentity;
 use App\Services\ElectionResults;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +19,7 @@ class PlaceController extends Controller
         $place = DB::table('places')->where('slug', $type.'-'.$slug)->first();
         abort_unless($place, 404);
         if (in_array($type, ['pc', 'ac']) && Schema::hasTable('historical_constituency_index') && DB::table('place_identifiers')->where('place_id', $place->id)->where('namespace', 'electoral:IN:UP:'.$type)->exists()) {
-            $entry = DB::table('historical_constituency_index')->where('kind', $type)->where('state_label', 'Uttar Pradesh')->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
+            $entry = DB::table('historical_constituency_index')->where('kind', $type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', ['uttar pradesh'])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
             if ($entry) {
                 return redirect()->route('constituency.overview', ['kind' => $type, 'state' => 'Uttar Pradesh', 'name' => $entry->constituency_name]);
             }

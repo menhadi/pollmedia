@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ElectionArchive;
+use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionArchive;
 use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
@@ -16,9 +17,9 @@ class ConstituencyOverviewController extends Controller
     {
         $input = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/']);
         $kind = $input['kind'];
-        $state = $input['state'];
+        $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
-        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->where('state_label', $state)->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($name)])->orderByDesc('year')->orderBy('edition_id')->get();
+        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($name)])->orderByDesc('year')->orderBy('edition_id')->get();
         abort_if($entries->isEmpty(), 404);
         $rows = $entries->map(function ($entry) use ($history, $archives, $reviews) {
             $record = null;
@@ -72,7 +73,7 @@ class ConstituencyOverviewController extends Controller
                 $linkedAcs = $kind === 'pc' ? $acs->whereIn('code', $match['ac_codes']) : collect([$match]);
                 $linkedSeats = $kind === 'pc' ? $linkedAcs->map(fn ($row) => ['name' => $row['name'], 'type' => 'ac']) : $pcs->filter(fn ($row) => in_array($match['code'], $row['ac_codes']))->map(fn ($row) => ['name' => $row['name'], 'type' => 'pc']);
                 foreach ($linkedSeats as $seat) {
-                    $candidates = DB::table('historical_constituency_index')->where('state_label', $state)->where('kind', $seat['type'])->select('constituency_name')->distinct()->get()->filter(fn ($row) => $normalize($row->constituency_name) === $normalize($seat['name']))->pluck('constituency_name')->unique(fn ($n) => mb_strtolower($n));
+                    $candidates = DB::table('historical_constituency_index')->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->where('kind', $seat['type'])->select('constituency_name')->distinct()->get()->filter(fn ($row) => $normalize($row->constituency_name) === $normalize($seat['name']))->pluck('constituency_name')->unique(fn ($n) => mb_strtolower($n));
                     if ($candidates->count() === 1) {
                         $related->push((object) ['name' => $seat['name'], 'type' => $seat['type'], 'url' => route('constituency.overview', ['kind' => $seat['type'], 'state' => $state, 'name' => $candidates->first()]), 'reference' => false]);
                     }
