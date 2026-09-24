@@ -39,6 +39,14 @@ def remap(root, state=None, source_sha256=None):
             if hashlib.sha256(body).hexdigest() != page['sha256']:
                 raise ValueError('Preserved page checksum changed: '+str(source))
             data = json.loads(body)
+            if page['polling_rows']:
+                # Keep accepted source-row mappings byte-for-byte. The
+                # upgrade only targets pages that previously mapped no rows.
+                for table in data['tables']:
+                    context = table_header(table['cells'])
+                    if context is not None:
+                        header_context = context
+                continue
             mapped = []
             carried = False
             for table in data['tables']:
