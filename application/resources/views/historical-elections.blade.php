@@ -16,6 +16,7 @@
 @if($kind === 'ac')<p class="small">Assembly coverage includes available extracted state report editions; use the edition selector for each state and year. Historical state and constituency boundaries belong to each edition.</p>@endif
 <p><a href="{{ route('elections.assembly-sources') }}">Assembly source reports: all listed states and historical years</a></p>
 <p class="notice">Names, codes and boundaries belong to the selected election edition. A matching name does not establish unchanged boundaries or a connection to a present-day constituency. Special editions may cover only part of India.</p>
+@if(($data['unavailable_original_count'] ?? 0) > 0)<p class="notice">{{ $data['unavailable_original_count'] }} preserved original {{ $data['unavailable_original_count'] === 1 ? 'file is' : 'files are' }} not yet accessible from this site. The extracted tables remain available with their data notes; use the official source links below to check the report.</p>@endif
 @if(!$data)<section class="card"><p>No extracted editions are available yet.</p></section>@else
 <section class="card" aria-label="Election filters">
 <form class="search" method="get" action="{{ route($archiveRoute) }}"><div><label for="edition">Election year / official edition</label><select id="edition" name="edition">@foreach($editions as $item)<option value="{{ $item['id'] }}" @selected($edition===$item['id'])>{{ $item['label'] }}</option>@endforeach</select></div><button>Choose edition</button></form>

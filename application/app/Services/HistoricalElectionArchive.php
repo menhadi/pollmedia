@@ -40,13 +40,26 @@ class HistoricalElectionArchive
         abort_unless(($data['year'] ?? null) === (int) substr($entry[0], 0, 4), 409);
         $source = collect($collection['files'])->firstWhere('file', $data['source_file']);
         abort_unless($source && basename($source['file']) === $source['file'], 409);
-        abort_unless(hash_equals($source['sha256'], $data['source_sha256']) && $disk->verify($root.$source['file'], $source['sha256']), 409, 'Extraction source integrity check failed.');
+        abort_unless(hash_equals($source['sha256'], $data['source_sha256']), 409, 'Extraction source identity differs.');
+        $unavailableOriginals = 0;
+        if ($disk->exists($root.$source['file'])) {
+            abort_unless($disk->verify($root.$source['file'], $source['sha256']), 409, 'Extraction source integrity check failed.');
+        } else {
+            $unavailableOriginals++;
+        }
 
         foreach ($data['additional_sources'] ?? [] as $additional) {
             $official = collect($collection['files'])->firstWhere('file', $additional['file']);
             abort_unless($official && basename($official['file']) === $official['file'], 409);
-            abort_unless(hash_equals($official['sha256'], $additional['sha256']) && $disk->verify($root.$official['file'], $official['sha256']), 409, 'Additional source integrity check failed.');
+            abort_unless(hash_equals($official['sha256'], $additional['sha256']), 409, 'Additional source identity differs.');
+            if ($disk->exists($root.$official['file'])) {
+                abort_unless($disk->verify($root.$official['file'], $official['sha256']), 409, 'Additional source integrity check failed.');
+            } else {
+                $unavailableOriginals++;
+            }
         }
+
+        $data['unavailable_original_count'] = $unavailableOriginals;
 
         return [$data, $source];
     }

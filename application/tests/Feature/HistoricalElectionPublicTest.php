@@ -80,6 +80,17 @@ class HistoricalElectionPublicTest extends TestCase
         $this->assertDatabaseCount('election_contests', 0);
     }
 
+    public function test_missing_preserved_pdfs_leave_imported_results_visible_with_a_warning(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition();
+        Storage::disk('local')->delete('election-archive/'.$id.'/detail.pdf');
+        Storage::disk('local')->delete('election-archive/'.$id.'/summary.pdf');
+
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]))
+            ->assertOk()->assertSee('Candidate One')->assertSee('2 preserved original files are not yet accessible');
+    }
+
     public function test_public_notes_follow_admin_reviews_and_source_changes(): void
     {
         config(['app.debug' => false]);
