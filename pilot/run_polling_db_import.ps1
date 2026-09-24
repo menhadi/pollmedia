@@ -100,7 +100,7 @@ try {
             $expected = ((Get-Content -LiteralPath $checksum -Raw).Trim() -split '\s+')[0]
             $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
             if ($expected -ne $actual) { throw "Package checksum differs for $state" }
-            Add-Type -AssemblyName System.IO.Compression
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
             $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
             try {
                 $entry = $archive.GetEntry('application/storage/app/private/polling-station-sources/index.json')
