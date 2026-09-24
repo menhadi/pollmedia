@@ -75,9 +75,11 @@ class HistoricalElectionController extends Controller
 
     public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|StreamedResponse
     {
-        $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:999999', 'format' => 'nullable|in:csv']);
+        $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:999999', 'format' => 'nullable|in:csv,report']);
         $download = ($input['format'] ?? null) === 'csv';
+        $report = ($input['format'] ?? null) === 'report';
         abort_if($download && (! isset($input['edition'], $input['state'])), 404);
+        abort_if($report && (! isset($input['edition'], $input['state'], $input['code'])), 404);
         $kind = $request->routeIs('elections.assembly') ? 'ac' : 'pc';
         $archiveRoute = $kind === 'ac' ? 'elections.assembly' : 'elections.history';
         $archiveTitle = $kind === 'ac' ? 'India Assembly' : 'Lok Sabha';
@@ -114,6 +116,9 @@ class HistoricalElectionController extends Controller
                 $selected = $reviews->apply($edition, $selected, $data['source_sha256']);
                 if ($download) {
                     return $this->download($data, [$selected], $state, $kind, $edition, (string) $selected['code']);
+                }
+                if ($report) {
+                    return view('historical-election-report', compact('data', 'selected', 'state', 'kind', 'edition'));
                 }
                 $relatedPlace = app(ConstituencyHistory::class)->relatedPlace($edition, $original);
             } elseif ($state) {

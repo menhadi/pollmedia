@@ -55,6 +55,7 @@
 <section class="card" id="results"><div class="kicker">{{ $data['year'] }} / {{ $state }}</div><h2>{{ $selected['name'] }} @if($selected['has_warning'])<a href="#data-note" aria-label="Data note">†</a>@endif</h2>
 <p>Official constituency code: {{ $selected['official_pc_code'] ?? $selected['official_ac_code'] ?? ($kind === 'ac' ? $selected['code'] : 'Not reported') }} · Seats: {{ $selected['number_of_seats'] ?? 1 }}</p>
 <p><a href="{{ route($archiveRoute, $filters + ['format' => 'csv']) }}">Download candidate results (CSV)</a></p><p class="small">Includes official references and current data notes. Blank cells mean not reported; constituency totals repeat on each candidate row and should not be added together.</p>
+<p><a href="{{ route($archiveRoute, $filters + ['format' => 'report']) }}">Open printable constituency result report</a></p>
 @if($relatedPlace)
 <nav aria-label="Related constituency"><a href="{{ route('places.show', ['type' => $kind, 'slug' => $relatedPlace['slug']]) }}">{{ $relatedPlace['name'] }} present-day profile</a> · <a href="{{ route($kind === 'ac' ? 'elections.compare-assembly' : 'elections.compare', ['slug' => $relatedPlace['slug']]) }}">Election history & boundary references</a></nav>
 @if($relatedPlace['earlier'])<p class="small">This historical constituency is linked through checked official records. Its boundaries differ from the present-day constituency; see the boundary references before comparing years.</p>@endif

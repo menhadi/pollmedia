@@ -91,6 +91,32 @@ class HistoricalElectionPublicTest extends TestCase
             ->assertOk()->assertSee('Candidate One')->assertSee('2 preserved original files are not yet accessible');
     }
 
+    public function test_constituency_report_preserves_source_votes_and_review_warning(): void
+    {
+        Storage::fake('local');
+        [$id, , $hash, $source] = $this->edition();
+        $filters = ['edition' => $id, 'state' => 'S24', 'code' => 451];
+
+        $this->get(route('elections.history', $filters))
+            ->assertOk()
+            ->assertSee('Open printable constituency result report');
+        $this->get(route('elections.history', $filters + ['format' => 'report']))
+            ->assertOk()
+            ->assertSee('Pilibhit')
+            ->assertSee('12,345')
+            ->assertSee('Source totals differ')
+            ->assertSee($hash)
+            ->assertSee($source)
+            ->assertDontSee('Winner:');
+        $this->get(route('elections.history', ['format' => 'report']))->assertNotFound();
+
+        [$assembly] = $this->edition(2022, 'ac');
+        $this->get(route('elections.assembly', ['edition' => $assembly, 'state' => 'Uttar Pradesh', 'code' => 1, 'format' => 'report']))
+            ->assertOk()
+            ->assertSee('Assembly election')
+            ->assertSee('SEOHARA');
+    }
+
     public function test_public_notes_follow_admin_reviews_and_source_changes(): void
     {
         config(['app.debug' => false]);

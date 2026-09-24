@@ -19,12 +19,18 @@ class ElectionGeographyFrontendTest extends TestCase
             ->assertOk()
             ->assertSeeText('States & Union Territories')
             ->assertSee('/india/state/maharashtra', false)
+            ->assertSee('id="historical-results"', false)
+            ->assertSee(route('elections.history'))
+            ->assertSee(route('elections.assembly'))
+            ->assertSee(route('elections.by-election-results'))
+            ->assertSeeText('Find a linked constituency or district profile')
             ->assertSee('published constituency contests');
 
         $this->get('/india/state/maharashtra')
             ->assertOk()
             ->assertSee('Maharashtra election coverage')
             ->assertSee('Assembly archive')
+            ->assertSee(route('elections.assembly'))
             ->assertSeeText('Browse Maharashtra Assembly sources');
     }
 
