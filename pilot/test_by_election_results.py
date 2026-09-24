@@ -155,6 +155,38 @@ class ResultsTest(unittest.TestCase):
         cells[2][1] = 'Other'
         self.assertEqual(map_table(cells), [])
 
+    def test_form20_named_station_and_source_header_typos(self):
+        cells = [
+            ['Form 20', None, None, None, None, None, None, None],
+            ['Sl.No. of Polling Station', 'Name of Polling Station',
+             'No. of valid votes case in favour of', None,
+             'Total of Valid Votes Polled', 'NOTA', 'No. of rejected votes',
+             'Total (Valid & Rejected & Nota) Votes', 'Tenderd Vote'],
+            [None, None, 'Candidate A', 'Candidate B', None, None, None, None, None],
+            ['', None, '1', '2', '', None, None, None, None],
+            ['1', 'Govt Primary School', '4', '6', '10', '2', '0', '12', '0'],
+        ]
+        rows = map_table(cells)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['polling_station'], '1 Govt Primary School')
+        self.assertEqual((rows[0]['valid_votes'], rows[0]['nota'], rows[0]['total_votes']), (10, 2, 12))
+        self.assertEqual(rows[0]['notes'], [])
+
+    def test_form20_compact_continuation_header_maps_printed_candidate_columns(self):
+        cells = [
+            ['Serial No.', 'Serial No. Of Polling Station', 'DILLIP KUMAR PANDA',
+             'RITA SAHU', 'Total of Valid Votes', 'No. Of Rejected Votes',
+             'NOTA', 'Total', 'No. Of Tendered Votes'],
+            ['24', '24', '29', '518', '547', '0', '12', '559', '0'],
+            ['25', '25', '15', '330', '345', '0', '14', '359', '0'],
+        ]
+        rows = map_table(cells)
+        self.assertEqual([row['polling_station'] for row in rows], ['24', '25'])
+        self.assertEqual(rows[0]['candidate_votes'][1], {'name': 'RITA SAHU', 'votes': 518})
+        self.assertEqual(rows[0]['notes'], [])
+        cells[0][1] = 'Other serial'
+        self.assertEqual(map_table(cells), [])
+
     def test_continuation_requires_a_resolved_header_and_the_same_width(self):
         cells = [['Serial No Of Polling Station', None, 'No of Valid Votes Cast in favour of', None, 'Total of Valid Votes'],
                  [None, None, 'A', 'B', None],

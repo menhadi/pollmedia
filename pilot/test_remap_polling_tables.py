@@ -38,7 +38,9 @@ class RemapPollingTablesTest(unittest.TestCase):
             index = {'adapter': 'form20-grid-v5', 'pages': pages, 'polling_rows': 1}
             (folder/'index.json').write_text(json.dumps(index))
 
-            remap(root, source_sha256=digest)
+            source_list = root/'selected.json'
+            source_list.write_text(json.dumps([digest]))
+            remap(root, source_list=source_list)
 
             updated = json.loads((folder/'index.json').read_text())
             self.assertEqual(updated['adapter'], ADAPTER)

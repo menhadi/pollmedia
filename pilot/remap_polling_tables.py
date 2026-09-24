@@ -11,8 +11,16 @@ import re
 from extract_polling_sources import ADAPTER, CARRIED_HEADER_NOTE, MAPPING_NOTE, table_header, map_rows, continues_table
 
 
-def remap(root, state=None, source_sha256=None):
-    if source_sha256 is not None and not re.fullmatch(r'[0-9a-f]{64}', source_sha256):
+def remap(root, state=None, source_sha256=None, source_list=None):
+    if source_sha256 is not None and source_list is not None:
+        raise ValueError('Choose one source selector')
+    selected = [source_sha256] if source_sha256 is not None else None
+    if source_list is not None:
+        selected = json.loads(Path(source_list).read_text(encoding='utf-8'))
+        if not isinstance(selected, list) or not 1 <= len(selected) <= 5000:
+            raise ValueError('Source list must contain 1 to 5000 SHA-256 values')
+    if selected is not None and any(not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{64}', value)
+                                    for value in selected):
         raise ValueError('Source SHA-256 must be 64 lowercase hexadecimal characters')
     folders = None
     if state:
@@ -21,8 +29,14 @@ def remap(root, state=None, source_sha256=None):
         if not folders:
             raise ValueError('State is not in the preserved source directory: '+state)
     changed = rows = 0
-    for path in root.glob('*/*-tables/index.json'):
-        if source_sha256 is not None and path.parent.name != source_sha256+'-tables':
+    if selected is None:
+        paths = root.glob('*/*-tables/index.json')
+    else:
+        source_folders = (root/folder for folder in folders) if folders is not None else root.iterdir()
+        paths = (folder/(digest+'-tables')/'index.json'
+                 for folder in source_folders for digest in dict.fromkeys(selected))
+    for path in paths:
+        if not path.is_file():
             continue
         if folders is not None and path.parent.parent.name not in folders:
             continue
@@ -53,7 +67,7 @@ def remap(root, state=None, source_sha256=None):
                 context = table_header(table['cells'])
                 if context is not None:
                     header_context = context
-                    found = map_rows(table['cells'], context, context['header']+2)
+                    found = map_rows(table['cells'], context, context['first_data_row'])
                 elif header_context is not None and continues_table(table['cells'], header_context):
                     carried = True
                     found = map_rows(table['cells'], header_context, 0, CARRIED_HEADER_NOTE)
@@ -89,6 +103,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--state')
     parser.add_argument('--source-sha256')
+    parser.add_argument('--source-list', type=Path)
     args = parser.parse_args()
     remap(Path(__file__).resolve().parents[1]/'application/storage/app/private/polling-station-sources',
-          args.state, args.source_sha256)
+          args.state, args.source_sha256, args.source_list)

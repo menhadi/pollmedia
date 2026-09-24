@@ -30,39 +30,67 @@ def readable_text_share(text):
     return sum(len(word) for word in words)/len(letters) if letters else 0.0
 
 
-ADAPTER = 'form20-grid-v6'
+ADAPTER = 'form20-grid-v7'
 CARRIED_HEADER_NOTE = 'Column headers carried forward from the previous page of the same document.'
 MAPPING_NOTE = 'Source tables extracted; polling-row layout still requires mapping.'
+VALID_LABELS = ('totalofvalidvotes', 'totalvalidvotes', 'totalnoofvalidvotes',
+                'totalnumberofvalidvotes', 'totalofvalidvotespolled')
+
+
+def total_columns(first):
+    return {key: next((i for i, value in enumerate(first) if test(value)), None) for key, test in {
+        'valid_votes': lambda value: value in VALID_LABELS,
+        'rejected_votes': lambda value: 'rejectedvotes' in value,
+        'nota': lambda value: 'nota' in value,
+        'total_votes': lambda value: value == 'total' or (value.startswith('total')
+                              and all(term in value for term in ('valid', 'rejected', 'nota', 'votes'))),
+        'tendered_votes': lambda value: 'tenderedvotes' in value or 'tenderdvote' in value,
+    }.items()}
 
 
 def table_header(cells):
     """Resolve the column layout of one table, or None when no Form 20 header is present."""
+    if len(cells) < 2:
+        return None
+    # Some continuation pages repeat a compact header: station serials,
+    # candidate names and printed totals all occupy the same row.
+    for index, row in enumerate(cells[:32]):
+        first = [normalized(value) for value in row]
+        if (len(first) < 7 or first[0] not in ('serialno', 'slno')
+                or first[1] not in ('serialnoofpollingstation', 'slnoofpollingstation')):
+            continue
+        totals = total_columns(first)
+        end = totals['valid_votes']
+        if (end is None or not 2 <= end - 2 <= 20
+                or any(totals[key] is None for key in ('rejected_votes', 'nota', 'total_votes'))):
+            continue
+        names = [' '.join(str(value or '').split()) for value in row[2:end]]
+        if any(not name or numeric(name) is not None for name in names):
+            continue
+        return {'header': index, 'first_data_row': index + 1, 'columns': len(row),
+                'start': 2, 'end': end, 'names': names, 'totals': totals,
+                'named_station': False, 'station_name_only': False}
     if len(cells) < 3:
         return None
+    vote_phrases = ('votescastinfavour', 'votescastinfavor',
+                    'votescaseinfavour', 'votescaseinfavor')
     header = next((i for i,row in enumerate(cells[:32]) if any('pollingstation' in normalized(v) for v in row)
-                   and any('votescastinfavour' in normalized(v) or 'votescastinfavor' in normalized(v) for v in row)), None)
+                   and any(any(phrase in normalized(v) for phrase in vote_phrases) for v in row)), None)
     if header is None or header+2 >= len(cells):
         return None
     first = [normalized(v) for v in cells[header]]
-    start = next((i for i,v in enumerate(first) if 'votescastinfavourof' in v or 'votescastinfavorof' in v), None)
+    start = next((i for i,v in enumerate(first) if any(phrase+'of' in v for phrase in vote_phrases)), None)
     station_column = next((i for i,v in enumerate(first) if 'pollingstation' in v), None)
     if (start is not None and station_column is not None and station_column < start
             and all(str(v or '').strip() for v in cells[header+1][station_column+1:start])):
         start = station_column + 1
-    valid_labels = ['totalofvalidvotes','totalvalidvotes','totalnoofvalidvotes','totalnumberofvalidvotes']
-    end = next((i for i,v in enumerate(first) if v in valid_labels), None)
+    end = next((i for i,v in enumerate(first) if v in VALID_LABELS), None)
     if start is None or end is None or start >= end or start < 1:
         return None
     names = [' '.join(str(v or '').split()) for v in cells[header+1][start:end]]
     if not all(names) or any(numeric(name) is not None for name in names) or len(names) != end-start:
         return None
-    totals = {k: next((i for i,v in enumerate(first) if test(v)), None) for k,test in {
-        'valid_votes': lambda v: v in valid_labels,
-        'rejected_votes': lambda v: 'rejectedvotes' in v,
-        'nota': lambda v: 'nota' in v,
-        'total_votes': lambda v: v == 'total',
-        'tendered_votes': lambda v: 'tenderedvotes' in v,
-    }.items()}
+    totals = total_columns(first)
     # Some official Form 20 grids put the station number and its name in
     # separate columns. Require both labels in the printed subheader before
     # joining those cells; an arbitrary text cell is not a station name.
@@ -70,8 +98,11 @@ def table_header(cells):
     named_station = (start >= 2 and len(subheader) > start-1
                      and subheader[start-2] in ('no', 'number')
                      and subheader[start-1] == 'name')
-    return {'header':header, 'columns':len(cells[header]), 'start':start, 'end':end,
-            'names':names, 'totals':totals, 'named_station':named_station}
+    station_name_only = (start == 2 and first[0] in ('slnoofpollingstation', 'serialnoofpollingstation')
+                         and first[1] == 'nameofpollingstation')
+    return {'header':header, 'first_data_row': header + 2, 'columns':len(cells[header]),
+            'start':start, 'end':end, 'names':names, 'totals':totals,
+            'named_station':named_station, 'station_name_only':station_name_only}
 
 
 def continues_table(cells, header):
@@ -91,8 +122,8 @@ def map_rows(cells, header, first_row, carried_note=None):
         station = ' '.join(str(station_value if station_value is not None else '').split())
         numbered_station = re.fullmatch(r'\d+(?:\s*[-/]?\s*[A-Za-z]|\([A-Za-z]\))?', station)
         named_station = re.fullmatch(r'\d+[A-Za-z]?(?:\s*[-–:]\s*|\s+)[^\d\s].*', station)
-        if header.get('named_station'):
-            station_number = numeric(row[header['start']-2])
+        if header.get('named_station') or header.get('station_name_only'):
+            station_number = numeric(row[0] if header.get('station_name_only') else row[header['start']-2])
             if (serial is None or station_number is None or station_number < 1
                     or not re.search(r'[A-Za-z]', station)
                     or normalized(station) in ('total', 'subtotal')):
@@ -103,7 +134,7 @@ def map_rows(cells, header, first_row, carried_note=None):
         votes = [numeric(v) for v in row[header['start']:header['end']]]
         values = {k:numeric(row[i]) if i is not None else None for k,i in header['totals'].items()}
         notes = [carried_note] if carried_note else []
-        if header.get('named_station') and any(i is None or not str(row[i] or '').strip()
+        if (header.get('named_station') or header.get('station_name_only')) and any(i is None or not str(row[i] or '').strip()
                                                for k,i in header['totals'].items()
                                                if k != 'tendered_votes'):
             notes.append('One or more source vote totals are absent; no value has been inferred.')
@@ -123,7 +154,7 @@ def map_rows(cells, header, first_row, carried_note=None):
 
 def map_table(cells):
     header = table_header(cells)
-    return map_rows(cells, header, header['header']+2) if header else []
+    return map_rows(cells, header, header['first_data_row']) if header else []
 
 
 def spreadsheet_pages(source):
@@ -199,7 +230,7 @@ def extract(job):
                         context = table_header(cells)
                         if context is not None:
                             header_context = context
-                            rows = map_rows(cells, context, context['header']+2)
+                            rows = map_rows(cells, context, context['first_data_row'])
                         elif header_context is not None and continues_table(cells, header_context):
                             carried = True
                             rows = map_rows(cells, header_context, 0, CARRIED_HEADER_NOTE)
