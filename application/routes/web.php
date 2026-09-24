@@ -10,6 +10,7 @@ use App\Http\Controllers\CensusCatalogueController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
 use App\Http\Controllers\CitizenIssueController;
+use App\Http\Controllers\ConstituencyOverviewController;
 use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
@@ -167,3 +168,5 @@ Route::prefix('admin/imports')->middleware([AdminTransport::class, RequireAdmini
     Route::post('/runs/{run}/census', [CensusPublicationController::class, 'publish'])->whereNumber('run')->name('imports.census.publish');
     Route::post('/publications/{publication}/restore', [CensusPublicationController::class, 'restore'])->whereNumber('publication')->name('imports.census.restore');
 });
+
+Route::get('/india/constituency', [ConstituencyOverviewController::class, 'index'])->name('constituency.overview');

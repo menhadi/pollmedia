@@ -26,9 +26,10 @@ class PublicSearchController extends Controller
                     ->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($q).'%'])->orderBy('name')->limit(20)->get();
             }
             if (in_array($kind, ['', 'pc', 'ac']) && Schema::hasTable('historical_constituency_index')) {
-                $results = DB::table('historical_constituency_index')->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($q).'%'])
+                $results = DB::table('historical_constituency_index')->whereNotNull('state_label')->where('state_label', '!=', '')->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($q).'%'])
                     ->when($kind !== '', fn ($query) => $query->where('kind', $kind))
-                    ->orderByDesc('year')->orderBy('state_label')->orderBy('constituency_name')->paginate(20)->withQueryString();
+                    ->select('kind', 'state_label', DB::raw('LOWER(constituency_name) as constituency_name'))
+                    ->groupBy('kind', 'state_label', DB::raw('LOWER(constituency_name)'))->orderBy('constituency_name')->orderBy('state_label')->paginate(20)->withQueryString();
             }
             if (in_array($kind, ['', 'village'])) {
                 $release = DB::table('source_releases as r')->join('data_sources as s', 's.id', '=', 'r.data_source_id')
@@ -38,11 +39,13 @@ class PublicSearchController extends Controller
                     ->sortBy('name')->take(20)->map(fn ($v) => $v + ['url' => route('villages.show', ['code' => $v['code'], 'slug' => Str::slug($v['name'])])])->values();
             }
         }
-
+        if ($results) {
+            $profiles = $profiles->reject(fn ($p) => collect($results->items())->contains(fn ($r) => $r->kind === $p->type && mb_strtolower($r->constituency_name) === mb_strtolower($p->name)));
+        }
         if ($request->expectsJson()) {
             $suggestions = $profiles->take(5)->map(fn ($p) => ['label' => $p->name, 'type' => ['pc' => 'Parliament (PC)', 'ac' => 'Assembly (AC)', 'district' => 'District'][$p->type], 'url' => route('places.show', ['type' => $p->type, 'slug' => substr($p->slug, strlen($p->type) + 1)])]);
             foreach (collect($results?->items() ?? [])->take(6) as $r) {
-                $suggestions->push(['label' => $r->constituency_name, 'type' => strtoupper($r->kind).' · '.$r->year.' · '.$r->state_label, 'url' => route($r->kind === 'pc' ? 'elections.history' : 'elections.assembly', ['edition' => $r->edition_id, 'state' => $r->state_label, 'code' => $r->record_code])]);
+                $suggestions->push(['label' => Str::title($r->constituency_name), 'type' => strtoupper($r->kind).' · '.$r->state_label, 'url' => route('constituency.overview', ['kind' => $r->kind, 'state' => $r->state_label, 'name' => $r->constituency_name])]);
             }
             foreach ($villages->take(4) as $v) {
                 $suggestions->push(['label' => $v['name'], 'type' => 'Village · Pilibhit, Uttar Pradesh', 'url' => $v['url']]);
