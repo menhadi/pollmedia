@@ -23,8 +23,8 @@ class ElectionGeographyFrontendTest extends TestCase
             ->assertSee(route('elections.history'))
             ->assertSee(route('elections.assembly'))
             ->assertSee(route('elections.by-election-results'))
-            ->assertSeeText('Find a linked constituency or district profile')
-            ->assertSee('published constituency contests');
+            ->assertDontSeeText('Find a linked constituency or district profile')
+            ->assertDontSee('published constituency contests')->assertSeeText('States & Union Territories to explore');
 
         $this->get('/india/state/maharashtra')
             ->assertOk()
