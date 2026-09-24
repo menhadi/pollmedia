@@ -181,6 +181,8 @@ class PollingSourceDatabaseImportTest extends TestCase
         $this->get('/india/elections/polling-stations?source='.$id)->assertOk()
             ->assertSee('Example candidate')->assertSee('Unverified source text')
             ->assertSee('https://eci.gov.in/source.pdf', false);
+        $this->get('/india/elections/polling-stations?source='.$id.'&download=1')->assertOk()
+            ->assertDownload($digest.'.pdf')->assertHeader('Content-Type', 'application/pdf');
         $this->artisan('polling:import', ['--root' => $root])->assertSuccessful();
         $this->assertDatabaseCount('polling_source_pages', 1);
         $endpoint = 'https://'.str_repeat('c', 32).'.r2.cloudflarestorage.com';

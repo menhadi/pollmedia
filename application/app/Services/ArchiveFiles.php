@@ -160,6 +160,8 @@ class ArchiveFiles
         if ($record && ! $this->verify($path, $record->sha256)) {
             abort(409, 'Archived file checksum differs.');
         }
+        $headers += ['Content-Type' => strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'pdf'
+            ? 'application/pdf' : 'application/octet-stream'];
 
         return response()->streamDownload(function () use ($path): void {
             $stream = $this->readStream($path);
