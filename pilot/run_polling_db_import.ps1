@@ -100,6 +100,20 @@ try {
             $expected = ((Get-Content -LiteralPath $checksum -Raw).Trim() -split '\s+')[0]
             $actual = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
             if ($expected -ne $actual) { throw "Package checksum differs for $state" }
+            Add-Type -AssemblyName System.IO.Compression
+            $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+            try {
+                $entry = $archive.GetEntry('application/storage/app/private/polling-station-sources/index.json')
+                if (-not $entry) { throw "Package index is missing for $state" }
+                $reader = [System.IO.StreamReader]::new($entry.Open())
+                try { $packageIndex = $reader.ReadToEnd() | ConvertFrom-Json }
+                finally { $reader.Dispose() }
+            } finally { $archive.Dispose() }
+            $packageSources = @($packageIndex.sources | Where-Object { $_.state -eq $state })
+            $expectedDocuments = $packageSources.Count
+            $expectedPages = ($packageSources | Measure-Object -Property page_count -Sum).Sum
+            $expectedRows = ($packageSources | Measure-Object -Property polling_rows -Sum).Sum
+            if ($expectedDocuments -eq 0) { throw "Package contains no documents for $state" }
 
             $remoteDisk = @()
             for ($attempt = 1; $attempt -le 3; $attempt++) {
@@ -133,7 +147,7 @@ try {
                 if (-not $transferred) { throw "Could not transfer and verify $base after three attempts." }
             }
 
-            $remoteCommand = 'set -eu; stage={0}; cd "$stage"; sha256sum -c {1}.sha256; mkdir -p -m 700 "$stage/{2}"; unzip -qn {1}.zip -d "$stage/{2}"; cd /home/pollmedia/app; git merge-base --is-ancestor 22fa20c HEAD; if php8.4 application/artisan polling:import --root="$stage/{2}/application/storage/app/private/polling-station-sources" --no-interaction > "$stage/{2}-import.log" 2>&1; then tail -n 1 "$stage/{2}-import.log"; else tail -n 12 "$stage/{2}-import.log"; exit 1; fi' -f $remoteStage, $base, $slug
+            $remoteCommand = 'set -eu; stage={0}; cd "$stage"; sha256sum -c {1}.sha256; mkdir -p -m 700 "$stage/{1}-extracted"; unzip -qo {1}.zip -d "$stage/{1}-extracted"; cd /home/pollmedia/app; git merge-base --is-ancestor 22fa20c HEAD; if php8.4 application/artisan polling:import --root="$stage/{1}-extracted/application/storage/app/private/polling-station-sources" --no-interaction > "$stage/{1}-import.log" 2>&1; then tail -n 1 "$stage/{1}-import.log"; else tail -n 12 "$stage/{1}-import.log"; exit 1; fi' -f $remoteStage, $base
             $result = & ssh -i $key -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=8 $target $remoteCommand 2>&1
             if ($LASTEXITCODE -ne 0) {
                 $result | Select-Object -Last 12 | ForEach-Object { Write-Output $_ }
@@ -141,6 +155,14 @@ try {
             }
             $summary = @($result | Where-Object { $_ -match '^Imported [0-9]+ documents' } | Select-Object -Last 1)[0]
             if (-not $summary) { throw "Server import did not report a summary for $state" }
+            $countMatch = [regex]::Match($summary, '^Imported ([0-9]+) documents, ([0-9]+) pages, ([0-9]+) indexed polling rows into the database\.$')
+            if (-not $countMatch.Success) { throw "Server import summary is unrecognised for $state" }
+            $reportedDocuments = [int64]$countMatch.Groups[1].Value
+            $reportedPages = [int64]$countMatch.Groups[2].Value
+            $reportedRows = [int64]$countMatch.Groups[3].Value
+            if ($reportedDocuments -ne $expectedDocuments -or $reportedPages -ne $expectedPages -or $reportedRows -ne $expectedRows) {
+                throw "Server import counts do not match the verified package for $state. Review the staging directory before retrying."
+            }
             $record = [pscustomobject]@{ state = $state; sha256 = $actual; package = "$base.zip";
                 summary = $summary; imported_at = (Get-Date).ToUniversalTime().ToString('o') }
             Add-Content -LiteralPath $receiptPath -Encoding UTF8 -Value ($record | ConvertTo-Json -Compress)
