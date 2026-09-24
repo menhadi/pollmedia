@@ -122,7 +122,7 @@ def _read_cells(gray, xs, rows, columns, scale=2):
 
 def reconciled_rows(values, rows, valid, names, page, source_sha256, source_url, xs):
     proposals = []
-    columns = list(range(1, valid + 5))
+    columns = list(range(0, valid + 5))
     seen_stations = set()
     for r, (top, bottom) in enumerate(rows):
         if any((r, c) not in values for c in columns):
@@ -130,7 +130,8 @@ def reconciled_rows(values, rows, valid, names, page, source_sha256, source_url,
         station = values[r, 1]
         votes = [values[r, c] for c in range(2, valid)]
         valid_votes, rejected, nota, total, tendered = [values[r, c] for c in range(valid, valid + 5)]
-        if (station < 1 or station in seen_stations or sum(votes) != valid_votes
+        if (station < 1 or values[r, 0] != station or station in seen_stations
+                or sum(votes) != valid_votes
                 or valid_votes + rejected + nota != total):
             continue
         seen_stations.add(station)
@@ -165,16 +166,16 @@ def extract_page(pdf, page_number, source_url, expected_sha256=None, dpi=130):
         return {'source_sha256': digest, 'source_url': source_url, 'page': page_number, 'dpi': dpi,
                 'quality': 'needs_visual_review', 'proposed_polling_rows': []}
     valid, names = layout
-    values = _read_cells(gray, xs, rows, range(1, valid + 5))
+    values = _read_cells(gray, xs, rows, range(0, valid + 5))
     proposals = reconciled_rows(values, rows, valid, names, page_number, digest, source_url, xs)
     return {'source_sha256': digest, 'source_url': source_url, 'page': page_number, 'dpi': dpi,
-            'adapter': 'form20-cell-grid-v1', 'quality': 'unverified_cell_ocr',
+            'adapter': 'form20-cell-grid-v2', 'quality': 'unverified_cell_ocr',
             'candidate_names_ocr': names, 'detected_rows': len(rows),
             'candidate_header_cells': [{'column': column, 'bbox': [xs[column], header_top,
                                                                     xs[column + 1], data_top],
                                         'ocr_header': name} for column, name in enumerate(names, 2)],
             'proposed_polling_rows': proposals,
-            'notes': ['Only complete rows matching both printed arithmetic totals are proposed; other rows remain in the official PDF for review.']}
+            'notes': ['Only complete rows with matching printed station numbers and both arithmetic totals are proposed; other rows remain in the official PDF for review.']}
 
 
 if __name__ == '__main__':

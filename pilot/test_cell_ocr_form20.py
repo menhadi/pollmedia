@@ -33,11 +33,11 @@ class Form20CellAdapterTest(unittest.TestCase):
     def test_reconciles_only_complete_rows_and_keeps_headers_unverified(self):
         rows = [(200, 225), (225, 250), (250, 275)]
         values = {
-            (0, 1): 1, (0, 2): 30, (0, 3): 20, (0, 4): 50,
+            (0, 0): 1, (0, 1): 1, (0, 2): 30, (0, 3): 20, (0, 4): 50,
             (0, 5): 1, (0, 6): 2, (0, 7): 53, (0, 8): 0,
-            (1, 1): 2, (1, 2): 15, (1, 3): 10, (1, 4): 25,
+            (1, 0): 2, (1, 1): 2, (1, 2): 15, (1, 3): 10, (1, 4): 25,
             (1, 5): 0, (1, 6): 1, (1, 7): 26, (1, 8): 0,
-            (2, 1): 3, (2, 2): 10, (2, 3): 10, (2, 4): 20,
+            (2, 0): 3, (2, 1): 3, (2, 2): 10, (2, 3): 10, (2, 4): 20,
             (2, 5): 1, (2, 6): 1, (2, 7): 23, (2, 8): 0,
         }
         proposals = reconciled_rows(values, rows, 4, ['Alice Kumar', 'Bob Singh'], 1,
@@ -46,8 +46,13 @@ class Form20CellAdapterTest(unittest.TestCase):
         self.assertEqual(proposals[0]['candidate_columns'][0],
                          {'column': 2, 'ocr_header': 'Alice Kumar', 'votes': 30})
         self.assertNotIn('candidate_votes', proposals[0])
-        self.assertEqual(len(proposals[0]['source_cells']), 8)
+        self.assertEqual(len(proposals[0]['source_cells']), 9)
         self.assertEqual(proposals[0]['quality'], 'unverified_cell_ocr')
+        values[1, 1] = 9
+        self.assertEqual([row['polling_station'] for row in reconciled_rows(
+            values, rows, 4, ['Alice Kumar', 'Bob Singh'], 1,
+            'a' * 64, 'https://example.gov.in/form20.pdf', list(range(0, 500, 50)))], ['1'])
+        values[1, 1] = 2
         del values[1, 5]
         self.assertEqual(len(reconciled_rows(values, rows, 4, ['Alice Kumar', 'Bob Singh'],
                                              1, 'a' * 64, 'https://example.gov.in/form20.pdf',
