@@ -56,7 +56,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertSee('Browse 1 constituency tables')->assertSee('2022 report')->assertSee('data-sortable', false)->assertDontSee('trend-chart')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
         $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
     }
 }

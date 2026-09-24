@@ -40,7 +40,7 @@ class OverviewController extends Controller
             $edition = $input['edition'] ?? ($history[0]['id'] ?? null);
             $election = collect($history)->firstWhere('id', $edition);
             abort_if(isset($input['edition']) && ! $election, 404);
-            $party = $input['party'] ?? ($election['parties'][0]['party'] ?? null);
+            $party = $input['party'] ?? null;
             $partyOptions = collect($history)->flatMap(fn (array $row): array => array_column($row['parties'], 'party'))->unique()->sort()->values();
 
             return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions'));
