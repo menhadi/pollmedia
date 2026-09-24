@@ -1,0 +1,9 @@
+<aside class="dashboard-sidebar"><details><summary>Explore elections & linked places</summary><nav aria-label="Election navigation"><p class="sidebar-label">Election results</p><a href="{{ route('elections.constituencies') }}">Find a constituency</a><a href="{{ route('elections.history') }}">Lok Sabha elections</a><a href="{{ route('elections.assembly') }}">Assembly elections</a><a href="{{ route('elections.by-election-results') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling-station tables</a>
+@if($state)
+@php $linkedState=app(\App\Services\ElectionGeographySummary::class)->states()->first(fn($s)=>mb_strtolower($s['name'])===mb_strtolower($state)); @endphp
+@if($linkedState)<a href="{{ route('states.show',['state'=>$linkedState['slug'],'election'=>$kind]) }}">{{ $linkedState['name'] }} trends →</a>@endif
+<a href="{{ route($archiveRoute,['edition'=>$edition,'state'=>$state]) }}">{{ $state }} · {{ $data['year'] }} results</a>
+@endif
+@if($states->isNotEmpty())<p class="sidebar-label">States in this edition</p>@foreach($states as $linked)<a href="{{ route($archiveRoute,['edition'=>$edition,'state'=>$linked]) }}" @if($state===$linked) aria-current="page" @endif>{{ $linked }}</a>@endforeach @endif
+@if($constituencies->isNotEmpty())<p class="sidebar-label">Go to a constituency</p><form method="get" action="{{ route($archiveRoute) }}"><input type="hidden" name="edition" value="{{ $edition }}"><input type="hidden" name="state" value="{{ $state }}"><label for="linked-seat" class="small">{{ $data['year'] }} constituency</label><select id="linked-seat" name="code">@foreach($constituencies as $record)<option value="{{ $record['code'] }}" @selected(($selected['code']??null)===$record['code'])>{{ $record['constituency_name']??$record['name'] }}</option>@endforeach</select><button>Open constituency</button></form>@endif
+</nav></details></aside>

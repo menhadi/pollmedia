@@ -8,8 +8,8 @@
     $breadcrumbs = ['India' => route('home'), $archiveTitle.' archive' => route($archiveRoute)];
 @endphp
 @include('seo-metadata')
-<link rel="stylesheet" href="/css/villages.css"></head>
-<body><header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><main>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css"></head>
+<body class="election-ui"><header class="topbar"><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><div class="dashboard-shell">@include('election-context-nav')<main class="dashboard-main">
 <div class="kicker">Politics & elections / Historical results</div><h1>{{ $archiveTitle }} election archive</h1>
 <p class="lead">Explore candidate results from the available official election reports. Choose an edition, then a state and constituency.</p>
 <p><a href="{{ route('elections.constituencies') }}">Search historical PC and AC constituencies across editions →</a></p>
@@ -53,6 +53,7 @@
 </tbody></table></div><p class="small">Only this selected edition is counted. Missing states are not treated as zero results. Individual result pages show any unresolved data notes.</p></section>
 @endif
 @if($selected)
+@include('constituency-election-analysis')
 <section class="card" id="results"><div class="kicker">{{ $data['year'] }} / {{ $state }}</div><h2>{{ $selected['name'] }} @if($selected['has_warning'])<a href="#data-note" aria-label="Data note">†</a>@endif</h2>
 <p>Official constituency code: {{ $selected['official_pc_code'] ?? $selected['official_ac_code'] ?? ($kind === 'ac' ? $selected['code'] : 'Not reported') }} · Seats: {{ $selected['number_of_seats'] ?? 1 }}</p>
 <p><a href="{{ route($archiveRoute, $filters + ['format' => 'csv']) }}">Download candidate results (CSV)</a></p><p class="small">Includes official references and current data notes. Blank cells mean not reported; constituency totals repeat on each candidate row and should not be added together.</p>
@@ -108,4 +109,4 @@
 @if(!empty($data['coverage']['unmatched_summaries']))<p>{{ count($data['coverage']['unmatched_summaries']) }} summary entries have no matched detailed candidate table.</p>@endif
 <p>Coverage includes extracted tables only. † marks unresolved extraction or source differences. Historical results do not identify the current office-holder.</p></section>
 @endif
-<footer>Pollmedia · Research pilot · Official sources and dated election results.</footer></main></body></html>
+<footer>Pollmedia · Research pilot · Official sources and dated election results.</footer></main></div><script>const menu=document.querySelector(".dashboard-sidebar details");const wide=matchMedia("(min-width:1100px)");menu.open=wide.matches;wide.addEventListener("change",event=>{menu.open=event.matches;});</script></body></html>

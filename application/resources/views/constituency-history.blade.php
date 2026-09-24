@@ -12,8 +12,8 @@
     $maxMargin = $chartRows->max(fn ($row) => $row['record']['margin']) ?: 1;
 @endphp
 @include('seo-metadata')
-<link rel="stylesheet" href="/css/villages.css"></head><body>
-<header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ $placeUrl }}">Constituency profile</a><a href="{{ route($archiveRoute) }}">All election years</a></nav></header><main>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css"></head><body class="election-ui">
+<header class="topbar"><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ $placeUrl }}">Constituency profile</a><a href="{{ route($archiveRoute) }}">All election years</a></nav></header><main>
 <div class="kicker">{{ $isAssembly ? 'Assembly' : 'Lok Sabha' }} / Election comparisons</div><h1>{{ $place->name }} across elections</h1>
 @if(!$comparison['mapping'])<section class="card"><h2>Historical links need verification</h2><p>This constituency does not yet have a verified connection to the supported historical editions.</p><a href="{{ route($archiveRoute) }}">Browse official historical tables â†’</a></section>
 @else
@@ -33,6 +33,12 @@
 @if($row['record'] && $row['record']['has_warning'])<p id="note-{{ $row['year'] }}" class="notice"><strong>â€  {{ $row['year'] }}:</strong> {{ $row['record']['error'] ?? 'Source data requires review.' }} Reported totals are shown with this note; a winner and margin are not inferred.</p>@endif
 @endforeach
 </section>
+<section class="card"><h2>Turnout and party shares by year</h2><p class="small">Only eligible, reconciled single-seat records contribute. Turnout is votes polled divided by electors; party shares use recorded candidate votes plus NOTA. Missing figures remain unavailable.</p><div class="table"><table><thead><tr><th scope="col">Year</th><th scope="col">Votes polled</th><th scope="col">Turnout</th><th scope="col">Margin · percentage points</th><th scope="col">Party · votes · share</th></tr></thead><tbody>
+@foreach($comparison['rows'] as $row)
+@php($yearAnalysis=app(\App\Services\HistoricalElectionAnalytics::class)->summarize($row['record'] ? [$row['record']] : []))
+<tr><th scope="row"><a href="{{ $row['url'] }}">{{ $row['year'] }}</a></th><td>{{ $yearAnalysis['polled']===null?'—':number_format($yearAnalysis['polled']) }}</td><td>{{ $yearAnalysis['turnout']===null?'—':number_format($yearAnalysis['turnout'],2).'%' }}</td><td>{{ $yearAnalysis['margin_percent']===null?'—':number_format($yearAnalysis['margin_percent'],2) }}</td><td>@forelse($yearAnalysis['parties'] as $partyRow)<div>{{ $partyRow['party'] }} · {{ number_format($partyRow['votes']) }} · {{ number_format($partyRow['share'],2) }}%</div>@empty Not available @endforelse</td></tr>
+@endforeach
+</tbody></table></div></section>
 <section class="card"><h2>Winning margins over time</h2><p class="small">Margin in votes, on one shared scale. Years with unresolved result checks or no established winner are omitted.</p>
 @forelse($chartRows as $row)<div style="margin:20px 0"><p><strong>{{ $row['year'] }} Â· {{ number_format($row['record']['margin']) }} votes</strong> Â· {{ $row['record']['winner'] }} Â· {{ $row['winner_party'] }}</p><div style="height:14px;background:#edf0e9" aria-hidden="true"><div style="height:100%;background:#176c55;width:{{ 100 * $row['record']['margin'] / $maxMargin }}%"></div></div></div>
 @empty<p>No reconciled winning margins are available yet.</p>@endforelse

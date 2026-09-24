@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ElectionGeographySummary;
+use App\Services\HistoricalElectionAnalytics;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -13,7 +14,7 @@ class OverviewController extends Controller
     public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View
     {
         $stateSummary = $state !== null ? $summary->state($state) : null;
-        $input = $request->validate(['q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000']);
+        $input = $request->validate(['q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
         $query = trim($input['q'] ?? '');
         $type = $input['type'] ?? '';
         $available = DB::table('places')->where(function ($query): void {
@@ -32,6 +33,18 @@ class OverviewController extends Controller
         $title = $stateSummary['name'] ?? 'India';
         $states = $summary->states();
         $nationalSummary = $summary->importedSummary();
+
+        if ($stateSummary) {
+            $kind = $input['election'] ?? 'ac';
+            $history = app(HistoricalElectionAnalytics::class)->forState($title, $kind);
+            $edition = $input['edition'] ?? ($history[0]['id'] ?? null);
+            $election = collect($history)->firstWhere('id', $edition);
+            abort_if(isset($input['edition']) && ! $election, 404);
+            $party = $input['party'] ?? ($election['parties'][0]['party'] ?? null);
+            $partyOptions = collect($history)->flatMap(fn (array $row): array => array_column($row['parties'], 'party'))->unique()->sort()->values();
+
+            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions'));
+        }
 
         return view('overview', compact('title', 'state', 'stateSummary', 'states', 'nationalSummary', 'query', 'type', 'places', 'coverage', 'years', 'options', 'selected'));
     }
