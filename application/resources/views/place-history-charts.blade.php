@@ -5,21 +5,57 @@ $chartRows=$rows->sortBy('entry.year')->values()->map(function($row){
 });
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>How voting has changed</h2></div><a class="place-action" href="#history">View the tables ↓</a></div>
-@foreach(['turnout'=>['Voter turnout','Turnout (%)'],'margin'=>['Winning margin','Margin (votes)']] as $metric=>$labels)
-@php $values=$chartRows->pluck($metric)->filter(fn($v)=>$v!==null); $maximum=max(1,$values->max()??1); $minimum=$values->min()??0; $plotWidth=max(640,$chartRows->count()*82); $step=($plotWidth-100)/max(1,$chartRows->count()); @endphp
-<div class="history-chart"><h3>{{ $labels[0] }}</h3><div class="chart-scroll" tabindex="0" role="region" aria-label="{{ $labels[0] }} by election year"><svg viewBox="0 0 {{ $plotWidth }} 300" role="img" aria-label="{{ $labels[0] }}. Years on the horizontal axis; {{ $labels[1] }} on the vertical axis." style="width:100%;min-width:{{ $plotWidth }}px"><title>{{ $labels[0] }} by election year</title>
-@for($tick=0;$tick<=4;$tick++)@php $y=240-$tick*48; @endphp<line x1="70" y1="{{ $y }}" x2="{{ $plotWidth-20 }}" y2="{{ $y }}" stroke="#d8e3df"/><text x="60" y="{{ $y+4 }}" text-anchor="end">{{ number_format($maximum*$tick/4,$metric==='turnout'?1:0) }}</text>@endfor
-<text x="12" y="130" transform="rotate(-90 12 130)" text-anchor="middle">{{ $labels[1] }}</text>
-@foreach($chartRows as $point)@php $value=$point[$metric]; $x=70+$loop->index*$step; $height=$value===null?0:192*$value/$maximum; $ratio=$maximum===$minimum?0.5:($value-$minimum)/($maximum-$minimum); $color=$ratio<0.33?'#936000':($ratio<0.66?'#487000':'#00665d'); @endphp
-@if($value!==null)<rect x="{{ $x+$step/2-min(32,$step*0.42)/2 }}" y="{{ 240-$height }}" width="{{ min(32,$step*0.42) }}" height="{{ $height }}" rx="4" fill="{{ $color }}"><title>{{ $point['label'] }}: {{ number_format($value,$metric==='turnout'?2:0) }}{{ $metric==='turnout'?'%':' votes' }}</title></rect>@if($metric==='margin')<text x="{{ $x+$step/2 }}" y="{{ 232-$height }}" text-anchor="middle" style="font-size:11px;font-weight:700;fill:#173c37;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round">{{ number_format($value) }}</text>@endif
-@else<text x="{{ $x+$step/2 }}" y="230" text-anchor="middle">—</text>@endif
-<text x="{{ $x+$step/2 }}" y="260" text-anchor="middle">{{ $point['year'] }}</text>@endforeach<text x="{{ $plotWidth/2 }}" y="290" text-anchor="middle">Election year</text></svg></div><p class="small">Gold → green → teal: lower to higher values in this chart. A dash means unavailable or under review; it is not zero. Each bar represents an available election report.</p></div>@endforeach
+@foreach(['turnout'=>'Voter turnout','margin'=>'Winning margin'] as $metric=>$label)
+@php
+$values=$chartRows->pluck($metric)->filter(fn($v)=>$v!==null);
+$maximum=max(1,$values->max()??1);
+$minimum=$values->min()??0;
+$scale=$metric==='turnout'?100:$maximum;
+@endphp
+<div class="history-chart"><h3>{{ $label }}</h3>
+<p class="small">Election year · {{ $metric==='turnout'?'Turnout (%) · scale 0–100%':'Margin (votes) · shared scale 0–'.number_format($maximum) }}</p>
+<div class="history-horizontal" role="list" aria-label="{{ $label }} by election year">
+@foreach($chartRows as $point)
+@php
+$value=$point[$metric];
+$ratio=$maximum==$minimum?0.5:(($value??$minimum)-$minimum)/($maximum-$minimum);
+$color=$ratio<0.33?'#936000':($ratio<0.66?'#487000':'#00665d');
+@endphp
+<div class="history-bar-row" role="listitem" title="{{ $point['label'] }}">
+<span class="history-bar-year">{{ $point['year'] }}</span>
+<span class="history-bar-track" aria-hidden="true">
+@if($value!==null)
+<span class="history-bar-fill" style="width:{{ 100*$value/$scale }}%;background:{{ $color }}"></span>
+@endif
+</span>
+<strong class="history-bar-value">{{ $value===null?'—':number_format($value,$metric==='turnout'?2:0).($metric==='turnout'?'%':'') }}</strong>
+</div>
+@endforeach
+</div>
+<p class="small">Gold → green → teal: lower to higher values in this chart. A dash means unavailable or under review; it is not zero. Each bar represents an available election report.</p>
+</div>
+@endforeach
 @php $totalMax=max(1,$chartRows->pluck('electors')->filter()->max()??1,$chartRows->pluck('polled')->filter()->max()??1); @endphp
-<div class="history-chart"><h3>Registered electors and votes polled</h3><p class="chart-legend"><span><i style="background:#315d91"></i>Total registered electors</span><span><i style="background:#007668"></i>Votes polled</span></p><div class="chart-scroll" tabindex="0" role="region" aria-label="Registered electors and votes polled by year"><svg viewBox="0 0 {{ $plotWidth }} 300" style="width:100%;min-width:{{ $plotWidth }}px" role="img" aria-label="Side-by-side counts of registered electors and votes polled for each election year"><title>Registered electors and votes polled</title>
-@for($tick=0;$tick<=4;$tick++)@php $y=240-$tick*48; @endphp<line x1="85" y1="{{ $y }}" x2="{{ $plotWidth-10 }}" y2="{{ $y }}" stroke="#d8e3df"/><text x="78" y="{{ $y+4 }}" text-anchor="end">{{ number_format($totalMax*$tick/4) }}</text>@endfor
-@php $pairStep=($plotWidth-100)/max(1,$chartRows->count()); @endphp
-@foreach($chartRows as $point)@php $center=85+($loop->index+0.5)*$pairStep; @endphp
-@foreach(['electors'=>'#315d91','polled'=>'#007668'] as $key=>$fill)@php $v=$point[$key]; $barWidth=min(25,$pairStep/3); $x=$center+($key==='electors'?-$barWidth-2:2); @endphp
-@if($v!==null)<rect x="{{ $x }}" y="{{ 240-192*$v/$totalMax }}" width="{{ $barWidth }}" height="{{ 192*$v/$totalMax }}" fill="{{ $fill }}" rx="3"><title>{{ $point['label'] }} · {{ $key==='electors'?'Registered electors':'Votes polled' }}: {{ number_format($v) }}</title></rect>@else<text x="{{ $x }}" y="230">—</text>@endif
-@endforeach<text x="{{ $center }}" y="260" text-anchor="middle">{{ $point['year'] }}</text>@endforeach<text x="{{ $plotWidth/2 }}" y="290" text-anchor="middle">Election year</text></svg></div><p class="small">Absolute counts, not percentages. Missing figures are not treated as zero.</p>
+<div class="history-chart"><h3>Registered electors and votes polled</h3>
+<p class="chart-legend"><span><i style="background:#315d91"></i>Total registered electors</span><span><i style="background:#007668"></i>Votes polled</span></p>
+<p class="small">Shared scale: 0–{{ number_format($totalMax) }} people.</p>
+<div class="history-horizontal" role="list" aria-label="Registered electors and votes polled by year">
+@foreach($chartRows as $point)
+<div class="history-bar-pair" role="listitem" title="{{ $point['label'] }}">
+@foreach(['electors'=>'#315d91','polled'=>'#007668'] as $key=>$fill)
+@php $value=$point[$key]; @endphp
+<div class="history-bar-row" aria-label="{{ $point['year'] }} · {{ $key==='electors'?'Registered electors':'Votes polled' }}">
+<span class="history-bar-year">{{ $key==='electors'?$point['year']:'' }}</span>
+<span class="history-bar-track" aria-hidden="true">
+@if($value!==null)
+<span class="history-bar-fill" style="width:{{ 100*$value/$totalMax }}%;background:{{ $fill }}"></span>
+@endif
+</span>
+<strong class="history-bar-value">{{ $value===null?'—':number_format($value) }}</strong>
+</div>
+@endforeach
+</div>
+@endforeach
+</div>
+<p class="small">Absolute counts, not percentages. Missing figures are not treated as zero.</p>
 <div class="table-scroll"><table data-sortable><thead><tr><th>Election</th><th data-sort-type="number">Registered electors</th><th data-sort-type="number">Votes polled</th></tr></thead><tbody>@foreach($chartRows as $point)<tr><th>{{ $point['label'] }}</th><td>{{ $point['electors']===null?'—':number_format($point['electors']) }}</td><td>{{ $point['polled']===null?'—':number_format($point['polled']) }}</td></tr>@endforeach</tbody></table></div></div></section>
