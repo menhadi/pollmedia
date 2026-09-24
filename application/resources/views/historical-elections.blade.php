@@ -12,6 +12,7 @@
 <body><header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('elections.by-elections') }}">By-elections</a><a href="{{ route('elections.polling-stations') }}">Polling stations</a><a href="#sources">Official sources</a></nav></header><main>
 <div class="kicker">Politics & elections / Historical results</div><h1>{{ $archiveTitle }} election archive</h1>
 <p class="lead">Explore candidate results from the available official election reports. Choose an edition, then a state and constituency.</p>
+<p><a href="{{ route('elections.constituencies') }}">Search historical PC and AC constituencies across editions →</a></p>
 <p><a href="{{ route('elections.history') }}">Lok Sabha archive</a> · <a href="{{ route('elections.assembly') }}">India Assembly archive</a></p>
 @if($kind === 'ac')<p class="small">Assembly coverage includes available extracted state report editions; use the edition selector for each state and year. Historical state and constituency boundaries belong to each edition.</p>@endif
 <p><a href="{{ route('elections.assembly-sources') }}">Assembly source reports: all listed states and historical years</a></p>
