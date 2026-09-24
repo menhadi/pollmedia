@@ -64,7 +64,7 @@ def verify_source(source, folder, client, bucket, prefix, endpoint):
             'source_url': source['source_url'], 'discovered_on': source['discovered_on'], 'endpoint': endpoint}
 
 
-def verify_remote(client, bucket, key, path, source_id, expected, size):
+def verify_remote(client, bucket, key, path, source_id, expected, size, content_type='application/pdf'):
     try:
         head = client.head_object(Bucket=bucket, Key=key)
     except Exception as error:
@@ -78,7 +78,7 @@ def verify_remote(client, bucket, key, path, source_id, expected, size):
             raise ValueError('An R2 object already exists with different metadata: ' + key)
     else:
         client.upload_file(str(path), bucket, key, ExtraArgs={
-            'ContentType': 'application/pdf', 'Metadata': {'sha256': expected, 'source-id': source_id},
+            'ContentType': content_type, 'Metadata': {'sha256': expected, 'source-id': source_id},
         })
         head = client.head_object(Bucket=bucket, Key=key)
         if head['ContentLength'] != size or head.get('Metadata', {}).get('sha256') != expected:
