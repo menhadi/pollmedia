@@ -48,6 +48,10 @@ class OcrPreservationTest(unittest.TestCase):
         self.assertTrue(result_source({'label': 'EVM votes in Form 20'}))
         self.assertFalse(result_source({'label': 'MPs from Tamil Nadu to Rajya Sabha'}))
         self.assertTrue(result_source({'label': 'Assembly Form 20 result'}))
+        self.assertFalse(result_source({'label': 'Candidate affidavit', 'url': 'https://eci.gov.in/form20/report.pdf'}))
+        self.assertFalse(result_source({'label': 'Election result', 'url': 'https://ceoassam.nic.in/form20/rahmat_affidavit.pdf'}))
+        self.assertFalse(result_source({'label': 'Election result', 'url': 'https://ceoassam.nic.in/form20/eem/candidate.pdf'}))
+        self.assertTrue(result_source({'label': 'Form 20', 'url': 'https://ceoassam.nic.in/form20/7-Gauhati.pdf'}))
 
     def test_sparse_ocr_is_not_called_readable(self):
         self.assertEqual(ocr_quality([{'confidence': 96}]), 'needs_visual_review')

@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+from urllib.parse import urlparse
 import fitz
 import cv2
 import numpy as np
@@ -17,6 +18,7 @@ from polling_ocr_mapping import propose_rows
 OCR_REQUIRED = 'OCR and visual checking are required.'
 NON_RESULT_TITLE = re.compile(r'^(?:presentation on evm|manual on evm(?: and vvpat)?|(?:legal|ligal) history of evms? and vvpats?)$', re.I)
 OUT_OF_SCOPE_TITLE = re.compile(r'\b(?:rajya\s+sabha|council\s+of\s+states)\b', re.I)
+NON_RESULT_LABEL = re.compile(r'\b(?:affidavit|election expenditure|expense statement)\b', re.I)
 
 
 def ocr_candidates(pages):
@@ -26,7 +28,10 @@ def ocr_candidates(pages):
 def result_source(source):
     """Keep obvious training/reference PDFs archived without spending OCR on them."""
     label = source.get('label', '').strip()
-    return not (NON_RESULT_TITLE.fullmatch(label) or OUT_OF_SCOPE_TITLE.search(label))
+    path = urlparse(source.get('url', '')).path.lower()
+    name = path.rsplit('/', 1)[-1]
+    return not (NON_RESULT_TITLE.fullmatch(label) or OUT_OF_SCOPE_TITLE.search(label)
+                or NON_RESULT_LABEL.search(label) or 'affidavit' in name or '/eem/' in path)
 
 
 def ocr_quality(words):
