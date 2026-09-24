@@ -61,6 +61,29 @@ class ConstituencyOverviewController extends Controller
             $related = DB::table('places')->whereIn('id', $ids->unique())->whereIn('type', ['pc', 'ac', 'district'])->orderBy('type')->orderBy('name')->get();
         }
 
+        if ($related->isEmpty() && $state === 'Uttar Pradesh') {
+            $geography = json_decode(file_get_contents(database_path('fixtures/up-electoral-geography.json')), true, 512, JSON_THROW_ON_ERROR);
+            $normalize = fn ($value) => preg_replace('/[^a-z]/', '', strtolower(preg_replace('/\s*\((?:SC|ST)\)$/i', '', trim($value))));
+            $pcs = collect($geography['pcs']);
+            $acs = collect($geography['district_rows']);
+            $matches = ($kind === 'pc' ? $pcs : $acs)->filter(fn ($row) => $normalize($row['name']) === $normalize($name));
+            if ($matches->count() === 1) {
+                $match = $matches->first();
+                $linkedAcs = $kind === 'pc' ? $acs->whereIn('code', $match['ac_codes']) : collect([$match]);
+                $linkedSeats = $kind === 'pc' ? $linkedAcs->map(fn ($row) => ['name' => $row['name'], 'type' => 'ac']) : $pcs->filter(fn ($row) => in_array($match['code'], $row['ac_codes']))->map(fn ($row) => ['name' => $row['name'], 'type' => 'pc']);
+                foreach ($linkedSeats as $seat) {
+                    $candidates = DB::table('historical_constituency_index')->where('state_label', $state)->where('kind', $seat['type'])->select('constituency_name')->distinct()->get()->filter(fn ($row) => $normalize($row->constituency_name) === $normalize($seat['name']))->pluck('constituency_name')->unique(fn ($n) => mb_strtolower($n));
+                    if ($candidates->count() === 1) {
+                        $related->push((object) ['name' => $seat['name'], 'type' => $seat['type'], 'url' => route('constituency.overview', ['kind' => $seat['type'], 'state' => $state, 'name' => $candidates->first()]), 'reference' => false]);
+                    }
+                }
+                foreach ($linkedAcs->pluck('district')->unique() as $district) {
+                    $profile = DB::table('places')->where('type', 'district')->where('country_code', 'IN')->whereRaw('LOWER(name) = ?', [mb_strtolower($district)])->first();
+                    $related->push((object) ['name' => $district, 'type' => 'district', 'url' => $profile ? route('places.show', ['type' => 'district', 'slug' => substr($profile->slug, 9)]) : $geography['district_url'], 'reference' => ! $profile]);
+                }
+            }
+        }
+
         return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related'));
     }
 }

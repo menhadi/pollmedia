@@ -38,4 +38,16 @@ class ConstituencyOverviewTest extends TestCase
         $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']))->assertOk()->assertSee('Connected places')->assertSee('Baheri')->assertSee('Bareilly')->assertSee('Puranpur');
         $this->get('/india/pc/pilibhit')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']));
     }
+
+    public function test_related_seats_use_official_mapping_without_legacy_profiles(): void
+    {
+        foreach ([['pc', 'Aonla', 1], ['ac', 'Bithari Chainpur', 2]] as [$kind,$name,$code]) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat('a', 24), 'record_code' => $code, 'kind' => $kind, 'year' => 2024, 'edition_label' => '2024', 'state_label' => 'Uttar Pradesh', 'constituency_name' => $name, 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 0, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+        $this->mock(HistoricalElectionArchive::class, function ($mock) {
+            $mock->shouldReceive('load')->andReturn([['records' => []]]);
+        });
+        $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Aonla']))->assertOk()->assertSee('Connected places')->assertSee('Bithari Chainpur')->assertSee('Bareilly')->assertSee('Official district reference')->assertSee(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Bithari Chainpur']));
+        $this->assertDatabaseCount('places', 0);
+    }
 }
