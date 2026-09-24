@@ -3,7 +3,8 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
-from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due, result_source, ocr_quality
+from PIL import Image, ImageDraw
+from ocr_polling_sources import words_from_data, read_ocr_page, ocr_candidates, state_folders, progress_due, result_source, ocr_quality, near_blank
 
 
 class OcrPreservationTest(unittest.TestCase):
@@ -58,6 +59,15 @@ class OcrPreservationTest(unittest.TestCase):
         self.assertEqual(ocr_quality([{'confidence': 96}] * 20), 'unverified_ocr')
         self.assertEqual(ocr_quality([{'confidence': 40}] * 7 + [{'confidence': 96}] * 13),
                          'needs_visual_review')
+
+    def test_skips_only_near_blank_page_centres(self):
+        bitmap = Image.new('L', (200, 200), 255)
+        draw = ImageDraw.Draw(bitmap)
+        draw.text((10, 2), 'HEADER', fill=0)
+        draw.text((10, 192), 'FOOTER', fill=0)
+        self.assertTrue(near_blank(bitmap))
+        draw.rectangle((40, 60, 45, 65), fill=0)
+        self.assertFalse(near_blank(bitmap))
 
     def test_requested_states_resolve_to_source_folders_without_every_manifest(self):
         with TemporaryDirectory() as directory:

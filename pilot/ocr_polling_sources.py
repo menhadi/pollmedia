@@ -28,7 +28,7 @@ def ocr_candidates(pages):
 def result_source(source):
     """Keep obvious training/reference PDFs archived without spending OCR on them."""
     label = source.get('label', '').strip()
-    path = urlparse(source.get('url', '')).path.lower()
+    path = urlparse(source.get('url') or '').path.lower()
     name = path.rsplit('/', 1)[-1]
     return not (NON_RESULT_TITLE.fullmatch(label) or OUT_OF_SCOPE_TITLE.search(label)
                 or NON_RESULT_LABEL.search(label) or 'affidavit' in name or '/eem/' in path)
@@ -39,6 +39,14 @@ def ocr_quality(words):
     if len(words) < 20 or sum(word['confidence'] < 60 for word in words) > len(words) / 3:
         return 'needs_visual_review'
     return 'unverified_ocr'
+
+
+def near_blank(bitmap):
+    """Skip OCR only when the central page has virtually no visible marks."""
+    pixels = np.asarray(bitmap)
+    height, width = pixels.shape
+    core = pixels[height // 10:height * 9 // 10, width // 20:width * 19 // 20]
+    return bool(core.size and np.count_nonzero(core < 200) / core.size < 0.0005)
 
 
 def state_folders(root, states):
@@ -146,30 +154,37 @@ def run(root, args):
                             continue
                     image = document[page['page']-1].get_pixmap(dpi=200,colorspace=fitz.csGRAY)
                     bitmap = Image.frombytes('L',[image.width,image.height],image.samples)
-                    notes = ['OCR text is unverified. Word confidence is an engine estimate; no candidate, winner or vote total is inferred from this text.']
+                    blank = near_blank(bitmap)
+                    notes = [] if blank else ['OCR text is unverified. Word confidence is an engine estimate; no candidate, winner or vote total is inferred from this text.']
                     rotation = args.rotation or 0
-                    try:
-                        if args.rotation is None:
-                            orientation = pytesseract.image_to_osd(bitmap,config=config,output_type=pytesseract.Output.DICT,timeout=30)
-                            if orientation['orientation_conf'] >= 5:
-                                rotation = int(orientation['rotate'])
-                            else:
-                                notes.append('Page orientation requires visual checking.')
-                    except (RuntimeError,pytesseract.TesseractError):
-                        notes.append('Automatic orientation could not be determined; original orientation was retained.')
-                    bitmap = bitmap.rotate(-rotation,expand=True)
-                    pixels = np.array(bitmap)
-                    binary = cv2.threshold(pixels,0,255,cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU)[1]
-                    horizontal = cv2.morphologyEx(binary,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(max(40,bitmap.width//40),1)))
-                    vertical = cv2.morphologyEx(binary,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(1,max(40,bitmap.height//40))))
-                    pixels[cv2.bitwise_or(horizontal,vertical)>0] = 255
-                    data, attempt_errors, ocr_error = read_ocr_page(Image.fromarray(pixels), args.language, config)
-                    if ocr_error:
-                        notes.append('OCR failed after two attempts: '+ocr_error+'. Original page retained for review or an explicit retry.')
-                    words = words_from_data(data)
+                    attempt_errors = []
+                    ocr_error = None
+                    if blank:
+                        words = []
+                        notes.append('Rendered page centre is almost blank; OCR was skipped. The original PDF remains available for visual review.')
+                    else:
+                        try:
+                            if args.rotation is None:
+                                orientation = pytesseract.image_to_osd(bitmap,config=config,output_type=pytesseract.Output.DICT,timeout=30)
+                                if orientation['orientation_conf'] >= 5:
+                                    rotation = int(orientation['rotate'])
+                                else:
+                                    notes.append('Page orientation requires visual checking.')
+                        except (RuntimeError,pytesseract.TesseractError):
+                            notes.append('Automatic orientation could not be determined; original orientation was retained.')
+                        bitmap = bitmap.rotate(-rotation,expand=True)
+                        pixels = np.array(bitmap)
+                        binary = cv2.threshold(pixels,0,255,cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU)[1]
+                        horizontal = cv2.morphologyEx(binary,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(max(40,bitmap.width//40),1)))
+                        vertical = cv2.morphologyEx(binary,cv2.MORPH_OPEN,cv2.getStructuringElement(cv2.MORPH_RECT,(1,max(40,bitmap.height//40))))
+                        pixels[cv2.bitwise_or(horizontal,vertical)>0] = 255
+                        data, attempt_errors, ocr_error = read_ocr_page(Image.fromarray(pixels), args.language, config)
+                        if ocr_error:
+                            notes.append('OCR failed after two attempts: '+ocr_error+'. Original page retained for review or an explicit retry.')
+                        words = words_from_data(data)
                     low_confidence = sum(word['confidence'] < 60 for word in words)
                     quality = ocr_quality(words)
-                    if quality == 'needs_visual_review':
+                    if quality == 'needs_visual_review' and not blank:
                         notes.append('OCR could not reliably read much of this page. A clearer official copy or manual transcription is required; do not use this text as election results.')
                     lines = {}
                     for word in words:
@@ -177,7 +192,8 @@ def run(root, args):
                         lines.setdefault(key,[]).append(word['text'])
                     result = {'source_sha256':digest,'source_url':source['url'],'page':page['page'],
                               'engine':engine,'model_sha256':model_hashes,'language':args.language,'dpi':200,
-                              'rotation_clockwise':rotation,'image_width':bitmap.width,'image_height':bitmap.height,'preprocessing':'Long grid lines removed from OCR image only; original PDF preserved.',
+                              'rotation_clockwise':rotation,'image_width':bitmap.width,'image_height':bitmap.height,
+                              'preprocessing':'OCR skipped after near-blank central-image check; original PDF preserved.' if blank else 'Long grid lines removed from OCR image only; original PDF preserved.',
                               'text':'\n'.join(' '.join(line) for line in lines.values()),'words':words,'notes':notes,'quality':quality,
                               'ocr_error':ocr_error,'attempt_errors':attempt_errors}
                     result['proposed_polling_rows'] = propose_rows(result)
