@@ -43,6 +43,24 @@ class ConstituencyOverviewController extends Controller
         $latest = $rows->first();
         $chosen ??= $latest;
 
-        return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest'));
+        $related = collect();
+        // UP identifiers establish state scope; a shared name alone is not a geographic link.
+        $placeIds = $state === 'Uttar Pradesh' ? DB::table('places as p')->join('place_identifiers as i', 'i.place_id', '=', 'p.id')->join('source_releases as s', 's.id', '=', 'i.source_release_id')
+            ->where('p.type', $kind)->whereRaw('LOWER(p.name) = ?', [mb_strtolower($name)])->where('i.namespace', 'electoral:IN:UP:'.$kind)->where('s.status', 'accepted')->distinct()->pluck('p.id') : collect();
+        if ($placeIds->count() === 1) {
+            $placeId = $placeIds->first();
+            $links = DB::table('place_relationships as r')->join('source_releases as s', 's.id', '=', 'r.source_release_id')->where('s.status', 'accepted')->whereIn('r.type', ['assembly_segment_of', 'district_directory_lists'])
+                ->where(fn ($q) => $q->whereNull('r.valid_from')->orWhere('r.valid_from', '<=', today()->toDateString()))
+                ->where(fn ($q) => $q->whereNull('r.valid_to')->orWhere('r.valid_to', '>', today()->toDateString()))->select('r.*')->get();
+            $direct = $links->filter(fn ($r) => $r->from_place_id === $placeId || $r->to_place_id === $placeId);
+            $ids = $direct->map(fn ($r) => $r->from_place_id === $placeId ? $r->to_place_id : $r->from_place_id);
+            if ($kind === 'pc') {
+                $segments = $direct->where('type', 'assembly_segment_of')->pluck('from_place_id');
+                $ids = $ids->merge($links->where('type', 'district_directory_lists')->whereIn('from_place_id', $segments)->pluck('to_place_id'));
+            }
+            $related = DB::table('places')->whereIn('id', $ids->unique())->whereIn('type', ['pc', 'ac', 'district'])->orderBy('type')->orderBy('name')->get();
+        }
+
+        return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related'));
     }
 }
