@@ -181,6 +181,18 @@ def historical_summary(table):
     return records
 
 
+def source_navigation_table(tables):
+    rows = [row['cells'] for table in tables for row in table['rows']]
+    if not rows or any(len(row) > 2 for row in rows):
+        return False
+    lines = [' '.join(text(cell) for cell in row if text(cell)) for row in rows]
+    if not any(re.search(r'\bSTATE\b.*\bCONSTITUENCY\b', line, re.I) for line in lines):
+        return False
+    if any(re.search(r'\b(?:votes?|candidates?|party|winner)\b', line, re.I) for line in lines):
+        return False
+    return sum(bool(re.search(r'\b\d{1,3}\s*[-–]\s*[A-Za-z]', line)) for line in lines) >= 2
+
+
 def build(root):
     catalogue = json.loads((root/'catalogue.json').read_text(encoding='utf-8'))
     records, unmapped = [], []
@@ -209,7 +221,7 @@ def build(root):
                     selected = data['tables'] if table_name == 'HTML document' else [t for t in data['tables'] if t['name'] == table_name]
                     values = [text(cell) for t in selected for row in t['rows'] for cell in row['cells'] if text(cell)]
                     status = 'blank_source_sheet' if not values else 'needs_mapping_or_supporting_table'
-                    if data['source_file'].endswith('.html') and (re.search(r'/index\.html?$', data['source_url'], re.I) or any('BACKGROUND INFORMATION' in value for value in values)):
+                    if data['source_file'].endswith('.html') and (re.search(r'/index\.html?$', data['source_url'], re.I) or any('BACKGROUND INFORMATION' in value for value in values) or source_navigation_table(selected)):
                         status = 'source_navigation_table'
                     unmapped.append(provenance | {'table': table_name, 'status': status})
                 for index, record in enumerate(mapped):
@@ -237,8 +249,9 @@ def build(root):
     temporary = published/'index.tmp'
     temporary.write_text(json.dumps({'records': index, 'built_at': result['built_at'], 'scope_note': result['scope_note'], 'unmapped_tables': sum(t['status'] == 'needs_mapping_or_supporting_table' for t in unmapped), 'supporting_tables':len(unmapped)}, ensure_ascii=False), encoding='utf-8')
     temporary.replace(published/'index.json')
-    print(json.dumps({'records': len(records), 'candidate_rows': sum(len(r['candidates']) for r in records), 'unmapped_tables': len(unmapped),
-                      'records_with_notes': sum(bool(r['notes']) for r in records)}))
+    print(json.dumps({'records': len(records), 'candidate_rows': sum(len(r['candidates']) for r in records),
+                      'unmapped_tables': sum(t['status'] == 'needs_mapping_or_supporting_table' for t in unmapped),
+                      'supporting_tables': len(unmapped), 'records_with_notes': sum(bool(r['notes']) for r in records)}))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 import unittest
-from extract_by_elections import index_card, historical_summary
+from extract_by_elections import index_card, historical_summary, source_navigation_table
 from collect_polling_sources import discover_links
 from extract_polling_sources import (map_table, spreadsheet_pages, numeric, table_header, map_rows,
                                      continues_table, CARRIED_HEADER_NOTE)
@@ -12,6 +12,15 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_by_election_list_is_navigation_only_when_it_has_no_result_cells(self):
+        navigation = [table([['STATE', 'CONSTITUENCY'],
+                             ['GUJARAT', '23-BROACH'],
+                             ['PUNJAB', '03-TARN TARAN']], 'HTML table')]
+        self.assertTrue(source_navigation_table(navigation))
+        result = [table([['STATE', 'CONSTITUENCY', 'CANDIDATE', 'VOTES'],
+                         ['GUJARAT', '23-BROACH', 'A', '12000']], 'HTML table')]
+        self.assertFalse(source_navigation_table(result))
+
     def test_spreadsheet_preserves_row_positions_formulas_and_zero(self):
         cells = [[None]*6,
                  ['Serial No Of Polling Station', None, 'Votes Cast In Favour Of', None, 'Total Valid Votes', 'Total'],
