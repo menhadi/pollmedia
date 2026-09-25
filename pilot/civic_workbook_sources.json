@@ -82,5 +82,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/820/download/2929/DH_2011_DCHB_Town_Release_2700.xlsx",
     "scope": "Maharashtra town amenities; source dates, definitions and boundaries pending review."
+  },
+  {
+    "key": "rajasthan-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1068/download/3288/DH_2011_DCHB_Village_Release_0800.xlsx",
+    "scope": "rajasthan village amenities; observation dates, codes and boundaries pending review."
+  },
+  {
+    "key": "rajasthan-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1068/download/3289/DH_2011_DCHB_Town_Release_0800.xlsx",
+    "scope": "rajasthan town amenities; observation dates, codes and boundaries pending review."
+  },
+  {
+    "key": "gujarat-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/404/download/1266/DH_2011_DCHB_Village_Release_2400.xlsx",
+    "scope": "gujarat village amenities; observation dates, codes and boundaries pending review."
+  },
+  {
+    "key": "gujarat-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/404/download/1267/DH_2011_DCHB_Town_Release_2400.xlsx",
+    "scope": "gujarat town amenities; observation dates, codes and boundaries pending review."
   }
 ]

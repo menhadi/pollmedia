@@ -105,5 +105,17 @@
     "title": "District Census Handbook, Pune, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/820",
     "coverage": "District directory; edition-specific geography and observation dates require review."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Jaipur, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1068",
+    "coverage": "District directory; source-specific observation periods and geography remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Ahmadabad, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/404",
+    "coverage": "District directory; source-specific observation periods and geography remain unverified."
   }
 ]
