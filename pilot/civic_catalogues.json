@@ -261,5 +261,17 @@
     "title": "District Census Handbook, Daman, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/364",
     "coverage": "Source-era territory/directory; observation dates and later boundary changes require review."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Andaman and Nicobar Islands, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1434",
+    "coverage": "Source-era directory; observation dates and later boundary changes require review."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Pulwama, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/506",
+    "coverage": "Source-era directory; observation dates and later boundary changes require review."
   }
 ]

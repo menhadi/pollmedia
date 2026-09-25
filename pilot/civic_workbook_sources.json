@@ -384,5 +384,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/364/download/1107/DH_2011_DCHB_Town_Release_2500.xlsx",
     "scope": "Daman and Diu town amenities in 2011 source-era territory; dates and codes require review. Do not silently merge with later administrative geography."
+  },
+  {
+    "key": "andaman-nicobar-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1434/download/17111/DH_2011_DCHB_Village_Release_3500.xlsx",
+    "scope": "Andaman and Nicobar Islands village amenities in source-era geography; dates and codes require review. Do not infer later administrative boundaries."
+  },
+  {
+    "key": "andaman-nicobar-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1434/download/17109/DH_2011_DCHB_Town_Release_3500.xlsx",
+    "scope": "Andaman and Nicobar Islands town amenities in source-era geography; dates and codes require review. Do not infer later administrative boundaries."
+  },
+  {
+    "key": "jammu-kashmir-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/506/download/1674/DH_2011_DCHB_Village_Release_0100.xlsx",
+    "scope": "Jammu and Kashmir village amenities in source-era geography; dates and codes require review. Do not infer later administrative boundaries."
+  },
+  {
+    "key": "jammu-kashmir-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/506/download/1675/DH_2011_DCHB_Town_Release_0100.xlsx",
+    "scope": "Jammu and Kashmir town amenities in source-era geography; dates and codes require review. Do not infer later administrative boundaries."
   }
 ]
