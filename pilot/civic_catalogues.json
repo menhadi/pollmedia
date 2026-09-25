@@ -225,5 +225,17 @@
     "title": "District Census Handbook, Sikkim, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/13990",
     "coverage": "Source-era district directory; observation dates and boundaries remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, NCT of Delhi, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/912",
+    "coverage": "Source-era directory; observation dates and boundaries remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Chandigarh, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/324",
+    "coverage": "Source-era directory; observation dates and boundaries remain unverified."
   }
 ]
