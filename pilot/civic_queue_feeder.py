@@ -146,6 +146,11 @@ def feed(root, download_limit=4):
             target = ocr / 'queue' / (key + '.json')
             if not target.exists(): save(target, job)
     state['updated_at'] = datetime.now(timezone.utc).isoformat()
+    for item in json.loads(workbook_registry.read_text()) if workbook_registry.exists() else []:
+        descriptor=root/'queue'/('workbook-'+item['key']+'.json')
+        target=root/'queue'/('zz-profile-'+item['key']+'.json')
+        if descriptor.exists() and not target.exists():
+            job=json.loads(descriptor.read_text());job['kind']='workbook_profile';save(target,job)
     state['pending_downloads'] = sum(not r.get('complete', False) for r in state['downloads'].values())
     state['pending_workbooks'] = sum(not r.get('complete', False) for r in state.get('workbook_downloads', {}).values())
     state['pending_catalogues'] = sum(not state['catalogues'].get(r['url'], {}).get('complete', False) for r in catalogues)

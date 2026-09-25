@@ -386,6 +386,8 @@ def run(root):
                 raise ValueError('Invalid queue descriptor')
             package = root / 'packages' / name
             job_key = hashlib.sha256(json.dumps({'original':expected,'pages':job.get('pages')},sort_keys=True).encode()).hexdigest() if job.get('kind') == 'pdf_ocr' else expected
+            if job.get('kind') == 'workbook_profile':
+                job_key = hashlib.sha256(('workbook_profile_v1:'+expected).encode()).hexdigest()
             db.execute('INSERT OR IGNORE INTO jobs(sha256,package,status) VALUES (?,?,?)', (job_key, name, 'pending'))
             db.commit()
             state, retry = db.execute('SELECT status,retry_after FROM jobs WHERE sha256=?', (job_key,)).fetchone()
@@ -409,6 +411,9 @@ def run(root):
                 elif kind == 'pdf_text':
                     from extract_dchb_pdf import extract as text_extract
                     text_extract(package, expected, job['source_url'], root / 'source-evidence' / ('pdf-' + expected))
+                elif kind == 'workbook_profile':
+                    from validate_civic_workbook import validate
+                    validate(root, package, expected, db)
                 else:
                     raise ValueError('Unsupported queue job kind')
                 db.execute('UPDATE jobs SET status=?,completed_at=?,retry_after=0 WHERE sha256=?',

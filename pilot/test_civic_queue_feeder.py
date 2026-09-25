@@ -25,6 +25,13 @@ class FeederTests(unittest.TestCase):
                 self.assertEqual(db.execute('select row_count from workbooks').fetchone()[0],2)
                 self.assertIn('00123',db.execute('select cells_json from raw_rows where source_row=2').fetchone()[0])
                 self.assertEqual(db.execute('select status from jobs').fetchone()[0],'complete')
+                from validate_civic_workbook import validate
+                job=json.loads(next((root/'queue').glob('*.json')).read_text())
+                result=validate(root,root/'packages'/job['package'],job['sha256'],db)
+                self.assertEqual(result['sources'][0]['rows_checked'],2)
+                db.execute("update raw_rows set cells_json='[\"changed\"]' where source_row=2");db.commit()
+                with self.assertRaisesRegex(ValueError,'mismatch'):
+                    validate(root,root/'packages'/job['package'],job['sha256'],db)
 
     def test_official_pdf_links_only(self):
         parser = Links('https://censusindia.gov.in/nada/index.php/catalog/1')

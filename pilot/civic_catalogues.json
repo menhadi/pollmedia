@@ -56,5 +56,26 @@
     "title": "District Census Handbook, Shahjahanpur, Part B",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/1287",
     "coverage": "Edition-specific district evidence. Part A covers village/town directories and dated amenities; Part B covers PCA. Observation dates, geography and table values remain subject to source review."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2014,
+    "title": "District Census Handbook, Bhopal, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/686",
+    "coverage": "District village/town directory; preserve source dates and geography. Unverified evidence."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2014,
+    "title": "District Census Handbook, Patna, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/298",
+    "coverage": "District village/town directory; preserve source dates and geography. Unverified evidence."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2016,
+    "title": "District Census Handbook, Lucknow, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1250",
+    "coverage": "District village/town directory; preserve source dates and geography. Unverified evidence."
   }
 ]

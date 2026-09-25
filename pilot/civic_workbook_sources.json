@@ -10,5 +10,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1184/download/3753/DH_2011_DCHB_Town_Release_0900.xlsx",
     "scope": "Uttar Pradesh town amenities; observation dates and geography pending source review"
+  },
+  {
+    "key": "mp-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/686/download/2394/DH_2011_DCHB_Village_Release_2300.xlsx",
+    "scope": "mp village amenities; observation dates, field codes and geography pending review."
+  },
+  {
+    "key": "mp-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/686/download/2395/DH_2011_DCHB_Town_Release_2300.xlsx",
+    "scope": "mp town amenities; observation dates, field codes and geography pending review."
+  },
+  {
+    "key": "bihar-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/298/download/844/DH_2011_DCHB_Village_Release_1000.xlsx",
+    "scope": "bihar village amenities; observation dates, field codes and geography pending review."
+  },
+  {
+    "key": "bihar-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/298/download/845/DH_2011_DCHB_Town_Release_1000.xlsx",
+    "scope": "bihar town amenities; observation dates, field codes and geography pending review."
   }
 ]
