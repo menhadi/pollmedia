@@ -28,5 +28,33 @@
     "title": "District Census Handbook, 16-Pilibhit",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/28494",
     "coverage": "Population, economic and village/town statistics listed; extraction and historical mapping pending."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2016,
+    "title": "District Census Handbook, Bareilly, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1184",
+    "coverage": "Edition-specific district evidence. Part A covers village/town directories and dated amenities; Part B covers PCA. Observation dates, geography and table values remain subject to source review."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2016,
+    "title": "District Census Handbook, Bareilly, Part B",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1185",
+    "coverage": "Edition-specific district evidence. Part A covers village/town directories and dated amenities; Part B covers PCA. Observation dates, geography and table values remain subject to source review."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2016,
+    "title": "District Census Handbook, Shahjahanpur, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1286",
+    "coverage": "Edition-specific district evidence. Part A covers village/town directories and dated amenities; Part B covers PCA. Observation dates, geography and table values remain subject to source review."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2016,
+    "title": "District Census Handbook, Shahjahanpur, Part B",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1287",
+    "coverage": "Edition-specific district evidence. Part A covers village/town directories and dated amenities; Part B covers PCA. Observation dates, geography and table values remain subject to source review."
   }
 ]
