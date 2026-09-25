@@ -14,6 +14,25 @@ from census_server_worker import run, workbook_rows
 
 
 class CensusWorkerTests(unittest.TestCase):
+    def test_invalid_styles_fallback_keeps_raw_cells_and_formula(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'raw.xlsx'
+            book = openpyxl.Workbook()
+            sheet = book.active
+            sheet['A1'] = 'Code'
+            sheet['C1'] = 'Value'
+            sheet['A2'] = '0012'
+            sheet['C2'] = 3
+            sheet['D2'] = '=C2+1'
+            book.save(path)
+            with patch('openpyxl.load_workbook', side_effect=TypeError("expected <class 'openpyxl.styles.fills.Fill'>")):
+                rows = list(workbook_rows(path))
+            self.assertEqual([row[1] for row in rows], [1, 2])
+            self.assertEqual(rows[1][2], ['0012', None, '3', '=C2+1'])
+            self.assertEqual(rows[1][3][2]['type'], 'n')
+            self.assertEqual(rows[1][3][3]['formula'], 'C2+1')
+            self.assertEqual(rows[1][3][2]['reader'], 'raw_ooxml_invalid_styles')
+
     def test_lgd_sparse_cells_keep_source_indices_and_formula(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'lgd.zip'

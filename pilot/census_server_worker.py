@@ -9,6 +9,7 @@ from datetime import date, datetime, time, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
+import posixpath
 import re
 import shutil
 import sqlite3
@@ -80,6 +81,89 @@ def value_json(value):
     raise TypeError(type(value).__name__)
 
 
+def xlsx_xml_rows(path):
+    """Read raw OOXML cells when an otherwise valid workbook has invalid styles.
+
+    Keep numeric lexemes and style/formula metadata as source evidence. This
+    deliberately does not interpret dates, codes, or cached formula results.
+    """
+    ns = '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
+    rel_ns = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}'
+    pkg_ns = '{http://schemas.openxmlformats.org/package/2006/relationships}'
+    with zipfile.ZipFile(path) as archive:
+        strings = []
+        if 'xl/sharedStrings.xml' in archive.namelist():
+            with archive.open('xl/sharedStrings.xml') as stream:
+                for _, element in ET.iterparse(stream, events=('end',)):
+                    if element.tag == ns + 'si':
+                        parts = []
+                        for child in element:
+                            if child.tag == ns + 't':
+                                parts.append(child.text or '')
+                            elif child.tag == ns + 'r':
+                                parts.extend(t.text or '' for t in child.findall(ns + 't'))
+                        strings.append(''.join(parts))
+                        element.clear()
+        workbook = ET.fromstring(archive.read('xl/workbook.xml'))
+        relations = ET.fromstring(archive.read('xl/_rels/workbook.xml.rels'))
+        targets = {item.attrib['Id']: item.attrib['Target'] for item in relations.findall(pkg_ns + 'Relationship')}
+        for sheet in workbook.find(ns + 'sheets').findall(ns + 'sheet'):
+            target = targets[sheet.attrib[rel_ns + 'id']]
+            member = posixpath.normpath(target.lstrip('/') if target.startswith('/') else 'xl/' + target)
+            if not member.startswith('xl/worksheets/') or member not in archive.namelist():
+                raise ValueError('Invalid OOXML worksheet path')
+            with archive.open(member) as stream:
+                root = None
+                previous_row = 0
+                for event, element in ET.iterparse(stream, events=('start', 'end')):
+                    if root is None:
+                        root = element
+                    if event != 'end' or element.tag != ns + 'row':
+                        continue
+                    number = int(element.attrib.get('r', previous_row + 1))
+                    if number <= previous_row:
+                        raise ValueError('Invalid OOXML row index')
+                    previous_row = number
+                    values, types = [], []
+                    for cell in element.findall(ns + 'c'):
+                        match = re.match(r'^([A-Z]+)[0-9]+$', cell.attrib.get('r', ''))
+                        if not match:
+                            raise ValueError('Invalid OOXML cell address')
+                        column = 0
+                        for letter in match.group(1):
+                            column = column * 26 + ord(letter) - 64
+                        if column <= len(values) or column > 16384:
+                            raise ValueError('Invalid OOXML column index')
+                        values.extend([None] * (column - len(values) - 1))
+                        types.extend(['blank'] * (column - len(types) - 1))
+                        kind = cell.attrib.get('t', 'n')
+                        raw = cell.find(ns + 'v')
+                        formula = cell.find(ns + 'f')
+                        cached = raw.text if raw is not None else None
+                        if kind == 's' and cached is not None:
+                            index = int(cached)
+                            if index < 0 or index >= len(strings):
+                                raise ValueError('Invalid OOXML shared-string index')
+                            value = strings[index]
+                        elif kind == 'inlineStr':
+                            inline = cell.find(ns + 'is')
+                            value = ''.join(t.text or '' for t in inline.iter(ns + 't')) if inline is not None else None
+                        elif formula is not None and formula.text:
+                            value = '=' + formula.text
+                        else:
+                            value = cached
+                        values.append(value)
+                        types.append({'type': kind, 'style': cell.attrib.get('s'),
+                                      'formula': formula.text if formula is not None else None,
+                                      'formula_attrs': formula.attrib if formula is not None else None,
+                                      'cached': cached if formula is not None else None,
+                                      'reader': 'raw_ooxml_invalid_styles'})
+                    if any(value is not None for value in values):
+                        yield sheet.attrib['name'], number, values, types
+                    element.clear()
+                    root.clear()
+
+
 def workbook_rows(path):
     if path.suffix == '.zip':
         # Official LGD exports contain SpreadsheetML documents, sometimes named XLS.
@@ -123,7 +207,13 @@ def workbook_rows(path):
                             element.clear()
     elif path.suffix == '.xlsx':
         import openpyxl
-        book = openpyxl.load_workbook(path, read_only=True, data_only=False)
+        try:
+            book = openpyxl.load_workbook(path, read_only=True, data_only=False)
+        except TypeError as error:
+            if 'openpyxl.styles.fills.Fill' not in str(error):
+                raise
+            yield from xlsx_xml_rows(path)
+            return
         try:
             for sheet in book:
                 sheet.reset_dimensions()
