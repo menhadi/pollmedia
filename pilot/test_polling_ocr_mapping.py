@@ -27,6 +27,14 @@ def sample_page():
 
 
 class StrictOcrMappingTest(unittest.TestCase):
+    def test_requires_both_printed_station_columns_to_agree(self):
+        page = sample_page()
+        for y, number in [(180, 1), (220, 9), (260, 3)]:
+            page['words'].append(word(number, 147, y))
+        rows = propose_rows(page)
+        self.assertEqual([row['polling_station'] for row in rows], ['1', '3'])
+        self.assertEqual(len(rows[0]['ocr_word_boxes']), 8)
+
     def test_uses_rightmost_valid_total_heading_before_rejected(self):
         page = sample_page()
         page['words'].insert(0, word('Valid', 300, 65, 99))

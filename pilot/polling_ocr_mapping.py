@@ -84,11 +84,13 @@ def propose_rows(page):
     candidate_x = _clusters(words, anchors[0] + 90, anchors[1] - 55, header_y + 45)
     if not 2 <= len(candidate_x) <= 20 or any(b - a < 65 for a, b in zip(candidate_x, candidate_x[1:])):
         return []
-    station_x = _clusters(words, anchors[0] + 35, candidate_x[0] - 55, header_y + 45)
-    if len(station_x) != 1:
+    # Form 20 may print both a serial number and a polling-station number.
+    # Keep either one explicit column or two columns that agree row by row.
+    station_x = _clusters(words, anchors[0] - 60, candidate_x[0] - 55, header_y + 45)
+    if not 1 <= len(station_x) <= 2:
         return []
     station_words = sorted((w for w in words if _good(w) and _number(w) is not None
-                            and abs(_center(w) - station_x[0]) <= 38 and w['top'] >= header_y + 45),
+                            and abs(_center(w) - station_x[-1]) <= 38 and w['top'] >= header_y + 45),
                            key=lambda w: w['top'])
     if len(station_words) < 2:
         return []
@@ -118,6 +120,9 @@ def propose_rows(page):
         if station_no is None or station_no == 0 or station_no in seen_stations:
             continue
         seen_stations.add(station_no)
+        leading_station_cells = [_cell(words, x, y) for x in station_x[:-1]]
+        if any(cell is None or _number(cell) != station_no for cell in leading_station_cells):
+            continue
         candidate_cells = [_cell(words, x, y) for x in candidate_x]
         total_cells = {key: _cell(words, x, y) for key, x in
                        [('valid_votes', anchors[1]), ('rejected_votes', anchors[2]),
@@ -130,7 +135,8 @@ def propose_rows(page):
             continue
         if totals['valid_votes'] + totals['rejected_votes'] + totals['nota'] != totals['total_votes']:
             continue
-        evidence = [station_word, *candidate_cells, *total_cells.values()]
+        evidence = [*leading_station_cells, station_word, *candidate_cells,
+                    *total_cells.values()]
         proposals.append({'page': page['page'], 'source_sha256': page['source_sha256'],
                           'source_url': page['source_url'], 'polling_station': str(station_no),
                           'candidate_votes': [{'name': name, 'votes': vote} for name, vote in zip(labels, votes)],
