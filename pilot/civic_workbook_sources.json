@@ -360,5 +360,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/670/download/2331/DH_2011_DCHB_Town_Release_3100.xlsx",
     "scope": "Lakshadweep town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "dadra-nagar-haveli-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/362/download/1098/DH_2011_DCHB_Village_Release_2600.xlsx",
+    "scope": "Dadra and Nagar Haveli village amenities in 2011 source-era territory; dates and codes require review. Do not silently merge with later administrative geography."
+  },
+  {
+    "key": "dadra-nagar-haveli-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/362/download/1099/DH_2011_DCHB_Town_Release_2600.xlsx",
+    "scope": "Dadra and Nagar Haveli town amenities in 2011 source-era territory; dates and codes require review. Do not silently merge with later administrative geography."
+  },
+  {
+    "key": "daman-diu-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/364/download/1106/DH_2011_DCHB_Village_Release_2500.xlsx",
+    "scope": "Daman and Diu village amenities in 2011 source-era territory; dates and codes require review. Do not silently merge with later administrative geography."
+  },
+  {
+    "key": "daman-diu-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/364/download/1107/DH_2011_DCHB_Town_Release_2500.xlsx",
+    "scope": "Daman and Diu town amenities in 2011 source-era territory; dates and codes require review. Do not silently merge with later administrative geography."
   }
 ]
