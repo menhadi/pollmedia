@@ -204,5 +204,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/128/download/165/DH_2011_DCHB_Town_Release_2800.xlsx",
     "scope": "andhra-pradesh town amenities on source-era boundaries; observation dates and code definitions require review. Andhra Pradesh 2011 predates Telangana formation; do not assign current-state geography without evidence."
+  },
+  {
+    "key": "himachal-pradesh-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/480/download/1570/DH_2011_DCHB_Village_Release_0200.xlsx",
+    "scope": "himachal-pradesh village amenities; observation dates, field codes and boundaries require review."
+  },
+  {
+    "key": "himachal-pradesh-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/480/download/1571/DH_2011_DCHB_Town_Release_0200.xlsx",
+    "scope": "himachal-pradesh town amenities; observation dates, field codes and boundaries require review."
+  },
+  {
+    "key": "uttarakhand-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1310/download/4256/DH_2011_DCHB_Village_Release_0500.xlsx",
+    "scope": "uttarakhand village amenities; observation dates, field codes and boundaries require review."
+  },
+  {
+    "key": "uttarakhand-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1310/download/4257/DH_2011_DCHB_Town_Release_0500.xlsx",
+    "scope": "uttarakhand town amenities; observation dates, field codes and boundaries require review."
   }
 ]

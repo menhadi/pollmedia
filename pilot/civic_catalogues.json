@@ -165,5 +165,17 @@
     "title": "District Census Handbook, West Godavari, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/128",
     "coverage": "Source-era district directory; do not silently map 2011 geography to current boundaries."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Mandi, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/480",
+    "coverage": "District directory; source dates and boundaries remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Dehradun, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1310",
+    "coverage": "District directory; source dates and boundaries remain unverified."
   }
 ]
