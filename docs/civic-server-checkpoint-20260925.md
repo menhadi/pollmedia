@@ -18,3 +18,11 @@ All work below is in `/home/pollmedia/census-worker/`, outside the live web appl
 - Page text is not a structured amenity table. The next step is to identify the Village and Town Directory table layouts, compare candidate rows and codes to the printed pages, and explicitly review the three textless pages before any OCR. Keep 2011 Census geography separate from current LGD codes and effective dates.
 
 No civic data was written to live PostgreSQL, no web code was deployed, and no publication claim follows from these raw-row counts. The 10 GiB server reserve remained intact.
+
+## Explicit historical village-code evidence
+
+The separate Pilibhit PCA 2001 workbook package subsequently completed; the worker reports four completed jobs, six distinct extracted originals and 362,077 raw rows. The 1991 source validation count remains separately 118 sources and 697,205 data rows. Do not combine those measures as normalized observations.
+
+On the next isolated server review, `extract_dchb_crosswalk.py` preserved 272 explicit 2001/2011 village-code pairs from PDF pages 83, 124, 150, 175, 201, 234 and 260. All 272 extracted 2011 codes are distinct. The parser requires the alphabetical-list title, both year headings, a district and a CD-block label on the same page, and complete six/eight-digit codes on each row. It retains leading zeroes, original line, page number, page-text checksum, PDF checksum and source URL. Tests reject incomplete codes and unrelated amenity headers. The output `source-evidence/dchb-2011-pilibhit-crosswalk-v1.jsonl` has SHA-256 `d4a8b48878a63850c7958d65aa22585f386fb388e096326db0aa3351e9503b06`.
+
+These are unverified text-derived candidates, not accepted crosswalks; continuation pages without self-contained headings are deliberately excluded pending layout review. Next: review those continuation layouts and compare the printed pairs against preserved 2001/2011 Census and LGD code evidence before accepting any join. The three textless PDF pages are 2, 3 and 455, still pending visual review rather than automatically being called blank. PDF page 100 explicitly labels amenities and land use **as in 2009**, despite being in the 2011 DCHB; retain that observation-year distinction in future education/health/water extraction.
