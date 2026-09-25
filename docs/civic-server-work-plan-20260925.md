@@ -33,3 +33,13 @@ User requested a progress summary every three hours and earlier notification of 
 ## Git and live release
 
 Commit and push only reviewed collector/parser/importer code, tests and scope/checkpoint documentation. Keep originals, staging databases, bulk exports and credentials outside Git. The user controls live code pulls and schema migrations. A later pull delivers code; data moves only through a separately verified compatible import with backups and reviewed activation. Do not write to live PostgreSQL or deploy the application from this worker.
+
+## Acceleration authorized and enabled on 25 September
+
+This supersedes the initial single-worker configuration above. The primary worker now reads an explicit official catalogue registry, preserves catalogue HTML and metadata, downloads at most four PDFs per pass with TLS verification and size/time limits, extracts page text, and automatically queues textless pages in batches of at most 25. Catalogue/download failures retry after 30 minutes without blocking other supported sources. Registering additional supported sources feeds subsequent cron passes; this is not unrestricted national crawling or a claim of complete coverage.
+
+A second five-minute cron runs `/home/pollmedia/census-worker/ocr-worker/`. It has its own exclusive lock, SQLite job database, status and log. Package originals and evidence storage are shared; the primary owns text/workbook outputs and the secondary owns OCR outputs. Do not enqueue new OCR jobs in the primary queue. Existing completed primary OCR jobs remain preserved. Each worker has a 1.5 GiB address-space cap, low priority and a 4.5 GiB available-memory gate; both preserve at least 10 GiB disk. These conservative gates reserve headroom for the live website even if both start together. Page receipts and completed jobs prevent repeated extraction. Do not add further workers without measurements.
+
+The Census site omitted an intermediate certificate required by the server's TLS client. The isolated worker now loads the emSign SSL CA G1 intermediate obtained over verified HTTPS from `https://repository.emsign.com/certs/emSignSSLCAG1.crt`; `openssl verify` validated it against the server trust store. Normal certificate-chain and hostname checks remain enabled. No system trust-store change or TLS bypass was made.
+
+Monitor both worker statuses and `feeder-status.json`, including pending catalogue/download counts and per-source errors. An idle text worker while OCR continues is normal. Source-specific table adapters and geography/period review still follow raw extraction; flags do not block unrelated collections. No live import or publication is part of this pipeline.

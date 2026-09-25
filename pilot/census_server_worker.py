@@ -68,7 +68,8 @@ def resources_ok(root):
         available = next(int(line.split()[1]) * 1024 for line in
                          Path('/proc/meminfo').read_text().splitlines()
                          if line.startswith('MemAvailable:'))
-        if available < 1536 * 1024**2:
+        minimum = int((root / 'minimum-memory-mib').read_text()) if (root / 'minimum-memory-mib').exists() else 1536
+        if available < minimum * 1024**2:
             return False
     return True
 
@@ -378,7 +379,7 @@ def run(root):
         for descriptor in sorted((root / 'queue').glob('*.json')):
             job = json.loads(descriptor.read_text(encoding='utf-8'))
             name, expected = job['package'], job['sha256']
-            suffix = '.pdf' if job.get('kind') == 'pdf_ocr' else '.zip'
+            suffix = '.pdf' if job.get('kind') in ('pdf_ocr', 'pdf_text') else '.zip'
             if Path(name).name != name or not name.endswith(suffix) or not re.fullmatch('[a-f0-9]{64}', expected):
                 raise ValueError('Invalid queue descriptor')
             package = root / 'packages' / name
@@ -403,6 +404,9 @@ def run(root):
                 elif kind == 'pdf_ocr':
                     from ocr_civic_pdf_pages import extract as ocr_extract
                     ocr_extract(root, package, expected, job, digest, resources_ok, status)
+                elif kind == 'pdf_text':
+                    from extract_dchb_pdf import extract as text_extract
+                    text_extract(package, expected, job['source_url'], root / 'source-evidence' / ('pdf-' + expected))
                 else:
                     raise ValueError('Unsupported queue job kind')
                 db.execute('UPDATE jobs SET status=?,completed_at=?,retry_after=0 WHERE sha256=?',
@@ -438,7 +442,12 @@ def main():
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             return
+        if (root / 'catalogues.json').exists():
+            from civic_queue_feeder import feed
+            feed(root)
         run(root)
+        if (root / 'catalogues.json').exists():
+            feed(root, download_limit=0)
 
 
 if __name__ == '__main__':
