@@ -378,18 +378,20 @@ def run(root):
         for descriptor in sorted((root / 'queue').glob('*.json')):
             job = json.loads(descriptor.read_text(encoding='utf-8'))
             name, expected = job['package'], job['sha256']
-            if Path(name).name != name or not name.endswith('.zip') or not re.fullmatch('[a-f0-9]{64}', expected):
+            suffix = '.pdf' if job.get('kind') == 'pdf_ocr' else '.zip'
+            if Path(name).name != name or not name.endswith(suffix) or not re.fullmatch('[a-f0-9]{64}', expected):
                 raise ValueError('Invalid queue descriptor')
             package = root / 'packages' / name
-            db.execute('INSERT OR IGNORE INTO jobs(sha256,package,status) VALUES (?,?,?)', (expected, name, 'pending'))
+            job_key = hashlib.sha256(json.dumps({'original':expected,'pages':job.get('pages')},sort_keys=True).encode()).hexdigest() if job.get('kind') == 'pdf_ocr' else expected
+            db.execute('INSERT OR IGNORE INTO jobs(sha256,package,status) VALUES (?,?,?)', (job_key, name, 'pending'))
             db.commit()
-            state, retry = db.execute('SELECT status,retry_after FROM jobs WHERE sha256=?', (expected,)).fetchone()
+            state, retry = db.execute('SELECT status,retry_after FROM jobs WHERE sha256=?', (job_key,)).fetchone()
             if state == 'complete' or retry > clock.time():
                 continue
             if not resources_ok(root):
                 status(root, state='waiting_for_resources')
                 return
-            db.execute('UPDATE jobs SET status=?,attempts=attempts+1,error=NULL WHERE sha256=?', ('running', expected))
+            db.execute('UPDATE jobs SET status=?,attempts=attempts+1,error=NULL WHERE sha256=?', ('running', job_key))
             db.commit()
             status(root, state='verifying_package', package=name)
             try:
@@ -398,14 +400,17 @@ def run(root):
                     process_package(root, package, expected, db)
                 elif kind == 'validate_1991':
                     validate_1991(root, package, expected, job, db)
+                elif kind == 'pdf_ocr':
+                    from ocr_civic_pdf_pages import extract as ocr_extract
+                    ocr_extract(root, package, expected, job, digest, resources_ok, status)
                 else:
                     raise ValueError('Unsupported queue job kind')
                 db.execute('UPDATE jobs SET status=?,completed_at=?,retry_after=0 WHERE sha256=?',
-                           ('complete', datetime.now(timezone.utc).isoformat(), expected))
+                           ('complete', datetime.now(timezone.utc).isoformat(), job_key))
             except Exception as error:
                 db.rollback()
                 db.execute('UPDATE jobs SET status=?,error=?,retry_after=? WHERE sha256=?',
-                           ('error', str(error)[:1000], clock.time() + 1800, expected))
+                           ('error', str(error)[:1000], clock.time() + 1800, job_key))
             db.commit()
         jobs = dict(db.execute('SELECT status,count(*) FROM jobs GROUP BY status'))
         sources, rows = db.execute("SELECT count(*),coalesce(sum(row_count),0) FROM workbooks WHERE status='complete'").fetchone()
