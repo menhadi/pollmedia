@@ -27,6 +27,14 @@ def sample_page():
 
 
 class StrictOcrMappingTest(unittest.TestCase):
+    def test_uses_result_column_total_with_multiline_station_header(self):
+        page = sample_page()
+        page['words'].append(word('Total', 70, 25, 99))
+        next(w for w in page['words'] if w['text'] == 'Station')['top'] = 45
+        self.assertEqual([row['polling_station'] for row in propose_rows(page)], ['1', '2', '3'])
+        page['words'] = [w for w in page['words'] if not (w['text'] == 'Total' and w['left'] == 1300)]
+        self.assertEqual(propose_rows(page), [])
+
     def test_maps_only_explicit_reconciled_cells_with_evidence(self):
         rows = propose_rows(sample_page())
         self.assertEqual(len(rows), 3)

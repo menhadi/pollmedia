@@ -20,10 +20,14 @@ def _good(word):
     return word.get('confidence', 0) >= 85
 
 
-def _anchor(words, label, near_y=None):
+def _anchor(words, label, near_y=None, tolerance=35, min_x=None, max_x=None):
     matches = [w for w in words if _good(w) and re.sub(r'[^a-z]', '', w['text'].lower()) == label]
     if near_y is not None:
-        matches = [w for w in matches if abs(w['top'] - near_y) <= 35]
+        matches = [w for w in matches if abs(w['top'] - near_y) <= tolerance]
+    if min_x is not None:
+        matches = [w for w in matches if _center(w) > min_x]
+    if max_x is not None:
+        matches = [w for w in matches if _center(w) < max_x]
     return max(matches, key=lambda w: w['confidence'], default=None)
 
 
@@ -55,11 +59,16 @@ def propose_rows(page):
     if page.get('ocr_error') or page.get('quality') != 'unverified_ocr' or len(words) < 20:
         return []
     rejected = _anchor(words, 'rejected')
-    nota = _anchor(words, 'nota', rejected['top'] if rejected else None)
-    valid = _anchor(words, 'valid', rejected['top'] if rejected else None)
-    total = _anchor(words, 'total', rejected['top'] if rejected else None)
-    station = _anchor(words, 'station', rejected['top'] if rejected else None)
-    if not all((rejected, nota, valid, total, station)):
+    if rejected is None:
+        return []
+    rejected_x = _center(rejected)
+    valid = _anchor(words, 'valid', rejected['top'], tolerance=70, max_x=rejected_x)
+    nota = _anchor(words, 'nota', rejected['top'], tolerance=70, min_x=rejected_x)
+    if valid is None or nota is None:
+        return []
+    station = _anchor(words, 'station', rejected['top'], tolerance=70, max_x=_center(valid))
+    total = _anchor(words, 'total', rejected['top'], tolerance=70, min_x=_center(nota))
+    if station is None or total is None:
         return []
     anchors = [_center(w) for w in (station, valid, rejected, nota, total)]
     if not anchors[0] < anchors[1] < anchors[2] < anchors[3] < anchors[4]:
