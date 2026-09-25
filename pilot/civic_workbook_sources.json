@@ -130,5 +130,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1002/download/3025/DH_2011_DCHB_Town_Release_0300.xlsx",
     "scope": "punjab town amenities; source periods, codes and geography require review."
+  },
+  {
+    "key": "odisha-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/950/download/36670/DH_2011_DCHB_Village_Release_2100.xlsx",
+    "scope": "odisha village amenities; source dates, code definitions and geography require review."
+  },
+  {
+    "key": "odisha-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/950/download/36671/DH_2011_DCHB_Town_Release_2100.xlsx",
+    "scope": "odisha town amenities; source dates, code definitions and geography require review."
+  },
+  {
+    "key": "west-bengal-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1362/download/4464/DH_2011_DCHB_Village_Release_1900.xlsx",
+    "scope": "west-bengal village amenities; source dates, code definitions and geography require review."
+  },
+  {
+    "key": "west-bengal-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1362/download/4465/DH_2011_DCHB_Town_Release_1900.xlsx",
+    "scope": "west-bengal town amenities; source dates, code definitions and geography require review."
   }
 ]
