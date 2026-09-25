@@ -33,6 +33,23 @@ class FeederTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'mismatch'):
                     validate(root,root/'packages'/job['package'],job['sha256'],db)
 
+    def test_pending_workbooks_uses_current_registry_and_retains_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); (root/'ocr-worker/queue').mkdir(parents=True)
+            (root/'catalogues.json').write_text('[]')
+            (root/'workbook-sources.json').write_text(json.dumps([
+                {'key':'replacement','source_url':'new'}, {'key':'unseen','source_url':'unseen'}]))
+            historical={'error':'invalid original', 'retry_after':123}
+            (root/'feeder-status.json').write_text(json.dumps({
+                'catalogues':{}, 'downloads':{},
+                'workbook_downloads':{'old':historical,'new':{'complete':True}}}))
+            with patch('civic_queue_feeder.fetch') as download:
+                feed(root, download_limit=0)
+                download.assert_not_called()
+            state=json.loads((root/'feeder-status.json').read_text())
+            self.assertEqual(state['pending_workbooks'],1)
+            self.assertEqual(state['workbook_downloads']['old'],historical)
+
     def test_official_pdf_links_only(self):
         parser = Links('https://censusindia.gov.in/nada/index.php/catalog/1')
         parser.feed('<a href="/nada/index.php/catalog/1/download/2/a.pdf">PDF</a>'

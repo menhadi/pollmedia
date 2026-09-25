@@ -273,5 +273,11 @@
     "title": "District Census Handbook, Pulwama, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/506",
     "coverage": "Source-era directory; observation dates and later boundary changes require review."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Sikkim, Part B",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/13991",
+    "coverage": "Source-era Census directory; geography and observation periods require review. No XLSX links found in inspected catalogue."
   }
 ]

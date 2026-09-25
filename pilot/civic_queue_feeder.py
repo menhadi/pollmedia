@@ -152,7 +152,10 @@ def feed(root, download_limit=4):
         if descriptor.exists() and not target.exists():
             job=json.loads(descriptor.read_text());job['kind']='workbook_profile';save(target,job)
     state['pending_downloads'] = sum(not r.get('complete', False) for r in state['downloads'].values())
-    state['pending_workbooks'] = sum(not r.get('complete', False) for r in state.get('workbook_downloads', {}).values())
+    active_workbook_urls = {item['source_url'] for item in
+                            (json.loads(workbook_registry.read_text()) if workbook_registry.exists() else [])}
+    state['pending_workbooks'] = sum(not state.get('workbook_downloads', {}).get(url, {}).get('complete', False)
+                                     for url in active_workbook_urls)
     state['pending_catalogues'] = sum(not state['catalogues'].get(r['url'], {}).get('complete', False) for r in catalogues)
     save(state_path, state)
 
