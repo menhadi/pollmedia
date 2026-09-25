@@ -27,6 +27,11 @@ def sample_page():
 
 
 class StrictOcrMappingTest(unittest.TestCase):
+    def test_uses_rightmost_valid_total_heading_before_rejected(self):
+        page = sample_page()
+        page['words'].insert(0, word('Valid', 300, 65, 99))
+        self.assertEqual([row['polling_station'] for row in propose_rows(page)], ['1', '2', '3'])
+
     def test_uses_result_column_total_with_multiline_station_header(self):
         page = sample_page()
         page['words'].append(word('Total', 70, 25, 99))

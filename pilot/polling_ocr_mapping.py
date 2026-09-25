@@ -20,7 +20,8 @@ def _good(word):
     return word.get('confidence', 0) >= 85
 
 
-def _anchor(words, label, near_y=None, tolerance=35, min_x=None, max_x=None):
+def _anchor(words, label, near_y=None, tolerance=35, min_x=None, max_x=None,
+            prefer_rightmost=False):
     matches = [w for w in words if _good(w) and re.sub(r'[^a-z]', '', w['text'].lower()) == label]
     if near_y is not None:
         matches = [w for w in matches if abs(w['top'] - near_y) <= tolerance]
@@ -28,6 +29,8 @@ def _anchor(words, label, near_y=None, tolerance=35, min_x=None, max_x=None):
         matches = [w for w in matches if _center(w) > min_x]
     if max_x is not None:
         matches = [w for w in matches if _center(w) < max_x]
+    if prefer_rightmost:
+        return max(matches, key=lambda w: (_center(w), w['confidence']), default=None)
     return max(matches, key=lambda w: w['confidence'], default=None)
 
 
@@ -62,7 +65,11 @@ def propose_rows(page):
     if rejected is None:
         return []
     rejected_x = _center(rejected)
-    valid = _anchor(words, 'valid', rejected['top'], tolerance=70, max_x=rejected_x)
+    # Multi-line forms can also say "No. of Valid Votes Cast in favour of"
+    # above the candidate columns. The rightmost Valid heading before Rejected
+    # labels the printed result total used for reconciliation.
+    valid = _anchor(words, 'valid', rejected['top'], tolerance=70, max_x=rejected_x,
+                    prefer_rightmost=True)
     nota = _anchor(words, 'nota', rejected['top'], tolerance=70, min_x=rejected_x)
     if valid is None or nota is None:
         return []
