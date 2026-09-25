@@ -279,5 +279,23 @@
     "title": "District Census Handbook, Sikkim, Part B",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/13991",
     "coverage": "Source-era Census directory; geography and observation periods require review. No XLSX links found in inspected catalogue."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Bareilly, Part XIII-A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28843",
+    "coverage": "Historical source-era district; preserve raw evidence and review dates, boundaries and OCR before indicator use."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Shahjahanpur, Part XIII-B",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29813",
+    "coverage": "Historical source-era district; preserve raw evidence and review dates, boundaries and OCR before indicator use."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Shahjahanpur, Part XIII-A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29814",
+    "coverage": "Historical source-era district; preserve raw evidence and review dates, boundaries and OCR before indicator use."
   }
 ]
