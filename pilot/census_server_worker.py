@@ -5,6 +5,7 @@ package format is produced by export_census_package.py. No live DB access.
 """
 import argparse
 from contextlib import closing
+from contextlib import nullcontext
 from datetime import date, datetime, time, timedelta, timezone
 import hashlib
 import json
@@ -450,12 +451,18 @@ def main():
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             return
-        if (root / 'catalogues.json').exists():
-            from civic_queue_feeder import feed
-            feed(root)
-        run(root)
-        if (root / 'catalogues.json').exists():
-            feed(root, download_limit=0)
+        from civic_resource_guard import admission
+        gate = admission(root) if (root / 'shared-resource-gate').exists() else nullcontext((True, 'legacy'))
+        with gate as (allowed, reason):
+            if not allowed:
+                status(root, state='waiting_for_resources', reason=reason)
+                return
+            if (root / 'catalogues.json').exists():
+                from civic_queue_feeder import feed
+                feed(root)
+            run(root)
+            if (root / 'catalogues.json').exists():
+                feed(root, download_limit=0)
 
 
 if __name__ == '__main__':
