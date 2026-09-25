@@ -34,5 +34,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/298/download/845/DH_2011_DCHB_Town_Release_1000.xlsx",
     "scope": "bihar town amenities; observation dates, field codes and geography pending review."
+  },
+  {
+    "key": "karnataka-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/584/download/1986/DH_2011_DCHB_Village_Release_2900.xlsx",
+    "scope": "karnataka village amenities; dates, field codes and geography pending review."
+  },
+  {
+    "key": "karnataka-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/584/download/1987/DH_2011_DCHB_Town_Release_2900.xlsx",
+    "scope": "karnataka town amenities; dates, field codes and geography pending review."
+  },
+  {
+    "key": "tamil-nadu-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/45343/download/49277/DH_2011_DCHB_Village_Release_3300.xlsx",
+    "scope": "tamil-nadu village amenities; dates, field codes and geography pending review."
+  },
+  {
+    "key": "tamil-nadu-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/45343/download/49278/DH_2011_DCHB_Town_Release_3300.xlsx",
+    "scope": "tamil-nadu town amenities; dates, field codes and geography pending review."
   }
 ]

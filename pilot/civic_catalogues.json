@@ -77,5 +77,19 @@
     "title": "District Census Handbook, Lucknow, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/1250",
     "coverage": "District village/town directory; preserve source dates and geography. Unverified evidence."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2014,
+    "title": "District Census Handbook, Bangalore, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/584",
+    "coverage": "Edition-specific district directory; source dates and boundaries require review."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2014,
+    "title": "District Census Handbook, Chennai, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/45343",
+    "coverage": "Edition-specific district directory; source dates and boundaries require review."
   }
 ]
