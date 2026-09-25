@@ -327,5 +327,23 @@
     "title": "District Census Handbook, Shahjahanpur, Part X-A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/29817",
     "coverage": "Historical source-era district; preserve catalogue identity, raw evidence and review dates/boundaries. Similar titles do not establish identical source files."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 11-Bareilly, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28514",
+    "coverage": "Historical source-era district; catalogue numbering is not a current geography identifier. Raw evidence, dates, boundaries and OCR require review."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 15-Shahjahanpur, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28497",
+    "coverage": "Historical source-era district; catalogue numbering is not a current geography identifier. Raw evidence, dates, boundaries and OCR require review."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 14-Shahjahanpur, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28501",
+    "coverage": "Historical source-era district; catalogue numbering is not a current geography identifier. Raw evidence, dates, boundaries and OCR require review."
   }
 ]
