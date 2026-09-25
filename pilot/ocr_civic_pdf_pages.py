@@ -8,6 +8,10 @@ import subprocess
 import tempfile
 
 
+class ResourceWait(RuntimeError):
+    """A resumable capacity pause, not a failed source extraction."""
+
+
 def selected_pages(values, total):
     if not isinstance(values, list) or not values or len(values) > 25:
         raise ValueError('Queue between one and 25 explicit pages')
@@ -38,7 +42,7 @@ def extract(root, pdf, expected, job, digest, resource_check, progress):
                 raise ValueError('Saved OCR evidence checksum differs')
             continue
         if not resource_check(root):
-            raise RuntimeError('Waiting for disk/RAM reserve')
+            raise ResourceWait('Waiting for disk/RAM reserve')
         progress(root, state='ocr_unverified_pages', source=pdf.name, page=page, queued_pages=len(pages))
         with tempfile.TemporaryDirectory(prefix='page-', dir=folder) as temporary:
             work = Path(temporary)

@@ -14,6 +14,24 @@ from census_server_worker import run, workbook_rows
 
 
 class CensusWorkerTests(unittest.TestCase):
+    def test_ocr_resource_pause_resumes_without_error_backoff(self):
+        from ocr_civic_pdf_pages import ResourceWait
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); (root/'queue').mkdir()
+            (root/'queue/test.json').write_text(json.dumps({'kind':'pdf_ocr', 'package':'test.pdf',
+                'sha256':'a'*64,'pages':[1],'source_url':'https://censusindia.gov.in/nada/test'}))
+            with patch('census_server_worker.resources_ok',return_value=True), patch(
+                    'ocr_civic_pdf_pages.extract',side_effect=ResourceWait('Waiting for disk/RAM reserve')):
+                run(root)
+            with closing(sqlite3.connect(root/'census-review.sqlite')) as db:
+                self.assertEqual(db.execute('SELECT status,error,retry_after FROM jobs').fetchone(),('pending',None,0))
+            self.assertEqual(json.loads((root/'status.json').read_text())['state'],'waiting_for_resources')
+            with patch('census_server_worker.resources_ok',return_value=True), patch('ocr_civic_pdf_pages.extract') as extract:
+                run(root)
+                extract.assert_called_once()
+            with closing(sqlite3.connect(root/'census-review.sqlite')) as db:
+                self.assertEqual(db.execute('SELECT status FROM jobs').fetchone()[0],'complete')
+
     def test_invalid_styles_fallback_keeps_raw_cells_and_formula(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'raw.xlsx'

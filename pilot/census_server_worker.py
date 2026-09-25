@@ -16,6 +16,7 @@ import sqlite3
 import time as clock
 import zipfile
 import xml.etree.ElementTree as ET
+from ocr_civic_pdf_pages import ResourceWait
 
 
 def digest(path):
@@ -411,6 +412,13 @@ def run(root):
                     raise ValueError('Unsupported queue job kind')
                 db.execute('UPDATE jobs SET status=?,completed_at=?,retry_after=0 WHERE sha256=?',
                            ('complete', datetime.now(timezone.utc).isoformat(), job_key))
+            except ResourceWait:
+                db.rollback()
+                db.execute('UPDATE jobs SET status=?,error=NULL,retry_after=0 WHERE sha256=?', ('pending', job_key))
+                db.commit()
+                status(root, state='waiting_for_resources', package=name,
+                       note='Preserved page receipts resume at the next resource check.')
+                return
             except Exception as error:
                 db.rollback()
                 db.execute('UPDATE jobs SET status=?,error=?,retry_after=? WHERE sha256=?',
