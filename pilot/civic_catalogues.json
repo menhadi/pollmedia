@@ -98,5 +98,12 @@
     "title": "District Census Handbook, Thiruvananthapuram, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/664",
     "coverage": "District directory; source-specific dates and boundaries remain unverified."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2014,
+    "title": "District Census Handbook, Pune, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/820",
+    "coverage": "District directory; edition-specific geography and observation dates require review."
   }
 ]
