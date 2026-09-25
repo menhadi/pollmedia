@@ -336,5 +336,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/324/download/949/DH_2011_DCHB_Town_Release_0400.xlsx",
     "scope": "Chandigarh town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "puducherry-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/974/download/36766/DH_2011_DCHB_Village_Release_3400.xlsx",
+    "scope": "Puducherry village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "puducherry-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/974/download/36767/DH_2011_DCHB_Town_Release_3400.xlsx",
+    "scope": "Puducherry town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "lakshadweep-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/670/download/2330/DH_2011_DCHB_Village_Release_3100.xlsx",
+    "scope": "Lakshadweep village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "lakshadweep-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/670/download/2331/DH_2011_DCHB_Town_Release_3100.xlsx",
+    "scope": "Lakshadweep town amenities; observation dates, codes and source-era geography require review."
   }
 ]
