@@ -91,5 +91,12 @@
     "title": "District Census Handbook, Chennai, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/45343",
     "coverage": "Edition-specific district directory; source dates and boundaries require review."
+  },
+  {
+    "year": 2011,
+    "publication_year": 2014,
+    "title": "District Census Handbook, Thiruvananthapuram, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/664",
+    "coverage": "District directory; source-specific dates and boundaries remain unverified."
   }
 ]

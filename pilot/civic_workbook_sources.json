@@ -58,5 +58,17 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/45343/download/49278/DH_2011_DCHB_Town_Release_3300.xlsx",
     "scope": "tamil-nadu town amenities; dates, field codes and geography pending review."
+  },
+  {
+    "key": "kerala-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/664/download/2306/DH_2011_DCHB_Village_Release_3200.xlsx",
+    "scope": "Kerala village amenities; source dates and geography pending review."
+  },
+  {
+    "key": "kerala-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/664/download/2307/DH_2011_DCHB_Town_Release_3200.xlsx",
+    "scope": "Kerala town amenities; source dates and geography pending review."
   }
 ]
