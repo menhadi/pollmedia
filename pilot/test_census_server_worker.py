@@ -10,10 +10,20 @@ from unittest.mock import patch
 import zipfile
 
 import openpyxl
-from census_server_worker import run
+from census_server_worker import run, workbook_rows
 
 
 class CensusWorkerTests(unittest.TestCase):
+    def test_lgd_sparse_cells_keep_source_indices_and_formula(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'lgd.zip'
+            body = '''<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Villages"><Table><Row ss:Index="4"><Cell><Data ss:Type="String">0012</Data></Cell><Cell ss:Index="3" ss:Formula="=R4C1"><Data ss:Type="Number">12</Data></Cell></Row></Table></Worksheet></Workbook>'''
+            with zipfile.ZipFile(path, 'w') as archive:
+                archive.writestr('villages.xls', body)
+            rows = list(workbook_rows(path))
+            self.assertEqual(rows[0][:3], ('villages.xls/Villages',4,['0012',None,'12']))
+            self.assertEqual(rows[0][3][2]['formula'], '=R4C1')
+
     def fixture(self, root, corrupt=False):
         (root / 'queue').mkdir()
         (root / 'packages').mkdir()

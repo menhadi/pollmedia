@@ -14,6 +14,7 @@ import shutil
 import sqlite3
 import time as clock
 import zipfile
+import xml.etree.ElementTree as ET
 
 
 def digest(path):
@@ -80,7 +81,47 @@ def value_json(value):
 
 
 def workbook_rows(path):
-    if path.suffix == '.xlsx':
+    if path.suffix == '.zip':
+        # Official LGD exports contain SpreadsheetML documents, sometimes named XLS.
+        ns = '{urn:schemas-microsoft-com:office:spreadsheet}'
+        with zipfile.ZipFile(path) as archive:
+            for member in archive.infolist():
+                if member.is_dir():
+                    continue
+                with archive.open(member) as stream:
+                    worksheet, row_number, root = '', 0, None
+                    for event, element in ET.iterparse(stream, events=('start', 'end')):
+                        if root is None:
+                            root = element
+                            if root.tag != ns + 'Workbook':
+                                raise ValueError('Unsupported LGD archive member: ' + member.filename)
+                        if event == 'start' and element.tag == ns + 'Worksheet':
+                            worksheet = element.attrib.get(ns + 'Name', '')
+                            row_number = 0
+                        if event == 'end' and element.tag == ns + 'Row':
+                            row_number = int(element.attrib.get(ns + 'Index', row_number + 1))
+                            values, types = [], []
+                            for cell in element.findall(ns + 'Cell'):
+                                index = int(cell.attrib.get(ns + 'Index', len(values) + 1))
+                                if index <= len(values) or index > 10000:
+                                    raise ValueError('Invalid SpreadsheetML cell index')
+                                values.extend([None] * (index - len(values) - 1))
+                                types.extend(['blank'] * (index - len(types) - 1))
+                                data = cell.find(ns + 'Data')
+                                values.append(''.join(data.itertext()) if data is not None else None)
+                                types.append({'type': data.attrib.get(ns + 'Type') if data is not None else None,
+                                              'formula': cell.attrib.get(ns + 'Formula'),
+                                              'merge_across': cell.attrib.get(ns + 'MergeAcross'),
+                                              'merge_down': cell.attrib.get(ns + 'MergeDown')})
+                                merge = int(cell.attrib.get(ns + 'MergeAcross', '0'))
+                                if merge < 0 or len(values) + merge > 10000:
+                                    raise ValueError('Invalid SpreadsheetML merge span')
+                                values.extend([None] * merge)
+                                types.extend(['merged_placeholder'] * merge)
+                            if any(v is not None for v in values):
+                                yield member.filename + '/' + worksheet, row_number, values, types
+                            element.clear()
+    elif path.suffix == '.xlsx':
         import openpyxl
         book = openpyxl.load_workbook(path, read_only=True, data_only=False)
         try:
@@ -143,7 +184,7 @@ def process_package(root, package, expected, db):
             key = item['key']
             if not re.fullmatch('[a-z0-9][a-z0-9-]{0,120}', key):
                 raise ValueError('Invalid source key')
-            candidates = [key + ext for ext in ('.xls', '.xlsx') if key + ext in names]
+            candidates = [key + ext for ext in ('.xls', '.xlsx', '.zip') if key + ext in names]
             if len(candidates) != 1:
                 raise ValueError('Missing or ambiguous workbook: ' + key)
             source_hash = item['sha256']
