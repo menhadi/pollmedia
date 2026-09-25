@@ -152,7 +152,9 @@
   {
     "key": "west-bengal-dchb-town-amenities-2011",
     "edition": 2011,
-    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1362/download/4465/DH_2011_DCHB_Town_Release_1900.xlsx",
-    "scope": "west-bengal town amenities; source dates, code definitions and geography require review."
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/44368/download/48032/DH_2011_DCHB_Town_Release_1900.xlsx",
+    "scope": "west-bengal town amenities; source dates, code definitions and geography require review.",
+    "previous_source_url": "https://censusindia.gov.in/nada/index.php/catalog/1362/download/4465/DH_2011_DCHB_Town_Release_1900.xlsx",
+    "recovery_note": "Original download is 389120 bytes and lacks ZIP end record (SHA256 07b64fcb89ff3901d89b4d5d4728a238f00d3a011eed6681da1dd0a0ea882c55). Official Kolkata catalogue supplies a valid 2086788-byte workbook; validate source content and dates independently."
   }
 ]
