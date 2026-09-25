@@ -177,5 +177,17 @@
     "title": "District Census Handbook, Dehradun, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/1310",
     "coverage": "District directory; source dates and boundaries remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, West Tripura, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/45411",
+    "coverage": "Source-era district directory; observation dates and boundaries remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, South Garo Hills, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/868",
+    "coverage": "Source-era district directory; observation dates and boundaries remain unverified."
   }
 ]

@@ -228,5 +228,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1310/download/4257/DH_2011_DCHB_Town_Release_0500.xlsx",
     "scope": "uttarakhand town amenities; observation dates, field codes and boundaries require review."
+  },
+  {
+    "key": "tripura-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/45411/download/49618/DH_2011_DCHB_Village_Release_1600.xlsx",
+    "scope": "tripura village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "tripura-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/45411/download/49619/DH_2011_DCHB_Town_Release_1600.xlsx",
+    "scope": "tripura town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "meghalaya-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/868/download/36342/DH_2011_DCHB_Village_Release_1700.xlsx",
+    "scope": "meghalaya village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "meghalaya-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/868/download/36343/DH_2011_DCHB_Town_Release_1700.xlsx",
+    "scope": "meghalaya town amenities; observation dates, codes and source-era geography require review."
   }
 ]
