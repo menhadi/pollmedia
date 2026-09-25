@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 from collections import Counter
 
+ROW = re.compile(r'\s*(\d+)\s+(.+?)\s{2,}(\d{6})\s+(\d{8})\s*')
 
 def page_rows(page):
     text = page['text']
@@ -21,7 +22,7 @@ def page_rows(page):
         return []
     result = []
     for line_number, line in enumerate(text.splitlines(), 1):
-        match = re.fullmatch(r'\s*(\d+)\s+(.+?)\s{2,}(\d{6})\s+(\d{8})\s*', line)
+        match = ROW.fullmatch(line)
         if match:
             serial, name, code2011, code2001 = match.groups()
             result.append({'page': page['page'], 'line_number': line_number,
@@ -32,6 +33,29 @@ def page_rows(page):
                            'source_line': line, 'page_text_sha256': page['text_sha256'],
                            'review_state': 'unverified_explicit_source_code_pair'})
     return result
+
+
+def continuation_rows(page, previous):
+    if not previous or page['page'] != previous['page'] + 1:
+        return []
+    result = []
+    expected = int(previous['printed_serial']) + 1
+    for number, line in enumerate(page['text'].splitlines(), 1):
+        if not line.strip() or re.fullmatch(r'\s*\d+\s*', line):
+            continue  # Printed page number is the only non-row text permitted.
+        match = ROW.fullmatch(line)
+        if not match or int(match[1]) != expected:
+            return []
+        row = {key: previous[key] for key in ('district_as_printed', 'cd_block_as_printed')}
+        row.update(page=page['page'], line_number=number, printed_serial=match[1],
+                   name_as_printed=match[2].strip(), census_2011_code=match[3], census_2001_code=match[4],
+                   source_line=line, page_text_sha256=page['text_sha256'],
+                   scope_header_page=previous.get('scope_header_page', previous['page']),
+                   review_state='unverified_explicit_source_code_pair',
+                   warning='Scope carried from adjacent alphabetical-list page with consecutive printed serials.')
+        result.append(row)
+        expected += 1
+    return result if len(result) >= 2 else []
 
 
 def digest(path):
@@ -49,6 +73,8 @@ def extract(pages, manifest, destination):
     if destination.exists():
         raise FileExistsError('Choose a new evidence filename')
     count, selected_pages = 0, []
+    previous = None
+    continued = 0
     codes = Counter()
     temporary = destination.with_suffix('.partial')
     try:
@@ -58,6 +84,10 @@ def extract(pages, manifest, destination):
                 if hashlib.sha256(page['text'].encode()).hexdigest() != page['text_sha256']:
                     raise ValueError('Page text checksum differs')
                 rows = page_rows(page)
+                if not rows:
+                    rows = continuation_rows(page, previous)
+                    continued += len(rows)
+                previous = rows[-1] if rows else None
                 if rows:
                     selected_pages.append(page['page'])
                 for row in rows:
@@ -69,9 +99,10 @@ def extract(pages, manifest, destination):
     finally:
         temporary.unlink(missing_ok=True)
     summary = {'rows': count, 'pages': selected_pages, 'unique_2011_codes': len(codes),
+               'continuation_rows': continued,
                'repeated_2011_codes': {c:n for c,n in codes.items() if n > 1},
                'sha256': digest(destination), 'review_state': 'unverified_explicit_source_code_pairs',
-               'scope_note': 'Only pages with explicit alphabetical-list and 2001/2011 headers, district and CD-block labels. No inferred missing codes, current LGD joins or unchanged-boundary claims.'}
+               'scope_note': 'Explicit alphabetical-list headers establish district/CD-block scope. Adjacent row-only pages require consecutive serials and retain a carried-scope warning. No inferred codes, current LGD joins or unchanged-boundary claims.'}
     destination.with_suffix('.summary.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
     return summary
 
