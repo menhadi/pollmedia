@@ -9,6 +9,23 @@ from civic_queue_feeder import Links, feed, official
 
 
 class FeederTests(unittest.TestCase):
+    def test_workbook_acquisition_flows_into_raw_cell_parser(self):
+        import openpyxl, sqlite3
+        from contextlib import closing
+        from civic_queue_feeder import queue_workbook
+        from census_server_worker import run
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'packages').mkdir()
+            def fetch(url,path,context,limit):
+                book=openpyxl.Workbook();book.active.append(['Village','School']);book.active.append(['00123',None]);book.save(path)
+            item={'key':'amenities-test','source_url':'https://censusindia.gov.in/nada/test.xlsx','edition':2011}
+            with patch('civic_queue_feeder.fetch',side_effect=fetch):queue_workbook(root,item,None)
+            with patch('census_server_worker.resources_ok',return_value=True):run(root)
+            with closing(sqlite3.connect(root/'census-review.sqlite')) as db:
+                self.assertEqual(db.execute('select row_count from workbooks').fetchone()[0],2)
+                self.assertIn('00123',db.execute('select cells_json from raw_rows where source_row=2').fetchone()[0])
+                self.assertEqual(db.execute('select status from jobs').fetchone()[0],'complete')
+
     def test_official_pdf_links_only(self):
         parser = Links('https://censusindia.gov.in/nada/index.php/catalog/1')
         parser.feed('<a href="/nada/index.php/catalog/1/download/2/a.pdf">PDF</a>'

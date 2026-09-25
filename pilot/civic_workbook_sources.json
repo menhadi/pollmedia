@@ -1,0 +1,14 @@
+[
+  {
+    "key": "up-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1184/download/3752/DH_2011_DCHB_Village_Release_0900.xlsx",
+    "scope": "Uttar Pradesh village amenities; observation dates and geography pending source review"
+  },
+  {
+    "key": "up-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/1184/download/3753/DH_2011_DCHB_Town_Release_0900.xlsx",
+    "scope": "Uttar Pradesh town amenities; observation dates and geography pending source review"
+  }
+]

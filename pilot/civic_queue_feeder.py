@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import ssl
 import time
+import zipfile
 from urllib.parse import urljoin, urlsplit
 from urllib.request import urlopen
 
@@ -71,6 +72,20 @@ def feed(root, download_limit=4):
     if not (ocr / 'queue').is_dir():
         raise ValueError('Separate OCR worker must be configured first')
     remaining = download_limit
+    workbook_registry = root / 'workbook-sources.json'
+    for item in json.loads(workbook_registry.read_text()) if workbook_registry.exists() else []:
+        records = state.setdefault('workbook_downloads', {})
+        url = item['source_url']; record = records.setdefault(url, {})
+        if record.get('complete') or record.get('retry_after', 0) > time.time() or not remaining: continue
+        if not resources_ok(root): break
+        remaining -= 1
+        try:
+            queue_workbook(root, item, context)
+            record.update(complete=True, metadata=item)
+            record.pop('error', None); record.pop('retry_after', None)
+        except Exception as error:
+            record.update(error=str(error), retry_after=time.time()+1800)
+        save(state_path, state)
     catalogues = json.loads((root / 'catalogues.json').read_text())
     for item in catalogues:
         url = item['url']; old = state['catalogues'].get(url, {})
@@ -132,5 +147,33 @@ def feed(root, download_limit=4):
             if not target.exists(): save(target, job)
     state['updated_at'] = datetime.now(timezone.utc).isoformat()
     state['pending_downloads'] = sum(not r.get('complete', False) for r in state['downloads'].values())
+    state['pending_workbooks'] = sum(not r.get('complete', False) for r in state.get('workbook_downloads', {}).values())
     state['pending_catalogues'] = sum(not state['catalogues'].get(r['url'], {}).get('complete', False) for r in catalogues)
     save(state_path, state)
+
+
+def queue_workbook(root, item, context):
+    """Preserve an official workbook and acquisition metadata for the raw-cell parser."""
+    import re
+    key = item['key']
+    if not re.fullmatch('[a-z0-9][a-z0-9-]{0,120}', key): raise ValueError('Invalid workbook key')
+    url = item['source_url']
+    if not urlsplit(url).path.lower().endswith('.xlsx'): raise ValueError('Expected XLSX source')
+    original = root / 'packages' / (key + '.xlsx')
+    fetch(url, original, context, 200 * 1024**2)
+    with zipfile.ZipFile(original) as book:
+        if 'xl/workbook.xml' not in book.namelist(): raise ValueError('Not an XLSX workbook')
+    acquisition = dict(item, original_sha256=digest(original), retrieved_at=datetime.now(timezone.utc).isoformat(),
+                       evidence_kind='acquisition_metadata', review_state='unverified_raw_workbook',
+                       warning='Source edition does not establish observation dates for all indicators.')
+    body = json.dumps(acquisition).encode()
+    manifest = {'version':1,'sources':[dict(item, sha256=digest(original),
+                  extracted_sha256=hashlib.sha256(body).hexdigest(),
+                  options={'evidence_kind':'acquisition_metadata','review_state':'unverified_raw_workbook'})]}
+    package = root / 'packages' / (key + '.zip')
+    temporary = package.with_suffix('.partial')
+    with zipfile.ZipFile(temporary,'w',zipfile.ZIP_DEFLATED) as target:
+        target.write(original,key+'.xlsx');target.writestr(key+'.json',body)
+        target.writestr('manifest.json',json.dumps(manifest))
+    temporary.replace(package)
+    save(root/'queue'/('workbook-'+key+'.json'),dict(package=package.name,sha256=digest(package)))
