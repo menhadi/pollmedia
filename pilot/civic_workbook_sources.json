@@ -300,5 +300,17 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/874/download/36367/DH_2011_DCHB_Town_Release_1500.xlsx",
     "scope": "Mizoram town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "goa-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/368/download/1122/DH_2011_DCHB_Village_Release_3000.xlsx",
+    "scope": "Goa village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "goa-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/368/download/1123/DH_2011_DCHB_Town_Release_3000.xlsx",
+    "scope": "Goa town amenities; observation dates, codes and source-era geography require review."
   }
 ]
