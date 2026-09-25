@@ -252,5 +252,29 @@
     "edition": 2011,
     "source_url": "https://censusindia.gov.in/nada/index.php/catalog/868/download/36343/DH_2011_DCHB_Town_Release_1700.xlsx",
     "scope": "meghalaya town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "arunachal-pradesh-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/192/download/420/DH_2011_DCHB_Village_Release_1200.xlsx",
+    "scope": "Arunachal Pradesh village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "arunachal-pradesh-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/192/download/421/DH_2011_DCHB_Town_Release_1200.xlsx",
+    "scope": "Arunachal Pradesh town amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "nagaland-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/894/download/36446/DH_2011_DCHB_Village_Release_1300.xlsx",
+    "scope": "Nagaland village amenities; observation dates, codes and source-era geography require review."
+  },
+  {
+    "key": "nagaland-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/894/download/36447/DH_2011_DCHB_Town_Release_1300.xlsx",
+    "scope": "Nagaland town amenities; observation dates, codes and source-era geography require review."
   }
 ]
