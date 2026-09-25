@@ -141,5 +141,17 @@
     "title": "District Census Handbook, South Twenty Four Parganas, Part A",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/1362",
     "coverage": "District directory; source-specific dates and geography remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Barpeta, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/196",
+    "coverage": "District directory; observation periods and geography remain unverified."
+  },
+  {
+    "year": 2011,
+    "title": "District Census Handbook, Ranchi, Part A",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/570",
+    "coverage": "District directory; observation periods and geography remain unverified."
   }
 ]

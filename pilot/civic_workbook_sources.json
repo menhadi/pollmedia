@@ -156,5 +156,29 @@
     "scope": "west-bengal town amenities; source dates, code definitions and geography require review.",
     "previous_source_url": "https://censusindia.gov.in/nada/index.php/catalog/1362/download/4465/DH_2011_DCHB_Town_Release_1900.xlsx",
     "recovery_note": "Original download is 389120 bytes and lacks ZIP end record (SHA256 07b64fcb89ff3901d89b4d5d4728a238f00d3a011eed6681da1dd0a0ea882c55). Official Kolkata catalogue supplies a valid 2086788-byte workbook; validate source content and dates independently."
+  },
+  {
+    "key": "assam-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/196/download/436/DH_2011_DCHB_Village_Release_1800.xlsx",
+    "scope": "assam village amenities; source dates, code definitions and geography require review."
+  },
+  {
+    "key": "assam-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/196/download/437/DH_2011_DCHB_Town_Release_1800.xlsx",
+    "scope": "assam town amenities; source dates, code definitions and geography require review."
+  },
+  {
+    "key": "jharkhand-dchb-village-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/570/download/1930/DH_2011_DCHB_Village_Release_2000.xlsx",
+    "scope": "jharkhand village amenities; source dates, code definitions and geography require review."
+  },
+  {
+    "key": "jharkhand-dchb-town-amenities-2011",
+    "edition": 2011,
+    "source_url": "https://censusindia.gov.in/nada/index.php/catalog/570/download/1931/DH_2011_DCHB_Town_Release_2000.xlsx",
+    "scope": "jharkhand town amenities; source dates, code definitions and geography require review."
   }
 ]
