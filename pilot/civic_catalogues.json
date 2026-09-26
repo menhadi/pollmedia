@@ -675,5 +675,35 @@
     "title": "District Census Handbook, Bijnor, Part A & B, Volume II, Uttar Pradesh",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/43914",
     "coverage": "Historical source-era district; preserve catalogue/edition/volume identity even for similar titles. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 18-Meerut, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28487",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 4-Meerut, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28734",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Meerut, Part XIII-B, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29441",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1971,
+    "title": "District Census Handbook, Meerut, Part X-A, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29442",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 2001,
+    "title": "District Census Handbook, Meerut, Part A & B, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43920",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
   }
 ]
