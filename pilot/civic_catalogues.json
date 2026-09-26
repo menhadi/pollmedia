@@ -345,5 +345,17 @@
     "title": "District Census Handbook, 14-Shahjahanpur, Uttar Pradesh",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/28501",
     "coverage": "Historical source-era district; catalogue numbering is not a current geography identifier. Raw evidence, dates, boundaries and OCR require review."
+  },
+  {
+    "year": 2001,
+    "title": "District Census Handbook, Shahjahanpur, Part A & B, Volume I",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43940",
+    "coverage": "Historical source-era district; preserve volume identity. Observation dates, geographic joins and extracted text require review."
+  },
+  {
+    "year": 2001,
+    "title": "District Census Handbook, Shahjahanpur, Part A & B, Volume II",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43941",
+    "coverage": "Historical source-era district; preserve volume identity. Observation dates, geographic joins and extracted text require review."
   }
 ]
