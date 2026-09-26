@@ -4,7 +4,7 @@ import json
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
-from extract_civic_block_table import parse_page, extract
+from extract_civic_block_table import parse_page, extract, SHAH_PROFILE
 
 HEADER = '''APPENDIX TO DISTRICT PRIMARY CENSUS ABSTRACT
 POPULATION - URBAN BLOCK WISE
@@ -12,6 +12,17 @@ Name of Town  Name of Ward  Population  Castes
 '''
 
 class BlockTableTests(unittest.TestCase):
+    def test_seven_columns_with_single_space_between_ward_and_block(self):
+        rows, rejects = parse_page(HEADER+'Tribes\n1  2  3  4  5  6  7\n800883   Khutar (NP)   WARD No.-0002 EB No.-000500  576  113  4', SHAH_PROFILE)
+        self.assertFalse(rejects)
+        self.assertEqual(rows[0]['scheduled_tribes_population'],4)
+        self.assertEqual(rows[0]['scheduled_castes_population'],113)
+
+    def test_merged_values_are_not_inferred(self):
+        rows, rejects = parse_page(HEADER+'Tribes\n1  2  3  4  5  6  7\n800883   Khutar (NP)   WARD No.-0002 EB No.-000500  576  113-', SHAH_PROFILE)
+        self.assertFalse(rows)
+        self.assertEqual(len(rejects),1)
+
     def test_preserves_codes_and_dash(self):
         rows, rejected = parse_page(HEADER+'800863  Aonla (NPP)  WARD No.-0001  EB No.-000100  598  -')
         self.assertFalse(rejected)

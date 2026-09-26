@@ -389,7 +389,8 @@ def run(root):
             if job.get('kind') == 'workbook_profile':
                 job_key = hashlib.sha256(('workbook_profile_v1:'+expected).encode()).hexdigest()
             if job.get('kind') == 'pdf_block_table':
-                job_key = hashlib.sha256(json.dumps(['bareilly_2011_urban_block_v1', expected, job['pages']]).encode()).hexdigest()
+                from extract_civic_block_table import profile_for
+                job_key = hashlib.sha256(json.dumps([profile_for(expected), expected, job['pages']]).encode()).hexdigest()
             db.execute('INSERT OR IGNORE INTO jobs(sha256,package,status) VALUES (?,?,?)', (job_key, name, 'pending'))
             db.commit()
             state, retry = db.execute('SELECT status,retry_after FROM jobs WHERE sha256=?', (job_key,)).fetchone()
