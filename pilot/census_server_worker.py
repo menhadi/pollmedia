@@ -381,13 +381,15 @@ def run(root):
         for descriptor in sorted((root / 'queue').glob('*.json')):
             job = json.loads(descriptor.read_text(encoding='utf-8'))
             name, expected = job['package'], job['sha256']
-            suffix = '.pdf' if job.get('kind') in ('pdf_ocr', 'pdf_text') else '.zip'
+            suffix = '.pdf' if job.get('kind') in ('pdf_ocr', 'pdf_text', 'pdf_block_table') else '.zip'
             if Path(name).name != name or not name.endswith(suffix) or not re.fullmatch('[a-f0-9]{64}', expected):
                 raise ValueError('Invalid queue descriptor')
             package = root / 'packages' / name
             job_key = hashlib.sha256(json.dumps({'original':expected,'pages':job.get('pages')},sort_keys=True).encode()).hexdigest() if job.get('kind') == 'pdf_ocr' else expected
             if job.get('kind') == 'workbook_profile':
                 job_key = hashlib.sha256(('workbook_profile_v1:'+expected).encode()).hexdigest()
+            if job.get('kind') == 'pdf_block_table':
+                job_key = hashlib.sha256(json.dumps(['bareilly_2011_urban_block_v1', expected, job['pages']]).encode()).hexdigest()
             db.execute('INSERT OR IGNORE INTO jobs(sha256,package,status) VALUES (?,?,?)', (job_key, name, 'pending'))
             db.commit()
             state, retry = db.execute('SELECT status,retry_after FROM jobs WHERE sha256=?', (job_key,)).fetchone()
@@ -411,6 +413,9 @@ def run(root):
                 elif kind == 'pdf_text':
                     from extract_dchb_pdf import extract as text_extract
                     text_extract(package, expected, job['source_url'], root / 'source-evidence' / ('pdf-' + expected))
+                elif kind == 'pdf_block_table':
+                    from extract_civic_block_table import extract as table_extract
+                    table_extract(root, package, expected, job, digest, resources_ok)
                 elif kind == 'workbook_profile':
                     from validate_civic_workbook import validate
                     validate(root, package, expected, db)
@@ -433,9 +438,12 @@ def run(root):
         jobs = dict(db.execute('SELECT status,count(*) FROM jobs GROUP BY status'))
         sources, rows = db.execute("SELECT count(*),coalesce(sum(row_count),0) FROM workbooks WHERE status='complete'").fetchone()
         validated, checked_rows = db.execute('SELECT count(*),coalesce(sum(rows_checked),0) FROM source_validations').fetchone()
+        table_reports = [json.loads(p.read_text()) for p in (root/'source-evidence').glob('table-*.report.json')]
         status(root, state='needs_attention' if jobs.get('error') else 'waiting_for_queue',
                jobs=jobs, completed_unique_workbooks=sources, extracted_raw_rows=rows,
                validated_1991_sources=validated, validated_1991_rows=checked_rows,
+               structured_pdf_rows=sum(r['structured_pdf_rows'] for r in table_reports),
+               structured_pdf_review_state='unverified',
                errors=[{'package':p, 'error':e} for p,e in db.execute(
                    "SELECT package,error FROM jobs WHERE status='error' LIMIT 10")],
                note='Raw historical source rows include headers and notes; geography and population review pending.')
