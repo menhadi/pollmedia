@@ -1485,5 +1485,29 @@
     "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Ballia-Vol-II",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/43991",
     "coverage": "Historical source-era district; preserve edition/part/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook 30-Ghazipur, Uttar Pradesh - Census 1951",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28568",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 52-Ghazipur, Uttar Pradesh - Census 1961",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28704",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Ghazipur, Part XIII-B, Series-22, Uttar Pradesh - Census 1981",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29279",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Ghazipur, Part XIII-A, Series-22, Uttar Pradesh - Census 1981",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29280",
+    "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
   }
 ]
