@@ -1041,5 +1041,47 @@
     "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Unnao",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/43946",
     "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 20-Kanpur, Uttar Pradesh - Census 1951",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28476",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 27-Kanpur, Uttar Pradesh - Census 1961",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28764",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Kanpur, Part XIII-B, Series-22, Uttar Pradesh - Census 1981",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29359",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1971,
+    "title": "District Census Handbook, Kanpur, Part X-B, Series-21, Uttar Pradesh - Census 1971",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29360",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1971,
+    "title": "District Census Handbook, Kanpur, Part X-A, Series-21, Uttar Pradesh - Census 1971",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29361",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 2001,
+    "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Kanpur Dehat",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43953",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 2001,
+    "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Kanpur Nagar",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43954",
+    "coverage": "Historical source-era district; preserve edition/part identity. Kanpur, Kanpur Dehat and Kanpur Nagar are distinct source labels, not an inferred boundary crosswalk. Observation periods, geographic joins and OCR require review."
   }
 ]
