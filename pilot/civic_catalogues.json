@@ -441,5 +441,47 @@
     "title": "District Census Handbook, Rampur, Part X-A, Uttar Pradesh",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/29657",
     "coverage": "Historical source-era district; preserve edition/part identity. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 13-Budaun, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28505",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 10-Budaun, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28518",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 2001,
+    "title": "District Census Handbook, Budaun, Part A & B, Volume I, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43933",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 2001,
+    "title": "District Census Handbook, Budaun, Part A & B, Volume II, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43934",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 17-Rampur, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28490",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 11-Rampur, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28513",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 2001,
+    "title": "District Census Handbook, Rampur, Part A & B, Uttar Pradesh",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43918",
+    "coverage": "Historical source-era district; preserve edition/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
   }
 ]
