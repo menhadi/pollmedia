@@ -1353,5 +1353,41 @@
     "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Basti - Vol-II",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/43980",
     "coverage": "Historical source-era district; preserve edition/part/volume identity. Observation periods, geographic joins and OCR require review; historical numbering is not a current geography identifier."
+  },
+  {
+    "year": 1961,
+    "title": "District Census Handbook, 47-Gorakhpur, Uttar Pradesh - Census 1961",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28718",
+    "coverage": "Historical source-era district; preserve catalogue and edition/part identity without inferring omitted part labels. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1951,
+    "title": "District Census Handbook, 32-Gorakhpur , Uttar Pradesh - Census 1951",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/28751",
+    "coverage": "Historical source-era district; preserve catalogue and edition/part identity without inferring omitted part labels. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Gorakhpur, Series-22, Uttar Pradesh - Census 1981",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29265",
+    "coverage": "Historical source-era district; preserve catalogue and edition/part identity without inferring omitted part labels. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1981,
+    "title": "District Census Handbook, Gorakhpur, Part XIII-A, Series-22, Uttar Pradesh - Census 1981",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29266",
+    "coverage": "Historical source-era district; preserve catalogue and edition/part identity without inferring omitted part labels. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1971,
+    "title": "District Census Handbook, Gorakhpur, Part X-A, Series-21, Uttar Pradesh - Census 1971",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29267",
+    "coverage": "Historical source-era district; preserve catalogue and edition/part identity without inferring omitted part labels. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 2001,
+    "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Gorakhpur",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43983",
+    "coverage": "Historical source-era district; preserve catalogue and edition/part identity without inferring omitted part labels. Observation periods, geographic joins and OCR require review."
   }
 ]
