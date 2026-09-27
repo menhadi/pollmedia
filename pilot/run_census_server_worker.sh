@@ -8,6 +8,10 @@ if [ "$(basename "$worker_root")" = ocr-worker ]; then shared_root=$(dirname "$w
 if [ "${1:-}" != --capped ] && [ -f "$shared_root/cpu-trial-until" ]; then
     trial_until=$(cat "$shared_root/cpu-trial-until")
     if [ "$(date +%s)" -lt "$trial_until" ]; then
+        # Cron does not inherit the login session's user-manager bus variables.
+        XDG_RUNTIME_DIR=/run/user/$(id -u)
+        DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+        export XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS
         exec /usr/bin/systemd-run --user --scope --quiet -p CPUQuota=50% -p CPUWeight=10 \
             /bin/sh "$worker_root/run_census_server_worker.sh" --capped
     fi
