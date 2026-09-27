@@ -6,6 +6,46 @@ from pathlib import Path
 import time
 
 
+def trial_enabled(shared):
+    path = shared/'cpu-trial-until'
+    return path.exists() and time.time() < float(path.read_text().strip())
+
+
+def quota_is_capped(value):
+    quota, period = value.split()
+    return quota != 'max' and 0 < int(quota) <= int(period) / 2
+
+
+def enforced_cpu_cap():
+    try:
+        relative = Path('/proc/self/cgroup').read_text().strip().split('0::', 1)[1]
+        return quota_is_capped((Path('/sys/fs/cgroup')/relative.lstrip('/')/'cpu.max').read_text())
+    except (OSError, ValueError, IndexError):
+        return False
+
+
+def cpu_headroom():
+    def ticks():
+        return list(map(int, Path('/proc/stat').read_text().splitlines()[0].split()[1:9]))
+    before = ticks(); time.sleep(1); after = ticks()
+    delta = [b-a for a,b in zip(before, after)]; total = sum(delta)
+    pressure = float(Path('/proc/pressure/cpu').read_text().splitlines()[0].split('avg10=')[1].split()[0])
+    return (100*delta[3]/total, 100*delta[4]/total, pressure) if total > 0 else (0, 100, pressure)
+
+
+def trial_decision(ram, active, load, cpus, swap, pressure, capped, idle, iowait, cpu_pressure):
+    if not capped:
+        return False, 'waiting for verified half-core CPU cap'
+    if active:
+        return False, 'single civic worker trial already occupied'
+    allowed, reason = decision(ram, 0, 0, cpus, swap, pressure)
+    if not allowed:
+        return allowed, reason
+    if load > 2*cpus or idle < 20 or iowait > 10 or cpu_pressure > 30:
+        return False, 'waiting for CPU headroom during capped trial'
+    return True, 'admitted: single worker, enforced half-core CPU cap'
+
+
 def decision(available_mib, active, load, cpus, swap_mib_s, pressure):
     if active >= 2:
         return False, 'two civic workers already admitted'
@@ -53,7 +93,11 @@ def admission(root):
             fcntl.flock(lock,fcntl.LOCK_EX)
             records = current()
             ram, load, cpus, swap, pressure = sample()
-            admitted, reason = decision(ram,len(records),load,cpus,swap,pressure)
+            if trial_enabled(shared):
+                admitted, reason = trial_decision(ram, len(records), load, cpus, swap, pressure,
+                                                  enforced_cpu_cap(), *cpu_headroom())
+            else:
+                admitted, reason = decision(ram,len(records),load,cpus,swap,pressure)
             if admitted: records[me] = identity(me)
             ledger.write_text(json.dumps(records))
         yield admitted, reason
