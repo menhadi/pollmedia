@@ -1851,5 +1851,17 @@
     "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Mahrajganj",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/43982",
     "coverage": "Historical Uttar Pradesh source-era district; preserve edition/part identity and original district spelling. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43988",
+    "year": 2001,
+    "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Mau-Vol-I",
+    "coverage": "Historical Uttar Pradesh source-era district; preserve volume and edition identity. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/43989",
+    "year": 2001,
+    "title": "Census of India 2001 - Series 10 - Uttar Pradesh - District Census Handbook, Part A & B - Mau -Vol-II",
+    "coverage": "Historical Uttar Pradesh source-era district; preserve volume and edition identity. Observation periods, geographic joins and OCR require review."
   }
 ]
