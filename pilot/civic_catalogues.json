@@ -2163,5 +2163,17 @@
     "title": "District Census Handbook,Part B-Uttar Pradesh,Mau 1991",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/45272",
     "coverage": "Historical Uttar Pradesh source-era Mau handbook; preserve publisher title and separate part identity. Distinct from completed 1991 workbook validation. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 2011,
+    "title": "Census of India 2011 - Uttar Pradesh - Series 10 - Part XII A - District Census Handbook, Gautam Buddha Nagar",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1212",
+    "coverage": "Historical Uttar Pradesh source-era district; preserve publisher district name and edition/part identity. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 2011,
+    "title": "Census of India 2011 - Uttar Pradesh - Series 10 - Part XII B - District Census Handbook, Gautam Buddha Nagar",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/1213",
+    "coverage": "Historical Uttar Pradesh source-era district; preserve publisher district name and edition/part identity. Observation periods, geographic joins and OCR require review."
   }
 ]
