@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 15:41 UTC
+### Latest concrete step — 29 September 15:56 UTC
+
+Extended the existing JJM adapter with exact hash/source/heading profiles for J1 and J17. J17 emits its report identity and distinct caveats about state district-band counts and non-additive percentages. Raw cells, spans, duplicate totals and locators remain unchanged; observation date remains unverified. Seventeen tests passed, including wrong source/heading rejection between J1 and J17. Server syntax compiled; installed only extract_jjm_html.py under primary worker.lock with backup and hash. Receipt: releases/civic-20260929/jjm-j17-adapter-install-20260929T1556.json; backup directory jjm-j17-adapter-1556.
+
+Verified the preserved J17 original hash, hard-linked it into packages, and queued exactly one jjm_html descriptor: queue/html-345688afbccf0ea0433bade42fb1af58ba46772245b733a1b12baad951b9bea2.json. No new download or manual extraction. Monitor now includes fourteen sources: nine PDFs pending text, three HTML snapshots pending extraction, two CSV access holds. Exact next action: inspect only new JJM/MGNREGA manifests after normal admission, verify original date/header/locator evidence before arithmetic diagnostics; otherwise continue supported official-source expansion without retrying held HMIS/OGD endpoints.
+
+15:55 workers waiting for CPU; completed jobs 521/488, no errors. RAM 5,464 MiB, load 18.25 / six CPUs, swap/PSI zero, disk 60.61 GiB. No publication, resource-policy change or new material failure; notification times unchanged. Next routine summary due after 16:14 UTC.
+
+### Previous concrete step — 29 September 15:41 UTC
 
 Preserved a second public JJM original: J17 Analysis of tap water connections in Districts, followed from the official Physical Progress menu. Worker source-evidence/jjm-j17-state-20260929T1541.html, 174,190 bytes, SHA-256 345688afbccf0ea0433bade42fb1af58ba46772245b733a1b12baad951b9bea2; retrieved 15:42:16 UTC. Verified hash; exact URL, response date and caveats in releases/civic-20260929/jjm-j17-acquisition-20260929T1541.json. Collection used primary worker.lock, shared collection admission, verified TLS and 2 MiB size bound. No extraction/publication or new worker.
 

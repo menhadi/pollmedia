@@ -23,7 +23,7 @@ class JjmTests(unittest.TestCase):
             digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
             expected = digest(package)
             job = {'source_url': adapter.SOURCE_URL}
-            with patch.object(adapter, 'ORIGINAL_SHA256', expected):
+            with patch.dict(adapter.PROFILES, {expected: adapter.PROFILES[adapter.ORIGINAL_SHA256]}):
                 with self.assertRaises(ValueError):
                     adapter.extract(root, package, expected, {'source_url':'wrong'}, digest, lambda _:True)
                 with self.assertRaises(ResourceWait):
@@ -38,6 +38,26 @@ class JjmTests(unittest.TestCase):
                 package.write_bytes(b'changed')
                 with self.assertRaises(ValueError):
                     adapter.extract(root, package, expected, job, digest, lambda _:True)
+
+    def test_j17_profile_cannot_accept_j1_url_or_heading(self):
+        digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); package = root/'report.html'
+            for heading, succeeds in [('State wise PWS and FHTC Coverage', False),
+                                       ('Analysis of tap water connections in Districts', True)]:
+                package.write_text(heading+'<table><tr><td>0</td><td>NA</td></tr></table>')
+                expected = digest(package)
+                with patch.dict(adapter.PROFILES, {expected: adapter.PROFILES[adapter.J17_SHA256]}):
+                    with self.assertRaises(ValueError):
+                        adapter.extract(root, package, expected, {'source_url':adapter.SOURCE_URL}, digest, lambda _:True)
+                    if not succeeds:
+                        with self.assertRaises(ValueError):
+                            adapter.extract(root, package, expected, {'source_url':adapter.J17_URL}, digest, lambda _:True)
+                    else:
+                        adapter.extract(root, package, expected, {'source_url':adapter.J17_URL}, digest, lambda _:True)
+                        manifest = json.loads((root/'source-evidence'/f'jjm-html-{expected}.manifest.json').read_text())
+                        self.assertEqual(manifest['report'], 'J17')
+                        self.assertIn('percentages are not additive', manifest['limitations'][-1])
 
     def test_monitor_uses_jjm_manifest(self):
         with tempfile.TemporaryDirectory() as directory:
