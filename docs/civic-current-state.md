@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 15:26 UTC
+### Latest concrete step — 29 September 15:41 UTC
+
+Preserved a second public JJM original: J17 Analysis of tap water connections in Districts, followed from the official Physical Progress menu. Worker source-evidence/jjm-j17-state-20260929T1541.html, 174,190 bytes, SHA-256 345688afbccf0ea0433bade42fb1af58ba46772245b733a1b12baad951b9bea2; retrieved 15:42:16 UTC. Verified hash; exact URL, response date and caveats in releases/civic-20260929/jjm-j17-acquisition-20260929T1541.json. Collection used primary worker.lock, shared collection admission, verified TLS and 2 MiB size bound. No extraction/publication or new worker.
+
+J17 summarizes numbers of districts in coverage-percentage bands by state; it is not individual district records. Web reader displayed as-of 22/09/2026 from a cached page; verify the acquired original's date before assigning observation period. Percentages are not additive, repeated totals must not become duplicate observations, and household connection coverage does not establish reliable/safe supply. Exact next action: extend JJM adapter with a separate exact hash/source/heading profile and J17 caveats; test source separation, queue this preserved original once, and extend monitoring through existing jjm_html handling. Do not re-download or silently use J1 assumptions.
+
+15:40 primary/OCR waiting for CPU. Registered backlog remains nine PDFs and two HTML jobs pending extraction, two CSV access holds; the new J17 original is not queued/countable yet. Jobs unchanged 521/488 complete, no errors. RAM 5,588 MiB, load 10.64 / six CPUs, swap/PSI zero, disk 60.61 GiB. Existing alerts and summary time unchanged; no completed import.
+
+### Previous concrete step — 29 September 15:26 UTC
 
 Added extract_jjm_html.py for the single preserved JJM J1 snapshot, requiring its exact hash and source URL. Reuses the raw HTML cell parser, with distinct JJM output names and review caveats. Retains duplicate totals, spans, raw strings and original character locators; no arithmetic confirmation or geography joins. Sixteen parser/worker/backlog tests passed, including altered-original rejection, wrong-source rejection, resource pause, CRLF locators and JJM manifest monitoring. Server syntax compiled successfully.
 
