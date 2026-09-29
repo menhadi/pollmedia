@@ -4,7 +4,7 @@
 
 The user clarified that only extraction and preparation of **new** data should pause. Preparation and website import of already collected civic data should continue. Keep both extraction cron lines commented `PAUSED_BY_USER_20260929`. The 15-minute heartbeat now handles existing-data preparation/import only. Do not acquire new sources, run OCR, register catalogues or touch election pipelines. Resume collection only after reporting successful completion of the existing-data release, not after a partial import.
 
-The five 2001/2011 Census views were imported and published on 29 September at 08:12 UTC: 30,525 rows, editions/import runs 1–5, zero population-component discrepancy flags. The 1991 source-table bundle remains uninstalled. The user clarified that extraction CPU admission must not block existing-data imports; retain low priority and memory/disk safeguards.
+The five 2001/2011 Census views were imported and published on 29 September at 08:12 UTC: 30,525 rows, editions/import runs 1–5, zero population-component discrepancy flags. The 1991 source-table bundle was installed and verified at 08:15 UTC. The user clarified that extraction CPU admission must not block existing-data imports; retain low priority and memory/disk safeguards.
 
 The existing application already has both required readers/import paths. No code deployment or migration is needed for the first two subsets below. The user still handles live code pulls if later changes become necessary.
 
@@ -90,3 +90,6 @@ All five `https://pollmedia.org/india/census?edition=ID` pages returned HTTP 200
 Server receipts in `releases/civic-20260929/`: `draft-import-20260929T081006Z.json` and `.log`; `draft-review-20260929T0810.json` (SHA-256 `ae33b01f5fff03310aa71ac71145fea69db2b630a36354fb854acc9cecf70e52`); `publication-20260929T0812.json`; `post-publication-20260929T0812.json`; `website-census-20260929T0812.json`. The three distinct original workbooks are preserved in app-private `official-imports/census-package/` with matching hashes. Public links currently point to official source workbooks; this does not establish a public local-download archive for every civic file.
 
 Next: atomic installation and website checks for the 1991 source-table bundle, then update reference artifacts and coordinate restoration of the four Examelite queues. Civic extraction stays paused; amenities, PDF candidates and LGD joins remain pending review.
+## 1991 release completed — 08:15 UTC
+
+Atomic installation succeeded: 237 files, 118 workbooks, 236 worksheets, 697,205 worksheet rows including definition sheets. Runtime 5.05 seconds; sampled peak RSS 21,832 KiB. No PostgreSQL changes were needed. Verified public year/area/group and district filters, data and definition worksheets, page two, and CSV source-row/official-URL/worksheet locators for 100 rows. Receipts: `install-1991-20260929.json` and `website-1991-20260929.json`. The coverage register now marks 123 source references released; all other entries retain pending-review state. Recovery remains the scoped directory quarantine described above.

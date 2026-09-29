@@ -22,14 +22,14 @@ Collection expanded ahead of integration. Correct that delivery order now. More 
 | Evidence | Actual state |
 | --- | --- |
 | Five 2001/2011 Census views, 30,525 rows | Published as editions 1–5 on 29 September; counts, hashes, scopes and public pages verified. |
-| 118 Census 1991 sources, 697,205 data rows | Original-cell validation completed. Source-table viewer exists; bundle not installed at last check. Historical joins/indicators remain unapproved. |
+| 118 Census 1991 sources, 697,205 worksheet rows including definitions | Installed and public-page/CSV checks passed. Historical joins/indicators remain unapproved. |
 | 68 amenity workbook validations | Original cells verified; reference years, field definitions and geography need interpretation. |
 | 378 PDF evidence manifests | Not a unique-publication count. OCR/text is evidence, not accepted indicator data. 4,217 structured candidate rows remain unverified. |
 | Official UP LGD export | Preserved source `https://lgdirectory.gov.in/downloadDirectory.do`, SHA-256 `3d8f2ad8754decb16e7b2f19512cf0526da186f2c6b4454271be2c10fb5e031e`. |
 | Pilibhit code comparison | 879 explicit historical code pairs corroborated by LGD; 34 names require review. Diagnostic only, not accepted joins or unchanged-boundary proof. |
 | data.gov.in | In original source plan. Zero matching source references in this civic staging database at the 29 September audit. Do not claim it was fully collected. |
 
-Raw staging has 1,497,683 worksheet rows including headers, notes and overlapping records. Do not add this to filtered/1991 counts as a unique final total. No final approved national row count exists. Historical and geographic coverage are incomplete. The five 2001/2011 views are now live in the Census catalogue; the 1991 source-table bundle remains pending.
+Raw staging has 1,497,683 worksheet rows including headers, notes and overlapping records. Do not add this to filtered/1991 counts as a unique final total. No final approved national row count exists. Historical and geographic coverage are incomplete. The five 2001/2011 views are now live in the Census catalogue; the 1991 source-table bundle is also live as source evidence.
 
 ## Next deliverable, in order
 
@@ -50,9 +50,11 @@ Imported and published the five-source 2001/2011 package: 30,525 rows; editions/
 
 Receipts under `/home/pollmedia/census-worker/releases/civic-20260929/`: `draft-import-20260929T081006Z.json` (fresh empty scoped pre-state and runtime), its `.log`, `draft-review-20260929T0810.json` (counts/geographic groups/original and extracted hashes), `publication-20260929T0812.json`, `post-publication-20260929T0812.json` and `website-census-20260929T0812.json`. All five public edition pages returned 200 with expected counts, official URLs, historical-scope and missingness notes. Generic urllib user agent received 403; browser user agent succeeded. Originals are preserved in app-private `official-imports/census-package/` and match the package hashes. This publishes source data with CLI review history, not accepted current-boundary joins or national completeness.
 
-Exact next action: install the already validated 1991 source-table bundle using the release document's atomic installer, fresh destination-absence check and resource monitoring; then verify filters, definitions, pagination and CSV locators. Do not repeat raw validation. Keep civic extraction paused. Restore the four temporarily paused Examelite queues after this import window through the user's root terminal. Baseline Git before this release: `6cb7b54`.
+The 1991 source-table bundle was installed at 08:15 UTC in 5.05 seconds, sampled peak RSS 21,832 KiB. All 237 bundle files verified; 118 workbooks / 236 worksheets are live. The 697,205 worksheet rows include definition sheets, not just data records. Verified year/area/group and district filters, two worksheets, pagination and 100 CSV row locators against preserved page evidence. Receipts: `install-1991-20260929.json`, its `.log`, and `website-1991-20260929.json` in the release directory. Originals remain preserved; the public viewer includes official workbook/catalogue references.
 
-Existing metadata: `coverage-register.json` (570 initial references, not exhaustive coverage) and `lgd-name-review-queue.json` (34 unresolved names on 15 pages). Update publication state for the five released views; the reference workbook also needs the release receipts reflected. No LGD joins accepted.
+Updated `coverage-register.json` on server and local exports: 123 released reference entries (five Census views and 118 historical workbooks), SHA-256 `c1cf067b79567f2f5c9f47694b9d931caa8f2936a3f108cf3898c677c7739498`. Prior register preserved as `coverage-register-before-publication.json`. The reference XLSX still predates publication and needs its status labels refreshed; use the JSON and release receipts for current status.
+
+Exact next action: prepare the remaining existing evidence for supported release, beginning with UP amenity source-date/codebook interpretation. There is no prepared amenity import package in this release. Do not import raw counts as indicators. PDF candidates need verification; 34 LGD names remain unresolved. Both prepared Census packages are now live; this is not all collected data or full historical coverage. Keep extraction paused. The temporary Examelite import window can end; send the four resume commands to the user for root execution and record confirmation. Baseline Git: `a086532`.
 
 ## Continuity protocol
 
