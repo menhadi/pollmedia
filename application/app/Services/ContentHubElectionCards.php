@@ -18,7 +18,7 @@ class ContentHubElectionCards
         $conflicts = [];
         foreach (collect($history)->groupBy('year')->sortKeys() as $year => $editions) {
             $row = $editions->first();
-            foreach (['turnout' => 'turnout_count', 'parties' => 'party_count', 'margin' => 'margin_count', 'winners' => 'margin_count'] as $metric => $count) {
+            foreach (['turnout' => 'turnout_count', 'electors' => 'turnout_count', 'polled' => 'turnout_count', 'parties' => 'party_count', 'margin' => 'margin_count', 'winners' => 'margin_count'] as $metric => $count) {
                 $signatures = $editions->map(fn ($edition) => json_encode([$edition[$metric] ?? null, $edition[$count], $edition['tables']], JSON_THROW_ON_ERROR))->unique();
                 if ($signatures->count() > 1) {
                     $row[$metric] = in_array($metric, ['parties', 'winners'], true) ? [] : null;
@@ -37,14 +37,32 @@ class ContentHubElectionCards
             $cards[] = ['source_url' => $url, 'visual' => ['type' => 'chart', 'chart_style' => 'line', 'heading' => mb_substr($heading, 0, 100), 'unit' => $unit, 'labels' => array_map('strval', array_keys($rows)), 'values' => $values, 'note' => $note]];
         };
         $addLine($state.': '.$label.' turnout', '%', fn ($row) => isset($row['turnout']) ? round($row['turnout'], 2) : null);
+        $registered = $cast = [];
+        foreach ($rows as $row) {
+            $validPair = isset($row['electors'], $row['polled']) && $row['electors'] > 0 && $row['polled'] <= $row['electors'];
+            $registered[] = $validPair ? $row['electors'] : null;
+            $cast[] = $validPair ? $row['polled'] : null;
+        }
+        if (count(array_filter($registered, fn ($v) => $v !== null)) >= 2) {
+            $cards[] = ['source_url' => $url, 'visual' => ['type' => 'chart', 'chart_style' => 'line', 'heading' => $state.': registered voters vs votes cast', 'unit' => 'people / votes', 'labels' => array_map('strval', array_keys($rows)), 'series' => [['name' => 'Registered voters', 'values' => $registered], ['name' => 'Votes cast', 'values' => $cast]], 'note' => 'Counts from the same validated tables in each year; coverage and boundaries vary. Votes cast is a count, not turnout %. Missing values are not zero.']];
+        }
         $eligible = array_filter($rows);
         $latest = $eligible ? end($eligible) : null;
-        foreach (array_slice(array_column($latest['parties'] ?? [], 'party'), 0, 3) as $party) {
-            $addLine($party.': '.$state.' '.$label.' vote share', '%', function ($row) use ($party) {
+        $partySeries = [];
+        foreach (array_slice(array_column($latest['parties'] ?? [], 'party'), 0, 2) as $party) {
+            $values = array_map(function ($row) use ($party) {
                 $entry = collect($row['parties'])->firstWhere('party', $party);
 
                 return $entry ? round($entry['share'], 2) : null;
-            });
+            }, array_values($rows));
+            if (count(array_filter($values, fn ($v) => $v !== null)) >= 2) {
+                $partySeries[] = ['name' => $party, 'values' => $values];
+            }
+        }
+        if (count($partySeries) === 2) {
+            $cards[] = ['source_url' => $url, 'visual' => ['type' => 'chart', 'chart_style' => 'line', 'heading' => $state.': '.$label.' party vote share', 'unit' => '%', 'labels' => array_map('strval', array_keys($rows)), 'series' => $partySeries, 'note' => 'Shares use the same available candidate-vote denominator per year. Coverage varies; party aliases are not merged. Missing or disputed values are not zero.']];
+        } elseif ($partySeries) {
+            $cards[] = ['source_url' => $url, 'visual' => ['type' => 'chart', 'chart_style' => 'line', 'heading' => $state.': '.$partySeries[0]['name'].' vote share', 'unit' => '%', 'labels' => array_map('strval', array_keys($rows)), 'values' => $partySeries[0]['values'], 'note' => $note]];
         }
         $addLine($state.': '.$label.' mean winning margin', 'votes', fn ($row) => isset($row['margin']) ? round($row['margin'], 2) : null);
         if ($latest) {
@@ -69,7 +87,7 @@ class ContentHubElectionCards
         foreach ($rows as $year => $row) {
             $coverage[] = $row ? $year.': turnout '.$row['turnout_count'].'/'.$row['tables'].' tables; party votes '.$row['party_count'].'/'.$row['tables'].'; margins '.$row['margin_count'].'.' : $year.': conflicting editions excluded.';
         }
-        $body = $state.' '.$label.' election history. '.$note.' Party charts show up to three leading parties in the latest available edition; names are kept as reported, not merged across aliases. Mean margins cover eligible constituencies only. Winner lists are selected validated results, not necessarily a complete statewide list. Identical editions are deduplicated. '.implode(' ', $coverage);
+        $body = $state.' '.$label.' election history. '.$note.' Party charts compare up to two leading parties in the latest available edition; names are kept as reported, not merged across aliases. Registered voters and votes cast are counts from the same tables, not percentages. Mean margins cover eligible constituencies only. Winner lists are selected validated results, not necessarily a complete statewide list. Identical editions are deduplicated. '.implode(' ', $coverage);
         if ($conflicts) {
             $body .= ' Conflicting editions excluded for: '.implode(', ', $conflicts).'.';
         }

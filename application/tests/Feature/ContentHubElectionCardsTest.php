@@ -31,7 +31,9 @@ class ContentHubElectionCardsTest extends TestCase
         $cards = $payload['source_cards'];
         $this->assertCount(5, $cards);
         $this->assertSame([70.0, 70.0, 70.0], $cards[0]['visual']['values']);
-        $this->assertSame([57.14, 57.14, 57.14], $cards[1]['visual']['values']);
+        $this->assertSame([1000, 1000, 1000], $cards[1]['visual']['series'][0]['values']);
+        $this->assertSame([700, 700, 700], $cards[1]['visual']['series'][1]['values']);
+        $this->assertSame([57.14, 57.14, 57.14], $cards[2]['visual']['series'][0]['values']);
         $this->assertSame([100.0, 100.0, 100.0], $cards[3]['visual']['values']);
         $this->assertStringContainsString('Candidate A (AAA)', $cards[4]['visual']['rows'][0]);
         $this->assertStringContainsString('election=pc', $payload['source_url']);
@@ -43,7 +45,7 @@ class ContentHubElectionCardsTest extends TestCase
         $history = $this->history();
         $history[1]['parties'] = [];
         $cards = app(ContentHubElectionCards::class)->payload('Karnataka', 'pc', $history)['source_cards'];
-        $this->assertNull($cards[1]['visual']['values'][1]);
+        $this->assertNull($cards[2]['visual']['series'][0]['values'][1]);
         $duplicate = $history[1];
         $duplicate['turnout'] = 99;
         $history[] = $duplicate;
