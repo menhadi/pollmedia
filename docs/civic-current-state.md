@@ -10,7 +10,9 @@ Preserved actual district-MGNREGA resource HTML (1,032,353 bytes, SHA-256 `653c0
 
 Server receipts in releases/civic-20260929: mgnrega-api-access-review-20260929T1311.json and mgnrega-api-probe-receipt-20260929T1311.json; original mgnrega-district-landing-20260929T1311.html. Exact request is preserved in the probe receipt. Do not repeatedly probe unchanged OGD failures. Next action: inspect the Department of Rural Development's own public At a Glance / aggregate reports linked from https://nrega.dord.gov.in/MGNREGA_new/Nrega_home.aspx; avoid person-level jobcard/muster data. Preserve reporting year, as-of date and distinct workers/households/person-days units.
 
-13:10 workers still waiting for extraction CPU admission: RAM 5,504 MiB, load 15.28 / six CPUs, swap traffic/PSI zero, disk 60.63 GiB. Backlog nine downloaded_text_pending plus two access_review_required. No new extraction, approved indicators or publication; unchanged failures deduplicated.
+Department alternative link resolved to https://mnregaweb4.dord.gov.in/netnrega/nrega_ataglance/At_a_glance.aspx; web reader returned 401 Unauthorized. This is a single access observation, not proof of permanent unavailability. Added to access receipt; do not bypass it. Next supported option is the department's public aggregate report menu or assisted publisher access.
+
+13:10 workers still waiting for extraction CPU admission: RAM 5,504 MiB, load 15.28 / six CPUs, swap traffic/PSI zero, disk 60.63 GiB. Backlog nine downloaded_text_pending plus two access_review_required. No new extraction, approved indicators or publication. Three-hour summary recorded at 13:14 UTC in exports/civic-monitor-notifications.json; department 401 alert recorded, older unchanged failures deduplicated.
 
 ### Previous concrete step — 29 September 12:56 UTC
 
