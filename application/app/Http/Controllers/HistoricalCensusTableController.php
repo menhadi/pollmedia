@@ -83,7 +83,8 @@ class HistoricalCensusTableController extends Controller
                     $safe = array_map(fn ($value) => is_string($value) && preg_match('/^[\s]*[=+@-]|^[\t\r\n]/u', $value) ? "'".$value : $value, $values);
                     fputcsv($stream, $safe, ',', '"', '', "\r\n");
                 };
-                $write(['source_row', ...$sheet['headers'], 'data_notes', 'census_year', 'source_population_group', 'source_area', 'official_source', 'worksheet']);
+                $isPdf = ($metadata['source_kind'] ?? 'workbook') === 'pdf';
+                $write([$isPdf ? 'pdf_page_text_line' : 'source_row', ...$sheet['headers'], 'data_notes', 'census_year', 'source_population_group', 'source_area', 'official_source', $isPdf ? 'pdf_candidate_table' : 'worksheet']);
                 foreach ($rows as $row) {
                     $cells = array_pad($row['cells'], count($sheet['headers']), null);
                     $write([$row['source_row'], ...$cells, implode(' | ', $row['flags']), $metadata['year'], $metadata['population_group'], $metadata['area_as_recorded'], $metadata['source_url'], $sheet['name']]);

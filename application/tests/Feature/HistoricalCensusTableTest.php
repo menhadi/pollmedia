@@ -92,4 +92,32 @@ class HistoricalCensusTableTest extends TestCase
         Storage::fake('local');
         $this->get('/india/census/source-tables')->assertOk()->assertSee('have not been prepared');
     }
+
+    public function test_pdf_candidates_use_page_locators_and_explicit_review_labels_in_html_and_csv(): void
+    {
+        $id = $this->prepare();
+        $disk = Storage::disk('local');
+        $prefix = 'census-source-tables/'.$id.'/';
+        $page = json_encode([['source_row' => '61:8', 'cells' => ['Baheri', 598, '-'], 'flags' => ['PENDING ADMIN REVIEW']]]);
+        $disk->put($prefix.'pages.jsonl', $page);
+        $metadata = json_decode($disk->get($prefix.'manifest.json'), true);
+        $metadata['source_kind'] = 'pdf';
+        $metadata['source_url'] = 'https://censusindia.gov.in/example.pdf';
+        $metadata['sheets'][0]['pages'] = [['offset' => 0, 'length' => strlen($page), 'sha256' => hash('sha256', $page)]];
+        $metadata['sheets'][0]['districts'] = [];
+        $body = json_encode($metadata);
+        $disk->put($prefix.'manifest.json', $body);
+        $index = json_decode($disk->get('census-source-tables/index.json'), true);
+        $index['sources'][0]['manifest_sha256'] = hash('sha256', $body);
+        $disk->put('census-source-tables/index.json', json_encode($index));
+        $this->get('/india/census/source-tables?source='.$id)->assertOk()
+            ->assertSee('Official PDF document')->assertSee('PDF page / text line')->assertSee('61:8')
+            ->assertSee('PENDING ADMIN REVIEW')->assertSee('Printed dashes remain dashes')
+            ->assertDontSee('Official Excel workbook')->assertDontSee('Heading cells come from workbook');
+        $csv = $this->get('/india/census/source-tables?source='.$id.'&format=csv')->assertOk()->streamedContent();
+        $this->assertStringContainsString('pdf_page_text_line,NAME,COUNT,OTHER', $csv);
+        $this->assertStringContainsString('61:8', $csv);
+        $this->assertStringContainsString('pdf_candidate_table', $csv);
+        $this->assertStringContainsString('PENDING ADMIN REVIEW', $csv);
+    }
 }

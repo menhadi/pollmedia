@@ -87,6 +87,57 @@ def prepare(root, output):
     return receipt
 
 
+def viewer_bundle(prepared, output):
+    """Adapt verified candidates to bounded pages for the PDF-aware reader."""
+    manifest = json.loads((prepared / 'manifest.json').read_text())
+    assert sha(prepared / 'candidates.jsonl') == manifest['candidates_sha256']
+    groups = {}
+    with (prepared / 'candidates.jsonl').open() as stream:
+        for line in stream:
+            record = json.loads(line)
+            groups.setdefault(record['candidate']['original_sha256'], []).append(record)
+    output.mkdir(exist_ok=False)
+    entries = []
+    for original, records in groups.items():
+        source = manifest['sources'][original]['manifest']
+        catalogue = source['source_url'].split('/catalog/')[1].split('/')[0]
+        area = records[0]['candidate']['profile'].split('_')[0].title()
+        identity = f'2011-{catalogue}-{original[:16]}'
+        folder = output / identity
+        folder.mkdir()
+        entry = dict(id=identity, source_kind='pdf', year=2011,
+                     name=f'{area} PDF candidates — PENDING ADMIN REVIEW',
+                     area_as_recorded=area, population_group='PDF pending admin review',
+                     landing=source['source_url'].split('/download/')[0])
+        pages = []
+        with (folder / 'pages.jsonl').open('wb') as stream:
+            for start in range(0, len(records), 100):
+                rows = []
+                for record in records[start:start + 100]:
+                    row = record['candidate']
+                    rows.append(dict(source_row=f"{row['page']}:{row['line']}",
+                        cells=[row['page'], row['line'], row['raw_line'],
+                               row.get('total_population'), row.get('scheduled_castes_population'),
+                               row.get('scheduled_tribes_population'), row['page_text_sha256'], original],
+                        flags=['PENDING ADMIN REVIEW: visual interpretation and geography unconfirmed.',
+                               record['arithmetic_scope'], *row['warnings'], *record['arithmetic_flags']]))
+                body = json.dumps(rows, ensure_ascii=False).encode()
+                assert len(body) <= 8 * 1024 * 1024
+                pages.append(dict(offset=stream.tell(), length=len(body), sha256=hashlib.sha256(body).hexdigest()))
+                stream.write(body + b'\n')
+        sheet = dict(name='Urban block PDF candidates', headers=['PDF page', 'Saved text line', 'Original printed line',
+                     'Candidate total population', 'Candidate SC population', 'Candidate ST population',
+                     'Page text SHA-256', 'Original PDF SHA-256'], header_source_row=None,
+                     row_count=len(records), pages=pages, districts=[])
+        metadata = dict(entry, retrieved_at=source['extracted_at'], source_url=source['source_url'],
+                        original_sha256=original, pages_sha256=sha(folder / 'pages.jsonl'), sheets=[sheet])
+        (folder / 'manifest.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
+        entries.append(dict(entry, manifest_sha256=sha(folder / 'manifest.json')))
+    (output / 'index.json').write_text(json.dumps(dict(sources=entries, pending=[],
+        scope_note='PDF candidates pending admin review; incomplete coverage and no current geography joins.'), indent=2), encoding='utf-8')
+    return entries
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('root', type=Path)
