@@ -4,7 +4,13 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 17:41 UTC
+### Latest concrete step — 29 September 17:58 UTC
+
+Registered previously absent official Gaya 1961 handbook catalogue https://censusindia.gov.in/nada/index.php/catalog/29283, published 1965, reference Dspace_123456789_744, listed filename 22627_1961_GAY.pdf. Verified exact-URL uniqueness and registry increase 378 to 379 under primary worker.lock; backup/hash receipt releases/civic-20260929/gaya1961-registration-20260929T1758.json. Registration only: no PDF acquisition claimed. Keep historical Bihar/Gaya geography, rural/urban table universes and sex/age definitions explicit; no current-boundary/LGD joins confirmed.
+
+Exact next action: inspect this one catalogue/download after the existing primary cron collection pass; verify newly acquired original receipt if present, then allow normal gated extraction/OCR. Do not repeat the unchanged eleven-PDF audit or any completed extraction. 17:55 primary/OCR still waiting for CPU, completed jobs 521/488 without errors; backlog 375 text receipts pending review, eleven PDFs/five HTML jobs pending extraction and two CSV holds. RAM 5,592 MiB, load 18.90 / six CPUs, swap/PSI zero, disk 60.52 GiB. No new failure/import; last summary unchanged at 16:28 UTC.
+
+### Previous concrete step — 29 September 17:41 UTC
 
 Resolved Dehra Dun 1971's missing text manifest: original exists and its matching pdf_text descriptor is queued, but no SQLite job is registered yet. Checked the same state for all eleven pending PDFs: all originals exist, all eleven descriptors match their downloaded hash/package/source URL and kind, all eleven lack DB registration, none has a completed DB state or text manifest. The worker registers queued jobs only after extraction admission, so this is waiting work, not a legacy receipt mismatch or reason to re-extract. Read-only audit receipt releases/civic-20260929/pending-pdf-queue-audit-20260929T1741.json verified; no payload rehash or evidence mutation.
 
