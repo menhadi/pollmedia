@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'content_hub' => [
+        'url' => env('CONTENT_HUB_URL', 'https://social.examelite.com'),
+        'token' => env('CONTENT_HUB_TOKEN'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

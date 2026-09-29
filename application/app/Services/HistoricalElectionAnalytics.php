@@ -33,7 +33,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v1:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v2:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -72,7 +72,7 @@ class HistoricalElectionAnalytics
     public function summarize(array $records): array
     {
         $electors = $polled = $turnoutCount = $partyCount = $voteTotal = 0;
-        $margins = $parties = $marginPercentages = [];
+        $margins = $parties = $marginPercentages = $winners = [];
         $identities = array_count_values(array_map(fn (array $r): string => (string) ($r['official_pc_code'] ?? $r['official_ac_code'] ?? $r['code']), $records));
         foreach ($records as $record) {
             $identity = (string) ($record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code']);
@@ -103,6 +103,11 @@ class HistoricalElectionAnalytics
                 $margin = $ranked[0]['votes'] - $ranked[1]['votes'];
                 $margins[] = $margin;
                 $marginPercentages[] = 100 * $margin / $total;
+                $name = trim($ranked[0]['candidate_name'] ?? '');
+                $place = trim($record['constituency_name'] ?? $record['name'] ?? '');
+                if ($name !== '' && $place !== '') {
+                    $winners[] = ['constituency' => $place, 'candidate' => $name, 'party' => $ranked[0]['party_at_election'], 'margin' => $margin];
+                }
             }
         }
         arsort($parties);
@@ -115,7 +120,7 @@ class HistoricalElectionAnalytics
             'polled' => $turnoutCount ? $polled : null, 'turnout' => $electors ? 100 * $polled / $electors : null,
             'party_count' => $partyCount, 'parties' => $partyRows, 'margin_count' => count($margins),
             'margin' => $margins ? array_sum($margins) / count($margins) : null,
-            'margin_percent' => $marginPercentages ? array_sum($marginPercentages) / count($marginPercentages) : null];
+            'margin_percent' => $marginPercentages ? array_sum($marginPercentages) / count($marginPercentages) : null, 'winners' => $winners];
     }
 
     private function count(mixed $value): bool
