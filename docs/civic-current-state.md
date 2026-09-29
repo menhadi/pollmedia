@@ -4,7 +4,13 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 12:26 UTC
+### Latest access review — 29 September 12:41 UTC
+
+Checked the supported JJM resource UI twice after navigation completed: it renders incomplete placeholders (Published NA, file size 0 bytes, date 1970), with no download control. These are a failed/incomplete UI state, not actual dataset size/date or evidence of missing values. Did not retry the denied CSV, log in, or bypass controls. A bounded, TLS-verified LGD district landing-page request under collection admission timed out. Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/official-access-review-20260929T1241.json`; neither CSV nor LGD dataset acquired. Existing access alert is unchanged and was not repeated.
+
+12:40 worker statuses remain waiting_for_resources; registry-aware backlog nine downloaded_text_pending and one access_review_required. RAM 5,493 MiB, load 26.02 / six CPUs, measured swap traffic/PSI zero, disk 60.64 GiB; no extraction or publication. Exact next action: inspect official livelihoods/MGNREGA or another supported machine-readable publisher release instead of repeating these unchanged access attempts; preserve periods/units/geographic scope before registering it. Keep JJM held for supported publisher access or assisted acquisition, and inspect only new PDF extraction manifests when admission succeeds. No safeguard changes.
+
+### Previous concrete step — 29 September 12:26 UTC
 
 Added acquisition-only CSV support to the existing isolated primary feeder, allowing only the exact discovered JJM CSV URL. One MiB bound, original bytes/hash/date/metadata receipt, existing locks/TLS/resource admission and duplicate suppression retained; no CSV parsing or publication enabled. Backlog helper includes CSV stages. Normal wrapper GET returned HTTP 403 Forbidden; no CSV acquired. Held this source as access_review_required with no automatic retry (401/403 handling), without bypassing controls. Worker-only install backups/receipt: releases/civic-20260929/csv-acquisition-install-20260929T1226.json; final code hashes and response: csv-access-review-20260929T1226.json. Feeder tests cover original byte preservation, duplicate suppression, HTML rejection and access-denial hold. New access alert recorded in exports/civic-monitor-notifications.json.
 
