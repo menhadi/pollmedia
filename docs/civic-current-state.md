@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 13:56 UTC
+### Latest concrete step — 29 September 14:11 UTC
+
+Followed the public HMIS Reports > Standard Reports > C2. Data Itemwise Monthly (up to sub district) > All States Across Districts folder. Recorded twelve archive links for financial years 2008-2009 through 2019-2020, listed sizes 25-125 MB and publisher modification timestamps. Also observed provisional 2020-2021 and 2021-2022 folders. Server receipt: releases/civic-20260929/hmis-archive-discovery-20260929T1411.json. These are discovered links, not acquired archives or validated coverage. Listed modification dates are not observation dates; facility activity is not population prevalence, and source-era geography/definitions require review.
+
+One bounded server HEAD for the first archive returned HTTP 403 Forbidden. Receipt now marks access_review_required_after_head_403; no ZIP registered, downloaded, parsed or published. Exact next action: inspect the publisher-supported public download workflow or assisted official acquisition before adding narrow ZIP acquisition to the existing primary feeder. Do not automatically retry the denied endpoint or bypass controls. Future archive inspection/parsing stays behind normal extraction admission.
+
+14:10 compact backlog remained nine downloaded_text_pending PDFs, one html_queued_pending_extraction and two CSV access_review_required. Both workers waiting for CPU admission; RAM 7,373 MiB, load 15.50 / six CPUs, swap traffic/PSI zero, disk 60.63 GiB. No new extraction/import. New HMIS access observation recorded for notification; unchanged CPU alert suppressed and last routine summary remains 13:14 UTC.
+
+### Previous concrete step — 29 September 13:56 UTC
 
 Extended read-only civic_source_backlog.py to include explicit HTML queue snapshots before job-database registration. It deduplicates identical URL/hash descriptors and distinguishes pending extraction, missing originals, invalid descriptor paths, receipt mismatch and evidence-present/pending-review. It does not hash bulk originals or claim semantic validation. Five tests passed including HTML lifecycle, path rejection and CSV access-hold separation. Installed only the monitor script; receipt: worker releases/civic-20260929/html-backlog-monitor-20260929T1356.json (code hash and backup).
 
