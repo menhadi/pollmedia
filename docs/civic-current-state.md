@@ -4,7 +4,13 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 17:26 UTC
+### Latest concrete step — 29 September 17:41 UTC
+
+Resolved Dehra Dun 1971's missing text manifest: original exists and its matching pdf_text descriptor is queued, but no SQLite job is registered yet. Checked the same state for all eleven pending PDFs: all originals exist, all eleven descriptors match their downloaded hash/package/source URL and kind, all eleven lack DB registration, none has a completed DB state or text manifest. The worker registers queued jobs only after extraction admission, so this is waiting work, not a legacy receipt mismatch or reason to re-extract. Read-only audit receipt releases/civic-20260929/pending-pdf-queue-audit-20260929T1741.json verified; no payload rehash or evidence mutation.
+
+Exact next action: retain these descriptors unchanged and inspect only new manifests after normal admission. Continue historical Census expansion from unregistered official catalogue gaps while collection admission allows, with duplicate checks first. Do not repeat this eleven-job audit unless state changes. 17:40 both workers waiting for CPU; source counts unchanged (375 text receipts pending review, eleven PDFs and five HTML jobs pending extraction, two CSV access holds); jobs 521/488 complete, no errors. RAM 6,978 MiB, load 8.51 / six CPUs, swap/PSI zero, disk 60.53 GiB. No new material failure/import; last routine summary 16:28 UTC. Unrelated application changes left untouched.
+
+### Previous concrete step — 29 September 17:26 UTC
 
 Fixed the compact backlog monitor to include PDF URLs recorded under registered Census catalogues, deduplicated against direct source URLs and excluding stale unregistered downloads. Census and publication years remain distinct. Eleven monitor/JJM tests passed, including catalogue/direct URL overlap, duplicate links, completed receipt classification and stale-download exclusion. Installed only read-only civic_source_backlog.py under worker.lock, with backup/hash receipt releases/civic-20260929/catalogue-monitor-install-20260929T1726.json.
 
