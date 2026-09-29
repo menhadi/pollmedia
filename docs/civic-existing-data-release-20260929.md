@@ -97,3 +97,7 @@ Atomic installation succeeded: 237 files, 118 workbooks, 236 worksheets, 697,205
 ## UP amenity source tables live — 09:27 UTC
 
 Two source workbooks added without replacing the original 118 sources. Seven displayed worksheets include the preserved hamlet title/notes. All public pages and CSV downloads checked. Town/slum body rows: 915/2,015; village/hamlet: 106,774/165,081, plus source remarks. These are source rows, not approved indicators. Installation and public receipts: `up-amenity-install-20260929.json` and `up-amenity-public-check-20260929.json` in the server release directory. Recovery uses the exact prior index backup and current-hash precondition recorded in the short handoff; preserve evidence directories. No new extraction or app deployment.
+
+## Remaining amenities published pending review
+
+At the user's explicit direction, 66 more amenity workbooks are public as PENDING ADMIN REVIEW source evidence, preserving 860,797 raw rows including headers/notes. No mathematical-consistency or current-geography acceptance is claimed. All 66 source pages and three CSV samples checked. All 68 registered amenity workbooks are now available. The source-table index has 186 entries. Build/install/public receipts use the `amenities-pending-admin-` prefix in the release directory. The prior 120-entry index is preserved in `index-before-66-amenities.json`; restoration requires matching the exact new-index hash in the handoff. Dedicated admin confirmation UI is not part of the existing reader. New extraction remains paused.

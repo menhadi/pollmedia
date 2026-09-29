@@ -15,6 +15,7 @@ Collection expanded ahead of integration. Correct that delivery order now. More 
 - Keep both server extraction crons paused. No new acquisition, source discovery, OCR or new raw extraction.
 - Prepare and import already collected civic data. Keep bulk preparation under `/home/pollmedia/census-worker`; local checkout is for scoped code/tests/Git and compact handoff artifacts.
 - No election changes. No code deployment or migrations; user handles live code pull.
+- User now explicitly authorizes publication of existing source evidence before admin confirmation. Publish pending-review labels and unresolved math/geography/period notes; do not block on semantic review or invent confirmed values/joins. Keep integrity verification. This does not authorize new extraction or code deployment.
 - Do not resume collection after a partial import. First report what existing-data release actually completed and what remains.
 
 ## Evidence we have
@@ -82,9 +83,15 @@ Implemented/tested `pilot/add_census_source_tables.py`; four tests passed for pr
 
 Receipts: `releases/civic-20260929/up-amenity-install-20260929.json` and `up-amenity-public-check-20260929.json`. Exact prior index backup: `index-before-up-amenities.json`, SHA-256 `e4365c871b79a3af9c26e973b564b179452e8c055db3abb57ada859b02afa0d4`; new index SHA-256 `357a3381723c32f77f683a0c801fa885fdd5342bf9ed3e641aa42d2ae60fba42`. Recovery: under the same exclusive release lock, verify current index still matches that new hash, then atomically restore the backup; retain new evidence directories unreferenced. Never overwrite later index changes. Coverage register updated on server/local to mark these two amenity references published. No app code deployment or migrations.
 
-Exact next action: select the next already-validated amenity source, review its actual sheet headers/definitions/periods, and use the streaming/additive path with receipts. Do not assume UP layouts apply to other states. The stale reference XLSX also needs status refresh. Remaining PDF candidates and LGD joins remain pending review. Baseline Git `c7c7f03`. Extraction stays paused.
-Both prepared Census packages remain live; remaining amenities/PDF candidates/LGD joins require review. Extraction stays paused. Four Examelite resume commands were sent to the user after the import window; execution is not yet confirmed. Do not assume restoration.
+### Latest release — remaining amenity workbooks published pending admin review
 
+User explicitly requested publication before admin confirmation, with uncertainty/math flags visible. Published the remaining 66 validated amenity workbooks as original-structure source evidence: 860,797 raw rows including headers/notes, not approved indicators. All original rows are retained under generic column headings where header interpretation is unconfirmed. Source titles, group filters and row notes say PENDING ADMIN REVIEW; geography, field periods and mathematical consistency are explicitly unconfirmed. No implied completed math review. All 66 public source pages returned 200 with review labels; three CSV samples retained the notes. Eight focused packager/installer tests passed.
+
+All 68 registered amenity workbooks are now available (two UP plus this batch). The source-table index has 186 sources, preserving the original 120 entries exactly. Receipts in `releases/civic-20260929/`: `amenities-pending-admin-build.json`, `amenities-pending-admin-install.json`, `amenities-pending-admin-public-check.json`. Build: 318 seconds, peak RSS 28,660 KiB; install: 13.15 seconds. Backup `index-before-66-amenities.json`, prior hash `357a3381723c32f77f683a0c801fa885fdd5342bf9ed3e641aa42d2ae60fba42`; new live index hash `3bebef4fdb7880b798f23137bde6386e0c7089076d8148e4aced4da98fb603dc`. Recovery only restores that backup under the release lock after matching the new hash; retain unreferenced evidence directories. Coverage register updated server/local.
+
+A brief post-install swap sample reached 23.13 MiB/sec, then zero on the next check; final 0.14 MiB/sec, 6,617.73 MiB available RAM, memory PSI 0.16. No memory-floor event. Do not change swap settings. Publication labels do not implement a dedicated admin confirmation workflow: existing source-table reader has no approval action. That UI would require scoped code work and user-managed deployment; do not claim it exists.
+
+Exact next action: publish remaining existing PDF-derived candidate evidence with source/page locators and explicit OCR/math/geography review flags, using an appropriate existing reader if compatible. Do not invent confirmed joins or convert uncertain candidates to indicators. Maintain source-preservation and integrity checks; semantic review alone must not block pending-review source publication. Refresh stale reference XLSX. Extraction remains paused. Examelite resume commands were provided; execution still unconfirmed. Baseline Git `e79589a`.
 ## Continuity protocol
 
 ### Shared-load diagnosis and pending decision

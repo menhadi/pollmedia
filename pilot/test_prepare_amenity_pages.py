@@ -58,6 +58,20 @@ class AmenityPagesTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Duplicate'):
             prepare_sheet(self.db, io.BytesIO(), 'hash', 'Hamlet_Test', 1)
 
+    def test_unresolved_header_preserves_every_row_and_review_note(self):
+        self.put(1, ['Title', None], ['s', 'n'])
+        self.put(3, ['001', 0], ['s', 'n'])
+        stream = io.BytesIO()
+        sheet, notes = prepare_sheet(self.db, stream, 'hash', 'Hamlet_Test', 0,
+                                     period_note='Pending admin review; period unconfirmed.')
+        self.assertEqual(sheet['headers'], ['Original column 1', 'Original column 2'])
+        self.assertEqual(sheet['row_count'], 2)
+        self.assertIsNone(sheet['header_source_row'])
+        self.assertEqual(notes, [])
+        rows = json.loads(stream.getvalue())
+        self.assertEqual([row['source_row'] for row in rows], [1, 3])
+        self.assertIn('Pending admin review; period unconfirmed.', rows[0]['flags'])
+
 
 if __name__ == '__main__':
     unittest.main()

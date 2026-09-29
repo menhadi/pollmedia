@@ -14,14 +14,15 @@ def encode(value):
     return json.dumps(value, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
 
 
-def prepare_sheet(connection, stream, workbook_hash, name, header_row, page_size=100):
+def prepare_sheet(connection, stream, workbook_hash, name, header_row, page_size=100,
+                  period_note=PERIOD_NOTE):
     """Bound memory to one page; retain sparse row numbers and original JSON types."""
-    if page_size < 1 or header_row < 1:
-        raise ValueError('Positive page size and header row required')
+    if page_size < 1 or header_row < 0:
+        raise ValueError('Positive page size and nonnegative header row required')
     records = connection.execute(
         'SELECT source_row, cells_json, cell_types_json FROM raw_rows '
         'WHERE workbook_sha256=? AND sheet=? ORDER BY source_row', (workbook_hash, name))
-    header = None
+    header = {'cells': [], 'cell_types': []} if header_row == 0 else None
     preamble, batch, pages = [], [], []
     count = width = 0
     previous = 0
@@ -59,7 +60,7 @@ def prepare_sheet(connection, stream, workbook_hash, name, header_row, page_size
         width = max(width, len(cells))
         item.update(formula_columns=[i for i, t in enumerate(types) if t == 'f'],
                     error_columns=[i for i, t in enumerate(types) if t == 'e'],
-                    flags=[PERIOD_NOTE])
+                    flags=[period_note])
         if name.startswith(('Slum', 'Hamlet')):
             item['flags'].append('Detail rows repeat parent codes/population; do not sum parent population.')
         batch.append(item)
@@ -69,8 +70,10 @@ def prepare_sheet(connection, stream, workbook_hash, name, header_row, page_size
     if header is None:
         raise ValueError('Reviewed header row missing')
     flush()
-    result = {'name': name, 'headers': header['cells'] + [None] * (width - len(header['cells'])),
-              'header_source_row': header_row, 'header_cell_types': header['cell_types'],
+    headers = (['Original column ' + str(i + 1) for i in range(width)] if header_row == 0
+               else header['cells'] + [None] * (width - len(header['cells'])))
+    result = {'name': name, 'headers': headers,
+              'header_source_row': header_row or None, 'header_cell_types': header['cell_types'],
               'row_count': count, 'pages': pages, 'districts': [],
               'staged_sheet_sha256': input_digest.hexdigest()}
     # Caller must expose these in a supplementary worksheet; viewer ignores preamble metadata.
