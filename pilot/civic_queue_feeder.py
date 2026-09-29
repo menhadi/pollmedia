@@ -21,6 +21,7 @@ from census_server_worker import digest, resources_ok
 def official(url):
     p = urlsplit(url)
     return p.scheme == 'https' and (
+        url == 'https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf' or
         (p.netloc == 'censusindia.gov.in' and p.path.startswith('/nada/')) or
         (p.netloc == 'dashboard.udiseplus.gov.in' and not p.query and not p.fragment and
          re.fullmatch(r'/report2026/static/media/UDISE\+20\d{2}_\d{2}_Booklet_(nep|existing)\.[a-f0-9]+\.pdf', p.path) is not None))

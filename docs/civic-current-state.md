@@ -38,6 +38,14 @@ Added read-only pilot/civic_source_backlog.py (server copy in worker root). Two 
 
 Workers at 11:10 still waiting_for_resources; primary/OCR prior complete counts 521/488; RAM 7,466 MiB, load 10.26 / six CPUs, swap/PSI zero, disk 60.77 GiB. Same CPU alert already recorded; no repeat notification. Exact next action: run python3 civic_source_backlog.py /home/pollmedia/census-worker, inspect progress when cron admission succeeds, and continue supported LGD/health discovery while these eight await resources. Preserve all existing limits. No original downloaded, extraction performed or release published this run.
 
+### Latest concrete step — 29 September 11:26 UTC: health review registered
+
+Registered official NHM https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf (16th Common Review Mission, 2024). Server HEAD returned 200 application/pdf, 6,635,053 bytes. This is selected facility/programme assessment evidence, NOT nationwide facility enumeration, HMIS monthly activity, patient data or village health outcomes. Table-specific periods require review. Failed Health Dynamics 2022-23 URL returned HEAD 404 and was not registered; discovery receipt health-source-discovery-20260929T1126.json preserves it.
+
+Exact NHM URL added to feeder allowlist with seven passing feeder tests (including unrelated paths/hosts/query rejection). Existing primary worker module updated under worker.lock with backup; direct registry preserves all eight education sources plus one health source. Receipt releases/civic-20260929/health-source-registration-20260929T1126.json records metadata, checks, code hash and backup. No application deployment, extraction policy change or manual download. Nine sources registered pending admission; not acquired or published.
+
+11:25 worker states still waiting_for_resources; primary/OCR complete counts 521/488; load 18.19 / six CPUs, RAM 7,032 MiB, swap/PSI zero. Same CPU block, not a new memory failure. Exact next action: check registry-aware backlog; normal cron processes sources only after admission. While waiting, pursue official LGD/HMIS machine-readable access, keeping data.gov.in catalogue discovery separate from acquired data. Do not repeat failed Health Dynamics URL or force extraction. Preserve academic-year variants and health review scope during later table normalization.
+
 ---
 
 # Civic work: read this first

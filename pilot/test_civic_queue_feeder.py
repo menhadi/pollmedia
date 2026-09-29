@@ -9,6 +9,13 @@ from civic_queue_feeder import Links, feed, official
 
 
 class FeederTests(unittest.TestCase):
+    def test_health_review_is_explicitly_allowlisted_not_arbitrary_health_paths(self):
+        url = 'https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf'
+        self.assertTrue(official(url))
+        self.assertFalse(official(url.replace('16th_', 'unknown_')))
+        self.assertFalse(official(url.replace('nhm.gov.in', 'nhm.gov.in.evil')))
+        self.assertFalse(official(url + '?redirect=elsewhere'))
+
     def test_explicit_education_pdf_registry_preserves_period_and_resumes(self):
         url = 'https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2023_24_Booklet_nep.f2ab818294eb169c0adc.pdf'
         self.assertTrue(official(url))
