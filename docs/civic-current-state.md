@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 14:26 UTC
+### Latest concrete step — 29 September 14:41 UTC
+
+Reviewed HMIS public terms and Contact Us pages through the normal UI. Terms contain general reference/verification notices, no automated-download procedure. Saved official statistics and UP-assigned support contacts plus an unsent, specific access question in releases/civic-20260929/hmis-supported-access-review-20260929T1441.json; verified receipt. No contact made or agreement accepted. The prior historical ZIP HEAD 403 remains a single method-specific observation; workbook GET is untested, not proven forbidden. Do not claim all HMIS downloads require login or are unavailable.
+
+HMIS access investigation is now awaiting a supported method/assisted access; do not spend subsequent checks rereading these same listings/terms. Exact next action: inspect remaining official source gaps in the original source matrix and select another machine-readable publisher release, while checking only new worker manifests. If HMIS access is clarified, prioritize the twelve small provisional UP monthly XLSX files using the existing primary feeder. Any outgoing support message requires the user's explicit instruction.
+
+14:40 primary/OCR still waiting for CPU; completed jobs 521/488, zero job errors, nine PDFs and one HTML pending extraction, two CSV access holds, one known catalogue gap. RAM 6,632 MiB, load 14.49 / six CPUs, swap traffic/PSI zero, disk 60.61 GiB. No new material failure or import; unchanged alerts suppressed and last summary remains 13:14 UTC. Safeguards unchanged.
+
+### Previous concrete step — 29 September 14:26 UTC
 
 Inspected the public HMIS provisional 2020-2021 folder, then A.MonthWise > Uttar Pradesh. Preserved twelve exact monthly XLSX links (April through March), listed sizes 0.64-0.71 MB and modification timestamps in releases/civic-20260929/hmis-up-monthly-discovery-20260929T1426.json. Verified twelve unique links in the receipt. This provides smaller machine-readable acquisition candidates than national ZIPs. Monthly and B.Cummulative folders are distinct; never add cumulative to monthly figures. Source is explicitly provisional; confirm fiscal month-year mapping, definitions and district geography from originals before indicators.
 
