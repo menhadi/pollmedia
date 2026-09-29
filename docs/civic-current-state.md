@@ -6,6 +6,12 @@ Resume receipt: /home/pollmedia/census-worker/releases/civic-20260929/extraction
 
 Exact next action: expand supported official sources against coverage gaps, prioritizing machine-readable Census/LGD/data.gov.in, then education/health/water/livelihood releases per original source matrix. Do not duplicate completed registry jobs. Investigate catalogue 43938 format and the non-ZIP workbook response; do not bypass verification or retry indefinitely. LGD/data.gov.in catalogue discovery was attempted this turn but web fetch timed out; no new dataset acquired. Preserve original URLs/hashes/period and source-era identifiers. Reference XLSX refresh and admin confirmation/local-original-download UI remain unfinished release work. Existing published releases remain live with review flags.
 
+### Latest check — 29 September 10:11 UTC
+
+Both resumed crons checked at 10:10 and report waiting_for_resources (load 8.12 / six CPUs, RAM 6,323 MiB, swap/PSI zero). Primary 521 complete; OCR 488 complete; no pending extraction jobs. Investigated Saharanpur 2001 catalogue 43938: preserved HTML has no download link of any format. Verified-TLS metadata export acquired (1,262 bytes), SHA-256 4394d39dff2a1a5151aa1ac57c301c68bb3449d8e37d22311d6a207928de3fb4. Metadata identifies DH_09_2001_SAH.pdf and publication date 2006-10-17, but resources is empty and file_uri is only a filename, not a verified download URL. Do not guess a URL or call this book collected. Receipt source-gap-review-20260929T1011.json in worker releases/civic-20260929 includes original catalogue HTML hash and metadata provenance. This resolves the parser-format question: no supported link is present in this evidence.
+
+Official data.gov.in search confirms the LGD catalogue and district resource landing page; direct web fetches timed out. Exact downloadable resource/API access still unverified. Next action: inspect the official LGD resource through a supported browser/API path, preserve exact download URLs/schema/access requirements; in parallel planning prioritize further supported Census sources rather than repeated unchanged Saharanpur retries. No new bulk dataset or publication this check. Reference XLSX/admin UI remain unfinished.
+
 ---
 
 # Civic work: read this first
