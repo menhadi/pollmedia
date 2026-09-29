@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 14:11 UTC
+### Latest concrete step — 29 September 14:26 UTC
+
+Inspected the public HMIS provisional 2020-2021 folder, then A.MonthWise > Uttar Pradesh. Preserved twelve exact monthly XLSX links (April through March), listed sizes 0.64-0.71 MB and modification timestamps in releases/civic-20260929/hmis-up-monthly-discovery-20260929T1426.json. Verified twelve unique links in the receipt. This provides smaller machine-readable acquisition candidates than national ZIPs. Monthly and B.Cummulative folders are distinct; never add cumulative to monthly figures. Source is explicitly provisional; confirm fiscal month-year mapping, definitions and district geography from originals before indicators.
+
+No workbooks acquired or requested yet: ordinary public download links use the same HMIS downloadfiles route whose historical ZIP HEAD previously returned 403. No automatic retries, local bulk downloads or new registry entries. Exact next action: inspect official HMIS contact/terms or assisted acquisition to resolve supported server download access before registering these narrow XLSX URLs in the existing primary feeder. Extraction stays behind normal admission. The initial transient No Record Found display resolved to folder contents; do not report it as absent data.
+
+14:25 workers still waiting for CPU admission; nine PDFs and one HTML snapshot pending extraction, two CSV access holds. Completed job totals unchanged at 521 primary / 488 OCR, no job errors. RAM 6,733 MiB, load 24.97 / six CPUs, swap traffic/PSI zero, disk 60.63 GiB. Feeder has zero pending PDF/workbook downloads, one known catalogue gap; its two pending CSV entries are access holds, not retryable work. No new failure/import; notification timestamps unchanged.
+
+### Previous concrete step — 29 September 14:11 UTC
 
 Followed the public HMIS Reports > Standard Reports > C2. Data Itemwise Monthly (up to sub district) > All States Across Districts folder. Recorded twelve archive links for financial years 2008-2009 through 2019-2020, listed sizes 25-125 MB and publisher modification timestamps. Also observed provisional 2020-2021 and 2021-2022 folders. Server receipt: releases/civic-20260929/hmis-archive-discovery-20260929T1411.json. These are discovered links, not acquired archives or validated coverage. Listed modification dates are not observation dates; facility activity is not population prevalence, and source-era geography/definitions require review.
 
