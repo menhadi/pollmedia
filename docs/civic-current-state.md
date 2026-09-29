@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 12:56 UTC
+### Latest access step — 29 September 13:11 UTC
+
+Preserved actual district-MGNREGA resource HTML (1,032,353 bytes, SHA-256 `653c0077782f77369cd6142f52948f5b90aff187e0d3745e82d1f7a0c99d57c1`). It contains the records API path `https://api.data.gov.in/resource/ee03643a-ee4c-48c2-ac30-9f2ff26ab722` with a publisher-supplied public sample key, distinct from the catalogue UUID. One bounded sample request (limit=1, offset=0, JSON) under collection admission timed out; no records acquired. Do not treat a discovered endpoint as successful collection. The landing also contains a sandbox warning: resolve publisher/environment provenance before release. Official help https://www.data.gov.in/help describes account-based API key generation; no private key or user credential obtained.
+
+Server receipts in releases/civic-20260929: mgnrega-api-access-review-20260929T1311.json and mgnrega-api-probe-receipt-20260929T1311.json; original mgnrega-district-landing-20260929T1311.html. Exact request is preserved in the probe receipt. Do not repeatedly probe unchanged OGD failures. Next action: inspect the Department of Rural Development's own public At a Glance / aggregate reports linked from https://nrega.dord.gov.in/MGNREGA_new/Nrega_home.aspx; avoid person-level jobcard/muster data. Preserve reporting year, as-of date and distinct workers/households/person-days units.
+
+13:10 workers still waiting for extraction CPU admission: RAM 5,504 MiB, load 15.28 / six CPUs, swap traffic/PSI zero, disk 60.63 GiB. Backlog nine downloaded_text_pending plus two access_review_required. No new extraction, approved indicators or publication; unchanged failures deduplicated.
+
+### Previous concrete step — 29 September 12:56 UTC
 
 Registered a narrowly allowlisted livelihoods CSV observed in official data.gov.in HTML: `https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_616_E_iii.csv`. Title: Odisha monthly MGNREGS person-days during 2024-25; published 27 June 2025. Preserved landing HTML (1,014,752 bytes, SHA-256 `6efa9a5d89014658f9f1da6f19c61fca4399d1dd0c1d26331baee6b8eb18a304`). Listing incorrectly/conflictingly describes units as Rs. in lakh despite person-days fields; keep unresolved and compare original parliamentary question 616, answered 7 February 2025. Financial-year series may be partial; not district observations or unique people.
 
