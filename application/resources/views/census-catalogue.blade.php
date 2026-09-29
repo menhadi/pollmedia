@@ -1,7 +1,7 @@
 @extends($admin ? 'seo-layout' : 'geography-layout')
 @section('title', 'India Census data')
 @section('content')
-<h1>India Census data</h1><p>Explore recorded population and household figures using official Census geography. Census boundaries and names can differ between years and from today's administrative areas.</p>
+<p><a href="{{ route('civic.index') }}">Browse state → district → tehsil → village / town profiles →</a></p><h1>India Census data</h1><p>Explore recorded population and household figures using official Census geography. Census boundaries and names can differ between years and from today's administrative areas.</p>
 <p><a href="{{ route('census.national-history') }}">Historical population: 1901 to 2011, with original source notes</a></p>
 <p><a href="{{ route('census.source-tables') }}">Historical Census source tables: original columns, definitions and district filters</a></p>
 @if($admin)

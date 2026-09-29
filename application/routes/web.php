@@ -10,6 +10,7 @@ use App\Http\Controllers\CensusCatalogueController;
 use App\Http\Controllers\CensusHistoryController;
 use App\Http\Controllers\CensusPublicationController;
 use App\Http\Controllers\CitizenIssueController;
+use App\Http\Controllers\CivicExplorerController;
 use App\Http\Controllers\ConstituencyOverviewController;
 use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\ElectionBatchController;
@@ -45,6 +46,8 @@ Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('th
 Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
 Route::get('/search', [PublicSearchController::class, 'index'])->name('public.search');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/india/census/explore', [CivicExplorerController::class, 'index'])->name('civic.index');
+Route::get('/india/census/places/{record}', [CivicExplorerController::class, 'index'])->whereNumber('record')->name('civic.place');
 Route::get('/india/census/history', [CensusHistoryController::class, 'national'])->name('census.national-history');
 Route::get('/india/census/source-tables', [HistoricalCensusTableController::class, 'index'])->name('census.source-tables');
 Route::get('/india/census', [CensusCatalogueController::class, 'index'])->name('census-catalogue.index');
