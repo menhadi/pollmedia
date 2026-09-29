@@ -64,3 +64,15 @@ On 29 September, one sequential local PHPUnit run passed all 15 tests / 97 asser
 Before substantial server preparation/import require available RAM >=3 GiB, one-minute load <= CPU count, swap traffic <=8 MiB/sec, memory PSI some avg10 <=5%, and disk reserve >=10 GiB. Use low priority, a 1.5 GiB address-space cap and the 1.5 GiB ongoing RAM floor. Do not compete with workers or other import attempts. Do not relax admission for this release. Capture fresh scoped backup/receipts before writes; checks and tests alone do not establish successful publication.
 
 Next run: check resources; continue reference/semantic review of existing evidence while waiting; execute the first eligible import path once admitted, verify the website, update this document and the reference workbook with actual receipts. Keep remaining raw-only subsets explicitly pending. Do not label the whole task complete after these first two subsets.
+
+## Release-code preflight completed
+
+The 07:23 UTC heartbeat on 29 September verified these server files exactly match the tested local files:
+
+| File | SHA-256 |
+| --- | --- |
+| Staged `install_census_source_bundle.py` | `f67e08e32587083427431fa8a710136f159e3345cfd0a32e202e938903987c14` |
+| Deployed `HistoricalCensusTableController.php` | `f7a49795f89c02fdc207c967e4c12824c40900dc6755fb7ddd859a75ae4794cf` |
+| Deployed `ImportCensusPackage.php` | `478bf6937d7a1061b15c965670fee4d5b6fbc6388904d22dad3215c4e960fc67` |
+
+Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/release-code-preflight-20260929.json`. The historical destination remained absent and its parent writable. This verifies release-code identity, not complete deployed dependency equivalence or completed data import. Fresh storage configuration/pre-state and resource admission are still required at execution time. Load was 15.59 on six CPUs, so no import was launched.

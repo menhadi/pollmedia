@@ -44,6 +44,12 @@ Last server samples: load approximately 18–21 on six CPUs. Live import held fo
 
 Fifteen relevant application tests and two bundle installer tests passed. Do not rerun completed raw-cell/OCR work. Narrow retesting to changed behavior or a concrete unresolved failure. No live import receipt exists yet.
 
+### Latest concrete step — 29 September, 07:23 UTC heartbeat
+
+Release-code preflight completed: the staged 1991 installer and deployed historical reader/Census package importer exactly match the tested local files by SHA-256. The source-table destination is still absent and its parent writable. Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/release-code-preflight-20260929.json`. No live import or code deployment occurred. Current sample: load 15.59/6 CPUs, available RAM 7,273.75 MiB, disk 65.67 GiB, swap and memory PSI zero; shared worker ledger empty. CPU wait is unchanged and already alerted.
+
+LGD provenance check confirms the stored URL is a collection page, checked 16 September, not an exact file-download URL. Preserve that distinction. Stored scope describes the UP administrative export and Pilibhit pilot extraction; it does not establish verified statewide joins. Next: once admitted, capture fresh scoped pre-state and import the five-source package as drafts; inspect rows/flags before publication. During resource waits, extend the coverage register with this LGD provenance and explicit data.gov.in gaps. Baseline Git commit before this preflight: `a87595a`.
+
 ## Continuity protocol
 
 Every run records only: completed action and receipt, exact next action, remaining blocker and current Git commit. Update this file when state changes; keep detailed evidence in release receipts, not the automation prompt. Read chronological checkpoints only for a specific missing fact. Never restart the project or ask the user to restate agreed scope because the chat became long.
