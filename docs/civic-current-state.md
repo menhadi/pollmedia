@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 16:56 UTC
+### Latest concrete step — 29 September 17:11 UTC
+
+Existing collector acquired Patna 1961 handbook at 17:00:16 UTC from https://censusindia.gov.in/nada/index.php/catalog/29737/download/32918/22621_1961_PAT.pdf. Verified PDF signature, 17,816,730-byte size and SHA-256 2c8119d0c74dff69abef7d7877b5705fce3bcfe63c2e06640bda58ced74b591a. Receipt releases/civic-20260929/patna1961-acquisition-check-20260929T1711.json identifies original package and acquisition metadata. No extraction manifest yet; byte integrity is validated, semantic review/publication pending. Catalogue HTML hash c518bf44b36074de5bced85f598b94f5923de4ead2b49edac5400eb7d799c83c preserved by feeder.
+
+Exact next action: extend compact backlog helper to include catalogue-derived acquired PDFs without double-counting direct URLs or completed evidence, so Patna's pending extraction is visible. Inspect only new manifests after normal admission. Current helper still reports nine direct PDFs, five HTML jobs and two CSV access holds; the newly acquired Patna PDF is an additional pending original outside its current coverage. Do not re-download or rehash this completed integrity check. Publication year 1966 remains separate from Census 1961 and historical geography remains unjoined.
+
+17:10 primary/OCR waiting for CPU; jobs 521/488 complete, no errors. RAM 6,126 MiB, load 6.70 / six CPUs, swap/PSI zero, disk 60.57 GiB. No pending downloads, one known catalogue gap. No new failure/import; last summary unchanged at 16:28 UTC. Unrelated local application/election changes were present and left untouched; civic commit scopes only this handoff.
+
+### Previous concrete step — 29 September 16:56 UTC
 
 Returned to historical Census gaps. Registry contained Patna 2011 Part A only; registered official catalogue https://censusindia.gov.in/nada/index.php/catalog/29737 for District Census Handbook, Patna, 1, Bihar - Census 1961, published 1966, reference Dspace_123456789_741, listed filename 22621_1961_PAT.pdf. Exact URL deduplicated under primary worker.lock; registry backup and verified count/hash in releases/civic-20260929/patna1961-registration-20260929T1656.json. Registration is not PDF acquisition, extraction or publication. Source-era district boundaries and urban-only table universes require review; no LGD join asserted.
 
