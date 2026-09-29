@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest verified step — 29 September 11:56 UTC
+### Latest discovery step — 29 September 12:11 UTC
+
+Resolved an actual machine-readable water-source link from the official data.gov.in landing HTML: `https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_91_A_to_D_i.csv`. Landing: `https://www.data.gov.in/resource/stateut-wise-status-tap-water-connections-rural-households-under-jal-jeevan-mission-jjm-29`. Server GET of the landing succeeded under collection admission with verified TLS; preserved 1,015,022 HTML bytes, SHA-256 `005490a58542aef37639b706d55f32b40fe00a2916daf3740ba5965170f78a04`. The URL is from its field_datafile metadata, not guessed. CSV HEAD returned 405 (method unsupported, not evidence that GET fails); CSV bytes have NOT been acquired or parsed. Receipt and HTML: worker `releases/civic-20260929/water-source-discovery-20260929T1211.json` and `water-source-landing-20260929T1211.html`.
+
+Listing describes a 2.2 KB state/UT household-connection CSV as of 29 January 2025, published 30 May 2025, Rajya Sabha Session 267 question 91 answered 3 February 2025, sourced from JJM IMIS. Numbers in lakh and percentages need separate units; NA remains missing. It is not village coverage or proof of water quality/reliability. Exact next action: add narrowly scoped CSV acquisition to the existing primary feeder with original/hash receipts and tests, use a bounded GET rather than repeating unsupported HEAD, and keep parsing behind extraction admission. No new parallel collector or broad domain allowlist.
+
+12:10 workers still wait for CPU admission; all nine PDFs downloaded_text_pending, no pending downloads/workbooks, one known catalogue gap. RAM 6,386 MiB, load 12.84 / six CPUs, swap traffic/PSI zero, disk 60.65 GiB. No new failures, extraction or publication; unchanged resource alert deduplicated. Next extraction check should inspect only new manifests, not revalidate completed originals.
+
+### Previous verified step — 29 September 11:56 UTC
 
 NHM's 16th Common Review Mission 2024 original was acquired by cron at 11:45 UTC. Verified PDF signature, 6,635,053 bytes, full SHA-256 `e7ecf771ae13c74bbdfdcc5bdc6c9d4bec79d13fcb356c2f61f079c3e3f85179` and the queued PDF-text source/hash/package descriptor. Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/health-original-check-20260929T1156.json`. All nine registered education/health originals now have verified acquisition evidence and are downloaded_text_pending; none has new text extraction or publication. NHM is selected assessed-facility/programme evidence, not a national facility census; retain table-specific periods and pending semantic review.
 
