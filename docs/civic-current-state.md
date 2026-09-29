@@ -52,6 +52,10 @@ LGD provenance receipt: `releases/civic-20260929/lgd-administrative-reference.js
 
 ## Continuity protocol
 
+### Shared-load diagnosis and pending decision
+
+Read-only diagnosis at 07:41–07:42 UTC identified genuine CPU saturation: Examelite Python/OCR used about 3.08 cores, Pollmedia PHP-FPM 1.24, MariaDB 0.65 in a four-second sample. Civic extraction is stopped. Repeated dynamic-page requests, including claimed crawler agents, contribute to Pollmedia traffic. See `civic-server-load-diagnosis-20260929.md` for evidence and limits. The user was asked whether to temporarily pause separate Examelite bulk jobs safely for an import window and restore them afterwards. Do not modify Examelite without that answer; do not lower the civic gate. Continue lightweight review while waiting, or execute the approved pause/import path after verifying supported controls. No server changes were made by diagnosis.
+
 Every run records only: completed action and receipt, exact next action, remaining blocker and current Git commit. Update this file when state changes; keep detailed evidence in release receipts, not the automation prompt. Read chronological checkpoints only for a specific missing fact. Never restart the project or ask the user to restate agreed scope because the chat became long.
 
 The existing 15-minute task is preparation/import-only. Routine summaries stay at three-hour intervals; notify new material failures or completed imports promptly and deduplicate unchanged resource alerts in `exports/civic-monitor-notifications.json`.
