@@ -54,7 +54,13 @@ The 1991 source-table bundle was installed at 08:15 UTC in 5.05 seconds, sampled
 
 Updated `coverage-register.json` on server and local exports: 123 released reference entries (five Census views and 118 historical workbooks), SHA-256 `c1cf067b79567f2f5c9f47694b9d931caa8f2936a3f108cf3898c677c7739498`. Prior register preserved as `coverage-register-before-publication.json`. The reference XLSX still predates publication and needs its status labels refreshed; use the JSON and release receipts for current status.
 
-Exact next action: prepare the remaining existing evidence for supported release, beginning with UP amenity source-date/codebook interpretation. There is no prepared amenity import package in this release. Do not import raw counts as indicators. PDF candidates need verification; 34 LGD names remain unresolved. Both prepared Census packages are now live; this is not all collected data or full historical coverage. Keep extraction paused. The temporary Examelite import window can end; send the four resume commands to the user for root execution and record confirmation. Baseline Git: `a086532`.
+### Latest preparation step — 29 September, 08:23 UTC heartbeat
+
+Completed a bounded UP amenity semantic review from existing validated SQLite rows and reports. Receipt: `releases/civic-20260929/up-amenity-semantic-review-20260929.json` (server worker root; local metadata copy under exports), SHA-256 `1658dea5d81b5d2321a563e87d36b3112896d24c78a750591ac79cb024488e9a`. Preserves exact headers, cell types, source URLs/hashes and source-row witnesses. Village/town Reference Year is 2009 despite 2011 edition; other field periods need definition support. Hamlet header is row 2, not row 1. Slum/town and hamlet/village code repetition represents detail records, not automatic duplicates. Drainage/notification codes are categories; NA means Not Applicable. No indicators or current-geography joins accepted.
+
+Exact next action: prepare an additive amenity source-table package from the existing SQLite rows, with sheet-specific headers, original types, definitions and locators; verify viewer compatibility and safe additive installation before release. Preserve the installed 1991 directory. Do not infer observation dates for every field or sum repeated parent populations. This is existing-evidence preparation, not raw extraction. Resources: 6,191.76 MiB available RAM, load 11.88/6 CPUs, disk 65.15 GiB, swap/PSI zero. No new import or resource alert this run. Baseline Git `6f4e1bc`.
+
+Both prepared Census packages remain live; remaining amenities/PDF candidates/LGD joins require review. Extraction stays paused. Four Examelite resume commands were sent to the user after the import window; execution is not yet confirmed. Do not assume restoration.
 
 ## Continuity protocol
 
