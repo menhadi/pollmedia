@@ -1,0 +1,54 @@
+import hashlib
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+import extract_jjm_html as adapter
+from census_server_worker import ResourceWait
+from civic_source_backlog import summarize
+
+
+class JjmTests(unittest.TestCase):
+    def test_snapshot_guards_and_duplicate_totals_preserve_evidence(self):
+        source = ('State wise PWS and FHTC Coverage\r\n<table>'
+                  '<tr><th colspan="2">FHTC</th></tr>'
+                  '<tr><td>Total</td><td>001</td></tr>'
+                  '<tr><td>A &amp; B</td><td>NA</td></tr>'
+                  '<tr><td>Total</td><td>001</td></tr></table>')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); package = root/'report.html'
+            package.write_bytes(source.encode())
+            digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+            expected = digest(package)
+            job = {'source_url': adapter.SOURCE_URL}
+            with patch.object(adapter, 'ORIGINAL_SHA256', expected):
+                with self.assertRaises(ValueError):
+                    adapter.extract(root, package, expected, {'source_url':'wrong'}, digest, lambda _:True)
+                with self.assertRaises(ResourceWait):
+                    adapter.extract(root, package, expected, job, digest, lambda _:False)
+                adapter.extract(root, package, expected, job, digest, lambda _:True)
+                cells = [json.loads(line) for line in (root/'source-evidence'/f'jjm-html-{expected}.cells.jsonl').read_text().splitlines()]
+                self.assertEqual([c['text'] for c in cells], ['FHTC','Total','001','A & B','NA','Total','001'])
+                for cell in cells:
+                    self.assertEqual(source[cell['start_character']:cell['end_character']], cell['raw_html'])
+                manifest = json.loads((root/'source-evidence'/f'jjm-html-{expected}.manifest.json').read_text())
+                self.assertEqual(manifest['review_state'], 'PENDING ADMIN REVIEW')
+                package.write_bytes(b'changed')
+                with self.assertRaises(ValueError):
+                    adapter.extract(root, package, expected, job, digest, lambda _:True)
+
+    def test_monitor_uses_jjm_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for d in ['queue','packages','source-evidence']: (root/d).mkdir()
+            job = dict(kind='jjm_html', package='jjm.html', sha256='a'*64, source_url=adapter.SOURCE_URL)
+            (root/'queue/html-a.json').write_text(json.dumps(job))
+            (root/'packages/jjm.html').write_text('original')
+            self.assertEqual(summarize(root)['counts'], {'html_queued_pending_extraction':1})
+            (root/'source-evidence'/('jjm-html-'+'a'*64+'.manifest.json')).write_text(json.dumps({'original_sha256':'a'*64}))
+            self.assertEqual(summarize(root)['counts'], {'html_evidence_present_pending_review':1})
+
+
+if __name__ == '__main__': unittest.main()

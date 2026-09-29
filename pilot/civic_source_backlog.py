@@ -48,7 +48,7 @@ def summarize(root):
     seen_html = set()
     for descriptor in sorted((root / 'queue').glob('html-*.json')):
         job = read(descriptor, {})
-        if job.get('kind') != 'mgnrega_html':
+        if job.get('kind') not in ('mgnrega_html', 'jjm_html'):
             continue
         digest = job.get('sha256', '')
         url = job.get('source_url')
@@ -64,12 +64,13 @@ def summarize(root):
         elif not (root / 'packages' / package).is_file():
             phase = 'html_original_missing'
         else:
-            manifest = root / 'source-evidence' / f'mgnrega-html-{digest}.manifest.json'
+            prefix = 'jjm-html' if job['kind'] == 'jjm_html' else 'mgnrega-html'
+            manifest = root / 'source-evidence' / f'{prefix}-{digest}.manifest.json'
             if manifest.exists():
                 phase = ('html_evidence_present_pending_review'
                          if read(manifest, {}).get('original_sha256') == digest
                          else 'html_receipt_mismatch')
-        rows.append(dict(source_url=url, original_sha256=digest, kind='mgnrega_html',
+        rows.append(dict(source_url=url, original_sha256=digest, kind=job['kind'],
                          phase=phase, descriptor=descriptor.name))
     counts = {}
     for row in rows:

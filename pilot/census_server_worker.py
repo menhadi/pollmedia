@@ -381,7 +381,7 @@ def run(root):
         for descriptor in sorted((root / 'queue').glob('*.json')):
             job = json.loads(descriptor.read_text(encoding='utf-8'))
             name, expected = job['package'], job['sha256']
-            suffix = '.html' if job.get('kind') == 'mgnrega_html' else ('.pdf' if job.get('kind') in ('pdf_ocr', 'pdf_text', 'pdf_block_table') else '.zip')
+            suffix = '.html' if job.get('kind') in ('mgnrega_html', 'jjm_html') else ('.pdf' if job.get('kind') in ('pdf_ocr', 'pdf_text', 'pdf_block_table') else '.zip')
             if Path(name).name != name or not name.endswith(suffix) or not re.fullmatch('[a-f0-9]{64}', expected):
                 raise ValueError('Invalid queue descriptor')
             package = root / 'packages' / name
@@ -417,6 +417,9 @@ def run(root):
                 elif kind == 'pdf_block_table':
                     from extract_civic_block_table import extract as table_extract
                     table_extract(root, package, expected, job, digest, resources_ok)
+                elif kind == 'jjm_html':
+                    from extract_jjm_html import extract as jjm_extract
+                    jjm_extract(root, package, expected, job, digest, resources_ok)
                 elif kind == 'mgnrega_html':
                     from extract_mgnrega_html import extract as html_extract
                     html_extract(root, package, expected, job, digest, resources_ok)

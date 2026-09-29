@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 15:11 UTC
+### Latest concrete step — 29 September 15:26 UTC
+
+Added extract_jjm_html.py for the single preserved JJM J1 snapshot, requiring its exact hash and source URL. Reuses the raw HTML cell parser, with distinct JJM output names and review caveats. Retains duplicate totals, spans, raw strings and original character locators; no arithmetic confirmation or geography joins. Sixteen parser/worker/backlog tests passed, including altered-original rejection, wrong-source rejection, resource pause, CRLF locators and JJM manifest monitoring. Server syntax compiled successfully.
+
+Installed only isolated worker modules under worker.lock with backups and code hashes in releases/civic-20260929/jjm-adapter-1526; receipt jjm-html-adapter-install-20260929T1526.json. Hard-linked the existing verified original into packages and queued exactly one JJM HTML job (kind jjm_html), queue/html-5781f578c329a2ac4fb5d84823ea8b2ad2a67f99c4bb648f52f3b4c857d455dc.json. No new download or manual extraction. Registry-aware monitor now counts thirteen sources: nine PDFs pending text, two HTML snapshots pending extraction, two CSV access holds.
+
+Exact next action: inspect newly produced source-evidence/jjm-html-HASH.cells.jsonl and .manifest.json after normal extraction admission, validate table/header locators, then add explicit repeated-total/arithmetic diagnostics without changing raw evidence. Until then continue supported official source expansion, avoiding unchanged held access paths. 15:25 both workers waiting for CPU; RAM 5,750 MiB, load 15.36 / six CPUs, swap/PSI zero, disk 60.60 GiB. No publication or safeguard changes; routine notification timestamps unchanged.
+
+### Previous concrete step — 29 September 15:11 UTC
 
 Acquired the official JJM J1 state-wise PWS/FHTC HTML report through its public Physical Progress menu. Original: worker source-evidence/jjm-j1-state-20260929T1511.html, 232,220 bytes, SHA-256 5781f578c329a2ac4fb5d84823ea8b2ad2a67f99c4bb648f52f3b4c857d455dc. HTTP 200, retrieved 15:13:00 UTC with verified TLS, primary worker.lock and shared collection admission, 2 MiB request bound. Original hash verified; receipt releases/civic-20260929/jjm-j1-acquisition-20260929T1511.json includes exact URL, navigation, response date and caveats. No parsing or publication. This snapshot is not yet counted by the registry-aware helper.
 
@@ -297,3 +305,4 @@ Added /india/census/explore and /india/census/places/{record}, and routed shared
 Verification: 17 civic/catalogue/source-viewer tests, 133 assertions passed; Pint and diff checks passed. Browser checked actual local published data through Uttar Pradesh → Pilibhit, including map, three subdistricts, existing village link and sourced AC sidebar; desktop right column/mobile stacked layout with no horizontal overflow. Broader ElectionGeographyFrontendTest has one pre-existing missing 'Assembly archive' label expectation, reproduced with unchanged baseline header; election implementation was not modified. Local preview remains at http://127.0.0.1:8769/india/census/explore. No live code deployment, migrations or extraction.
 
 Next: user-managed pull of the frontend commit; verify live Census header navigation and a district profile. Continue source-reference workbook refresh separately. This establishes the expandable frontend; it does not mean all raw evidence is normalized into place profiles or that cross-year joins are confirmed.
+
