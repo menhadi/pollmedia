@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest access step — 29 September 13:11 UTC
+### Latest acquisition — 29 September 13:26 UTC
+
+National MGNREGA report menu https://mnregaweb4.dord.gov.in/netnregarep/MISreport4.aspx presents CAPTCHA; did not answer/bypass it. Independently followed the official public State reports directory https://nrega.dord.gov.in/stHome.aspx to Uttar Pradesh, then its Employment Provided Period wise link. This public state report returned HTTP 200 with the expected heading and no CAPTCHA. Preserved original HTML under primary worker.lock and collection admission: `/home/pollmedia/census-worker/source-evidence/up-mgnrega-employment-20260929T1326.html`, 227,432 bytes, SHA-256 `05535ffe2264ab05ac873dbe79ddda1df2aa849029e5c8a0b0bef3716809944a`, retrieved 13:28:16 UTC. Exact payload URL, navigation provenance and checks: releases/civic-20260929/up-mgnrega-employment-acquisition-20260929T1326.json. State directory HTML/hash and national access requirement: mgnrega-report-menu-review-20260929T1326.json. This is an additional HTML original, not included in the PDF/CSV backlog helper.
+
+Report R5.1.3 covers UP district employment attendance bands for financial year 2026-2027, with separate household-employed and person-days columns. Current-year snapshot is incomplete annual data. No rows parsed, arithmetic validated, geography joined or figures published. Exact next action: add a source-specific HTML table adapter/job to the existing primary worker, preserving multirow headers, row/column/span locators and original strings; parsing must wait for extraction admission. Check band totals against printed totals, retain discrepancies for admin review, never treat overlapping drought categories as additive without source definitions. No person-level jobcards/musters collected. Do not re-download this snapshot.
+
+13:25 workers still waiting for CPU; RAM 6,939 MiB, load 12.26 / six CPUs, swap/PSI zero, disk 60.63 GiB. Existing backlog nine downloaded_text_pending and two CSV access holds unchanged. No new publication; last routine summary 13:14 UTC.
+
+### Previous access step — 29 September 13:11 UTC
 
 Preserved actual district-MGNREGA resource HTML (1,032,353 bytes, SHA-256 `653c0077782f77369cd6142f52948f5b90aff187e0d3745e82d1f7a0c99d57c1`). It contains the records API path `https://api.data.gov.in/resource/ee03643a-ee4c-48c2-ac30-9f2ff26ab722` with a publisher-supplied public sample key, distinct from the catalogue UUID. One bounded sample request (limit=1, offset=0, JSON) under collection admission timed out; no records acquired. Do not treat a discovered endpoint as successful collection. The landing also contains a sandbox warning: resolve publisher/environment provenance before release. Official help https://www.data.gov.in/help describes account-based API key generation; no private key or user credential obtained.
 
