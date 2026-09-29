@@ -466,14 +466,21 @@ def main():
         except BlockingIOError:
             return
         from civic_resource_guard import admission
+        if (root / 'catalogues.json').exists():
+            from civic_queue_feeder import feed
+            collection_gate = admission(root, collection=True) if (root / 'shared-resource-gate').exists() else nullcontext((True, 'legacy'))
+            with collection_gate as (allowed, reason):
+                if allowed:
+                    status(root, state='collecting_sources', note='Bounded downloads; CPU load gate applies to extraction only.')
+                    feed(root, collection_only=True)
+                else:
+                    status(root, state='waiting_for_resources', reason=reason, phase='collection')
+                    return
         gate = admission(root) if (root / 'shared-resource-gate').exists() else nullcontext((True, 'legacy'))
         with gate as (allowed, reason):
             if not allowed:
                 status(root, state='waiting_for_resources', reason=reason)
                 return
-            if (root / 'catalogues.json').exists():
-                from civic_queue_feeder import feed
-                feed(root)
             run(root)
             if (root / 'catalogues.json').exists():
                 feed(root, download_limit=0)

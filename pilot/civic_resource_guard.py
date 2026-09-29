@@ -46,12 +46,12 @@ def trial_decision(ram, active, load, cpus, swap, pressure, capped, idle, iowait
     return True, 'admitted: single worker, enforced half-core CPU cap'
 
 
-def decision(available_mib, active, load, cpus, swap_mib_s, pressure):
+def decision(available_mib, active, load, cpus, swap_mib_s, pressure, collection=False):
     if active >= 2:
         return False, 'two civic workers already admitted'
     if available_mib < (4608 if active else 3072):
         return False, 'waiting for RAM headroom'
-    if load > cpus:
+    if not collection and load > cpus:
         return False, 'waiting for CPU load to settle'
     if swap_mib_s > 8 or pressure > 5:
         return False, 'waiting for swap/memory pressure to settle'
@@ -79,7 +79,7 @@ def identity(pid):
 
 
 @contextmanager
-def admission(root):
+def admission(root, collection=False):
     import fcntl
     shared = root.parent if root.name == 'ocr-worker' else root
     ledger = shared/'active-civic-workers.json'
@@ -93,11 +93,11 @@ def admission(root):
             fcntl.flock(lock,fcntl.LOCK_EX)
             records = current()
             ram, load, cpus, swap, pressure = sample()
-            if trial_enabled(shared):
+            if trial_enabled(shared) and not collection:
                 admitted, reason = trial_decision(ram, len(records), load, cpus, swap, pressure,
                                                   enforced_cpu_cap(), *cpu_headroom())
             else:
-                admitted, reason = decision(ram,len(records),load,cpus,swap,pressure)
+                admitted, reason = decision(ram,len(records),load,cpus,swap,pressure,collection=collection)
             if admitted: records[me] = identity(me)
             ledger.write_text(json.dumps(records))
         yield admitted, reason

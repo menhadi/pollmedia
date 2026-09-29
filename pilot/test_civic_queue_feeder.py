@@ -112,6 +112,7 @@ class FeederTests(unittest.TestCase):
                 feed(root)
                 self.assertEqual(len(list((root/'ocr-worker/queue').glob('*.json'))), 2)
                 pages.write_text('tampered')
+                feed(root, download_limit=0, collection_only=True)
                 with self.assertRaisesRegex(ValueError,'checksum'): feed(root)
 
     @patch('civic_queue_feeder.resources_ok', return_value=True)

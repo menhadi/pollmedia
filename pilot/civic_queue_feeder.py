@@ -63,7 +63,7 @@ def fetch(url, path, context, limit):
         tmp.unlink(missing_ok=True)
 
 
-def feed(root, download_limit=4):
+def feed(root, download_limit=4, collection_only=False):
     root = Path(root)
     state_path = root / 'feeder-status.json'
     state = json.loads(state_path.read_text()) if state_path.exists() else {'catalogues': {}, 'downloads': {}}
@@ -135,7 +135,7 @@ def feed(root, download_limit=4):
             record.update(error=str(error), retry_after=time.time()+1800)
         save(state_path, state)
     # Completed text jobs automatically supply explicit <=25-page OCR batches.
-    for record in state['downloads'].values():
+    for record in ([] if collection_only else state['downloads'].values()):
         if not record.get('complete'): continue
         h = record['sha256']; prefix = evidence / ('pdf-' + h)
         manifest = prefix.with_suffix('.manifest.json')

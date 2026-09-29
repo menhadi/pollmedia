@@ -3,6 +3,12 @@ from civic_resource_guard import decision, trial_decision, quota_is_capped
 
 
 class ResourceTests(unittest.TestCase):
+    def test_collection_ignores_load_but_retains_memory_pressure_and_concurrency(self):
+        self.assertTrue(decision(5000,0,30,6,0,0,collection=True)[0])
+        self.assertFalse(decision(5000,0,30,6,0,0)[0])
+        for args in [(3000,0,30,6,0,0),(5000,2,30,6,0,0),(5000,0,30,6,9,0),(5000,0,30,6,0,6)]:
+            self.assertFalse(decision(*args,collection=True)[0])
+
     def test_trial_requires_enforced_cap_and_single_worker(self):
         args = [5000,0,8,6,0,0,True,35,1,15]
         self.assertTrue(trial_decision(*args)[0])
