@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 17:11 UTC
+### Latest concrete step — 29 September 17:26 UTC
+
+Fixed the compact backlog monitor to include PDF URLs recorded under registered Census catalogues, deduplicated against direct source URLs and excluding stale unregistered downloads. Census and publication years remain distinct. Eleven monitor/JJM tests passed, including catalogue/direct URL overlap, duplicate links, completed receipt classification and stale-download exclusion. Installed only read-only civic_source_backlog.py under worker.lock, with backup/hash receipt releases/civic-20260929/catalogue-monitor-install-20260929T1726.json.
+
+Verified expanded source inventory: 393 unique URL/job entries; 375 PDF text receipts present/pending review, eleven downloaded PDFs without text manifests, five HTML jobs pending extraction, two CSV access holds. Counts grew because monitoring scope expanded, not because hundreds of new documents were acquired this turn. Missing text manifests include Patna 1961 and Dehra Dun 1971 catalogue 29139 (42129_1971_DEH.pdf), plus nine direct PDFs. Receipt presence does not establish OCR completion, semantic validation, publication or national coverage. The one catalogue lacking a supported download link remains a separate feeder gap.
+
+Exact next action: inspect the Dehra Dun 1971 download descriptor/job state to distinguish queued extraction from an alternate/legacy receipt convention; do not re-download or repeat completed extraction. Inspect only new manifests for other sources after normal admission. 17:25 both workers waiting for CPU; jobs 521/488 complete, no errors, RAM 7,101 MiB, load 14.04 / six CPUs, swap/PSI zero, disk 60.54 GiB. No new material failure/import; last summary remains 16:28 UTC.
+
+### Previous concrete step — 29 September 17:11 UTC
 
 Existing collector acquired Patna 1961 handbook at 17:00:16 UTC from https://censusindia.gov.in/nada/index.php/catalog/29737/download/32918/22621_1961_PAT.pdf. Verified PDF signature, 17,816,730-byte size and SHA-256 2c8119d0c74dff69abef7d7877b5705fce3bcfe63c2e06640bda58ced74b591a. Receipt releases/civic-20260929/patna1961-acquisition-check-20260929T1711.json identifies original package and acquisition metadata. No extraction manifest yet; byte integrity is validated, semantic review/publication pending. Catalogue HTML hash c518bf44b36074de5bced85f598b94f5923de4ead2b49edac5400eb7d799c83c preserved by feeder.
 

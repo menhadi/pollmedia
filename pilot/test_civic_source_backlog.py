@@ -7,6 +7,24 @@ from civic_source_backlog import summarize
 
 
 class BacklogTests(unittest.TestCase):
+    def test_catalogue_pdf_pending_completed_and_url_deduplication(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); cat = 'https://example.test/catalog/1'
+            direct = 'https://example.test/direct.pdf'; new = 'https://example.test/new.pdf'
+            (root/'catalogues.json').write_text(json.dumps([{'url':cat,'year':1961,'publication_year':1966}]))
+            (root/'direct-pdf-sources.json').write_text(json.dumps([{'source_url':direct}]))
+            (root/'feeder-status.json').write_text(json.dumps({
+                'catalogues':{cat:{'urls':[direct,new,new]}},
+                'downloads':{direct:{'complete':True,'sha256':'a'*64},new:{'complete':True,'sha256':'b'*64},
+                             'https://example.test/stale.pdf':{'complete':True,'sha256':'c'*64}}}))
+            (root/'source-evidence').mkdir()
+            (root/'source-evidence'/('pdf-'+'a'*64+'.manifest.json')).write_text(json.dumps({'original_sha256':'a'*64}))
+            result = summarize(root)
+            self.assertEqual(result['registered_unique'], 2)
+            self.assertEqual(result['counts'], {'text_evidence_present_pending_review':1,'downloaded_text_pending':1})
+            item = next(x for x in result['sources'] if x['source_url']==new)
+            self.assertEqual((item['census_year'], item['publication_year']), (1961,1966))
+
     def test_html_queue_visible_before_db_registration_and_deduplicated(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); (root/'queue').mkdir(); (root/'packages').mkdir()

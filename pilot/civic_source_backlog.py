@@ -1,4 +1,4 @@
-"""Read-only direct-source backlog, including registrations not yet seen by cron."""
+"""Read-only direct, catalogue-linked PDF and explicit HTML source backlog."""
 import argparse
 import json
 from pathlib import Path
@@ -15,6 +15,14 @@ def summarize(root):
     registry += csv_registry
     state = read(root / 'feeder-status.json', {})
     downloads = state.get('downloads', {})
+    # Only follow URLs recorded for registered catalogues, not arbitrary stale downloads.
+    for catalogue in read(root / 'catalogues.json', []):
+        catalogue_url = catalogue.get('url')
+        saved = state.get('catalogues', {}).get(catalogue_url, {})
+        for url in saved.get('urls', []):
+            registry.append(dict(source_url=url, catalogue_url=catalogue_url,
+                                 census_year=catalogue.get('year'),
+                                 publication_year=catalogue.get('publication_year')))
     rows = []
     seen = set()
     for item in registry:
@@ -42,6 +50,9 @@ def summarize(root):
                         phase = ('text_evidence_present_pending_review'
                                  if metadata.get('original_sha256') == digest else 'text_receipt_mismatch')
         rows.append(dict(source_url=url, academic_year=item.get('academic_year'),
+                         catalogue_url=item.get('catalogue_url'),
+                         census_year=item.get('census_year'),
+                         publication_year=item.get('publication_year'),
                          structure=item.get('structure'), phase=phase,
                          error=(record or {}).get('error')))
     # HTML snapshots are registered by queue descriptor, not the download registries.
