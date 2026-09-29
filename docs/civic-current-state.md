@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 16:41 UTC
+### Latest concrete step — 29 September 16:56 UTC
+
+Returned to historical Census gaps. Registry contained Patna 2011 Part A only; registered official catalogue https://censusindia.gov.in/nada/index.php/catalog/29737 for District Census Handbook, Patna, 1, Bihar - Census 1961, published 1966, reference Dspace_123456789_741, listed filename 22621_1961_PAT.pdf. Exact URL deduplicated under primary worker.lock; registry backup and verified count/hash in releases/civic-20260929/patna1961-registration-20260929T1656.json. Registration is not PDF acquisition, extraction or publication. Source-era district boundaries and urban-only table universes require review; no LGD join asserted.
+
+Exact next action: inspect only the new Patna catalogue/download entry after the existing primary cron's collection pass. Preserve catalogue/PDF dates and hashes through the established verified Census TLS path; parsing/OCR stays behind normal admission. Do not re-register completed Bareilly 1971 sources found in search. Historical registry counts before this addition were 1951:41, 1961:44, 1971:70, 1981:66, 1991:8, 2001:66, 2011:82; these are catalogue registrations, not geographic coverage or raw/approved rows. The separate 1991 workbook release is not measured by this PDF registry.
+
+16:55 workers waiting for CPU; existing backlog nine PDFs and five HTML jobs pending extraction, two CSV access holds; completed jobs 521/488, no errors. RAM 7,292 MiB, load 10.43 / six CPUs, swap/PSI zero, disk 60.54 GiB. Before registration, feeder had only the known catalogue gap pending. The PDF/CSV/HTML compact helper does not count newly registered catalogue URLs; check feeder for this new entry. No new failure/import; last summary unchanged at 16:28 UTC.
+
+### Previous concrete step — 29 September 16:41 UTC
 
 Acquired and queued official JJM F27 Public Institutions tap-connection report from its public menu. Original source-evidence/jjm-f27-institutions-20260929T1641.html, 255,930 bytes, SHA-256 8c41d50ab6b8f1fdb2580771fe942e9b8bdf345abc48adc11f860ed0cc67ae16, retrieved 16:42:33 UTC; verified original hash. Acquisition receipt releases/civic-20260929/jjm-f27-acquisition-20260929T1641.json retains exact URL/response date/caveats. Collection used verified TLS, 2 MiB cap, primary lock and collection admission.
 
