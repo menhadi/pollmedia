@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest access review — 29 September 12:41 UTC
+### Latest concrete step — 29 September 12:56 UTC
+
+Registered a narrowly allowlisted livelihoods CSV observed in official data.gov.in HTML: `https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_616_E_iii.csv`. Title: Odisha monthly MGNREGS person-days during 2024-25; published 27 June 2025. Preserved landing HTML (1,014,752 bytes, SHA-256 `6efa9a5d89014658f9f1da6f19c61fca4399d1dd0c1d26331baee6b8eb18a304`). Listing incorrectly/conflictingly describes units as Rs. in lakh despite person-days fields; keep unresolved and compare original parliamentary question 616, answered 7 February 2025. Financial-year series may be partial; not district observations or unique people.
+
+Eleven feeder tests passed; worker-only allowlist update installed under its lock with backup and hashes. Normal wrapper attempted bounded GET: HTTP 403, automatically access_review_required without retries. No CSV acquired or published. Receipts under worker releases/civic-20260929: livelihood-source-discovery-20260929T1256.json, livelihood-registration-20260929T1256.json, livelihood-acquisition-check-20260929T1256.json. Both JJM and livelihoods CSVs now held; do not continue registering similar denied /files/ URLs without resolving supported access.
+
+Found district aggregate resource `https://www.data.gov.in/resource/district-wise-mgnrega-data-glance`; official catalogue links `https://ap.data.gov.in/apis/854e5a1f-a4e3-4177-8586-2bcc27b74552`, which presents Generate API Key. This is catalogue API metadata, not a verified records endpoint or credential. Exact next action: inspect that supported API's access/documentation and district resource metadata; do not invent an endpoint/key or claim records acquired. If assisted access is needed, record a concise requirement and pursue another publisher. Nine PDF originals still await extraction; 12:55 workers waiting for CPU, RAM 5,095 MiB, load 27.34 / six CPUs, swap/PSI zero, disk 60.67 GiB, completed jobs 521/488. No safeguard relaxation.
+
+### Previous access review — 29 September 12:41 UTC
 
 Checked the supported JJM resource UI twice after navigation completed: it renders incomplete placeholders (Published NA, file size 0 bytes, date 1970), with no download control. These are a failed/incomplete UI state, not actual dataset size/date or evidence of missing values. Did not retry the denied CSV, log in, or bypass controls. A bounded, TLS-verified LGD district landing-page request under collection admission timed out. Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/official-access-review-20260929T1241.json`; neither CSV nor LGD dataset acquired. Existing access alert is unchanged and was not repeated.
 

@@ -5,10 +5,15 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from civic_queue_feeder import Links, feed, official, JJM_CSV
+from civic_queue_feeder import Links, feed, official, JJM_CSV, LIVELIHOOD_CSV
 
 
 class FeederTests(unittest.TestCase):
+    def test_livelihood_csv_allowlist_is_exact(self):
+        self.assertTrue(official(LIVELIHOOD_CSV))
+        self.assertFalse(official(LIVELIHOOD_CSV.replace('E_iii', 'E_iv')))
+        self.assertFalse(official(LIVELIHOOD_CSV + '?redirect=elsewhere'))
+
     def test_csv_access_denial_is_held_without_automatic_retry(self):
         from urllib.error import HTTPError
         with tempfile.TemporaryDirectory() as directory:

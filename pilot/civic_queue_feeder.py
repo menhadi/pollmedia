@@ -19,12 +19,14 @@ from urllib.error import HTTPError
 from census_server_worker import digest, resources_ok
 
 JJM_CSV = 'https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_91_A_to_D_i.csv'
+LIVELIHOOD_CSV = 'https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_616_E_iii.csv'
+CSV_SOURCES = {JJM_CSV, LIVELIHOOD_CSV}
 
 
 def official(url):
     p = urlsplit(url)
     return p.scheme == 'https' and (
-        url == JJM_CSV or
+        url in CSV_SOURCES or
         url == 'https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf' or
         (p.netloc == 'censusindia.gov.in' and p.path.startswith('/nada/')) or
         (p.netloc == 'dashboard.udiseplus.gov.in' and not p.query and not p.fragment and
@@ -85,7 +87,7 @@ def feed(root, download_limit=4, collection_only=False):
     csv_items = json.loads(csv_registry.read_text()) if csv_registry.exists() else []
     for item in csv_items:
         url = item['source_url']
-        if url != JJM_CSV:
+        if url not in CSV_SOURCES:
             raise ValueError('Unsupported explicit CSV source')
         record = state.setdefault('csv_downloads', {}).setdefault(url, {'metadata': item})
         if record.get('complete') or record.get('access_review_required') or record.get('retry_after', 0) > time.time() or not remaining:
