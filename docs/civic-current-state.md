@@ -32,6 +32,12 @@ Extended existing civic_queue_feeder.py with explicit direct-PDF registry, narro
 
 Status: eight registered pending resource admission, NOT downloaded/extracted/published. Existing feeder-status pending counter can remain zero until the next admitted feed reads the new registry. Last resources: load 12.78 / six CPUs, RAM 7,427 MiB, swap/PSI zero; workers wait, 521/488 prior jobs complete. Exact next action: check compact statuses and direct registry together; allow normal cron acquisition when gates pass, verify original hashes/text manifests and distinct academic-year/structure metadata, then review aggregate-table extraction. Do not manually bypass CPU admission. Resume LGD/health source expansion while waiting, without retrying obsolete education links. Original PDF text/OCR outputs still require semantic review before indicators.
 
+### Latest check — 29 September 11:11 UTC: backlog reporting corrected
+
+Added read-only pilot/civic_source_backlog.py (server copy in worker root). Two focused tests passed: unseen registrations count even when saved feeder pending is zero; download/text receipt presence never implies publication. Server run confirms eight unique UDISE sources registered_pending_admission, none downloaded. Receipt releases/civic-20260929/direct-source-backlog-20260929T1111.json records states and script hash. Use this compact helper on subsequent checks instead of interpreting stale feeder pending_downloads alone. Does not hash all bulk evidence or duplicate extraction.
+
+Workers at 11:10 still waiting_for_resources; primary/OCR prior complete counts 521/488; RAM 7,466 MiB, load 10.26 / six CPUs, swap/PSI zero, disk 60.77 GiB. Same CPU alert already recorded; no repeat notification. Exact next action: run python3 civic_source_backlog.py /home/pollmedia/census-worker, inspect progress when cron admission succeeds, and continue supported LGD/health discovery while these eight await resources. Preserve all existing limits. No original downloaded, extraction performed or release published this run.
+
 ---
 
 # Civic work: read this first
