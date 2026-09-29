@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 14:41 UTC
+### Latest concrete step — 29 September 15:11 UTC
+
+Acquired the official JJM J1 state-wise PWS/FHTC HTML report through its public Physical Progress menu. Original: worker source-evidence/jjm-j1-state-20260929T1511.html, 232,220 bytes, SHA-256 5781f578c329a2ac4fb5d84823ea8b2ad2a67f99c4bb648f52f3b4c857d455dc. HTTP 200, retrieved 15:13:00 UTC with verified TLS, primary worker.lock and shared collection admission, 2 MiB request bound. Original hash verified; receipt releases/civic-20260929/jjm-j1-acquisition-20260929T1511.json includes exact URL, navigation, response date and caveats. No parsing or publication. This snapshot is not yet counted by the registry-aware helper.
+
+Exact next action: add a narrowly scoped JJM J1 HTML adapter/job to the existing primary worker, retaining multirow headers/spans, raw strings and exact locators; parse under normal extraction admission. Existing MGNREGA adapter is hash/source-specific and must not be used as-is. Handle repeated totals explicitly, keep PWS/FHTC/reported HGJ/certified HGJ separate, and verify reporting as-of date rather than assuming retrieval date. State totals are not village observations or safe/continuous supply evidence.
+
+JJM Web API visibly requires login/CAPTCHA; monthly report J36 redirected to login in web reader. Neither accessed further. Public J1 report succeeds independently; do not generalize the login requirement to all JJM reports. 15:10 backlog unchanged at nine PDFs plus one MGNREGA HTML pending extraction, two CSV access holds and known catalogue gap; completed jobs 521/488, no job errors. RAM 7,317 MiB, load 12.27 / six CPUs, swap/PSI zero, disk 60.60 GiB. Both workers waiting for CPU; no safeguard changes. Routine summary remains due after 16:14 UTC.
+
+### Previous concrete step — 29 September 14:41 UTC
 
 Reviewed HMIS public terms and Contact Us pages through the normal UI. Terms contain general reference/verification notices, no automated-download procedure. Saved official statistics and UP-assigned support contacts plus an unsent, specific access question in releases/civic-20260929/hmis-supported-access-review-20260929T1441.json; verified receipt. No contact made or agreement accepted. The prior historical ZIP HEAD 403 remains a single method-specific observation; workbook GET is untested, not proven forbidden. Do not claim all HMIS downloads require login or are unavailable.
 
