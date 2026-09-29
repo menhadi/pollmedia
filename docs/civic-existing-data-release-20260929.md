@@ -18,6 +18,8 @@ Local reference workbook: `exports/civic-release-20260929/civic-source-reference
 
 The 07:38 UTC heartbeat added `coverage-register.json` in the same local and server release directories. This initial 570-entry register adds the official UP administrative LGD export, distinguishes collection-page provenance from exact-download URLs, records validation/publication states, and marks data.gov.in and unestablished departmental coverage as gaps. It is not exhaustive historical coverage. `lgd-administrative-reference.json` preserves the source metadata and existing crosswalk-report checksum/counts. No original-cell extraction or crosswalk acceptance was repeated. Server load remained above admission, so no live import ran.
 
+The 07:53 UTC heartbeat prepared `lgd-name-review-queue.json` from the existing diagnostic and candidate files, preserving all 34 unresolved name differences on 15 PDF pages with worksheet/page/line locators. Its SHA-256 is `81b7da19f220715b907dce7988e899d4114c8db2df52d84c19ee201d9ddcbbbd`; both input hashes were checked against the saved diagnostic hashes. No join was accepted and no raw extraction was rerun. First review target: the three page-83 exceptions, including the potentially meaningful Ehatmali suffix. Load remained 19.43 on six CPUs; live import still waits for admission.
+
 | Subset | Preserved evidence | Website path and remaining review |
 | --- | --- | --- |
 | 2001/2011 Census | Five source views, three distinct original workbooks, 30,525 filtered rows | Existing Census catalogue importer. Live `--check` passed. Import as drafts, inspect counts/flags/geography/period and then publish reviewed editions. |
