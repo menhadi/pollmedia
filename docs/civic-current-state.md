@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest acquisition — 29 September 13:26 UTC
+### Latest concrete step — 29 September 13:41 UTC
+
+Implemented and installed `extract_mgnrega_html.py` in the isolated primary worker plus an explicit `mgnrega_html` job handler. Adapter accepts only the preserved UP snapshot hash; strict UTF-8 decoding retains original newline characters. Evidence retains table/row/cell ordinals, header tags, rowspan/colspan attributes, exact raw cell HTML, decoded text and character offsets. No inferred numeric conversion, expanded grid, joins or arithmetic confirmation. Three fixtures cover spans/entities/leading zeros, nested-table provenance and malformed-markup failure; six existing worker tests also pass.
+
+Installed under worker.lock with prior worker backup; original SHA-256 checked and hard-linked into packages without downloading/copying the bulk original. One descriptor queued: `queue/html-05535ffe2264ab05ac873dbe79ddda1df2aa849029e5c8a0b0bef3716809944a.json`. Receipt with installed hashes and exact job: `releases/civic-20260929/mgnrega-html-parser-install-20260929T1341.json`. Parsing was NOT manually executed and remains behind normal extraction admission. On completion expect source-evidence/mgnrega-html-HASH.cells.jsonl and .manifest.json. Exact next action: inspect this descriptor/job and manifest alongside the PDF/CSV helper (which does not yet count HTML jobs); validate newly produced cell provenance before header interpretation and arithmetic diagnostics. Drought categories may overlap; no blanket sum assumption. No publication or app deployment.
+
+13:40 workers still waiting for CPU, RAM 7,140 MiB, load 19.19 / six CPUs, swap/PSI zero, free disk 60.62 GiB. Nine PDFs pending extraction, two CSV access holds, plus this one newly queued HTML job. Existing alerts unchanged; last routine summary 13:14 UTC.
+
+### Previous acquisition — 29 September 13:26 UTC
 
 National MGNREGA report menu https://mnregaweb4.dord.gov.in/netnregarep/MISreport4.aspx presents CAPTCHA; did not answer/bypass it. Independently followed the official public State reports directory https://nrega.dord.gov.in/stHome.aspx to Uttar Pradesh, then its Employment Provided Period wise link. This public state report returned HTTP 200 with the expected heading and no CAPTCHA. Preserved original HTML under primary worker.lock and collection admission: `/home/pollmedia/census-worker/source-evidence/up-mgnrega-employment-20260929T1326.html`, 227,432 bytes, SHA-256 `05535ffe2264ab05ac873dbe79ddda1df2aa849029e5c8a0b0bef3716809944a`, retrieved 13:28:16 UTC. Exact payload URL, navigation provenance and checks: releases/civic-20260929/up-mgnrega-employment-acquisition-20260929T1326.json. State directory HTML/hash and national access requirement: mgnrega-report-menu-review-20260929T1326.json. This is an additional HTML original, not included in the PDF/CSV backlog helper.
 
