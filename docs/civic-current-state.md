@@ -18,6 +18,12 @@ Primary/OCR statuses at 10:25 still waiting_for_resources; 521/488 complete, no 
 
 Exact next action: inspect the current official education publication listing (search also found master-dsel-education.digifootprint.gov.in/documents/reports/udise-publications-statistics-EDN0EjMtQWa) and resolve current linked downloads before adapting the primary feeder. Existing feeder permits Census /nada URLs only; do not silently add education links there. If metadata access remains unavailable, continue another supported scope source instead of retrying unchanged URLs. Keep extraction resource gates intact.
 
+### Latest check — 29 September 10:41 UTC
+
+Workers remain waiting_for_resources (load 9.37 / six CPUs; RAM 6,439 MiB, swap/PSI zero), queues unchanged complete 521/488. No duplicate extraction. GET of the shortened Ministry PDF-looking URL returned a Next.js HTML shell, definitively not PDF bytes; preserved response and SHA-256 recorded in worker receipt education-publications-review-20260929T1041.json. Do not enqueue that URL as an original PDF.
+
+Official UDISE+ browser navigation reached https://udiseplus.gov.in/#/en/page/publications, listing annual reports 2018-19 through 2025-26 and NEP/Non-NEP columns. 2023-24 NEP download anchor had no href; click produced no verified file/navigation and console reported i.lang is not a function. No original acquired. Exact next action: follow the official detailed-tables link https://dashboard.udiseplus.gov.in/#/reportDashboard/sReport (or observed archive https://data.udiseplus.gov.in/archive) to resolve a supported downloadable source. Keep structure/period distinctions and use existing guarded primary worker after tested source support. Do not repeat legacy URLs or misrepresent discovered listings as acquired datasets. No publication this run.
+
 ---
 
 # Civic work: read this first
