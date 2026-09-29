@@ -16,6 +16,8 @@ SHA-256: `eca348352a8f84a1b3ee7f4a87febab298983155937623cc9ad23515da17eb35`.
 
 Local reference workbook: `exports/civic-release-20260929/civic-source-references-20260929.xlsx`. Tabs contain release status, five Census package references, 118 historical workbook references, 68 amenity validations and 378 PDF evidence manifests. PDF manifest count is not a deduplicated publication count. Exact official workbook/PDF URLs and hashes are included. The JSON retains original metadata and full timestamps. Bulk originals and row data remain on the server.
 
+The 07:38 UTC heartbeat added `coverage-register.json` in the same local and server release directories. This initial 570-entry register adds the official UP administrative LGD export, distinguishes collection-page provenance from exact-download URLs, records validation/publication states, and marks data.gov.in and unestablished departmental coverage as gaps. It is not exhaustive historical coverage. `lgd-administrative-reference.json` preserves the source metadata and existing crosswalk-report checksum/counts. No original-cell extraction or crosswalk acceptance was repeated. Server load remained above admission, so no live import ran.
+
 | Subset | Preserved evidence | Website path and remaining review |
 | --- | --- | --- |
 | 2001/2011 Census | Five source views, three distinct original workbooks, 30,525 filtered rows | Existing Census catalogue importer. Live `--check` passed. Import as drafts, inspect counts/flags/geography/period and then publish reviewed editions. |
