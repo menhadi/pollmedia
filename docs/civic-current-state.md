@@ -1,3 +1,13 @@
+# Current authorization — collection resumed 29 September 2026
+
+User explicitly requested resuming remaining exploration/extraction under the original scope, faster where feasible. This supersedes ALL older pause-only instructions below. Both existing civic five-minute crons were re-enabled at 10:06 UTC; no other crons changed. The 15-minute monitor was updated to collection/preparation/release scope. Original plan: civic-server-work-plan-20260925.md; retain adaptive two-worker admission, caps, low priority, TLS and original-source preservation. No renewed expired CPU trial or relaxed extraction CPU gate. App deployment/migrations remain user-managed; elections excluded.
+
+Resume receipt: /home/pollmedia/census-worker/releases/civic-20260929/extraction-resume.json. Exact crontab backup recorded there. Queue audit: primary 521 complete, OCR 488 complete, no pending jobs; feeder zero pending downloads/workbooks, one catalogue requiring source review (43938, no supported PDF link). A West Bengal town XLSX URL returned non-ZIP content previously; preserve as source failure, do not mislabel parsed data. Current sample RAM 5,973 MiB, load 8.04 on six CPUs, swap/PSI zero: extraction admission waits for load <=6. Scheduling enabled does not mean actively extracting.
+
+Exact next action: expand supported official sources against coverage gaps, prioritizing machine-readable Census/LGD/data.gov.in, then education/health/water/livelihood releases per original source matrix. Do not duplicate completed registry jobs. Investigate catalogue 43938 format and the non-ZIP workbook response; do not bypass verification or retry indefinitely. LGD/data.gov.in catalogue discovery was attempted this turn but web fetch timed out; no new dataset acquired. Preserve original URLs/hashes/period and source-era identifiers. Reference XLSX refresh and admin confirmation/local-original-download UI remain unfinished release work. Existing published releases remain live with review flags.
+
+---
+
 # Civic work: read this first
 
 Updated 29 September 2026. This is the current operational handoff, not a replacement for the agreed product specification. Keep it short and update it after each material result. Read this file and the referenced release document before work; do not reread the entire chat or chronological checkpoint by default.
