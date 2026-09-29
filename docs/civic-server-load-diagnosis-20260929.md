@@ -30,3 +30,9 @@ After that change, remeasure resources rather than assuming the gate is satisfie
 If the user leaves Examelite running, keep imports queued and continue lightweight review. Do not bypass the load gate. Longer-term request caching and crawler traffic management merit separate review of the affected web routes; they are not authorized changes in this civic task. Adding swap would not resolve the measured CPU contention.
 
 Available commands include `systemd-run`, `prlimit` and `ionice`; `cpulimit` was not found. Availability does not establish permission to change another project's limits, and no CPU quota was configured during this diagnosis.
+
+## User approval and access blocker
+
+The user approved: "Pause Examelite bulk jobs for the import." This includes letting active jobs finish safely and restoring workers after the import window. Further pause permission is not needed.
+
+Process inspection identified admission-prediction `extract_mcc_allotment_result.py`, PDF `extract-pdf-text.py`, Tesseract and cron-launched `queue:work` processes. The Pollmedia SSH account cannot read Examelite's home or use noninteractive sudo. The saved codexaudit key/account and root profile authentication attempts were rejected. No worker controls were changed and no active jobs were signalled. The correct administration SSH account/key-file path has been requested. Do not confuse an approved action with an executed pause; do not repeatedly retry rejected connections.
