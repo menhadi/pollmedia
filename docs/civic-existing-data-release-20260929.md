@@ -4,7 +4,7 @@
 
 The user clarified that only extraction and preparation of **new** data should pause. Preparation and website import of already collected civic data should continue. Keep both extraction cron lines commented `PAUSED_BY_USER_20260929`. The 15-minute heartbeat now handles existing-data preparation/import only. Do not acquire new sources, run OCR, register catalogues or touch election pipelines. Resume collection only after reporting successful completion of the existing-data release, not after a partial import.
 
-No live data import has occurred in this release. The live `census_editions` and `census_publications` tables were empty at the read-only preflight. The historical source-table directory was absent. Server load remained approximately 18–21 on six CPUs during preparation, so live import was held. This is a resource wait, not an import failure.
+The five 2001/2011 Census views were imported and published on 29 September at 08:12 UTC: 30,525 rows, editions/import runs 1–5, zero population-component discrepancy flags. The 1991 source-table bundle remains uninstalled. The user clarified that extraction CPU admission must not block existing-data imports; retain low priority and memory/disk safeguards.
 
 The existing application already has both required readers/import paths. No code deployment or migration is needed for the first two subsets below. The user still handles live code pulls if later changes become necessary.
 
@@ -65,7 +65,7 @@ Public endpoint: `https://pollmedia.org/india/census/source-tables`. Verify year
 
 On 29 September, one sequential local PHPUnit run passed all 15 tests / 97 assertions across `CensusPackageTest`, `CensusCatalogueTest` and `HistoricalCensusTableTest`. The bundle installer passed its two tests. Earlier overlapping test invocations interfered with shared fake storage; the sequential run resolved those test-only failures. No application code changes were needed.
 
-Before substantial server preparation/import require available RAM >=3 GiB, one-minute load <= CPU count, swap traffic <=8 MiB/sec, memory PSI some avg10 <=5%, and disk reserve >=10 GiB. Use low priority, a 1.5 GiB address-space cap and the 1.5 GiB ongoing RAM floor. Do not compete with workers or other import attempts. Do not relax admission for this release. Capture fresh scoped backup/receipts before writes; checks and tests alone do not establish successful publication.
+User clarification on 29 September: the load <=CPU count admission rule applies to extraction, not importing existing data. Run one low-priority existing-data import at a time and record actual resource use. Retain available RAM >=3 GiB, swap traffic <=8 MiB/sec, memory PSI some avg10 <=5%, and disk reserve >=10 GiB. Use low priority, a 1.5 GiB address-space cap and the 1.5 GiB ongoing RAM floor. Do not compete with workers or other import attempts. Keep extraction paused and its admission policy unchanged. Capture fresh scoped backup/receipts before writes; checks and tests alone do not establish successful publication.
 
 Next run: check resources; continue reference/semantic review of existing evidence while waiting; execute the first eligible import path once admitted, verify the website, update this document and the reference workbook with actual receipts. Keep remaining raw-only subsets explicitly pending. Do not label the whole task complete after these first two subsets.
 
@@ -80,3 +80,13 @@ The 07:23 UTC heartbeat on 29 September verified these server files exactly matc
 | Deployed `ImportCensusPackage.php` | `478bf6937d7a1061b15c965670fee4d5b6fbc6388904d22dad3215c4e960fc67` |
 
 Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/release-code-preflight-20260929.json`. The historical destination remained absent and its parent writable. This verifies release-code identity, not complete deployed dependency equivalence or completed data import. Fresh storage configuration/pre-state and resource admission are still required at execution time. Load was 15.59 on six CPUs, so no import was launched.
+
+## First live release receipt — 08:12 UTC
+
+The package above imported as drafts in 16.10 seconds with sampled peak RSS 315,164 KiB (~308 MiB). Fresh scoped pre-state was empty. Counts, source-era geographic groups, source URLs, preserved original hashes and extracted hashes reconciled to all five manifest entries. The existing publish command reused those editions in 2.89 seconds. Editions and import runs 1–5 now have matching publication pointers; reviews record `publish_with_notes_cli` with no invented human reviewer.
+
+All five `https://pollmedia.org/india/census?edition=ID` pages returned HTTP 200 with expected row counts, official source links, historical scope and missing-value notes. Browser user agent was needed because generic urllib was rejected with 403. No deployment or migrations were performed.
+
+Server receipts in `releases/civic-20260929/`: `draft-import-20260929T081006Z.json` and `.log`; `draft-review-20260929T0810.json` (SHA-256 `ae33b01f5fff03310aa71ac71145fea69db2b630a36354fb854acc9cecf70e52`); `publication-20260929T0812.json`; `post-publication-20260929T0812.json`; `website-census-20260929T0812.json`. The three distinct original workbooks are preserved in app-private `official-imports/census-package/` with matching hashes. Public links currently point to official source workbooks; this does not establish a public local-download archive for every civic file.
+
+Next: atomic installation and website checks for the 1991 source-table bundle, then update reference artifacts and coordinate restoration of the four Examelite queues. Civic extraction stays paused; amenities, PDF candidates and LGD joins remain pending review.

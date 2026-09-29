@@ -21,7 +21,7 @@ Collection expanded ahead of integration. Correct that delivery order now. More 
 
 | Evidence | Actual state |
 | --- | --- |
-| Five 2001/2011 Census views, 30,525 rows | Package integrity and deployed importer compatibility passed. Full row review/import/publication pending. |
+| Five 2001/2011 Census views, 30,525 rows | Published as editions 1–5 on 29 September; counts, hashes, scopes and public pages verified. |
 | 118 Census 1991 sources, 697,205 data rows | Original-cell validation completed. Source-table viewer exists; bundle not installed at last check. Historical joins/indicators remain unapproved. |
 | 68 amenity workbook validations | Original cells verified; reference years, field definitions and geography need interpretation. |
 | 378 PDF evidence manifests | Not a unique-publication count. OCR/text is evidence, not accepted indicator data. 4,217 structured candidate rows remain unverified. |
@@ -29,7 +29,7 @@ Collection expanded ahead of integration. Correct that delivery order now. More 
 | Pilibhit code comparison | 879 explicit historical code pairs corroborated by LGD; 34 names require review. Diagnostic only, not accepted joins or unchanged-boundary proof. |
 | data.gov.in | In original source plan. Zero matching source references in this civic staging database at the 29 September audit. Do not claim it was fully collected. |
 
-Raw staging has 1,497,683 worksheet rows including headers, notes and overlapping records. Do not add this to filtered/1991 counts as a unique final total. No final approved national row count exists. Historical and geographic coverage are incomplete. No new release data had reached the live catalogue/source-table viewer at the latest read-only check.
+Raw staging has 1,497,683 worksheet rows including headers, notes and overlapping records. Do not add this to filtered/1991 counts as a unique final total. No final approved national row count exists. Historical and geographic coverage are incomplete. The five 2001/2011 views are now live in the Census catalogue; the 1991 source-table bundle remains pending.
 
 ## Next deliverable, in order
 
@@ -40,17 +40,19 @@ Raw staging has 1,497,683 worksheet rows including headers, notes and overlappin
 
 ## Blockers and safeguards
 
-Last server samples: load approximately 18–21 on six CPUs. Live import held for resource admission. RAM, disk and sampled swap/memory pressure were within limits. Recheck; do not relax the gate or alter unrelated services. Before substantial server processing/import require >=3 GiB available RAM, load <=CPU count, swap <=8 MiB/sec, memory PSI some avg10 <=5%, disk >=10 GiB; use low priority, 1.5 GiB address-space cap and ongoing RAM floor >=1.5 GiB.
+On 29 September the user clarified that the CPU-load admission threshold is for extraction, not importing existing data. Existing-data imports may proceed one at a time at low priority even when load exceeds CPU count. Retain >=3 GiB starting RAM, swap <=8 MiB/sec, memory PSI some avg10 <=5%, disk >=10 GiB, 1.5 GiB address-space cap and ongoing RAM floor >=1.5 GiB. Record actual importer resource use. Do not alter extraction safeguards or unrelated services.
 
-Fifteen relevant application tests and two bundle installer tests passed. Do not rerun completed raw-cell/OCR work. Narrow retesting to changed behavior or a concrete unresolved failure. No live import receipt exists yet.
+Fifteen relevant application tests and two bundle installer tests passed. Do not rerun completed raw-cell/OCR work. Narrow retesting to changed behavior or a concrete unresolved failure. Import and publication receipts now exist in the server release directory.
 
-### Latest concrete step — 29 September, 08:08 UTC heartbeat
+### Latest concrete step — 29 September, 08:12 UTC release
 
-Captured a read-only, transaction-consistent Census pre-state receipt at `/home/pollmedia/census-worker/releases/civic-20260929/prestate-20260929T0808.json`, SHA-256 `9115e0955abda00d632cc9f41d9633416e8322021a0328ca992ec754591f8c32`. All four Census tables (editions, publications, catalogue rows and reviews) are empty. Verified configured local storage root is `/home/pollmedia/app/application/storage/app/private`; historical source-table destination is absent. Refresh this snapshot immediately before import; it is a preflight, not an import receipt.
+Imported and published the five-source 2001/2011 package: 30,525 rows; editions/import runs 1–5; publication pointers 1–5; zero population-component flags. Draft import took 16.10 seconds, sampled peak RSS 315,164 KiB (~308 MiB), followed by a 2.89-second publication pass. User clarification allows existing-data imports without the extraction CPU-load gate. RAM stayed above its floor; no swap or memory-pressure event was observed.
 
-Resources: load 10.05/6 CPUs, available RAM 5,563.64 MiB, disk 65.64 GiB, sampled swap/PSI zero. No import ran. The proposed CPU-admission exception has not been approved; retain the existing gate. Unchanged CPU alert suppressed. Next action: recheck admission, refresh scoped pre-state, then import the five-source package as drafts and inspect counts/flags. Keep both extraction crons paused. Baseline Git commit: `a00024c`.
+Receipts under `/home/pollmedia/census-worker/releases/civic-20260929/`: `draft-import-20260929T081006Z.json` (fresh empty scoped pre-state and runtime), its `.log`, `draft-review-20260929T0810.json` (counts/geographic groups/original and extracted hashes), `publication-20260929T0812.json`, `post-publication-20260929T0812.json` and `website-census-20260929T0812.json`. All five public edition pages returned 200 with expected counts, official URLs, historical-scope and missingness notes. Generic urllib user agent received 403; browser user agent succeeded. Originals are preserved in app-private `official-imports/census-package/` and match the package hashes. This publishes source data with CLI review history, not accepted current-boundary joins or national completeness.
 
-Existing metadata receipts remain in the release directory: `coverage-register.json` (570 initial references, not exhaustive coverage), and `lgd-name-review-queue.json` (34 unresolved names on 15 pages; SHA-256 `81b7da19f220715b907dce7988e899d4114c8db2df52d84c19ee201d9ddcbbbd`). No joins accepted. First visual-review target remains page 83; preserve meaningful suffix differences such as Ehatmali.
+Exact next action: install the already validated 1991 source-table bundle using the release document's atomic installer, fresh destination-absence check and resource monitoring; then verify filters, definitions, pagination and CSV locators. Do not repeat raw validation. Keep civic extraction paused. Restore the four temporarily paused Examelite queues after this import window through the user's root terminal. Baseline Git before this release: `6cb7b54`.
+
+Existing metadata: `coverage-register.json` (570 initial references, not exhaustive coverage) and `lgd-name-review-queue.json` (34 unresolved names on 15 pages). Update publication state for the five released views; the reference workbook also needs the release receipts reflected. No LGD joins accepted.
 
 ## Continuity protocol
 
@@ -60,7 +62,7 @@ Read-only diagnosis at 07:41–07:42 UTC identified genuine CPU saturation: Exam
 
 The user supplied successful deployed Artisan output confirming four Examelite queues are now paused: `admission_database:admission-imports`, `admission_database:official-content`, `database:paper-extraction`, and `database:exam-pdfs`. Existing active jobs may finish; do not force-kill them. Pollmedia SSH remains available for read-only process/resource checks and civic work; administrative Examelite controls were executed by the user, not this account.
 
-At 08:01:34 UTC, load had fallen to 11.91 on six CPUs, with 5,920.59 MiB available RAM, 65.65 GiB disk, zero sampled swap traffic and zero memory PSI. One Examelite Python process remained active. Import is still waiting for load <=6; no live import ran. Next action: sample admission again, then capture scoped pre-state and run the five-source draft import if admitted. Keep both civic extraction crons paused.
+At 08:01:34 UTC, load had fallen to 11.91 on six CPUs, with 5,920.59 MiB available RAM, 65.65 GiB disk, zero sampled swap traffic and zero memory PSI. One Examelite Python process remained active. This was a historical sample before the user clarified the import policy; the five-source import has since succeeded. Keep both civic extraction crons paused.
 
 Restoration obligation: after the import window, have the user run `sudo -u examelite php8.4 artisan queue:resume CONNECTION:QUEUE` from `/home/examelite/public_html` for exactly the four queues above, and verify the output. Do not resume unrelated queues or civic extraction. No further permission is needed for the already authorized temporary pause/restoration.
 
