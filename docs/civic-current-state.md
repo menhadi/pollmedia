@@ -24,6 +24,14 @@ Workers remain waiting_for_resources (load 9.37 / six CPUs; RAM 6,439 MiB, swap/
 
 Official UDISE+ browser navigation reached https://udiseplus.gov.in/#/en/page/publications, listing annual reports 2018-19 through 2025-26 and NEP/Non-NEP columns. 2023-24 NEP download anchor had no href; click produced no verified file/navigation and console reported i.lang is not a function. No original acquired. Exact next action: follow the official detailed-tables link https://dashboard.udiseplus.gov.in/#/reportDashboard/sReport (or observed archive https://data.udiseplus.gov.in/archive) to resolve a supported downloadable source. Keep structure/period distinctions and use existing guarded primary worker after tested source support. Do not repeat legacy URLs or misrepresent discovered listings as acquired datasets. No publication this run.
 
+### Latest concrete step — 29 September 10:56 UTC: education sources registered
+
+Resolved working UDISE+ links through the official dashboard's Reports menu at https://dashboard.udiseplus.gov.in/#. Eight exact PDF URLs for academic years 2022-23, 2023-24, 2024-25, 2025-26 (NEP and existing structure) are now in pilot/udise-direct-pdf-sources.json and server direct-pdf-sources.json. All eight returned HEAD 200 application/pdf, 10–13 MB each; actual PDF bytes/hashes remain for guarded acquisition. Do not treat structure variants as additive records or school microdata.
+
+Extended existing civic_queue_feeder.py with explicit direct-PDF registry, narrowly allowing dashboard.udiseplus.gov.in/report2026/static/media/UDISE+...Booklet_(nep|existing).hash.pdf. HTTPS, redirect validation, size/PDF-signature checks, four-download batches and <=25-page textless OCR handoff remain. Six feeder tests passed including metadata preservation, repeat-run deduplication and disallowed hosts/paths/query rejection. Worker-only update installed under its exclusive job lock; prior module backed up. Receipt releases/civic-20260929/education-registry-20260929T1056.json records all endpoint checks, deployed hash and backup. No app deployment or live data change.
+
+Status: eight registered pending resource admission, NOT downloaded/extracted/published. Existing feeder-status pending counter can remain zero until the next admitted feed reads the new registry. Last resources: load 12.78 / six CPUs, RAM 7,427 MiB, swap/PSI zero; workers wait, 521/488 prior jobs complete. Exact next action: check compact statuses and direct registry together; allow normal cron acquisition when gates pass, verify original hashes/text manifests and distinct academic-year/structure metadata, then review aggregate-table extraction. Do not manually bypass CPU admission. Resume LGD/health source expansion while waiting, without retrying obsolete education links. Original PDF text/OCR outputs still require semantic review before indicators.
+
 ---
 
 # Civic work: read this first

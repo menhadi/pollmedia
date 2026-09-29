@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 import hashlib
 import json
+import re
 from pathlib import Path
 import ssl
 import time
@@ -19,7 +20,10 @@ from census_server_worker import digest, resources_ok
 
 def official(url):
     p = urlsplit(url)
-    return p.scheme == 'https' and p.netloc == 'censusindia.gov.in' and p.path.startswith('/nada/')
+    return p.scheme == 'https' and (
+        (p.netloc == 'censusindia.gov.in' and p.path.startswith('/nada/')) or
+        (p.netloc == 'dashboard.udiseplus.gov.in' and not p.query and not p.fragment and
+         re.fullmatch(r'/report2026/static/media/UDISE\+20\d{2}_\d{2}_Booklet_(nep|existing)\.[a-f0-9]+\.pdf', p.path) is not None))
 
 
 class Links(HTMLParser):
@@ -72,6 +76,12 @@ def feed(root, download_limit=4):
     if not (ocr / 'queue').is_dir():
         raise ValueError('Separate OCR worker must be configured first')
     remaining = download_limit
+    direct_registry = root / 'direct-pdf-sources.json'
+    for item in json.loads(direct_registry.read_text()) if direct_registry.exists() else []:
+        source = item['source_url']
+        if not official(source) or not urlsplit(source).path.lower().endswith('.pdf'):
+            raise ValueError('Unsupported explicit PDF source')
+        state['downloads'].setdefault(source, {'catalogue_url': item['landing'], 'metadata': item})
     workbook_registry = root / 'workbook-sources.json'
     for item in json.loads(workbook_registry.read_text()) if workbook_registry.exists() else []:
         records = state.setdefault('workbook_downloads', {})

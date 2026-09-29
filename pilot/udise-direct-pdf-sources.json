@@ -1,0 +1,82 @@
+[
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2025_26_Booklet_nep.94ceae1e8c2210549d21.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2025-26",
+    "structure": "nep",
+    "title": "UDISE+ Report 2025-26 nep structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2025_26_Booklet_existing.edd7cd16d934a10377ba.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2025-26",
+    "structure": "existing",
+    "title": "UDISE+ Report 2025-26 existing structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2024_25_Booklet_nep.ea09e672a163f92d9cfe.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2024-25",
+    "structure": "nep",
+    "title": "UDISE+ Report 2024-25 nep structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2024_25_Booklet_existing.118ba29d4773e6372f72.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2024-25",
+    "structure": "existing",
+    "title": "UDISE+ Report 2024-25 existing structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2023_24_Booklet_nep.f2ab818294eb169c0adc.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2023-24",
+    "structure": "nep",
+    "title": "UDISE+ Report 2023-24 nep structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2023_24_Booklet_existing.309eabf9e4889db93bcb.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2023-24",
+    "structure": "existing",
+    "title": "UDISE+ Report 2023-24 existing structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2022_23_Booklet_nep.897ad1d762ba546d666b.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2022-23",
+    "structure": "nep",
+    "title": "UDISE+ Report 2022-23 nep structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  },
+  {
+    "source_url": "https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2022_23_Booklet_existing.d209e7c7516d77939da9.pdf",
+    "landing": "https://dashboard.udiseplus.gov.in/#",
+    "source_family": "UDISE+",
+    "academic_year": "2022-23",
+    "structure": "existing",
+    "title": "UDISE+ Report 2022-23 existing structure",
+    "coverage": "Official aggregate education report; not school microdata. Structure variants overlap; no unverified geography joins.",
+    "discovered_at": "2026-09-29T10:56:00Z"
+  }
+]

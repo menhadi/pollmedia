@@ -9,6 +9,27 @@ from civic_queue_feeder import Links, feed, official
 
 
 class FeederTests(unittest.TestCase):
+    def test_explicit_education_pdf_registry_preserves_period_and_resumes(self):
+        url = 'https://dashboard.udiseplus.gov.in/report2026/static/media/UDISE+2023_24_Booklet_nep.f2ab818294eb169c0adc.pdf'
+        self.assertTrue(official(url))
+        self.assertFalse(official(url.replace('udiseplus.gov.in', 'udiseplus.gov.in.evil')))
+        self.assertFalse(official(url + '?redirect=elsewhere'))
+        self.assertFalse(official(url.replace('/report2026/', '/unreviewed/')))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'ocr-worker/queue').mkdir(parents=True)
+            (root/'catalogues.json').write_text('[]')
+            item = {'source_url':url, 'landing':'https://dashboard.udiseplus.gov.in/',
+                    'academic_year':'2023-24', 'structure':'NEP'}
+            (root/'direct-pdf-sources.json').write_text(json.dumps([item]))
+            with patch('civic_queue_feeder.resources_ok', return_value=True), patch('civic_queue_feeder.fetch', side_effect=lambda u,p,c,l:p.write_bytes(b'%PDF-fixture')) as download:
+                feed(root)
+                feed(root)
+                self.assertEqual(download.call_count, 1)
+            state = json.loads((root/'feeder-status.json').read_text())
+            self.assertEqual(state['downloads'][url]['metadata'], item)
+            self.assertEqual(len(list((root/'queue').glob('text-*.json'))), 1)
+
     def test_workbook_acquisition_flows_into_raw_cell_parser(self):
         import openpyxl, sqlite3
         from contextlib import closing
