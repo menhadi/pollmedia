@@ -4,7 +4,13 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest verified step — 29 September 11:41 UTC
+### Latest verified step — 29 September 11:56 UTC
+
+NHM's 16th Common Review Mission 2024 original was acquired by cron at 11:45 UTC. Verified PDF signature, 6,635,053 bytes, full SHA-256 `e7ecf771ae13c74bbdfdcc5bdc6c9d4bec79d13fcb356c2f61f079c3e3f85179` and the queued PDF-text source/hash/package descriptor. Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/health-original-check-20260929T1156.json`. All nine registered education/health originals now have verified acquisition evidence and are downloaded_text_pending; none has new text extraction or publication. NHM is selected assessed-facility/programme evidence, not a national facility census; retain table-specific periods and pending semantic review.
+
+Compact check: zero pending downloads/workbooks, one previously known catalogue gap; no download/workbook errors. Both workers at 11:55 wait for extraction CPU admission, no active civic extraction process or resource lease. Available RAM 7,085 MiB, load 16.37 / six CPUs, swap traffic/PSI zero, free disk 60.69 GiB. Database complete counts remain 521/488; nine text descriptors await admission before job registration. Unchanged CPU alert deduplicated; last routine summary remains 10:13 UTC. Exact next action: inspect registry-aware backlog for newly admitted text receipts, validate only new output, and continue official LGD/HMIS machine-readable discovery while extraction waits. Do not re-download/re-hash these nine originals or relax extraction safeguards.
+
+### Previous verified step — 29 September 11:41 UTC
 
 All EIGHT registered UDISE originals are downloaded; the NHM report remains download_pending. Verified the four newly acquired 2022-23/2023-24 PDFs against signatures, SHA-256 and queued source/hash descriptors. Receipt: `/home/pollmedia/census-worker/releases/civic-20260929/education-originals-check-20260929T1141.json`. The earlier four remain covered by collection-load-exemption-download-check.json and were not rehashed. A compact nine-source inventory is saved alongside them as new-sector-acquisition-inventory.json. Preserve academic-year/NEP/existing-structure distinctions; these overlapping reports are not additive school records.
 
