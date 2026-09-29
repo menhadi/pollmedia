@@ -12,6 +12,12 @@ Both resumed crons checked at 10:10 and report waiting_for_resources (load 8.12 
 
 Official data.gov.in search confirms the LGD catalogue and district resource landing page; direct web fetches timed out. Exact downloadable resource/API access still unverified. Next action: inspect the official LGD resource through a supported browser/API path, preserve exact download URLs/schema/access requirements; in parallel planning prioritize further supported Census sources rather than repeated unchanged Saharanpur retries. No new bulk dataset or publication this check. Reference XLSX/admin UI remain unfinished.
 
+### Latest check — 29 September 10:26 UTC
+
+Primary/OCR statuses at 10:25 still waiting_for_resources; 521/488 complete, no queued extraction; RAM 7,403 MiB, load 11.57 on six CPUs, swap/PSI zero. Unchanged CPU alert not repeated. LGD district resource also timed out in the in-app browser; no download/API credentials acquired. Expanded discovery to official UDISE+ 2023-24 aggregate reports, keeping NEP/existing-structure overlap explicit. Four search-discovered ministry PDF URLs returned HTTP 404 to server HEAD requests; these are access observations, not proof of permanent loss or GET unavailability. No failed source was enqueued. Receipt: worker releases/civic-20260929/education-source-discovery-20260929T1026.json with exact tested URLs and responses. No original PDF downloaded, extracted or published.
+
+Exact next action: inspect the current official education publication listing (search also found master-dsel-education.digifootprint.gov.in/documents/reports/udise-publications-statistics-EDN0EjMtQWa) and resolve current linked downloads before adapting the primary feeder. Existing feeder permits Census /nada URLs only; do not silently add education links there. If metadata access remains unavailable, continue another supported scope source instead of retrying unchanged URLs. Keep extraction resource gates intact.
+
 ---
 
 # Civic work: read this first
