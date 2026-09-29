@@ -9,6 +9,8 @@ J17_SHA256 = '345688afbccf0ea0433bade42fb1af58ba46772245b733a1b12baad951b9bea2'
 J17_URL = 'https://ejalshakti.gov.in/JJM/JJMReports/Physical/JJMRep_DistrictWiseFHTCCoverage.aspx'
 F26_SHA256 = '435367d063f346d17e0e5348e72a87819bf468a608b3600401031caaa80c924b'
 F26_URL = 'https://ejalshakti.gov.in/JJM/JJMReports/Physical/rpt_RWS_SchoolsEntryStatus.aspx'
+F27_SHA256 = '8c41d50ab6b8f1fdb2580771fe942e9b8bdf345abc48adc11f860ed0cc67ae16'
+F27_URL = 'https://ejalshakti.gov.in/JJM/JJMReports/school/rpt_publicinstitutionentrystatus.aspx'
 PROFILES = {
     ORIGINAL_SHA256: dict(source_url=SOURCE_URL, report='J1',
         heading='State wise PWS and FHTC Coverage',
@@ -19,6 +21,9 @@ PROFILES = {
     F26_SHA256: dict(source_url=F26_URL, report='F26',
         heading='Status of Pipe Water Supply in School',
         limitation='School entry includes unapproved data; source Approved Entry is not Pollmedia approval. DISE, rural and entered school totals have different denominators; facilities overlap. Form selections remain in original HTML and require review; no Anganwadi or academic-year inference'),
+    F27_SHA256: dict(source_url=F27_URL, report='F27',
+        heading='Public Institutions',
+        limitation='Entered institutions, tap connections and Approved by State counts remain separate; state approval is not Pollmedia approval. Category partition requires review; health-centre connections do not establish healthcare availability. No individual institution records or geography joins'),
 }
 
 

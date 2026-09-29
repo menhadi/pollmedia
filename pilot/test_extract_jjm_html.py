@@ -86,5 +86,22 @@ class JjmTests(unittest.TestCase):
                 self.assertIn('different denominators', manifest['limitations'][-1])
                 self.assertIn('not Pollmedia approval', manifest['limitations'][-1])
 
+    def test_f27_keeps_institution_and_connection_counts_distinct(self):
+        digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); package = root/'report.html'
+            package.write_text('F27 Public Institutions<table><tr><th>Total</th><th>Availability of Tap Connection</th></tr><tr><td>10</td><td>0</td></tr></table>')
+            expected = digest(package)
+            with patch.dict(adapter.PROFILES, {expected:adapter.PROFILES[adapter.F27_SHA256]}):
+                with self.assertRaises(ValueError):
+                    adapter.extract(root, package, expected, {'source_url':adapter.F26_URL}, digest, lambda _:True)
+                adapter.extract(root, package, expected, {'source_url':adapter.F27_URL}, digest, lambda _:True)
+                evidence = root/'source-evidence'
+                cells = [json.loads(line) for line in (evidence/f'jjm-html-{expected}.cells.jsonl').read_text().splitlines()]
+                self.assertEqual([c['text'] for c in cells][-2:], ['10','0'])
+                manifest = json.loads((evidence/f'jjm-html-{expected}.manifest.json').read_text())
+                self.assertEqual(manifest['report'], 'F27')
+                self.assertIn('do not establish healthcare availability', manifest['limitations'][-1])
+
 
 if __name__ == '__main__': unittest.main()

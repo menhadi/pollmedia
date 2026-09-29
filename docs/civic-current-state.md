@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 16:26 UTC
+### Latest concrete step — 29 September 16:41 UTC
+
+Acquired and queued official JJM F27 Public Institutions tap-connection report from its public menu. Original source-evidence/jjm-f27-institutions-20260929T1641.html, 255,930 bytes, SHA-256 8c41d50ab6b8f1fdb2580771fe942e9b8bdf345abc48adc11f860ed0cc67ae16, retrieved 16:42:33 UTC; verified original hash. Acquisition receipt releases/civic-20260929/jjm-f27-acquisition-20260929T1641.json retains exact URL/response date/caveats. Collection used verified TLS, 2 MiB cap, primary lock and collection admission.
+
+Added exact F27 hash/source profile to existing JJM adapter with distinct institution/connection/state-approval caveats. Nineteen tests passed; server syntax compiled. Installed under worker.lock with backup and code hash in jjm-f27-adapter-install-20260929T1641.json. Hard-linked original and queued once as jjm_html (html-HASH.json). Monitor now counts sixteen sources: nine PDFs pending text, five HTML jobs pending extraction, two CSV access holds. No manual extraction/publication; no new workers or relaxed safeguards.
+
+Exact next action: inspect only newly completed manifests after normal admission; validate source periods/form selections/header spans and repeated totals, then arithmetic diagnostics. F27 health-centre water connections are not healthcare availability and state approval is not Pollmedia review. Do not assume categories partition without checking. If still waiting, prioritize remaining historical Census or LGD coverage gaps rather than collecting redundant JJM snapshots. 16:40 both workers waiting for CPU; jobs 521/488 complete, no errors; RAM 6,354 MiB, load 10.29 / six CPUs, swap/PSI zero, disk 60.53 GiB. No new material failure/import; last summary remains 16:28 UTC.
+
+### Previous concrete step — 29 September 16:26 UTC
 
 Installed the exact hash/source/heading F26 profile in the existing JJM adapter under worker.lock, with backup and receipt releases/civic-20260929/jjm-f26-adapter-install-20260929T1626.json. Eighteen parser/worker/monitor tests passed; server syntax compiled. Preserved original hash verified, hard-linked into packages and queued once as jjm_html: queue/html-435367d063f346d17e0e5348e72a87819bf468a608b3600401031caaa80c924b.json. F26 manifest caveats explicitly separate source approval from Pollmedia review and different school denominators/overlapping facilities. Form selections remain preserved in the original HTML, not yet interpreted.
 
