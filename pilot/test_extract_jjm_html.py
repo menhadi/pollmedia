@@ -70,5 +70,21 @@ class JjmTests(unittest.TestCase):
             (root/'source-evidence'/('jjm-html-'+'a'*64+'.manifest.json')).write_text(json.dumps({'original_sha256':'a'*64}))
             self.assertEqual(summarize(root)['counts'], {'html_evidence_present_pending_review':1})
 
+    def test_f26_keeps_approval_and_denominator_caveats(self):
+        digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); package = root/'report.html'
+            package.write_text('Status of Pipe Water Supply in School<table><tr><th>Approved Entry</th></tr><tr><td>001</td></tr></table>')
+            expected = digest(package)
+            with patch.dict(adapter.PROFILES, {expected: adapter.PROFILES[adapter.F26_SHA256]}):
+                with self.assertRaises(ValueError):
+                    adapter.extract(root, package, expected, {'source_url':adapter.J17_URL}, digest, lambda _:True)
+                adapter.extract(root, package, expected, {'source_url':adapter.F26_URL}, digest, lambda _:True)
+                manifest = json.loads((root/'source-evidence'/f'jjm-html-{expected}.manifest.json').read_text())
+                self.assertEqual(manifest['report'], 'F26')
+                self.assertEqual(manifest['review_state'], 'PENDING ADMIN REVIEW')
+                self.assertIn('different denominators', manifest['limitations'][-1])
+                self.assertIn('not Pollmedia approval', manifest['limitations'][-1])
+
 
 if __name__ == '__main__': unittest.main()

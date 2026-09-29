@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 16:11 UTC
+### Latest concrete step — 29 September 16:26 UTC
+
+Installed the exact hash/source/heading F26 profile in the existing JJM adapter under worker.lock, with backup and receipt releases/civic-20260929/jjm-f26-adapter-install-20260929T1626.json. Eighteen parser/worker/monitor tests passed; server syntax compiled. Preserved original hash verified, hard-linked into packages and queued once as jjm_html: queue/html-435367d063f346d17e0e5348e72a87819bf468a608b3600401031caaa80c924b.json. F26 manifest caveats explicitly separate source approval from Pollmedia review and different school denominators/overlapping facilities. Form selections remain preserved in the original HTML, not yet interpreted.
+
+Monitor now counts fifteen source entries: nine PDFs pending text, four HTML jobs pending extraction, two CSV access holds. All acquired HTML originals are now queued. Exact next action: inspect only newly completed manifests when normal extraction admission succeeds; validate original selected controls, reporting periods, header locators and duplicate totals before semantic/arithmetic diagnostics. Continue supported source expansion if no new output; do not relax CPU gates or repeat held access attempts.
+
+16:25 both workers waiting for CPU; completed jobs remain 521/488, no errors. RAM 7,129 MiB, load 12.58 / six CPUs, swap/PSI zero, disk 60.50 GiB. Since the prior summary, four official aggregate HTML originals were acquired and queued (UP MGNREGA, JJM J1, J17, F26), with hashes validated but extraction/review still pending; HMIS archive/workbook links remain discovery only. No new live publication. Three-hour summary recorded this turn; no new material failure or checksum mismatch.
+
+### Previous concrete step — 29 September 16:11 UTC
 
 Preserved official JJM F26 school water/facility report from the public School/Anganwadi/Public Institutions menu. Original source-evidence/jjm-f26-school-20260929T1611.html, 230,754 bytes, SHA-256 435367d063f346d17e0e5348e72a87819bf468a608b3600401031caaa80c924b; retrieved 16:12:34 UTC. Verified original hash; exact URL/response date/caveats in releases/civic-20260929/jjm-f26-acquisition-20260929T1611.json. Primary worker.lock, collection admission, verified TLS and 2 MiB cap used. No parsing or publication.
 

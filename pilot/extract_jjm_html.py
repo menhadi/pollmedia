@@ -7,6 +7,8 @@ ORIGINAL_SHA256 = '5781f578c329a2ac4fb5d84823ea8b2ad2a67f99c4bb648f52f3b4c857d45
 SOURCE_URL = 'https://ejalshakti.gov.in/JJM/JJMReports/Physical/Rpt_JJM_VillageWisePWSReport.aspx'
 J17_SHA256 = '345688afbccf0ea0433bade42fb1af58ba46772245b733a1b12baad951b9bea2'
 J17_URL = 'https://ejalshakti.gov.in/JJM/JJMReports/Physical/JJMRep_DistrictWiseFHTCCoverage.aspx'
+F26_SHA256 = '435367d063f346d17e0e5348e72a87819bf468a608b3600401031caaa80c924b'
+F26_URL = 'https://ejalshakti.gov.in/JJM/JJMReports/Physical/rpt_RWS_SchoolsEntryStatus.aspx'
 PROFILES = {
     ORIGINAL_SHA256: dict(source_url=SOURCE_URL, report='J1',
         heading='State wise PWS and FHTC Coverage',
@@ -14,6 +16,9 @@ PROFILES = {
     J17_SHA256: dict(source_url=J17_URL, report='J17',
         heading='Analysis of tap water connections in Districts',
         limitation='State counts of districts in coverage bands are not district records; percentages are not additive'),
+    F26_SHA256: dict(source_url=F26_URL, report='F26',
+        heading='Status of Pipe Water Supply in School',
+        limitation='School entry includes unapproved data; source Approved Entry is not Pollmedia approval. DISE, rural and entered school totals have different denominators; facilities overlap. Form selections remain in original HTML and require review; no Anganwadi or academic-year inference'),
 }
 
 
