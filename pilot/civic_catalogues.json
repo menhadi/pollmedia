@@ -2259,5 +2259,11 @@
     "title": "Census of India 2011 - Uttarakhand - Series 06 - Part XII B - District Census Handbook, Dehradun",
     "url": "https://censusindia.gov.in/nada/index.php/catalog/1311",
     "coverage": "Historical Uttarakhand source-era district; preserve publisher district name and edition/part identity. Observation periods, geographic joins and OCR require review."
+  },
+  {
+    "year": 1971,
+    "title": "District Census Handbook, Dehradun, Part X-B, Series-21, Uttar Pradesh - Census 1971",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/29136",
+    "coverage": "Historical Uttar Pradesh source-era district; preserve publisher state and district names and edition/part identity. Observation periods, geographic joins and OCR require review."
   }
 ]
