@@ -93,3 +93,7 @@ Next: atomic installation and website checks for the 1991 source-table bundle, t
 ## 1991 release completed — 08:15 UTC
 
 Atomic installation succeeded: 237 files, 118 workbooks, 236 worksheets, 697,205 worksheet rows including definition sheets. Runtime 5.05 seconds; sampled peak RSS 21,832 KiB. No PostgreSQL changes were needed. Verified public year/area/group and district filters, data and definition worksheets, page two, and CSV source-row/official-URL/worksheet locators for 100 rows. Receipts: `install-1991-20260929.json` and `website-1991-20260929.json`. The coverage register now marks 123 source references released; all other entries retain pending-review state. Recovery remains the scoped directory quarantine described above.
+
+## UP amenity source tables live — 09:27 UTC
+
+Two source workbooks added without replacing the original 118 sources. Seven displayed worksheets include the preserved hamlet title/notes. All public pages and CSV downloads checked. Town/slum body rows: 915/2,015; village/hamlet: 106,774/165,081, plus source remarks. These are source rows, not approved indicators. Installation and public receipts: `up-amenity-install-20260929.json` and `up-amenity-public-check-20260929.json` in the server release directory. Recovery uses the exact prior index backup and current-hash precondition recorded in the short handoff; preserve evidence directories. No new extraction or app deployment.
