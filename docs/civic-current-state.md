@@ -4,7 +4,15 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 15:56 UTC
+### Latest concrete step — 29 September 16:11 UTC
+
+Preserved official JJM F26 school water/facility report from the public School/Anganwadi/Public Institutions menu. Original source-evidence/jjm-f26-school-20260929T1611.html, 230,754 bytes, SHA-256 435367d063f346d17e0e5348e72a87819bf468a608b3600401031caaa80c924b; retrieved 16:12:34 UTC. Verified original hash; exact URL/response date/caveats in releases/civic-20260929/jjm-f26-acquisition-20260929T1611.json. Primary worker.lock, collection admission, verified TLS and 2 MiB cap used. No parsing or publication.
+
+Default school-entry table explicitly includes unapproved entries; Approved Entry is a separate source column, not Pollmedia admin approval. DISE total, rural schools reported by state and entered schools have different denominators; do not force equality. Facility categories overlap. This is state-level school evidence, not an Anganwadi extract, individual school records or an academic-year UDISE release. Exact next action: add an exact hash/source/heading F26 profile to the existing JJM adapter, preserve selected-control/report-period context, test profile separation and queue the preserved original once under normal extraction admission. The new original is not queued or counted in backlog yet.
+
+16:10 workers still waiting for CPU; nine PDFs and three HTML jobs pending extraction, two CSV access holds, one known catalogue gap. Completed jobs unchanged at 521/488, no errors. RAM 5,529 MiB, load 11.85 / six CPUs, swap/PSI zero, disk 60.58 GiB. No new material failure or import; unchanged alerts suppressed. Routine summary due after 16:14 UTC, not sent early.
+
+### Previous concrete step — 29 September 15:56 UTC
 
 Extended the existing JJM adapter with exact hash/source/heading profiles for J1 and J17. J17 emits its report identity and distinct caveats about state district-band counts and non-additive percentages. Raw cells, spans, duplicate totals and locators remain unchanged; observation date remains unverified. Seventeen tests passed, including wrong source/heading rejection between J1 and J17. Server syntax compiled; installed only extract_jjm_html.py under primary worker.lock with backup and hash. Receipt: releases/civic-20260929/jjm-j17-adapter-install-20260929T1556.json; backup directory jjm-j17-adapter-1556.
 
