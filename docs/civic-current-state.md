@@ -4,7 +4,13 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest discovery step — 29 September 12:11 UTC
+### Latest concrete step — 29 September 12:26 UTC
+
+Added acquisition-only CSV support to the existing isolated primary feeder, allowing only the exact discovered JJM CSV URL. One MiB bound, original bytes/hash/date/metadata receipt, existing locks/TLS/resource admission and duplicate suppression retained; no CSV parsing or publication enabled. Backlog helper includes CSV stages. Normal wrapper GET returned HTTP 403 Forbidden; no CSV acquired. Held this source as access_review_required with no automatic retry (401/403 handling), without bypassing controls. Worker-only install backups/receipt: releases/civic-20260929/csv-acquisition-install-20260929T1226.json; final code hashes and response: csv-access-review-20260929T1226.json. Feeder tests cover original byte preservation, duplicate suppression, HTML rejection and access-denial hold. New access alert recorded in exports/civic-monitor-notifications.json.
+
+Nine PDFs still downloaded_text_pending; 12:25 extraction workers waiting for CPU, RAM 5,261 MiB, load 16.45 / six CPUs, swap/PSI zero, disk 60.67 GiB. Exact next action: use the publisher's supported download UI or assisted official acquisition for this CSV, preserving the same provenance; do not repeatedly retry the denied URL. Continue other supported machine-readable source discovery and inspect newly admitted extraction output. No application deployment, live import or extraction-policy changes.
+
+### Previous discovery step — 29 September 12:11 UTC
 
 Resolved an actual machine-readable water-source link from the official data.gov.in landing HTML: `https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_91_A_to_D_i.csv`. Landing: `https://www.data.gov.in/resource/stateut-wise-status-tap-water-connections-rural-households-under-jal-jeevan-mission-jjm-29`. Server GET of the landing succeeded under collection admission with verified TLS; preserved 1,015,022 HTML bytes, SHA-256 `005490a58542aef37639b706d55f32b40fe00a2916daf3740ba5965170f78a04`. The URL is from its field_datafile metadata, not guessed. CSV HEAD returned 405 (method unsupported, not evidence that GET fails); CSV bytes have NOT been acquired or parsed. Receipt and HTML: worker `releases/civic-20260929/water-source-discovery-20260929T1211.json` and `water-source-landing-20260929T1211.html`.
 

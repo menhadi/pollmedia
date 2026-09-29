@@ -14,13 +14,17 @@ import time
 import zipfile
 from urllib.parse import urljoin, urlsplit
 from urllib.request import urlopen
+from urllib.error import HTTPError
 
 from census_server_worker import digest, resources_ok
+
+JJM_CSV = 'https://www.data.gov.in/files/ogdpv2dms/s3fs-public/RS_Session_267_AU_91_A_to_D_i.csv'
 
 
 def official(url):
     p = urlsplit(url)
     return p.scheme == 'https' and (
+        url == JJM_CSV or
         url == 'https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf' or
         (p.netloc == 'censusindia.gov.in' and p.path.startswith('/nada/')) or
         (p.netloc == 'dashboard.udiseplus.gov.in' and not p.query and not p.fragment and
@@ -77,6 +81,37 @@ def feed(root, download_limit=4, collection_only=False):
     if not (ocr / 'queue').is_dir():
         raise ValueError('Separate OCR worker must be configured first')
     remaining = download_limit
+    csv_registry = root / 'direct-csv-sources.json'
+    csv_items = json.loads(csv_registry.read_text()) if csv_registry.exists() else []
+    for item in csv_items:
+        url = item['source_url']
+        if url != JJM_CSV:
+            raise ValueError('Unsupported explicit CSV source')
+        record = state.setdefault('csv_downloads', {}).setdefault(url, {'metadata': item})
+        if record.get('complete') or record.get('access_review_required') or record.get('retry_after', 0) > time.time() or not remaining:
+            continue
+        if not resources_ok(root): break
+        remaining -= 1
+        path = root / 'packages' / (hashlib.sha256(url.encode()).hexdigest() + '.csv')
+        try:
+            fetch(url, path, context, 1024**2)
+            # Acquisition only: do not parse cells or infer encoding/types here.
+            with path.open('rb') as stream:
+                prefix = stream.read(1024).lstrip(b'\xef\xbb\xbf \t\r\n').lower()
+            if not prefix or prefix.startswith((b'<', b'%pdf-', b'pk\x03\x04')):
+                raise ValueError('Expected CSV bytes; received empty or non-CSV document')
+            record.update(complete=True, sha256=digest(path), package=path.name,
+                          bytes=path.stat().st_size, retrieved_at=datetime.now(timezone.utc).isoformat(),
+                          review_state='acquired_pending_csv_validation')
+            record.pop('error', None); record.pop('retry_after', None)
+            save(evidence / ('csv-' + record['sha256'] + '.acquisition.json'), dict(record, source_url=url))
+        except Exception as error:
+            record.update(error=str(error), retry_after=time.time()+1800)
+            if isinstance(error, HTTPError) and error.code in (401, 403):
+                record['access_review_required'] = True
+                record.pop('retry_after', None)
+        save(state_path, state)
+    state['pending_csv_downloads'] = sum(not state.get('csv_downloads', {}).get(item['source_url'], {}).get('complete', False) for item in csv_items)
     direct_registry = root / 'direct-pdf-sources.json'
     for item in json.loads(direct_registry.read_text()) if direct_registry.exists() else []:
         source = item['source_url']

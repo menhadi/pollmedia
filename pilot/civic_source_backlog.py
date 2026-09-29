@@ -10,6 +10,9 @@ def read(path, default):
 
 def summarize(root):
     registry = read(root / 'direct-pdf-sources.json', [])
+    csv_registry = read(root / 'direct-csv-sources.json', [])
+    csv_urls = {item['source_url'] for item in csv_registry}
+    registry += csv_registry
     state = read(root / 'feeder-status.json', {})
     downloads = state.get('downloads', {})
     rows = []
@@ -19,18 +22,22 @@ def summarize(root):
         if url in seen:
             continue
         seen.add(url)
-        record = downloads.get(url)
+        record = (state.get('csv_downloads', {}) if url in csv_urls else downloads).get(url)
         phase = 'registered_pending_admission'
         if record is not None:
             phase = 'download_retry_pending' if record.get('error') else 'download_pending'
+            if record.get('access_review_required'):
+                phase = 'access_review_required'
             if record.get('complete'):
                 phase = 'downloaded_text_pending'
+                if url in csv_urls:
+                    phase = 'acquired_pending_csv_validation'
                 digest = record.get('sha256', '')
                 if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
                     phase = 'download_receipt_invalid'
                 else:
                     manifest = root / 'source-evidence' / f'pdf-{digest}.manifest.json'
-                    if manifest.exists():
+                    if url not in csv_urls and manifest.exists():
                         metadata = read(manifest, {})
                         phase = ('text_evidence_present_pending_review'
                                  if metadata.get('original_sha256') == digest else 'text_receipt_mismatch')

@@ -5,10 +5,55 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from civic_queue_feeder import Links, feed, official
+from civic_queue_feeder import Links, feed, official, JJM_CSV
 
 
 class FeederTests(unittest.TestCase):
+    def test_csv_access_denial_is_held_without_automatic_retry(self):
+        from urllib.error import HTTPError
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root/'ocr-worker/queue').mkdir(parents=True)
+            (root/'catalogues.json').write_text('[]')
+            (root/'direct-csv-sources.json').write_text(json.dumps([{'source_url': JJM_CSV}]))
+            with patch('civic_queue_feeder.resources_ok', return_value=True), patch('civic_queue_feeder.fetch', side_effect=HTTPError(JJM_CSV,403,'Forbidden',{},None)) as download:
+                feed(root, collection_only=True); feed(root, collection_only=True)
+                self.assertEqual(download.call_count, 1)
+            record = json.loads((root/'feeder-status.json').read_text())['csv_downloads'][JJM_CSV]
+            self.assertTrue(record['access_review_required'])
+            self.assertNotIn('retry_after', record)
+
+    def test_csv_acquisition_preserves_bytes_without_parsing_or_duplicate_download(self):
+        raw = b'Name,Code,Value\r\nExample,0012,NA\r\n'
+        self.assertTrue(official(JJM_CSV))
+        self.assertFalse(official(JJM_CSV + '?other=1'))
+        self.assertFalse(official(JJM_CSV.replace('www.data.gov.in', 'evil.example')))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root/'ocr-worker/queue').mkdir(parents=True)
+            (root/'catalogues.json').write_text('[]')
+            item = {'source_url': JJM_CSV, 'units': 'lakh; percentages separate'}
+            (root/'direct-csv-sources.json').write_text(json.dumps([item]))
+            with patch('civic_queue_feeder.resources_ok', return_value=True), patch('civic_queue_feeder.fetch', side_effect=lambda u,p,c,l:p.write_bytes(raw)) as download:
+                feed(root, collection_only=True); feed(root, collection_only=True)
+                self.assertEqual(download.call_count, 1)
+            record = json.loads((root/'feeder-status.json').read_text())['csv_downloads'][JJM_CSV]
+            self.assertEqual((root/'packages'/record['package']).read_bytes(), raw)
+            self.assertEqual(record['sha256'], hashlib.sha256(raw).hexdigest())
+            self.assertEqual(record['metadata'], item)
+            self.assertFalse((root/'queue').exists())
+            self.assertEqual(record['review_state'], 'acquired_pending_csv_validation')
+
+    def test_csv_html_response_remains_retry_pending(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root/'ocr-worker/queue').mkdir(parents=True)
+            (root/'catalogues.json').write_text('[]')
+            (root/'direct-csv-sources.json').write_text(json.dumps([{'source_url': JJM_CSV}]))
+            with patch('civic_queue_feeder.resources_ok', return_value=True), patch('civic_queue_feeder.fetch', side_effect=lambda u,p,c,l:p.write_bytes(b'<!DOCTYPE html>denied')):
+                feed(root, collection_only=True)
+            record = json.loads((root/'feeder-status.json').read_text())['csv_downloads'][JJM_CSV]
+            self.assertFalse(record.get('complete', False))
+            self.assertIn('retry_after', record)
+            self.assertFalse(list((root/'source-evidence').glob('csv-*.json')))
+
     def test_health_review_is_explicitly_allowlisted_not_arbitrary_health_paths(self):
         url = 'https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf'
         self.assertTrue(official(url))
