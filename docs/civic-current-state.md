@@ -4,7 +4,13 @@ User requested removing the CPU-load constraint for searching/downloading, disti
 
 19 resource/feeder/worker tests passed. Three isolated worker modules installed under worker.lock with backups in releases/civic-20260929/before-collection-load-exemption; receipt collection-load-exemption.json. Collection is progressing despite high CPU load; extraction retains its separate gate. Do not revert collection to extraction admission or bypass extraction safeguards.
 
-### Latest concrete step — 29 September 13:41 UTC
+### Latest concrete step — 29 September 13:56 UTC
+
+Extended read-only civic_source_backlog.py to include explicit HTML queue snapshots before job-database registration. It deduplicates identical URL/hash descriptors and distinguishes pending extraction, missing originals, invalid descriptor paths, receipt mismatch and evidence-present/pending-review. It does not hash bulk originals or claim semantic validation. Five tests passed including HTML lifecycle, path rejection and CSV access-hold separation. Installed only the monitor script; receipt: worker releases/civic-20260929/html-backlog-monitor-20260929T1356.json (code hash and backup).
+
+Verified compact counts now include all twelve registered source entries: nine downloaded_text_pending PDFs, one html_queued_pending_extraction, two CSV access_review_required. At 13:55 neither worker was extracting; the HTML job had not reached database registration and no manifest existed. RAM 7,349 MiB, load 16.33 / six CPUs, measured swap traffic/PSI zero, disk 60.66 GiB. No new failure/import; existing alerts and last summary (13:14 UTC) unchanged. Exact next action: run the compact helper and inspect only newly produced HTML/PDF manifests after normal extraction admission; then validate cell locators/header structure and arithmetic diagnostics. Continue supported official source discovery if no new output, without repeating held OGD URLs or bypassing CAPTCHA. No need to count the HTML descriptor separately anymore.
+
+### Previous concrete step — 29 September 13:41 UTC
 
 Implemented and installed `extract_mgnrega_html.py` in the isolated primary worker plus an explicit `mgnrega_html` job handler. Adapter accepts only the preserved UP snapshot hash; strict UTF-8 decoding retains original newline characters. Evidence retains table/row/cell ordinals, header tags, rowspan/colspan attributes, exact raw cell HTML, decoded text and character offsets. No inferred numeric conversion, expanded grid, joins or arithmetic confirmation. Three fixtures cover spans/entities/leading zeros, nested-table provenance and malformed-markup failure; six existing worker tests also pass.
 

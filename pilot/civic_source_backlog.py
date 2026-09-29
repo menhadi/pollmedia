@@ -44,6 +44,33 @@ def summarize(root):
         rows.append(dict(source_url=url, academic_year=item.get('academic_year'),
                          structure=item.get('structure'), phase=phase,
                          error=(record or {}).get('error')))
+    # HTML snapshots are registered by queue descriptor, not the download registries.
+    seen_html = set()
+    for descriptor in sorted((root / 'queue').glob('html-*.json')):
+        job = read(descriptor, {})
+        if job.get('kind') != 'mgnrega_html':
+            continue
+        digest = job.get('sha256', '')
+        url = job.get('source_url')
+        identity = (url, digest)
+        if identity in seen_html:
+            continue
+        seen_html.add(identity)
+        phase = 'html_queued_pending_extraction'
+        package = job.get('package', '')
+        if (len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest)
+                or not package or Path(package).name != package or not package.endswith('.html')):
+            phase = 'html_descriptor_invalid'
+        elif not (root / 'packages' / package).is_file():
+            phase = 'html_original_missing'
+        else:
+            manifest = root / 'source-evidence' / f'mgnrega-html-{digest}.manifest.json'
+            if manifest.exists():
+                phase = ('html_evidence_present_pending_review'
+                         if read(manifest, {}).get('original_sha256') == digest
+                         else 'html_receipt_mismatch')
+        rows.append(dict(source_url=url, original_sha256=digest, kind='mgnrega_html',
+                         phase=phase, descriptor=descriptor.name))
     counts = {}
     for row in rows:
         counts[row['phase']] = counts.get(row['phase'], 0) + 1
