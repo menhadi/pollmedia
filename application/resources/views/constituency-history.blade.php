@@ -22,7 +22,7 @@
 <section class="card"><h2>Year-by-year results</h2><div class="table"><table><caption>General elections only.@if(!$isAssembly) The 2019 edition including Vellore is used once; the alternative edition is not double-counted.@endif</caption><thead><tr><th scope="col">Year</th><th scope="col">Winner</th><th scope="col">Party at election</th><th scope="col">Margin</th><th scope="col">Electors</th><th scope="col">Votes polled</th><th scope="col">Evidence</th></tr></thead><tbody>
 @foreach($comparison['rows'] as $row)
 @php($record = $row['record'])
-<tr><th scope="row">{{ $row['year'] }} @if($record && $record['has_warning'])<a href="#note-{{ $row['year'] }}" aria-label="Data note for {{ $row['year'] }}">â€ </a>@endif</th>
+<tr><th scope="row">{{ $row['year'] }} @if($record && $record['has_warning'])<a href="#note-{{ $row['year'] }}" aria-label="Data note for {{ $row['year'] }}">†</a>@endif</th>
 @if($record)<td>{{ !$record['has_warning'] ? ($record['winner'] ?? 'Not established') : 'Under review' }}</td><td>{{ $row['winner_party'] ?? '—' }}</td><td>{{ !$record['has_warning'] && isset($record['margin']) ? number_format($record['margin']) : '—' }}</td><td>{{ isset($record['electors']) ? number_format($record['electors']) : 'Not reported' }}</td><td>{{ isset($record['votes_polled']) ? number_format($record['votes_polled']) : 'Not reported' }}</td><td><a href="{{ $row['url'] }}">Candidate table</a> · <a href="{{ $row['source_url'] }}" target="_blank" rel="noreferrer">ECI source ↗</a></td>
 @else<td colspan="6">{{ $row['reason'] }}</td>@endif
 </tr>
@@ -30,7 +30,7 @@
 </tbody></table></div>
 @foreach($comparison['rows'] as $row)
 @if(!empty($row['mapping_note']))<p class="small"><strong>{{ $row['year'] }} name reference:</strong> {{ $row['mapping_note'] }} <a href="{{ $row['url'] }}">View the original record</a>.</p>@endif
-@if($row['record'] && $row['record']['has_warning'])<p id="note-{{ $row['year'] }}" class="notice"><strong>â€  {{ $row['year'] }}:</strong> {{ $row['record']['error'] ?? 'Source data requires review.' }} Reported totals are shown with this note; a winner and margin are not inferred.</p>@endif
+@if($row['record'] && $row['record']['has_warning'])<p id="note-{{ $row['year'] }}" class="notice"><strong>† {{ $row['year'] }}:</strong> {{ $row['record']['error'] ?? 'Source data requires review.' }} Reported totals are shown with this note; a winner and margin are not inferred.</p>@endif
 @endforeach
 </section>
 <section class="card"><h2>Turnout and party shares by year</h2><p class="small">Only eligible, reconciled single-seat records contribute. Turnout is votes polled divided by electors; party shares use recorded candidate votes plus NOTA. Missing figures remain unavailable.</p><div class="table"><table><thead><tr><th scope="col">Year</th><th scope="col">Votes polled</th><th scope="col">Turnout</th><th scope="col">Margin · percentage points</th><th scope="col">Party · votes · share</th></tr></thead><tbody>
@@ -40,7 +40,8 @@
 @endforeach
 </tbody></table></div></section>
 <section class="card"><h2>Winning margins over time</h2><p class="small">Margin in votes, on one shared scale. Years with unresolved result checks or no established winner are omitted.</p>
-@include('line-chart',['linePoints'=>$chartRows->map(fn($row)=>['year'=>$row['year'],'label'=>$row['year'].' · '.number_format($row['record']['margin']).' votes','margin'=>$row['record']['margin'],'url'=>$row['url']]),'lineTitle'=>'Winning margins over time','lineMetrics'=>['margin'=>'Winning margin (votes)']])
+@forelse($chartRows as $row)<div style="margin:20px 0"><p><strong>{{ $row['year'] }} · {{ number_format($row['record']['margin']) }} votes</strong> · {{ $row['record']['winner'] }} · {{ $row['winner_party'] }}</p><div style="height:14px;background:var(--palette-edf0e9)" aria-hidden="true"><div style="height:100%;background:var(--palette-176c55);width:{{ 100 * $row['record']['margin'] / $maxMargin }}%"></div></div></div>
+@empty<p>No reconciled winning margins are available yet.</p>@endforelse
 </section>
 @if(!empty($comparison['earlier']))
 <section class="card"><h2>Earlier Pilibhit: a different constituency extent</h2>
