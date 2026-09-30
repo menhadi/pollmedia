@@ -35,3 +35,8 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 .public-header.site-header .search-suggestions[hidden]{display:none}
 .public-footer .footer-bottom{justify-content:center;text-align:center}
 @media(max-width:800px){.public-header.site-header .header-search-wrap{order:3;flex:1 1 100%;width:100%;max-width:none}.public-header.site-header .header-search{order:initial}}
+
+/* Keep public navigation visible without a menu toggle. */
+.public-header.site-header{flex-wrap:wrap!important}
+.public-header.site-header #public-navigation{display:flex;flex-wrap:wrap;max-width:100%;min-width:0;gap:12px 18px}
+@media(max-width:800px){.public-header.site-header #public-navigation{flex:1 1 100%;width:100%;order:4;justify-content:flex-start}}

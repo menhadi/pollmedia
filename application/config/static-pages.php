@@ -61,7 +61,7 @@ Audited corrections retain the previous value and an explanation. Source-table c
 ## Reuse and attribution
 When sharing a result, retain the source reference, historical period and relevant caveats. Do not present partial coverage as national completeness.', 'published' => true, 'order' => 40],
     'accessibility' => ['title' => 'Accessibility', 'summary' => 'Help using navigation, tables and source documents, and reporting barriers.', 'content' => '## Using the interface
-Navigation, forms and controls are intended to work with a keyboard. On small screens, use Menu to open the main navigation. Wide tables can be scrolled horizontally; figures remain available in tables alongside charts.
+Navigation, forms and controls are intended to work with a keyboard. On small screens, navigation links remain visible below the search field. Wide tables can be scrolled horizontally; figures remain available in tables alongside charts.
 
 ## Source documents
 Original PDFs and workbooks may contain scanned pages, complex tables or accessibility limitations. An extracted table may help with reading, but it does not replace the original evidence or resolve every interpretation issue.
