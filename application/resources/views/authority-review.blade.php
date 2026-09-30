@@ -23,7 +23,7 @@
 <p class="muted">Captured {{ $loop->first ? ($source->successful->checked_at ?? 'Never') : ($source->baseline->checked_at ?? 'Never') }} UTC</p>
 @forelse($tables as $table)
 <div style="overflow-x:auto;margin:16px 0"><table style="border-collapse:collapse;width:100%"><caption>Official directory table {{ $loop->iteration }}</caption><tbody>
-@foreach($table as $row)<tr>@foreach($row as $cell)<td style="border:1px solid #d5dfd5;padding:8px;vertical-align:top">{{ $cell }}</td>@endforeach</tr>@endforeach
+@foreach($table as $row)<tr>@foreach($row as $cell)<td style="border:1px solid var(--palette-d5dfd5);padding:8px;vertical-align:top">{{ $cell }}</td>@endforeach</tr>@endforeach
 </tbody></table></div>
 @empty<p>No captured table is available.</p>@endforelse
 </details>@endforeach

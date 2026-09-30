@@ -78,4 +78,11 @@ class CivicExplorerTest extends TestCase
         DB::table('place_identifiers')->where('namespace', 'census:district:IN:UP')->delete();
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertViewHas('matchedPlace', null);
     }
+
+    public function test_state_navigation_opens_its_published_record_or_explains_missing_coverage(): void
+    {
+        $ids = $this->fixture();
+        $this->get('/india/census/explore?state=state-alpha')->assertRedirect(route('civic.place', ['record' => $ids['STATE']]));
+        $this->get('/india/census/explore?state=missing-state')->assertOk()->assertSee('No matching state record');
+    }
 }

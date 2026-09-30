@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\ArchiveFiles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -59,8 +61,19 @@ class HistoricalCensusTableController extends Controller
                     fclose($stream);
                 }
             }
+            $corrections = Schema::hasTable('site_changes')
+                ? DB::table('site_changes')->whereIn('target', array_map(fn ($r) => 'source:'.$source['id'].':'.$sheetNumber.':'.$r['source_row'], $rows))->orderByDesc('id')->get()->unique('target')->keyBy('target') : collect();
             foreach ($rows as &$row) {
                 $row['flags'] ??= [];
+                $correction = $corrections->get('source:'.$source['id'].':'.$sheetNumber.':'.$row['source_row']);
+                $row['revision'] = 0;
+                if ($correction) {
+                    $row['original_cells'] = $row['cells'];
+                    $row['cells'] = json_decode($correction->after_value, true);
+                    $row['revision'] = $correction->id;
+                    $row['flags'][] = 'Administrative correction; original cells retained. Reason: '.$correction->reason;
+                }
+
                 if ($row['formula_columns'] ?? []) {
                     $row['flags'][] = 'Source formula shown as text; it has not been evaluated.';
                 }

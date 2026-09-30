@@ -13,6 +13,7 @@ use App\Http\Controllers\CitizenIssueController;
 use App\Http\Controllers\CivicExplorerController;
 use App\Http\Controllers\ConstituencyOverviewController;
 use App\Http\Controllers\CoverageReportController;
+use App\Http\Controllers\DataFeedbackController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\GeographyController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\ReportArchiveController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportScopeController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\SiteManagementController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VillageController;
@@ -173,3 +175,21 @@ Route::prefix('admin/imports')->middleware([AdminTransport::class, RequireAdmini
 });
 
 Route::get('/india/constituency', [ConstituencyOverviewController::class, 'index'])->name('constituency.overview');
+
+Route::get('/report-problem', [DataFeedbackController::class, 'create'])->name('feedback.create');
+Route::post('/report-problem', [DataFeedbackController::class, 'store'])->middleware('throttle:3,10')->name('feedback.store');
+Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix('admin')->group(function () {
+    Route::get('/site', [SiteManagementController::class, 'index'])->name('site.manage');
+    Route::post('/site/connectors/{id}', [SiteManagementController::class, 'connector'])->whereNumber('id')->name('site.connector');
+    Route::post('/site/asset', [SiteManagementController::class, 'asset'])->name('site.asset');
+    Route::post('/site/appearance', [SiteManagementController::class, 'appearance'])->name('site.appearance');
+    Route::post('/site/tasks/{key}', [SiteManagementController::class, 'task'])->name('site.task');
+    Route::post('/site/api', [SiteManagementController::class, 'api'])->name('site.api');
+    Route::post('/site/seo', [SiteManagementController::class, 'seo'])->name('site.seo');
+    Route::get('/source-correction', [SiteManagementController::class, 'sourceEditor'])->name('site.source-editor');
+    Route::post('/source-correction', [SiteManagementController::class, 'sourceSave'])->name('site.source-save');
+    Route::get('/corrections', [SiteManagementController::class, 'editor'])->name('site.editor');
+    Route::post('/corrections', [SiteManagementController::class, 'correct'])->name('site.correct');
+    Route::get('/feedback', [DataFeedbackController::class, 'index'])->name('feedback.queue');
+    Route::post('/feedback/{id}', [DataFeedbackController::class, 'update'])->whereUlid('id')->name('feedback.update');
+});

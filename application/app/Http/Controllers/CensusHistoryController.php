@@ -13,7 +13,7 @@ class CensusHistoryController extends Controller
     {
         $data = json_decode(file_get_contents(database_path('fixtures/census-india-decadal.json')), true, 512, JSON_THROW_ON_ERROR);
         $all = collect($data['records']);
-        $years = $all->pluck('year')->unique()->sort()->values();
+        $years = $all->pluck('year')->unique()->sortDesc()->values();
         $states = $all->unique('state_code')->sortBy('state_code')->values();
         $input = $request->validate(['year' => ['nullable', 'integer', Rule::in($years->all())], 'state' => ['nullable', Rule::in($states->pluck('state_code')->all())]]);
         $year = isset($input['year']) ? (int) $input['year'] : null;
@@ -27,7 +27,7 @@ class CensusHistoryController extends Controller
     {
         $data = $service->population();
         abort_unless($data, 404, 'Historical Census population data has not been imported.');
-        $years = collect($data['rows'])->pluck('year')->unique()->sort()->values()->all();
+        $years = collect($data['rows'])->pluck('year')->unique()->sortDesc()->values()->all();
         $input = $request->validate(['area' => 'nullable|in:total,rural,urban', 'census_year' => ['nullable', 'integer', Rule::in($years)]]);
         $area = $input['area'] ?? 'total';
         $selectedYear = isset($input['census_year']) ? (int) $input['census_year'] : null;

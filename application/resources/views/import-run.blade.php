@@ -1,6 +1,6 @@
 @extends('seo-layout')
 @section('content')
-<style>.import-table{overflow:auto}.import-table table{border-collapse:collapse;font-size:13px;min-width:100%}.import-table th,.import-table td{padding:9px 12px;border:1px solid #d5dfd5;text-align:left;max-width:300px;min-width:100px;overflow-wrap:anywhere}.import-table th{background:#edf3e9}</style>
+<style>.import-table{overflow:auto}.import-table table{border-collapse:collapse;font-size:13px;min-width:100%}.import-table th,.import-table td{padding:9px 12px;border:1px solid var(--palette-d5dfd5);text-align:left;max-width:300px;min-width:100px;overflow-wrap:anywhere}.import-table th{background:var(--palette-edf3e9)}</style>
 <a href="{{ route('imports.index') }}">Back to data imports</a><h1>{{ $connector->name }}</h1><p>Run #{{ $record->id }} / {{ str_replace('_',' ',$record->status) }} / {{ $record->origin }} / {{ $record->created_at }} UTC</p>
 <p><a class="url" href="{{ $record->source_url }}" target="_blank" rel="noreferrer">Official source URL</a></p>
 @if($record->raw_path)

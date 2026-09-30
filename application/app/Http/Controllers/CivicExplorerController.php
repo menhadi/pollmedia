@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class CivicExplorerController extends Controller
@@ -40,11 +42,11 @@ class CivicExplorerController extends Controller
         };
     }
 
-    public function index(Request $request, ?int $record = null): View
+    public function index(Request $request, ?int $record = null): View|RedirectResponse
     {
         $input = $request->validate(['year' => 'nullable|integer|min:1800|max:2100', 'edition' => 'nullable|integer',
             'residence' => 'nullable|in:Total,Rural,Urban', 'group' => 'nullable|in:population,households,literacy,work',
-            'q' => 'nullable|string|max:100']);
+            'state' => 'nullable|string|max:100', 'q' => 'nullable|string|max:100']);
         $editions = DB::table('census_editions')->where('status', 'published')->orderByDesc('year')->orderBy('id')->get();
         $years = $editions->pluck('year')->unique()->values();
         $anchor = $record ? DB::table('census_catalogue_rows')->where('id', $record)->whereIn('edition_id', $editions->pluck('id'))->first() : null;
@@ -56,6 +58,14 @@ class CivicExplorerController extends Controller
         $edition = isset($input['edition']) ? $availableEditions->firstWhere('id', (int) $input['edition'])
             : ($anchorEdition ?? $availableEditions->firstWhere('source_key', 'india-basic-'.$year.'-total') ?? $availableEditions->first());
         abort_if(isset($input['edition']) && ! $edition, 404);
+        if (! $record && ! empty($input['state'])) {
+            $matches = DB::table('census_catalogue_rows')->where('edition_id', $edition?->id ?? 0)->where('level', 'STATE')->get()
+                ->filter(fn ($row) => Str::slug($row->name) === $input['state']);
+            $candidate = $matches->firstWhere('residence', $input['residence'] ?? 'Total') ?? $matches->first();
+            if ($candidate) {
+                return redirect()->route('civic.place', ['record' => $candidate->id] + $request->except('state', 'year'));
+            }
+        }
         $group = $input['group'] ?? 'population';
         $residence = $input['residence'] ?? $anchor?->residence ?? 'Total';
         $base = DB::table('census_catalogue_rows')->where('edition_id', $edition?->id ?? 0);

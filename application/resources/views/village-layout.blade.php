@@ -16,7 +16,7 @@
 
 @include('seo-metadata', ['seoTitle' => $__env->yieldContent('title').' · Pollmedia', 'seoDescription' => $__env->yieldContent('description')])
 
-<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script></head>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')</head>
 
 <body>@include('public-header')<main>
 
@@ -36,4 +36,4 @@
 
 </section>
 
-<footer>Pollmedia · Local research pilot · Official sources, dated measurements and explicit coverage.</footer></main></body></html>
+</main>@include('public-footer')</body></html>
