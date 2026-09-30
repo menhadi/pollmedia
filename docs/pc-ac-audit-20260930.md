@@ -31,17 +31,17 @@ Candidate rows being present does not certify every value: **1,212 PC and 52,173
 
 ## Guarded data-only import
 
-The local bundle [pollmedia-pc-ac-corrections-20260930.zip](../exports/pollmedia-pc-ac-corrections-20260930.zip) contains 18 checksum-verified one-file packages: nine exact old snapshots and nine revisions, plus `SHA256SUMS` and `IMPORT.sh`. Bundle SHA-256: `950ea36e40d71b09180fd1658fa9aea3b3a4f985e5739cc3f6371720e713175f` (559,096 bytes). It has **not yet been transferred or imported to the live server**.
+The local bundle [pollmedia-pc-ac-corrections-20260930.zip](../exports/pollmedia-pc-ac-corrections-20260930.zip) contains 18 checksum-verified one-file packages: nine exact old snapshots and nine revisions, plus `SHA256SUMS` and `IMPORT.sh`. Bundle SHA-256: `adb637f61ac183010faf53906d49b91bb82f1a5abef768f2e166261b7674f557` (559,093 bytes). It has **not yet been transferred or imported to the live server**.
 
 After transferring the bundle to `/home/pollmedia/tmp/` on the server, use these exact commands:
 
 ```bash
 cd /home/pollmedia/tmp
-echo '950ea36e40d71b09180fd1658fa9aea3b3a4f985e5739cc3f6371720e713175f  pollmedia-pc-ac-corrections-20260930.zip' | sha256sum -c -
+echo 'adb637f61ac183010faf53906d49b91bb82f1a5abef768f2e166261b7674f557  pollmedia-pc-ac-corrections-20260930.zip' | sha256sum -c -
 mkdir -p pc-ac-corrections-20260930
 unzip -n pollmedia-pc-ac-corrections-20260930.zip -d pc-ac-corrections-20260930
 cd pc-ac-corrections-20260930
 bash IMPORT.sh
 ```
 
-`IMPORT.sh` holds a single-run lock, verifies every inner package checksum, checks at least 10 GiB free server disk before and during the import, validates and imports all previous snapshots first, then validates and applies exact-hash guarded revisions. It finally checks for **74,218 records across 448 editions** before rebuilding the constituency index. Run when no other election import is active and after confirming the live code already includes `archive:import-json --allow-revision`; the script does not pull code or run migrations. Check the import command output and live database afterward. This package changes election archive JSON only; it has no census or polling-source import.
+`IMPORT.sh` holds a single-run lock, verifies every inner package checksum, checks at least 10 GiB free server disk before and during the import, validates and imports all previous snapshots first, then preflights all exact-hash guarded revisions before applying any of them. It finally checks for **74,218 records across 448 editions** before rebuilding the constituency index. Run when no other election import is active and after confirming the live code already includes `archive:import-json --allow-revision`; the script does not pull code or run migrations. Check the import command output and live database afterward. This package changes election archive JSON only; it has no census or polling-source import.

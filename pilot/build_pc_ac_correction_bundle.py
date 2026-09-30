@@ -27,6 +27,10 @@ for f in *correction-20260930.zip; do
     check_disk
     sha=$(sha256sum "$f" | awk '{print $1}')
     php8.4 "$artisan" archive:import-json "$PWD/$f" "--sha256=$sha" --check --allow-revision
+done
+for f in *correction-20260930.zip; do
+    check_disk
+    sha=$(sha256sum "$f" | awk '{print $1}')
     php8.4 "$artisan" archive:import-json "$PWD/$f" "--sha256=$sha" --allow-revision
 done
 check_disk
