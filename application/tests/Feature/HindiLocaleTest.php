@@ -10,6 +10,13 @@ class HindiLocaleTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_standard_hindi_file_is_available_to_laravel_and_the_editor(): void
+    {
+        $this->assertSame('खोजें', __('Search', [], 'hi'));
+        $this->assertSame('States', __('States', [], 'en'));
+        $this->assertSame(config('hindi')['States'], __('States', [], 'hi'));
+    }
+
     public function test_hindi_selection_persists_and_english_can_be_restored(): void
     {
         $this->get('/pages/privacy?lang=hi')->assertOk()->assertSee('lang="hi"', false)->assertSee('गोपनीयता नीति')->assertSee('खोजें')->assertHeader('Content-Language', 'hi')->assertSee('मूल अंग्रेज़ी पाठ');
