@@ -67,5 +67,19 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNotNull($edition);
         $this->assertSame('Goa', $edition['state']);
         $this->assertSame(2, $edition['tables']);
+        $this->assertSame(2, $edition['review_count']);
+        $this->assertSame(0, $edition['turnout_count']);
+
+        $this->get('/india/state/goa?election=pc&edition='.$edition['id'])
+            ->assertOk()
+            ->assertSee($edition['label'].' †')
+            ->assertSee('2 of 2 constituency tables have data notes')
+            ->assertSee('View the tables and notes');
+
+        $this->get('/india/elections/lok-sabha?edition='.$edition['id'].'&state=Goa')
+            ->assertOk()
+            ->assertSee('North Goa')
+            ->assertSee('South Goa')
+            ->assertSee('Summary and detailed totals differ');
     }
 }

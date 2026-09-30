@@ -58,7 +58,7 @@ class HistoricalElectionAnalytics
                     return null;
                 }
 
-                return $this->summarize($records) + ['id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
+                return $this->summarize($records) + ['review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
             });
             if ($summary) {
                 $result[] = $summary;
