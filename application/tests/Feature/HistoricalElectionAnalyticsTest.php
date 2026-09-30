@@ -74,11 +74,36 @@ class HistoricalElectionAnalyticsTest extends TestCase
     {
         $this->seed(PilibhitSeeder::class);
         $summary = app(HistoricalElectionAnalytics::class)->summarize([$this->record(1, 100, 80, 50, 30)]) + ['id' => str_repeat('a', 24), 'year' => 2022, 'label' => '2022 report', 'source_url' => 'https://www.eci.gov.in/report', 'state' => 'Uttar Pradesh'];
-        $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
-            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
+        $unverified = $this->record(2, 100, 80, 50, 30);
+        $unverified['status'] = 'needs_review';
+        $olderSummary = app(HistoricalElectionAnalytics::class)->summarize([$unverified]) + ['id' => str_repeat('b', 24), 'year' => 2016, 'label' => '2016 report', 'source_url' => 'https://www.eci.gov.in/older-report', 'state' => 'Uttar Pradesh'];
+        $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary, $olderSummary): void {
+            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary, $olderSummary]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSee('Map of Uttar Pradesh, India')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
-        $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('2016 report')->assertDontSee('2016<small', false)->assertDontSee('No data')->assertDontSee('0 / 1 tables')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSee('Map of Uttar Pradesh')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertOk()->assertSee('Browse 1 constituency tables')->assertDontSee('No comparable vote totals are available for this year.');
+        $this->get('/india/state/uttar-pradesh?party=UNKNOWN')->assertOk()->assertSee('No recorded vote total for this party')->assertDontSee('aria-label="Party share history"', false);
+        $this->get('/india/state/uttar-pradesh?edition='.str_repeat('c', 24))->assertNotFound();
+    }
+
+    public function test_state_dashboard_links_to_source_tables_when_no_summary_figures_are_verified(): void
+    {
+        $unverified = $this->record(1, 100, 80, 50, 30);
+        $unverified['status'] = 'needs_review';
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$unverified]) + ['id' => str_repeat('a', 24), 'year' => 2016, 'label' => '2016 report', 'source_url' => 'https://www.eci.gov.in/report', 'state' => 'Assam'];
+        $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
+            $mock->shouldReceive('forState')->with('Assam', 'ac')->andReturn([$summary]);
+        });
+
+        $this->get('/india/state/assam?election=ac&edition='.str_repeat('a', 24))
+            ->assertOk()
+            ->assertSee('2016 report')
+            ->assertSee('Summary comparisons are unavailable')
+            ->assertSee('Browse 1 constituency tables')
+            ->assertDontSee('How turnout changed')
+            ->assertDontSee('How close were the contests?')
+            ->assertDontSee('Party vote shares')
+            ->assertDontSee('trend-chart');
     }
 
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
@@ -98,7 +123,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee($edition['label'].' †')
             ->assertSee('2 of 2 results have data notes')
             ->assertSee('Turnout in 2 of these results agrees')
-            ->assertSee('Map of Goa, India')
+            ->assertSee('Map of Goa')
             ->assertSee('View the tables and notes');
 
         $this->get('/india/elections/lok-sabha?edition='.$edition['id'].'&state=Goa')
