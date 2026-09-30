@@ -3,11 +3,52 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 from preserve_polling_sources import preserve
 
 
 class PreservationTest(unittest.TestCase):
+    def test_active_ocr_index_replacement_keeps_a_verified_snapshot(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            folder = root/'application/storage/app/private/polling-station-sources'
+            base = folder/('a'*24)
+            original = b'%PDF-active-ocr'
+            digest = hashlib.sha256(original).hexdigest()
+            ocr_dir = base/(digest+'-ocr')
+            ocr_dir.mkdir(parents=True)
+            page = b'{"text":"first saved page"}'
+            (ocr_dir/'1.json').write_bytes(page)
+            old_index = json.dumps({'pages':[{'page':1,'file':'1.json',
+                'sha256':hashlib.sha256(page).hexdigest()}]}).encode()
+            index_path = ocr_dir/'index.json'
+            index_path.write_bytes(old_index)
+            (folder/'index.json').write_text(json.dumps({'states':[{'id':'a'*24,'state':'DELHI'}],
+                'sources':[{'id':'b'*24,'state':'DELHI','folder':'a'*24,
+                    'file':digest+'.pdf','sha256':digest,'pages':[]}]}))
+            newer_index = json.dumps({'pages':[]}).encode()
+            original_write = zipfile.ZipFile.write
+            replaced = False
+
+            def replace_during_packaging(archive, filename, arcname=None, *args, **kwargs):
+                nonlocal replaced
+                if not replaced and Path(filename) == ocr_dir/'1.json':
+                    replacement = index_path.with_suffix('.tmp')
+                    replacement.write_bytes(newer_index)
+                    replacement.replace(index_path)
+                    replaced = True
+                return original_write(archive, filename, arcname, *args, **kwargs)
+
+            output = root/'snapshot.zip'
+            with patch.object(zipfile.ZipFile,'write',replace_during_packaging):
+                preserve(root,output,['DELHI'],data_only=True)
+            self.assertTrue(replaced)
+            with zipfile.ZipFile(output) as archive:
+                name = index_path.relative_to(root).as_posix()
+                self.assertEqual(archive.read(name),old_index)
+                self.assertEqual(archive.read((ocr_dir/'1.json').relative_to(root).as_posix()),page)
+
     def test_state_snapshot_includes_current_ocr_without_stale_public_reference(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

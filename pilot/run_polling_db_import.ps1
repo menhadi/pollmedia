@@ -5,6 +5,7 @@ param(
     [string] $Revision = '',
     [string] $Target = 'pollmedia@94.136.186.150',
     [string] $KeyPath = (Join-Path $env:USERPROFILE '.ssh\pollmedia_ed25519'),
+    [switch] $SnapshotActiveState,
     [switch] $CheckOnly
 )
 
@@ -79,7 +80,7 @@ try {
             $checksum = Join-Path $exports "$base.sha256"
             $partial = Join-Path $exports "$base.partial"
 
-            while ($true) {
+            while (-not $SnapshotActiveState) {
                 $active = @(Get-CimInstance Win32_Process -Filter "Name='python.exe'" |
                     Where-Object { $_.CommandLine -like '*ocr_polling_sources.py*' -and $_.CommandLine -like "*$state*" })
                 if ($active.Count -eq 0) { break }

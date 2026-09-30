@@ -10,7 +10,8 @@ use ZipArchive;
 class ImportArchiveJsonPackage extends Command
 {
     protected $signature = 'archive:import-json {package : Verified data-only ZIP}
-        {--sha256= : Expected package SHA-256} {--check : Validate without database writes}';
+        {--sha256= : Expected package SHA-256} {--check : Validate without database writes}
+        {--allow-revision : Replace exact prior JSON only after its bytes are preserved as a versioned snapshot}';
 
     protected $description = 'Import preserved historical election JSON and raw tables into PostgreSQL';
 
@@ -57,6 +58,17 @@ class ImportArchiveJsonPackage extends Command
                     || ! is_int($entry['bytes'] ?? null) || $entry['bytes'] < 2 || $entry['bytes'] > 32000000) {
                     throw new RuntimeException('Unsafe or inconsistent archive entry.');
                 }
+                if (isset($entry['replaces_sha256']) || isset($entry['previous_path'])) {
+                    $priorHash = $entry['replaces_sha256'] ?? null;
+                    $previousPath = $entry['previous_path'] ?? null;
+                    if (! is_string($priorHash) || ! preg_match('/^[a-f0-9]{64}$/', $priorHash)
+                        || ! is_string($previousPath)
+                        || ! preg_match('~^'.preg_quote($category, '~').'/[A-Za-z0-9_./-]+-[a-f0-9]{64}\.json$~', $previousPath)
+                        || str_contains($previousPath, '..') || $previousPath === $name
+                        || ! str_ends_with($previousPath, '-'.$priorHash.'.json')) {
+                        throw new RuntimeException('Unsafe archived JSON revision evidence: '.$name);
+                    }
+                }
                 $names[$name] = true;
                 $stat = $archive->statName($name);
                 if ($stat === false || $stat['size'] !== $entry['bytes']) {
@@ -68,8 +80,8 @@ class ImportArchiveJsonPackage extends Command
                     throw new RuntimeException('Unexpected file in archive package.');
                 }
             }
-            $imported = $existing = 0;
-            DB::transaction(function () use ($archive, $files, $category, &$imported, &$existing): void {
+            $imported = $existing = $revised = 0;
+            DB::transaction(function () use ($archive, $files, $category, &$imported, &$existing, &$revised): void {
                 foreach ($files as $entry) {
                     $name = $entry['path'];
                     $body = $archive->getFromName($name);
@@ -78,7 +90,9 @@ class ImportArchiveJsonPackage extends Command
                         throw new RuntimeException('Archived entry checksum differs: '.$name);
                     }
                     $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-                    if ($this->option('check')) {
+                    $sourceUrl = is_array($data) ? ($data['source_url'] ?? $data['url'] ?? null) : null;
+                    $sourceUrl = is_string($sourceUrl) && preg_match('~^https?://~', $sourceUrl) ? $sourceUrl : null;
+                    if ($this->option('check') && ! $this->option('allow-revision')) {
                         $existing++;
 
                         continue;
@@ -88,17 +102,50 @@ class ImportArchiveJsonPackage extends Command
                     if ($prior) {
                         if ($prior->path !== $name || $prior->sha256 !== $entry['sha256']
                             || (int) $prior->bytes !== $entry['bytes']) {
-                            throw new RuntimeException('Existing archived JSON conflicts: '.$name);
+                            if (! $this->option('allow-revision')
+                                || $prior->path !== $name
+                                || $prior->sha256 !== ($entry['replaces_sha256'] ?? null)
+                                || (int) $prior->bytes !== strlen($prior->body)
+                                || ! hash_equals($prior->sha256, hash('sha256', $prior->body))) {
+                                throw new RuntimeException('Existing archived JSON conflicts: '.$name);
+                            }
+                            $previousPath = $entry['previous_path'];
+                            $snapshot = DB::table('archive_json_files')
+                                ->where('path_hash', hash('sha256', $previousPath))->first();
+                            if (! $snapshot || $snapshot->path !== $previousPath
+                                || $snapshot->category !== $category
+                                || $snapshot->sha256 !== $prior->sha256
+                                || (int) $snapshot->bytes !== strlen($snapshot->body)
+                                || ! hash_equals($snapshot->sha256, hash('sha256', $snapshot->body))
+                                || $snapshot->body !== $prior->body) {
+                                throw new RuntimeException('Previous archived JSON is not preserved: '.$name);
+                            }
+                            if (! $this->option('check')) {
+                                DB::table('archive_json_files')->where('path_hash', $pathHash)->update([
+                                    'sha256' => $entry['sha256'], 'bytes' => $entry['bytes'],
+                                    'source_url' => $sourceUrl, 'body' => $body, 'updated_at' => now(),
+                                ]);
+                            }
+                            $revised++;
+
+                            continue;
                         }
                         $existing++;
 
                         continue;
                     }
-                    $sourceUrl = is_array($data) ? ($data['source_url'] ?? $data['url'] ?? null) : null;
+                    if (isset($entry['replaces_sha256'])) {
+                        throw new RuntimeException('Archived JSON revision has no previous record: '.$name);
+                    }
+                    if ($this->option('check')) {
+                        $existing++;
+
+                        continue;
+                    }
                     DB::table('archive_json_files')->insert([
                         'path_hash' => $pathHash, 'path' => $name, 'category' => $category,
                         'sha256' => $entry['sha256'], 'bytes' => $entry['bytes'],
-                        'source_url' => is_string($sourceUrl) && preg_match('~^https?://~', $sourceUrl) ? $sourceUrl : null,
+                        'source_url' => $sourceUrl,
                         'body' => $body, 'created_at' => now(), 'updated_at' => now(),
                     ]);
                     $imported++;
@@ -112,8 +159,8 @@ class ImportArchiveJsonPackage extends Command
             $archive->close();
         }
 
-        $this->info($this->option('check') ? "Verified {$existing} archived JSON files."
-            : "Imported {$imported} archived JSON files; {$existing} already present.");
+        $this->info($this->option('check') ? 'Verified '.($existing + $revised).' archived JSON files.'
+            : "Imported {$imported} archived JSON files; {$existing} already present; {$revised} revised with prior bytes preserved.");
 
         return self::SUCCESS;
     }

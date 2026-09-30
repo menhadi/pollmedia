@@ -22,6 +22,7 @@ def preserve(root, output, states=None, data_only=False):
     if output.exists():
         raise ValueError('Choose a new snapshot filename')
     required = {}
+    metadata = {folder/'index.json':index_body}
     for source in index['sources']:
         base = folder/source['folder']
         if not data_only:
@@ -44,12 +45,13 @@ def preserve(root, output, states=None, data_only=False):
         ocr_index = base/(source['sha256']+'-ocr')/'index.json'
         if ocr_index.exists():
             ocr_body = ocr_index.read_bytes()
-            required[ocr_index] = hashlib.sha256(ocr_body).hexdigest()
+            # Keep the exact index we used to select immutable, hashed page files.
+            # An active OCR worker may atomically replace its index during packaging.
+            metadata[ocr_index] = ocr_body
             for page in json.loads(ocr_body).get('pages', []):
                 if Path(page['file']).name != page['file']:
                     raise ValueError('Unsafe OCR page path')
                 required[ocr_index.parent/page['file']] = page['sha256']
-    metadata = {folder/'index.json':index_body}
     for name in ['catalogue.json','summary.json']:
         if (folder/name).exists():
             if states and name == 'summary.json':
