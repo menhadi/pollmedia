@@ -140,6 +140,7 @@ class ImportPollingSources extends Command
             }
         }
         Cache::forget('polling-source-summary');
+        Cache::forget('polling-source-summary-v2');
         $this->info("Imported {$documents} documents, {$pages} pages, {$rows} indexed polling rows into the database.");
 
         return self::SUCCESS;

@@ -5,6 +5,37 @@ import json
 from pathlib import Path
 
 
+def polling_reference_summary(sources):
+    """Count preserved references separately from distinct file contents."""
+    by_hash = {}
+    pdf_hashes = set()
+    row_references = 0
+    for source in sources:
+        digest = source['sha256']
+        rows = int(source.get('polling_rows') or 0)
+        row_references += rows
+        if digest in by_hash:
+            counts = by_hash[digest]
+            counts[0] = min(counts[0], rows)
+            counts[1] = max(counts[1], rows)
+        else:
+            by_hash[digest] = [rows, rows]
+        if source['file'].lower().endswith('.pdf'):
+            pdf_hashes.add(digest)
+    return {
+        'documents': len(sources),
+        'distinct_file_contents': len(by_hash),
+        'duplicate_file_references': len(sources) - len(by_hash),
+        'pdf_references': sum(source['file'].lower().endswith('.pdf') for source in sources),
+        'distinct_pdf_contents': len(pdf_hashes),
+        'source_rows': row_references,
+        'source_rows_after_identical_file_dedup_min': sum(counts[0] for counts in by_hash.values()),
+        'source_rows_after_identical_file_dedup_max': sum(counts[1] for counts in by_hash.values()),
+        'files_with_different_extraction_counts': sum(counts[0] != counts[1] for counts in by_hash.values()),
+        'counting_note': 'Documents and source rows are collection references, not unique elections, polling stations, or verified candidate results. The same file can be stored under multiple collection labels. The deduplicated row range only removes identical file contents; different extraction versions and overlapping editions require source review. Collection labels are not verified election jurisdictions.',
+    }
+
+
 def audit(root):
     fixtures = root/'application/database/fixtures'
     archive = root/'application/storage/app/private/election-archive'
@@ -40,7 +71,7 @@ def audit(root):
               'scope': 'Saved official catalogue editions, including overlapping and replacement editions. Counts must not be summed as unique elections. Collected sources are not a claim that every data field is extracted or verified.',
               'general_elections': entries, 'by_elections': by_entries,
               'polling_station_results': {'status': 'discovery_and_extraction_incomplete',
-                  'documents':len(polling.get('sources', [])), 'source_rows':sum(s['polling_rows'] for s in polling.get('sources', [])),
+                  **polling_reference_summary(polling.get('sources', [])),
                   'note':polling.get('scope_note', 'PC/AC reports do not establish polling-station coverage. Separate official Form 20 and state/CEO archives require discovery and extraction.')}}
     destination = bye/'coverage.json'
     destination.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding='utf-8')

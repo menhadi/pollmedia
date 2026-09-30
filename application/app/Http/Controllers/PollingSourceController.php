@@ -26,6 +26,7 @@ class PollingSourceController extends Controller
         $states = collect($index['states'])->sortBy('state')->values();
         $all = collect($index['sources']);
         $documentCount = $all->count();
+        $distinctDocumentCount = $all->pluck('sha256')->unique()->count();
         $pollingRowCount = $all->sum('polling_rows');
         $input = $request->validate(['state' => ['nullable', Rule::in($states->pluck('state')->all())], 'source' => ['nullable', 'regex:/^[a-f0-9]{24}$/'], 'page' => ['nullable', 'integer', 'min:1'], 'download' => ['nullable', 'boolean']]);
         $choices = $all->filter(fn ($source) => ! isset($input['state']) || $source['state'] === $input['state'])->values();
@@ -68,7 +69,7 @@ class PollingSourceController extends Controller
             $source['has_preserved_original'] = isset($source['file']) && $disk->exists($root.$source['folder'].'/'.$source['file']);
         }
 
-        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount', 'sourcePages'));
+        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'distinctDocumentCount', 'pollingRowCount', 'sourcePages'));
     }
 
     private function databaseIndex(Request $request): View|StreamedResponse
@@ -108,15 +109,20 @@ class PollingSourceController extends Controller
         if ($source && ! $choices->contains('id', $source['id'])) {
             $choices->prepend($source);
         }
-        $summary = Cache::remember('polling-source-summary', now()->addHour(), function (): array {
+        $summary = Cache::remember('polling-source-summary-v2', now()->addHour(), function (): array {
             $rows = 0;
-            foreach (DB::table('polling_source_documents')->select('metadata')->cursor() as $document) {
+            $documents = 0;
+            $hashes = [];
+            foreach (DB::table('polling_source_documents')->select('sha256', 'metadata')->cursor() as $document) {
+                $documents++;
+                $hashes[$document->sha256] = true;
                 $rows += (int) (json_decode($document->metadata, true)['polling_rows'] ?? 0);
             }
 
-            return ['documents' => DB::table('polling_source_documents')->count(), 'rows' => $rows];
+            return ['documents' => $documents, 'distinct_documents' => count($hashes), 'rows' => $rows];
         });
         $documentCount = $summary['documents'];
+        $distinctDocumentCount = $summary['distinct_documents'];
         $pollingRowCount = $summary['rows'];
         if ($input['download'] ?? false) {
             abort_unless($source && isset($input['source']), 404);
@@ -150,6 +156,6 @@ class PollingSourceController extends Controller
         }
         $index = ['scope_note' => 'Imported official source records retain warnings and links to their original publication. State directory labels identify collection paths, not verified document jurisdiction.'];
 
-        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'pollingRowCount', 'sourcePages'));
+        return view('polling-source-tables', compact('index', 'states', 'choices', 'source', 'input', 'page', 'data', 'ocr', 'documentCount', 'distinctDocumentCount', 'pollingRowCount', 'sourcePages'));
     }
 }

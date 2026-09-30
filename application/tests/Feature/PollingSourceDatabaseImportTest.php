@@ -16,7 +16,7 @@ class PollingSourceDatabaseImportTest extends TestCase
     public function test_default_database_view_opens_a_document_and_page_with_extracted_rows(): void
     {
         Storage::fake('local');
-        Cache::forget('polling-source-summary');
+        Cache::forget('polling-source-summary-v2');
         DB::table('polling_source_states')->insert(['name' => 'EXAMPLE',
             'metadata' => json_encode(['state' => 'EXAMPLE', 'url' => 'https://eci.gov.in/',
                 'documents' => 2, 'pending_pages' => 0, 'errors' => []]),
@@ -56,7 +56,7 @@ class PollingSourceDatabaseImportTest extends TestCase
     public function test_large_state_document_choices_are_paginated(): void
     {
         Storage::fake('local');
-        Cache::forget('polling-source-summary');
+        Cache::forget('polling-source-summary-v2');
         DB::table('polling_source_states')->insert(['name' => 'EXAMPLE',
             'metadata' => json_encode(['state' => 'EXAMPLE', 'url' => 'https://eci.gov.in/',
                 'documents' => 201, 'pending_pages' => 0, 'errors' => []]),
@@ -84,7 +84,7 @@ class PollingSourceDatabaseImportTest extends TestCase
     public function test_default_state_view_finds_mapped_rows_beyond_the_first_document_page(): void
     {
         Storage::fake('local');
-        Cache::forget('polling-source-summary');
+        Cache::forget('polling-source-summary-v2');
         DB::table('polling_source_states')->insert(['name' => 'EXAMPLE',
             'metadata' => json_encode(['state' => 'EXAMPLE', 'url' => 'https://eci.gov.in/',
                 'documents' => 201, 'pending_pages' => 0, 'errors' => []]),
@@ -118,7 +118,7 @@ class PollingSourceDatabaseImportTest extends TestCase
     public function test_database_document_choices_are_scoped_to_the_selected_state(): void
     {
         Storage::fake('local');
-        Cache::forget('polling-source-summary');
+        Cache::forget('polling-source-summary-v2');
         foreach (['EXAMPLE', 'OTHER'] as $state) {
             DB::table('polling_source_states')->insert(['name' => $state,
                 'metadata' => json_encode(['state' => $state, 'url' => 'https://eci.gov.in/',
@@ -137,7 +137,9 @@ class PollingSourceDatabaseImportTest extends TestCase
         }
 
         $this->get('/india/elections/polling-stations?state=EXAMPLE')->assertOk()
-            ->assertSee('2 preserved source-document references')->assertSee('A report')->assertDontSee('B report');
+            ->assertSee('2 preserved source-document references (1 distinct file by content hash)')
+            ->assertSee('These counts do not establish unique polling stations')
+            ->assertSee('A report')->assertDontSee('B report');
         $this->get('/india/elections/polling-stations?source='.str_repeat('b', 24))->assertOk()
             ->assertSee('B report')->assertDontSee('A report');
         $this->get('/india/elections/polling-stations?state=EXAMPLE&source='.str_repeat('b', 24))->assertNotFound();
