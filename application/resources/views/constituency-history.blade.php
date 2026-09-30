@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 @php
     $isAssembly = $place->type === 'ac';
     $archiveRoute = $isAssembly ? 'elections.assembly' : 'elections.history';
@@ -19,7 +19,7 @@
 @else
 <p class="lead">Uttar Pradesh · Official {{ strtoupper($place->type) }} {{ $comparison['mapping']['code'] }} · {{ $isAssembly ? '2012, 2017 and 2022' : '2009, 2014, 2019 and 2024' }}</p>
 <p class="notice">Linked using official Uttar Pradesh constituency references and each report’s code and name. Earlier elections remain separately available in the <a href="{{ route($archiveRoute) }}">historical archive</a>. Figures describe each election’s electorate; they do not measure how individual voters changed their vote.</p>
-<section class="card"><h2>Year-by-year results</h2><div class="table"><table><caption>General elections only.@if(!$isAssembly) The 2019 edition including Vellore is used once; the alternative edition is not double-counted.@endif</caption><thead><tr><th scope="col">Year</th><th scope="col">Winner</th><th scope="col">Party at election</th><th scope="col">Margin</th><th scope="col">Electors</th><th scope="col">Votes polled</th><th scope="col">Evidence</th></tr></thead><tbody>
+<section class="card"><h2>Year-by-year results</h2><div class="table"><table><caption>General elections only.@if(!$isAssembly) The 2019 edition including Vellore is used once; the alternative edition is not double-counted.@endif</caption><thead><tr><th scope="col">{{ \App\Services\PublicLanguage::text('Year') }}</th><th scope="col">{{ \App\Services\PublicLanguage::text('Winner') }}</th><th scope="col">Party at election</th><th scope="col">{{ \App\Services\PublicLanguage::text('Margin') }}</th><th scope="col">Electors</th><th scope="col">Votes polled</th><th scope="col">Evidence</th></tr></thead><tbody>
 @foreach($comparison['rows'] as $row)
 @php($record = $row['record'])
 <tr><th scope="row">{{ $row['year'] }} @if($record && $record['has_warning'])<a href="#note-{{ $row['year'] }}" aria-label="Data note for {{ $row['year'] }}">†</a>@endif</th>
@@ -33,7 +33,7 @@
 @if($row['record'] && $row['record']['has_warning'])<p id="note-{{ $row['year'] }}" class="notice"><strong>† {{ $row['year'] }}:</strong> {{ $row['record']['error'] ?? 'Source data requires review.' }} Reported totals are shown with this note; a winner and margin are not inferred.</p>@endif
 @endforeach
 </section>
-<section class="card"><h2>Turnout and party shares by year</h2><p class="small">Only eligible, reconciled single-seat records contribute. Turnout is votes polled divided by electors; party shares use recorded candidate votes plus NOTA. Missing figures remain unavailable.</p><div class="table"><table><thead><tr><th scope="col">Year</th><th scope="col">Votes polled</th><th scope="col">Turnout</th><th scope="col">Margin · percentage points</th><th scope="col">Party · votes · share</th></tr></thead><tbody>
+<section class="card"><h2>Turnout and party shares by year</h2><p class="small">Only eligible, reconciled single-seat records contribute. Turnout is votes polled divided by electors; party shares use recorded candidate votes plus NOTA. Missing figures remain unavailable.</p><div class="table"><table><thead><tr><th scope="col">{{ \App\Services\PublicLanguage::text('Year') }}</th><th scope="col">Votes polled</th><th scope="col">{{ \App\Services\PublicLanguage::text('Turnout') }}</th><th scope="col">Margin · percentage points</th><th scope="col">Party · votes · share</th></tr></thead><tbody>
 @foreach($comparison['rows'] as $row)
 @php($yearAnalysis=app(\App\Services\HistoricalElectionAnalytics::class)->summarize($row['record'] ? [$row['record']] : []))
 <tr><th scope="row"><a href="{{ $row['url'] }}">{{ $row['year'] }}</a></th><td>{{ $yearAnalysis['polled']===null?'—':number_format($yearAnalysis['polled']) }}</td><td>{{ $yearAnalysis['turnout']===null?'—':number_format($yearAnalysis['turnout'],2).'%' }}</td><td>{{ $yearAnalysis['margin_percent']===null?'—':number_format($yearAnalysis['margin_percent'],2) }}</td><td>@forelse($yearAnalysis['parties'] as $partyRow)<div>{{ $partyRow['party'] }} · {{ number_format($partyRow['votes']) }} · {{ number_format($partyRow['share'],2) }}%</div>@empty Not available @endforelse</td></tr>

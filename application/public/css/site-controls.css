@@ -40,3 +40,4 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 .public-header.site-header{flex-wrap:wrap!important}
 .public-header.site-header #public-navigation{display:flex;flex-wrap:wrap;max-width:100%;min-width:0;gap:12px 18px}
 @media(max-width:800px){.public-header.site-header #public-navigation{flex:1 1 100%;width:100%;order:4;justify-content:flex-start}}
+.language-switch{display:flex;gap:9px;align-items:center;font-size:13px;white-space:nowrap}.public-header.site-header .language-switch a{color:var(--site-header_text);text-decoration:none;padding:6px 2px}.language-switch [aria-current]{font-weight:800;border-bottom:2px solid currentColor}html[lang=hi] body{font-family:system-ui,'Nirmala UI',sans-serif}html[lang=hi] h1,html[lang=hi] h2{letter-spacing:normal;line-height:1.5}html[lang=hi] .public-header.site-header{gap:16px}html[lang=hi] .public-header.site-header .header-search-wrap{flex-basis:260px}

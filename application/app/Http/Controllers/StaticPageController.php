@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PublicLanguage;
 use App\Services\StaticPages;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,9 +15,14 @@ class StaticPageController extends Controller
     {
         $page = $pages->published()[$slug] ?? null;
         abort_unless($page, 404);
+        $originalContent = $page['content'];
+        foreach (['title', 'summary', 'content'] as $field) {
+            $page[$field] = PublicLanguage::text($page[$field]);
+        }
+        $contentLanguage = app()->getLocale() === 'hi' && $page['content'] === $originalContent ? 'en' : app()->getLocale();
         $html = Str::markdown($page['content'], ['html_input' => 'strip', 'allow_unsafe_links' => false]);
 
-        return view('static-page', compact('page', 'slug', 'html'));
+        return view('static-page', compact('page', 'slug', 'html', 'contentLanguage'));
     }
 
     public function index(Request $request, StaticPages $pages): View
@@ -35,6 +41,6 @@ class StaticPageController extends Controller
         $data = $request->validate(['slug' => ['required', 'max:100', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'], 'title' => 'required|string|max:160', 'summary' => 'required|string|max:320', 'content' => 'required|string|max:50000', 'published' => 'required|boolean', 'order' => 'required|integer|min:0|max:9999', 'expected' => 'required|string|size:64']);
         $pages->save($data['slug'], ['title' => $data['title'], 'summary' => $data['summary'], 'content' => $data['content'], 'published' => (bool) $data['published'], 'order' => (int) $data['order']], $data['expected']);
 
-        return redirect()->route('static-pages.index', ['edit' => $data['slug']])->with('status','Page saved. Published pages automatically appear in the footer.');
+        return redirect()->route('static-pages.index', ['edit' => $data['slug']])->with('status', 'Page saved. Published pages automatically appear in the footer.');
     }
 }

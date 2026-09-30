@@ -37,6 +37,7 @@ use App\Http\Controllers\SiteManagementController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\StaticPageController;
+use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\VillageController;
 use App\Http\Middleware\AdminTransport;
 use App\Http\Middleware\LocalEditorOnly;
@@ -199,4 +200,9 @@ Route::get('/pages/{slug}', [StaticPageController::class, 'show'])->where('slug'
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function () {
     Route::get('/admin/pages', [StaticPageController::class, 'index'])->name('static-pages.index');
     Route::post('/admin/pages', [StaticPageController::class, 'save'])->name('static-pages.save');
+});
+
+Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function () {
+    Route::get('/admin/translations', [TranslationController::class, 'index'])->name('translations.index');
+    Route::post('/admin/translations', [TranslationController::class, 'save'])->name('translations.save');
 });

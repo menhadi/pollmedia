@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sources & update status · Pollmedia</title><meta name="description" content="Check Pollmedia's official data sources, imported editions and update status."><link rel="stylesheet" href="/css/villages.css"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')</head>
+<html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sources & update status · Pollmedia</title><meta name="description" content="Check Pollmedia's official data sources, imported editions and update status."><link rel="stylesheet" href="/css/villages.css"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')</head>
 <body>
 @include('public-header')
 <main>
 <div class="kicker">Evidence & dates</div><h1>Sources & update status</h1><p class="lead">See which official sources support Pollmedia and when the displayed editions were imported.</p>
 <p class="notice"><strong>Updates are currently manual.</strong> No automatic source refresh is active in this pilot. An import date is not the date an official took office or a measurement was collected. Historical Census and election figures keep their original reference year.</p>
 <p><a href="{{ route('elections.history') }}">Lok Sabha historical results</a> · <a href="{{ route('elections.assembly') }}">Available Assembly results</a> · <a href="{{ route('census-catalogue.index') }}">Census tables</a> · <a href="{{ route('census.national-history') }}">Historical population</a> · <a href="{{ route('indicators.india') }}">Other historical measurements</a></p>
-<form method="get" class="search"><div><label for="publisher">Official publisher</label><select id="publisher" name="publisher"><option value="">All publishers</option>@foreach($publishers as $name)<option value="{{ $name }}" @selected($publisher===$name)>{{ $name }}</option>@endforeach</select></div><button type="submit">Show sources</button><a href="{{ route('sources.index') }}">Reset</a></form>
+<form method="get" class="search"><div><label for="publisher">Official publisher</label><select id="publisher" name="publisher"><option value="">All publishers</option>@foreach($publishers as $name)<option value="{{ $name }}" @selected($publisher===$name)>{{ $name }}</option>@endforeach</select></div><button type="submit">Show sources</button><a href="{{ route('sources.index') }}">{{ \App\Services\PublicLanguage::text('Reset') }}</a></form>
 <p role="status">{{ $sources->count() }} sources in this selection.</p><div class="grid">
 @forelse($sources as $source)
 <article class="card"><div class="kicker">{{ $source->publisher }}</div><h2>{{ $source->label }}</h2>

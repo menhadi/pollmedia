@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 @php
     $filters = array_filter(['edition' => $edition, 'state' => $state, 'code' => $selected['code'] ?? null], fn ($value) => $value !== null);
     $canonical = route($archiveRoute, $filters);
@@ -39,7 +39,7 @@
 <section class="card" id="state-results"><div class="kicker">{{ $data['year'] }} / {{ $state }}</div><h2>Constituency results in {{ $state }}</h2>
 <p><a href="{{ route($archiveRoute, $filters + ['format' => 'csv']) }}">Download this state’s candidate results (CSV)</a></p><p class="small">Exports the available results in this election, with official references and current data notes. Blank cells mean not reported. Constituency totals repeat on candidate rows; do not sum them across rows.</p>
 <p>{{ $stateResults->count() }} available election results. Winners and margins appear where established for a single-seat contest. Open a candidate table for the full figures and official references.</p>
-<div class="table"><table><caption>Results from the selected official edition</caption><thead><tr><th scope="col">Constituency</th><th scope="col">Winner</th><th scope="col">Party at election</th><th scope="col">Margin (votes)</th><th scope="col">Details</th></tr></thead><tbody>
+<div class="table"><table><caption>Results from the selected official edition</caption><thead><tr><th scope="col">Constituency</th><th scope="col">{{ \App\Services\PublicLanguage::text('Winner') }}</th><th scope="col">Party at election</th><th scope="col">Margin (votes)</th><th scope="col">Details</th></tr></thead><tbody>
 @foreach($stateResults as $record)<tr><th scope="row">{{ $record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code'] }} / {{ $record['constituency_name'] ?? $record['name'] }} @if($record['has_warning'])<a href="#state-note-{{ $record['code'] }}" aria-label="Data note for {{ $record['constituency_name'] ?? $record['name'] }}">†</a>@endif</th>
 <td>{{ $record['winner_party'] !== null ? $record['winner'] : ($record['has_warning'] ? 'Under review' : 'See candidate table') }}</td><td>{{ $record['winner_party'] ?? '—' }}</td><td>{{ $record['winner_party'] !== null ? number_format($record['margin']) : '—' }}</td>
 <td><a href="{{ route('constituency.overview', ['kind'=>$kind,'state'=>$state,'name'=>$record['constituency_name']??$record['name']]) }}">Candidate table</a></td></tr>@endforeach
@@ -50,7 +50,7 @@
 @if(!$selected && !$state)
 <section class="card" id="coverage"><div class="kicker">Available data / {{ $data['year'] }}</div><h2>State coverage in this edition</h2>
 <p>Browse the available results by the state names or codes used in this report. Counts describe the collected data, not the total seats or complete election coverage.</p>
-<div class="table"><table><caption>Available election results and candidate rows, including NOTA where reported</caption><thead><tr><th scope="col">State / union territory</th><th scope="col">Constituency tables</th><th scope="col">Candidate records</th><th scope="col">Explore</th></tr></thead><tbody>
+<div class="table"><table><caption>Available election results and candidate rows, including NOTA where reported</caption><thead><tr><th scope="col">State / union territory</th><th scope="col">Constituency tables</th><th scope="col">Candidate records</th><th scope="col">{{ \App\Services\PublicLanguage::text('Explore') }}</th></tr></thead><tbody>
 @forelse($coverage as $item)<tr><th scope="row">{{ $item['state'] ?: 'State not identified' }}</th><td>{{ number_format($item['tables']) }}</td><td>{{ number_format($item['rows']) }}</td><td>@if($item['state'] !== '')<a href="{{ route($archiveRoute, ['edition' => $edition, 'state' => $item['state']]) }}">Browse {{ $item['state'] }}</a>@else State mapping pending @endif</td></tr>
 @empty<tr><td colspan="4">No constituency tables have been available for this election.</td></tr>@endforelse
 </tbody></table></div><p class="small">Only this selected edition is counted. Missing states are not treated as zero results. Individual result pages show any unresolved data notes.</p></section>
@@ -80,7 +80,7 @@
 @endphp
 <div class="table"><table>
 <caption>Candidate votes as recorded in this edition @if($selected['has_warning'])†@endif</caption>
-<thead><tr><th scope="col">Candidate</th><th scope="col">Party at election</th>
+<thead><tr><th scope="col">{{ \App\Services\PublicLanguage::text('Candidate') }}</th><th scope="col">Party at election</th>
 @if($showSymbols)
 <th scope="col">Election symbol</th>
 @endif
