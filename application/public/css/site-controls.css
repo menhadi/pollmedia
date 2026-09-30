@@ -2,3 +2,22 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 @media(max-width:800px){.public-menu-toggle{display:block;margin-left:auto}.public-header.site-header{gap:14px}.public-header .header-search-wrap{order:3;width:100%}.public-header nav{width:100%;order:4}.public-header[data-menu-ready] nav[hidden]{display:none}.public-header .header-search{display:flex;width:100%}.public-header input{min-width:0;flex:1}.public-footer{grid-template-columns:1fr}.public-header .brand{font-size:22px}}
 
 :root{--ink:var(--site-text);--muted:var(--site-muted);--paper:var(--site-background);--line:var(--site-border);--green:var(--site-primary);--gold:var(--site-accent)}body.election-ui{background:var(--site-background);color:var(--site-text)}.public-header.site-header{background:var(--site-surface)!important}.public-header.site-header .brand,.public-header.site-header nav a{color:var(--site-primary)!important}.public-header.site-header .header-search button{background:var(--site-primary);color:var(--site-surface)}
+/* Shared public chrome: the same theme on every public route. */
+.public-header.site-header{background:var(--site-header_background)!important;color:var(--site-header_text)!important;padding:24px 5vw;align-items:center;gap:24px;border:0}
+.public-header.site-header .brand,.public-header.site-header nav a{color:var(--site-header_text)!important}
+.public-header.site-header .brand{font-size:30px;font-weight:800;letter-spacing:-1px;text-decoration:none}
+.public-header.site-header nav a{padding:8px 0;text-decoration:none}.public-header.site-header nav a:hover{text-decoration:underline;text-underline-offset:6px}
+.public-header.site-header .public-menu-toggle{background:transparent;color:var(--site-header_text);border:1px solid currentColor}
+.public-header.site-header #public-navigation{background:var(--site-header_background)!important}
+.public-footer{display:block!important;background:var(--site-header_background)!important;color:var(--site-header_text)!important;padding:54px 5vw 24px!important;margin-top:48px;border:0!important}
+.public-footer .footer-grid{display:grid;grid-template-columns:2fr 1fr 1.3fr 1.3fr;gap:40px;max-width:1380px;margin:auto}
+.public-footer a{color:inherit!important;text-decoration:none}.public-footer a:hover{text-decoration:underline;text-underline-offset:4px}
+.public-footer .brand{font-size:30px;font-weight:800;letter-spacing:-1px}.public-footer h2{font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin:4px 0 20px;color:inherit}
+.public-footer p{font-size:14px;line-height:1.8;max-width:380px;opacity:.85}.public-footer .footer-tagline{font-size:17px;opacity:1}
+.public-footer nav{display:flex;flex-direction:column;align-items:start;gap:10px;font-size:14px}.public-footer nav h2{margin-bottom:8px}
+.footer-socials{display:flex;flex-wrap:wrap;gap:8px}.footer-socials a{padding:8px 12px;border:1px solid currentColor;border-radius:6px;font-size:13px}.footer-contact,.footer-report{display:block;margin-top:18px;font-size:14px;overflow-wrap:anywhere}
+.footer-bottom{max-width:1380px;margin:36px auto 0;padding-top:22px;border-top:1px solid var(--site-muted);display:flex;justify-content:space-between;gap:24px;font-size:12px}.footer-bottom small{font-size:12px;opacity:.8}
+.footer-compact .footer-grid{gap:24px}.static-page-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(200px,1fr);gap:24px;align-items:start}.policy-copy{line-height:1.85}.policy-copy h2{margin-top:32px;font-size:24px}.policy-summary{font-size:20px;color:var(--site-muted)}.policy-nav a{display:block;padding:10px 0}.policy-nav [aria-current]{font-weight:750}.policy-nav h2{font-size:18px}
+@media(max-width:1000px){.public-footer .footer-grid{grid-template-columns:1fr 1fr}.static-page-layout{grid-template-columns:1fr}}
+@media(max-width:600px){.public-footer .footer-grid{grid-template-columns:1fr;gap:28px}.footer-bottom{flex-direction:column}.public-header.site-header{padding:18px 5vw}.public-footer{padding-top:36px!important}}
+.public-header.site-header.header-compact{padding-top:12px;padding-bottom:12px}.public-footer.footer-compact{padding-top:28px!important}

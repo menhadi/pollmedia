@@ -36,6 +36,7 @@ use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SiteManagementController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
+use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\VillageController;
 use App\Http\Middleware\AdminTransport;
 use App\Http\Middleware\LocalEditorOnly;
@@ -192,4 +193,10 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix(
     Route::post('/corrections', [SiteManagementController::class, 'correct'])->name('site.correct');
     Route::get('/feedback', [DataFeedbackController::class, 'index'])->name('feedback.queue');
     Route::post('/feedback/{id}', [DataFeedbackController::class, 'update'])->whereUlid('id')->name('feedback.update');
+});
+
+Route::get('/pages/{slug}', [StaticPageController::class, 'show'])->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')->name('static-pages.show');
+Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function () {
+    Route::get('/admin/pages', [StaticPageController::class, 'index'])->name('static-pages.index');
+    Route::post('/admin/pages', [StaticPageController::class, 'save'])->name('static-pages.save');
 });

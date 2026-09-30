@@ -47,6 +47,12 @@ class SiteManagementController extends Controller
         foreach (['logo', 'favicon'] as $image) {
             $rules[$image] = ['nullable', 'string', 'max:500', 'regex:~^/(?!/)[a-zA-Z0-9/_-]+\.(png|jpg|jpeg|webp|ico)$~'];
         }
+        foreach (['header_background', 'header_text'] as $color) {
+            $rules[$color] = ['sometimes', 'required', 'regex:/^#[a-fA-F0-9]{6}$/'];
+        }
+        $rules['contact_email'] = 'nullable|email|max:254';
+        $rules['socials'] = 'sometimes|array:Facebook,X,Instagram,YouTube,LinkedIn';
+        $rules['socials.*'] = ['nullable', 'url:https', 'max:500'];
         $rules['palette'] = 'nullable|array';
         foreach (config('site.palette', []) as $key => $value) {
             $rules['palette.'.$key] = ['nullable', 'regex:/^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$/'];

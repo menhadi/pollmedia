@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sources & update status · Pollmedia</title><meta name="description" content="Check Pollmedia's official data sources, imported editions and update status."><link rel="stylesheet" href="/css/villages.css"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')</head>
-<body><header><a class="brand" href="{{ route('home') }}">pollmedia.</a><nav><a href="{{ route('home') }}">Explore India</a><a href="{{ route('villages.index') }}">Villages</a></nav></header><main>
+<body>
+@include('public-header')
+<main>
 <div class="kicker">Evidence & dates</div><h1>Sources & update status</h1><p class="lead">See which official sources support Pollmedia and when the displayed editions were imported.</p>
 <p class="notice"><strong>Updates are currently manual.</strong> No automatic source refresh is active in this pilot. An import date is not the date an official took office or a measurement was collected. Historical Census and election figures keep their original reference year.</p>
 <p><a href="{{ route('elections.history') }}">Lok Sabha historical results</a> · <a href="{{ route('elections.assembly') }}">Available Assembly results</a> · <a href="{{ route('census-catalogue.index') }}">Census tables</a> · <a href="{{ route('census.national-history') }}">Historical population</a> · <a href="{{ route('indicators.india') }}">Other historical measurements</a></p>
@@ -28,4 +30,6 @@
 <p>No sources have been imported.</p>
 @endforelse
 </div><section class="card"><h2>How to read these dates</h2><p>For changing information such as officeholders, check the dated entry and its official directory. A recent import does not guarantee that the publisher updated every record recently. Older historical data is not automatically incorrect because its import is old.</p></section>
-<footer>Pollmedia · Local research pilot · Official links and dated evidence</footer></main></body></html>
+</main>
+@include('public-footer')
+</body></html>
