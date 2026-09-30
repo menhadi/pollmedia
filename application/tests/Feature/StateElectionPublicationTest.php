@@ -62,8 +62,8 @@ class StateElectionPublicationTest extends TestCase
         $this->assertDatabaseCount('election_contests', 405);
         $this->get('/india/ac/uttar-pradesh-1-behat')->assertOk()->assertSee('Umar Ali Khan')->assertSee('37,880')->assertSee('Official ECI report')->assertSee('Verified parliamentary constituency and district links have not been imported')->assertDontSee('Available coverage in the Pilibhit PC report');
         $this->get('/india/ac/puranpur')->assertOk()->assertSee('BABURAM');
-        $this->get('/india/state/uttar-pradesh?type=ac')->assertOk()->assertSee('403 available pages')->assertSee('Choose an available place');
-        $this->get('/india/state/uttar-pradesh?place=ac-uttar-pradesh-1-behat')->assertOk()->assertSee('1 available pages')->assertSee('/india/ac/uttar-pradesh-1-behat');
+        $this->get('/india/state/uttar-pradesh?type=ac')->assertOk()->assertSee('403 places')->assertSee('Choose an available place');
+        $this->get('/india/state/uttar-pradesh?place=ac-uttar-pradesh-1-behat')->assertOk()->assertSee('1 place')->assertSee('/india/ac/uttar-pradesh-1-behat');
         $this->get('/admin/imports/election-batches/'.$id.'?code=1')->assertOk()->assertSee('Open published election page');
         $this->get('/sitemap.xml')->assertOk()->assertSee('/india/ac/uttar-pradesh-1-behat');
         $this->assertCount(403, app(SeoPages::class)->catalog('ac', '2022'));

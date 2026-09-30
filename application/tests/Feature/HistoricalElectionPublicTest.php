@@ -125,7 +125,7 @@ class HistoricalElectionPublicTest extends TestCase
         $reviews = app(HistoricalElectionReview::class);
         $reviews->save($id, $record, $hash, ['action' => 'accept', 'reason' => 'Checked source difference', 'fingerprint' => $reviews->fingerprint($record, $hash), 'review_id' => 0], User::factory()->create(['is_admin' => true])->id);
         $url = route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]);
-        $this->get($url)->assertOk()->assertDontSee('id="data-note"', false)->assertSee('Administrator accepted')->assertDontSee('Checked source difference');
+        $this->get($url)->assertOk()->assertDontSee('id="data-note"', false)->assertSee('The source discrepancy has a review note.')->assertDontSee('Checked source difference');
         $stateUrl = route('elections.history', ['edition' => $id, 'state' => 'S24']);
         $this->get($stateUrl)->assertOk()->assertDontSee('id="state-note-451"', false)->assertSee('See candidate table')->assertDontSee('Checked source difference')
             ->assertSee('No established single-seat winners are available to chart')->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 0 && $summary['under_review'] === 0 && $summary['other'] === 1);
@@ -194,7 +194,7 @@ class HistoricalElectionPublicTest extends TestCase
         Storage::fake('local');
         [$pc] = $this->edition();
         [$ac] = $this->edition(2007, 'ac');
-        $this->get(route('elections.assembly'))->assertOk()->assertSee('India Assembly election archive')->assertViewHas('edition', $ac);
+        $this->get(route('elections.assembly'))->assertOk()->assertSee('India Assembly elections')->assertViewHas('edition', $ac);
         $state = route('elections.assembly', ['edition' => $ac, 'state' => 'Uttar Pradesh']);
         $record = route('elections.assembly', ['edition' => $ac, 'state' => 'Uttar Pradesh', 'code' => 1]);
         $this->get($state)->assertOk()->assertSee('SEOHARA')->assertSee($record)->assertSee('id="state-note-1"', false);

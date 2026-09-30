@@ -39,7 +39,7 @@ class CivicExplorerTest extends TestCase
             ->assertDontSee('Wrong district child')->assertSee(route('civic.index'), false);
         $this->get('/india/census/places/'.$ids['STATE'])->assertOk()->assertSee('District Alpha')->assertDontSee('Tehsil Alpha');
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertSee('Tehsil Alpha')->assertDontSee('Wrong district child')
-            ->assertSee('State Alpha')->assertSee('Example review note')->assertSee('Area locator')->assertSee('Verified AC/PC associations are not available');
+            ->assertSee('State Alpha')->assertSee('Example review note')->assertSee('Map of District Alpha')->assertDontSee('Verified AC/PC associations are not available');
     }
 
     public function test_villages_and_towns_preserve_group_and_missing_values(): void
@@ -74,7 +74,7 @@ class CivicExplorerTest extends TestCase
             ->assertSee('Open available village profiles')->assertViewHas('linked', fn ($items) => $items->pluck('place.id')->unique()->count() === $items->count());
         DB::table('place_relationships')->where(fn ($q) => $q->where('from_place_id', $district)->orWhere('to_place_id', $district))->update(['valid_to' => '2000-01-01']);
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertDontSee('Barkhera')
-            ->assertSee('Verified AC/PC associations are not available');
+            ->assertDontSee('AC, PC & other areas');
         DB::table('place_identifiers')->where('namespace', 'census:district:IN:UP')->delete();
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertViewHas('matchedPlace', null);
     }

@@ -26,7 +26,7 @@ class PublicSearchTest extends TestCase
         $this->get('/search?q=Pilibhit&kind=pc')->assertOk()->assertSee('Places')->assertDontSee('Pilibhit Test Village')->assertDontSee('/india/ac/pilibhit', false);
         $this->get('/search?q=123456&kind=village')->assertOk()->assertSee('Pilibhit Test Village')->assertDontSee('matching records');
         $this->get('/search?q=NoSuchPlace')->assertOk()->assertSee('No matching pages yet');
-        $this->get('/search')->assertOk()->assertSee('Enter at least two characters')->assertSee('brand-mark')->assertSee('pollmedia-profile.png');
+        $this->get('/search')->assertOk()->assertSee('Enter at least two characters')->assertSee('brand-mark')->assertSee('pollmedia-favicon.png');
     }
 
     public function test_earlier_only_matches_follow_pc_district_and_ac_profiles(): void
