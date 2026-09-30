@@ -25,7 +25,34 @@ class ConstituencyOverviewTest extends TestCase
         $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Current office-holder status has not yet been verified')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('Area locator')->assertSee('Registered electors and votes polled')->assertSee('Absolute counts, not percentages');
         $this->get($url.'&edition='.str_repeat('a', 24))->assertOk()->assertSee('2024 results')->assertSee('Example party');
         $this->get($url.'&edition='.str_repeat('d', 24))->assertNotFound();
-        $this->get('/india/elections/lok-sabha?edition='.str_repeat('a', 24).'&state=Uttar%20Pradesh&code=1')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Lucknow', 'edition' => str_repeat('a', 24)]));
+        $this->get('/india/elections/lok-sabha?edition='.str_repeat('a', 24).'&state=Uttar%20Pradesh&code=1')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Lucknow', 'edition' => str_repeat('a', 24), 'code' => 1]));
+    }
+
+    public function test_same_name_seats_keep_their_official_record_codes(): void
+    {
+        $edition = str_repeat('a', 24);
+        foreach ([10, 20] as $code) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => $edition, 'record_code' => $code,
+                'kind' => 'ac', 'year' => 2007, 'edition_label' => '2007', 'state_label' => 'Uttar Pradesh',
+                'constituency_name' => 'Nawabganj', 'status' => 'validated', 'has_warning' => false,
+                'candidate_count' => 1, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+        $this->mock(HistoricalElectionArchive::class, function ($mock) {
+            $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in',
+                'source_sha256' => str_repeat('c', 64), 'records' => [
+                    ['code' => 10, 'status' => 'validated', 'candidates' => [['candidate_name' => 'First seat candidate', 'party_at_election' => 'A', 'votes' => 10]]],
+                    ['code' => 20, 'status' => 'validated', 'candidates' => [['candidate_name' => 'Second seat candidate', 'party_at_election' => 'B', 'votes' => 20]]],
+                ]]]);
+        });
+
+        $base = route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Nawabganj']);
+        $this->get($base)->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'q' => 'Nawabganj']));
+        $this->get($base.'&edition='.$edition.'&code=20')->assertOk()
+            ->assertSee('Second seat candidate')->assertDontSee('First seat candidate')
+            ->assertSee('Only the selected source record is shown');
+        $this->get('/india/elections/assembly?edition='.$edition.'&state=Uttar%20Pradesh&code=20')
+            ->assertRedirect(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh',
+                'name' => 'Nawabganj', 'edition' => $edition, 'code' => 20]));
     }
 
     public function test_legacy_pilibhit_profile_opens_shared_history_template(): void

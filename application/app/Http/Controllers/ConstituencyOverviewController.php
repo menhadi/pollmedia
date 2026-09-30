@@ -7,20 +7,34 @@ use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionArchive;
 use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ConstituencyOverviewController extends Controller
 {
-    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View
+    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|RedirectResponse
     {
-        $input = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/']);
+        $input = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'code' => 'nullable|integer|min:1|max:999999']);
         $kind = $input['kind'];
         $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
         $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($name)])->orderByDesc('year')->orderBy('edition_id')->get();
         abort_if($entries->isEmpty(), 404);
+        $ambiguousName = $entries->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1);
+        $exactSeatOnly = false;
+        if ($ambiguousName) {
+            if (! isset($input['edition'], $input['code'])) {
+                return redirect()->route('elections.constituencies', ['kind' => $kind, 'state' => $state, 'q' => $name]);
+            }
+            $exact = $entries->first(fn ($entry): bool => $entry->edition_id === $input['edition'] && $entry->record_code === (int) $input['code']);
+            abort_if(! $exact, 404);
+            $entries = collect([$exact]);
+            $exactSeatOnly = true;
+        } elseif (isset($input['code'])) {
+            abort_if(! isset($input['edition']) || ! $entries->contains(fn ($entry): bool => $entry->edition_id === $input['edition'] && $entry->record_code === (int) $input['code']), 404);
+        }
         $rows = $entries->map(function ($entry) use ($history, $archives, $reviews) {
             $record = null;
             $source = null;
@@ -39,14 +53,14 @@ class ConstituencyOverviewController extends Controller
 
             return ['entry' => $entry, 'record' => $record, 'source' => $source];
         });
-        $chosen = isset($input['edition']) ? $rows->first(fn ($row) => $row['entry']->edition_id === $input['edition']) : null;
+        $chosen = isset($input['edition']) ? $rows->first(fn ($row) => $row['entry']->edition_id === $input['edition'] && (! isset($input['code']) || $row['entry']->record_code === (int) $input['code'])) : null;
         abort_if(isset($input['edition']) && ! $chosen, 404);
         $latest = $rows->first();
         $chosen ??= $latest;
 
         $related = collect();
         // UP identifiers establish state scope; a shared name alone is not a geographic link.
-        $placeIds = $state === 'Uttar Pradesh' ? DB::table('places as p')->join('place_identifiers as i', 'i.place_id', '=', 'p.id')->join('source_releases as s', 's.id', '=', 'i.source_release_id')
+        $placeIds = ! $exactSeatOnly && $state === 'Uttar Pradesh' ? DB::table('places as p')->join('place_identifiers as i', 'i.place_id', '=', 'p.id')->join('source_releases as s', 's.id', '=', 'i.source_release_id')
             ->where('p.type', $kind)->whereRaw('LOWER(p.name) = ?', [mb_strtolower($name)])->where('i.namespace', 'electoral:IN:UP:'.$kind)->where('s.status', 'accepted')->distinct()->pluck('p.id') : collect();
         if ($placeIds->count() === 1) {
             $placeId = $placeIds->first();
@@ -62,7 +76,7 @@ class ConstituencyOverviewController extends Controller
             $related = DB::table('places')->whereIn('id', $ids->unique())->whereIn('type', ['pc', 'ac', 'district'])->orderBy('type')->orderBy('name')->get();
         }
 
-        if ($related->isEmpty() && $state === 'Uttar Pradesh') {
+        if (! $exactSeatOnly && $related->isEmpty() && $state === 'Uttar Pradesh') {
             $geography = json_decode(file_get_contents(database_path('fixtures/up-electoral-geography.json')), true, 512, JSON_THROW_ON_ERROR);
             $normalize = fn ($value) => preg_replace('/[^a-z]/', '', strtolower(preg_replace('/\s*\((?:SC|ST)\)$/i', '', trim($value))));
             $pcs = collect($geography['pcs']);
@@ -85,6 +99,6 @@ class ConstituencyOverviewController extends Controller
             }
         }
 
-        return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related'));
+        return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
     }
 }

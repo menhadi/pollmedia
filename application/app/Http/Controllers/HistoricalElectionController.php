@@ -81,7 +81,7 @@ class HistoricalElectionController extends Controller
         if (! isset($input['format']) && isset($input['edition'], $input['state'], $input['code']) && Schema::hasTable('historical_constituency_index')) {
             $indexed = DB::table('historical_constituency_index')->where('edition_id', $input['edition'])->where('state_label', $input['state'])->where('record_code', $input['code'])->where('kind', $request->routeIs('elections.assembly') ? 'ac' : 'pc')->first();
             if ($indexed) {
-                return redirect()->route('constituency.overview', ['kind' => $indexed->kind, 'state' => $indexed->state_label, 'name' => $indexed->constituency_name, 'edition' => $indexed->edition_id]);
+                return redirect()->route('constituency.overview', ['kind' => $indexed->kind, 'state' => $indexed->state_label, 'name' => $indexed->constituency_name, 'edition' => $indexed->edition_id, 'code' => $indexed->record_code]);
             }
         }
         $download = ($input['format'] ?? null) === 'csv';
