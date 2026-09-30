@@ -26,7 +26,7 @@ class StaticPagesTest extends TestCase
         $html = $response->getContent();
         $header = substr($html, strpos($html, '<header'), strpos($html, '</header>') - strpos($html, '<header'));
         $this->assertStringNotContainsString('Admin', $header);
-        $response->assertSee('Admin panel');
+        $response->assertDontSee('Admin panel')->assertDontSee('href="'.route('admin.dashboard').'"', false);
         $this->get('/sources')->assertOk()->assertSee('public-header site-header')->assertSee('About &amp; policies', false)->assertDontSee("@include('public-footer')", false);
         foreach (array_keys(config('static-pages')) as $slug) {
             $this->get('/pages/'.$slug)->assertOk();

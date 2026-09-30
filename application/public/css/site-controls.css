@@ -21,3 +21,17 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 @media(max-width:1000px){.public-footer .footer-grid{grid-template-columns:1fr 1fr}.static-page-layout{grid-template-columns:1fr}}
 @media(max-width:600px){.public-footer .footer-grid{grid-template-columns:1fr;gap:28px}.footer-bottom{flex-direction:column}.public-header.site-header{padding:18px 5vw}.public-footer{padding-top:36px!important}}
 .public-header.site-header.header-compact{padding-top:12px;padding-bottom:12px}.public-footer.footer-compact{padding-top:28px!important}
+
+/* Search must not depend on an election-only stylesheet. */
+.public-header.site-header .header-search-wrap{position:relative;flex:1 1 320px;max-width:540px;min-width:0}
+.public-header.site-header .header-search{display:flex;align-items:stretch;flex-wrap:nowrap;width:100%;max-width:none;margin:0;gap:0;background:var(--site-surface);border:1px solid var(--site-border);border-radius:8px;overflow:hidden;box-sizing:border-box}
+.public-header.site-header .header-search input{flex:1 1 0;width:0;min-width:0;max-width:none;min-height:44px;margin:0;border:0!important;border-radius:0!important;box-shadow:none;background:var(--site-surface);color:var(--site-text);font:inherit;font-size:14px;line-height:1.4;padding:11px 12px;box-sizing:border-box}
+.public-header.site-header .header-search button{flex:0 0 auto;width:auto;min-height:44px;margin:0;border:0!important;border-radius:0!important;font:inherit;font-size:14px;line-height:1.4;padding:11px 16px;cursor:pointer}
+.public-header.site-header .header-search:focus-within{outline:3px solid var(--site-accent);outline-offset:3px}
+.public-header.site-header .search-suggestions{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:100;background:var(--site-surface);border:1px solid var(--site-border);border-radius:8px;box-shadow:0 12px 28px var(--palette-0003);max-height:360px;overflow:auto}
+.public-header.site-header .search-suggestions a{display:block;padding:12px 15px;text-decoration:none;border-bottom:1px solid var(--site-border);color:var(--site-text)!important}
+.public-header.site-header .search-suggestions small{display:block;color:var(--site-muted);font-size:12px;margin-top:3px}
+.public-header.site-header .search-suggestions a:hover,.public-header.site-header .search-suggestions [aria-selected=true]{background:var(--site-background)}
+.public-header.site-header .search-suggestions[hidden]{display:none}
+.public-footer .footer-bottom{justify-content:center;text-align:center}
+@media(max-width:800px){.public-header.site-header .header-search-wrap{order:3;flex:1 1 100%;width:100%;max-width:none}.public-header.site-header .header-search{order:initial}}
