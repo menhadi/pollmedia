@@ -105,7 +105,7 @@
 @foreach($selected['edition_notes'] ?? [] as $note)<p class="notice">{{ $note }}</p>@endforeach
 @if($selected['has_warning'])<p class="notice" id="data-note"><strong>† Data note:</strong> {{ $selected['error'] ?? 'This record requires review.' }} Displayed rows may be incomplete. Please check the official report before relying on figures marked for review.</p>
 @if(isset($selected['summary_totals']))<details><summary>Compare the report’s summary totals</summary>@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>'Valid candidate votes'] as $key=>$label)<p>{{ $label }}: {{ isset($selected['summary_totals'][$key]) ? number_format($selected['summary_totals'][$key]) : 'Not reported' }}</p>@endforeach</details>@endif
-@elseif($selected['review'])<p class="small">Administrator {{ $selected['status']==='corrected' ? 'corrected' : 'accepted' }} this record. Official source references remain available below.</p>@endif
+@elseif($selected['review'])<p class="small">{{ $selected['status']==='corrected' ? 'This result includes a documented correction.' : 'The source discrepancy has a review note.' }} See the original report below.</p>@endif
 <p class="small">@isset($selected['detail_page'])Detailed results: PDF page {{ $selected['detail_page'] }}. @endisset {{ $selected['source_locator'] ?? '' }} @isset($selected['summary_page'])Summary: PDF page {{ $selected['summary_page'] }}.@endisset {{ $selected['summary_locator'] ?? '' }}</p>
 </section>
 @endif

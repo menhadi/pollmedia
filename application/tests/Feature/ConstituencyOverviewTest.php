@@ -17,12 +17,12 @@ class ConstituencyOverviewTest extends TestCase
         foreach ([2019, 2024] as $year) {
             DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat($year === 2024 ? 'a' : 'b', 24), 'record_code' => 1, 'kind' => 'pc', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => $year === 2019 ? 'UTTAR PRADESH' : 'Uttar Pradesh', 'constituency_name' => 'Lucknow', 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 1, 'extraction_sha256' => str_repeat('c', 64)]);
         }
-        $this->getJson('/search?q=Lucknow')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.type', 'PC · Uttar Pradesh')->assertJsonPath('suggestions.0.label', 'Lucknow');
+        $this->getJson('/search?q=Lucknow')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.type', 'Parliament (PC)')->assertJsonPath('suggestions.0.period', 'Uttar Pradesh')->assertJsonPath('suggestions.0.label', 'Lucknow');
         $this->mock(HistoricalElectionArchive::class, function ($mock) {
             $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [['code' => 1, 'status' => 'validated', 'winner' => 'Example winner', 'candidates' => [['candidate_name' => 'Example winner', 'party_at_election' => 'Example party', 'votes' => 100]], 'number_of_seats' => 1]]]]);
         });
         $url = '/india/constituency?kind=pc&state=UTTAR%20PRADESH&name=lucknow';
-        $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Current office-holder status has not yet been verified')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('Area locator')->assertSee('Registered electors and votes polled')->assertSee('Absolute counts, not percentages');
+        $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Election winners may differ from current representatives')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('Location map')->assertSee('Registered electors and votes polled')->assertSee('Absolute counts, not percentages');
         $this->get($url.'&edition='.str_repeat('a', 24))->assertOk()->assertSee('2024 results')->assertSee('Example party');
         $this->get($url.'&edition='.str_repeat('d', 24))->assertNotFound();
         $this->get('/india/elections/lok-sabha?edition='.str_repeat('a', 24).'&state=Uttar%20Pradesh&code=1')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Lucknow', 'edition' => str_repeat('a', 24), 'code' => 1]));
@@ -49,7 +49,7 @@ class ConstituencyOverviewTest extends TestCase
         $this->get($base)->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'q' => 'Nawabganj']));
         $this->get($base.'&edition='.$edition.'&code=20')->assertOk()
             ->assertSee('Second seat candidate')->assertDontSee('First seat candidate')
-            ->assertSee('Only the selected source record is shown');
+            ->assertSee('This page shows the selected seat');
         $this->get('/india/elections/assembly?edition='.$edition.'&state=Uttar%20Pradesh&code=20')
             ->assertRedirect(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh',
                 'name' => 'Nawabganj', 'edition' => $edition, 'code' => 20]));
@@ -76,6 +76,36 @@ class ConstituencyOverviewTest extends TestCase
         });
         $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => 'UTTAR PRADESH', 'name' => 'Aonla']))->assertOk()->assertSee('Connected places')->assertSee('Bithari Chainpur')->assertSee('Bareilly')->assertSee('Official district reference')->assertSee(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Bithari Chainpur']));
         $this->assertDatabaseCount('places', 0);
+    }
+
+    public function test_2009_turnout_with_source_discrepancy_stays_visible_and_identical_2019_charts_are_not_repeated(): void
+    {
+        $edition2009 = str_repeat('d', 24);
+        foreach ([[$edition2009, 2009, 404, '2009 Vol I, II, III'], [str_repeat('a', 24), 2019, 387, '2019 (Including Vellore PC)'], [str_repeat('b', 24), 2019, 387, '2019 (Excluding Vellore PC)']] as [$edition,$year,$code,$label]) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => $edition, 'record_code' => $code, 'kind' => 'pc', 'year' => $year, 'edition_label' => $label, 'state_label' => 'Uttar Pradesh', 'constituency_name' => 'Pilibhit', 'status' => $year === 2009 ? 'needs_review' : 'validated', 'has_warning' => $year === 2009, 'candidate_count' => 2, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+        $this->mock(HistoricalElectionArchive::class, function ($mock) use ($edition2009): void {
+            $mock->shouldReceive('load')->andReturnUsing(function (string $edition) use ($edition2009): array {
+                $is2009 = $edition === $edition2009;
+
+                return [['source_url' => 'https://www.eci.gov.in/statistical-reports', 'source_sha256' => str_repeat('c', 64), 'records' => [[
+                    'code' => $is2009 ? 404 : 387, 'status' => $is2009 ? 'needs_review' : 'validated', 'number_of_seats' => 1,
+                    'electors' => $is2009 ? 1310007 : 100, 'votes_polled' => $is2009 ? 837929 : 60,
+                    'detail_page' => 149, 'summary_page' => 404,
+                    'summary_totals' => $is2009 ? ['electors' => 1310007, 'votes_polled' => 837929, 'valid_candidate_votes' => 837567] : null,
+                    'error' => $is2009 ? 'Summary and detailed totals differ' : null,
+                    'candidates' => [
+                        ['candidate_name' => 'Candidate A', 'party_at_election' => 'AAA', 'votes' => $is2009 ? 419539 : 40],
+                        ['candidate_name' => 'Candidate B', 'party_at_election' => 'BBB', 'votes' => $is2009 ? 112576 : 20],
+                    ],
+                ]]]];
+            });
+        });
+
+        $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
+        $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
+        $this->assertSame(3, substr_count($overview->getContent(), 'class="history-bar-year">2019</span>'));
+        $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A');
     }
 
     public function test_state_case_and_official_codes_resolve_across_states(): void

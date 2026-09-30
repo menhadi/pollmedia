@@ -3,7 +3,7 @@
 @section('content')
 <h1>Find historical constituency results</h1>
 <p>Search the available source-backed Lok Sabha and Assembly candidate tables by the constituency name recorded in each election edition. <a href="{{ route('elections.by-election-results') }}">Browse by-election results separately</a>.</p>
-<p class="notice">Each row belongs to one report edition. A matching name in another year does not prove that the constituency had the same boundaries. Extracted tables are shown with source review warnings and are not necessarily published as accepted place-profile results.</p>
+<p class="notice">Each row belongs to one report edition. A matching name in another year does not prove that the constituency had the same boundaries. A † note flags figures that need checking against the official report.</p>
 @if(! $indexed || ! $results->total())
 <p class="notice">@if(! $indexed)Search is not yet available for these records. @else No election records match this selection. @endif You can still browse <a href="{{ route('elections.history') }}">Lok Sabha editions</a> and <a href="{{ route('elections.assembly') }}">Assembly editions</a>.</p>
 @endif

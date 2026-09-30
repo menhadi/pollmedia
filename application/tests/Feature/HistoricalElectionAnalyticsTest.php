@@ -49,6 +49,27 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($result['margin']);
     }
 
+    public function test_source_corroborated_turnout_is_shown_with_review_marker_without_accepting_disputed_votes(): void
+    {
+        $record = $this->record(404, 1310007, 837929, 419539, 112576);
+        $record['status'] = 'needs_review';
+        $record['detail_page'] = 149;
+        $record['summary_page'] = 404;
+        $record['valid_candidate_votes'] = 837577;
+        $record['summary_totals'] = ['electors' => 1310007, 'votes_polled' => 837929, 'valid_candidate_votes' => 837567];
+
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $result['turnout_count']);
+        $this->assertSame(1, $result['turnout_review_count']);
+        $this->assertSame(837929, $result['polled']);
+        $this->assertEqualsWithDelta(63.96, $result['turnout'], 0.005);
+        $this->assertSame(0, $result['party_count']);
+        $this->assertNull($result['margin']);
+
+        $record['summary_totals']['votes_polled']--;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
     public function test_state_dashboard_keeps_filters_sources_and_constituency_links(): void
     {
         $this->seed(PilibhitSeeder::class);
@@ -56,7 +77,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSee('Map of Uttar Pradesh, India')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
         $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
     }
 
@@ -68,12 +89,16 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame('Goa', $edition['state']);
         $this->assertSame(2, $edition['tables']);
         $this->assertSame(2, $edition['review_count']);
-        $this->assertSame(0, $edition['turnout_count']);
+        $this->assertSame(2, $edition['turnout_count']);
+        $this->assertSame(2, $edition['turnout_review_count']);
+        $this->assertNotNull($edition['turnout']);
 
         $this->get('/india/state/goa?election=pc&edition='.$edition['id'])
             ->assertOk()
             ->assertSee($edition['label'].' †')
-            ->assertSee('2 of 2 constituency tables have data notes')
+            ->assertSee('2 of 2 results have data notes')
+            ->assertSee('Turnout in 2 of these results agrees')
+            ->assertSee('Map of Goa, India')
             ->assertSee('View the tables and notes');
 
         $this->get('/india/elections/lok-sabha?edition='.$edition['id'].'&state=Goa')

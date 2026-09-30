@@ -33,7 +33,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v2:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v3:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -71,18 +71,26 @@ class HistoricalElectionAnalytics
 
     public function summarize(array $records): array
     {
-        $electors = $polled = $turnoutCount = $partyCount = $voteTotal = 0;
+        $electors = $polled = $turnoutCount = $turnoutReviewCount = $partyCount = $voteTotal = 0;
         $margins = $parties = $marginPercentages = $winners = [];
         $identities = array_count_values(array_map(fn (array $r): string => (string) ($r['official_pc_code'] ?? $r['official_ac_code'] ?? $r['code']), $records));
         foreach ($records as $record) {
             $identity = (string) ($record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code']);
-            if (($record['has_warning'] ?? (($record['status'] ?? '') !== 'validated')) || ($record['number_of_seats'] ?? 1) !== 1 || $identities[$identity] !== 1) {
+            if (($record['number_of_seats'] ?? 1) !== 1 || $identities[$identity] !== 1) {
                 continue;
             }
-            if ($this->count($record['electors'] ?? null) && $record['electors'] > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $record['electors']) {
+            $hasWarning = $record['has_warning'] ?? (($record['status'] ?? '') !== 'validated');
+            if ($this->count($record['electors'] ?? null) && $record['electors'] > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $record['electors']
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record))) {
                 $electors += $record['electors'];
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
+                if ($hasWarning) {
+                    $turnoutReviewCount++;
+                }
+            }
+            if ($hasWarning) {
+                continue;
             }
             $candidates = $record['candidates'] ?? [];
             if ($candidates === [] || collect($candidates)->contains(fn (array $c): bool => ! $this->count($c['votes'] ?? null) || trim($c['party_at_election'] ?? '') === '')) {
@@ -116,7 +124,7 @@ class HistoricalElectionAnalytics
             $partyRows[] = ['party' => (string) $party, 'votes' => $votes, 'share' => 100 * $votes / $voteTotal];
         }
 
-        return ['tables' => count($records), 'turnout_count' => $turnoutCount, 'electors' => $turnoutCount ? $electors : null,
+        return ['tables' => count($records), 'turnout_count' => $turnoutCount, 'turnout_review_count' => $turnoutReviewCount, 'electors' => $turnoutCount ? $electors : null,
             'polled' => $turnoutCount ? $polled : null, 'turnout' => $electors ? 100 * $polled / $electors : null,
             'party_count' => $partyCount, 'parties' => $partyRows, 'margin_count' => count($margins),
             'margin' => $margins ? array_sum($margins) / count($margins) : null,
@@ -126,5 +134,18 @@ class HistoricalElectionAnalytics
     private function count(mixed $value): bool
     {
         return is_int($value) && $value >= 0;
+    }
+
+    private function hasCorroboratedTurnout(array $record): bool
+    {
+        $summary = $record['summary_totals'] ?? null;
+
+        return is_array($summary)
+            && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0
+            && $this->count($record['summary_page'] ?? null) && $record['summary_page'] > 0
+            && $this->count($summary['electors'] ?? null)
+            && $this->count($summary['votes_polled'] ?? null)
+            && $summary['electors'] === $record['electors']
+            && $summary['votes_polled'] === $record['votes_polled'];
     }
 }
