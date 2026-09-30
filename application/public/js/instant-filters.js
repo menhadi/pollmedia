@@ -2,7 +2,7 @@
     if (window.pollmediaInstantFilters) return;
     window.pollmediaInstantFilters = true;
     document.querySelectorAll('form').forEach(form => {
-        if (form.method.toLowerCase() !== 'get' || form.matches('.header-search,[data-manual-submit]')) return;
+        if (form.method.toLowerCase() !== 'get' || form.matches('.header-search,[data-place-search],[data-manual-submit]')) return;
         let timer;
         const submit = () => {
             if (!form.checkValidity()) return;
@@ -22,15 +22,15 @@
         });
         form.addEventListener('submit', () => clearTimeout(timer));
     });
-    const input = document.getElementById('site-search');
-    if (!input) return;
-    const list = document.getElementById('search-suggestions');
-    const status = document.getElementById('search-suggestion-status');
+    document.querySelectorAll('[data-place-search]').forEach(form => {
+    const input = form.querySelector('[role=combobox]');
+    const list = document.getElementById(input.getAttribute('aria-controls'));
+    const status = form.querySelector('[role=status]');
     let timer, request, selected = -1, matches = [];
     const close = () => { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); selected = -1; };
     const highlight = () => {
         Array.from(list.children).forEach((node, index) => node.setAttribute('aria-selected', String(index === selected)));
-        if (selected >= 0) { input.setAttribute('aria-activedescendant', `suggestion-${selected}`); list.children[selected].scrollIntoView({block:'nearest'}); }
+        if (selected >= 0) { input.setAttribute('aria-activedescendant', `${input.id}-suggestion-${selected}`); list.children[selected].scrollIntoView({block:'nearest'}); }
     };
     input.addEventListener('input', event => {
         clearTimeout(timer); request?.abort(); close(); status.textContent = '';
@@ -48,10 +48,10 @@
                 matches = data.suggestions;
                 list.replaceChildren();
                 matches.forEach((match,index) => {
-                    const option = document.createElement('a'); option.id=`suggestion-${index}`;
+                    const option = document.createElement('a'); option.id=`${input.id}-suggestion-${index}`;
                     option.href=match.url; option.role='option'; option.setAttribute('aria-selected','false'); option.tabIndex=-1;
                     const name=document.createElement('strong'); name.textContent=match.label;
-                    const type=document.createElement('small'); type.textContent=match.type;
+                    const type=document.createElement('small'); type.textContent=match.type+(match.period ? " · "+match.period : "");
                     option.append(name,type); list.append(option);
                 });
                 status.textContent=matches.length ? `${matches.length} suggestions. Use arrow keys to choose.` : 'No suggestions. Press Search to view available results.';
@@ -71,5 +71,6 @@
         } else if(event.key==='Enter'&&selected>=0){event.preventDefault();window.location.assign(matches[selected].url);}
         else if(event.key==='Tab') close();
     });
-    document.addEventListener('click',event=>{if(!event.target.closest('.header-search-wrap')){clearTimeout(timer);request?.abort();close();}});
+    document.addEventListener('click',event=>{if(!form.contains(event.target)){clearTimeout(timer);request?.abort();close();}});
+    });
 })();

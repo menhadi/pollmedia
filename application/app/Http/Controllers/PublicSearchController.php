@@ -24,13 +24,20 @@ class PublicSearchController extends Controller
             if ($kind !== 'village') {
                 $profiles = DB::table('places')->whereIn('type', ['pc', 'ac', 'district'])
                     ->when($kind !== '', fn ($query) => $query->where('type', $kind))
-                    ->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($q).'%'])->orderBy('name')->limit(20)->get();
+                    ->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($q).'%'])->orderByRaw("CASE type WHEN 'pc' THEN 0 WHEN 'district' THEN 1 ELSE 2 END")->orderBy('name')->limit(20)->get();
             }
             if (in_array($kind, ['', 'pc', 'ac']) && Schema::hasTable('historical_constituency_index')) {
-                $results = DB::table('historical_constituency_index')->whereNotNull('state_label')->where('state_label', '!=', '')->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($q).'%'])
+                $stateSql = ElectionPlaceIdentity::stateSql();
+                $latest = DB::table('historical_constituency_index')->select('kind', DB::raw($stateSql.' as state_key'), DB::raw('MAX(year) as latest_year'))->groupBy('kind', DB::raw($stateSql));
+                $matches = DB::table('historical_constituency_index')->whereNotNull('state_label')->where('state_label', '!=', '')->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($q).'%'])
                     ->when($kind !== '', fn ($query) => $query->where('kind', $kind))
-                    ->select('kind', DB::raw(ElectionPlaceIdentity::stateSql().' as state_label'), DB::raw('LOWER(constituency_name) as constituency_name'))
-                    ->groupBy('kind', DB::raw(ElectionPlaceIdentity::stateSql()), DB::raw('LOWER(constituency_name)'))->orderBy('constituency_name')->orderBy('state_label')->paginate(20)->withQueryString();
+                    ->select('kind', DB::raw($stateSql.' as state_label'), DB::raw('LOWER(constituency_name) as constituency_name'), DB::raw('MIN(year) as first_year'), DB::raw('MAX(year) as last_year'))
+                    ->groupBy('kind', DB::raw($stateSql), DB::raw('LOWER(constituency_name)'));
+                $results = DB::query()->fromSub($matches, 'matches')->leftJoinSub($latest, 'latest', fn ($join) => $join->on('matches.kind', '=', 'latest.kind')->on('matches.state_label', '=', 'latest.state_key'))
+                    ->select('matches.*', 'latest.latest_year')
+                    ->orderByRaw('CASE WHEN matches.last_year < latest.latest_year THEN 1 ELSE 0 END')
+                    ->orderByRaw("CASE matches.kind WHEN 'pc' THEN 0 ELSE 2 END")
+                    ->orderBy('matches.constituency_name')->orderBy('matches.state_label')->paginate(20)->withQueryString();
                 $results->through(function ($row) {
                     $row->state_label = ElectionPlaceIdentity::state($row->state_label);
 
@@ -45,21 +52,19 @@ class PublicSearchController extends Controller
                     ->sortBy('name')->take(20)->map(fn ($v) => $v + ['url' => route('villages.show', ['code' => $v['code'], 'slug' => Str::slug($v['name'])])])->values();
             }
         }
-        if ($results) {
-            $profiles = $profiles->reject(fn ($p) => collect($results->items())->contains(fn ($r) => $r->kind === $p->type && mb_strtolower($r->constituency_name) === mb_strtolower($p->name)));
+        $suggestions = $profiles->map(fn ($p) => ['label' => $p->name, 'type' => ['pc' => 'Parliament (PC)', 'ac' => 'Assembly (AC)', 'district' => 'District'][$p->type], 'rank' => ['pc' => 0, 'district' => 1, 'ac' => 2][$p->type], 'period' => 'Place profile · see dated sources', 'url' => route('places.show', ['type' => $p->type, 'slug' => substr($p->slug, strlen($p->type) + 1)])]);
+        foreach ($results?->items() ?? [] as $r) {
+            $earlier = $r->last_year < $r->latest_year;
+            $suggestions->push(['label' => Str::title($r->constituency_name), 'type' => strtoupper($r->kind).' · '.$r->state_label, 'rank' => ($earlier ? 3 : 0) + ($r->kind === 'pc' ? 0 : 2), 'period' => ($earlier ? 'Earlier records' : 'Latest available records').' · '.$r->first_year.'–'.$r->last_year.($earlier ? ' · current status unverified' : ''), 'url' => route('constituency.overview', ['kind' => $r->kind, 'state' => $r->state_label, 'name' => $r->constituency_name])]);
         }
+        foreach ($villages as $v) {
+            $suggestions->push(['label' => $v['name'], 'type' => 'Village · Pilibhit, Uttar Pradesh', 'rank' => 6, 'period' => 'Census 2011', 'url' => $v['url']]);
+        }
+        $suggestions = $suggestions->sortBy([['rank', 'asc'], ['label', 'asc']])->unique('url')->values();
         if ($request->expectsJson()) {
-            $suggestions = $profiles->take(5)->map(fn ($p) => ['label' => $p->name, 'type' => ['pc' => 'Parliament (PC)', 'ac' => 'Assembly (AC)', 'district' => 'District'][$p->type], 'url' => route('places.show', ['type' => $p->type, 'slug' => substr($p->slug, strlen($p->type) + 1)])]);
-            foreach (collect($results?->items() ?? [])->take(6) as $r) {
-                $suggestions->push(['label' => Str::title($r->constituency_name), 'type' => strtoupper($r->kind).' · '.$r->state_label, 'url' => route('constituency.overview', ['kind' => $r->kind, 'state' => $r->state_label, 'name' => $r->constituency_name])]);
-            }
-            foreach ($villages->take(4) as $v) {
-                $suggestions->push(['label' => $v['name'], 'type' => 'Village · Pilibhit, Uttar Pradesh', 'url' => $v['url']]);
-            }
-
-            return response()->json(['suggestions' => $suggestions->values()]);
+            return response()->json(['suggestions' => $suggestions->take(20)->values()]);
         }
 
-        return view('public-search', compact('q', 'kind', 'profiles', 'villages', 'results'));
+        return view('public-search', compact('q', 'kind', 'profiles', 'villages', 'results', 'suggestions'));
     }
 }

@@ -25,4 +25,17 @@ class PublicSearchTest extends TestCase
         $this->get('/search?q=NoSuchPlace')->assertOk()->assertSee('No matching pages yet');
         $this->get('/search')->assertOk()->assertSee('Enter at least two characters');
     }
+
+    public function test_earlier_only_matches_follow_pc_district_and_ac_profiles(): void
+    {
+        $this->seed(PilibhitSeeder::class);
+        foreach ([[1962, 'Pilibhit Old', 'a'], [2024, 'Different Seat', 'b']] as [$year, $name, $id]) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat($id, 24), 'record_code' => 26, 'kind' => 'pc', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => 'Uttar Pradesh', 'constituency_name' => $name, 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 2, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+        $matches = $this->getJson('/search?q=Pilibhit')->assertOk()->json('suggestions');
+        $this->assertSame(['Parliament (PC)', 'District', 'Assembly (AC)', 'PC · Uttar Pradesh'], array_slice(array_column($matches, 'type'), 0, 4));
+        $this->assertStringContainsString('1962', $matches[3]['period']);
+        $this->assertStringContainsString('current status unverified', $matches[3]['period']);
+        $this->get('/search?q=Pilibhit')->assertSeeInOrder(['Place profile · see dated sources', 'Earlier records']);
+    }
 }
