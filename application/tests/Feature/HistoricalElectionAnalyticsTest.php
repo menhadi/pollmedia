@@ -59,4 +59,13 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
         $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
     }
+
+    public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
+    {
+        $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);
+
+        $this->assertNotNull($edition);
+        $this->assertSame('Goa', $edition['state']);
+        $this->assertSame(2, $edition['tables']);
+    }
 }
