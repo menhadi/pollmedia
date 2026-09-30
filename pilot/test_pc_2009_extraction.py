@@ -10,6 +10,10 @@ class LokSabha2009ExtractionTest(unittest.TestCase):
         records = extract(root / '5556fc48df7b5645106ff974-6640.pdf', root / 'e73b9b69acde3f3d048bb45d-6634.pdf')
         self.assertEqual(len(records), 543)
         self.assertEqual(len({(r['state_code'], r['official_pc_code']) for r in records}), 543)
+        self.assertEqual(len({(r['state_code'], r['state_name']) for r in records}), 35)
+        self.assertEqual(records[0]['state_name'], 'Andhra Pradesh')
+        self.assertEqual(records[0]['state_heading_page'], 1)
+        self.assertEqual(records[0]['name'], 'Andhra Pradesh / Adilabad')
         self.assertEqual(sum(len(r['candidates']) for r in records), 8070)
         self.assertEqual(sum(r['status'] == 'validated' for r in records), 31)
         self.assertEqual(records[0]['candidates'][2]['candidate_name'], 'RATHOD RAMESH')
@@ -17,8 +21,11 @@ class LokSabha2009ExtractionTest(unittest.TestCase):
         self.assertEqual(records[0]['valid_candidate_votes'], 863581)
         self.assertEqual(records[0]['summary_totals']['valid_candidate_votes'], 862997)
         pilibhit = next(r for r in records if r['state_code'] == 'S24' and r['official_pc_code'] == 26)
+        self.assertEqual(pilibhit['state_name'], 'Uttar Pradesh')
         self.assertEqual(pilibhit['constituency_name'], 'Pilibhit')
         self.assertEqual(len(pilibhit['candidates']), 16)
+        self.assertEqual(next(r for r in records if r['state_code'] == 'S07')['state_heading_page'], 46)
+        self.assertEqual(next(r for r in records if r['state_code'] == 'S20')['state_heading_page'], 113)
         for record in records:
             for candidate in record['candidates']:
                 self.assertEqual(candidate['general_votes'] + candidate['postal_votes'], candidate['votes'])

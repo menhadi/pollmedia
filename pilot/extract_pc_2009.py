@@ -29,13 +29,27 @@ def extract(detail, summary):
         if len(matches) != 543:
             raise ValueError(f'Expected 543 detailed identities, found {len(matches)}')
         records=[]
+        state_names={}
+        state_heading_pages={}
         normal=lambda value: re.sub(r'[^a-z0-9]','',value.lower())
         name_variants = {('S20',12,'TONK-SAWAI MADHOPU','TONK-SAWAI MADHOPUR'),('S28',4,'Nainital-udhamsingh Nag','Nainital-udhamsingh Nagar'),('U01',1,'Andaman & nicobar islan','Andaman & nicobar islands')}
         for index, match in enumerate(matches):
             state, pc_code, seat, summary_page, page = identities[index]
             if int(match[1]) != pc_code or (normal(match[2]) != normal(seat) and (state,pc_code,match[2],seat) not in name_variants):
                 raise ValueError('State-scoped source order/constituency identity differs')
-            record=dict(code=index+1, official_pc_code=pc_code, state_code=state, name=f'{state} / {seat}', constituency_name=seat, detailed_name=match[2], number_of_seats=1, detail_page=max(n for offset,n in offsets if offset<=match.start()), summary_page=summary_page, electors=int(match[3]), candidates=[])
+            if pc_code == 1:
+                if state in state_names:
+                    raise ValueError('State/UT code appears in multiple detailed-report groups')
+                heading = text[:match.start()].strip().splitlines()[-1]
+                if not re.fullmatch(r'[A-Za-z][A-Za-z &.-]{1,60}', heading) or heading.casefold() in {value.casefold() for value in state_names.values()}:
+                    raise ValueError('Missing or repeated State/UT heading in detailed report')
+                state_names[state] = heading
+                heading_offset = text.rfind(heading, 0, match.start())
+                state_heading_pages[state] = max(n for offset,n in offsets if offset<=heading_offset)
+            elif state not in state_names or (index and identities[index-1][0] != state):
+                raise ValueError('Detailed report State/UT group does not start at PC 1')
+            state_name = state_names[state]
+            record=dict(code=index+1, official_pc_code=pc_code, state_code=state, state_name=state_name, state_heading_page=state_heading_pages[state], name=f'{state_name} / {seat}', constituency_name=seat, detailed_name=match[2], number_of_seats=1, detail_page=max(n for offset,n in offsets if offset<=match.start()), summary_page=summary_page, electors=int(match[3]), candidates=[])
             records.append(record)
             try:
                 body=text[match.end():matches[index+1].start() if index+1<len(matches) else len(text)]
@@ -59,6 +73,8 @@ def extract(detail, summary):
                 record.update(status='validated',winner=ranked[0]['candidate_name'],margin=ranked[0]['votes']-ranked[1]['votes'])
             except ValueError as error:
                 record.update(status='needs_review',error=str(error))
+        if len(state_names) != 35:
+            raise ValueError('Expected 35 named State/UT groups in the detailed report')
         return records
 
 
