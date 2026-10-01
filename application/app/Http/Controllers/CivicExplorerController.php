@@ -157,6 +157,17 @@ class CivicExplorerController extends Controller
             'work' => ['TOT_WORK_P' => 'Total workers', 'MAINWORK_P' => 'Main workers', 'MARGWORK_P' => 'Marginal workers'],
             default => ['TOT_P' => 'Population', 'TOT_M' => 'Male', 'TOT_F' => 'Female', 'P_06' => 'Children aged 0–6'],
         };
+        $additionalMeasures = match ($group) {
+            'households' => ['OCCUPIED_HOUSES' => 'Occupied residential houses'],
+            'work' => ['TOT_WORK_M' => 'Male workers', 'TOT_WORK_F' => 'Female workers',
+                'CULTIVATOR_P' => 'Cultivators', 'CULTIVATOR_M' => 'Male cultivators', 'CULTIVATOR_F' => 'Female cultivators'],
+            default => [],
+        };
+        foreach ($additionalMeasures as $code => $label) {
+            if ($records->contains(fn ($row) => array_key_exists($code, json_decode($row->values, true)))) {
+                $measures[$code] = $label;
+            }
+        }
         $title = $place?->name ?? 'India Census';
 
         return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions'));
