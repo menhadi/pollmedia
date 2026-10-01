@@ -105,8 +105,15 @@ class ConstituencyOverviewTest extends TestCase
 
         $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
         $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('281,501 †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
-        $this->assertSame(3, substr_count($overview->getContent(), 'class="history-bar-year">2019</span>'));
-        $this->assertLessThan(strpos($overview->getContent(), 'class="history-bar-year">2009'), strpos($overview->getContent(), 'class="history-bar-year">2019'));
+        preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $overview->getContent(), $charts);
+        $this->assertCount(4, $charts[1]);
+        $chart = json_decode($charts[1][0], true);
+        $this->assertSame([2009, 2019], array_column($chart['rows'], 'year'));
+        $this->assertEquals(60, $chart['rows'][1]['polled']);
+        preg_match('/<select name="edition" id="edition">(.*?)<\/select>/s', $overview->getContent(), $selector);
+        $this->assertSame(2, substr_count($selector[1], '<option'));
+        $this->assertStringNotContainsString('Vol', $selector[1]);
+        $this->assertStringNotContainsString('Vellore', $selector[1]);
         $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
     }
 
@@ -124,5 +131,25 @@ class ConstituencyOverviewTest extends TestCase
             $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => $state, 'name' => $name]))->assertOk()->assertSee('2004')->assertSee('2014')->assertSee('2024')->assertSee('3 available years');
             $this->getJson('/search?q='.urlencode($name))->assertOk()->assertJsonCount(1, 'suggestions');
         }
+    }
+
+    public function test_party_lines_rank_parties_once_per_year_and_preserve_missing_figures(): void
+    {
+        $record = ['code' => 1, 'status' => 'validated', 'number_of_seats' => 1, 'electors' => 200, 'votes_polled' => 100,
+            'candidates' => array_map(fn ($party, $votes) => ['candidate_name' => $party, 'party_at_election' => $party, 'votes' => $votes], ['A', 'B', 'C', 'D', 'NOTA'], [40, 30, 20, 8, 2])];
+        $rows = collect([
+            ['entry' => (object) ['year' => 2019], 'record' => $record],
+            ['entry' => (object) ['year' => 2019], 'record' => $record],
+            ['entry' => (object) ['year' => 2024], 'record' => null],
+        ]);
+        $html = view('place-history-charts', compact('rows'))->render();
+        preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $html, $matches);
+        $party = json_decode($matches[1][3], true);
+        $this->assertSame(['A', 'B', 'C', 'Others'], array_column($party['series'], 'label'));
+        $this->assertCount(2, $party['rows']);
+        $this->assertEquals(40, $party['rows'][0]['party0']);
+        $this->assertEquals(10, $party['rows'][0]['others']);
+        $this->assertNull($party['rows'][1]['party0']);
+        $this->assertNull($party['rows'][1]['others']);
     }
 }

@@ -1,61 +1,33 @@
 @php
-$chartRows=$rows->sortByDesc('entry.year')->values()->map(function($row){
+$chartRows=$rows->sortBy('entry.year')->values()->map(function($row){
  $summary=$row['record']?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$row['record']]):[];
- return ['year'=>$row['entry']->year,'label'=>$row['entry']->edition_label,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'turnout_review_count'=>$summary['turnout_review_count']??0,'margin_review_count'=>$summary['margin_review_count']??0];
-})->unique(fn($point)=>json_encode([$point['year'],$point['turnout'],$point['margin'],$point['polled'],$point['electors']]))->values();
+ return ['year'=>$row['entry']->year,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'parties'=>$summary['parties']??[],'review'=>max($summary['turnout_review_count']??0,$summary['margin_review_count']??0,$summary['party_review_count']??0)];
+})->groupBy('year')->map(function($group){
+ $point=['year'=>$group->first()['year'],'review'=>$group->max('review')];
+ foreach(['turnout','margin','polled','electors','parties'] as $key){
+  $values=$group->pluck($key)->unique(fn($value)=>json_encode($value));
+  $point[$key]=$values->count()===1?$values->first():($key==='parties'?[]:null);
+ }
+ return $point;
+})->values();
+$totals=[];
+foreach($chartRows as $point){foreach($point['parties'] as $party){if(!in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT'])){$totals[$party['party']]=($totals[$party['party']]??0)+$party['votes'];}}}
+arsort($totals); $topParties=array_slice(array_keys($totals),0,3);
+$plotRows=$chartRows->map(function($point)use($topParties){
+ foreach($topParties as $i=>$party){$point['party'.$i]=$point['parties']?collect($point['parties'])->where('party',$party)->sum('votes'):null;}
+ $point['others']=$point['parties']?collect($point['parties'])->reject(fn($party)=>in_array($party['party'],$topParties))->sum('votes'):null;
+ return $point;
+});
+$plots=[['title'=>'Voter turnout','unit'=>'%','series'=>[['key'=>'turnout','label'=>'Turnout']]],['title'=>'Winning margin','unit'=>'votes','series'=>[['key'=>'margin','label'=>'Winning margin']]],['title'=>'Registered electors and votes polled','unit'=>'people','series'=>[['key'=>'electors','label'=>'Registered electors'],['key'=>'polled','label'=>'Votes polled']]],['title'=>'Party votes across the years','unit'=>'votes','series'=>array_merge(array_map(fn($party,$i)=>['key'=>'party'.$i,'label'=>$party],$topParties,array_keys($topParties)),[['key'=>'others','label'=>'Others']])]];
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>How voting has changed</h2></div><a class="place-action" href="#history">View the tables ↓</a></div>
-@foreach(['turnout'=>'Voter turnout','margin'=>'Winning margin'] as $metric=>$label)
-@php
-$values=$chartRows->pluck($metric)->filter(fn($v)=>$v!==null);
-$maximum=max(1,$values->max()??1);
-$minimum=$values->min()??0;
-$scale=$metric==='turnout'?100:$maximum;
-@endphp
-<div class="history-chart"><h3>{{ $label }}</h3>
-<p class="small">Election year · {{ $metric==='turnout'?'Turnout (%) · scale 0–100%':'Margin (votes) · shared scale 0–'.number_format($maximum) }}</p>
-<div class="history-horizontal" role="list" aria-label="{{ $label }} by election year">
-@foreach($chartRows as $point)
-@php
-$value=$point[$metric];
-$ratio=$maximum==$minimum?0.5:(($value??$minimum)-$minimum)/($maximum-$minimum);
-$color=$ratio<0.33?'var(--palette-936000)':($ratio<0.66?'var(--palette-487000)':'var(--palette-00665d)');
-@endphp
-<div class="history-bar-row" role="listitem" title="{{ $point['label'] }}">
-<span class="history-bar-year">{{ $point['year'] }}</span>
-<span class="history-bar-track" aria-hidden="true">
-@if($value!==null)
-<span class="history-bar-fill" style="width:{{ 100*$value/$scale }}%;background:{{ $color }}"></span>
-@endif
-</span>
-<strong class="history-bar-value">{{ $value===null?'—':number_format($value,$metric==='turnout'?2:0).($metric==='turnout'?'%':'').(($metric==='turnout'?$point['turnout_review_count']:$point['margin_review_count'])?' †':'') }}</strong>
-</div>
+<p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>
+@foreach($plots as $plot)
+<section class="history-line" data-history-chart><h3>{{ $plot['title'] }}</h3>
+<script type="application/json" class="history-chart-data">{!! json_encode(['rows'=>$plotRows,'series'=>$plot['series'],'unit'=>$plot['unit']],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
+<div class="history-controls"><label>From <select data-chart-from>@foreach($chartRows as $point)<option value="{{ $point['year'] }}">{{ $point['year'] }}</option>@endforeach</select></label><label>To <select data-chart-to>@foreach($chartRows as $point)<option value="{{ $point['year'] }}" @selected($loop->last)>{{ $point['year'] }}</option>@endforeach</select></label></div>
+<div class="history-legend" aria-label="Chart series"></div><div class="history-plot"></div><p class="history-readout" role="status">Tap or focus a point to see the value.</p>
+<details><summary>View chart values</summary><div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>{{ $series['label'] }} ({{ $plot['unit'] }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0).($plot['unit']==='%'?'%':'').($point['review']?' †':'') }}</td>@endforeach</tr>@endforeach</tbody></table></div></details>
+</section>
 @endforeach
-</div>
-<p class="small">Gold → green → teal: lower to higher values. A dash means unavailable, not zero. † marks a figure with a data note in the result table. Identical chart figures from two editions in one year appear once; both reports remain in the results table.</p>
-</div>
-@endforeach
-@php $totalMax=max(1,$chartRows->pluck('electors')->filter()->max()??1,$chartRows->pluck('polled')->filter()->max()??1); @endphp
-<div class="history-chart"><h3>Registered electors and votes polled</h3>
-<p class="chart-legend"><span><i style="background:var(--palette-315d91)"></i>Total registered electors</span><span><i style="background:var(--palette-007668)"></i>Votes polled</span></p>
-<p class="small">Shared scale: 0–{{ number_format($totalMax) }} people.</p>
-<div class="history-horizontal" role="list" aria-label="Registered electors and votes polled by year">
-@foreach($chartRows as $point)
-<div class="history-bar-pair" role="listitem" title="{{ $point['label'] }}">
-@foreach(['electors'=>'var(--palette-315d91)','polled'=>'var(--palette-007668)'] as $key=>$fill)
-@php $value=$point[$key]; @endphp
-<div class="history-bar-row" aria-label="{{ $point['year'] }} · {{ $key==='electors'?'Registered electors':'Votes polled' }}">
-<span class="history-bar-year">{{ $key==='electors'?$point['year']:'' }}</span>
-<span class="history-bar-track" aria-hidden="true">
-@if($value!==null)
-<span class="history-bar-fill" style="width:{{ 100*$value/$totalMax }}%;background:{{ $fill }}"></span>
-@endif
-</span>
-<strong class="history-bar-value">{{ $value===null?'—':number_format($value).($point['turnout_review_count']?' †':'') }}</strong>
-</div>
-@endforeach
-</div>
-@endforeach
-</div>
-<p class="small">Absolute counts, not percentages. Missing figures are not treated as zero.</p>
-<div class="table-scroll"><table data-sortable><thead><tr><th>Election</th><th data-sort-type="number">Registered electors</th><th data-sort-type="number">Votes polled</th></tr></thead><tbody>@foreach($chartRows as $point)<tr><th>{{ $point['label'] }}</th><td>{{ $point['electors']===null?'—':number_format($point['electors']).($point['turnout_review_count']?' †':'') }}</td><td>{{ $point['polled']===null?'—':number_format($point['polled']).($point['turnout_review_count']?' †':'') }}</td></tr>@endforeach</tbody></table></div></div></section>
+<p class="small">Absolute counts, not percentages, except turnout. Top three parties are ranked by combined votes across the available years, counting each year once. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p></section>
