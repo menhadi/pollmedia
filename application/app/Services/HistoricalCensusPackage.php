@@ -255,7 +255,7 @@ class HistoricalCensusPackage
         try {
             $manifest = json_decode($this->member($zip, 'manifest.json', 1000000), true, 512, JSON_THROW_ON_ERROR);
             abort_unless(($manifest['version'] ?? null) === 1 && ($manifest['family'] ?? null) === 'historical-census-a02'
-                && in_array($manifest['selected_years'] ?? null, [[1901, 1911], [1921], [1931], [1941]], true)
+                && in_array($manifest['selected_years'] ?? null, [[1901, 1911], [1921], [1931], [1941], [1951]], true)
                 && ! empty($manifest['sources']) && count($manifest['sources']) <= 72
                 && ! empty($manifest['files']), 422, 'Unsupported historical package.');
             $years = $manifest['selected_years'];

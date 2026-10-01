@@ -14,6 +14,21 @@ class HistoricalCensusPackageTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_1951_package_keeps_persons_and_sex_counts(): void
+    {
+        $path = base_path('../exports/pollmedia-historical-census-1951-20261001.zip');
+        if (! is_file($path)) {
+            $this->markTestSkipped('Prepared 1951 package is unavailable.');
+        }
+        $service = new HistoricalCensusPackage;
+        $partitions = $service->verify($path, hash_file('sha256', $path));
+        $coverage = $service->coverage($partitions);
+        $this->assertSame(32, $coverage['partitions']);
+        $this->assertSame([1951 => 694], $coverage['source_rows_by_year']);
+        $values = json_decode($service->catalogueRows($partitions[0], 1)[0]['values'], true);
+        $this->assertSame(['TOT_P', 'TOT_M', 'TOT_F'], array_keys($values));
+    }
+
     public function test_1941_package_contains_only_printed_1941_records(): void
     {
         $path = base_path('../exports/pollmedia-historical-census-1941-20261001.zip');
