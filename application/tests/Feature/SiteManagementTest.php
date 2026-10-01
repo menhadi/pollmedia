@@ -66,7 +66,7 @@ class SiteManagementTest extends TestCase
 
         $this->get(route('feedback.create', ['path' => $path, 'category' => 'data']))
             ->assertOk()->assertSee('Report saved successfully')->assertSee('Report another problem')
-            ->assertDontSee('name="category"', false)->assertDontSee('Send report');
+            ->assertDontSee('name="category"', false)->assertDontSee('Send report')->assertDontSee('Choose the problem type');
 
         $this->post('/report-problem', ['category' => 'source', 'path' => $path, 'email' => 'reader@example.org'])->assertSessionHasNoErrors();
         $this->assertDatabaseHas('data_feedback', ['path' => $path, 'category' => 'source', 'details' => 'Problem reported for this page and result.']);
