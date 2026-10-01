@@ -560,6 +560,62 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($record));
     }
 
+    public function test_2019_and_2020_official_workbook_summary_turnout_survives_candidate_warnings(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        foreach ([['267cd82b74f76a034f14dc7b', 4, 217768, 11335], ['eedecf943f2ac2ddf717246e', 1, 195791, 21585]] as [$edition, $code, $polled, $margin]) {
+            [$data] = app(HistoricalElectionArchive::class)->load($edition, app(ElectionArchive::class));
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $this->assertSame($polled, $analytics->summarize([$record])['polled']);
+            $this->assertSame(1, $analytics->summarize([$record])['turnout_review_count']);
+            $this->assertSame($margin, $analytics->summarize([$record])['margin']);
+            $this->assertSame(0, $analytics->summarize([$record])['party_count']);
+
+            $record['summary_source_rows'] = [];
+            $this->assertNull($analytics->summarize([$record])['polled']);
+            $this->assertNull($analytics->summarize([$record])['margin']);
+
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $record['constituency_name'] = 'Different seat';
+            $this->assertNull($analytics->summarize([$record])['polled']);
+
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $record['summary_totals']['valid_candidate_votes'] = $record['votes_polled'] + 1;
+            $this->assertNull($analytics->summarize([$record])['margin']);
+        }
+    }
+
+    public function test_2024_small_official_detail_and_summary_turnout_difference_is_shown_with_note(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('349e04305ee4652986f79497', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 32);
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1602455, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(1, $summary['turnout_discrepancy_count']);
+
+        $record['summary_totals']['votes_polled'] += 10;
+        $this->assertNull($analytics->summarize([$record])['polled']);
+    }
+
+    public function test_1960_kerala_detail_turnout_survives_candidate_text_warning_without_accepting_candidates(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('c7c15b329cbd2123a34e5b3e', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 1);
+        $this->assertSame('PARASSALA', $record['name']);
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(52975, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_detail_count']);
+        $this->assertSame(0, $summary['party_count']);
+
+        $record['error'] .= '; Reported elector and voter totals are inconsistent.';
+        $this->assertNull($analytics->summarize([$record])['polled']);
+    }
+
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
     {
         $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);
@@ -577,7 +633,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertOk()
             ->assertSee($edition['label'].' †')
             ->assertSee('2 of 2 results have data notes')
-            ->assertSee('Turnout in 2 results agrees')
+            ->assertSee('Turnout in 2 results has source notes')
             ->assertSee('Map of Goa')
             ->assertSee('View results and notes');
 

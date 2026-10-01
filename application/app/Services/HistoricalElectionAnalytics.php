@@ -50,7 +50,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v8:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v9:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -101,25 +101,38 @@ class HistoricalElectionAnalytics
             $hasWarning = $record['has_warning'] ?? (($record['status'] ?? '') !== 'validated');
             $provisionalCandidates = $hasWarning && $this->hasProvisionalCandidateVotes($record);
             $provisionalTurnout = $provisionalCandidates && ($record['error'] ?? '') === self::LEGACY_DETAIL_PENDING;
+            $detailTurnoutWithTextWarning = $this->hasDetailTurnoutWithTextWarning($record);
             $electorDifference = $this->hasDocumentedElectorDifference($record);
-            $legacySourceDifference = $this->hasDocumentedLegacySourceDifference($record);
+            $sourceDifference = $this->hasDocumentedSourceDifference($record);
+            $workbookSummaryTurnout = $this->hasOfficialWorkbookSummaryTurnout($record);
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $turnoutElectors
-                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $legacySourceDifference)) {
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout)) {
                 $electors += $turnoutElectors;
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
                 if ($hasWarning) {
                     $turnoutReviewCount++;
-                    if ($provisionalTurnout) {
+                    if ($provisionalTurnout || $detailTurnoutWithTextWarning) {
                         $turnoutDetailCount++;
                     }
-                    if ($electorDifference || $legacySourceDifference) {
+                    if ($electorDifference || $sourceDifference) {
                         $turnoutDiscrepancyCount++;
                     }
                 }
             }
             if ($hasWarning && ! $provisionalCandidates) {
+                $workbookResult = $this->officialWorkbookSummaryResult($record);
+                if ($workbookResult !== null) {
+                    $margins[] = $workbookResult['margin'];
+                    $marginReviewCount++;
+                    $validVotes = $record['summary_totals']['valid_candidate_votes'] ?? null;
+                    if ($this->count($validVotes) && $validVotes > 0) {
+                        $marginPercentages[] = 100 * $workbookResult['margin'] / $validVotes;
+                    }
+                    $winners[] = ['constituency' => trim($record['constituency_name'] ?? $record['name'] ?? ''), 'candidate' => $workbookResult['winner'], 'party' => $workbookResult['party'], 'margin' => $workbookResult['margin']];
+                }
+
                 continue;
             }
             $candidates = $record['candidates'] ?? [];
@@ -417,7 +430,7 @@ class HistoricalElectionAnalytics
                     && $summary['votes_polled'] >= $summary['valid_candidate_votes'] + ($summary['nota_votes'] ?? 0)));
     }
 
-    private function hasDocumentedLegacySourceDifference(array $record): bool
+    private function hasDocumentedSourceDifference(array $record): bool
     {
         if (($record['status'] ?? '') !== 'needs_review' || isset($record['source_warning_code'])
             || ! $this->count($record['detail_page'] ?? null) || $record['detail_page'] < 1
@@ -429,6 +442,17 @@ class HistoricalElectionAnalytics
         }
 
         $summary = $record['summary_totals'] ?? null;
+        if (($record['error'] ?? '') === 'Detailed and summary polled votes differ') {
+            $difference = is_array($summary) && $this->count($summary['votes_polled'] ?? null)
+                ? abs($summary['votes_polled'] - $record['votes_polled']) : null;
+
+            return is_array($summary)
+                && ($summary['electors'] ?? null) === $record['electors']
+                && $this->count($summary['votes_polled'] ?? null)
+                && $summary['votes_polled'] > 0 && $summary['votes_polled'] <= $record['electors']
+                && $difference > 0 && $difference <= 5
+                && $difference * 1000 <= $summary['votes_polled'];
+        }
         if (str_starts_with($record['error'] ?? '', 'Summary and detailed totals differ: ')) {
             return is_array($summary)
                 && ($summary['electors'] ?? null) === $record['electors']
@@ -446,9 +470,23 @@ class HistoricalElectionAnalytics
             && (int) $matches[3] > 0;
     }
 
+    private function hasDetailTurnoutWithTextWarning(array $record): bool
+    {
+        return ($record['status'] ?? '') === 'needs_review'
+            && ($record['error'] ?? '') === self::LEGACY_DETAIL_PENDING.'; Some candidate text could not be parsed; see the original PDF.'
+            && ! isset($record['source_warning_code'])
+            && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0
+            && $this->count($record['electors'] ?? null) && $record['electors'] > 0
+            && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] > 0
+            && $record['votes_polled'] <= $record['electors']
+            && $this->count($record['valid_candidate_votes'] ?? null)
+            && $record['valid_candidate_votes'] > 0
+            && $record['valid_candidate_votes'] <= $record['votes_polled'];
+    }
+
     private function hasDocumentedLegacyCandidateDifference(array $record, int $candidateVotes): bool
     {
-        if (! $this->hasDocumentedLegacySourceDifference($record)
+        if (! $this->hasDocumentedSourceDifference($record)
             || preg_match('/^Candidate sum (\d+); detailed total (\d+); summary valid votes (\d+)\. Totals differ\.$/', $record['error'] ?? '', $matches) !== 1) {
             return false;
         }
@@ -460,6 +498,91 @@ class HistoricalElectionAnalytics
             && $record['valid_candidate_votes'] === (int) $matches[3]
             && $difference > 0 && $difference <= 10
             && $difference * 1000 <= $record['valid_candidate_votes'];
+    }
+
+    private function hasOfficialWorkbookSummaryTurnout(array $record): bool
+    {
+        $error = $record['error'] ?? '';
+        $summary = $record['summary_totals'] ?? null;
+        $rows = $record['summary_source_rows'] ?? null;
+        if (($record['status'] ?? '') !== 'needs_review' || isset($record['source_warning_code'])
+            || (! str_contains($error, 'The official workbook has structural inconsistencies. Stored cell values are retained')
+                && ! str_contains($error, 'Candidate vote cells are missing or non-numeric; original cells are preserved.'))
+            || ! str_starts_with($record['summary_locator'] ?? '', 'Summary sheet ')
+            || ! is_array($rows) || $rows === [] || ! is_array($summary)
+            || ! $this->count($summary['electors'] ?? null) || $summary['electors'] < 1
+            || ! $this->count($summary['votes_polled'] ?? null) || $summary['votes_polled'] < 1
+            || $summary['votes_polled'] > $summary['electors']
+            || $summary['electors'] !== ($record['electors'] ?? null)
+            || $summary['votes_polled'] !== ($record['votes_polled'] ?? null)) {
+            return false;
+        }
+
+        $seatName = preg_replace('/[^a-z0-9]/', '', strtolower($record['constituency_name'] ?? $record['name'] ?? ''));
+        $summaryHeading = preg_replace('/[^a-z0-9]/', '', strtolower(json_encode(array_slice($rows, 0, 3), JSON_THROW_ON_ERROR)));
+        if ($seatName === '' || ! str_contains($summaryHeading, $seatName)) {
+            return false;
+        }
+
+        $foundElectors = $foundVoters = false;
+        foreach ($rows as $row) {
+            if (! is_array($row)) {
+                return false;
+            }
+            foreach ($row as $cell) {
+                if (! is_int($cell) && ! is_float($cell)) {
+                    continue;
+                }
+                $foundElectors = $foundElectors || $cell == $summary['electors'];
+                $foundVoters = $foundVoters || $cell == $summary['votes_polled'];
+            }
+        }
+
+        return $foundElectors && $foundVoters;
+    }
+
+    /** @return array{winner: string, party: string|null, margin: int}|null */
+    private function officialWorkbookSummaryResult(array $record): ?array
+    {
+        if (! $this->hasOfficialWorkbookSummaryTurnout($record)
+            || ! is_string($record['winner'] ?? null) || trim($record['winner']) === ''
+            || ! $this->count($record['margin'] ?? null) || $record['margin'] < 1) {
+            return null;
+        }
+
+        $rows = $record['summary_source_rows'];
+        $validVotes = $record['summary_totals']['valid_candidate_votes'] ?? null;
+        if (! $this->count($validVotes) || $validVotes < 1 || $validVotes > $record['votes_polled']
+            || ! collect($rows)->contains(fn (array $row): bool => collect($row)->contains(fn ($cell): bool => (is_int($cell) || is_float($cell)) && $cell == $validVotes))) {
+            return null;
+        }
+
+        $rowFor = fn (string $label): ?array => collect($rows)->first(fn (array $row): bool => in_array($label, $row, true));
+        $winnerRow = $rowFor('Winner');
+        $runnerRow = $rowFor('Runner-Up');
+        $marginRow = $rowFor('Margin');
+        if ($winnerRow === null || $runnerRow === null || $marginRow === null
+            || ! in_array($record['winner'], $winnerRow, true)) {
+            return null;
+        }
+
+        $vote = function (array $row): ?int {
+            $numbers = array_values(array_filter($row, fn ($cell): bool => (is_int($cell) || is_float($cell)) && $cell >= 0 && floor($cell) == $cell));
+
+            return count($numbers) === 1 ? (int) $numbers[0] : null;
+        };
+        $winnerVotes = $vote($winnerRow);
+        $runnerVotes = $vote($runnerRow);
+        $sourceMargin = $vote($marginRow);
+        if ($winnerVotes === null || $runnerVotes === null || $sourceMargin === null
+            || $winnerVotes <= $runnerVotes || $winnerVotes - $runnerVotes !== $sourceMargin
+            || $sourceMargin !== $record['margin']) {
+            return null;
+        }
+
+        $candidate = collect($record['candidates'] ?? [])->firstWhere('candidate_name', $record['winner']);
+
+        return ['winner' => $record['winner'], 'party' => $candidate['party_at_election'] ?? null, 'margin' => $sourceMargin];
     }
 
     private function hasDocumentedCandidateDifference(array $record, int $candidateVotes, int $summaryVotes): bool
