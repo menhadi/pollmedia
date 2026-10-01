@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 class HistoricalElectionAnalytics
 {
+    private const LEGACY_DETAIL_PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.';
+
+    private const LEGACY_DETAIL_RECONCILED = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.';
+
+    private const WORKBOOK_DETAIL_PENDING = 'Candidate cells transcribed from the official workbook; independent summary reconciliation is pending.';
+
+    private const WORKBOOK_TOTAL_AMBIGUOUS = 'The source total column is preserved by its original label; voter and valid-vote meanings require summary verification.';
+
     public function forState(string $state, string $kind): array
     {
         $entries = [];
@@ -33,7 +41,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v3:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v4:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -71,25 +79,31 @@ class HistoricalElectionAnalytics
 
     public function summarize(array $records): array
     {
-        $electors = $polled = $turnoutCount = $turnoutReviewCount = $partyCount = $voteTotal = 0;
+        $electors = $polled = $turnoutCount = $turnoutReviewCount = $turnoutDetailCount = $partyCount = $partyReviewCount = $marginReviewCount = $candidateRows = $voteTotal = 0;
         $margins = $parties = $marginPercentages = $winners = [];
         $identities = array_count_values(array_map(fn (array $r): string => (string) ($r['official_pc_code'] ?? $r['official_ac_code'] ?? $r['code']), $records));
         foreach ($records as $record) {
+            $candidateRows += count($record['candidates'] ?? []);
             $identity = (string) ($record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code']);
             if (($record['number_of_seats'] ?? 1) !== 1 || $identities[$identity] !== 1) {
                 continue;
             }
             $hasWarning = $record['has_warning'] ?? (($record['status'] ?? '') !== 'validated');
+            $provisionalCandidates = $hasWarning && $this->hasProvisionalCandidateVotes($record);
+            $provisionalTurnout = $provisionalCandidates && ($record['error'] ?? '') === self::LEGACY_DETAIL_PENDING;
             if ($this->count($record['electors'] ?? null) && $record['electors'] > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $record['electors']
-                && (! $hasWarning || $this->hasCorroboratedTurnout($record))) {
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout)) {
                 $electors += $record['electors'];
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
                 if ($hasWarning) {
                     $turnoutReviewCount++;
+                    if ($provisionalTurnout) {
+                        $turnoutDetailCount++;
+                    }
                 }
             }
-            if ($hasWarning) {
+            if ($hasWarning && ! $provisionalCandidates) {
                 continue;
             }
             $candidates = $record['candidates'] ?? [];
@@ -101,6 +115,9 @@ class HistoricalElectionAnalytics
                 continue;
             }
             $partyCount++;
+            if ($hasWarning) {
+                $partyReviewCount++;
+            }
             $voteTotal += $total;
             foreach ($candidates as $candidate) {
                 $party = ($candidate['is_nota'] ?? false) ? 'NOTA' : trim($candidate['party_at_election']);
@@ -111,6 +128,9 @@ class HistoricalElectionAnalytics
                 $margin = $ranked[0]['votes'] - $ranked[1]['votes'];
                 $margins[] = $margin;
                 $marginPercentages[] = 100 * $margin / $total;
+                if ($hasWarning) {
+                    $marginReviewCount++;
+                }
                 $name = trim($ranked[0]['candidate_name'] ?? '');
                 $place = trim($record['constituency_name'] ?? $record['name'] ?? '');
                 if ($name !== '' && $place !== '') {
@@ -124,9 +144,9 @@ class HistoricalElectionAnalytics
             $partyRows[] = ['party' => (string) $party, 'votes' => $votes, 'share' => 100 * $votes / $voteTotal];
         }
 
-        return ['tables' => count($records), 'turnout_count' => $turnoutCount, 'turnout_review_count' => $turnoutReviewCount, 'electors' => $turnoutCount ? $electors : null,
+        return ['tables' => count($records), 'candidate_rows' => $candidateRows, 'turnout_count' => $turnoutCount, 'turnout_review_count' => $turnoutReviewCount, 'turnout_detail_count' => $turnoutDetailCount, 'electors' => $turnoutCount ? $electors : null,
             'polled' => $turnoutCount ? $polled : null, 'turnout' => $electors ? 100 * $polled / $electors : null,
-            'party_count' => $partyCount, 'parties' => $partyRows, 'margin_count' => count($margins),
+            'party_count' => $partyCount, 'party_review_count' => $partyReviewCount, 'parties' => $partyRows, 'margin_count' => count($margins), 'margin_review_count' => $marginReviewCount,
             'margin' => $margins ? array_sum($margins) / count($margins) : null,
             'margin_percent' => $marginPercentages ? array_sum($marginPercentages) / count($marginPercentages) : null, 'winners' => $winners];
     }
@@ -134,6 +154,56 @@ class HistoricalElectionAnalytics
     private function count(mixed $value): bool
     {
         return is_int($value) && $value >= 0;
+    }
+
+    private function hasProvisionalCandidateVotes(array $record): bool
+    {
+        if (($record['status'] ?? '') !== 'needs_review') {
+            return false;
+        }
+
+        $error = $record['error'] ?? '';
+        $legacyDetail = in_array($error, [self::LEGACY_DETAIL_PENDING, self::LEGACY_DETAIL_RECONCILED], true)
+            && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0;
+        if ($error === self::LEGACY_DETAIL_RECONCILED) {
+            $summary = $record['summary_totals'] ?? [];
+            $legacyDetail = $legacyDetail && $this->count($record['summary_page'] ?? null) && $record['summary_page'] > 0
+                && $this->count($summary['valid_candidate_votes'] ?? null)
+                && $summary['valid_candidate_votes'] === ($record['valid_candidate_votes'] ?? null)
+                && $this->hasCorroboratedTurnout($record);
+        }
+        $workbookDetail = in_array($error, [self::WORKBOOK_DETAIL_PENDING, self::WORKBOOK_DETAIL_PENDING.'; '.self::WORKBOOK_TOTAL_AMBIGUOUS], true);
+        if (! $legacyDetail && ! $workbookDetail) {
+            return false;
+        }
+
+        $candidates = $record['candidates'] ?? [];
+        if ($candidates === [] || collect($candidates)->contains(fn (array $candidate): bool => ! $this->count($candidate['votes'] ?? null)
+            || trim($candidate['candidate_name'] ?? '') === '' || trim($candidate['party_at_election'] ?? '') === '')) {
+            return false;
+        }
+
+        $candidateVotes = array_sum(array_column($candidates, 'votes'));
+        if ($candidateVotes <= 0 || ($this->count($record['electors'] ?? null) && $candidateVotes > $record['electors'])
+            || ($this->count($record['votes_polled'] ?? null) && $candidateVotes > $record['votes_polled'])) {
+            return false;
+        }
+
+        if ($legacyDetail) {
+            return $this->count($record['valid_candidate_votes'] ?? null) && $candidateVotes === $record['valid_candidate_votes'];
+        }
+
+        $totals = $record['reported_totals'] ?? [];
+        if (count($totals) !== 1 || ! in_array($totals[0]['label'] ?? '', ['Total Votes', 'Total valid votes polled +NOTA'], true)
+            || ! $this->count($totals[0]['value'] ?? null) || $candidateVotes !== $totals[0]['value']) {
+            return false;
+        }
+
+        return collect($candidates)->every(fn (array $candidate): bool => $this->count($candidate['general_votes'] ?? null)
+            && $this->count($candidate['postal_votes'] ?? null)
+            && $candidate['votes'] === $candidate['general_votes'] + $candidate['postal_votes']
+            && trim($candidate['source_sheet'] ?? '') !== ''
+            && $this->count($candidate['workbook_row'] ?? null) && $candidate['workbook_row'] > 0);
     }
 
     private function hasCorroboratedTurnout(array $record): bool

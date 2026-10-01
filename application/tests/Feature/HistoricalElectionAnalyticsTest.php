@@ -70,6 +70,70 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
     }
 
+    public function test_internally_reconciled_legacy_detail_figures_remain_visible_with_review_markers(): void
+    {
+        $record = $this->record(1, 100, 80, 50, 30);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.';
+        $record['detail_page'] = 12;
+        $record['valid_candidate_votes'] = 80;
+
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $result['turnout_count']);
+        $this->assertSame(1, $result['turnout_review_count']);
+        $this->assertSame(1, $result['turnout_detail_count']);
+        $this->assertEquals(80, $result['turnout']);
+        $this->assertSame(1, $result['party_review_count']);
+        $this->assertSame(1, $result['margin_review_count']);
+        $this->assertSame(2, $result['candidate_rows']);
+
+        $reconciled = $record;
+        $reconciled['error'] = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.';
+        $reconciled['summary_page'] = 6;
+        $reconciled['summary_totals'] = ['electors' => 100, 'votes_polled' => 80, 'valid_candidate_votes' => 80];
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$reconciled]);
+        $this->assertSame(1, $result['turnout_count']);
+        $this->assertSame(0, $result['turnout_detail_count']);
+        $this->assertSame(1, $result['party_count']);
+
+        $record['votes_polled'] = null;
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertNull($result['turnout']);
+        $this->assertSame(1, $result['party_count']);
+        $this->assertSame(1, $result['margin_count']);
+
+        $record['valid_candidate_votes']--;
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(0, $result['party_count']);
+        $this->assertNull($result['margin']);
+    }
+
+    public function test_ambiguous_workbook_total_can_support_candidate_comparisons_but_not_turnout(): void
+    {
+        $record = $this->record(1, 100, 80, 50, 30);
+        $record['status'] = 'needs_review';
+        $record['votes_polled'] = null;
+        $record['error'] = 'Candidate cells transcribed from the official workbook; independent summary reconciliation is pending.; The source total column is preserved by its original label; voter and valid-vote meanings require summary verification.';
+        $record['reported_totals'] = [['label' => 'Total Votes', 'value' => 80]];
+        foreach ($record['candidates'] as $index => &$candidate) {
+            $candidate['general_votes'] = $candidate['votes'] - 1;
+            $candidate['postal_votes'] = 1;
+            $candidate['source_sheet'] = 'DetailedResult';
+            $candidate['workbook_row'] = $index + 4;
+        }
+        unset($candidate);
+
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertNull($result['turnout']);
+        $this->assertSame(1, $result['party_count']);
+        $this->assertSame(1, $result['margin_count']);
+
+        $record['reported_totals'][0]['value']++;
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(0, $result['party_count']);
+        $this->assertNull($result['margin']);
+    }
+
     public function test_state_dashboard_keeps_filters_sources_and_constituency_links(): void
     {
         $this->seed(PilibhitSeeder::class);
@@ -77,8 +141,32 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSee('Map of Uttar Pradesh, India')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('How turnout changed')->assertSee('80.0%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('trend-chart')->assertSee('All parties')->assertSee('All available years')->assertSee('Map of Uttar Pradesh')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
         $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
+    }
+
+    public function test_state_dashboard_keeps_years_with_candidate_tables_visible_when_turnout_is_unknown(): void
+    {
+        $known = app(HistoricalElectionAnalytics::class)->summarize([$this->record(1, 100, 80, 50, 30)]) + ['id' => str_repeat('a', 24), 'year' => 2021, 'label' => '2021 report', 'source_url' => 'https://www.eci.gov.in/report', 'state' => 'Assam'];
+        $candidateOnly = $this->record(2, 100, 80, 50, 30);
+        $candidateOnly['status'] = 'needs_review';
+        $candidateOnly['votes_polled'] = null;
+        $candidateOnly['error'] = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.';
+        $candidateOnly['detail_page'] = 12;
+        $candidateOnly['valid_candidate_votes'] = 80;
+        $older = app(HistoricalElectionAnalytics::class)->summarize([$candidateOnly]) + ['id' => str_repeat('b', 24), 'year' => 2011, 'label' => '2011 report', 'source_url' => 'https://www.eci.gov.in/older-report', 'state' => 'Assam', 'review_count' => 1];
+        $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($known, $older): void {
+            $mock->shouldReceive('forState')->with('Assam', 'ac')->andReturn([$known, $older]);
+        });
+
+        $this->get('/india/state/assam?election=ac')
+            ->assertOk()
+            ->assertSee('2021 report')
+            ->assertSee('2011 report')
+            ->assertSee('80.0%')
+            ->assertSee('2 candidate rows')
+            ->assertSee('View tables →')
+            ->assertDontSee('No data');
     }
 
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
@@ -98,7 +186,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee($edition['label'].' †')
             ->assertSee('2 of 2 results have data notes')
             ->assertSee('Turnout in 2 of these results agrees')
-            ->assertSee('Map of Goa, India')
+            ->assertSee('Map of Goa')
             ->assertSee('View the tables and notes');
 
         $this->get('/india/elections/lok-sabha?edition='.$edition['id'].'&state=Goa')
