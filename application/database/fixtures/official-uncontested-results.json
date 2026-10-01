@@ -1,0 +1,2540 @@
+{
+  "001934254d54998b613f156e:425": {
+    "name": "CHAKRATA (ST)",
+    "candidate": "GULAB SINGH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3255-uttar-pradesh-1985/",
+    "source_file": "001934254d54998b613f156e-7495.pdf",
+    "source_sha256": "12631768914d1c71c57273af559bc158c5126f5b7012c06d4b409e88829f5f82",
+    "pdf_page": 451
+  },
+  "00fa45113ca5b5cde46a2802:150": {
+    "name": "DESURI (SC)",
+    "candidate": "DINESH RAI DANGI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3383-rajasthan-1972/",
+    "source_file": "00fa45113ca5b5cde46a2802-7824.pdf",
+    "source_sha256": "403d522e257f680753ab3c3bd217fb1ecb941a0ae5bcd4a38e2cbbc0dc10cdc5",
+    "pdf_page": 164
+  },
+  "0156fb15c230224252158709:15": {
+    "name": "SOUTHERN ANGAMI-II",
+    "candidate": "VIZOL",
+    "party": "UDF",
+    "source_url": "https://old.eci.gov.in/files/file/3635-nagaland-1977/",
+    "source_file": "0156fb15c230224252158709-8519.pdf",
+    "source_sha256": "0c64bb609535a1d6a963981f95d79459784c3fa1ad53a6493c53e13f3565b36c",
+    "pdf_page": 25
+  },
+  "01c7241a3dd33dabb7454faa:29": {
+    "name": "KOKRAJHAR WEST (ST)",
+    "candidate": "PARAMESWAR BRAHMA",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/4003-assam-1991/",
+    "source_file": "01c7241a3dd33dabb7454faa-9488.pdf",
+    "source_sha256": "5f76fe0f9bacc98a11dc411ea8a30680f41ca5a885c451acbd6f51414ce7d8f7",
+    "pdf_page": 43
+  },
+  "023d8f6aa19a0adc73c8bd0f:119": {
+    "name": "RAISINGHNAGAR",
+    "candidate": "CHUNI LAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3379-rajasthan-1957/",
+    "source_file": "023d8f6aa19a0adc73c8bd0f-7816.pdf",
+    "source_sha256": "4d9423c3e44dcae883e4985eea2782b36c5da177df73a4a274e59f08bbda5e9c",
+    "pdf_page": 134
+  },
+  "023d8f6aa19a0adc73c8bd0f:45": {
+    "name": "MALPURA",
+    "candidate": "DAMODAR LAL VYAS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3379-rajasthan-1957/",
+    "source_file": "023d8f6aa19a0adc73c8bd0f-7816.pdf",
+    "source_sha256": "4d9423c3e44dcae883e4985eea2782b36c5da177df73a4a274e59f08bbda5e9c",
+    "pdf_page": 60
+  },
+  "023d8f6aa19a0adc73c8bd0f:66": {
+    "name": "SAGWARA",
+    "candidate": "BHEEKHA BHAI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3379-rajasthan-1957/",
+    "source_file": "023d8f6aa19a0adc73c8bd0f-7816.pdf",
+    "source_sha256": "4d9423c3e44dcae883e4985eea2782b36c5da177df73a4a274e59f08bbda5e9c",
+    "pdf_page": 81
+  },
+  "0e868a644d2c0c738dface6b:185": {
+    "name": "KANGAYAM",
+    "candidate": "A . K . SUBBARAYA GOUNDER",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4100-madras-1951/",
+    "source_file": "0e868a644d2c0c738dface6b-9712.pdf",
+    "source_sha256": "3f820a815efd3ffb68185d3681ce21b1166998c3ca86aad85a2a7050aed2c973",
+    "pdf_page": 202
+  },
+  "10c581fd595514406c97f4e9:129": {
+    "name": "KILLIYOOR",
+    "candidate": "A.NESAMONY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4101-madras-1957/",
+    "source_file": "10c581fd595514406c97f4e9-9714.pdf",
+    "source_sha256": "5350d6d792ad39fbba840946460663663feb6ce03ee90f2b7c44d33b7874cb70",
+    "pdf_page": 144
+  },
+  "10c581fd595514406c97f4e9:130": {
+    "name": "VILAVANCODE",
+    "candidate": "M.WILLIAM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4101-madras-1957/",
+    "source_file": "10c581fd595514406c97f4e9-9714.pdf",
+    "source_sha256": "5350d6d792ad39fbba840946460663663feb6ce03ee90f2b7c44d33b7874cb70",
+    "pdf_page": 145
+  },
+  "10c581fd595514406c97f4e9:158": {
+    "name": "NAMBIYUR",
+    "candidate": "K.L. RAMASWAMY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4101-madras-1957/",
+    "source_file": "10c581fd595514406c97f4e9-9714.pdf",
+    "source_sha256": "5350d6d792ad39fbba840946460663663feb6ce03ee90f2b7c44d33b7874cb70",
+    "pdf_page": 173
+  },
+  "13bf0e655de7bd3d015d87db:14": {
+    "name": "BEGUM BAZAR",
+    "candidate": "J. V. NARSING RAO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4043-andhra-pradesh-1957/",
+    "source_file": "13bf0e655de7bd3d015d87db-9590.pdf",
+    "source_sha256": "0e1d980a5a7d584d5bfb8602f1e6025d1aefa5dca324f5beeb690049251dcda4",
+    "pdf_page": 27
+  },
+  "13bf0e655de7bd3d015d87db:37": {
+    "name": "BANSWADA",
+    "candidate": "SEETAKUMARI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4043-andhra-pradesh-1957/",
+    "source_file": "13bf0e655de7bd3d015d87db-9590.pdf",
+    "source_sha256": "0e1d980a5a7d584d5bfb8602f1e6025d1aefa5dca324f5beeb690049251dcda4",
+    "pdf_page": 50
+  },
+  "13bf0e655de7bd3d015d87db:5": {
+    "name": "WANPARTHI",
+    "candidate": "PADMANABHA REDDI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4043-andhra-pradesh-1957/",
+    "source_file": "13bf0e655de7bd3d015d87db-9590.pdf",
+    "source_sha256": "0e1d980a5a7d584d5bfb8602f1e6025d1aefa5dca324f5beeb690049251dcda4",
+    "pdf_page": 18
+  },
+  "15a4c182187a8815d266fa76:5": {
+    "name": "CHAWNGTE (ST)",
+    "candidate": "NIRUPAM CHAKMA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3659-mizoram-1987/",
+    "source_file": "15a4c182187a8815d266fa76-8590.pdf",
+    "source_sha256": "d22252b7b07cd8eb40c35c6b875f0e3ccc20cee4c68e63f055adf35bd9e56311",
+    "pdf_page": 15
+  },
+  "15d3f90369dd57c22b52e617:13": {
+    "name": "PARGI",
+    "candidate": "SHAH JEHAN BEGUM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4105-hyderabad-1951/",
+    "source_file": "15d3f90369dd57c22b52e617-9722.pdf",
+    "source_sha256": "9cf85d20fc45d293e6668e9283b1a6a9b5fb76bd1012f9d9e97963aff9ccd2b8",
+    "pdf_page": 26
+  },
+  "165392d9f968ef073166ef32:129": {
+    "name": "THAMBALLAPALLE",
+    "candidate": "T.N. VENKATASUBBA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4042-andhra-pradesh-1955/",
+    "source_file": "165392d9f968ef073166ef32-9588.pdf",
+    "source_sha256": "b087d7c7f4391e0a6c9b60cbd4cda3c1562d70a29e5b1a85c4723caa18b22255",
+    "pdf_page": 142
+  },
+  "16b80d9144c89d56f903005a:11": {
+    "name": "PUGHOBOTO",
+    "candidate": "SHRI KIYELHO (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 19
+  },
+  "16b80d9144c89d56f903005a:15": {
+    "name": "CHAZOUBA (I)",
+    "candidate": "SHRI PUDENU DEMO (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 23
+  },
+  "16b80d9144c89d56f903005a:17": {
+    "name": "PHEK",
+    "candidate": "SHRI LHUTHIPRU (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 25
+  },
+  "16b80d9144c89d56f903005a:19": {
+    "name": "MELURI",
+    "candidate": "SHRI AMON ( UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 27
+  },
+  "16b80d9144c89d56f903005a:21": {
+    "name": "ARKAKONG",
+    "candidate": "SHRI R.C. CHITEN JAMIR (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 29
+  },
+  "16b80d9144c89d56f903005a:22": {
+    "name": "YISEMYONG",
+    "candidate": "SHRI SUZUMAR IMSONG (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 30
+  },
+  "16b80d9144c89d56f903005a:27": {
+    "name": "IMPUR",
+    "candidate": "SHRI P. SHILU AO.",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 35
+  },
+  "16b80d9144c89d56f903005a:29": {
+    "name": "ALONGTAKI",
+    "candidate": "SHRI ZULUTEMBA (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 37
+  },
+  "16b80d9144c89d56f903005a:30": {
+    "name": "AKULUTO",
+    "candidate": "SHRI HOKISHE SEMA (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 38
+  },
+  "16b80d9144c89d56f903005a:31": {
+    "name": "ATOIZU",
+    "candidate": "SHRI KIYEKHU SHIKHU",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 39
+  },
+  "16b80d9144c89d56f903005a:32": {
+    "name": "SUROHOTO",
+    "candidate": "SHRI NIHOVI AVEMI",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 40
+  },
+  "16b80d9144c89d56f903005a:33": {
+    "name": "AGHUNATO",
+    "candidate": "SHRI IHEZE",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 41
+  },
+  "16b80d9144c89d56f903005a:35": {
+    "name": "SATAKHA",
+    "candidate": "SHRI YESHITO",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 43
+  },
+  "16b80d9144c89d56f903005a:40": {
+    "name": "BHANDARI",
+    "candidate": "SHRI TSENLAMO KIKON",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3632-nagaland-1964/",
+    "source_file": "16b80d9144c89d56f903005a-8513.pdf",
+    "source_sha256": "7b3e86f42b2fae145d9966ef0feed651d3e5c2924006737f7fd1a3c208b0f406",
+    "pdf_page": 48
+  },
+  "1828febe749b3b5c3c0110ca:27": {
+    "name": "Loutolim",
+    "candidate": "ALEIXO SEQUEIRA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3852-goa-1999/",
+    "source_file": "1828febe749b3b5c3c0110ca-9091.pdf",
+    "source_sha256": "e4df06b9fa91b9a57d8350c78a67eaa191b4cf80349da6d4c4633ae176e31524",
+    "pdf_page": 39
+  },
+  "1901084c7189cfe9433f1842:1": {
+    "name": "Lumla  (ST)",
+    "candidate": "JAMBEY TASHI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4039-arunachal-pradesh-2009/",
+    "source_file": "1901084c7189cfe9433f1842-9581.pdf",
+    "source_sha256": "84b0c206edc0141aa65d547258314821b039dace07eafb8b5e285d06b9e84091",
+    "pdf_page": 12
+  },
+  "1901084c7189cfe9433f1842:2": {
+    "name": "Tawang  (ST)",
+    "candidate": "TSEWANG DHONDUP",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4039-arunachal-pradesh-2009/",
+    "source_file": "1901084c7189cfe9433f1842-9581.pdf",
+    "source_sha256": "84b0c206edc0141aa65d547258314821b039dace07eafb8b5e285d06b9e84091",
+    "pdf_page": 13
+  },
+  "1901084c7189cfe9433f1842:3": {
+    "name": "Mukto  (ST)",
+    "candidate": "DORJEE KHANDU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4039-arunachal-pradesh-2009/",
+    "source_file": "1901084c7189cfe9433f1842-9581.pdf",
+    "source_sha256": "84b0c206edc0141aa65d547258314821b039dace07eafb8b5e285d06b9e84091",
+    "pdf_page": 14
+  },
+  "26358a2198d33c7e725ede1a:101": {
+    "name": "MAGRAHAT EAST (SC)",
+    "candidate": "ARDHENDU SEKHAR NASKAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3183-west-bengal-1962/",
+    "source_file": "26358a2198d33c7e725ede1a-7303.pdf",
+    "source_sha256": "8115182a19dd0a7245e6d4d139fef35622266fc8a242d70888c0c157db71e021",
+    "pdf_page": 117
+  },
+  "276e7b08f2a72796688eefc3:202": {
+    "name": "AMAUR",
+    "candidate": "MOHAMMAD TAHIR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3886-bihar-1951/",
+    "source_file": "276e7b08f2a72796688eefc3-9191.pdf",
+    "source_sha256": "61c779396de0a12dbf0c0f7b55a343d209069b0e8f1f8f84a47433ff99c707d0",
+    "pdf_page": 218
+  },
+  "2f28536c3658989c7519ffc4:48": {
+    "name": "DODA",
+    "candidate": "RESULT WHITHHEAL BY HIGH COURT OF J AND K",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3792-jammu-kashmir-1983/",
+    "source_file": "2f28536c3658989c7519ffc4-8926.pdf",
+    "source_sha256": "f61275e0eb88b574c453c83caead37e039b04d86ffcc45371cc3bfa9a0f4010a",
+    "pdf_page": 58
+  },
+  "30c60a850d2cb80646b7e138:42": {
+    "name": "DANTEWARA",
+    "candidate": "BODA",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3727-madhya-pradesh-1951/",
+    "source_file": "30c60a850d2cb80646b7e138-8770.pdf",
+    "source_sha256": "8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650",
+    "pdf_page": 56
+  },
+  "30c60a850d2cb80646b7e138:43": {
+    "name": "BIJAPUR (ST)",
+    "candidate": "HIRASHA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3727-madhya-pradesh-1951/",
+    "source_file": "30c60a850d2cb80646b7e138-8770.pdf",
+    "source_sha256": "8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650",
+    "pdf_page": 57
+  },
+  "30c60a850d2cb80646b7e138:44": {
+    "name": "SUKMA (ST)",
+    "candidate": "PILOO",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3727-madhya-pradesh-1951/",
+    "source_file": "30c60a850d2cb80646b7e138-8770.pdf",
+    "source_sha256": "8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650",
+    "pdf_page": 58
+  },
+  "30c60a850d2cb80646b7e138:47": {
+    "name": "KESKAL (ST)",
+    "candidate": "RAJMAN (UNCONTESTED)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3727-madhya-pradesh-1951/",
+    "source_file": "30c60a850d2cb80646b7e138-8770.pdf",
+    "source_sha256": "8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650",
+    "pdf_page": 61
+  },
+  "30c60a850d2cb80646b7e138:48": {
+    "name": "NARAYANPUR (ST)",
+    "candidate": "RAMESHWAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3727-madhya-pradesh-1951/",
+    "source_file": "30c60a850d2cb80646b7e138-8770.pdf",
+    "source_sha256": "8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650",
+    "pdf_page": 62
+  },
+  "36a054f049046077569dfbd9:23": {
+    "name": "BEERWA",
+    "candidate": "ABDUL KHALIQ MIR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3790-jammu-kashmir-1972/",
+    "source_file": "36a054f049046077569dfbd9-8922.pdf",
+    "source_sha256": "a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c",
+    "pdf_page": 34
+  },
+  "36a054f049046077569dfbd9:41": {
+    "name": "VERINAG",
+    "candidate": "SYED MIR QASIM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3790-jammu-kashmir-1972/",
+    "source_file": "36a054f049046077569dfbd9-8922.pdf",
+    "source_sha256": "a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c",
+    "pdf_page": 52
+  },
+  "36a054f049046077569dfbd9:42": {
+    "name": "NAUBUG",
+    "candidate": "PIR HUSAN QASIM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3790-jammu-kashmir-1972/",
+    "source_file": "36a054f049046077569dfbd9-8922.pdf",
+    "source_sha256": "a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c",
+    "pdf_page": 53
+  },
+  "36a054f049046077569dfbd9:44": {
+    "name": "KARGIL",
+    "candidate": "KACHOO MOHD ALI KHAN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3790-jammu-kashmir-1972/",
+    "source_file": "36a054f049046077569dfbd9-8922.pdf",
+    "source_sha256": "a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c",
+    "pdf_page": 55
+  },
+  "36a054f049046077569dfbd9:50": {
+    "name": "BANIHAL",
+    "candidate": "HAJRA BEGUM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3790-jammu-kashmir-1972/",
+    "source_file": "36a054f049046077569dfbd9-8922.pdf",
+    "source_sha256": "a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c",
+    "pdf_page": 61
+  },
+  "37e360c9b06caf43ca5cddfd:172": {
+    "name": "SHIGGAON",
+    "candidate": "S. NIJALINGAPPPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3774-karnataka-1967/",
+    "source_file": "37e360c9b06caf43ca5cddfd-8890.pdf",
+    "source_sha256": "bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7",
+    "pdf_page": 187
+  },
+  "37e360c9b06caf43ca5cddfd:34": {
+    "name": "SANDUR",
+    "candidate": "M. Y. GHORPADE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3774-karnataka-1967/",
+    "source_file": "37e360c9b06caf43ca5cddfd-8890.pdf",
+    "source_sha256": "bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7",
+    "pdf_page": 49
+  },
+  "3c3f61d1f6c39f142b7b495a:110": {
+    "name": "BARDOLI",
+    "candidate": "MEHTA KALYANJIBHAI VITHALBHAI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4108-bombay-1957/",
+    "source_file": "3c3f61d1f6c39f142b7b495a-9728.pdf",
+    "source_sha256": "616bf1f9a15553604a7c14e67718e166de0a008551f03a6b89662f2078c72a25",
+    "pdf_page": 132
+  },
+  "3c3f61d1f6c39f142b7b495a:17": {
+    "name": "JODIYA",
+    "candidate": "SHAH KANTILAL PREMCHAND",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4108-bombay-1957/",
+    "source_file": "3c3f61d1f6c39f142b7b495a-9728.pdf",
+    "source_sha256": "616bf1f9a15553604a7c14e67718e166de0a008551f03a6b89662f2078c72a25",
+    "pdf_page": 39
+  },
+  "3c3f61d1f6c39f142b7b495a:89": {
+    "name": "LIMKHEDA (ST)",
+    "candidate": "NISARTA VIRSINGBHAI KANJIBHAI (ST)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4108-bombay-1957/",
+    "source_file": "3c3f61d1f6c39f142b7b495a-9728.pdf",
+    "source_sha256": "616bf1f9a15553604a7c14e67718e166de0a008551f03a6b89662f2078c72a25",
+    "pdf_page": 111
+  },
+  "3d43a1c5d9759834aee6f0cb:64": {
+    "name": "NASWADI (ST)",
+    "candidate": "TADVI BHULABHAI DULABHAI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4107-bombay-1951/",
+    "source_file": "3d43a1c5d9759834aee6f0cb-9726.pdf",
+    "source_sha256": "8dcef73993ecfec1614eaecc395721c9b3cf4d9e275b6f121d0bc091a9e34fae",
+    "pdf_page": 80
+  },
+  "3d43a1c5d9759834aee6f0cb:66": {
+    "name": "CHHO TA UDEPUR (ST)",
+    "candidate": "TADVI BHAIJIBHAI GARBADBHAI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4107-bombay-1951/",
+    "source_file": "3d43a1c5d9759834aee6f0cb-9726.pdf",
+    "source_sha256": "8dcef73993ecfec1614eaecc395721c9b3cf4d9e275b6f121d0bc091a9e34fae",
+    "pdf_page": 82
+  },
+  "3ffba1a5fb2b6de3d21aa4ba:227": {
+    "name": "BALKONDA",
+    "candidate": "G.R. RAM (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4045-andhra-pradesh-1967/",
+    "source_file": "3ffba1a5fb2b6de3d21aa4ba-9594.pdf",
+    "source_sha256": "50fcad2af05ed58e074004b2f8c6612c9c9eceddd0f66007b1734a9ca75c052d",
+    "pdf_page": 244
+  },
+  "3ffba1a5fb2b6de3d21aa4ba:252": {
+    "name": "JAGTIAL",
+    "candidate": "K.L.N.RAO (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4045-andhra-pradesh-1967/",
+    "source_file": "3ffba1a5fb2b6de3d21aa4ba-9594.pdf",
+    "source_sha256": "50fcad2af05ed58e074004b2f8c6612c9c9eceddd0f66007b1734a9ca75c052d",
+    "pdf_page": 269
+  },
+  "423ac218c49da0ad41ec442d:54": {
+    "name": "KARTARPUR (SC)",
+    "candidate": "GURBANTA SINGH (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3447-punjab-1972/",
+    "source_file": "423ac218c49da0ad41ec442d-7984.pdf",
+    "source_sha256": "2ad72ed6652f064a26bd063dadb5f8378e8745174333f2a1ef7dd6d3af009c30",
+    "pdf_page": 66
+  },
+  "427240255d55258227ace258:10": {
+    "name": "NORTHERN ANGAMI - I (ST)",
+    "candidate": "SHURHOZELIE",
+    "party": "NPC",
+    "source_url": "https://old.eci.gov.in/files/file/3639-nagaland-1993/",
+    "source_file": "427240255d55258227ace258-8527.pdf",
+    "source_sha256": "7ae5515d1c6a4b18b24effc83e199593edc1134847ba729a704f469c035127cc",
+    "pdf_page": 19
+  },
+  "47994458fb9d1bdcf3d3907f:31": {
+    "name": "AKULUTO",
+    "candidate": "HOKISHE SEMA",
+    "party": "NNO",
+    "source_url": "https://old.eci.gov.in/files/file/3634-nagaland-1974/",
+    "source_file": "47994458fb9d1bdcf3d3907f-8517.pdf",
+    "source_sha256": "30f9c0d56d65c7e8305d5f33a7413363e7d6261a3a392e0c313a4210df0add37",
+    "pdf_page": 40
+  },
+  "47994458fb9d1bdcf3d3907f:55": {
+    "name": "TOBU",
+    "candidate": "NUKLO",
+    "party": "UDF",
+    "source_url": "https://old.eci.gov.in/files/file/3634-nagaland-1974/",
+    "source_file": "47994458fb9d1bdcf3d3907f-8517.pdf",
+    "source_sha256": "30f9c0d56d65c7e8305d5f33a7413363e7d6261a3a392e0c313a4210df0add37",
+    "pdf_page": 64
+  },
+  "496d7edbfe44e6b6cf4b312b:55": {
+    "name": "JIRIBAM",
+    "candidate": "S. BIJOY (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3703-manipur-1972/",
+    "source_file": "496d7edbfe44e6b6cf4b312b-8705.pdf",
+    "source_sha256": "3ad14420b4c062cf80afa20a12991bcbfa67670b947467c6d149c7cb6922565b",
+    "pdf_page": 66
+  },
+  "49dbb8efc17134761739ec94:58": {
+    "name": "MALARNA CHOUR (ST)",
+    "candidate": "BHARAT LAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3380-rajasthan-1962/",
+    "source_file": "49dbb8efc17134761739ec94-7818.pdf",
+    "source_sha256": "737c30ec89723c61511b276cde309186d9aca9f333ebb04f7ae1bcfba593bc56",
+    "pdf_page": 72
+  },
+  "5076d09b00cbbe1a938da550:12": {
+    "name": "ICHHAWAR",
+    "candidate": "KESARIMAL JAIN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4109-bhopal-1951/",
+    "source_file": "5076d09b00cbbe1a938da550-9730.pdf",
+    "source_sha256": "2cb4b59c1066cc8c1314c225f52c3003bf73a6979e8e718c6895415be8dbf9bd",
+    "pdf_page": 21
+  },
+  "524a09979e550e15c31fadd7:10": {
+    "name": "MANDAWAR",
+    "candidate": "GHASI RAM YADAV",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3378-rajasthan-1951/",
+    "source_file": "524a09979e550e15c31fadd7-7814.pdf",
+    "source_sha256": "f4db2ce5d24bd9c8aaba2b37840952effbf5197fa372c183836c2966b5a8f225",
+    "pdf_page": 22
+  },
+  "524a09979e550e15c31fadd7:49": {
+    "name": "KOTPUTLI",
+    "candidate": "HAZARI LAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3378-rajasthan-1951/",
+    "source_file": "524a09979e550e15c31fadd7-7814.pdf",
+    "source_sha256": "f4db2ce5d24bd9c8aaba2b37840952effbf5197fa372c183836c2966b5a8f225",
+    "pdf_page": 61
+  },
+  "524a09979e550e15c31fadd7:89": {
+    "name": "BAGIDORA",
+    "candidate": "HARI RAM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3378-rajasthan-1951/",
+    "source_file": "524a09979e550e15c31fadd7-7814.pdf",
+    "source_sha256": "f4db2ce5d24bd9c8aaba2b37840952effbf5197fa372c183836c2966b5a8f225",
+    "pdf_page": 101
+  },
+  "54620c434b54e06715dc86f1:14": {
+    "name": "LAKHIPUR",
+    "candidate": "CHOUBEY, RAM PRASAD",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3991-assam-1957/",
+    "source_file": "54620c434b54e06715dc86f1-9462.pdf",
+    "source_sha256": "c5aec9280a02fb8ca19663128a1c1caca27f4db0aac7cd667d2ac68562c2cc7e",
+    "pdf_page": 26
+  },
+  "54620c434b54e06715dc86f1:16": {
+    "name": "MOKOKCHUNG (ST)",
+    "candidate": "AO, CHUBATEMSU, I (ST)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3991-assam-1957/",
+    "source_file": "54620c434b54e06715dc86f1-9462.pdf",
+    "source_sha256": "c5aec9280a02fb8ca19663128a1c1caca27f4db0aac7cd667d2ac68562c2cc7e",
+    "pdf_page": 28
+  },
+  "54620c434b54e06715dc86f1:17": {
+    "name": "NAGA HILLS CENTRAL (ST)",
+    "candidate": "SEMA, KHELHOSE (ST)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3991-assam-1957/",
+    "source_file": "54620c434b54e06715dc86f1-9462.pdf",
+    "source_sha256": "c5aec9280a02fb8ca19663128a1c1caca27f4db0aac7cd667d2ac68562c2cc7e",
+    "pdf_page": 29
+  },
+  "54620c434b54e06715dc86f1:18": {
+    "name": "KOHIMA (ST)",
+    "candidate": "ANGAMI, SATSUO (ST)",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3991-assam-1957/",
+    "source_file": "54620c434b54e06715dc86f1-9462.pdf",
+    "source_sha256": "c5aec9280a02fb8ca19663128a1c1caca27f4db0aac7cd667d2ac68562c2cc7e",
+    "pdf_page": 30
+  },
+  "54620c434b54e06715dc86f1:66": {
+    "name": "RUPOHIHAT",
+    "candidate": "IDRIS, MAULAVI MD.",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3991-assam-1957/",
+    "source_file": "54620c434b54e06715dc86f1-9462.pdf",
+    "source_sha256": "c5aec9280a02fb8ca19663128a1c1caca27f4db0aac7cd667d2ac68562c2cc7e",
+    "pdf_page": 78
+  },
+  "55bc20c23f6541da36fceadb:15": {
+    "name": "UDHARBOND",
+    "candidate": "JAGANNATH SINHA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3995-assam-1972/",
+    "source_file": "55bc20c23f6541da36fceadb-9470.pdf",
+    "source_sha256": "b96554951189dd84c9613a6ac75d1adc1054b85e399875ee3953d36776f40590",
+    "pdf_page": 23
+  },
+  "55bc20c23f6541da36fceadb:18": {
+    "name": "HAFLONG (ST)",
+    "candidate": "J. B. HAGJER",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3995-assam-1972/",
+    "source_file": "55bc20c23f6541da36fceadb-9470.pdf",
+    "source_sha256": "b96554951189dd84c9613a6ac75d1adc1054b85e399875ee3953d36776f40590",
+    "pdf_page": 26
+  },
+  "58b8ef8a045c6eca3b99dc6a:172": {
+    "name": "SHIGGAON",
+    "candidate": "S. NIJALINGAPPPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4099-mysore-1967/",
+    "source_file": "58b8ef8a045c6eca3b99dc6a-9710.pdf",
+    "source_sha256": "bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7",
+    "pdf_page": 187
+  },
+  "58b8ef8a045c6eca3b99dc6a:34": {
+    "name": "SANDUR",
+    "candidate": "M. Y. GHORPADE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4099-mysore-1967/",
+    "source_file": "58b8ef8a045c6eca3b99dc6a-9710.pdf",
+    "source_sha256": "bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7",
+    "pdf_page": 49
+  },
+  "60d8a031055599ff3b89eb78:28": {
+    "name": "BAGHMARA",
+    "candidate": "HARISON MOMIN",
+    "party": "GNC",
+    "source_url": "https://old.eci.gov.in/files/file/3989-assam-general-legislative-election-1951/",
+    "source_file": "60d8a031055599ff3b89eb78-9457.pdf",
+    "source_sha256": "f79bcd43564bbc4e8ba11574ce9519d338d2845c0e5829f4b20bce1666eb6156",
+    "pdf_page": 39
+  },
+  "6210f814ee5b46e924395875:47": {
+    "name": "Nobra",
+    "candidate": "Sonam Wangchuk Narboo",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3795-jammu-kashmir-2002/",
+    "source_file": "6210f814ee5b46e924395875-8932.pdf",
+    "source_sha256": "f5d0a316aabaef86f291846121905350ecfc366f565840891e2eb0f96417e599",
+    "pdf_page": 63
+  },
+  "6210f814ee5b46e924395875:48": {
+    "name": "Leh",
+    "candidate": "Sh. Nawang RigZin",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3795-jammu-kashmir-2002/",
+    "source_file": "6210f814ee5b46e924395875-8932.pdf",
+    "source_sha256": "f5d0a316aabaef86f291846121905350ecfc366f565840891e2eb0f96417e599",
+    "pdf_page": 64
+  },
+  "64c78308991bdd107a1cfa57:15": {
+    "name": "SAMPGAON II",
+    "candidate": "NAGNUR MUGATSAB NABISAB",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/",
+    "source_file": "64c78308991bdd107a1cfa57-8886.pdf",
+    "source_sha256": "ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531",
+    "pdf_page": 30
+  },
+  "64c78308991bdd107a1cfa57:178": {
+    "name": "BAINDUR",
+    "candidate": "SHETTY MANJAYYA Y.",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/",
+    "source_file": "64c78308991bdd107a1cfa57-8886.pdf",
+    "source_sha256": "ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531",
+    "pdf_page": 193
+  },
+  "64c78308991bdd107a1cfa57:60": {
+    "name": "AFZALPUR",
+    "candidate": "ANNARAO BASAPPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/",
+    "source_file": "64c78308991bdd107a1cfa57-8886.pdf",
+    "source_sha256": "ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531",
+    "pdf_page": 75
+  },
+  "64c78308991bdd107a1cfa57:66": {
+    "name": "SHAHPUR",
+    "candidate": "VIRUPAKSHAPPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/",
+    "source_file": "64c78308991bdd107a1cfa57-8886.pdf",
+    "source_sha256": "ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531",
+    "pdf_page": 81
+  },
+  "64c78308991bdd107a1cfa57:91": {
+    "name": "CHENNAGIRI",
+    "candidate": "KUNDUR RUDRAPPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/",
+    "source_file": "64c78308991bdd107a1cfa57-8886.pdf",
+    "source_sha256": "ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531",
+    "pdf_page": 106
+  },
+  "64c78308991bdd107a1cfa57:97": {
+    "name": "SRINGERI",
+    "candidate": "KADIDAL MANJAPPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3772-karnataka-1957/",
+    "source_file": "64c78308991bdd107a1cfa57-8886.pdf",
+    "source_sha256": "ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531",
+    "pdf_page": 112
+  },
+  "67cbc63183f169509782123b:179": {
+    "name": "ALLUR",
+    "candidate": "D. LAKSHMIKANTHA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/",
+    "source_file": "67cbc63183f169509782123b-9592.pdf",
+    "source_sha256": "41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375",
+    "pdf_page": 197
+  },
+  "67cbc63183f169509782123b:19": {
+    "name": "PONDURU (SC)",
+    "candidate": "KOTAPALLI PUNNAIAH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/",
+    "source_file": "67cbc63183f169509782123b-9592.pdf",
+    "source_sha256": "41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375",
+    "pdf_page": 37
+  },
+  "67cbc63183f169509782123b:190": {
+    "name": "KOILKUNTLA",
+    "candidate": "B. V. SUBBA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/",
+    "source_file": "67cbc63183f169509782123b-9592.pdf",
+    "source_sha256": "41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375",
+    "pdf_page": 208
+  },
+  "67cbc63183f169509782123b:199": {
+    "name": "GADWAL",
+    "candidate": "KRISHNA RAM BHOPAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/",
+    "source_file": "67cbc63183f169509782123b-9592.pdf",
+    "source_sha256": "41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375",
+    "pdf_page": 217
+  },
+  "67cbc63183f169509782123b:226": {
+    "name": "VICARABAD (SC)",
+    "candidate": "A. RAMASWAMY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/",
+    "source_file": "67cbc63183f169509782123b-9592.pdf",
+    "source_sha256": "41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375",
+    "pdf_page": 244
+  },
+  "67cbc63183f169509782123b:244": {
+    "name": "ARMOOR",
+    "candidate": "T. RANGA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4044-andhra-pradesh-1962/",
+    "source_file": "67cbc63183f169509782123b-9592.pdf",
+    "source_sha256": "41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375",
+    "pdf_page": 262
+  },
+  "687fe2c90d213972d658b389:204": {
+    "name": "HUNSUR",
+    "candidate": "D. DEVARAJ URS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3773-karnataka-1962/",
+    "source_file": "687fe2c90d213972d658b389-8888.pdf",
+    "source_sha256": "f3eb5c5cc24499f37d1a32e4c3bd6a918cc7e00cb9f3f30709e872e79a82ca42",
+    "pdf_page": 219
+  },
+  "687fe2c90d213972d658b389:31": {
+    "name": "TALIKOT",
+    "candidate": "GADIGEPPAGOUDA NINGANGOUDA PATIL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3773-karnataka-1962/",
+    "source_file": "687fe2c90d213972d658b389-8888.pdf",
+    "source_sha256": "f3eb5c5cc24499f37d1a32e4c3bd6a918cc7e00cb9f3f30709e872e79a82ca42",
+    "pdf_page": 46
+  },
+  "6ae852fa3016c117cbb11d87:32": {
+    "name": "NAVELIM",
+    "candidate": "FALEIRO LUIZINHO JOA-QUIM (UNCONTESTED ELECTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3849-goa-1989/",
+    "source_file": "6ae852fa3016c117cbb11d87-9084.pdf",
+    "source_sha256": "e2853b7feb35d1ba825c59a685480ad1bead878c2e73b5bd4e85ef0ff5a4046e",
+    "pdf_page": 43
+  },
+  "6dfd6b3caf24c34e288769cf:124": {
+    "name": "BICHHIA (ST)",
+    "candidate": "BAREDI BUDANA (ST)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/",
+    "source_file": "6dfd6b3caf24c34e288769cf-8772.pdf",
+    "source_sha256": "195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2",
+    "pdf_page": 142
+  },
+  "6dfd6b3caf24c34e288769cf:133": {
+    "name": "BIRENDRANAGAR",
+    "candidate": "RANI PADMAVATI DEVI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/",
+    "source_file": "6dfd6b3caf24c34e288769cf-8772.pdf",
+    "source_sha256": "195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2",
+    "pdf_page": 151
+  },
+  "6dfd6b3caf24c34e288769cf:160": {
+    "name": "SARAIPALI",
+    "candidate": "JAIDEO GADADHAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/",
+    "source_file": "6dfd6b3caf24c34e288769cf-8772.pdf",
+    "source_sha256": "195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2",
+    "pdf_page": 178
+  },
+  "6dfd6b3caf24c34e288769cf:96": {
+    "name": "PANAGAR",
+    "candidate": "PARMANAND MOHANLAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/",
+    "source_file": "6dfd6b3caf24c34e288769cf-8772.pdf",
+    "source_sha256": "195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2",
+    "pdf_page": 114
+  },
+  "7a0dd6f73df2261e41bf503d:16": {
+    "name": "MANGAON",
+    "candidate": "MAHALUNGE RAM VITHAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3716-maharashtra-1972/",
+    "source_file": "7a0dd6f73df2261e41bf503d-8748.pdf",
+    "source_sha256": "3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6",
+    "pdf_page": 31
+  },
+  "7a0dd6f73df2261e41bf503d:183": {
+    "name": "GEORAI",
+    "candidate": "SOLANKE SUNDERAO ABASAHEB",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3716-maharashtra-1972/",
+    "source_file": "7a0dd6f73df2261e41bf503d-8748.pdf",
+    "source_sha256": "3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6",
+    "pdf_page": 198
+  },
+  "7a0dd6f73df2261e41bf503d:211": {
+    "name": "MALSHIRAS",
+    "candidate": "DESHMUKH C. ABASAHEB",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3716-maharashtra-1972/",
+    "source_file": "7a0dd6f73df2261e41bf503d-8748.pdf",
+    "source_sha256": "3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6",
+    "pdf_page": 226
+  },
+  "80935700eb137d57fbc822ed:249": {
+    "name": "PATAN",
+    "candidate": "D. S. DESAI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3715-maharashtra-1967/",
+    "source_file": "80935700eb137d57fbc822ed-8746.pdf",
+    "source_sha256": "8c3b6a8383b4c276a74e862ff9500d657adc927fb3f4f80aece6963e0c6b3e14",
+    "pdf_page": 266
+  },
+  "84d7792c81fb705511420ae6:156": {
+    "name": "MYDUKUR",
+    "candidate": "SETTIPALLI NAGI REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 171
+  },
+  "84d7792c81fb705511420ae6:178": {
+    "name": "KODUMUR (SC)",
+    "candidate": "D. MUNISWAMY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 193
+  },
+  "84d7792c81fb705511420ae6:182": {
+    "name": "KOILKUNTLA",
+    "candidate": "B. V. SUBBAREDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 197
+  },
+  "84d7792c81fb705511420ae6:184": {
+    "name": "PANYAM",
+    "candidate": "ERASU AYYAPU REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 199
+  },
+  "84d7792c81fb705511420ae6:185": {
+    "name": "NANDIKOTKUR",
+    "candidate": "MADDRU SUBBA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 200
+  },
+  "84d7792c81fb705511420ae6:197": {
+    "name": "AMARCHINTA",
+    "candidate": "SOMBHOPAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 212
+  },
+  "84d7792c81fb705511420ae6:198": {
+    "name": "MAKTHAL",
+    "candidate": "KALYANI RAMCHANDER RAO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 213
+  },
+  "84d7792c81fb705511420ae6:20": {
+    "name": "GAJAPATHINAGARAM",
+    "candidate": "PENUMATCHA SAMBASIVARAJU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 35
+  },
+  "84d7792c81fb705511420ae6:200": {
+    "name": "TANDUR",
+    "candidate": "M. MANIK RAO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 215
+  },
+  "84d7792c81fb705511420ae6:235": {
+    "name": "MUDHOLE",
+    "candidate": "GADDANNA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 250
+  },
+  "84d7792c81fb705511420ae6:236": {
+    "name": "NIRMAL",
+    "candidate": "P NARSA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 251
+  },
+  "84d7792c81fb705511420ae6:242": {
+    "name": "CHINNUR (SC)",
+    "candidate": "KODATI RAJAMMALLY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 257
+  },
+  "84d7792c81fb705511420ae6:259": {
+    "name": "DORNAKAL",
+    "candidate": "N. RAMCHANDRA REDDY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 274
+  },
+  "84d7792c81fb705511420ae6:50": {
+    "name": "ANAPARTHI",
+    "candidate": "RAMAKRISHANA CHOWDARY V",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 65
+  },
+  "84d7792c81fb705511420ae6:68": {
+    "name": "UNGUTUR",
+    "candidate": "CHENTALAPATI S V S MR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 83
+  },
+  "84d7792c81fb705511420ae6:69": {
+    "name": "DENDULUR",
+    "candidate": "RAMAMOHAN R MOTAPARTHY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 84
+  },
+  "84d7792c81fb705511420ae6:91": {
+    "name": "AVANIGADDA",
+    "candidate": "M. VENKATAKRISHNA RAO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4046-andhra-pradesh-1972/",
+    "source_file": "84d7792c81fb705511420ae6-9596.pdf",
+    "source_sha256": "4d26bfd33fccaca6a2d15910eae325518a46353c14de5420b41a6e9aa5cd543f",
+    "pdf_page": 106
+  },
+  "8951320f5cb055e1bb542d7d:2": {
+    "name": "TAWANG (ST)",
+    "candidate": "THUPTEN TEMPA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4036-arunachal-pradesh-1999/",
+    "source_file": "8951320f5cb055e1bb542d7d-9575.pdf",
+    "source_sha256": "b5334b398b02bdb64d51ccf4018cc2c1c9ed621c4c2b76eb1dafec7ac7b3830f",
+    "pdf_page": 14
+  },
+  "8951320f5cb055e1bb542d7d:41": {
+    "name": "ANINI (ST)",
+    "candidate": "RAJESH TACHO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4036-arunachal-pradesh-1999/",
+    "source_file": "8951320f5cb055e1bb542d7d-9575.pdf",
+    "source_sha256": "b5334b398b02bdb64d51ccf4018cc2c1c9ed621c4c2b76eb1dafec7ac7b3830f",
+    "pdf_page": 53
+  },
+  "8951320f5cb055e1bb542d7d:43": {
+    "name": "ROING (ST)",
+    "candidate": "MUKUT MITHI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4036-arunachal-pradesh-1999/",
+    "source_file": "8951320f5cb055e1bb542d7d-9575.pdf",
+    "source_sha256": "b5334b398b02bdb64d51ccf4018cc2c1c9ed621c4c2b76eb1dafec7ac7b3830f",
+    "pdf_page": 55
+  },
+  "8951320f5cb055e1bb542d7d:55": {
+    "name": "KHONSA EAST (ST)",
+    "candidate": "T.L. RAJKUMAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4036-arunachal-pradesh-1999/",
+    "source_file": "8951320f5cb055e1bb542d7d-9575.pdf",
+    "source_sha256": "b5334b398b02bdb64d51ccf4018cc2c1c9ed621c4c2b76eb1dafec7ac7b3830f",
+    "pdf_page": 67
+  },
+  "8bea140010fef922a65fa3e7:42": {
+    "name": "PATACHARKUCHI",
+    "candidate": "RABI RAM DAS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3998-assam-1983/",
+    "source_file": "8bea140010fef922a65fa3e7-9477.pdf",
+    "source_sha256": "814225a971b29397289f3bb6ec87eac5d28e4dc12ac22006cbba4eb2e9c9b940",
+    "pdf_page": 51
+  },
+  "8bea140010fef922a65fa3e7:48": {
+    "name": "BOKO (SC)",
+    "candidate": "UPENDRA DAS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3998-assam-1983/",
+    "source_file": "8bea140010fef922a65fa3e7-9477.pdf",
+    "source_sha256": "814225a971b29397289f3bb6ec87eac5d28e4dc12ac22006cbba4eb2e9c9b940",
+    "pdf_page": 57
+  },
+  "8bea140010fef922a65fa3e7:50": {
+    "name": "PALASBARI",
+    "candidate": "MOHAN BASUMATARI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3998-assam-1983/",
+    "source_file": "8bea140010fef922a65fa3e7-9477.pdf",
+    "source_sha256": "814225a971b29397289f3bb6ec87eac5d28e4dc12ac22006cbba4eb2e9c9b940",
+    "pdf_page": 59
+  },
+  "8bea140010fef922a65fa3e7:67": {
+    "name": "MANGALDOI (SC)",
+    "candidate": "KARTIK SARKAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3998-assam-1983/",
+    "source_file": "8bea140010fef922a65fa3e7-9477.pdf",
+    "source_sha256": "814225a971b29397289f3bb6ec87eac5d28e4dc12ac22006cbba4eb2e9c9b940",
+    "pdf_page": 74
+  },
+  "9013d463bb4e332a159e41a1:12": {
+    "name": "WAK",
+    "candidate": "CHANDRA BAHADUR KARKI",
+    "party": "SDF",
+    "source_url": "https://old.eci.gov.in/files/file/3363-sikkim-2004/",
+    "source_file": "9013d463bb4e332a159e41a1-7781.pdf",
+    "source_sha256": "f3eefb398080f79161f51c862a2e408b544c283ff4643ee80b36e90963d4578e",
+    "pdf_page": 23
+  },
+  "9013d463bb4e332a159e41a1:13": {
+    "name": "DAMTHANG",
+    "candidate": "PAWAN CHAMLING",
+    "party": "SDF",
+    "source_url": "https://old.eci.gov.in/files/file/3363-sikkim-2004/",
+    "source_file": "9013d463bb4e332a159e41a1-7781.pdf",
+    "source_sha256": "f3eefb398080f79161f51c862a2e408b544c283ff4643ee80b36e90963d4578e",
+    "pdf_page": 24
+  },
+  "9013d463bb4e332a159e41a1:14": {
+    "name": "MELLI",
+    "candidate": "GIRISH CHANDRA RAI",
+    "party": "SDF",
+    "source_url": "https://old.eci.gov.in/files/file/3363-sikkim-2004/",
+    "source_file": "9013d463bb4e332a159e41a1-7781.pdf",
+    "source_sha256": "f3eefb398080f79161f51c862a2e408b544c283ff4643ee80b36e90963d4578e",
+    "pdf_page": 25
+  },
+  "9013d463bb4e332a159e41a1:25": {
+    "name": "KABI TINGDA (BL)",
+    "candidate": "THENLAY TSHERING BHUTIA",
+    "party": "SDF",
+    "source_url": "https://old.eci.gov.in/files/file/3363-sikkim-2004/",
+    "source_file": "9013d463bb4e332a159e41a1-7781.pdf",
+    "source_sha256": "f3eefb398080f79161f51c862a2e408b544c283ff4643ee80b36e90963d4578e",
+    "pdf_page": 36
+  },
+  "9025b24a06b55158d799c648:153": {
+    "name": "SIRONCHA (ST)",
+    "candidate": "SHRI TALANDI PENTA RAMA",
+    "party": "INC(I)",
+    "source_url": "https://old.eci.gov.in/files/file/3718-maharashtra-1980/",
+    "source_file": "9025b24a06b55158d799c648-8752.pdf",
+    "source_sha256": "c0bf375fbeeab77b668ea51a16fd1000d4f8e0f77f3a8044a8077a8371dc4020",
+    "pdf_page": 170
+  },
+  "951c1facc254f68f8c54731c:18": {
+    "name": "FEROZEPORE JHIRKA",
+    "candidate": "MOHD. YASEEN KHAN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3442-punjab-1951/",
+    "source_file": "951c1facc254f68f8c54731c-7974.pdf",
+    "source_sha256": "74c413925133995aa90ec977e4a00823d33afe436f7877019c3551c96f5825f8",
+    "pdf_page": 29
+  },
+  "9a57af51e71e6ff194d3f409:152": {
+    "name": "COIMBATORE",
+    "candidate": "T. A. RAMALINGA CHETTIAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4111-general-election-1951-vol-i-ii/",
+    "source_file": "9a57af51e71e6ff194d3f409-9735.pdf",
+    "source_sha256": "5edb3b4145da98e57b4032430cf0fa846a882d22278a41fa491b9a5d14c93718",
+    "pdf_page": 156
+  },
+  "9a57af51e71e6ff194d3f409:308": {
+    "name": "YADGIR",
+    "candidate": "KRISHNA CHARYA JOSHI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4111-general-election-1951-vol-i-ii/",
+    "source_file": "9a57af51e71e6ff194d3f409-9735.pdf",
+    "source_sha256": "5edb3b4145da98e57b4032430cf0fa846a882d22278a41fa491b9a5d14c93718",
+    "pdf_page": 312
+  },
+  "9a57af51e71e6ff194d3f409:364": {
+    "name": "HALAR",
+    "candidate": "MAJOR GEN. M. S. HIMATSINHJI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4111-general-election-1951-vol-i-ii/",
+    "source_file": "9a57af51e71e6ff194d3f409-9735.pdf",
+    "source_sha256": "5edb3b4145da98e57b4032430cf0fa846a882d22278a41fa491b9a5d14c93718",
+    "pdf_page": 368
+  },
+  "9a57af51e71e6ff194d3f409:385": {
+    "name": "BILASPUR",
+    "candidate": "ANAND CHAND",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/4111-general-election-1951-vol-i-ii/",
+    "source_file": "9a57af51e71e6ff194d3f409-9735.pdf",
+    "source_sha256": "5edb3b4145da98e57b4032430cf0fa846a882d22278a41fa491b9a5d14c93718",
+    "pdf_page": 389
+  },
+  "9b90f41d25aa7d6521c935c8:1": {
+    "name": "DIMAPUR-I",
+    "candidate": "I. VIKHESHE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 11
+  },
+  "9b90f41d25aa7d6521c935c8:10": {
+    "name": "NORTHERN ANGAMI - I (ST)",
+    "candidate": "SEYIEKUOLIE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 20
+  },
+  "9b90f41d25aa7d6521c935c8:11": {
+    "name": "NORTHERN ANGAMI -II (ST)",
+    "candidate": "NEIPHIU RIO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 21
+  },
+  "9b90f41d25aa7d6521c935c8:12": {
+    "name": "TSEMINYU (ST)",
+    "candidate": "NILLO RENGMA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 22
+  },
+  "9b90f41d25aa7d6521c935c8:13": {
+    "name": "PUGHOBOTO (ST)",
+    "candidate": "JOSHUA SUMI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 23
+  },
+  "9b90f41d25aa7d6521c935c8:15": {
+    "name": "SOUTHERN ANGAMI-II (ST)",
+    "candidate": "K.V. PUSA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 25
+  },
+  "9b90f41d25aa7d6521c935c8:16": {
+    "name": "PFUTSERO (ST)",
+    "candidate": "KEWEKHAPE THERIE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 26
+  },
+  "9b90f41d25aa7d6521c935c8:17": {
+    "name": "CHIZAMI (ST)",
+    "candidate": "ZHOVEHU LOHE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 27
+  },
+  "9b90f41d25aa7d6521c935c8:19": {
+    "name": "PHEK (ST)",
+    "candidate": "ZACHILHU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 29
+  },
+  "9b90f41d25aa7d6521c935c8:2": {
+    "name": "DIMAPUR-II (ST)",
+    "candidate": "IMTISUNGET JAMIR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 12
+  },
+  "9b90f41d25aa7d6521c935c8:21": {
+    "name": "TULI (ST)",
+    "candidate": "T.TALI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 31
+  },
+  "9b90f41d25aa7d6521c935c8:22": {
+    "name": "ARKAKONG (ST)",
+    "candidate": "IMTIYANGER",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 32
+  },
+  "9b90f41d25aa7d6521c935c8:23": {
+    "name": "IMPUR (ST)",
+    "candidate": "T. CHUBA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 33
+  },
+  "9b90f41d25aa7d6521c935c8:24": {
+    "name": "ANGETYONGPANG (ST)",
+    "candidate": "T. SENTICHUBA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 34
+  },
+  "9b90f41d25aa7d6521c935c8:25": {
+    "name": "MONGUYA (ST)",
+    "candidate": "T. IMTIMEREN JAMIR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 35
+  },
+  "9b90f41d25aa7d6521c935c8:26": {
+    "name": "AONGLENDEN (ST)",
+    "candidate": "S.C. JAMIR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 36
+  },
+  "9b90f41d25aa7d6521c935c8:27": {
+    "name": "MOKOKCHUNG TOWN (ST)",
+    "candidate": "NUNGSHIZENBA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 37
+  },
+  "9b90f41d25aa7d6521c935c8:28": {
+    "name": "KORIDANG (ST)",
+    "candidate": "T. NOKYU LONGCHAR",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 38
+  },
+  "9b90f41d25aa7d6521c935c8:29": {
+    "name": "JANGPETKONG (ST)",
+    "candidate": "I. IMKONG",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 39
+  },
+  "9b90f41d25aa7d6521c935c8:30": {
+    "name": "ALUNGTAKI (ST)",
+    "candidate": "TONGPANG NUNGSHI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 40
+  },
+  "9b90f41d25aa7d6521c935c8:31": {
+    "name": "AKULUTO (ST)",
+    "candidate": "KAKHETO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 41
+  },
+  "9b90f41d25aa7d6521c935c8:32": {
+    "name": "ATOIZU (ST)",
+    "candidate": "DOSHEHE-Y-SEMA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 42
+  },
+  "9b90f41d25aa7d6521c935c8:33": {
+    "name": "SURUHUTO (ST)",
+    "candidate": "KIYEZHE SEMA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 43
+  },
+  "9b90f41d25aa7d6521c935c8:34": {
+    "name": "AGHUNATO (ST)",
+    "candidate": "TOKHEHO YEPTHOMI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 44
+  },
+  "9b90f41d25aa7d6521c935c8:36": {
+    "name": "SATAKHA (ST)",
+    "candidate": "KAITO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 46
+  },
+  "9b90f41d25aa7d6521c935c8:37": {
+    "name": "TYUI (ST)",
+    "candidate": "T.C.K. LOTHA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 47
+  },
+  "9b90f41d25aa7d6521c935c8:38": {
+    "name": "WOKHA (ST)",
+    "candidate": "JOHN LOTHA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 48
+  },
+  "9b90f41d25aa7d6521c935c8:39": {
+    "name": "SANIS (ST)",
+    "candidate": "THOMAS NGULLIE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 49
+  },
+  "9b90f41d25aa7d6521c935c8:4": {
+    "name": "GHASPANI-I (ST)",
+    "candidate": "DR. V. KANITO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 14
+  },
+  "9b90f41d25aa7d6521c935c8:40": {
+    "name": "BHANDARI (ST)",
+    "candidate": "L. YANTHUNGO PATTON",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 50
+  },
+  "9b90f41d25aa7d6521c935c8:42": {
+    "name": "WAKCHING (ST)",
+    "candidate": "P. ENYEI KONYAK",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 52
+  },
+  "9b90f41d25aa7d6521c935c8:43": {
+    "name": "TAPI (ST)",
+    "candidate": "BONGNAO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 53
+  },
+  "9b90f41d25aa7d6521c935c8:44": {
+    "name": "PHOMCHING (ST)",
+    "candidate": "KONGAM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 54
+  },
+  "9b90f41d25aa7d6521c935c8:45": {
+    "name": "TEHOK (ST)",
+    "candidate": "W. WONGYUH KONYAK",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 55
+  },
+  "9b90f41d25aa7d6521c935c8:48": {
+    "name": "MOKA (ST)",
+    "candidate": "NYIAMNYEI KONYAK",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 58
+  },
+  "9b90f41d25aa7d6521c935c8:5": {
+    "name": "GHASPANI-II (ST)",
+    "candidate": "ROKONICHA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 15
+  },
+  "9b90f41d25aa7d6521c935c8:52": {
+    "name": "LONGKHIM CHARE (ST)",
+    "candidate": "S.K.SANGTAM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 62
+  },
+  "9b90f41d25aa7d6521c935c8:55": {
+    "name": "TOBU (ST)",
+    "candidate": "SHEAKPONG KONYAK",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 65
+  },
+  "9b90f41d25aa7d6521c935c8:56": {
+    "name": "NOKLAK (ST)",
+    "candidate": "SEDEM KHAMING",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 66
+  },
+  "9b90f41d25aa7d6521c935c8:58": {
+    "name": "SHAMTORR-CHESSORE (ST)",
+    "candidate": "K.YAMAKAM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 68
+  },
+  "9b90f41d25aa7d6521c935c8:6": {
+    "name": "TENNING (ST)",
+    "candidate": "T.R.ZELANG",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 16
+  },
+  "9b90f41d25aa7d6521c935c8:60": {
+    "name": "PUNGRO-KIPHIRE (ST)",
+    "candidate": "R.L.AKAMBA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 70
+  },
+  "9b90f41d25aa7d6521c935c8:7": {
+    "name": "PEREN (ST)",
+    "candidate": "NEIBA NDANG",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3640-nagaland-1998/",
+    "source_file": "9b90f41d25aa7d6521c935c8-8529.pdf",
+    "source_sha256": "14678732f9d5c21aa4077e22b895a1feb185bcc92109b8ac7bcb578485658b8c",
+    "pdf_page": 17
+  },
+  "a070f6500cd9afecdc06f782:114": {
+    "name": "MANJESWAR",
+    "candidate": "M. UMESH RAO",
+    "party": "IND",
+    "source_url": "https://old.eci.gov.in/files/file/3746-kerala-1957/",
+    "source_file": "a070f6500cd9afecdc06f782-8810.pdf",
+    "source_sha256": "dd3d9d3425a9e30eac0e416c350ff2316aea1f7d429623d701cf8a0870fe9830",
+    "pdf_page": 126
+  },
+  "a192c5268ca9878ad13d18d6:7": {
+    "name": "KOLORIANG",
+    "candidate": "CHERA TALO (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4030-arunachal-pradesh-1984/",
+    "source_file": "a192c5268ca9878ad13d18d6-9563.pdf",
+    "source_sha256": "2ff5e4ca85bdaffacb2dace0df5e887a5c387b8cb6223bc4d0b58b18c5d24ba1",
+    "pdf_page": 17
+  },
+  "a1b887ea9c50978fe4cf8e5c:180": {
+    "name": "MANDLA (ST)",
+    "candidate": "MANGRUBABU UIKE (S.T.)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 183
+  },
+  "a1b887ea9c50978fe4cf8e5c:239": {
+    "name": "HASSAN",
+    "candidate": "J. SIDDANANJAPPA H.",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 242
+  },
+  "a1b887ea9c50978fe4cf8e5c:27": {
+    "name": "VICARABAD",
+    "candidate": "SANGAM LAKSHMI BAI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 30
+  },
+  "a1b887ea9c50978fe4cf8e5c:41": {
+    "name": "DARRANG",
+    "candidate": "BHAGAVATI, BIJOY CHANDRA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 44
+  },
+  "a1b887ea9c50978fe4cf8e5c:5": {
+    "name": "RAJAMUNDRY",
+    "candidate": "D. SATYANARAYANA RAJU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 8
+  },
+  "a2e7249881589b59ff298c06:15": {
+    "name": "SAILANA (ST)",
+    "candidate": "JETA BHAGGA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4104-madhya-bharat-1951/",
+    "source_file": "a2e7249881589b59ff298c06-9720.pdf",
+    "source_sha256": "a58936a52bc7422317368b080d0f9320e070fa774540a4d1dde5c2a2ecceac4b",
+    "pdf_page": 26
+  },
+  "a3bfd6f36a55bd233261dd26:2": {
+    "name": "TAWANG (ST)",
+    "candidate": "THUPTEN TEMPA (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4032-arunachal-pradesh-1990/",
+    "source_file": "a3bfd6f36a55bd233261dd26-9567.pdf",
+    "source_sha256": "52b50a0159c8df8c361650bc0a076ac7c428a1ad140753d1c665df84374b117e",
+    "pdf_page": 12
+  },
+  "a3bfd6f36a55bd233261dd26:21": {
+    "name": "KOLORIANG (ST)",
+    "candidate": "CHERA TALO (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4032-arunachal-pradesh-1990/",
+    "source_file": "a3bfd6f36a55bd233261dd26-9567.pdf",
+    "source_sha256": "52b50a0159c8df8c361650bc0a076ac7c428a1ad140753d1c665df84374b117e",
+    "pdf_page": 31
+  },
+  "a3bfd6f36a55bd233261dd26:3": {
+    "name": "MUKTO (ST)",
+    "candidate": "DORJEE KHANDU (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4032-arunachal-pradesh-1990/",
+    "source_file": "a3bfd6f36a55bd233261dd26-9567.pdf",
+    "source_sha256": "52b50a0159c8df8c361650bc0a076ac7c428a1ad140753d1c665df84374b117e",
+    "pdf_page": 13
+  },
+  "a64ab983aedfe75858d20e63:64": {
+    "name": "SATYABADI",
+    "candidate": "NILAKANTHA DAS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3618-orissa-1957/",
+    "source_file": "a64ab983aedfe75858d20e63-8485.pdf",
+    "source_sha256": "cf6c0acb785bf459eb652c9b8d55cefab4983bcc48527c9b0771d0284398e0e3",
+    "pdf_page": 77
+  },
+  "a7a6b5af309e92d3ae61adb6:33": {
+    "name": "KUTIYANA",
+    "candidate": "MAHANT VIJAYDASJI VIRDASJI",
+    "party": "INC(I)",
+    "source_url": "https://old.eci.gov.in/files/file/3832-gujarat-1980/",
+    "source_file": "a7a6b5af309e92d3ae61adb6-9029.pdf",
+    "source_sha256": "641524842bef5a7ac40167b3709f07a3d78d15aec4c16f90eaf32360d9c9e35e",
+    "pdf_page": 48
+  },
+  "a8b322b12ac70e02164de036:29": {
+    "name": "NIAUSA KANUBARI",
+    "candidate": "NOKSONG BOHAM (UNCONTESTED)",
+    "party": "JNP",
+    "source_url": "https://old.eci.gov.in/files/file/4025-arunachal-pradesh-1978/",
+    "source_file": "a8b322b12ac70e02164de036-9553.pdf",
+    "source_sha256": "f2b8a56da4ec884d64215ee4c1ba35de456e70a22202bbebac42497c21f42d85",
+    "pdf_page": 38
+  },
+  "a8b322b12ac70e02164de036:3": {
+    "name": "DIRANG KALAKTANG",
+    "candidate": "PREM KHANDU THUNGON (UNCONTESTED)",
+    "party": "JNP",
+    "source_url": "https://old.eci.gov.in/files/file/4025-arunachal-pradesh-1978/",
+    "source_file": "a8b322b12ac70e02164de036-9553.pdf",
+    "source_sha256": "f2b8a56da4ec884d64215ee4c1ba35de456e70a22202bbebac42497c21f42d85",
+    "pdf_page": 12
+  },
+  "ad01728ae4481b3f5d9287ab:10": {
+    "name": "BALLIGUDA (ST)",
+    "candidate": "JADAB PADRA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3617-orissa-1951/",
+    "source_file": "ad01728ae4481b3f5d9287ab-8483.pdf",
+    "source_sha256": "08e45dc509a26b0601653b45e7ae02ade64cbfcd8f6ae09841118ef39128c738",
+    "pdf_page": 22
+  },
+  "affdd40634235082132e418b:34": {
+    "name": "TALAJA DATHA",
+    "candidate": "MANIAR LALOOBHAI K.",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4095-sourastra-1951/",
+    "source_file": "affdd40634235082132e418b-9702.pdf",
+    "source_sha256": "8b18ac69e999ac28891b23156b5f5874345a06550fe7adcbfaa617e46fd6ee8c",
+    "pdf_page": 44
+  },
+  "b0175bdb1ada22383dce175d:10": {
+    "name": "NIVANLAIPHAI",
+    "candidate": "C.L. RUALA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3658-mizoram-1984/",
+    "source_file": "b0175bdb1ada22383dce175d-8588.pdf",
+    "source_sha256": "956bc23bcc8269c271f17436253c8ee21a8b1ef99769790280aeaa865fd2d363",
+    "pdf_page": 19
+  },
+  "b38df850d9381f3ee9fd846b:1": {
+    "name": "KARNAH",
+    "candidate": "M. YOUNAS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 12
+  },
+  "b38df850d9381f3ee9fd846b:13": {
+    "name": "URI",
+    "candidate": "M. M. KHAN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 24
+  },
+  "b38df850d9381f3ee9fd846b:14": {
+    "name": "KANGAN",
+    "candidate": "M. B. AHMAD",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 25
+  },
+  "b38df850d9381f3ee9fd846b:15": {
+    "name": "GANDERBAL",
+    "candidate": "M. M. BHAT",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 26
+  },
+  "b38df850d9381f3ee9fd846b:2": {
+    "name": "KUPWARA",
+    "candidate": "M. S. TANTRAY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 13
+  },
+  "b38df850d9381f3ee9fd846b:23": {
+    "name": "BEERWA",
+    "candidate": "A. QUDDUS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 34
+  },
+  "b38df850d9381f3ee9fd846b:24": {
+    "name": "KHAN SAHIB",
+    "candidate": "A. G. NAMTHALI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 35
+  },
+  "b38df850d9381f3ee9fd846b:28": {
+    "name": "RAJPURA",
+    "candidate": "G. M. RAJPORI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 39
+  },
+  "b38df850d9381f3ee9fd846b:29": {
+    "name": "PULWAMA",
+    "candidate": "M. SONAULLAH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 40
+  },
+  "b38df850d9381f3ee9fd846b:3": {
+    "name": "LOLAB",
+    "candidate": "G. N. WANI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 14
+  },
+  "b38df850d9381f3ee9fd846b:33": {
+    "name": "NOORABAD",
+    "candidate": "A. AZIY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 44
+  },
+  "b38df850d9381f3ee9fd846b:34": {
+    "name": "DEVSAR",
+    "candidate": "M. N. KOUL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 45
+  },
+  "b38df850d9381f3ee9fd846b:35": {
+    "name": "KULGAM",
+    "candidate": "M. Y. BHAT",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 46
+  },
+  "b38df850d9381f3ee9fd846b:36": {
+    "name": "NANDI",
+    "candidate": "A. REHMAN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 47
+  },
+  "b38df850d9381f3ee9fd846b:37": {
+    "name": "PAHALGAM",
+    "candidate": "M. LAL",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 48
+  },
+  "b38df850d9381f3ee9fd846b:38": {
+    "name": "BIJIBEHARA",
+    "candidate": "M. M> SYEED",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 49
+  },
+  "b38df850d9381f3ee9fd846b:39": {
+    "name": "ANANTNAG",
+    "candidate": "SHAMASUDDIN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 50
+  },
+  "b38df850d9381f3ee9fd846b:40": {
+    "name": "KOTHAR",
+    "candidate": "M. A. KHAN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 51
+  },
+  "b38df850d9381f3ee9fd846b:41": {
+    "name": "VERINAG",
+    "candidate": "M. QASIM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 52
+  },
+  "b38df850d9381f3ee9fd846b:42": {
+    "name": "NAUBUG",
+    "candidate": "HASSAN-UD-DIN",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 53
+  },
+  "b38df850d9381f3ee9fd846b:5": {
+    "name": "HANDWARA",
+    "candidate": "A. G. LONE",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 16
+  },
+  "b38df850d9381f3ee9fd846b:74": {
+    "name": "MENDHAR",
+    "candidate": "M. ASLAM",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3789-jammu-kashmir-1967/",
+    "source_file": "b38df850d9381f3ee9fd846b-8920.pdf",
+    "source_sha256": "f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a",
+    "pdf_page": 85
+  },
+  "b677cc6ad6a0d0c54546d9f0:19": {
+    "name": "MENDHAR",
+    "candidate": "PIR JAMAT ALI SHAH",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 29
+  },
+  "b677cc6ad6a0d0c54546d9f0:31": {
+    "name": "ANANTNAG",
+    "candidate": "SHAMAS - UD- DIN",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 41
+  },
+  "b677cc6ad6a0d0c54546d9f0:32": {
+    "name": "KOTHAR",
+    "candidate": "MANOHAR NATH KAUL",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 42
+  },
+  "b677cc6ad6a0d0c54546d9f0:33": {
+    "name": "NAUBUG BRANG VALLY",
+    "candidate": "NIZAM - UD- DIN",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 43
+  },
+  "b677cc6ad6a0d0c54546d9f0:34": {
+    "name": "DORU SHAHBAD",
+    "candidate": "MIR QASIM",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 44
+  },
+  "b677cc6ad6a0d0c54546d9f0:35": {
+    "name": "KHOWARPARA",
+    "candidate": "NOOR - UD - DIN - DAR",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 45
+  },
+  "b677cc6ad6a0d0c54546d9f0:36": {
+    "name": "DACHHINPORA",
+    "candidate": "MOHAMMAD SYED",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 46
+  },
+  "b677cc6ad6a0d0c54546d9f0:37": {
+    "name": "DEVASAR",
+    "candidate": "ABDUL AZIZ ZARGAR",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 47
+  },
+  "b677cc6ad6a0d0c54546d9f0:38": {
+    "name": "KULGAM",
+    "candidate": "MOHD. YAQUB BHAT",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 48
+  },
+  "b677cc6ad6a0d0c54546d9f0:39": {
+    "name": "NANDI",
+    "candidate": "ABDUL KABIR WANI",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 49
+  },
+  "b677cc6ad6a0d0c54546d9f0:40": {
+    "name": "NORBAD (NARWAW)",
+    "candidate": "GHULAM HUSSAIN KHAN",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 50
+  },
+  "b677cc6ad6a0d0c54546d9f0:41": {
+    "name": "SHOPIAN",
+    "candidate": "ABDUL MAJID BANDEY",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 51
+  },
+  "b677cc6ad6a0d0c54546d9f0:42": {
+    "name": "PAMPUR",
+    "candidate": "PEERZADA GHULAM JEELANI",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 52
+  },
+  "b677cc6ad6a0d0c54546d9f0:43": {
+    "name": "PULWAMA",
+    "candidate": "MASTER SANAULLAH SHEIKH",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 53
+  },
+  "b677cc6ad6a0d0c54546d9f0:44": {
+    "name": "TRAL",
+    "candidate": "A.G. TRALI",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 54
+  },
+  "b677cc6ad6a0d0c54546d9f0:48": {
+    "name": "TANKIPURA (SRINAGAR CITY)",
+    "candidate": "G.M. SADIQ",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 58
+  },
+  "b677cc6ad6a0d0c54546d9f0:50": {
+    "name": "SAFA KADAL (SRINAGAR CITY)",
+    "candidate": "BAKHSHI GHULAM MOHAMMAD",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 60
+  },
+  "b677cc6ad6a0d0c54546d9f0:52": {
+    "name": "KANGAN",
+    "candidate": "MAIN NIZAM UD-DIN",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 62
+  },
+  "b677cc6ad6a0d0c54546d9f0:53": {
+    "name": "GANDERBAL",
+    "candidate": "ABDUL SALAM AITU",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 63
+  },
+  "b677cc6ad6a0d0c54546d9f0:54": {
+    "name": "HAZARATBAL",
+    "candidate": "MOHD. YAHYA SIDIQI",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 64
+  },
+  "b677cc6ad6a0d0c54546d9f0:55": {
+    "name": "BIRWA",
+    "candidate": "SYED ABDUL QUDUS AZAD",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 65
+  },
+  "b677cc6ad6a0d0c54546d9f0:59": {
+    "name": "CHAR  I  SHARIFF",
+    "candidate": "BAKSHI ABDUL RASHID",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 69
+  },
+  "b677cc6ad6a0d0c54546d9f0:61": {
+    "name": "TANGAMARG",
+    "candidate": "MOHAMMAD AKBAR",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 71
+  },
+  "b677cc6ad6a0d0c54546d9f0:62": {
+    "name": "MAGAM",
+    "candidate": "SYED ABBAS",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 72
+  },
+  "b677cc6ad6a0d0c54546d9f0:63": {
+    "name": "PATTAN",
+    "candidate": "GHULAM MOHAMMAD BHAT ZALIB",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 73
+  },
+  "b677cc6ad6a0d0c54546d9f0:64": {
+    "name": "SOPORE",
+    "candidate": "ABDUL GHANI MALIK",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 74
+  },
+  "b677cc6ad6a0d0c54546d9f0:65": {
+    "name": "RAFIABAD (HAMAL)",
+    "candidate": "GHULAM RASUL KAR",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 75
+  },
+  "b677cc6ad6a0d0c54546d9f0:67": {
+    "name": "SONAWARI",
+    "candidate": "ABDUL KHALIQ BHAT",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 77
+  },
+  "b677cc6ad6a0d0c54546d9f0:69": {
+    "name": "DRUGMULLA",
+    "candidate": "MOHD. SULTAN TANTERY",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 79
+  },
+  "b677cc6ad6a0d0c54546d9f0:70": {
+    "name": "LOLAB",
+    "candidate": "GHULAM NABI WANI",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 80
+  },
+  "b677cc6ad6a0d0c54546d9f0:71": {
+    "name": "RAMHAL",
+    "candidate": "GHULAM MOHAMMAD WANI",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 81
+  },
+  "b677cc6ad6a0d0c54546d9f0:72": {
+    "name": "KARNAH",
+    "candidate": "MOHD. YUNIS KHAN",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 82
+  },
+  "b677cc6ad6a0d0c54546d9f0:73": {
+    "name": "URI",
+    "candidate": "MOHD. AFZAL KHAN RAJA",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 83
+  },
+  "b677cc6ad6a0d0c54546d9f0:75": {
+    "name": "KARGIL",
+    "candidate": "AGHA SAYAD IBRAHIM SHAH",
+    "party": "NC",
+    "source_url": "https://old.eci.gov.in/files/file/3788-jammu-kashmir-1962/",
+    "source_file": "b677cc6ad6a0d0c54546d9f0-8918.pdf",
+    "source_sha256": "1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5",
+    "pdf_page": 85
+  },
+  "b9bae5d3aef4239776cec441:23": {
+    "name": "TARN TARAN",
+    "candidate": "DILBAG SINGH (UNCONTESTED)",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3451-punjab-1992/",
+    "source_file": "b9bae5d3aef4239776cec441-7992.pdf",
+    "source_sha256": "0a2770d4f7ed9c3c9500efa725950a02ef9e528cbafff40c3710ea7b207e08fd",
+    "pdf_page": 35
+  },
+  "b9bae5d3aef4239776cec441:75": {
+    "name": "SAMANA",
+    "candidate": "AMARINDER SINGH (UNCONTESTED)",
+    "party": "SAD",
+    "source_url": "https://old.eci.gov.in/files/file/3451-punjab-1992/",
+    "source_file": "b9bae5d3aef4239776cec441-7992.pdf",
+    "source_sha256": "0a2770d4f7ed9c3c9500efa725950a02ef9e528cbafff40c3710ea7b207e08fd",
+    "pdf_page": 87
+  },
+  "b9dc2765d7ca0d1c746693ea:2": {
+    "name": "AIJAL EAST (ST)",
+    "candidate": "A . THANGLURA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3994-assam-1967/",
+    "source_file": "b9dc2765d7ca0d1c746693ea-9468.pdf",
+    "source_sha256": "e9e007293b4dd92500c74975cc344ee17f03f0cf86ee8106106ee121cd5a56f9",
+    "pdf_page": 14
+  },
+  "b9dc2765d7ca0d1c746693ea:24": {
+    "name": "NONGPOH (SC)",
+    "candidate": "B . B . LYNGDOH UNCONTESTED",
+    "party": "AHL",
+    "source_url": "https://old.eci.gov.in/files/file/3994-assam-1967/",
+    "source_file": "b9dc2765d7ca0d1c746693ea-9468.pdf",
+    "source_sha256": "e9e007293b4dd92500c74975cc344ee17f03f0cf86ee8106106ee121cd5a56f9",
+    "pdf_page": 36
+  },
+  "b9dc2765d7ca0d1c746693ea:26": {
+    "name": "CHERRAPUNJI (ST)",
+    "candidate": "S . D . D . N . ROY UNCONTESTED",
+    "party": "AHL",
+    "source_url": "https://old.eci.gov.in/files/file/3994-assam-1967/",
+    "source_file": "b9dc2765d7ca0d1c746693ea-9468.pdf",
+    "source_sha256": "e9e007293b4dd92500c74975cc344ee17f03f0cf86ee8106106ee121cd5a56f9",
+    "pdf_page": 38
+  },
+  "b9dc2765d7ca0d1c746693ea:3": {
+    "name": "AIJAL WEST (ST)",
+    "candidate": "A . THANGLURA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3994-assam-1967/",
+    "source_file": "b9dc2765d7ca0d1c746693ea-9468.pdf",
+    "source_sha256": "e9e007293b4dd92500c74975cc344ee17f03f0cf86ee8106106ee121cd5a56f9",
+    "pdf_page": 15
+  },
+  "b9dc2765d7ca0d1c746693ea:61": {
+    "name": "HAJO",
+    "candidate": "B . R . MEDHI UNCONTESTED",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3994-assam-1967/",
+    "source_file": "b9dc2765d7ca0d1c746693ea-9468.pdf",
+    "source_sha256": "e9e007293b4dd92500c74975cc344ee17f03f0cf86ee8106106ee121cd5a56f9",
+    "pdf_page": 73
+  },
+  "c2f796a4415124c983df09b7:25": {
+    "name": "MAO WEST (ST)",
+    "candidate": "S . LARHO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3702-manipur-1967/",
+    "source_file": "c2f796a4415124c983df09b7-8703.pdf",
+    "source_sha256": "1fa5d39a4247f7c8e5a54164c80d98b8c20e762f5ee43d4741896ac3ee96f95c",
+    "pdf_page": 34
+  },
+  "c6ebe7e62d700bde90512d9b:19": {
+    "name": "VAMANA PURAM",
+    "candidate": "NEELAKANDA PILLAI, K . P .",
+    "party": "SP",
+    "source_url": "https://old.eci.gov.in/files/file/4093-travancore-cochin-1951/",
+    "source_file": "c6ebe7e62d700bde90512d9b-9698.pdf",
+    "source_sha256": "627c16a6ecf581ccb56c8f1274daa27040bb01181d15c5e3b47617de0fd58267",
+    "pdf_page": 30
+  },
+  "c6ebe7e62d700bde90512d9b:40": {
+    "name": "KALLUPARA",
+    "candidate": "NINAN, O . C .",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4093-travancore-cochin-1951/",
+    "source_file": "c6ebe7e62d700bde90512d9b-9698.pdf",
+    "source_sha256": "627c16a6ecf581ccb56c8f1274daa27040bb01181d15c5e3b47617de0fd58267",
+    "pdf_page": 51
+  },
+  "c6ebe7e62d700bde90512d9b:58": {
+    "name": "VIJAYAPURAM",
+    "candidate": "P . T . THOMAS",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4093-travancore-cochin-1951/",
+    "source_file": "c6ebe7e62d700bde90512d9b-9698.pdf",
+    "source_sha256": "627c16a6ecf581ccb56c8f1274daa27040bb01181d15c5e3b47617de0fd58267",
+    "pdf_page": 69
+  },
+  "d31cb3f180e44ec4b9e59209:11": {
+    "name": "DEOPRAYAG",
+    "candidate": "VINAY LAKSHMI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/",
+    "source_file": "d31cb3f180e44ec4b9e59209-7464.pdf",
+    "source_sha256": "7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c",
+    "pdf_page": 33
+  },
+  "d31cb3f180e44ec4b9e59209:12": {
+    "name": "TEHRI",
+    "candidate": "SURAT CHAND",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/",
+    "source_file": "d31cb3f180e44ec4b9e59209-7464.pdf",
+    "source_sha256": "7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c",
+    "pdf_page": 34
+  },
+  "d31cb3f180e44ec4b9e59209:13": {
+    "name": "RAWAIN",
+    "candidate": "JAYENDRA SINGH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/",
+    "source_file": "d31cb3f180e44ec4b9e59209-7464.pdf",
+    "source_sha256": "7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c",
+    "pdf_page": 35
+  },
+  "d31cb3f180e44ec4b9e59209:60": {
+    "name": "KANTH",
+    "candidate": "JITENDRA PRATAP SINGH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/",
+    "source_file": "d31cb3f180e44ec4b9e59209-7464.pdf",
+    "source_sha256": "7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c",
+    "pdf_page": 82
+  },
+  "d4f4dc0eb0e3d6961ecf2b4a:131": {
+    "name": "BIJAPUR (ST)",
+    "candidate": "HIRA SHAH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3729-madhya-pradesh-1962/",
+    "source_file": "d4f4dc0eb0e3d6961ecf2b4a-8774.pdf",
+    "source_sha256": "f1f45af916664175b214a4744f0975f27f01baab69465b8f647579a1c5163588",
+    "pdf_page": 149
+  },
+  "d4f4dc0eb0e3d6961ecf2b4a:191": {
+    "name": "LAKHNADON (ST)",
+    "candidate": "VASANT RAO UIKEY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3729-madhya-pradesh-1962/",
+    "source_file": "d4f4dc0eb0e3d6961ecf2b4a-8774.pdf",
+    "source_sha256": "f1f45af916664175b214a4744f0975f27f01baab69465b8f647579a1c5163588",
+    "pdf_page": 209
+  },
+  "d4f4dc0eb0e3d6961ecf2b4a:198": {
+    "name": "PAGARA (ST)",
+    "candidate": "UDAIBHANSHAH MARDANSHAH",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3729-madhya-pradesh-1962/",
+    "source_file": "d4f4dc0eb0e3d6961ecf2b4a-8774.pdf",
+    "source_sha256": "f1f45af916664175b214a4744f0975f27f01baab69465b8f647579a1c5163588",
+    "pdf_page": 216
+  },
+  "d778612fb67fe7025a2f4ef2:30": {
+    "name": "YANAM",
+    "candidate": "KAMISHETTY SRI PARASURAMA VARA PRASADA RAO NAIDU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3421-puducherry-1964/",
+    "source_file": "d778612fb67fe7025a2f4ef2-7911.pdf",
+    "source_sha256": "fe828333a954b9beebcfd6b0e66562d0260200d9f9e640c4d9150f24b2e38f77",
+    "pdf_page": 40
+  },
+  "da0b1158b7bb6a9a6de95bb2:29": {
+    "name": "NIAUSA KANUBARI",
+    "candidate": "WANGHLU WANGSHU",
+    "party": "PPA",
+    "source_url": "https://old.eci.gov.in/files/file/4028-arunachal-pradesh-1980/",
+    "source_file": "da0b1158b7bb6a9a6de95bb2-9559.pdf",
+    "source_sha256": "c0fc3ea576192043e2c573d5f87723b8789bb847b40e8380a234e00b5a43f8cf",
+    "pdf_page": 39
+  },
+  "dc469be7915c7a5a9e699aac:15": {
+    "name": "SAGALEE (ST)",
+    "candidate": "SHRI NABAM TUKI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4038-arunachal-pradesh-2004/",
+    "source_file": "dc469be7915c7a5a9e699aac-9579.pdf",
+    "source_sha256": "a6a2d830c8969fc7364cd70457593b46bc5edf5b854284bae52668ee9d05f76b",
+    "pdf_page": 27
+  },
+  "dc469be7915c7a5a9e699aac:3": {
+    "name": "MUKTO (ST)",
+    "candidate": "DORJEE KHANDU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4038-arunachal-pradesh-2004/",
+    "source_file": "dc469be7915c7a5a9e699aac-9579.pdf",
+    "source_sha256": "a6a2d830c8969fc7364cd70457593b46bc5edf5b854284bae52668ee9d05f76b",
+    "pdf_page": 15
+  },
+  "dc469be7915c7a5a9e699aac:4": {
+    "name": "DIRANG (ST)",
+    "candidate": "SHRI TSERING GYURME",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4038-arunachal-pradesh-2004/",
+    "source_file": "dc469be7915c7a5a9e699aac-9579.pdf",
+    "source_sha256": "a6a2d830c8969fc7364cd70457593b46bc5edf5b854284bae52668ee9d05f76b",
+    "pdf_page": 16
+  },
+  "e891f2487e5ba45fc8e7b854:20": {
+    "name": "CHOPRA",
+    "candidate": "MAHAMMAD AFFAQUE CHOUDHURY",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3182-west-bengal-1957/",
+    "source_file": "e891f2487e5ba45fc8e7b854-7301.pdf",
+    "source_sha256": "651da305495d881157fec383c20952e0d27cf09e807313a9a5f9224119d6e294",
+    "pdf_page": 36
+  },
+  "f314a5fdc1b90616322346d0:43": {
+    "name": "REWARI",
+    "candidate": "SUMITRA DEVI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/3443-punjab-1957/",
+    "source_file": "f314a5fdc1b90616322346d0-7976.pdf",
+    "source_sha256": "3cac3109e47bfc684ee13c15eef73d3b505bc5cacc65b7684226f1a51c5aa986",
+    "pdf_page": 57
+  },
+  "fc893b0a5e63a3d13e3e848e:41": {
+    "name": "SIJU (ST)",
+    "candidate": "WILLIAMSON SANGMA (UNCONTESTED)",
+    "party": "AHL",
+    "source_url": "https://old.eci.gov.in/files/file/3669-meghalaya-1972/",
+    "source_file": "fc893b0a5e63a3d13e3e848e-8613.pdf",
+    "source_sha256": "9e35640ce02e1cab08c123df2ca591ba8865dc0107f54115106c54daac92d0cb",
+    "pdf_page": 51
+  },
+  "fc893b0a5e63a3d13e3e848e:59": {
+    "name": "DALAMGIRI (ST)",
+    "candidate": "IRA MARAK (UNCONTESTED)",
+    "party": "AHL",
+    "source_url": "https://old.eci.gov.in/files/file/3669-meghalaya-1972/",
+    "source_file": "fc893b0a5e63a3d13e3e848e-8613.pdf",
+    "source_sha256": "9e35640ce02e1cab08c123df2ca591ba8865dc0107f54115106c54daac92d0cb",
+    "pdf_page": 69
+  },
+  "fc893b0a5e63a3d13e3e848e:60": {
+    "name": "SALMANPARA (ST)",
+    "candidate": "SAMARENDRA SANGMA (UNCONTESTED)",
+    "party": "AHL",
+    "source_url": "https://old.eci.gov.in/files/file/3669-meghalaya-1972/",
+    "source_file": "fc893b0a5e63a3d13e3e848e-8613.pdf",
+    "source_sha256": "9e35640ce02e1cab08c123df2ca591ba8865dc0107f54115106c54daac92d0cb",
+    "pdf_page": 70
+  }
+}

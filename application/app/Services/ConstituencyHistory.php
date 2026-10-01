@@ -50,7 +50,7 @@ class ConstituencyHistory
                 $row['reason'] = null;
                 $row['source_url'] = $data['source_url'];
                 $row['url'] = route('elections.assembly', ['edition' => $archive, 'state' => 'Uttar Pradesh', 'code' => $original['code']]);
-                $row['result'] = app(HistoricalElectionAnalytics::class)->singleSeatResult($record);
+                $row['result'] = app(HistoricalElectionAnalytics::class)->singleSeatResult($record, $archive);
                 $row['winner_party'] = $row['result']['party'] ?? null;
             }
             $rows[] = $row;
@@ -153,7 +153,7 @@ class ConstituencyHistory
             $row['reason'] = null;
             $row['source_url'] = $data['source_url'];
             $row['url'] = route('elections.history', ['edition' => $archive, 'state' => $original['state_name'] ?? $original['state_code'], 'code' => $original['code']]);
-            $row['result'] = app(HistoricalElectionAnalytics::class)->singleSeatResult($record);
+            $row['result'] = app(HistoricalElectionAnalytics::class)->singleSeatResult($record, $archive);
             $row['winner_party'] = $row['result']['party'] ?? null;
             $rows[] = $row;
         }

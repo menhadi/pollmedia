@@ -21,6 +21,44 @@ class HistoricalElectionAnalyticsTest extends TestCase
         ]];
     }
 
+    public function test_officially_uncontested_winner_is_shown_without_votes_or_margin(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $record = ['code' => 150, 'name' => 'DESURI (SC)', 'votes_polled' => 0, 'candidates' => [
+            ['candidate_name' => 'DINESH RAI DANGI', 'party_at_election' => 'INC', 'votes' => 0],
+        ]];
+        $result = $analytics->singleSeatResult($record, '00fa45113ca5b5cde46a2802');
+        $this->assertSame(['winner' => 'DINESH RAI DANGI', 'party' => 'INC', 'margin' => null, 'derived' => false, 'uncontested' => true], $result);
+        $this->assertNull($analytics->summarize([$record])['turnout']);
+        $this->assertNull($analytics->summarize([$record])['margin']);
+
+        $record['candidates'][0]['candidate_name'] = 'NOTA';
+        $this->assertNull($analytics->singleSeatResult($record, '00fa45113ca5b5cde46a2802'));
+        $record['candidates'][0]['candidate_name'] = 'DINESH RAI DANGI';
+        $record['candidates'][0]['votes'] = 1;
+        $this->assertNull($analytics->singleSeatResult($record, '00fa45113ca5b5cde46a2802'));
+    }
+
+    public function test_unverified_single_candidate_zero_does_not_become_an_uncontested_winner(): void
+    {
+        $record = ['code' => 144, 'name' => 'FALTA', 'candidates' => [
+            ['candidate_name' => 'Candidate A', 'party_at_election' => 'AAA', 'votes' => 0],
+        ]];
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->singleSeatResult($record, '43f931b20e1fe26e3e1f72ec'));
+    }
+
+    public function test_source_summary_can_confirm_a_recent_uncontested_winner(): void
+    {
+        $record = ['code' => 31, 'name' => 'Akuluto (ST)', 'candidates' => [
+            ['candidate_name' => 'Kazheto', 'party_at_election' => 'BJP', 'votes' => 0],
+        ], 'summary_source_rows' => [
+            ['Constituency Name', '31-Akuluto-(ST)'],
+            ['Winner', 'BJP', 'Kazheto'],
+            ['*THE ELECTION IN AC-31: AKULUTO (ST) WAS UNCONTESTED.'],
+        ]];
+        $this->assertTrue(app(HistoricalElectionAnalytics::class)->singleSeatResult($record, '060caae725598a42799ba636')['uncontested']);
+    }
+
     public function test_turnout_is_weighted_and_missing_or_disputed_rows_are_not_zero(): void
     {
         $rows = [$this->record(1, 100, 80, 50, 30), $this->record(2, 900, 450, 250, 200)];

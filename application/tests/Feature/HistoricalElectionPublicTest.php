@@ -208,6 +208,30 @@ class HistoricalElectionPublicTest extends TestCase
             ->assertOk()->assertSee('Winner: Candidate One')->assertSee('12,344 votes');
     }
 
+    public function test_official_summary_shows_uncontested_winner_without_a_zero_margin(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition(2022, 'ac');
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0]['candidates'][0]['votes'] = 0;
+        $data['records'][0]['votes_polled'] = 0;
+        $data['records'][0]['summary_source_rows'] = [
+            ['Constituency Name', '1-SEOHARA'],
+            ['Winner', 'PARTY', 'Candidate One'],
+            ['THE ELECTION IN AC-1: SEOHARA WAS UNCONTESTED.'],
+        ];
+        Storage::disk('local')->put($path, json_encode($data));
+
+        $this->get(route('elections.assembly', ['edition' => $id, 'state' => 'Uttar Pradesh']))
+            ->assertOk()->assertSee('Candidate One')->assertSee('Uncontested');
+        $this->get(route('elections.assembly', ['edition' => $id, 'state' => 'Uttar Pradesh', 'code' => 1]))
+            ->assertOk()->assertSee('Winner: Candidate One')->assertSee('Uncontested; no poll or winning margin')
+            ->assertDontSee('Margin: 0 votes');
+        $this->get(route('elections.assembly', ['edition' => $id, 'state' => 'Uttar Pradesh', 'code' => 1, 'format' => 'report']))
+            ->assertOk()->assertSee('Uncontested; no poll or winning margin')->assertDontSee('Margin:</strong> 0 votes', false);
+    }
+
     public function test_candidate_supported_winner_and_margin_show_despite_summary_discrepancy(): void
     {
         Storage::fake('local');

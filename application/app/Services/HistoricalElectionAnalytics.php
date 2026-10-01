@@ -167,11 +167,16 @@ class HistoricalElectionAnalytics
             'margin_percent' => $marginPercentages ? array_sum($marginPercentages) / count($marginPercentages) : null, 'winners' => $winners];
     }
 
-    /** @return array{winner: string, party: string|null, margin: int, derived: bool}|null */
-    public function singleSeatResult(array $record): ?array
+    /** @return array{winner: string, party: string|null, margin: int|null, derived: bool, uncontested?: bool}|null */
+    public function singleSeatResult(array $record, ?string $edition = null): ?array
     {
         if (($record['number_of_seats'] ?? 1) !== 1) {
             return null;
+        }
+
+        $uncontested = $this->uncontestedResult($record, $edition);
+        if ($uncontested !== null) {
+            return $uncontested;
         }
 
         if (is_string($record['winner'] ?? null) && trim($record['winner']) !== '' && $this->count($record['margin'] ?? null)) {
@@ -190,6 +195,41 @@ class HistoricalElectionAnalytics
         }
 
         return ['winner' => $ranked[0]['candidate_name'], 'party' => $ranked[0]['party_at_election'], 'margin' => $ranked[0]['votes'] - $ranked[1]['votes'], 'derived' => true];
+    }
+
+    private function uncontestedResult(array $record, ?string $edition): ?array
+    {
+        $candidates = $record['candidates'] ?? [];
+        if (count($candidates) !== 1 || ! is_array($candidates[0]) || ! in_array($candidates[0]['votes'] ?? null, [null, 0], true)
+            || ! in_array($record['votes_polled'] ?? null, [null, 0], true) || ! in_array($record['margin'] ?? null, [null, 0], true)) {
+            return null;
+        }
+        $candidate = $candidates[0];
+        $name = trim($candidate['candidate_name'] ?? '');
+        $party = trim($candidate['party_at_election'] ?? '');
+        if ($name === '' || $party === '' || ($candidate['is_nota'] ?? false) || strtoupper($name) === 'NOTA' || strtoupper($party) === 'NOTA') {
+            return null;
+        }
+
+        $confirmed = false;
+        if ($edition !== null && preg_match('/^[a-f0-9]{24}$/', $edition)) {
+            static $evidence = null;
+            $evidence ??= json_decode(file_get_contents(database_path('fixtures/official-uncontested-results.json')), true, 512, JSON_THROW_ON_ERROR);
+            $source = $evidence[$edition.':'.($record['code'] ?? '')] ?? null;
+            $recordName = trim($record['constituency_name'] ?? basename(str_replace(' / ', '/', $record['name'] ?? '')));
+            $confirmed = $source !== null && $source['name'] === $recordName
+                && $source['candidate'] === $name && $source['party'] === $party;
+        }
+        if (! $confirmed && ! empty($record['summary_source_rows'])) {
+            $summaryText = json_encode($record['summary_source_rows'], JSON_THROW_ON_ERROR);
+            $confirmed = stripos($summaryText, 'uncontested') !== false
+                && stripos($summaryText, $name) !== false;
+        }
+        if (! $confirmed) {
+            return null;
+        }
+
+        return ['winner' => $name, 'party' => $party, 'margin' => null, 'derived' => false, 'uncontested' => true];
     }
 
     private function count(mixed $value): bool

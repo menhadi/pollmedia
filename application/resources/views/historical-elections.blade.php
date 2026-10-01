@@ -43,7 +43,7 @@
 <p>{{ $stateResults->count() }} available election results. † marks reported figures with a data note. Open a candidate table for the full figures and official references.</p>
 <div class="table"><table><caption>Results from the selected official edition</caption><thead><tr><th scope="col">Constituency</th><th scope="col">{{ \App\Services\PublicLanguage::text('Winner') }}</th><th scope="col">Party at election</th><th scope="col">Margin (votes)</th><th scope="col">Details</th></tr></thead><tbody>
 @foreach($stateResults as $record)<tr><th scope="row">{{ $record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code'] }} / {{ $record['constituency_name'] ?? $record['name'] }} @if($record['has_warning'])<a href="#state-note-{{ $record['code'] }}" aria-label="Data note for {{ $record['constituency_name'] ?? $record['name'] }}">†</a>@endif</th>
-<td>{{ $record['display_result']['winner'] ?? 'See candidate table' }}@if($record['has_warning'] && $record['display_result']) †@endif</td><td>{{ $record['winner_party'] ?? '—' }}</td><td>{{ $record['display_result'] ? number_format($record['display_result']['margin']).($record['has_warning'] ? ' †' : '') : '—' }}</td>
+<td>{{ $record['display_result']['winner'] ?? 'See candidate table' }}@if($record['has_warning'] && $record['display_result']) †@endif</td><td>{{ $record['winner_party'] ?? '—' }}</td><td>{{ ($record['display_result']['uncontested'] ?? false) ? 'Uncontested' : (isset($record['display_result']['margin']) ? number_format($record['display_result']['margin']).($record['has_warning'] ? ' †' : '') : '—') }}</td>
 <td><a href="{{ route($archiveRoute, ['edition'=>$edition,'state'=>$state,'code'=>$record['code']]) }}">Candidate table</a> · <a href="{{ route('feedback.create',['path'=>route($archiveRoute,['edition'=>$edition,'state'=>$state,'code'=>$record['code']],false),'category'=>'data']) }}">Report issue</a></td></tr>@endforeach
 </tbody></table></div>
 @foreach($stateResults->where('has_warning', true) as $record)<p class="small" id="state-note-{{ $record['code'] }}"><strong>† {{ $record['constituency_name'] ?? $record['name'] }}:</strong> {{ $record['error'] ?? 'This record requires review.' }} See the candidate table for available figures.</p>@endforeach
@@ -75,14 +75,14 @@
 <p class="small">Navigation includes verified links only. Historical names and boundaries can change between elections; check the boundary references when comparing results.</p>
 @endif
 @endif
-@if($selected['display_result'])<p><strong>Winner: {{ $selected['display_result']['winner'] }}@if($selected['has_warning']) †@endif</strong> · Margin: {{ number_format($selected['display_result']['margin']) }} votes @if($selected['has_warning'])†@endif</p>@endif
+@if($selected['display_result'])<p><strong>Winner: {{ $selected['display_result']['winner'] }}@if($selected['has_warning']) †@endif</strong> @if($selected['display_result']['uncontested'] ?? false) · Uncontested; no poll or winning margin @else · Margin: {{ number_format($selected['display_result']['margin']) }} votes @if($selected['has_warning'])†@endif @endif</p>@endif
 @php
     $summaryVoteLabel = ($selected['source_warning_code'] ?? '') === 'workbook_pdf_summary'
         ? (isset($selected['summary_totals']['nota_votes']) ? 'Valid candidate votes' : 'Source valid votes (including NOTA)')
         : (in_array($selected['source_warning_code'] ?? '', ['summary_turnout_with_detail_warnings', 'summary_only_turnout'], true)
             ? 'Valid votes (official summary)' : 'Valid candidate votes');
 @endphp
-<div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>$summaryVoteLabel] as $key=>$label)@php $value = $key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings', 'summary_only_turnout'], true) ? ($selected['summary_totals'][$key] ?? null) : ($selected[$key] ?? null); @endphp<div class="stat"><span>{{ $label }}</span><strong>{{ $value !== null ? number_format($value) : '—' }}</strong></div>@endforeach</div>
+<div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>$summaryVoteLabel] as $key=>$label)@php $value = $key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings', 'summary_only_turnout'], true) ? ($selected['summary_totals'][$key] ?? null) : ($selected[$key] ?? null); @endphp<div class="stat"><span>{{ $label }}</span><strong>{{ ($selected['display_result']['uncontested'] ?? false) && $value === 0 ? '—' : ($value !== null ? number_format($value) : '—') }}</strong></div>@endforeach</div>
 @php
     $showSymbols = collect($selected['candidates'])->contains(fn ($row) => !empty($row['election_symbol']));
 @endphp
@@ -100,7 +100,7 @@
 <td>{{ $candidate['election_symbol'] ?? 'Not reported' }}</td>
 @endif
 @foreach(['general_votes','postal_votes','votes'] as $key)
-<td>{{ isset($candidate[$key]) ? number_format($candidate[$key]) : 'Not reported' }}</td>
+<td>{{ ($selected['display_result']['uncontested'] ?? false) && ($candidate[$key] ?? null) === 0 ? '—' : (isset($candidate[$key]) ? number_format($candidate[$key]) : 'Not reported') }}</td>
 @endforeach
 </tr>
 @empty

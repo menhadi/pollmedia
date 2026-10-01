@@ -123,7 +123,7 @@ class HistoricalElectionController extends Controller
                 abort_unless($selected, 404);
                 $original = $selected;
                 $selected = $reviews->apply($edition, $selected, $data['source_sha256']);
-                $selected['display_result'] = $analytics->singleSeatResult($selected);
+                $selected['display_result'] = $analytics->singleSeatResult($selected, $edition);
                 if ($download) {
                     return $this->download($data, [$selected], $state, $kind, $edition, (string) $selected['code']);
                 }
@@ -134,7 +134,7 @@ class HistoricalElectionController extends Controller
             } elseif ($state) {
                 $stateResults = $constituencies->map(function (array $original) use ($reviews, $edition, $data, $analytics): array {
                     $record = $reviews->apply($edition, $original, $data['source_sha256']);
-                    $record['display_result'] = $analytics->singleSeatResult($record);
+                    $record['display_result'] = $analytics->singleSeatResult($record, $edition);
                     $record['winner_party'] = $record['display_result']['party'] ?? null;
 
                     return $record;

@@ -8,7 +8,7 @@
     $seoTitle = $place->name.' election history & comparisons · Pollmedia';
     $seoDescription = 'Compare linked election years for '.$place->name.', with candidates, parties, winning margins and official boundary references.';
     $breadcrumbs = ['India' => route('home'), $place->name.' '.strtoupper($place->type) => $placeUrl, 'Election history' => $canonical];
-    $chartRows = collect($comparison['rows'])->filter(fn ($row) => !empty($row['result']))->sortByDesc('year');
+    $chartRows = collect($comparison['rows'])->filter(fn ($row) => isset($row['result']['margin']))->sortByDesc('year');
     $maxMargin = $chartRows->max(fn ($row) => $row['result']['margin']) ?: 1;
 @endphp
 @include('seo-metadata')
@@ -23,7 +23,7 @@
 @foreach($comparison['rows'] as $row)
 @php($record = $row['record'])
 <tr><th scope="row">{{ $row['year'] }} @if($record && $record['has_warning'])<a href="#note-{{ $row['year'] }}" aria-label="Data note for {{ $row['year'] }}">†</a>@endif</th>
-@if($record)<td>{{ $row['result']['winner'] ?? 'See candidate table' }}{{ $record['has_warning'] && !empty($row['result']) ? ' †' : '' }}</td><td>{{ $row['winner_party'] ?? '—' }}</td><td>{{ !empty($row['result']) ? number_format($row['result']['margin']).($record['has_warning'] ? ' †' : '') : '—' }}</td><td>{{ isset($record['electors']) ? number_format($record['electors']) : 'Not reported' }}</td><td>{{ isset($record['votes_polled']) ? number_format($record['votes_polled']) : 'Not reported' }}</td><td><a href="{{ $row['url'] }}">Candidate table</a> · <a href="{{ $row['source_url'] }}" target="_blank" rel="noreferrer">ECI source ↗</a> · <a href="{{ route('feedback.create',['path'=>parse_url($row['url'],PHP_URL_PATH).(parse_url($row['url'],PHP_URL_QUERY)?'?'.parse_url($row['url'],PHP_URL_QUERY):''),'category'=>'data']) }}">Report issue</a></td>
+@if($record)<td>{{ $row['result']['winner'] ?? 'See candidate table' }}{{ $record['has_warning'] && !empty($row['result']) ? ' †' : '' }}</td><td>{{ $row['winner_party'] ?? '—' }}</td><td>{{ ($row['result']['uncontested'] ?? false) ? 'Uncontested' : (isset($row['result']['margin']) ? number_format($row['result']['margin']).($record['has_warning'] ? ' †' : '') : '—') }}</td><td>{{ isset($record['electors']) ? number_format($record['electors']) : 'Not reported' }}</td><td>{{ ($row['result']['uncontested'] ?? false) ? 'Not reported' : (isset($record['votes_polled']) ? number_format($record['votes_polled']) : 'Not reported') }}</td><td><a href="{{ $row['url'] }}">Candidate table</a> · <a href="{{ $row['source_url'] }}" target="_blank" rel="noreferrer">ECI source ↗</a> · <a href="{{ route('feedback.create',['path'=>parse_url($row['url'],PHP_URL_PATH).(parse_url($row['url'],PHP_URL_QUERY)?'?'.parse_url($row['url'],PHP_URL_QUERY):''),'category'=>'data']) }}">Report issue</a></td>
 @else<td colspan="6">{{ $row['reason'] }}</td>@endif
 </tr>
 @endforeach
