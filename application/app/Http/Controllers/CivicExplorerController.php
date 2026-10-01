@@ -76,9 +76,12 @@ class CivicExplorerController extends Controller
             ->groupBy('edition_id', 'state_code')->get()->keyBy(fn ($row) => $row->edition_id.':'.$row->state_code);
         $stateOptions = DB::table('census_catalogue_rows')->whereIn('edition_id', $editions->where('year', $year)->pluck('id'))
             ->where('level', 'STATE')->where('residence', 'Total')->orderBy('name')->get()
-            ->groupBy(fn ($row) => $row->state_code.':'.$editions->firstWhere('id', $row->edition_id)->scope)->map(function ($rows) use ($districtCounts) {
-                return $rows->sortByDesc(fn ($row) => $districtCounts->get($row->edition_id.':'.$row->state_code)?->total ?? 0)->first();
-            })->values();
+            ->groupBy('state_code')->map(function ($rows) use ($districtCounts) {
+                $option = clone $rows->sortByDesc(fn ($row) => $districtCounts->get($row->edition_id.':'.$row->state_code)?->total ?? 0)->first();
+                $option->display_name = Str::title(trim(preg_replace('/[\s@*#†‡]+$/u', '', $option->name)));
+
+                return $option;
+            })->sortBy('display_name')->values();
         $districtOptions = $anchor && $anchor->level === 'STATE'
             ? DB::table('census_catalogue_rows')->where('edition_id', $anchor->edition_id)->where('state_code', $anchor->state_code)
                 ->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('name')->get()

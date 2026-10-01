@@ -11,13 +11,16 @@ class CivicExplorerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_state_dropdown_keeps_different_boundary_scopes_separate(): void
+    public function test_state_dropdown_groups_navigation_without_changing_source_names_or_boundaries(): void
     {
         $first = $this->fixture(1901);
         $second = $this->fixture(1901);
         DB::table('census_editions')->where('id', $second['edition'])->update(['scope' => 'Different historical boundaries']);
+        DB::table('census_catalogue_rows')->where('id', $second['STATE'])->update(['name' => 'STATE ALPHA @@']);
         $this->get(route('civic.index', ['year' => 1901]))->assertOk()
-            ->assertViewHas('stateOptions', fn ($rows) => $rows->count() === 2);
+            ->assertViewHas('stateOptions', fn ($rows) => $rows->count() === 1 && $rows->first()->display_name === 'State Alpha');
+        $this->assertDatabaseHas('census_catalogue_rows', ['id' => $second['STATE'], 'name' => 'STATE ALPHA @@']);
+        $this->assertDatabaseHas('census_editions', ['id' => $second['edition'], 'scope' => 'Different historical boundaries']);
         $this->get(route('civic.place', ['record' => $first['STATE']]))->assertOk()
             ->assertViewHas('districtOptions', fn ($rows) => $rows->every(fn ($row) => $row->edition_id === $first['edition']));
     }
