@@ -52,11 +52,12 @@ class CivicExplorerController extends Controller
         $anchor = $record ? DB::table('census_catalogue_rows')->where('id', $record)->whereIn('edition_id', $editions->pluck('id'))->first() : null;
         abort_if($record && ! $anchor, 404);
         $anchorEdition = $anchor ? $editions->firstWhere('id', $anchor->edition_id) : null;
-        $year = (int) ($anchorEdition?->year ?? $input['year'] ?? $years->first() ?? 2011);
+        $selectedEdition = isset($input['edition']) ? $editions->firstWhere('id', (int) $input['edition']) : null;
+        $year = (int) ($anchorEdition?->year ?? $selectedEdition?->year ?? $input['year'] ?? $years->first() ?? 2011);
         abort_if($anchor && isset($input['year']) && (int) $input['year'] !== $year, 422, 'Choose another year from the Census explorer; historical place identities require a verified crosswalk.');
-        $availableEditions = $editions->where('year', $year)->values();
+        $availableEditions = $record ? $editions->where('year', $year)->values() : $editions;
         $edition = isset($input['edition']) ? $availableEditions->firstWhere('id', (int) $input['edition'])
-            : ($anchorEdition ?? $availableEditions->firstWhere('source_key', 'india-basic-'.$year.'-total') ?? $availableEditions->first());
+            : ($anchorEdition ?? $availableEditions->firstWhere('source_key', 'india-basic-'.$year.'-total') ?? $availableEditions->where('year', $year)->first());
         abort_if(isset($input['edition']) && ! $edition, 404);
         if (! $record && ! empty($input['state'])) {
             $matches = DB::table('census_catalogue_rows')->where('edition_id', $edition?->id ?? 0)->where('level', 'STATE')->get()

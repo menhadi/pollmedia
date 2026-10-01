@@ -77,6 +77,8 @@ class HistoricalCensusPackageTest extends TestCase
                 ->assertOk()->assertSee('1901')->assertSee('retrospective 2011 boundaries')
                 ->assertSee('Official source workbook')->assertSee('†');
             $this->get(route('civic.index', ['year' => 1911]))->assertOk()->assertSee('1911');
+            $this->get(route('civic.index', ['year' => 2011, 'edition' => $published['edition_ids'][0]]))
+                ->assertOk()->assertSee('Census · 1901')->assertSee('1911');
             $service->importDraftPackage($package, $sha, $directory, true);
             $this->assertDatabaseCount('census_catalogue_reviews', 66);
             DB::table('census_publications')->where('source_key', 'census-a02-43333-1901')->update(['edition_id' => $published['edition_ids'][1]]);
