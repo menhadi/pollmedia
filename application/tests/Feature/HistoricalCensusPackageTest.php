@@ -14,6 +14,22 @@ class HistoricalCensusPackageTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_1961_package_retains_sex_counts_and_boundary_notes(): void
+    {
+        $path = base_path('../exports/pollmedia-historical-census-1961-20261001.zip');
+        if (! is_file($path)) {
+            $this->markTestSkipped('Prepared 1961 package is unavailable.');
+        }
+        $service = new HistoricalCensusPackage;
+        $partitions = $service->verify($path, hash_file('sha256', $path));
+        $coverage = $service->coverage($partitions);
+        $this->assertSame(33, $coverage['partitions']);
+        $this->assertSame([1961 => 700], $coverage['source_rows_by_year']);
+        $row = $service->catalogueRows($partitions[0], 1)[0];
+        $this->assertSame(['TOT_P', 'TOT_M', 'TOT_F'], array_keys(json_decode($row['values'], true)));
+        $this->assertStringContainsString('2011 boundaries', $row['flags']);
+    }
+
     public function test_1951_package_keeps_persons_and_sex_counts(): void
     {
         $path = base_path('../exports/pollmedia-historical-census-1951-20261001.zip');
