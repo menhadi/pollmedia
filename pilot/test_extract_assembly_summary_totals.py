@@ -42,6 +42,23 @@ class AssemblySummaryTotalsTest(unittest.TestCase):
                  .replace('3. TOTAL VALID VOTES POLLED 85641', '7.TOTAL VALID VOTES POLLED 85641'))
         self.assertEqual(parse_summary_page(later, 28)['votes_polled'], 85648)
 
+    def test_older_report_without_percentage_can_show_gender_voter_columns(self):
+        older = (SUMMARY.replace('4. TOTAL 85648\nIII(A). POLLING PERCENTAGE 62.76',
+                                 '4. TOTAL 43659 52421 96121')
+                 .replace('3. TOTAL VALID VOTES POLLED 85641', '3. TOTAL VALID VOTES POLLED 96109'))
+        self.assertEqual(parse_summary_page(older, 28)['votes_polled'], 96121)
+
+    def test_nota_is_matched_separately_from_valid_candidate_votes(self):
+        later = (SUMMARY.replace('3. TOTAL VALID VOTES POLLED 85641',
+                                 "7.TOTAL VALID VOTES POLLED 85641\n9.VOTES POLLED FOR 'NOTA' (INCLUDING POSTAL) 7"))
+        summary = parse_summary_page(later, 35)
+        self.assertEqual(summary['nota_votes'], 7)
+        record = {'code': 1, 'name': 'Ratabari(SC)', 'valid_candidate_votes': 85641,
+                  'candidates': [{'votes': 33555}, {'votes': 52086}, {'votes': 7, 'is_nota': True}]}
+        self.assertTrue(corroborates(record, summary))
+        record['candidates'][-1]['votes'] = 8
+        self.assertFalse(corroborates(record, summary))
+
 
 if __name__ == '__main__':
     unittest.main()

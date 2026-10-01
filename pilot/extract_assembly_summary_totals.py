@@ -8,11 +8,12 @@ import fitz
 SUMMARY = re.compile(r'CONSTITUENCY DATA\s*-\s*SUMMARY', re.I)
 IDENTITY = re.compile(r'CONSTITUENCY\s*:?\s*(\d+)\s*-\s*([^\n]+)', re.I)
 ELECTORS = re.compile(r'II\.\s*ELECTORS\b(.*?)III\.\s*VOTERS\b', re.I | re.S)
-VOTERS = re.compile(r'III\.\s*VOTERS\b(.*?)III\s*\(?A\)?\s*\.', re.I | re.S)
+VOTERS = re.compile(r'III\.\s*VOTERS\b(.*?)(?:III\s*\(?A\)?\s*\.|IV\.\s*VOTES\b)', re.I | re.S)
 VOTES = re.compile(r'IV\.\s*VOTES\b(.*?)V\.\s*POLLING STATIONS\b', re.I | re.S)
 TOTAL_ELECTORS = re.compile(r'^\s*\d+\.\s*TOTAL\s+([\d\s]+)$', re.I | re.M)
-TOTAL_VOTERS = re.compile(r'^\s*\d+\.\s*TOTAL\s+(\d+)\s*$', re.I | re.M)
+TOTAL_VOTERS = re.compile(r'^\s*\d+\.\s*TOTAL\s+([\d\s]+)$', re.I | re.M)
 VALID_VOTES = re.compile(r'^\s*\d+\.\s*TOTAL\s*VALID VOTES POLLED\s+(\d+)\s*$', re.I | re.M)
+NOTA_VOTES = re.compile(r'''^\s*\d+\.\s*VOTES POLLED FOR ['"]?NOTA['"]? \(INCLUDING POSTAL\)\s+(\d+)\s*$''', re.I | re.M)
 POLL_PERCENT = re.compile(r'III\s*\(?A\)?\.\s*POLLING PERCENTAGE\s+([\d.]+)', re.I)
 
 
@@ -35,14 +36,17 @@ def parse_summary_page(text, page_number):
     if not 1 <= len(elector_columns) <= 4:
         return None
     total_electors = elector_columns[-1]
-    total_voters = int(voter_totals[0][1])
+    voter_columns = [int(value) for value in voter_totals[0][1].split()]
+    if not 1 <= len(voter_columns) <= 4:
+        return None
+    total_voters = voter_columns[-1]
     total_valid = int(valid_totals[0][1])
     if not 0 < total_valid <= total_voters <= total_electors:
         return None
     percentage = POLL_PERCENT.search(text)
     if percentage and abs(float(percentage[1]) - 100 * total_voters / total_electors) > 0.06:
         return None
-    return {
+    summary = {
         'code': int(identity[1]),
         'name': identity[2].strip(),
         'electors': total_electors,
@@ -50,6 +54,14 @@ def parse_summary_page(text, page_number):
         'valid_candidate_votes': total_valid,
         'summary_page': page_number,
     }
+    nota = list(NOTA_VOTES.finditer(votes[1]))
+    if len(nota) > 1:
+        return None
+    if nota:
+        summary['nota_votes'] = int(nota[0][1])
+        if summary['valid_candidate_votes'] + summary['nota_votes'] > total_voters:
+            return None
+    return summary
 
 
 def read_summary_pages(path):
@@ -90,4 +102,9 @@ def corroborates(record, summary):
     candidates = record.get('candidates') or []
     if not candidates or any(not isinstance(candidate.get('votes'), int) for candidate in candidates):
         return False
-    return sum(candidate['votes'] for candidate in candidates) == summary['valid_candidate_votes']
+    nota = [candidate for candidate in candidates if candidate.get('is_nota') is True]
+    if 'nota_votes' in summary:
+        return (len(nota) == 1 and nota[0]['votes'] == summary['nota_votes']
+                and sum(candidate['votes'] for candidate in candidates if candidate.get('is_nota') is not True)
+                == summary['valid_candidate_votes'])
+    return not nota and sum(candidate['votes'] for candidate in candidates) == summary['valid_candidate_votes']

@@ -34,6 +34,23 @@ class AssemblySummaryBundleTest(unittest.TestCase):
         self.assertEqual(revised['records'][1], second)
         self.assertEqual(data['records'][0], first)
 
+    def test_separate_official_summary_and_nota_are_preserved(self):
+        record = {'code': 1, 'name': 'Sirpur', 'status': 'needs_review', 'error': PENDING,
+                  'electors': 190962, 'votes_polled': None, 'valid_candidate_votes': 149532,
+                  'candidates': [{'votes': 149532}, {'votes': 1756, 'is_nota': True}]}
+        summary = {1: {'code': 1, 'name': 'Sirpur', 'electors': 190962,
+                       'votes_polled': 151565, 'valid_candidate_votes': 149532,
+                       'nota_votes': 1756, 'summary_page': 35}}
+        secondary = {'source_file': 'summary.pdf', 'source_sha256': 'a' * 64}
+
+        revised, count = revised_records({'records': [record]}, summary, secondary)
+
+        self.assertEqual(count, 1)
+        self.assertEqual(revised['records'][0]['summary_totals']['nota_votes'], 1756)
+        self.assertEqual(revised['records'][0]['summary_source_file'], 'summary.pdf')
+        self.assertEqual(revised['records'][0]['summary_source_sha256'], 'a' * 64)
+        self.assertEqual(revised['records'][0]['candidates'], record['candidates'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -190,7 +190,22 @@ class HistoricalElectionAnalytics
         }
 
         if ($legacyDetail) {
-            return $this->count($record['valid_candidate_votes'] ?? null) && $candidateVotes === $record['valid_candidate_votes'];
+            if (! $this->count($record['valid_candidate_votes'] ?? null)) {
+                return false;
+            }
+            $nota = collect($candidates)->filter(fn (array $candidate): bool => ($candidate['is_nota'] ?? false) === true)->values();
+            if ($nota->isEmpty()) {
+                return $candidateVotes === $record['valid_candidate_votes'];
+            }
+            if ($nota->count() !== 1 || $candidateVotes - $nota[0]['votes'] !== $record['valid_candidate_votes']) {
+                return false;
+            }
+            if ($error === self::LEGACY_DETAIL_RECONCILED
+                && ($record['summary_totals']['nota_votes'] ?? null) !== $nota[0]['votes']) {
+                return false;
+            }
+
+            return true;
         }
 
         $totals = $record['reported_totals'] ?? [];

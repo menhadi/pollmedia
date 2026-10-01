@@ -13,7 +13,7 @@ from preserve_archive_json import package
 
 PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.'
 RECONCILED = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.'
-NAME = 'pollmedia-ac-summary-corrections-20261001-v2'
+NAME = 'pollmedia-ac-summary-corrections-20261001-v4'
 
 
 def digest(body):
@@ -40,7 +40,30 @@ def source_pdf(folder, data):
     return source
 
 
-def revised_records(data, summaries):
+def source_summaries(folder, data):
+    """Use the recorded detail PDF, or one separately preserved PDF from its official edition."""
+    detail = source_pdf(folder, data)
+    summaries = read_summary_pages(detail)
+    if summaries:
+        return summaries, None
+    manifest = json.loads((folder / 'manifest.json').read_text(encoding='utf-8'))
+    matches = []
+    for item in manifest.get('files', []):
+        name = item.get('file')
+        if not isinstance(name, str) or name == data['source_file'] or not name.lower().endswith('.pdf'):
+            continue
+        candidate = folder / name
+        if candidate.is_symlink() or not candidate.is_file() or candidate.resolve().parent != folder.resolve():
+            raise ValueError('An official edition has an unsafe secondary PDF: ' + folder.name)
+        if file_digest(candidate) != item.get('sha256'):
+            raise ValueError('A secondary official PDF checksum differs: ' + folder.name)
+        found = read_summary_pages(candidate)
+        if found:
+            matches.append((found, {'source_file': name, 'source_sha256': item['sha256']}))
+    return matches[0] if len(matches) == 1 else ({}, None)
+
+
+def revised_records(data, summaries, secondary_source=None):
     revised = copy.deepcopy(data)
     count = 0
     for record in revised['records']:
@@ -57,8 +80,12 @@ def revised_records(data, summaries):
         record['error'] = RECONCILED
         record['electors'] = summary['electors']
         record['votes_polled'] = summary['votes_polled']
-        record['summary_totals'] = {key: summary[key] for key in ('electors', 'votes_polled', 'valid_candidate_votes')}
+        record['summary_totals'] = {key: summary[key] for key in
+                                    ('electors', 'votes_polled', 'valid_candidate_votes', 'nota_votes') if key in summary}
         record['summary_page'] = summary['summary_page']
+        if secondary_source is not None:
+            record['summary_source_file'] = secondary_source['source_file']
+            record['summary_source_sha256'] = secondary_source['source_sha256']
         count += 1
     return revised, count
 
@@ -86,8 +113,8 @@ def build(root):
                 for record in data.get('records', [])
             ):
                 continue
-            source = source_pdf(extraction.parent, data)
-            revised, count = revised_records(data, read_summary_pages(source))
+            summaries, secondary_source = source_summaries(extraction.parent, data)
+            revised, count = revised_records(data, summaries, secondary_source)
             if count == 0:
                 continue
             old_sha = digest(old_bytes)

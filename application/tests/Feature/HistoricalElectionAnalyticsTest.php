@@ -134,6 +134,26 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($result['margin']);
     }
 
+    public function test_legacy_detail_with_separately_reported_nota_keeps_candidate_metrics_and_reconciled_turnout(): void
+    {
+        $record = $this->record(1, 120, 93, 55, 35);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.';
+        $record['detail_page'] = 12;
+        $record['summary_page'] = 5;
+        $record['valid_candidate_votes'] = 90;
+        $record['summary_totals'] = ['electors' => 120, 'votes_polled' => 93, 'valid_candidate_votes' => 90, 'nota_votes' => 2];
+        $record['candidates'][] = ['candidate_name' => 'None of the Above', 'party_at_election' => 'NOTA', 'votes' => 2, 'is_nota' => true];
+
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $result['turnout_count']);
+        $this->assertSame(1, $result['party_count']);
+        $this->assertSame(1, $result['margin_count']);
+
+        $record['summary_totals']['nota_votes'] = 3;
+        $this->assertSame(0, app(HistoricalElectionAnalytics::class)->summarize([$record])['party_count']);
+    }
+
     public function test_state_dashboard_keeps_filters_sources_and_constituency_links(): void
     {
         $this->seed(PilibhitSeeder::class);
