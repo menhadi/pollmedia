@@ -25,6 +25,7 @@ class ConstituencyOverviewTest extends TestCase
         $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Election winners may differ from current representatives')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('Location map')->assertSee('Registered electors and votes polled')->assertSee('Absolute counts, not percentages');
         $this->get($url.'&edition='.str_repeat('a', 24))->assertOk()->assertSee('2024 results')->assertSee('Example party');
         $this->get($url.'&edition='.str_repeat('d', 24))->assertNotFound();
+        $this->get($url.'&format=report')->assertOk()->assertSee('Print / Save as PDF')->assertSee('Sources and data notes')->assertSee('https://eci.gov.in')->assertSee('<svg', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('history-lines.js')->assertDontSee('data-history-chart');
         $this->get('/india/elections/lok-sabha?edition='.str_repeat('a', 24).'&state=Uttar%20Pradesh&code=1')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Lucknow', 'edition' => str_repeat('a', 24), 'code' => 1]));
     }
 
@@ -194,5 +195,11 @@ class ConstituencyOverviewTest extends TestCase
         $this->assertNull($party['rows'][1]['others_share']);
         $this->assertStringContainsString('80 (40.00%)', $html);
         $this->assertStringContainsString('60 (30.00%)', $html);
+        $report = view('place-history-charts', ['rows' => $rows, 'reportMode' => true])->render();
+        $this->assertSame(5, substr_count($report, '<svg'));
+        $this->assertSame(5, substr_count($report, '<table>'));
+        $this->assertStringNotContainsString('<details', $report);
+        $this->assertStringNotContainsString('data-history-chart', $report);
+        $this->assertStringContainsString('60 (30.00%)', $report);
     }
 }

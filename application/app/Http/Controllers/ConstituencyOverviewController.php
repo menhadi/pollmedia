@@ -17,7 +17,7 @@ class ConstituencyOverviewController extends Controller
 {
     public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews, HistoricalElectionAnalytics $analytics): View|RedirectResponse
     {
-        $input = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'code' => 'nullable|integer|min:1|max:999999']);
+        $input = $request->validate(['format' => 'nullable|in:report', 'kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'code' => 'nullable|integer|min:1|max:999999']);
         $kind = $input['kind'];
         $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
@@ -103,6 +103,6 @@ class ConstituencyOverviewController extends Controller
             }
         }
 
-        return view('constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
+        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
     }
 }
