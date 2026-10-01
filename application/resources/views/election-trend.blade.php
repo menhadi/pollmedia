@@ -1,5 +1,5 @@
 @php
-    $chartRows = collect($chartHistory ?? $history)->filter(fn ($row) => ($row[$metric] ?? null) !== null)->reverse();
+    $chartRows = collect($history)->reverse();
     $chartMax = $maximum ?? max(1, $chartRows->max($metric) ?? 0);
     $colourValues = $chartRows->pluck($metric)->filter(fn($value) => $value !== null);
     $colourMin = $colourValues->min();
@@ -11,7 +11,7 @@
         return array_map('hexdec',str_split(substr($hex,0,6),2));
     })->all();
 @endphp
-<p class="small">Bars show the available figures for each year. Coverage is shown beside each year.</p>
+<p class="small">Bar length uses 0–{{ number_format($chartMax) }}{{ $suffix ?? '' }}. Colour uses this chart's displayed minimum and maximum: yellow → lime → green → teal as values increase. Colours are relative to this chart, not party labels or performance ratings. Coverage is shown beside each year; missing values have no bar.</p>
 @if($colourMin !== null)<div class="value-colour-legend"><span>{{ number_format($colourMin, $decimals ?? 1) }}{{ $suffix ?? '' }} · lowest</span><span class="value-colour-ramp" aria-hidden="true"></span><span>{{ number_format($colourMax, $decimals ?? 1) }}{{ $suffix ?? '' }} · highest</span></div>@endif
 <div class="trend-chart" aria-label="{{ $chartLabel }}">
 @foreach($chartRows as $row)
@@ -22,7 +22,7 @@
     }
     $barColour=sprintf('rgb(%d,%d,%d)',...$rgb); $covered=$row[$metric === 'turnout' ? 'turnout_count' : ($metric === 'margin' ? 'margin_count' : 'party_count')]; @endphp
 <a class="trend-row" href="{{ route('states.show', ['state'=>$state, 'election'=>$kind, 'edition'=>$row['id'], 'party'=>$party]) }}" title="{{ $row['label'] }}">
-<span>{{ $row['year'] }}<small class="trend-coverage">{{ $covered }}/{{ $row['tables'] }} tables</small></span><span class="trend-track" aria-hidden="true"><span class="trend-fill " style="background:{{ $barColour }};width:{{ min(100, max(0, 100 * $value / $chartMax)) }}%"></span></span><span class="trend-value">{{ number_format($value, $decimals ?? 1) }}{{ $suffix ?? '' }}{{ $metric === 'turnout' && ($row['turnout_review_count'] ?? 0) ? ' †' : '' }}</span>
+<span>{{ $row['year'] }}<small class="trend-coverage">{{ $covered }}/{{ $row['tables'] }} tables</small></span><span class="trend-track" aria-hidden="true"><span class="trend-fill " style="background:{{ $barColour }};width:{{ $value === null ? 0 : min(100, max(0, 100 * $value / $chartMax)) }}%"></span></span><span class="trend-value">{{ $value === null ? 'No data' : number_format($value, $decimals ?? 1).($suffix ?? '').($metric === 'turnout' && ($row['turnout_review_count'] ?? 0) ? ' †' : '') }}</span>
 </a>
 @endforeach
 </div>
