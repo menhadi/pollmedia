@@ -225,7 +225,7 @@ class HistoricalElectionPublicTest extends TestCase
             ->assertSee('Summary and detailed totals differ')->assertSee('Report issue');
         $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]))
             ->assertOk()->assertSee('Winner: Candidate One')->assertSee('10,000 votes')
-            ->assertSee('The winner and margin are calculated from the candidate votes');
+            ->assertSee('The winner and margin are calculated from the recorded candidate votes');
         $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451, 'format' => 'report']))
             ->assertOk()->assertSee('10,000 votes');
 

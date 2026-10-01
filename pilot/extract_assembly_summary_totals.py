@@ -6,7 +6,7 @@ import fitz
 
 
 SUMMARY = re.compile(r'CONSTITUENCY DATA\s*-\s*SUMMARY', re.I)
-IDENTITY = re.compile(r'CONSTITUENCY\s*:?\s*(\d+)\s*-\s*([^\n]+)', re.I)
+IDENTITY = re.compile(r'CONSTITUENCY\s*:?\s*-?\s*(\d+)\s*-\s*([^\n]+)', re.I)
 ELECTORS = re.compile(r'II\.\s*ELECTORS\b(.*?)III\.\s*VOTERS\b', re.I | re.S)
 VOTERS = re.compile(r'III\.\s*VOTERS\b(.*?)(?:III\s*\(?A\)?\s*\.|IV\.\s*VOTES\b)', re.I | re.S)
 VOTES = re.compile(r'IV\.\s*VOTES\b(.*?)V\.\s*POLLING STATIONS\b', re.I | re.S)
@@ -88,25 +88,34 @@ def read_summary_pages(path):
     return found
 
 
-def corroborates(record, summary, allow_elector_difference=False):
+def corroborates(record, summary, allow_elector_difference=False, allow_inclusive_nota=False,
+                 allow_candidate_difference=False):
     """Check the summary against the preserved detailed candidate result."""
     if record.get('code') != summary['code']:
         return False
-    source_name = re.sub(r'[^a-z0-9]', '', record.get('name', '').casefold())
-    summary_name = re.sub(r'[^a-z0-9]', '', summary['name'].casefold())
+    source_name = re.sub(r'[^a-z0-9]', '', re.sub(r'(?:\s*\((?:SC|ST)\))+\s*$', '', record.get('name', ''), flags=re.I).casefold())
+    summary_name = re.sub(r'[^a-z0-9]', '', re.sub(r'(?:\s*\((?:SC|ST)\))+\s*$', '', summary['name'], flags=re.I).casefold())
     if not source_name or source_name != summary_name:
         return False
-    for key in ('electors', 'votes_polled', 'valid_candidate_votes'):
-        if key == 'electors' and allow_elector_difference:
-            continue
-        if record.get(key) is not None and record[key] != summary[key]:
-            return False
     candidates = record.get('candidates') or []
     if not candidates or any(not isinstance(candidate.get('votes'), int) for candidate in candidates):
         return False
     nota = [candidate for candidate in candidates if candidate.get('is_nota') is True]
+    inclusive_nota = (allow_inclusive_nota and 'nota_votes' not in summary and len(nota) == 1
+                      and isinstance(record.get('valid_candidate_votes'), int)
+                      and record['valid_candidate_votes'] + nota[0]['votes'] == summary['valid_candidate_votes'])
+    candidate_valid = sum(candidate['votes'] for candidate in candidates
+                          if 'nota_votes' not in summary or candidate.get('is_nota') is not True)
+    difference = candidate_valid - summary['valid_candidate_votes']
+    small_difference = (allow_candidate_difference and 0 < abs(difference)
+                        and abs(difference) * 1000 <= summary['valid_candidate_votes'])
+    for key in ('electors', 'votes_polled', 'valid_candidate_votes'):
+        if key == 'electors' and allow_elector_difference:
+            continue
+        if key == 'valid_candidate_votes' and (inclusive_nota or small_difference):
+            continue
+        if record.get(key) is not None and record[key] != summary[key]:
+            return False
     if 'nota_votes' in summary:
-        return (len(nota) == 1 and nota[0]['votes'] == summary['nota_votes']
-                and sum(candidate['votes'] for candidate in candidates if candidate.get('is_nota') is not True)
-                == summary['valid_candidate_votes'])
-    return not nota and sum(candidate['votes'] for candidate in candidates) == summary['valid_candidate_votes']
+        return len(nota) == 1 and nota[0]['votes'] == summary['nota_votes'] and (difference == 0 or small_difference)
+    return (not nota or allow_inclusive_nota) and (difference == 0 or small_difference)

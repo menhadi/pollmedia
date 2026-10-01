@@ -16,17 +16,17 @@ class DataFeedbackController extends Controller
         $path = str_starts_with($path, '/') && ! str_starts_with($path, '//') && strlen($path) <= 2000 ? $path : '/';
         $category = $request->string('category')->toString();
 
-        return view('data-feedback', ['path' => $path, 'category' => in_array($category, ['data', 'source', 'navigation', 'accessibility', 'other'], true) ? $category : 'data']);
+        return view('data-feedback', ['path' => $path, 'category' => in_array($category, ['data', 'source', 'navigation', 'accessibility', 'other'], true) ? $category : 'data', 'email' => $request->user()?->email]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $data = $request->validate(['category' => 'required|in:data,source,navigation,accessibility,other', 'path' => ['required', 'string', 'max:2000', 'regex:~^/(?!/)[^\\\\<>\r\n]*$~'], 'details' => 'nullable|string|max:5000']);
+        $data = $request->validate(['category' => 'required|in:data,source,navigation,accessibility,other', 'path' => ['required', 'string', 'max:2000', 'regex:~^/(?!/)[^\\\\<>\r\n]*$~'], 'email' => 'required|email|max:254', 'details' => 'nullable|string|max:5000']);
         $data['details'] = trim($data['details'] ?? '') ?: 'Problem reported for this page and result.';
         $id = (string) Str::ulid();
         DB::table('data_feedback')->insert($data + ['id' => $id, 'status' => 'open', 'created_at' => now(), 'updated_at' => now()]);
 
-        return back()->with('status', 'Report received. Reference: '.$id.'. An administrator will review it.');
+        return redirect()->route('feedback.create', ['path' => $data['path'], 'category' => $data['category']])->with('status', 'Report saved successfully. Reference: '.$id.'.');
     }
 
     public function index(): View

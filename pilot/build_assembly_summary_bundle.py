@@ -13,7 +13,8 @@ from preserve_archive_json import package
 
 PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.'
 RECONCILED = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.'
-NAME = 'pollmedia-ac-summary-corrections-20261001-v5'
+RECONCILED_WARNINGS = 'Official summary confirms constituency turnout and candidate-vote total; detailed candidate text still needs review.'
+NAME = 'pollmedia-ac-summary-corrections-20261001-v6'
 
 
 def digest(body):
@@ -25,7 +26,7 @@ def file_digest(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def source_pdf(folder, data):
+def source_pdf(folder, data, allow_workbook=False):
     manifest = json.loads((folder / 'manifest.json').read_text(encoding='utf-8'))
     source_file = data.get('source_file')
     sources = [item for item in manifest.get('files', []) if item.get('file') == source_file]
@@ -33,17 +34,18 @@ def source_pdf(folder, data):
             or sources[0]['sha256'] != data.get('source_sha256')):
         raise ValueError('Official source identity or recorded checksum differs: ' + folder.name)
     source = folder / source_file
-    if not source.is_file() or source.is_symlink() or source.suffix.lower() != '.pdf':
-        raise ValueError('Official source PDF is unavailable locally: ' + folder.name)
+    suffixes = ('.pdf', '.xlsx') if allow_workbook else ('.pdf',)
+    if not source.is_file() or source.is_symlink() or source.suffix.lower() not in suffixes:
+        raise ValueError('Official source document is unavailable locally: ' + folder.name)
     if file_digest(source) != sources[0]['sha256']:
         raise ValueError('Official source PDF checksum differs: ' + folder.name)
     return source
 
 
-def source_summaries(folder, data):
+def source_summaries(folder, data, allow_workbook=False):
     """Use the recorded detail PDF, or one separately preserved PDF from its official edition."""
-    detail = source_pdf(folder, data)
-    summaries = read_summary_pages(detail)
+    detail = source_pdf(folder, data, allow_workbook=allow_workbook)
+    summaries = read_summary_pages(detail) if detail.suffix.lower() == '.pdf' else {}
     if summaries:
         return summaries, None
     manifest = json.loads((folder / 'manifest.json').read_text(encoding='utf-8'))
@@ -53,7 +55,9 @@ def source_summaries(folder, data):
         if not isinstance(name, str) or name == data['source_file'] or not name.lower().endswith('.pdf'):
             continue
         candidate = folder / name
-        if candidate.is_symlink() or not candidate.is_file() or candidate.resolve().parent != folder.resolve():
+        if not candidate.is_file():
+            raise ValueError('Secondary official PDF is unavailable locally: ' + folder.name)
+        if candidate.is_symlink() or candidate.resolve().parent != folder.resolve():
             raise ValueError('An official edition has an unsafe secondary PDF: ' + folder.name)
         if file_digest(candidate) != item.get('sha256'):
             raise ValueError('A secondary official PDF checksum differs: ' + folder.name)
@@ -67,9 +71,11 @@ def revised_records(data, summaries, secondary_source=None):
     revised = copy.deepcopy(data)
     count = 0
     for record in revised['records']:
-        if (record.get('status') != 'needs_review' or record.get('error') != PENDING
+        original_error = record.get('error') or ''
+        detail_warnings = original_error.startswith(PENDING + '; ')
+        if (record.get('status') != 'needs_review' or (original_error != PENDING and not detail_warnings)
                 or record.get('votes_polled') is not None
-                or not isinstance(record.get('valid_candidate_votes'), int)):
+                or (not detail_warnings and not isinstance(record.get('valid_candidate_votes'), int))):
             continue
         summary = summaries.get(record.get('code'))
         if (summary is None or record.get('summary_page') not in (None, summary['summary_page'])
@@ -77,14 +83,23 @@ def revised_records(data, summaries, secondary_source=None):
             continue
         matched = corroborates(record, summary)
         detail_electors = record.get('electors')
-        elector_difference = (not matched and type(detail_electors) is int
+        elector_difference = (not matched and not detail_warnings and type(detail_electors) is int
                               and 0 < abs(detail_electors - summary['electors'])
                               and abs(detail_electors - summary['electors']) * 10000 <= summary['electors'] * 5
                               and corroborates(record, summary, allow_elector_difference=True))
         if not matched and not elector_difference:
             continue
+        if detail_warnings and (type(record.get('detail_page')) is not int or record['detail_page'] <= 0
+                                or len(record.get('candidates') or []) < 2
+                                or any(type(candidate.get('votes')) is not int or candidate['votes'] < 0
+                                       for candidate in record['candidates'])):
+            continue
         record['original_extraction_warning'] = record['error']
-        if elector_difference:
+        if detail_warnings:
+            record['error'] = RECONCILED_WARNINGS + ' ' + original_error[len(PENDING):].lstrip('; ')
+            record['source_warning_code'] = 'summary_turnout_with_detail_warnings'
+            record['electors'] = summary['electors']
+        elif elector_difference:
             record['error'] = (f"Detailed result lists {detail_electors:,} electors; official summary lists "
                                f"{summary['electors']:,}. Turnout uses the summary totals; candidate votes match. "
                                'Review of this difference is pending.')
@@ -124,7 +139,8 @@ def build(root):
             old_bytes = extraction.read_bytes()
             data = json.loads(old_bytes)
             if data.get('kind') != 'ac' or not any(
-                record.get('error') == PENDING and record.get('votes_polled') is None
+                (record.get('error') == PENDING or (record.get('error') or '').startswith(PENDING + '; '))
+                and record.get('votes_polled') is None
                 for record in data.get('records', [])
             ):
                 continue

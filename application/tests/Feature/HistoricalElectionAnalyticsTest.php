@@ -162,6 +162,118 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($result['margin']);
     }
 
+    public function test_official_workbook_summary_restores_turnout_without_guessing_from_candidate_votes(): void
+    {
+        $record = $this->record(87, 162019, 135812, 65768, 60599);
+        $record['status'] = 'needs_review';
+        $record['winner'] = null;
+        $record['margin'] = null;
+        $record['error'] = 'Official constituency summary confirms voters and candidate votes; its valid-vote total includes NOTA. Publication review pending.';
+        $record['source_warning_code'] = 'workbook_pdf_summary';
+        $record['summary_source_file'] = 'summary.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_page'] = 87;
+        $record['summary_totals'] = ['electors' => 162019, 'votes_polled' => 135812, 'valid_candidate_votes' => 135790];
+        $record['reported_totals'] = [['label' => 'Total Votes', 'value' => 135790]];
+        $record['candidates'][0]['votes'] = 65768;
+        $record['candidates'][1]['votes'] = 60599;
+        $record['candidates'][] = ['candidate_name' => 'Other', 'party_at_election' => 'IND', 'votes' => 8238, 'is_nota' => false];
+        $record['candidates'][] = ['candidate_name' => 'None of the Above', 'party_at_election' => 'NOTA', 'votes' => 1185, 'is_nota' => true];
+        foreach ($record['candidates'] as $index => &$candidate) {
+            $candidate['general_votes'] = $candidate['votes'];
+            $candidate['postal_votes'] = 0;
+            $candidate['source_sheet'] = 'DetailedResult';
+            $candidate['workbook_row'] = $index + 858;
+        }
+        unset($candidate);
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(135812, $summary['polled']);
+        $this->assertSame(5169, $summary['margin']);
+        $this->assertSame(5169, app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['margin']);
+
+        $record['summary_totals']['votes_polled']++;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+
+        $record['summary_totals']['votes_polled']--;
+        $record['summary_totals']['valid_candidate_votes'] = 134605;
+        $record['summary_totals']['nota_votes'] = 1185;
+        $record['reported_totals'][0]['value'] = 136000;
+        $record['error'] = 'Official constituency summary confirms voters and candidate votes; the workbook total differs and is preserved for review.';
+        $record['source_discrepancy'] = ['field' => 'reported_total', 'workbook_value' => 136000,
+            'candidate_sum' => 135790, 'summary_value' => 135790];
+        $this->assertSame(135812, app(HistoricalElectionAnalytics::class)->summarize([$record])['polled']);
+        $this->assertSame(5169, app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['margin']);
+
+        $record['summary_totals']['nota_votes']++;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+
+        $record['summary_totals']['nota_votes']--;
+        $record['summary_totals']['valid_candidate_votes']--;
+        $record['reported_totals'][0]['value'] = 135790;
+        $record['error'] = 'Official constituency summary confirms voters; its valid-vote total differs slightly from the preserved candidate rows. Publication review pending.';
+        $record['source_discrepancy'] = ['field' => 'candidate_total', 'candidate_sum' => 135790,
+            'summary_value' => 135789, 'difference' => 1];
+        $this->assertSame(135812, app(HistoricalElectionAnalytics::class)->summarize([$record])['polled']);
+        $this->assertSame(5169, app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['margin']);
+
+        $record['source_discrepancy']['difference'] = 200;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
+    public function test_verified_summary_turnout_survives_detailed_candidate_text_warning(): void
+    {
+        $record = $this->record(1, 100, 82, 50, 30);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Official summary confirms constituency turnout and candidate-vote total; detailed candidate text still needs review. Some candidate text could not be parsed.';
+        $record['source_warning_code'] = 'summary_turnout_with_detail_warnings';
+        $record['detail_page'] = 9;
+        $record['summary_page'] = 4;
+        $record['summary_totals'] = ['electors' => 100, 'votes_polled' => 82, 'valid_candidate_votes' => 80];
+        $record['valid_candidate_votes'] = null;
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(82, $summary['polled']);
+        $this->assertSame(0, $summary['party_count']);
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->singleSeatResult($record));
+
+        $record['candidates'][1]['votes']--;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
+    public function test_recovered_workbook_rows_use_official_voter_total_with_component_note(): void
+    {
+        $record = $this->record(87, 100, 82, 50, 30);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Official constituency summary confirms electors, voters and candidate votes; the source elector components differ slightly. Publication review pending.';
+        $record['source_warning_code'] = 'workbook_pdf_summary';
+        $record['source_discrepancy'] = ['field' => 'elector_components', 'component_value' => 99, 'summary_value' => 100];
+        $record['summary_source_file'] = 'summary.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_page'] = 87;
+        $record['summary_totals'] = ['electors' => 100, 'votes_polled' => 82, 'valid_candidate_votes' => 80];
+        $record['reported_totals'] = null;
+        foreach ($record['candidates'] as $index => &$candidate) {
+            $candidate['general_votes'] = $candidate['votes'];
+            $candidate['postal_votes'] = 0;
+            $candidate['source_sheet'] = 'DetailedResult';
+            $candidate['workbook_row'] = $index + 4;
+        }
+        unset($candidate);
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(82, $summary['polled']);
+        $this->assertSame(20, app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['margin']);
+
+        $record['source_discrepancy']['component_value'] = 96;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
     public function test_legacy_detail_with_separately_reported_nota_keeps_candidate_metrics_and_reconciled_turnout(): void
     {
         $record = $this->record(1, 120, 93, 55, 35);

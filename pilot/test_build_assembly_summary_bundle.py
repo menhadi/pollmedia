@@ -1,7 +1,7 @@
 import copy
 import unittest
 
-from build_assembly_summary_bundle import PENDING, RECONCILED, revised_records
+from build_assembly_summary_bundle import PENDING, RECONCILED, RECONCILED_WARNINGS, revised_records
 
 
 class AssemblySummaryBundleTest(unittest.TestCase):
@@ -71,6 +71,29 @@ class AssemblySummaryBundleTest(unittest.TestCase):
         self.assertEqual(record['electors'], 189696)
 
         summary[1]['electors'] = 180000
+        unchanged, count = revised_records({'records': [record]}, summary)
+        self.assertEqual(count, 0)
+        self.assertEqual(unchanged['records'][0], record)
+
+    def test_official_summary_restores_turnout_when_candidate_text_needs_review(self):
+        error = PENDING + '; Some candidate text could not be parsed; see the original PDF.; Detailed totals are missing or use an unsupported layout.'
+        record = {'code': 1, 'name': 'Sheopur', 'status': 'needs_review', 'error': error,
+                  'electors': 100, 'votes_polled': None, 'valid_candidate_votes': None,
+                  'detail_page': 9, 'candidates': [{'votes': 50}, {'votes': 30}]}
+        summary = {1: {'code': 1, 'name': 'Sheopur', 'electors': 100,
+                       'votes_polled': 82, 'valid_candidate_votes': 80, 'summary_page': 4}}
+
+        revised, count = revised_records({'records': [record]}, summary)
+
+        self.assertEqual(count, 1)
+        result = revised['records'][0]
+        self.assertEqual(result['votes_polled'], 82)
+        self.assertEqual(result['source_warning_code'], 'summary_turnout_with_detail_warnings')
+        self.assertTrue(result['error'].startswith(RECONCILED_WARNINGS))
+        self.assertEqual(result['original_extraction_warning'], error)
+        self.assertIsNone(result['valid_candidate_votes'])
+
+        record['candidates'][1]['votes'] = 29
         unchanged, count = revised_records({'records': [record]}, summary)
         self.assertEqual(count, 0)
         self.assertEqual(unchanged['records'][0], record)

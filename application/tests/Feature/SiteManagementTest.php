@@ -46,9 +46,9 @@ class SiteManagementTest extends TestCase
 
     public function test_private_report_editor_link(): void
     {
-        $this->post('/report-problem', ['category' => 'data', 'path' => '/india/census/places/12', 'details' => 'The population total needs checking.'])->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('data_feedback', ['status' => 'open']);
-        $this->actingAs($this->admin())->get('/admin/feedback')->assertOk()->assertSee('Edit this Census record');
+        $this->post('/report-problem', ['category' => 'data', 'path' => '/india/census/places/12', 'email' => 'reader@example.org', 'details' => 'The population total needs checking.'])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('data_feedback', ['status' => 'open', 'email' => 'reader@example.org']);
+        $this->actingAs($this->admin())->get('/admin/feedback')->assertOk()->assertSee('Edit this Census record')->assertSee('reader@example.org');
     }
 
     public function test_problem_report_receives_the_affected_result_path_automatically(): void
@@ -60,17 +60,22 @@ class SiteManagementTest extends TestCase
             ->assertSee('type="hidden" name="path"', false)
             ->assertDontSee('Page path');
 
-        $this->post('/report-problem', ['category' => 'data', 'path' => $path, 'details' => 'The 2009 winning margin needs source review.'])
+        $this->post('/report-problem', ['category' => 'data', 'path' => $path, 'email' => 'reader@example.org', 'details' => 'The 2009 winning margin needs source review.'])
             ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('data_feedback', ['path' => $path, 'category' => 'data']);
 
-        $this->post('/report-problem', ['category' => 'source', 'path' => $path])->assertSessionHasNoErrors();
+        $this->get(route('feedback.create', ['path' => $path, 'category' => 'data']))
+            ->assertOk()->assertSee('Report saved successfully')->assertSee('Report another problem')
+            ->assertDontSee('name="category"', false)->assertDontSee('Send report');
+
+        $this->post('/report-problem', ['category' => 'source', 'path' => $path, 'email' => 'reader@example.org'])->assertSessionHasNoErrors();
         $this->assertDatabaseHas('data_feedback', ['path' => $path, 'category' => 'source', 'details' => 'Problem reported for this page and result.']);
     }
 
     public function test_report_rejects_external_urls(): void
     {
-        $this->post('/report-problem', ['category' => 'data', 'path' => '//example.com', 'details' => 'This value needs checking.'])->assertSessionHasErrors('path');
+        $this->post('/report-problem', ['category' => 'data', 'path' => '//example.com', 'email' => 'reader@example.org', 'details' => 'This value needs checking.'])->assertSessionHasErrors('path');
+        $this->post('/report-problem', ['category' => 'data', 'path' => '/', 'details' => 'This value needs checking.'])->assertSessionHasErrors('email');
     }
 
     public function test_api_disable(): void
