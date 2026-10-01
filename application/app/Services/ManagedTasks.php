@@ -16,6 +16,7 @@ class ManagedTasks
             'reports' => ['command' => 'reports:archive-due', 'purpose' => 'Build queued downloadable report archives.', 'schedule' => '*/5 * * * *', 'enabled' => true],
             'queue' => ['command' => 'queue:work database --queue=imports --stop-when-empty --max-time=50 --timeout=60 --tries=1', 'purpose' => 'Process application import queue; stops after 50 seconds.', 'schedule' => '* * * * *', 'enabled' => true],
             'sources' => ['command' => 'sources:check', 'purpose' => 'Check configured official representative and authority sources.', 'schedule' => '0 6 * * *', 'enabled' => (bool) config('source-monitor.enabled')],
+            'elections' => ['command' => 'elections:check-catalogue', 'purpose' => 'Check official ECI PC, AC and by-election catalogues for new links. No extraction or publication.', 'schedule' => '0 6 * * *', 'enabled' => true],
             'monitor' => ['command' => 'site:monitor', 'purpose' => 'Record database connectivity, failed queue count and open correction reports. No extraction.', 'schedule' => '*/5 * * * *', 'enabled' => true],
         ];
     }
