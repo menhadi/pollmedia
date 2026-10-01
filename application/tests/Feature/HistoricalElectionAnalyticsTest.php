@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Services\ElectionArchive;
 use App\Services\HistoricalElectionAnalytics;
+use App\Services\HistoricalElectionArchive;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -68,6 +70,32 @@ class HistoricalElectionAnalyticsTest extends TestCase
 
         $record['summary_totals']['votes_polled']--;
         $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
+    public function test_summary_conflict_keeps_source_candidate_margin_visible_with_note(): void
+    {
+        $record = $this->record(404, 1310007, 837929, 419539, 138038);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Summary and detailed totals differ';
+        $record['detail_page'] = 149;
+        $record['summary_page'] = 404;
+        $record['valid_candidate_votes'] = 557577;
+        $record['summary_totals'] = ['electors' => 1310007, 'votes_polled' => 837929, 'valid_candidate_votes' => 557567];
+
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $this->assertSame(['winner' => 'A', 'party' => 'AAA', 'margin' => 281501, 'derived' => true], $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(1, $summary['margin_review_count']);
+        $this->assertSame(281501, $summary['margin']);
+
+        $record['candidates'][1]['votes']++;
+        $this->assertNull($analytics->singleSeatResult($record));
+        $this->assertNull($analytics->summarize([$record])['margin']);
+
+        $record['candidates'][1]['votes']--;
+        $record['error'] = 'Detailed and summary constituency names differ';
+        $this->assertNull($analytics->singleSeatResult($record));
     }
 
     public function test_internally_reconciled_legacy_detail_figures_remain_visible_with_review_markers(): void
@@ -178,6 +206,10 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
         $this->assertNull($result['turnout']);
         $this->assertSame(0, $result['party_count']);
+
+        $record['source_discrepancy']['summary_value']--;
+        $record['status'] = 'accepted';
+        $this->assertSame(27310, app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['margin']);
     }
 
     public function test_state_dashboard_keeps_filters_sources_and_constituency_links(): void
@@ -215,6 +247,21 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertDontSee('No data');
     }
 
+    public function test_2009_pilibhit_margin_uses_preserved_candidate_rows_with_source_note(): void
+    {
+        $archive = app(HistoricalElectionArchive::class);
+        [$data] = $archive->load('e5346f9160ad32fb68a34578', app(ElectionArchive::class));
+        $record = collect($data['records'])->first(fn (array $row): bool => ($row['state_name'] ?? '') === 'Uttar Pradesh'
+            && ($row['constituency_name'] ?? '') === 'Pilibhit' && ($row['code'] ?? null) === 404);
+
+        $this->assertNotNull($record);
+        $this->assertSame('https://old.eci.gov.in/files/category/98-general-election-2009/', $data['source_url']);
+        $this->assertSame(837577, $record['valid_candidate_votes']);
+        $this->assertSame(837567, $record['summary_totals']['valid_candidate_votes']);
+        $this->assertSame(281501, app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['margin']);
+        $this->assertSame(1, app(HistoricalElectionAnalytics::class)->summarize([$record])['margin_review_count']);
+    }
+
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
     {
         $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);
@@ -225,6 +272,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(2, $edition['review_count']);
         $this->assertSame(2, $edition['turnout_count']);
         $this->assertSame(2, $edition['turnout_review_count']);
+        $this->assertSame(2, $edition['margin_count']);
         $this->assertNotNull($edition['turnout']);
 
         $this->get('/india/state/goa?election=pc&edition='.$edition['id'])

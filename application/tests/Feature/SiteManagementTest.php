@@ -51,6 +51,23 @@ class SiteManagementTest extends TestCase
         $this->actingAs($this->admin())->get('/admin/feedback')->assertOk()->assertSee('Edit this Census record');
     }
 
+    public function test_problem_report_receives_the_affected_result_path_automatically(): void
+    {
+        $path = '/india/constituency?kind=pc&state=Uttar%20Pradesh&name=Pilibhit&edition='.str_repeat('a', 24);
+        $this->get(route('feedback.create', ['path' => $path, 'category' => 'data']))
+            ->assertOk()
+            ->assertSee('Page and result:')
+            ->assertSee('type="hidden" name="path"', false)
+            ->assertDontSee('Page path');
+
+        $this->post('/report-problem', ['category' => 'data', 'path' => $path, 'details' => 'The 2009 winning margin needs source review.'])
+            ->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('data_feedback', ['path' => $path, 'category' => 'data']);
+
+        $this->post('/report-problem', ['category' => 'source', 'path' => $path])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('data_feedback', ['path' => $path, 'category' => 'source', 'details' => 'Problem reported for this page and result.']);
+    }
+
     public function test_report_rejects_external_urls(): void
     {
         $this->post('/report-problem', ['category' => 'data', 'path' => '//example.com', 'details' => 'This value needs checking.'])->assertSessionHasErrors('path');

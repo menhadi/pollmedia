@@ -50,8 +50,8 @@ class ConstituencyHistory
                 $row['reason'] = null;
                 $row['source_url'] = $data['source_url'];
                 $row['url'] = route('elections.assembly', ['edition' => $archive, 'state' => 'Uttar Pradesh', 'code' => $original['code']]);
-                $winner = collect($record['candidates'])->first(fn (array $candidate): bool => $candidate['candidate_name'] === ($record['winner'] ?? null) && ! ($candidate['is_nota'] ?? false) && strtoupper($candidate['party_at_election']) !== 'NOTA');
-                $row['winner_party'] = ! $record['has_warning'] ? ($winner['party_at_election'] ?? null) : null;
+                $row['result'] = app(HistoricalElectionAnalytics::class)->singleSeatResult($record);
+                $row['winner_party'] = $row['result']['party'] ?? null;
             }
             $rows[] = $row;
         }
@@ -153,8 +153,8 @@ class ConstituencyHistory
             $row['reason'] = null;
             $row['source_url'] = $data['source_url'];
             $row['url'] = route('elections.history', ['edition' => $archive, 'state' => $original['state_name'] ?? $original['state_code'], 'code' => $original['code']]);
-            $ranked = collect($record['candidates'])->reject(fn (array $candidate): bool => ($candidate['is_nota'] ?? false) || strtoupper($candidate['party_at_election']) === 'NOTA')->sortByDesc('votes')->values();
-            $row['winner_party'] = ! $record['has_warning'] && isset($record['winner']) && $ranked->count() > 1 && $ranked[0]['candidate_name'] === $record['winner'] ? $ranked[0]['party_at_election'] : null;
+            $row['result'] = app(HistoricalElectionAnalytics::class)->singleSeatResult($record);
+            $row['winner_party'] = $row['result']['party'] ?? null;
             $rows[] = $row;
         }
 

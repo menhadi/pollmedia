@@ -12,12 +12,17 @@ class DataFeedbackController extends Controller
 {
     public function create(Request $request): View
     {
-        return view('data-feedback', ['path' => str_starts_with($request->string('path')->toString(), '/') && ! str_starts_with($request->string('path')->toString(), '//') ? $request->string('path')->toString() : '/']);
+        $path = $request->string('path')->toString();
+        $path = str_starts_with($path, '/') && ! str_starts_with($path, '//') && strlen($path) <= 2000 ? $path : '/';
+        $category = $request->string('category')->toString();
+
+        return view('data-feedback', ['path' => $path, 'category' => in_array($category, ['data', 'source', 'navigation', 'accessibility', 'other'], true) ? $category : 'data']);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $data = $request->validate(['category' => 'required|in:data,source,navigation,accessibility,other', 'path' => ['required', 'string', 'max:2000', 'regex:~^/(?!/)[^\\\\<>\r\n]*$~'], 'details' => 'required|string|min:10|max:5000']);
+        $data = $request->validate(['category' => 'required|in:data,source,navigation,accessibility,other', 'path' => ['required', 'string', 'max:2000', 'regex:~^/(?!/)[^\\\\<>\r\n]*$~'], 'details' => 'nullable|string|max:5000']);
+        $data['details'] = trim($data['details'] ?? '') ?: 'Problem reported for this page and result.';
         $id = (string) Str::ulid();
         DB::table('data_feedback')->insert($data + ['id' => $id, 'status' => 'open', 'created_at' => now(), 'updated_at' => now()]);
 

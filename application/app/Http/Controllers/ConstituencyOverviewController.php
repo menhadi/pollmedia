@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
+use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
 use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
@@ -14,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ConstituencyOverviewController extends Controller
 {
-    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|RedirectResponse
+    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews, HistoricalElectionAnalytics $analytics): View|RedirectResponse
     {
         $input = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'code' => 'nullable|integer|min:1|max:999999']);
         $kind = $input['kind'];
@@ -35,7 +36,7 @@ class ConstituencyOverviewController extends Controller
         } elseif (isset($input['code'])) {
             abort_if(! isset($input['edition']) || ! $entries->contains(fn ($entry): bool => $entry->edition_id === $input['edition'] && $entry->record_code === (int) $input['code']), 404);
         }
-        $rows = $entries->map(function ($entry) use ($history, $archives, $reviews) {
+        $rows = $entries->map(function ($entry) use ($history, $archives, $reviews, $analytics) {
             $record = null;
             $source = null;
             try {
@@ -51,7 +52,7 @@ class ConstituencyOverviewController extends Controller
                 }
             }
 
-            return ['entry' => $entry, 'record' => $record, 'source' => $source];
+            return ['entry' => $entry, 'record' => $record, 'result' => $record ? $analytics->singleSeatResult($record) : null, 'source' => $source];
         });
         $chosen = isset($input['edition']) ? $rows->first(fn ($row) => $row['entry']->edition_id === $input['edition'] && (! isset($input['code']) || $row['entry']->record_code === (int) $input['code'])) : null;
         abort_if(isset($input['edition']) && ! $chosen, 404);

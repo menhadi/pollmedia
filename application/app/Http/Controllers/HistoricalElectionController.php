@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyHistory;
 use App\Services\ElectionArchive;
+use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
 use App\Services\HistoricalElectionReview;
 use Illuminate\Contracts\View\View;
@@ -75,7 +76,7 @@ class HistoricalElectionController extends Controller
         return view('constituency-history', compact('place', 'comparison'));
     }
 
-    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews): View|StreamedResponse|RedirectResponse
+    public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews, HistoricalElectionAnalytics $analytics): View|StreamedResponse|RedirectResponse
     {
         $input = $request->validate(['edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'state' => 'nullable|string|max:100', 'code' => 'nullable|integer|min:1|max:999999', 'format' => 'nullable|in:csv,report']);
         if (! isset($input['format']) && isset($input['edition'], $input['state'], $input['code']) && Schema::hasTable('historical_constituency_index')) {
@@ -122,6 +123,7 @@ class HistoricalElectionController extends Controller
                 abort_unless($selected, 404);
                 $original = $selected;
                 $selected = $reviews->apply($edition, $selected, $data['source_sha256']);
+                $selected['display_result'] = $analytics->singleSeatResult($selected);
                 if ($download) {
                     return $this->download($data, [$selected], $state, $kind, $edition, (string) $selected['code']);
                 }
@@ -130,13 +132,10 @@ class HistoricalElectionController extends Controller
                 }
                 $relatedPlace = app(ConstituencyHistory::class)->relatedPlace($edition, $original);
             } elseif ($state) {
-                $stateResults = $constituencies->map(function (array $original) use ($reviews, $edition, $data): array {
+                $stateResults = $constituencies->map(function (array $original) use ($reviews, $edition, $data, $analytics): array {
                     $record = $reviews->apply($edition, $original, $data['source_sha256']);
-                    $record['winner_party'] = null;
-                    if (($record['number_of_seats'] ?? 1) === 1 && isset($record['winner'], $record['margin'])) {
-                        $winner = collect($record['candidates'])->first(fn (array $candidate): bool => ! ($candidate['is_nota'] ?? false) && strtoupper($candidate['party_at_election']) !== 'NOTA' && $candidate['candidate_name'] === $record['winner']);
-                        $record['winner_party'] = $winner['party_at_election'] ?? null;
-                    }
+                    $record['display_result'] = $analytics->singleSeatResult($record);
+                    $record['winner_party'] = $record['display_result']['party'] ?? null;
 
                     return $record;
                 });

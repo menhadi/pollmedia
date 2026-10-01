@@ -1,7 +1,7 @@
 @php
-$chartRows=$rows->sortBy('entry.year')->values()->map(function($row){
+$chartRows=$rows->sortByDesc('entry.year')->values()->map(function($row){
  $summary=$row['record']?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$row['record']]):[];
- return ['year'=>$row['entry']->year,'label'=>$row['entry']->edition_label,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'turnout_review_count'=>$summary['turnout_review_count']??0];
+ return ['year'=>$row['entry']->year,'label'=>$row['entry']->edition_label,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'turnout_review_count'=>$summary['turnout_review_count']??0,'margin_review_count'=>$summary['margin_review_count']??0];
 })->unique(fn($point)=>json_encode([$point['year'],$point['turnout'],$point['margin'],$point['polled'],$point['electors']]))->values();
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>How voting has changed</h2></div><a class="place-action" href="#history">View the tables ↓</a></div>
@@ -28,11 +28,11 @@ $color=$ratio<0.33?'var(--palette-936000)':($ratio<0.66?'var(--palette-487000)':
 <span class="history-bar-fill" style="width:{{ 100*$value/$scale }}%;background:{{ $color }}"></span>
 @endif
 </span>
-<strong class="history-bar-value">{{ $value===null?'—':number_format($value,$metric==='turnout'?2:0).($metric==='turnout'?'%':'').($metric==='turnout' && $point['turnout_review_count']?' †':'') }}</strong>
+<strong class="history-bar-value">{{ $value===null?'—':number_format($value,$metric==='turnout'?2:0).($metric==='turnout'?'%':'').(($metric==='turnout'?$point['turnout_review_count']:$point['margin_review_count'])?' †':'') }}</strong>
 </div>
 @endforeach
 </div>
-<p class="small">Gold → green → teal: lower to higher values. A dash means unavailable; it is not zero. † marks turnout agreed by the source summary and detailed table even though other figures need review. Identical chart figures from two editions in one year appear once; both reports remain in the results table.</p>
+<p class="small">Gold → green → teal: lower to higher values. A dash means unavailable, not zero. † marks a figure with a data note in the result table. Identical chart figures from two editions in one year appear once; both reports remain in the results table.</p>
 </div>
 @endforeach
 @php $totalMax=max(1,$chartRows->pluck('electors')->filter()->max()??1,$chartRows->pluck('polled')->filter()->max()??1); @endphp

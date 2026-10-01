@@ -38,15 +38,15 @@ class ConstituencyHistoryTest extends TestCase
         });
     }
 
-    public function test_comparison_keeps_unique_years_and_omits_flagged_margins(): void
+    public function test_comparison_keeps_unique_years_and_labels_flagged_margins(): void
     {
         $place = $this->mappedPlace();
         $this->mockEditions([2009 => ['status' => 'needs_review', 'error' => 'Summary totals differ']]);
         $data = app(ConstituencyHistory::class)->forPlace($place);
         $this->assertSame([2009, 2014, 2019, 2024], array_column($data['rows'], 'year'));
-        $this->assertNull($data['rows'][0]['winner_party']);
+        $this->assertSame('PARTY A', $data['rows'][0]['winner_party']);
         $this->assertSame('PARTY A', $data['rows'][1]['winner_party']);
-        $this->get('/india/pc/pilibhit/history')->assertOk()->assertSee('Winning margins over time')->assertSee('Summary totals differ')->assertSee('id="note-2009"', false)->assertDontSee('2009 · 5 votes')->assertSee('2014 · 5 votes');
+        $this->get('/india/pc/pilibhit/history')->assertOk()->assertSee('Winning margins over time')->assertSee('Summary totals differ')->assertSee('id="note-2009"', false)->assertSee('2009 · 5 votes †')->assertSeeInOrder(['2024 · 5 votes', '2009 · 5 votes †']);
         $this->assertDatabaseCount('election_contests', 0);
     }
 

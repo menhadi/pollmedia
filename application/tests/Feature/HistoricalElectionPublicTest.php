@@ -208,6 +208,34 @@ class HistoricalElectionPublicTest extends TestCase
             ->assertOk()->assertSee('Winner: Candidate One')->assertSee('12,344 votes');
     }
 
+    public function test_candidate_supported_winner_and_margin_show_despite_summary_discrepancy(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition();
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0]['error'] = 'Summary and detailed totals differ';
+        $data['records'][0]['candidates'][] = ['candidate_name' => 'Candidate Two', 'party_at_election' => 'OTHER', 'votes' => 2345];
+        $data['records'][0]['valid_candidate_votes'] = 14690;
+        $data['records'][0]['summary_totals'] = ['valid_candidate_votes' => 14680];
+        Storage::disk('local')->put($path, json_encode($data));
+
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24']))
+            ->assertOk()->assertSee('Candidate One †')->assertSee('10,000 †')
+            ->assertSee('Summary and detailed totals differ')->assertSee('Report issue');
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]))
+            ->assertOk()->assertSee('Winner: Candidate One')->assertSee('10,000 votes')
+            ->assertSee('The winner and margin are calculated from the candidate votes');
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451, 'format' => 'report']))
+            ->assertOk()->assertSee('10,000 votes');
+
+        $record = $data['records'][0];
+        $reviews = app(HistoricalElectionReview::class);
+        $reviews->save($id, $record, $data['source_sha256'], ['action' => 'accept', 'reason' => 'Checked the detailed candidate table', 'fingerprint' => $reviews->fingerprint($record, $data['source_sha256']), 'review_id' => 0], User::factory()->create(['is_admin' => true])->id);
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]))
+            ->assertOk()->assertSee('10,000 votes');
+    }
+
     public function test_assembly_archive_uses_its_own_editions_state_scope_and_links(): void
     {
         Storage::fake('local');

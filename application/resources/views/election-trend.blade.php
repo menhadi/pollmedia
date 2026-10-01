@@ -1,5 +1,5 @@
 @php
-    $chartRows = collect($history)->reverse();
+    $chartRows = collect($history)->sortByDesc('year')->values();
     $chartMax = $maximum ?? max(1, $chartRows->max($metric) ?? 0);
     $colourValues = $chartRows->pluck($metric)->filter(fn($value) => $value !== null);
     $colourMin = $colourValues->min();

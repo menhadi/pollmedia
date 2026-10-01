@@ -8,8 +8,8 @@
     $seoTitle = $place->name.' election history & comparisons · Pollmedia';
     $seoDescription = 'Compare linked election years for '.$place->name.', with candidates, parties, winning margins and official boundary references.';
     $breadcrumbs = ['India' => route('home'), $place->name.' '.strtoupper($place->type) => $placeUrl, 'Election history' => $canonical];
-    $chartRows = collect($comparison['rows'])->filter(fn ($row) => $row['record'] && !$row['record']['has_warning'] && isset($row['record']['winner'], $row['record']['margin']));
-    $maxMargin = $chartRows->max(fn ($row) => $row['record']['margin']) ?: 1;
+    $chartRows = collect($comparison['rows'])->filter(fn ($row) => !empty($row['result']))->sortByDesc('year');
+    $maxMargin = $chartRows->max(fn ($row) => $row['result']['margin']) ?: 1;
 @endphp
 @include('seo-metadata')
 <link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')</head><body class="election-ui">
@@ -23,25 +23,25 @@
 @foreach($comparison['rows'] as $row)
 @php($record = $row['record'])
 <tr><th scope="row">{{ $row['year'] }} @if($record && $record['has_warning'])<a href="#note-{{ $row['year'] }}" aria-label="Data note for {{ $row['year'] }}">†</a>@endif</th>
-@if($record)<td>{{ !$record['has_warning'] ? ($record['winner'] ?? 'Not established') : 'Under review' }}</td><td>{{ $row['winner_party'] ?? '—' }}</td><td>{{ !$record['has_warning'] && isset($record['margin']) ? number_format($record['margin']) : '—' }}</td><td>{{ isset($record['electors']) ? number_format($record['electors']) : 'Not reported' }}</td><td>{{ isset($record['votes_polled']) ? number_format($record['votes_polled']) : 'Not reported' }}</td><td><a href="{{ $row['url'] }}">Candidate table</a> · <a href="{{ $row['source_url'] }}" target="_blank" rel="noreferrer">ECI source ↗</a></td>
+@if($record)<td>{{ $row['result']['winner'] ?? 'See candidate table' }}{{ $record['has_warning'] && !empty($row['result']) ? ' †' : '' }}</td><td>{{ $row['winner_party'] ?? '—' }}</td><td>{{ !empty($row['result']) ? number_format($row['result']['margin']).($record['has_warning'] ? ' †' : '') : '—' }}</td><td>{{ isset($record['electors']) ? number_format($record['electors']) : 'Not reported' }}</td><td>{{ isset($record['votes_polled']) ? number_format($record['votes_polled']) : 'Not reported' }}</td><td><a href="{{ $row['url'] }}">Candidate table</a> · <a href="{{ $row['source_url'] }}" target="_blank" rel="noreferrer">ECI source ↗</a> · <a href="{{ route('feedback.create',['path'=>parse_url($row['url'],PHP_URL_PATH).(parse_url($row['url'],PHP_URL_QUERY)?'?'.parse_url($row['url'],PHP_URL_QUERY):''),'category'=>'data']) }}">Report issue</a></td>
 @else<td colspan="6">{{ $row['reason'] }}</td>@endif
 </tr>
 @endforeach
 </tbody></table></div>
 @foreach($comparison['rows'] as $row)
 @if(!empty($row['mapping_note']))<p class="small"><strong>{{ $row['year'] }} name reference:</strong> {{ $row['mapping_note'] }} <a href="{{ $row['url'] }}">View the original record</a>.</p>@endif
-@if($row['record'] && $row['record']['has_warning'])<p id="note-{{ $row['year'] }}" class="notice"><strong>† {{ $row['year'] }}:</strong> {{ $row['record']['error'] ?? 'Source data requires review.' }} Reported totals are shown with this note; a winner and margin are not inferred.</p>@endif
+@if($row['record'] && $row['record']['has_warning'])<p id="note-{{ $row['year'] }}" class="notice"><strong>† {{ $row['year'] }}:</strong> {{ $row['record']['error'] ?? 'Source data requires review.' }} @if(isset($row['record']['summary_totals']['valid_candidate_votes'],$row['record']['valid_candidate_votes']) && $row['record']['summary_totals']['valid_candidate_votes']!==$row['record']['valid_candidate_votes'])Detailed candidate votes: {{ number_format($row['record']['valid_candidate_votes']) }}; report summary: {{ number_format($row['record']['summary_totals']['valid_candidate_votes']) }}. @endif @if($row['result']['derived'] ?? false)The displayed winner and margin use the detailed candidate votes. @endif Check the official source for the original figures.</p>@endif
 @endforeach
 </section>
-<section class="card"><h2>Turnout and party shares by year</h2><p class="small">Only eligible, reconciled single-seat records contribute. Turnout is votes polled divided by electors; party shares use recorded candidate votes plus NOTA. Missing figures remain unavailable.</p><div class="table"><table><thead><tr><th scope="col">{{ \App\Services\PublicLanguage::text('Year') }}</th><th scope="col">Votes polled</th><th scope="col">{{ \App\Services\PublicLanguage::text('Turnout') }}</th><th scope="col">Margin · percentage points</th><th scope="col">Party · votes · share</th></tr></thead><tbody>
+<section class="card"><h2>Turnout and party shares by year</h2><p class="small">Available single-seat figures are shown with † when the source has a data note. Turnout is votes polled divided by electors; party shares use recorded candidate votes plus NOTA. Missing figures remain unavailable.</p><div class="table"><table><thead><tr><th scope="col">{{ \App\Services\PublicLanguage::text('Year') }}</th><th scope="col">Votes polled</th><th scope="col">{{ \App\Services\PublicLanguage::text('Turnout') }}</th><th scope="col">Margin · percentage points</th><th scope="col">Party · votes · share</th></tr></thead><tbody>
 @foreach($comparison['rows'] as $row)
 @php($yearAnalysis=app(\App\Services\HistoricalElectionAnalytics::class)->summarize($row['record'] ? [$row['record']] : []))
 <tr><th scope="row"><a href="{{ $row['url'] }}">{{ $row['year'] }}</a></th><td>{{ $yearAnalysis['polled']===null?'—':number_format($yearAnalysis['polled']) }}</td><td>{{ $yearAnalysis['turnout']===null?'—':number_format($yearAnalysis['turnout'],2).'%' }}</td><td>{{ $yearAnalysis['margin_percent']===null?'—':number_format($yearAnalysis['margin_percent'],2) }}</td><td>@forelse($yearAnalysis['parties'] as $partyRow)<div>{{ $partyRow['party'] }} · {{ number_format($partyRow['votes']) }} · {{ number_format($partyRow['share'],2) }}%</div>@empty Not available @endforelse</td></tr>
 @endforeach
 </tbody></table></div></section>
-<section class="card"><h2>Winning margins over time</h2><p class="small">Margin in votes, on one shared scale. Years with unresolved result checks or no established winner are omitted.</p>
-@forelse($chartRows as $row)<div style="margin:20px 0"><p><strong>{{ $row['year'] }} · {{ number_format($row['record']['margin']) }} votes</strong> · {{ $row['record']['winner'] }} · {{ $row['winner_party'] }}</p><div style="height:14px;background:var(--palette-edf0e9)" aria-hidden="true"><div style="height:100%;background:var(--palette-176c55);width:{{ 100 * $row['record']['margin'] / $maxMargin }}%"></div></div></div>
-@empty<p>No reconciled winning margins are available yet.</p>@endforelse
+<section class="card"><h2>Winning margins over time</h2><p class="small">Margin in votes, on one shared scale. † marks a result with a source note.</p>
+@forelse($chartRows as $row)<div style="margin:20px 0"><p><strong>{{ $row['year'] }} · {{ number_format($row['result']['margin']) }} votes{{ $row['record']['has_warning'] ? ' †' : '' }}</strong> · {{ $row['result']['winner'] }} · {{ $row['winner_party'] }}</p><div style="height:14px;background:var(--palette-edf0e9)" aria-hidden="true"><div style="height:100%;background:var(--palette-176c55);width:{{ 100 * $row['result']['margin'] / $maxMargin }}%"></div></div></div>
+@empty<p>No source-supported winning margins are available yet.</p>@endforelse
 </section>
 @if(!empty($comparison['earlier']))
 <section class="card"><h2>Earlier Pilibhit: a different constituency extent</h2>

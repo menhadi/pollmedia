@@ -41,7 +41,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v5:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v6:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -156,20 +156,47 @@ class HistoricalElectionAnalytics
             'margin_percent' => $marginPercentages ? array_sum($marginPercentages) / count($marginPercentages) : null, 'winners' => $winners];
     }
 
+    /** @return array{winner: string, party: string|null, margin: int, derived: bool}|null */
+    public function singleSeatResult(array $record): ?array
+    {
+        if (($record['number_of_seats'] ?? 1) !== 1) {
+            return null;
+        }
+
+        if (is_string($record['winner'] ?? null) && trim($record['winner']) !== '' && $this->count($record['margin'] ?? null)) {
+            $candidate = collect($record['candidates'] ?? [])->firstWhere('candidate_name', $record['winner']);
+
+            return ['winner' => $record['winner'], 'party' => $candidate['party_at_election'] ?? null, 'margin' => $record['margin'], 'derived' => false];
+        }
+
+        if (! $this->hasProvisionalCandidateVotes($record, true)) {
+            return null;
+        }
+
+        $ranked = collect($record['candidates'])->reject(fn (array $candidate): bool => ($candidate['is_nota'] ?? false) || strtoupper(trim($candidate['party_at_election'])) === 'NOTA')->sortByDesc('votes')->values();
+        if ($ranked->count() < 2 || $ranked[0]['votes'] <= $ranked[1]['votes']) {
+            return null;
+        }
+
+        return ['winner' => $ranked[0]['candidate_name'], 'party' => $ranked[0]['party_at_election'], 'margin' => $ranked[0]['votes'] - $ranked[1]['votes'], 'derived' => true];
+    }
+
     private function count(mixed $value): bool
     {
         return is_int($value) && $value >= 0;
     }
 
-    private function hasProvisionalCandidateVotes(array $record): bool
+    private function hasProvisionalCandidateVotes(array $record, bool $includeReviewed = false): bool
     {
-        if (($record['status'] ?? '') !== 'needs_review') {
+        if (($record['status'] ?? '') !== 'needs_review' && (! $includeReviewed || ! in_array($record['status'] ?? '', ['validated', 'accepted', 'corrected'], true))) {
             return false;
         }
 
         $error = $record['error'] ?? '';
         $documentedDifference = $this->hasDocumentedElectorDifference($record);
-        $legacyDetail = (in_array($error, [self::LEGACY_DETAIL_PENDING, self::LEGACY_DETAIL_RECONCILED], true) || $documentedDifference)
+        $sourceDetail = ! isset($record['source_warning_code']) && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0
+            && ! preg_match('/candidate (?:count differs|serial numbers? (?:are )?(?:incomplete|duplicated)|text could not be parsed|vote cells are missing|rows are missing)|(?:constituency names|identities) differ|report pages are missing, duplicated or out of order/i', $error);
+        $legacyDetail = (in_array($error, [self::LEGACY_DETAIL_PENDING, self::LEGACY_DETAIL_RECONCILED], true) || $documentedDifference || $sourceDetail)
             && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0;
         if ($error === self::LEGACY_DETAIL_RECONCILED || $documentedDifference) {
             $summary = $record['summary_totals'] ?? [];
@@ -185,7 +212,14 @@ class HistoricalElectionAnalytics
 
         $candidates = $record['candidates'] ?? [];
         if ($candidates === [] || collect($candidates)->contains(fn (array $candidate): bool => ! $this->count($candidate['votes'] ?? null)
-            || trim($candidate['candidate_name'] ?? '') === '' || trim($candidate['party_at_election'] ?? '') === '')) {
+            || trim($candidate['candidate_name'] ?? '') === '' || trim($candidate['party_at_election'] ?? '') === ''
+            || ($this->count($candidate['general_votes'] ?? null) && $this->count($candidate['postal_votes'] ?? null)
+                && $candidate['votes'] !== $candidate['general_votes'] + $candidate['postal_votes']))) {
+            return false;
+        }
+
+        $candidateKeys = collect($candidates)->map(fn (array $candidate): string => mb_strtolower(trim($candidate['candidate_name']).'|'.trim($candidate['party_at_election']).'|'.$candidate['votes']));
+        if ($candidateKeys->unique()->count() !== count($candidates)) {
             return false;
         }
 
@@ -245,7 +279,7 @@ class HistoricalElectionAnalytics
         $summary = $record['summary_totals'] ?? [];
         $difference = $record['source_discrepancy'] ?? [];
         if (! is_array($summary) || ! is_array($difference)
-            || ($record['status'] ?? '') !== 'needs_review'
+            || ! in_array($record['status'] ?? '', ['needs_review', 'accepted', 'corrected'], true)
             || ($record['source_warning_code'] ?? '') !== 'summary_elector_difference'
             || ($record['original_extraction_warning'] ?? '') !== self::LEGACY_DETAIL_PENDING
             || ($difference['field'] ?? '') !== 'electors'
