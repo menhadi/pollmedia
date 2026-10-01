@@ -30,7 +30,7 @@
             for (let i = 0; i <= 4; i++) {
                 const value = max * i / 4, yy = y(value);
                 svg.append(element('line', {x1:left,x2:right,y1:yy,y2:yy,class:'history-grid'}));
-                const tick = new Intl.NumberFormat(document.documentElement.lang, {notation:'compact',maximumFractionDigits:1}).format(value);
+                const tick = new Intl.NumberFormat(document.documentElement.lang, {notation:'compact',maximumFractionDigits:1}).format(value) + (data.unit === '%' ? '%' : '');
                 svg.append(element('text',{x:left-9,y:yy+4,'text-anchor':'end'},tick));
             }
             const step = Math.max(1, Math.ceil(rows.length / Math.max(2, Math.floor((right-left)/62))));

@@ -135,8 +135,8 @@ class ConstituencyOverviewTest extends TestCase
 
     public function test_party_lines_rank_parties_once_per_year_and_preserve_missing_figures(): void
     {
-        $record = ['code' => 1, 'status' => 'validated', 'number_of_seats' => 1, 'electors' => 200, 'votes_polled' => 100,
-            'candidates' => array_map(fn ($party, $votes) => ['candidate_name' => $party, 'party_at_election' => $party, 'votes' => $votes], ['A', 'B', 'C', 'D', 'NOTA'], [40, 30, 20, 8, 2])];
+        $record = ['code' => 1, 'status' => 'validated', 'number_of_seats' => 1, 'electors' => 400, 'votes_polled' => 200,
+            'candidates' => array_map(fn ($party, $votes) => ['candidate_name' => $party, 'party_at_election' => $party, 'votes' => $votes], ['A', 'B', 'C', 'D', 'NOTA'], [80, 60, 40, 16, 4])];
         $rows = collect([
             ['entry' => (object) ['year' => 2019], 'record' => $record],
             ['entry' => (object) ['year' => 2019], 'record' => $record],
@@ -147,9 +147,16 @@ class ConstituencyOverviewTest extends TestCase
         $party = json_decode($matches[1][3], true);
         $this->assertSame(['A', 'B', 'C', 'Others'], array_column($party['series'], 'label'));
         $this->assertCount(2, $party['rows']);
-        $this->assertEquals(40, $party['rows'][0]['party0']);
-        $this->assertEquals(10, $party['rows'][0]['others']);
+        $this->assertEquals(80, $party['rows'][0]['party0']);
+        $this->assertEquals(20, $party['rows'][0]['others']);
         $this->assertNull($party['rows'][1]['party0']);
         $this->assertNull($party['rows'][1]['others']);
+        $this->assertSame('%', $party['unit']);
+        $this->assertEquals(40, $party['rows'][0]['party0_share']);
+        $this->assertEquals(10, $party['rows'][0]['others_share']);
+        $this->assertNull($party['rows'][1]['party0_share']);
+        $this->assertNull($party['rows'][1]['others_share']);
+        $this->assertStringContainsString('80 (40.00%)', $html);
+        $this->assertStringContainsString('20 (10.00%)', $html);
     }
 }
