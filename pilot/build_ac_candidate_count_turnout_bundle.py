@@ -169,7 +169,7 @@ def build(root: Path, audit_csv: Path) -> dict:
             archive.writestr('IMPORT.sh', import_script([detail['edition'] for detail in details]))
         partial.replace(output)
     checksum = file_digest(output)
-    output.with_suffix('.sha256').write_text(checksum + '  ' + output.name + '\n', encoding='ascii')
+    output.with_suffix('.sha256').write_bytes((checksum + '  ' + output.name + '\n').encode('ascii'))
     return {'bundle': str(output), 'sha256': checksum, 'turnout_rows': 33, 'held_rows': 1}
 
 
