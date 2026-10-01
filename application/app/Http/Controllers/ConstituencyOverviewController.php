@@ -52,7 +52,10 @@ class ConstituencyOverviewController extends Controller
                 }
             }
 
-            return ['entry' => $entry, 'record' => $record, 'result' => $record ? $analytics->singleSeatResult($record, $entry->edition_id) : null, 'source' => $source];
+            $result = $record ? $analytics->singleSeatResult($record, $entry->edition_id) : null;
+
+            return ['entry' => $entry, 'record' => $record, 'result' => $result,
+                'source_candidate' => $record && ! $result ? $analytics->sourceOnlyCandidate($record) : null, 'source' => $source];
         });
         $chosen = isset($input['edition']) ? $rows->first(fn ($row) => $row['entry']->edition_id === $input['edition'] && (! isset($input['code']) || $row['entry']->record_code === (int) $input['code'])) : null;
         abort_if(isset($input['edition']) && ! $chosen, 404);

@@ -47,6 +47,20 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull(app(HistoricalElectionAnalytics::class)->singleSeatResult($record, '43f931b20e1fe26e3e1f72ec'));
     }
 
+    public function test_source_candidate_is_displayable_without_claiming_a_winner(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $record = ['candidates' => [
+            ['candidate_name' => 'Candidate One', 'party_at_election' => 'AAA', 'votes' => null],
+            ['candidate_name' => 'None of the Above', 'party_at_election' => 'NOTA', 'votes' => null],
+        ]];
+        $this->assertSame(['name' => 'Candidate One', 'party' => 'AAA'], $analytics->sourceOnlyCandidate($record));
+        $this->assertNull($analytics->singleSeatResult($record));
+        $record['candidates'][] = ['candidate_name' => 'Candidate Two', 'party_at_election' => 'BBB', 'votes' => null];
+        $this->assertNull($analytics->sourceOnlyCandidate($record));
+        $this->assertNull($analytics->sourceOnlyCandidate(['candidates' => [$record['candidates'][1]]]));
+    }
+
     public function test_source_summary_can_confirm_a_recent_uncontested_winner(): void
     {
         $record = ['code' => 31, 'name' => 'Akuluto (ST)', 'candidates' => [

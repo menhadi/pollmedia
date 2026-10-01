@@ -80,6 +80,18 @@ class HistoricalElectionPublicTest extends TestCase
         $this->assertDatabaseCount('election_contests', 0);
     }
 
+    public function test_unverified_source_candidate_has_a_note_and_official_link(): void
+    {
+        Storage::fake('local');
+        [$id, , , $source] = $this->edition();
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24']))
+            ->assertOk()->assertSee('Reported candidate*: Candidate One')->assertSee('A candidate or source table is recorded')
+            ->assertSee($source)->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 0);
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]))
+            ->assertOk()->assertSee('Available candidate rows are shown as recorded')
+            ->assertSee('12,345')->assertSee($source)->assertDontSee('Winner: Candidate One');
+    }
+
     public function test_missing_preserved_pdfs_leave_imported_results_visible_with_a_warning(): void
     {
         Storage::fake('local');
@@ -127,14 +139,14 @@ class HistoricalElectionPublicTest extends TestCase
         $url = route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]);
         $this->get($url)->assertOk()->assertDontSee('id="data-note"', false)->assertSee('The source discrepancy has a review note.')->assertDontSee('Checked source difference');
         $stateUrl = route('elections.history', ['edition' => $id, 'state' => 'S24']);
-        $this->get($stateUrl)->assertOk()->assertDontSee('id="state-note-451"', false)->assertSee('See candidate table')->assertDontSee('Checked source difference')
+        $this->get($stateUrl)->assertOk()->assertDontSee('id="state-note-451"', false)->assertSee('Reported candidate*: Candidate One')->assertDontSee('Checked source difference')
             ->assertSee('No reported single-seat winners are available to chart')->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 0 && $summary['under_review'] === 0 && $summary['other'] === 1);
         $path = 'election-archive/'.$id.'/extraction.json';
         $data = json_decode(Storage::disk('local')->get($path), true);
         $data['records'][0]['candidates'][0]['votes']++;
         Storage::disk('local')->put($path, json_encode($data));
         $this->get($url)->assertOk()->assertSee('id="data-note"', false)->assertDontSee('Administrator accepted');
-        $this->get($stateUrl)->assertOk()->assertSee('id="state-note-451"', false)->assertSee('See candidate table')
+        $this->get($stateUrl)->assertOk()->assertSee('id="state-note-451"', false)->assertSee('Reported candidate*: Candidate One')
             ->assertViewHas('partySummary', fn (array $summary): bool => $summary['under_review'] === 1 && $summary['other'] === 0);
         Storage::disk('local')->put('election-archive/'.$id.'/summary.pdf', 'changed');
         $this->get($url)->assertStatus(409)->assertDontSee('Candidate One');
@@ -183,7 +195,7 @@ class HistoricalElectionPublicTest extends TestCase
         Storage::disk('local')->put($path, json_encode($data));
         $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24']))->assertOk()
             ->assertSee('Constituency results in S24')->assertSee('Candidate One')->assertSee('PARTY')->assertSee('123')
-            ->assertSee('id="state-note-451"', false)->assertSee('See candidate table')->assertDontSee('S01 / Other')->assertDontSee('456')
+            ->assertSee('id="state-note-451"', false)->assertSee('Reported candidate*: Candidate One')->assertDontSee('S01 / Other')->assertDontSee('456')
             ->assertViewHas('stateResults', fn ($rows): bool => $rows->count() === 3 && $rows->firstWhere('code', 454)['winner_party'] === null)
             ->assertSee('Party-wise wins in available results')->assertSee('PARTY: 1 of 1 counted wins')
             ->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 1 && $summary['under_review'] === 1 && $summary['other'] === 1 && $summary['parties']->all() === ['PARTY' => 1]);

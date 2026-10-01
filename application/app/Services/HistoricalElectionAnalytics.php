@@ -197,6 +197,23 @@ class HistoricalElectionAnalytics
         return ['winner' => $ranked[0]['candidate_name'], 'party' => $ranked[0]['party_at_election'], 'margin' => $ranked[0]['votes'] - $ranked[1]['votes'], 'derived' => true];
     }
 
+    /** @return array{name: string, party: string|null}|null A source row, never a declared winner. */
+    public function sourceOnlyCandidate(array $record): ?array
+    {
+        $people = collect($record['candidates'] ?? [])->filter(fn ($candidate): bool => is_array($candidate) && ! ($candidate['is_nota'] ?? false)
+            && ! in_array(strtoupper(trim($candidate['candidate_name'] ?? '')), ['NOTA', 'NONE OF THE ABOVE'], true)
+            && strtoupper(trim($candidate['party_at_election'] ?? '')) !== 'NOTA')->values();
+        if ($people->count() !== 1) {
+            return null;
+        }
+        $name = trim($people[0]['candidate_name'] ?? '');
+        if ($name === '') {
+            return null;
+        }
+
+        return ['name' => $name, 'party' => trim($people[0]['party_at_election'] ?? '') ?: null];
+    }
+
     private function uncontestedResult(array $record, ?string $edition): ?array
     {
         $candidates = $record['candidates'] ?? [];
