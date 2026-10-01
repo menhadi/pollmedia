@@ -38,6 +38,11 @@ class AssemblySummaryTotalsTest(unittest.TestCase):
         self.assertIsNone(parse_summary_page(SUMMARY.replace('4. TOTAL 85648', '4. UNKNOWN 85648'), 18))
         self.assertIsNone(parse_summary_page(SUMMARY.replace('85641', '85649'), 18))
 
+    def test_official_valid_vote_discrepancy_requires_explicit_review_mode(self):
+        page = SUMMARY.replace('85641', '85649')
+        self.assertIsNone(parse_summary_page(page, 18))
+        self.assertEqual(parse_summary_page(page, 18, allow_vote_discrepancy=True)['votes_polled'], 85648)
+
     def test_later_reports_can_number_totals_differently(self):
         later = (SUMMARY.replace('3. TOTAL 70830 65640 136470', '4. TOTAL 70830 65640 0 136470')
                  .replace('4. TOTAL 85648', '5. TOTAL 85648')
@@ -53,6 +58,12 @@ class AssemblySummaryTotalsTest(unittest.TestCase):
                                  '4. TOTAL 43659 52421 96121')
                  .replace('3. TOTAL VALID VOTES POLLED 85641', '3. TOTAL VALID VOTES POLLED 96109'))
         self.assertEqual(parse_summary_page(older, 28)['votes_polled'], 96121)
+
+    def test_older_report_labels_electors_who_voted_and_valid_votes(self):
+        older = (SUMMARY.replace('III. VOTERS', 'III. ELECTORS WHO VOTED')
+                 .replace('3. TOTAL VALID VOTES POLLED 85641', '2. VALID 85641'))
+        self.assertEqual(parse_summary_page(older, 28)['valid_candidate_votes'], 85641)
+        self.assertIsNone(parse_summary_page(older.replace('2. VALID 85641', '2. VALID Uncontested'), 28))
 
     def test_nota_is_matched_separately_from_valid_candidate_votes(self):
         later = (SUMMARY.replace('3. TOTAL VALID VOTES POLLED 85641',

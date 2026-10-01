@@ -51,6 +51,28 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($result['margin']);
     }
 
+    public function test_same_official_seat_in_separate_election_rounds_counts_each_round_once(): void
+    {
+        $february = $this->record(100001, 100, 80, 50, 30);
+        $february['official_ac_code'] = 1;
+        $february['election_round'] = '2005-feb';
+        $october = $this->record(200001, 200, 100, 60, 40);
+        $october['official_ac_code'] = 1;
+        $october['election_round'] = '2005-oct';
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$february, $october]);
+
+        $this->assertSame(2, $summary['turnout_count']);
+        $this->assertSame(180, $summary['polled']);
+        $this->assertSame(2, $summary['margin_count']);
+        $this->assertSame(2, $summary['party_count']);
+
+        $duplicate = $october;
+        $duplicate['code'] = 200002;
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$february, $october, $duplicate]);
+        $this->assertSame(1, $summary['turnout_count']);
+    }
+
     public function test_source_corroborated_turnout_is_shown_with_review_marker_without_accepting_disputed_votes(): void
     {
         $record = $this->record(404, 1310007, 837929, 419539, 112576);
@@ -69,6 +91,58 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($result['margin']);
 
         $record['summary_totals']['votes_polled']--;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
+    public function test_official_summary_turnout_can_show_printed_vote_discrepancy_with_note(): void
+    {
+        $record = $this->record(1, 7007, 6122, 3318, 2851);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'The official report prints 6,169 valid votes but 6,122 voters.';
+        $record['source_warning_code'] = 'official_summary_turnout_only';
+        $record['summary_source_file'] = 'official-summary.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_page'] = 13;
+        $record['summary_totals'] = ['electors' => 7007, 'votes_polled' => 6122, 'valid_candidate_votes' => 6169];
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(6122, $summary['polled']);
+
+        $record['summary_source_sha256'] = '';
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['electors'] = 7006;
+        $record['source_discrepancy'] = ['field' => 'electors', 'detail_value' => 7006, 'summary_value' => 7007];
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(1, $summary['turnout_discrepancy_count']);
+        $this->assertSame(7007, $summary['electors']);
+    }
+
+    public function test_official_detail_turnout_can_show_source_total_without_accepting_candidate_rows(): void
+    {
+        $record = $this->record(1, 195191, 143451, 60704, 53091);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Source turnout total confirmed; candidate rows remain under review.';
+        $record['source_warning_code'] = 'official_detail_turnout_only';
+        $record['turnout_source_file'] = 'official-detail.pdf';
+        $record['turnout_source_sha256'] = str_repeat('a', 64);
+        $record['turnout_ocr_sha256'] = str_repeat('b', 64);
+        $record['turnout_source_page'] = 204;
+        $record['turnout_totals'] = ['electors' => 195191, 'general_votes' => 142331,
+            'postal_votes' => 1120, 'votes_polled' => 143451];
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(143451, $summary['polled']);
+        $this->assertSame(0, $summary['party_count']);
+        $this->assertNull($summary['margin']);
+
+        $record['turnout_totals']['votes_polled']--;
         $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
     }
 

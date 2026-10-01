@@ -91,10 +91,11 @@ class HistoricalElectionAnalytics
     {
         $electors = $polled = $turnoutCount = $turnoutReviewCount = $turnoutDetailCount = $turnoutDiscrepancyCount = $partyCount = $partyReviewCount = $marginReviewCount = $candidateRows = $voteTotal = 0;
         $margins = $parties = $marginPercentages = $winners = [];
-        $identities = array_count_values(array_map(fn (array $r): string => (string) ($r['official_pc_code'] ?? $r['official_ac_code'] ?? $r['code']), $records));
+        $seatIdentity = fn (array $record): string => ($record['election_round'] ?? '').':'.($record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code']);
+        $identities = array_count_values(array_map($seatIdentity, $records));
         foreach ($records as $record) {
             $candidateRows += count($record['candidates'] ?? []);
-            $identity = (string) ($record['official_pc_code'] ?? $record['official_ac_code'] ?? $record['code']);
+            $identity = $seatIdentity($record);
             if (($record['number_of_seats'] ?? 1) !== 1 || $identities[$identity] !== 1) {
                 continue;
             }
@@ -297,6 +298,38 @@ class HistoricalElectionAnalytics
     {
         $summary = $record['summary_totals'] ?? null;
 
+        if (($record['source_warning_code'] ?? '') === 'official_detail_turnout_only') {
+            $turnout = $record['turnout_totals'] ?? null;
+
+            return ($record['status'] ?? '') === 'needs_review'
+                && is_array($turnout)
+                && preg_match('/\.pdf$/i', $record['turnout_source_file'] ?? '') === 1
+                && preg_match('/^[a-f0-9]{64}$/', $record['turnout_source_sha256'] ?? '') === 1
+                && preg_match('/^[a-f0-9]{64}$/', $record['turnout_ocr_sha256'] ?? '') === 1
+                && $this->count($record['turnout_source_page'] ?? null) && $record['turnout_source_page'] > 0
+                && $this->count($turnout['electors'] ?? null) && $turnout['electors'] === ($record['electors'] ?? null)
+                && $this->count($turnout['general_votes'] ?? null)
+                && $this->count($turnout['postal_votes'] ?? null)
+                && $this->count($turnout['votes_polled'] ?? null)
+                && $turnout['votes_polled'] === $turnout['general_votes'] + $turnout['postal_votes']
+                && $turnout['votes_polled'] === ($record['votes_polled'] ?? null)
+                && $turnout['votes_polled'] > 0 && $turnout['votes_polled'] <= $turnout['electors'];
+        }
+
+        if (($record['source_warning_code'] ?? '') === 'official_summary_turnout_only') {
+            return ($record['status'] ?? '') === 'needs_review'
+                && is_array($summary)
+                && preg_match('/\.pdf$/i', $record['summary_source_file'] ?? '') === 1
+                && preg_match('/^[a-f0-9]{64}$/', $record['summary_source_sha256'] ?? '') === 1
+                && $this->count($record['summary_page'] ?? null) && $record['summary_page'] > 0
+                && $this->count($summary['electors'] ?? null) && $summary['electors'] > 0
+                && ($summary['electors'] === ($record['electors'] ?? null) || $this->hasDocumentedElectorDifference($record))
+                && $this->count($summary['votes_polled'] ?? null) && $summary['votes_polled'] > 0
+                && $summary['votes_polled'] <= $summary['electors']
+                && $summary['votes_polled'] === ($record['votes_polled'] ?? null)
+                && $this->count($summary['valid_candidate_votes'] ?? null);
+        }
+
         if (($record['source_warning_code'] ?? '') === 'workbook_pdf_summary') {
             return is_array($summary)
                 && preg_match('/\.pdf$/i', $record['summary_source_file'] ?? '') === 1
@@ -344,6 +377,22 @@ class HistoricalElectionAnalytics
     {
         $summary = $record['summary_totals'] ?? [];
         $difference = $record['source_discrepancy'] ?? [];
+        if (($record['source_warning_code'] ?? '') === 'official_summary_turnout_only') {
+            if (! is_array($summary) || ! is_array($difference)
+                || ($record['status'] ?? '') !== 'needs_review'
+                || ($difference['field'] ?? '') !== 'electors'
+                || ! $this->count($record['electors'] ?? null)
+                || ! $this->count($summary['electors'] ?? null)
+                || ($difference['detail_value'] ?? null) !== $record['electors']
+                || ($difference['summary_value'] ?? null) !== $summary['electors']) {
+                return false;
+            }
+
+            $delta = abs($record['electors'] - $summary['electors']);
+
+            return $delta > 0 && $delta * 10000 <= $summary['electors'] * 5;
+        }
+
         if (! is_array($summary) || ! is_array($difference)
             || ! in_array($record['status'] ?? '', ['needs_review', 'accepted', 'corrected'], true)
             || ($record['source_warning_code'] ?? '') !== 'summary_elector_difference'

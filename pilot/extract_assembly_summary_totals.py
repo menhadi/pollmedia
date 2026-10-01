@@ -7,17 +7,17 @@ import fitz
 
 SUMMARY = re.compile(r'CONSTITUENCY DATA\s*-\s*SUMMARY', re.I)
 IDENTITY = re.compile(r'CONSTITUENCY\s*:?\s*-?\s*(\d+)\s*-\s*([^\n]+)', re.I)
-ELECTORS = re.compile(r'II\.\s*ELECTORS\b(.*?)III\.\s*VOTERS\b', re.I | re.S)
-VOTERS = re.compile(r'III\.\s*VOTERS\b(.*?)(?:III\s*\(?A\)?\s*\.|IV\.\s*VOTES\b)', re.I | re.S)
+ELECTORS = re.compile(r'II\.\s*ELECTORS\b(.*?)III\.\s*(?:VOTERS|ELECTORS WHO VOTED)\b', re.I | re.S)
+VOTERS = re.compile(r'III\.\s*(?:VOTERS|ELECTORS WHO VOTED)\b(.*?)(?:III\s*\(?A\)?\s*\.|IV\.\s*VOTES\b)', re.I | re.S)
 VOTES = re.compile(r'IV\.\s*VOTES\b(.*?)V\.\s*POLLING STATIONS\b', re.I | re.S)
 TOTAL_ELECTORS = re.compile(r'^\s*\d+\.\s*TOTAL\s+([\d\s]+)$', re.I | re.M)
 TOTAL_VOTERS = re.compile(r'^\s*\d+\.\s*TOTAL\s+([\d\s]+)$', re.I | re.M)
-VALID_VOTES = re.compile(r'^\s*\d+\.\s*TOTAL\s*VALID VOTES POLLED\s+(\d+)\s*$', re.I | re.M)
+VALID_VOTES = re.compile(r'^\s*\d+\.\s*(?:TOTAL\s*VALID VOTES POLLED|VALID)\s+(\d+)\s*$', re.I | re.M)
 NOTA_VOTES = re.compile(r'''^\s*\d+\.\s*VOTES POLLED FOR ['"]?NOTA['"]? \(INCLUDING POSTAL\)\s+(\d+)\s*$''', re.I | re.M)
 POLL_PERCENT = re.compile(r'III\s*\(?A\)?\.\s*POLLING PERCENTAGE\s+([\d.]+)', re.I)
 
 
-def parse_summary_page(text, page_number):
+def parse_summary_page(text, page_number, allow_vote_discrepancy=False):
     """Return only totals whose labels and polling percentage agree on one source page."""
     if not SUMMARY.search(text):
         return None
@@ -41,7 +41,8 @@ def parse_summary_page(text, page_number):
         return None
     total_voters = voter_columns[-1]
     total_valid = int(valid_totals[0][1])
-    if not 0 < total_valid <= total_voters <= total_electors:
+    if not (0 < total_voters <= total_electors and 0 < total_valid <= total_electors
+            and (allow_vote_discrepancy or total_valid <= total_voters)):
         return None
     percentage = POLL_PERCENT.search(text)
     if percentage and abs(float(percentage[1]) - 100 * total_voters / total_electors) > 0.06:
@@ -59,12 +60,12 @@ def parse_summary_page(text, page_number):
         return None
     if nota:
         summary['nota_votes'] = int(nota[0][1])
-        if summary['valid_candidate_votes'] + summary['nota_votes'] > total_voters:
+        if not allow_vote_discrepancy and summary['valid_candidate_votes'] + summary['nota_votes'] > total_voters:
             return None
     return summary
 
 
-def read_summary_pages(path):
+def read_summary_pages(path, allow_vote_discrepancy=False):
     """Keep one unambiguous official summary page per constituency code."""
     found = {}
     duplicates = set()
@@ -75,7 +76,7 @@ def read_summary_pages(path):
                 if found and re.search(r'^\s*DETAILED RESULTS\b', text, re.I | re.M):
                     break
                 continue
-            summary = parse_summary_page(page.get_text(sort=True), index + 1)
+            summary = parse_summary_page(page.get_text(sort=True), index + 1, allow_vote_discrepancy)
             if summary is None:
                 continue
             code = summary['code']
