@@ -8,6 +8,27 @@ from extract_historical_a02 import extract
 
 
 class HistoricalA02Test(unittest.TestCase):
+    def test_1921_selection_preserves_printed_year_and_footnotes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'1921.xlsx'
+            book = openpyxl.Workbook()
+            sheet = book.active
+            sheet.title = 'A-2'
+            sheet.append(['A-02'])
+            sheet.append(['State Code', 'District Code', 'State/District', 'Census Year', 'Persons'])
+            sheet.append([None]); sheet.append([None])
+            sheet.append(['01', '000', 'Printed state', '1921*', 10, None, None, 5, 5])
+            sheet.append(['* Adjusted boundaries'])
+            book.save(path)
+            manifest = {'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'boundary_basis': '2011 jurisdictions'}
+            data = extract(path, manifest, years=(1921,))
+            self.assertEqual([1921], [row['year'] for row in data['records']])
+            self.assertEqual('1921*', data['records'][0]['year_label'])
+            self.assertTrue(data['records'][0]['flags'])
+            self.assertTrue(data['notes'])
+            with self.assertRaisesRegex(ValueError, 'Requested year missing'):
+                extract(path, manifest, years=(1911,))
+
     def test_split_header_requires_the_printed_year_label(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'split.xlsx'
