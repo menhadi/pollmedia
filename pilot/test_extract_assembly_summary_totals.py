@@ -36,6 +36,12 @@ class AssemblySummaryTotalsTest(unittest.TestCase):
         self.assertIsNone(parse_summary_page(SUMMARY.replace('4. TOTAL 85648', '4. UNKNOWN 85648'), 18))
         self.assertIsNone(parse_summary_page(SUMMARY.replace('85641', '85649'), 18))
 
+    def test_later_reports_can_number_totals_differently(self):
+        later = (SUMMARY.replace('3. TOTAL 70830 65640 136470', '4. TOTAL 70830 65640 0 136470')
+                 .replace('4. TOTAL 85648', '5. TOTAL 85648')
+                 .replace('3. TOTAL VALID VOTES POLLED 85641', '7.TOTAL VALID VOTES POLLED 85641'))
+        self.assertEqual(parse_summary_page(later, 28)['votes_polled'], 85648)
+
 
 if __name__ == '__main__':
     unittest.main()
