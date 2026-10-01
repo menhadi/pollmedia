@@ -522,6 +522,44 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(1, app(HistoricalElectionAnalytics::class)->summarize([$record])['margin_review_count']);
     }
 
+    public function test_puranpur_1996_preserves_documented_detail_and_summary_turnout_difference(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('1cc8415ab4d57b66831417e8', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 60);
+        $this->assertSame('PURANPUR', $record['name']);
+
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(170352, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(1, $summary['turnout_discrepancy_count']);
+        $this->assertSame(4452, $analytics->singleSeatResult($record)['margin']);
+
+        $record['summary_totals']['votes_polled']++;
+        $this->assertNull($analytics->summarize([$record])['polled']);
+    }
+
+    public function test_puranpur_2007_shows_source_result_with_small_documented_total_difference(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('174ec81b511a8fb1aeca553f', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 44);
+        $this->assertSame('PURANPUR', $record['name']);
+
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(170064, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(1, $summary['turnout_discrepancy_count']);
+        $this->assertSame(['winner' => 'ARSHAD KHAN', 'party' => 'BSP', 'margin' => 6267, 'derived' => true], $analytics->singleSeatResult($record));
+
+        $record['candidates'][1]['votes']++;
+        $this->assertNull($analytics->singleSeatResult($record));
+        $record['candidates'][1]['votes']--;
+        $record['summary_page'] = null;
+        $this->assertNull($analytics->summarize([$record])['polled']);
+        $this->assertNull($analytics->singleSeatResult($record));
+    }
+
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
     {
         $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);

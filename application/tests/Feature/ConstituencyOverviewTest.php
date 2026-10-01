@@ -117,6 +117,21 @@ class ConstituencyOverviewTest extends TestCase
         $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
     }
 
+    public function test_puranpur_displays_documented_1996_and_2007_source_values_with_notes(): void
+    {
+        foreach ([['1cc8415ab4d57b66831417e8', 1996, 60, 6], ['174ec81b511a8fb1aeca553f', 2007, 44, 16]] as [$edition, $year, $code, $candidates]) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => $edition, 'record_code' => $code, 'kind' => 'ac', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => 'Uttar Pradesh', 'constituency_name' => 'PURANPUR', 'status' => 'needs_review', 'has_warning' => true, 'candidate_count' => $candidates, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+
+        $url = route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'PURANPUR']);
+        $this->get($url)->assertOk()
+            ->assertSee('170,064 †')->assertSee('ARSHAD KHAN †')->assertSee('6,267 †')
+            ->assertSee('170,352 †')->assertSee('GOPAL KRISHNA †')->assertSee('4,452 †');
+        $this->get($url.'&edition=174ec81b511a8fb1aeca553f')->assertOk()
+            ->assertSee('Candidate sum 170056; detailed total 170056; summary valid votes 170060. Totals differ.')
+            ->assertSee('Check the official report');
+    }
+
     public function test_state_case_and_official_codes_resolve_across_states(): void
     {
         foreach ([['KARNATAKA', 'Karnataka', 'S10', 'Example Karnataka'], ['ASSAM', 'Assam', 'S03', 'Example Assam'], ['UTTAR PRADESH', 'Uttar Pradesh', 'S24', 'Example UP']] as [$upper,$label,$code,$name]) {

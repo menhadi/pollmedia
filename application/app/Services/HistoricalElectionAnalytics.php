@@ -50,7 +50,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v7:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v8:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -102,9 +102,10 @@ class HistoricalElectionAnalytics
             $provisionalCandidates = $hasWarning && $this->hasProvisionalCandidateVotes($record);
             $provisionalTurnout = $provisionalCandidates && ($record['error'] ?? '') === self::LEGACY_DETAIL_PENDING;
             $electorDifference = $this->hasDocumentedElectorDifference($record);
+            $legacySourceDifference = $this->hasDocumentedLegacySourceDifference($record);
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $turnoutElectors
-                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout)) {
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $legacySourceDifference)) {
                 $electors += $turnoutElectors;
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
@@ -113,7 +114,7 @@ class HistoricalElectionAnalytics
                     if ($provisionalTurnout) {
                         $turnoutDetailCount++;
                     }
-                    if ($electorDifference) {
+                    if ($electorDifference || $legacySourceDifference) {
                         $turnoutDiscrepancyCount++;
                     }
                 }
@@ -304,7 +305,8 @@ class HistoricalElectionAnalytics
             }
             $nota = collect($candidates)->filter(fn (array $candidate): bool => ($candidate['is_nota'] ?? false) === true)->values();
             if ($nota->isEmpty()) {
-                return $candidateVotes === $record['valid_candidate_votes'];
+                return $candidateVotes === $record['valid_candidate_votes']
+                    || $this->hasDocumentedLegacyCandidateDifference($record, $candidateVotes);
             }
             if ($nota->count() !== 1 || $candidateVotes - $nota[0]['votes'] !== $record['valid_candidate_votes']) {
                 return false;
@@ -413,6 +415,51 @@ class HistoricalElectionAnalytics
                 || ($this->count($summary['valid_candidate_votes'] ?? null)
                     && $this->count($summary['nota_votes'] ?? 0)
                     && $summary['votes_polled'] >= $summary['valid_candidate_votes'] + ($summary['nota_votes'] ?? 0)));
+    }
+
+    private function hasDocumentedLegacySourceDifference(array $record): bool
+    {
+        if (($record['status'] ?? '') !== 'needs_review' || isset($record['source_warning_code'])
+            || ! $this->count($record['detail_page'] ?? null) || $record['detail_page'] < 1
+            || ! $this->count($record['summary_page'] ?? null) || $record['summary_page'] < 1
+            || ! $this->count($record['electors'] ?? null) || $record['electors'] < 1
+            || ! $this->count($record['votes_polled'] ?? null) || $record['votes_polled'] < 1
+            || $record['votes_polled'] > $record['electors']) {
+            return false;
+        }
+
+        $summary = $record['summary_totals'] ?? null;
+        if (str_starts_with($record['error'] ?? '', 'Summary and detailed totals differ: ')) {
+            return is_array($summary)
+                && ($summary['electors'] ?? null) === $record['electors']
+                && $this->count($summary['votes_polled'] ?? null)
+                && $summary['votes_polled'] > 0 && $summary['votes_polled'] <= $record['electors']
+                && preg_match('/votes_polled: detail (\d+), summary (\d+)/', $record['error'], $matches) === 1
+                && (int) $matches[1] === $record['votes_polled']
+                && (int) $matches[2] === $summary['votes_polled'];
+        }
+
+        return preg_match('/^Candidate sum (\d+); detailed total (\d+); summary valid votes (\d+)\. Totals differ\.$/', $record['error'] ?? '', $matches) === 1
+            && (int) $matches[1] === (int) $matches[2]
+            && (int) $matches[2] === ($record['detailed_totals']['votes'] ?? null)
+            && (int) $matches[3] === ($record['valid_candidate_votes'] ?? null)
+            && (int) $matches[3] > 0;
+    }
+
+    private function hasDocumentedLegacyCandidateDifference(array $record, int $candidateVotes): bool
+    {
+        if (! $this->hasDocumentedLegacySourceDifference($record)
+            || preg_match('/^Candidate sum (\d+); detailed total (\d+); summary valid votes (\d+)\. Totals differ\.$/', $record['error'] ?? '', $matches) !== 1) {
+            return false;
+        }
+
+        $difference = abs($candidateVotes - $record['valid_candidate_votes']);
+
+        return $candidateVotes === (int) $matches[1]
+            && $candidateVotes === (int) $matches[2]
+            && $record['valid_candidate_votes'] === (int) $matches[3]
+            && $difference > 0 && $difference <= 10
+            && $difference * 1000 <= $record['valid_candidate_votes'];
     }
 
     private function hasDocumentedCandidateDifference(array $record, int $candidateVotes, int $summaryVotes): bool
