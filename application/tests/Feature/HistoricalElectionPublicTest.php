@@ -128,13 +128,13 @@ class HistoricalElectionPublicTest extends TestCase
         $this->get($url)->assertOk()->assertDontSee('id="data-note"', false)->assertSee('The source discrepancy has a review note.')->assertDontSee('Checked source difference');
         $stateUrl = route('elections.history', ['edition' => $id, 'state' => 'S24']);
         $this->get($stateUrl)->assertOk()->assertDontSee('id="state-note-451"', false)->assertSee('See candidate table')->assertDontSee('Checked source difference')
-            ->assertSee('No established single-seat winners are available to chart')->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 0 && $summary['under_review'] === 0 && $summary['other'] === 1);
+            ->assertSee('No reported single-seat winners are available to chart')->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 0 && $summary['under_review'] === 0 && $summary['other'] === 1);
         $path = 'election-archive/'.$id.'/extraction.json';
         $data = json_decode(Storage::disk('local')->get($path), true);
         $data['records'][0]['candidates'][0]['votes']++;
         Storage::disk('local')->put($path, json_encode($data));
         $this->get($url)->assertOk()->assertSee('id="data-note"', false)->assertDontSee('Administrator accepted');
-        $this->get($stateUrl)->assertOk()->assertSee('id="state-note-451"', false)->assertSee('Under review')
+        $this->get($stateUrl)->assertOk()->assertSee('id="state-note-451"', false)->assertSee('See candidate table')
             ->assertViewHas('partySummary', fn (array $summary): bool => $summary['under_review'] === 1 && $summary['other'] === 0);
         Storage::disk('local')->put('election-archive/'.$id.'/summary.pdf', 'changed');
         $this->get($url)->assertStatus(409)->assertDontSee('Candidate One');
@@ -183,10 +183,29 @@ class HistoricalElectionPublicTest extends TestCase
         Storage::disk('local')->put($path, json_encode($data));
         $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24']))->assertOk()
             ->assertSee('Constituency results in S24')->assertSee('Candidate One')->assertSee('PARTY')->assertSee('123')
-            ->assertSee('id="state-note-451"', false)->assertSee('Under review')->assertDontSee('S01 / Other')->assertDontSee('456')
+            ->assertSee('id="state-note-451"', false)->assertSee('See candidate table')->assertDontSee('S01 / Other')->assertDontSee('456')
             ->assertViewHas('stateResults', fn ($rows): bool => $rows->count() === 3 && $rows->firstWhere('code', 454)['winner_party'] === null)
             ->assertSee('Party-wise wins in available results')->assertSee('PARTY: 1 of 1 counted wins')
             ->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 1 && $summary['under_review'] === 1 && $summary['other'] === 1 && $summary['parties']->all() === ['PARTY' => 1]);
+    }
+
+    public function test_reported_winner_and_margin_remain_visible_with_a_source_warning(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition();
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0]['winner'] = 'Candidate One';
+        $data['records'][0]['margin'] = 12344;
+        $data['records'][0]['candidates'][] = ['candidate_name' => 'Candidate Two', 'party_at_election' => 'OTHER', 'votes' => 1];
+        Storage::disk('local')->put($path, json_encode($data));
+
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24']))
+            ->assertOk()->assertSee('Candidate One †')->assertSee('12,344 †')
+            ->assertSee('Source totals differ')
+            ->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 1 && $summary['under_review'] === 1);
+        $this->get(route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]))
+            ->assertOk()->assertSee('Winner: Candidate One')->assertSee('12,344 votes');
     }
 
     public function test_assembly_archive_uses_its_own_editions_state_scope_and_links(): void

@@ -13,7 +13,7 @@ from preserve_archive_json import package
 
 PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.'
 RECONCILED = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.'
-NAME = 'pollmedia-ac-summary-corrections-20261001-v4'
+NAME = 'pollmedia-ac-summary-corrections-20261001-v5'
 
 
 def digest(body):
@@ -72,13 +72,28 @@ def revised_records(data, summaries, secondary_source=None):
                 or not isinstance(record.get('valid_candidate_votes'), int)):
             continue
         summary = summaries.get(record.get('code'))
-        if (summary is None or not corroborates(record, summary)
-                or record.get('summary_page') not in (None, summary['summary_page'])
+        if (summary is None or record.get('summary_page') not in (None, summary['summary_page'])
                 or record.get('summary_totals') not in (None, {})):
             continue
+        matched = corroborates(record, summary)
+        detail_electors = record.get('electors')
+        elector_difference = (not matched and type(detail_electors) is int
+                              and 0 < abs(detail_electors - summary['electors'])
+                              and abs(detail_electors - summary['electors']) * 10000 <= summary['electors'] * 5
+                              and corroborates(record, summary, allow_elector_difference=True))
+        if not matched and not elector_difference:
+            continue
         record['original_extraction_warning'] = record['error']
-        record['error'] = RECONCILED
-        record['electors'] = summary['electors']
+        if elector_difference:
+            record['error'] = (f"Detailed result lists {detail_electors:,} electors; official summary lists "
+                               f"{summary['electors']:,}. Turnout uses the summary totals; candidate votes match. "
+                               'Review of this difference is pending.')
+            record['source_warning_code'] = 'summary_elector_difference'
+            record['source_discrepancy'] = {'field': 'electors', 'detail_value': detail_electors,
+                                            'summary_value': summary['electors']}
+        else:
+            record['error'] = RECONCILED
+            record['electors'] = summary['electors']
         record['votes_polled'] = summary['votes_polled']
         record['summary_totals'] = {key: summary[key] for key in
                                     ('electors', 'votes_polled', 'valid_candidate_votes', 'nota_votes') if key in summary}

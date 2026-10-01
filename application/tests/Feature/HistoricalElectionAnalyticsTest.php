@@ -154,6 +154,32 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(0, app(HistoricalElectionAnalytics::class)->summarize([$record])['party_count']);
     }
 
+    public function test_small_documented_elector_difference_uses_summary_turnout_with_warning(): void
+    {
+        $record = $this->record(1, 189696, 152927, 90000, 62690);
+        $record['status'] = 'needs_review';
+        $record['detail_page'] = 300;
+        $record['summary_page'] = 25;
+        $record['valid_candidate_votes'] = 152690;
+        $record['original_extraction_warning'] = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.';
+        $record['source_warning_code'] = 'summary_elector_difference';
+        $record['source_discrepancy'] = ['field' => 'electors', 'detail_value' => 189696, 'summary_value' => 189698];
+        $record['summary_totals'] = ['electors' => 189698, 'votes_polled' => 152927, 'valid_candidate_votes' => 152690];
+        $record['error'] = 'Detailed result lists 189,696 electors; official summary lists 189,698. Turnout uses the summary totals; candidate votes match. Review of this difference is pending.';
+
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertSame(189698, $result['electors']);
+        $this->assertSame(152927, $result['polled']);
+        $this->assertSame(1, $result['turnout_discrepancy_count']);
+        $this->assertSame(1, $result['party_review_count']);
+        $this->assertSame(1, $result['margin_review_count']);
+
+        $record['source_discrepancy']['summary_value']++;
+        $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+        $this->assertNull($result['turnout']);
+        $this->assertSame(0, $result['party_count']);
+    }
+
     public function test_state_dashboard_keeps_filters_sources_and_constituency_links(): void
     {
         $this->seed(PilibhitSeeder::class);
@@ -205,9 +231,9 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertOk()
             ->assertSee($edition['label'].' †')
             ->assertSee('2 of 2 results have data notes')
-            ->assertSee('Turnout in 2 of these results agrees')
+            ->assertSee('Turnout in 2 results agrees')
             ->assertSee('Map of Goa')
-            ->assertSee('View the tables and notes');
+            ->assertSee('View results and notes');
 
         $this->get('/india/elections/lok-sabha?edition='.$edition['id'].'&state=Goa')
             ->assertOk()

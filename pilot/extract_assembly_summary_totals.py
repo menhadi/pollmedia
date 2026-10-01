@@ -88,7 +88,7 @@ def read_summary_pages(path):
     return found
 
 
-def corroborates(record, summary):
+def corroborates(record, summary, allow_elector_difference=False):
     """Check the summary against the preserved detailed candidate result."""
     if record.get('code') != summary['code']:
         return False
@@ -97,6 +97,8 @@ def corroborates(record, summary):
     if not source_name or source_name != summary_name:
         return False
     for key in ('electors', 'votes_polled', 'valid_candidate_votes'):
+        if key == 'electors' and allow_elector_difference:
+            continue
         if record.get(key) is not None and record[key] != summary[key]:
             return False
     candidates = record.get('candidates') or []

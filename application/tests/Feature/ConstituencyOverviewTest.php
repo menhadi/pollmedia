@@ -94,6 +94,8 @@ class ConstituencyOverviewTest extends TestCase
                     'detail_page' => 149, 'summary_page' => 404,
                     'summary_totals' => $is2009 ? ['electors' => 1310007, 'votes_polled' => 837929, 'valid_candidate_votes' => 837567] : null,
                     'error' => $is2009 ? 'Summary and detailed totals differ' : null,
+                    'winner' => $is2009 ? 'Candidate A' : null,
+                    'margin' => $is2009 ? 306963 : null,
                     'candidates' => [
                         ['candidate_name' => 'Candidate A', 'party_at_election' => 'AAA', 'votes' => $is2009 ? 419539 : 40],
                         ['candidate_name' => 'Candidate B', 'party_at_election' => 'BBB', 'votes' => $is2009 ? 112576 : 20],
@@ -105,7 +107,7 @@ class ConstituencyOverviewTest extends TestCase
         $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
         $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
         $this->assertSame(3, substr_count($overview->getContent(), 'class="history-bar-year">2019</span>'));
-        $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A');
+        $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('306,963 †');
     }
 
     public function test_state_case_and_official_codes_resolve_across_states(): void

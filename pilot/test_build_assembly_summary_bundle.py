@@ -51,6 +51,30 @@ class AssemblySummaryBundleTest(unittest.TestCase):
         self.assertEqual(revised['records'][0]['summary_source_sha256'], 'a' * 64)
         self.assertEqual(revised['records'][0]['candidates'], record['candidates'])
 
+    def test_small_elector_difference_keeps_both_source_values_and_warning(self):
+        record = {'code': 1, 'name': 'Nippani', 'status': 'needs_review', 'error': PENDING,
+                  'electors': 189696, 'votes_polled': None, 'valid_candidate_votes': 152690,
+                  'candidates': [{'votes': 152690}]}
+        summary = {1: {'code': 1, 'name': 'Nippani', 'electors': 189698,
+                       'votes_polled': 152927, 'valid_candidate_votes': 152690, 'summary_page': 25}}
+
+        revised, count = revised_records({'records': [record]}, summary)
+
+        self.assertEqual(count, 1)
+        result = revised['records'][0]
+        self.assertEqual(result['electors'], 189696)
+        self.assertEqual(result['summary_totals']['electors'], 189698)
+        self.assertEqual(result['votes_polled'], 152927)
+        self.assertEqual(result['source_warning_code'], 'summary_elector_difference')
+        self.assertEqual(result['source_discrepancy']['detail_value'], 189696)
+        self.assertEqual(result['status'], 'needs_review')
+        self.assertEqual(record['electors'], 189696)
+
+        summary[1]['electors'] = 180000
+        unchanged, count = revised_records({'records': [record]}, summary)
+        self.assertEqual(count, 0)
+        self.assertEqual(unchanged['records'][0], record)
+
 
 if __name__ == '__main__':
     unittest.main()

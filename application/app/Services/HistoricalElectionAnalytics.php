@@ -41,7 +41,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v4:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v5:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -79,7 +79,7 @@ class HistoricalElectionAnalytics
 
     public function summarize(array $records): array
     {
-        $electors = $polled = $turnoutCount = $turnoutReviewCount = $turnoutDetailCount = $partyCount = $partyReviewCount = $marginReviewCount = $candidateRows = $voteTotal = 0;
+        $electors = $polled = $turnoutCount = $turnoutReviewCount = $turnoutDetailCount = $turnoutDiscrepancyCount = $partyCount = $partyReviewCount = $marginReviewCount = $candidateRows = $voteTotal = 0;
         $margins = $parties = $marginPercentages = $winners = [];
         $identities = array_count_values(array_map(fn (array $r): string => (string) ($r['official_pc_code'] ?? $r['official_ac_code'] ?? $r['code']), $records));
         foreach ($records as $record) {
@@ -91,15 +91,20 @@ class HistoricalElectionAnalytics
             $hasWarning = $record['has_warning'] ?? (($record['status'] ?? '') !== 'validated');
             $provisionalCandidates = $hasWarning && $this->hasProvisionalCandidateVotes($record);
             $provisionalTurnout = $provisionalCandidates && ($record['error'] ?? '') === self::LEGACY_DETAIL_PENDING;
-            if ($this->count($record['electors'] ?? null) && $record['electors'] > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $record['electors']
+            $electorDifference = $this->hasDocumentedElectorDifference($record);
+            $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
+            if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $turnoutElectors
                 && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout)) {
-                $electors += $record['electors'];
+                $electors += $turnoutElectors;
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
                 if ($hasWarning) {
                     $turnoutReviewCount++;
                     if ($provisionalTurnout) {
                         $turnoutDetailCount++;
+                    }
+                    if ($electorDifference) {
+                        $turnoutDiscrepancyCount++;
                     }
                 }
             }
@@ -144,7 +149,7 @@ class HistoricalElectionAnalytics
             $partyRows[] = ['party' => (string) $party, 'votes' => $votes, 'share' => 100 * $votes / $voteTotal];
         }
 
-        return ['tables' => count($records), 'candidate_rows' => $candidateRows, 'turnout_count' => $turnoutCount, 'turnout_review_count' => $turnoutReviewCount, 'turnout_detail_count' => $turnoutDetailCount, 'electors' => $turnoutCount ? $electors : null,
+        return ['tables' => count($records), 'candidate_rows' => $candidateRows, 'turnout_count' => $turnoutCount, 'turnout_review_count' => $turnoutReviewCount, 'turnout_detail_count' => $turnoutDetailCount, 'turnout_discrepancy_count' => $turnoutDiscrepancyCount, 'electors' => $turnoutCount ? $electors : null,
             'polled' => $turnoutCount ? $polled : null, 'turnout' => $electors ? 100 * $polled / $electors : null,
             'party_count' => $partyCount, 'party_review_count' => $partyReviewCount, 'parties' => $partyRows, 'margin_count' => count($margins), 'margin_review_count' => $marginReviewCount,
             'margin' => $margins ? array_sum($margins) / count($margins) : null,
@@ -163,9 +168,10 @@ class HistoricalElectionAnalytics
         }
 
         $error = $record['error'] ?? '';
-        $legacyDetail = in_array($error, [self::LEGACY_DETAIL_PENDING, self::LEGACY_DETAIL_RECONCILED], true)
+        $documentedDifference = $this->hasDocumentedElectorDifference($record);
+        $legacyDetail = (in_array($error, [self::LEGACY_DETAIL_PENDING, self::LEGACY_DETAIL_RECONCILED], true) || $documentedDifference)
             && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0;
-        if ($error === self::LEGACY_DETAIL_RECONCILED) {
+        if ($error === self::LEGACY_DETAIL_RECONCILED || $documentedDifference) {
             $summary = $record['summary_totals'] ?? [];
             $legacyDetail = $legacyDetail && $this->count($record['summary_page'] ?? null) && $record['summary_page'] > 0
                 && $this->count($summary['valid_candidate_votes'] ?? null)
@@ -200,7 +206,7 @@ class HistoricalElectionAnalytics
             if ($nota->count() !== 1 || $candidateVotes - $nota[0]['votes'] !== $record['valid_candidate_votes']) {
                 return false;
             }
-            if ($error === self::LEGACY_DETAIL_RECONCILED
+            if (($error === self::LEGACY_DETAIL_RECONCILED || $documentedDifference)
                 && ($record['summary_totals']['nota_votes'] ?? null) !== $nota[0]['votes']) {
                 return false;
             }
@@ -230,7 +236,32 @@ class HistoricalElectionAnalytics
             && $this->count($record['summary_page'] ?? null) && $record['summary_page'] > 0
             && $this->count($summary['electors'] ?? null)
             && $this->count($summary['votes_polled'] ?? null)
-            && $summary['electors'] === $record['electors']
+            && ($summary['electors'] === ($record['electors'] ?? null) || $this->hasDocumentedElectorDifference($record))
             && $summary['votes_polled'] === $record['votes_polled'];
+    }
+
+    private function hasDocumentedElectorDifference(array $record): bool
+    {
+        $summary = $record['summary_totals'] ?? [];
+        $difference = $record['source_discrepancy'] ?? [];
+        if (! is_array($summary) || ! is_array($difference)
+            || ($record['status'] ?? '') !== 'needs_review'
+            || ($record['source_warning_code'] ?? '') !== 'summary_elector_difference'
+            || ($record['original_extraction_warning'] ?? '') !== self::LEGACY_DETAIL_PENDING
+            || ($difference['field'] ?? '') !== 'electors'
+            || ! $this->count($record['electors'] ?? null)
+            || ! $this->count($summary['electors'] ?? null)
+            || ! $this->count($summary['votes_polled'] ?? null)
+            || ! $this->count($record['votes_polled'] ?? null)
+            || ! $this->count($summary['valid_candidate_votes'] ?? null)
+            || $summary['valid_candidate_votes'] !== ($record['valid_candidate_votes'] ?? null)
+            || $summary['votes_polled'] !== $record['votes_polled']
+            || ($difference['detail_value'] ?? null) !== $record['electors']
+            || ($difference['summary_value'] ?? null) !== $summary['electors']) {
+            return false;
+        }
+        $delta = abs($record['electors'] - $summary['electors']);
+
+        return $delta > 0 && $delta * 10000 <= $summary['electors'] * 5;
     }
 }

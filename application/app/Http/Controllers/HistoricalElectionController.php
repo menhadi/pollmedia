@@ -133,7 +133,7 @@ class HistoricalElectionController extends Controller
                 $stateResults = $constituencies->map(function (array $original) use ($reviews, $edition, $data): array {
                     $record = $reviews->apply($edition, $original, $data['source_sha256']);
                     $record['winner_party'] = null;
-                    if (! $record['has_warning'] && ($record['number_of_seats'] ?? 1) === 1 && isset($record['winner'], $record['margin'])) {
+                    if (($record['number_of_seats'] ?? 1) === 1 && isset($record['winner'], $record['margin'])) {
                         $winner = collect($record['candidates'])->first(fn (array $candidate): bool => ! ($candidate['is_nota'] ?? false) && strtoupper($candidate['party_at_election']) !== 'NOTA' && $candidate['candidate_name'] === $record['winner']);
                         $record['winner_party'] = $winner['party_at_election'] ?? null;
                     }
