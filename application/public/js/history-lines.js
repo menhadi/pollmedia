@@ -52,7 +52,9 @@
                 rows.forEach(row => {
                     const value = row[item.key];
                     if (value === null || !Number.isFinite(value)) return;
-                    const label = `${row.year} · ${item.label}: ${format(value)} ${data.unit}${row.review?' † — source note':''}`;
+                    const partyName = item.name_key && row[item.name_key] ? ` (${row[item.name_key]})` : '';
+                    const votes = item.votes_key ? ` · ${format(row[item.votes_key])} votes` : '';
+                    const label = `${row.year} · ${item.label}${partyName}: ${format(value)} ${data.unit}${votes}${row.review?' † — source note':''}`;
                     const point = element('circle',{cx:x(row.year),cy:y(value),r:5,fill:color,tabindex:0,role:'img','aria-label':label,class:'history-point'});
                     point.append(element('title',{},label));
                     ['focus','pointerenter','click'].forEach(event => point.addEventListener(event,()=>status.textContent=label));

@@ -152,16 +152,28 @@ class ConstituencyOverviewTest extends TestCase
     {
         $record = ['code' => 1, 'status' => 'validated', 'number_of_seats' => 1, 'electors' => 400, 'votes_polled' => 200,
             'candidates' => array_map(fn ($party, $votes) => ['candidate_name' => $party, 'party_at_election' => $party, 'votes' => $votes], ['A', 'B', 'C', 'D', 'NOTA'], [80, 60, 40, 16, 4])];
+        $later = $record;
+        $later['candidates'] = array_map(fn ($party, $votes) => ['candidate_name' => $party, 'party_at_election' => $party, 'votes' => $votes], ['C', 'D', 'A', 'B', 'NOTA'], [90, 70, 20, 16, 4]);
         $rows = collect([
             ['entry' => (object) ['year' => 2019], 'record' => $record],
             ['entry' => (object) ['year' => 2019], 'record' => $record],
             ['entry' => (object) ['year' => 2024], 'record' => null],
+            ['entry' => (object) ['year' => 2029], 'record' => $later],
         ]);
         $html = view('place-history-charts', compact('rows'))->render();
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $html, $matches);
-        $party = json_decode($matches[1][3], true);
-        $this->assertSame(['A', 'B', 'Others'], array_column($party['series'], 'label'));
-        $this->assertCount(2, $party['rows']);
+        $party = json_decode($matches[1][0], true);
+        $this->assertSame(['1st party', '2nd party', 'Others'], array_column($party['series'], 'label'));
+        $this->assertCount(3, $party['rows']);
+        $this->assertSame('A', $party['rows'][0]['party0_name']);
+        $this->assertSame('B', $party['rows'][0]['party1_name']);
+        $this->assertSame('C', $party['rows'][2]['party0_name']);
+        $this->assertSame('D', $party['rows'][2]['party1_name']);
+        $this->assertEquals(45, $party['rows'][2]['party0_share']);
+        $this->assertEquals(20, $party['rows'][2]['others_share']);
+        $this->assertLessThan(strpos($html, '<h3>Voter turnout'), strpos($html, '<h3>Party vote shares by year'));
+        $this->assertSame(['turnout', 'margin', 'electors'], array_map(fn ($json) => json_decode($json, true)['series'][0]['key'], array_slice($matches[1], 1)));
+        $this->assertStringContainsString('&amp;z=7&amp;', view('place-location-map', ['mapName' => 'Pilibhit', 'mapQuery' => 'Pilibhit, India'])->render());
         $this->assertEquals(80, $party['rows'][0]['party0']);
         $this->assertEquals(60, $party['rows'][0]['others']);
         $this->assertNull($party['rows'][1]['party0']);

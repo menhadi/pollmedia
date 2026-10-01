@@ -10,26 +10,32 @@ $chartRows=$rows->sortBy('entry.year')->values()->map(function($row){
  }
  return $point;
 })->values();
-$totals=[];
-foreach($chartRows as $point){foreach($point['parties'] as $party){if(!in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT'])){$totals[$party['party']]=($totals[$party['party']]??0)+$party['votes'];}}}
-arsort($totals); $topParties=array_slice(array_keys($totals),0,2);
-$plotRows=$chartRows->map(function($point)use($topParties){
- foreach($topParties as $i=>$party){$point['party'.$i]=$point['parties']?collect($point['parties'])->where('party',$party)->sum('votes'):null;}
+$plotRows=$chartRows->map(function($point){
+ $ranked=collect($point['parties'])->reject(fn($party)=>in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT']))->sortBy([['votes','desc'],['party','asc']])->take(2)->values();
+ foreach([0,1] as $i){$point['party'.$i]=$ranked[$i]['votes']??null;$point['party'.$i.'_name']=$ranked[$i]['party']??null;}
+ $topParties=$ranked->pluck('party')->all();
  $point['others']=$point['parties']?collect($point['parties'])->reject(fn($party)=>in_array($party['party'],$topParties))->sum('votes'):null;
  $total=collect($point['parties'])->sum('votes');
- foreach(array_merge(array_map(fn($i)=>'party'.$i,array_keys($topParties)),['others']) as $key){$point[$key.'_share']=$total>0&&$point[$key]!==null?100*$point[$key]/$total:null;}
+ foreach(['party0','party1','others'] as $key){$point[$key.'_share']=$total>0&&$point[$key]!==null?100*$point[$key]/$total:null;}
  return $point;
 });
-$plots=[['title'=>'Voter turnout','unit'=>'%','series'=>[['key'=>'turnout','label'=>'Turnout']]],['title'=>'Winning margin','unit'=>'votes','series'=>[['key'=>'margin','label'=>'Winning margin']]],['title'=>'Registered electors and votes polled','unit'=>'people','series'=>[['key'=>'electors','label'=>'Registered electors'],['key'=>'polled','label'=>'Votes polled']]],['title'=>'Party vote shares across the years','unit'=>'%','series'=>array_merge(array_map(fn($party,$i)=>['key'=>'party'.$i.'_share','votes_key'=>'party'.$i,'label'=>$party],$topParties,array_keys($topParties)),[['key'=>'others_share','votes_key'=>'others','label'=>'Others']])]];
+$plots=[
+ ['title'=>'Party vote shares by year','unit'=>'%','series'=>[['key'=>'party0_share','votes_key'=>'party0','name_key'=>'party0_name','label'=>'1st party'],['key'=>'party1_share','votes_key'=>'party1','name_key'=>'party1_name','label'=>'2nd party'],['key'=>'others_share','votes_key'=>'others','label'=>'Others']]],
+ ['title'=>'Voter turnout','unit'=>'%','series'=>[['key'=>'turnout','label'=>'Turnout']]],
+ ['title'=>'Winning margin','unit'=>'votes','series'=>[['key'=>'margin','label'=>'Winning margin']]],
+ ['title'=>'Registered electors and votes polled','unit'=>'people','series'=>[['key'=>'electors','label'=>'Registered electors'],['key'=>'polled','label'=>'Votes polled']]]
+];
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>How voting has changed</h2></div><a class="place-action" href="#history">View the tables ↓</a></div>
 <p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>
 @foreach($plots as $plot)
 <section class="history-line" data-history-chart><h3>{{ $plot['title'] }}</h3>
+@if($loop->first)<p class="small">The top two parties are selected separately for each year. Lines track rank, not the same party. Tap a point or open the table for the party name.</p>@endif
 <script type="application/json" class="history-chart-data">{!! json_encode(['rows'=>$plotRows,'series'=>$plot['series'],'unit'=>$plot['unit']],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
 <div class="history-controls"><label>From <select data-chart-from>@foreach($chartRows as $point)<option value="{{ $point['year'] }}">{{ $point['year'] }}</option>@endforeach</select></label><label>To <select data-chart-to>@foreach($chartRows as $point)<option value="{{ $point['year'] }}" @selected($loop->last)>{{ $point['year'] }}</option>@endforeach</select></label></div>
 <div class="history-legend" aria-label="Chart series"></div><div class="history-plot"></div><p class="history-readout" role="status">Tap or focus a point to see the value.</p>
-<details><summary>View chart values</summary><div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':$plot['unit'] }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>@if(isset($series['votes_key']) && $point[$series['key']]!==null){{ number_format($point[$series['votes_key']]).' ('.number_format($point[$series['key']],2).'%)'.($point['review']?' †':'') }}@else{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0).($plot['unit']==='%'?'%':'').($point['review']?' †':'') }}@endif</td>@endforeach</tr>@endforeach</tbody></table></div></details>
+<details><summary>View chart values</summary><div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':$plot['unit'] }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>@if(isset($series['name_key']) && $point[$series['name_key']])<strong>{{ $point[$series['name_key']] }}</strong><br>@endif
+@if(isset($series['votes_key']) && $point[$series['key']]!==null){{ number_format($point[$series['votes_key']]).' ('.number_format($point[$series['key']],2).'%)'.($point['review']?' †':'') }}@else{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0).($plot['unit']==='%'?'%':'').($point['review']?' †':'') }}@endif</td>@endforeach</tr>@endforeach</tbody></table></div></details>
 </section>
 @endforeach
-<p class="small">Absolute counts, not percentages, for margin and electors/votes polled. Turnout and party shares use percentages. Party shares divide each group’s votes by all recorded candidate votes plus NOTA for that year. Top two parties are ranked by combined votes across the available years, counting each year once. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p></section>
+<p class="small">Absolute counts, not percentages, for margin and electors/votes polled. Turnout and party shares use percentages. Party shares divide each group’s votes by all recorded candidate votes plus NOTA for that year. Top two parties are ranked independently by recorded votes in each year. Equal votes use alphabetical party order; this does not establish an election winner. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p></section>
