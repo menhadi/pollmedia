@@ -160,18 +160,18 @@ class ConstituencyOverviewTest extends TestCase
         $html = view('place-history-charts', compact('rows'))->render();
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $html, $matches);
         $party = json_decode($matches[1][3], true);
-        $this->assertSame(['A', 'B', 'C', 'Others'], array_column($party['series'], 'label'));
+        $this->assertSame(['A', 'B', 'Others'], array_column($party['series'], 'label'));
         $this->assertCount(2, $party['rows']);
         $this->assertEquals(80, $party['rows'][0]['party0']);
-        $this->assertEquals(20, $party['rows'][0]['others']);
+        $this->assertEquals(60, $party['rows'][0]['others']);
         $this->assertNull($party['rows'][1]['party0']);
         $this->assertNull($party['rows'][1]['others']);
         $this->assertSame('%', $party['unit']);
         $this->assertEquals(40, $party['rows'][0]['party0_share']);
-        $this->assertEquals(10, $party['rows'][0]['others_share']);
+        $this->assertEquals(30, $party['rows'][0]['others_share']);
         $this->assertNull($party['rows'][1]['party0_share']);
         $this->assertNull($party['rows'][1]['others_share']);
         $this->assertStringContainsString('80 (40.00%)', $html);
-        $this->assertStringContainsString('20 (10.00%)', $html);
+        $this->assertStringContainsString('60 (30.00%)', $html);
     }
 }

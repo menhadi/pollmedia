@@ -12,7 +12,7 @@ $chartRows=$rows->sortBy('entry.year')->values()->map(function($row){
 })->values();
 $totals=[];
 foreach($chartRows as $point){foreach($point['parties'] as $party){if(!in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT'])){$totals[$party['party']]=($totals[$party['party']]??0)+$party['votes'];}}}
-arsort($totals); $topParties=array_slice(array_keys($totals),0,3);
+arsort($totals); $topParties=array_slice(array_keys($totals),0,2);
 $plotRows=$chartRows->map(function($point)use($topParties){
  foreach($topParties as $i=>$party){$point['party'.$i]=$point['parties']?collect($point['parties'])->where('party',$party)->sum('votes'):null;}
  $point['others']=$point['parties']?collect($point['parties'])->reject(fn($party)=>in_array($party['party'],$topParties))->sum('votes'):null;
@@ -32,4 +32,4 @@ $plots=[['title'=>'Voter turnout','unit'=>'%','series'=>[['key'=>'turnout','labe
 <details><summary>View chart values</summary><div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':$plot['unit'] }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>@if(isset($series['votes_key']) && $point[$series['key']]!==null){{ number_format($point[$series['votes_key']]).' ('.number_format($point[$series['key']],2).'%)'.($point['review']?' †':'') }}@else{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0).($plot['unit']==='%'?'%':'').($point['review']?' †':'') }}@endif</td>@endforeach</tr>@endforeach</tbody></table></div></details>
 </section>
 @endforeach
-<p class="small">Absolute counts, not percentages, for margin and electors/votes polled. Turnout and party shares use percentages. Party shares divide each group’s votes by all recorded candidate votes plus NOTA for that year. Top three parties are ranked by combined votes across the available years, counting each year once. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p></section>
+<p class="small">Absolute counts, not percentages, for margin and electors/votes polled. Turnout and party shares use percentages. Party shares divide each group’s votes by all recorded candidate votes plus NOTA for that year. Top two parties are ranked by combined votes across the available years, counting each year once. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p></section>

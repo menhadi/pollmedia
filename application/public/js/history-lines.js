@@ -41,14 +41,14 @@
                 }
             });
             series.forEach(item => {
-                const index = data.series.indexOf(item), color = colors[index];
+                const index = data.series.indexOf(item), color = item.key === 'others_share' ? colors[3] : colors[index];
                 let path = '', connected = false;
                 rows.forEach(row => {
                     const value = row[item.key];
                     if (value === null || !Number.isFinite(value)) { connected=false; return; }
                     path += `${connected?'L':'M'}${x(row.year)},${y(value)} `; connected=true;
                 });
-                svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':index===3?'6 4':'none'}));
+                svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':item.key==='others_share'?'6 4':'none'}));
                 rows.forEach(row => {
                     const value = row[item.key];
                     if (value === null || !Number.isFinite(value)) return;
@@ -63,7 +63,7 @@
         };
         data.series.forEach((series,index) => {
             const button = document.createElement('button'); button.type='button'; button.setAttribute('aria-pressed','true');
-            const swatch=document.createElement('span'); swatch.style.background=colors[index]; swatch.setAttribute('aria-hidden','true');
+            const swatch=document.createElement('span'); swatch.style.background=series.key==='others_share'?colors[3]:colors[index]; swatch.setAttribute('aria-hidden','true');
             button.append(swatch,document.createTextNode(series.label));
             button.addEventListener('click',()=>{ enabled.has(series.key)?enabled.delete(series.key):enabled.add(series.key); button.setAttribute('aria-pressed',String(enabled.has(series.key))); render(); });
             chart.querySelector('.history-legend').append(button);
