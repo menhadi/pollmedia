@@ -10,7 +10,7 @@ from extract_historical_a02 import extract
 
 
 def build(root, destination, years=(1901, 1911), originals_root=None):
-    if tuple(years) not in ((1901, 1911), (1921,)):
+    if tuple(years) not in ((1901, 1911), (1921,), (1931,)):
         raise ValueError('Unsupported historical release years')
     originals_root = originals_root or root
     suffix = '-'.join(map(str, years))

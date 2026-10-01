@@ -41,8 +41,8 @@ def workbook_rows(path):
 def extract(path, manifest, years=(1901, 1911)):
     if hashlib.sha256(Path(path).read_bytes()).hexdigest() != manifest['sha256']:
         raise ValueError('Original checksum mismatch')
-    if not years or set(years) - {1901, 1911, 1921}:
-        raise ValueError('This extractor supports explicitly selected 1901, 1911 and 1921 years')
+    if not years or set(years) - {1901, 1911, 1921, 1931}:
+        raise ValueError('This extractor supports explicitly selected 1901, 1911, 1921 and 1931 years')
     rows = workbook_rows(path)
     try:
         records, notes, raw_rows, seen = [], [], [], set()

@@ -11,6 +11,17 @@ class CivicExplorerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_state_dropdown_keeps_different_boundary_scopes_separate(): void
+    {
+        $first = $this->fixture(1901);
+        $second = $this->fixture(1901);
+        DB::table('census_editions')->where('id', $second['edition'])->update(['scope' => 'Different historical boundaries']);
+        $this->get(route('civic.index', ['year' => 1901]))->assertOk()
+            ->assertViewHas('stateOptions', fn ($rows) => $rows->count() === 2);
+        $this->get(route('civic.place', ['record' => $first['STATE']]))->assertOk()
+            ->assertViewHas('districtOptions', fn ($rows) => $rows->every(fn ($row) => $row->edition_id === $first['edition']));
+    }
+
     private function fixture(int $year = 2011, string $status = 'published'): array
     {
         $connector = DB::table('import_connectors')->insertGetId(['name' => 'Civic fixture', 'url' => 'https://censusindia.gov.in/example.xlsx', 'format' => 'xlsx', 'record_key' => 'code', 'options' => '{}']);

@@ -14,6 +14,19 @@ class HistoricalCensusPackageTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_1931_package_retains_printed_year(): void
+    {
+        $path = base_path('../exports/pollmedia-historical-census-1931-20261001.zip');
+        if (! is_file($path)) {
+            $this->markTestSkipped('Prepared 1931 package is unavailable.');
+        }
+        $service = new HistoricalCensusPackage;
+        $coverage = $service->coverage($service->verify($path, hash_file('sha256', $path)));
+        $this->assertSame(36, $coverage['partitions']);
+        $this->assertSame([1931 => $coverage['source_rows']], $coverage['source_rows_by_year']);
+        $this->assertGreaterThan(0, $coverage['source_rows']);
+    }
+
     public function test_1921_package_preserves_year_and_source_partitions(): void
     {
         $path = base_path('../exports/pollmedia-historical-census-1921-20261001.zip');
@@ -92,6 +105,12 @@ class HistoricalCensusPackageTest extends TestCase
                 ->assertOk()->assertSee('1901')->assertSee('retrospective 2011 boundaries')
                 ->assertSee('Official source workbook')->assertSee('†');
             $this->get(route('civic.index', ['year' => 1911]))->assertOk()->assertSee('1911');
+            $state = $this->get(route('civic.index', ['year' => 1901]))->assertOk()
+                ->assertSee('state-navigation')->viewData('stateOptions')->firstWhere('state_code', '28');
+            $this->assertNotNull($state);
+            $this->get(route('civic.place', ['record' => $state->id]))->assertOk()->assertSee('district-navigation')
+                ->assertViewHas('districtOptions', fn ($rows) => $rows->count() === 23)
+                ->assertSee('retrospective 2011 boundaries');
             $this->get(route('civic.index', ['year' => 2011, 'edition' => $published['edition_ids'][0]]))
                 ->assertOk()->assertSee('Census · 1901')->assertSee('1911');
             $service->importDraftPackage($package, $sha, $directory, true);

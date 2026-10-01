@@ -71,6 +71,18 @@ class CivicExplorerController extends Controller
         $residence = $input['residence'] ?? $anchor?->residence ?? 'Total';
         $base = DB::table('census_catalogue_rows')->where('edition_id', $edition?->id ?? 0);
         $residenceOptions = (clone $base)->distinct()->pluck('residence');
+        $districtCounts = DB::table('census_catalogue_rows')->whereIn('edition_id', $editions->where('year', $year)->pluck('id'))
+            ->where('level', 'DISTRICT')->select('edition_id', 'state_code')->selectRaw('COUNT(*) as total')
+            ->groupBy('edition_id', 'state_code')->get()->keyBy(fn ($row) => $row->edition_id.':'.$row->state_code);
+        $stateOptions = DB::table('census_catalogue_rows')->whereIn('edition_id', $editions->where('year', $year)->pluck('id'))
+            ->where('level', 'STATE')->where('residence', 'Total')->orderBy('name')->get()
+            ->groupBy(fn ($row) => $row->state_code.':'.$editions->firstWhere('id', $row->edition_id)->scope)->map(function ($rows) use ($districtCounts) {
+                return $rows->sortByDesc(fn ($row) => $districtCounts->get($row->edition_id.':'.$row->state_code)?->total ?? 0)->first();
+            })->values();
+        $districtOptions = $anchor && $anchor->level === 'STATE'
+            ? DB::table('census_catalogue_rows')->where('edition_id', $anchor->edition_id)->where('state_code', $anchor->state_code)
+                ->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('name')->get()
+            : collect();
         if (! $residenceOptions->contains($residence) && $residenceOptions->isNotEmpty()) {
             $residence = $residenceOptions->contains('Total') ? 'Total' : $residenceOptions->first();
         }
@@ -144,6 +156,6 @@ class CivicExplorerController extends Controller
         };
         $title = $place?->name ?? 'India Census';
 
-        return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse'));
+        return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions'));
     }
 }
