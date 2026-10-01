@@ -14,6 +14,21 @@ class HistoricalCensusPackageTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_1921_package_preserves_year_and_source_partitions(): void
+    {
+        $path = base_path('../exports/pollmedia-historical-census-1921-20261001.zip');
+        if (! is_file($path)) {
+            $this->markTestSkipped('Prepared 1921 package is unavailable.');
+        }
+        $service = new HistoricalCensusPackage;
+        $partitions = $service->verify($path, hash_file('sha256', $path));
+        $coverage = $service->coverage($partitions);
+        $this->assertSame(36, $coverage['partitions']);
+        $this->assertSame(711, $coverage['source_rows']);
+        $this->assertSame([1921 => 711], $coverage['source_rows_by_year']);
+        $this->assertSame([1921], array_values(array_unique(array_column(array_column($partitions, 'source'), 'year'))));
+    }
+
     public function test_run_creation_retries_unchanged_and_preserves_prior_extraction_on_revision(): void
     {
         $archive = tempnam(sys_get_temp_dir(), 'historical-run-');

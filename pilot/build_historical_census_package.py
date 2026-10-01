@@ -9,21 +9,25 @@ import zipfile
 from extract_historical_a02 import extract
 
 
-def build(root, destination):
+def build(root, destination, years=(1901, 1911), originals_root=None):
+    if tuple(years) not in ((1901, 1911), (1921,)):
+        raise ValueError('Unsupported historical release years')
+    originals_root = originals_root or root
+    suffix = '-'.join(map(str, years))
     if destination.exists():
         raise FileExistsError('Preserve existing package')
     members, sources = {}, []
-    for payload in sorted(root.glob('*.1901-1911.json')):
+    for payload in sorted(root.glob('*.'+suffix+'.json')):
         ident = payload.name.split('.')[0]
         if not re.fullmatch(r'433(?:3[3-9]|[4-5][0-9]|6[0-8])', ident):
             raise ValueError('Source not in verified A-02 inventory')
         data = json.loads(payload.read_text(encoding='utf-8'))
-        manifest = json.loads((root/f'{ident}.manifest.json').read_text())
-        originals = list(root.glob(f'{ident}.xls*'))
+        manifest = json.loads((originals_root/f'{ident}.manifest.json').read_text())
+        originals = list(originals_root.glob(f'{ident}.xls*'))
         if len(originals) != 1:
             raise ValueError('Original identity is ambiguous')
         original = originals[0]
-        fresh = extract(original, manifest)
+        fresh = extract(original, manifest, years=years)
         if fresh['records'] != data['records'] or fresh['raw_rows'] != data['raw_rows']:
             raise ValueError('Extraction differs from original: '+ident)
         if not manifest['landing'].endswith('/catalog/'+ident) or not manifest['url'].startswith(
@@ -33,7 +37,7 @@ def build(root, destination):
         extracted_name = 'extracted/'+payload.name
         members[raw_name] = original.read_bytes()
         members[extracted_name] = payload.read_bytes()
-        for year in (1901, 1911):
+        for year in years:
             rows = [r for r in data['records'] if r['year'] == year]
             sources.append(dict(key=f'census-a02-{ident}-{year}', catalogue=ident, year=year,
                                 original=raw_name, extracted=extracted_name,
@@ -42,7 +46,7 @@ def build(root, destination):
                                 scope='Retrospective A-02 population adjusted to 2011 jurisdictions; preserve source footnotes.'))
     if not sources:
         raise ValueError('No selected records')
-    package = dict(version=1, family='historical-census-a02', selected_years=[1901, 1911],
+    package = dict(version=1, family='historical-census-a02', selected_years=list(years),
                    sources=sources, files={k: hashlib.sha256(v).hexdigest() for k, v in members.items()},
                    limitation='Source-specific rows overlap. Not original census-era geography, education, health or national completeness. Database publication requires tested historical importer.')
     destination.parent.mkdir(parents=True, exist_ok=True)

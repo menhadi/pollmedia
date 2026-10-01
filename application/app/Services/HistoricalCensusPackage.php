@@ -255,9 +255,11 @@ class HistoricalCensusPackage
         try {
             $manifest = json_decode($this->member($zip, 'manifest.json', 1000000), true, 512, JSON_THROW_ON_ERROR);
             abort_unless(($manifest['version'] ?? null) === 1 && ($manifest['family'] ?? null) === 'historical-census-a02'
-                && ($manifest['selected_years'] ?? null) === [1901, 1911]
+                && in_array($manifest['selected_years'] ?? null, [[1901, 1911], [1921]], true)
                 && ! empty($manifest['sources']) && count($manifest['sources']) <= 72
                 && ! empty($manifest['files']), 422, 'Unsupported historical package.');
+            $years = $manifest['selected_years'];
+            $suffix = implode('-', $years);
             $names = [];
             for ($index = 0; $index < $zip->numFiles; $index++) {
                 $name = $zip->getNameIndex($index);
@@ -266,7 +268,7 @@ class HistoricalCensusPackage
             }
             abort_unless(count($names) === count($manifest['files']) + 1, 422, 'Unexpected package members.');
             foreach ($manifest['files'] as $name => $digest) {
-                abort_unless(preg_match('~^(originals/433\d{2}\.xlsx?|extracted/433\d{2}\.1901-1911\.json)$~', $name)
+                abort_unless(preg_match('~^(originals/433\d{2}\.xlsx?|extracted/433\d{2}\.'.$suffix.'\.json)$~', $name)
                     && is_string($digest) && preg_match('/^[a-f0-9]{64}$/', $digest)
                     && hash_equals($digest, hash('sha256', $this->member($zip, $name, 20000000))), 422, 'Historical member checksum or identity mismatch.');
             }
@@ -277,8 +279,8 @@ class HistoricalCensusPackage
                 $year = $source['year'] ?? null;
                 $key = 'census-a02-'.$id.'-'.$year;
                 abort_unless(ctype_digit($id) && (int) $id >= 43333 && (int) $id <= 43368
-                    && in_array($year, [1901, 1911], true) && ($source['key'] ?? null) === $key
-                    && ! isset($seen[$key]) && ($source['extracted'] ?? null) === 'extracted/'.$id.'.1901-1911.json'
+                    && in_array($year, $years, true) && ($source['key'] ?? null) === $key
+                    && ! isset($seen[$key]) && ($source['extracted'] ?? null) === 'extracted/'.$id.'.'.$suffix.'.json'
                     && in_array($source['original'] ?? null, ['originals/'.$id.'.xls', 'originals/'.$id.'.xlsx'], true)
                     && ($source['landing_url'] ?? null) === 'https://censusindia.gov.in/nada/index.php/catalog/'.$id
                     && str_starts_with($source['source_url'] ?? '', $source['landing_url'].'/download/'), 422, 'Historical partition identity mismatch.');
@@ -309,8 +311,10 @@ class HistoricalCensusPackage
             }
             foreach ($partitions as $partition) {
                 $id = $partition['source']['catalogue'];
-                abort_unless(isset($seen['census-a02-'.$id.'-1901'], $seen['census-a02-'.$id.'-1911']),
-                    422, 'Historical source must include both requested year partitions.');
+                foreach ($years as $requestedYear) {
+                    abort_unless(isset($seen['census-a02-'.$id.'-'.$requestedYear]),
+                        422, 'Historical source must include all requested year partitions.');
+                }
             }
 
             return $partitions;
