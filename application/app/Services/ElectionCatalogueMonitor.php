@@ -37,13 +37,22 @@ class ElectionCatalogueMonitor
         }
 
         $baselinePath = self::ROOT.'/baseline.json';
+        $previousCheck = $this->latest();
         if (! $disk->exists($baselinePath)) {
-            $disk->put($baselinePath, json_encode(['by_election_urls' => array_values(array_map(
+            $disk->put($baselinePath, json_encode(['source_sha256' => $sha256, 'by_election_urls' => array_values(array_map(
                 fn (array $entry): string => $entry['url'],
                 array_filter($entries, fn (array $entry): bool => $entry['kind'] === 'be')
             ))], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
         }
         $baseline = json_decode($disk->get($baselinePath), true, 512, JSON_THROW_ON_ERROR);
+        if (! isset($baseline['source_sha256']) && $previousCheck && $disk->exists($previousCheck['raw_path'])) {
+            $previousEntries = $this->entries($disk->get($previousCheck['raw_path']));
+            $baseline = ['source_sha256' => $previousCheck['source_sha256'], 'by_election_urls' => array_values(array_map(
+                fn (array $entry): string => $entry['url'],
+                array_filter($previousEntries, fn (array $entry): bool => $entry['kind'] === 'be')
+            ))];
+            $disk->put($baselinePath, json_encode($baseline, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+        }
         $approved = $this->approvedUrls();
         $pending = array_values(array_filter($entries, fn (array $entry): bool => ! in_array(
             $entry['url'],
@@ -101,7 +110,8 @@ class ElectionCatalogueMonitor
             $state = null;
             if (preg_match('~/(?:general-election-to-loksabha-\d{4}-statistical-reports|files/(?:category|file)/\d+-general-election-\d{4}(?:-|/))~i', $path)) {
                 $kind = 'pc';
-            } elseif (preg_match('~/statistical-report/be/~i', $path)) {
+            } elseif (preg_match('~/statistical-report/be/~i', $path)
+                || ($this->byElectionTable($xpath, $anchor) && preg_match('/(?:19|20)\d{2}/', $label))) {
                 $kind = 'be';
             } else {
                 $row = $xpath->query('ancestor::tr[1]', $anchor)->item(0);
@@ -143,6 +153,13 @@ class ElectionCatalogueMonitor
         }
 
         return $url;
+    }
+
+    private function byElectionTable(DOMXPath $xpath, \DOMNode $anchor): bool
+    {
+        $table = $xpath->query('ancestor::table[1]', $anchor)->item(0);
+
+        return $table !== null && $xpath->query('.//a[contains(@href, "/statistical-report/be/")]', $table)->length > 0;
     }
 
     private function approvedUrls(): array
