@@ -11,7 +11,7 @@ foreach (app(ManagedTasks::class)->all() as $key => $task) {
     }
     Schedule::command($task['command'])->cron($task['schedule'])->timezone('Asia/Kolkata')->withoutOverlapping()->runInBackground()
         ->before(fn () => app(ManagedTasks::class)->record($key, 'running'))
-        ->onSuccess(fn () => app(ManagedTasks::class)->record($key, 'success'))
+        ->onSuccess(fn () => $key === 'election_sync' ? null : app(ManagedTasks::class)->record($key, 'success'))
         ->onFailure(fn () => app(ManagedTasks::class)->record($key, 'failed'));
 }
 

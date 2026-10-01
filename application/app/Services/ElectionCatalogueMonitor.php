@@ -167,8 +167,10 @@ class ElectionCatalogueMonitor
         $assembly = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
         $elections = json_decode(file_get_contents(database_path('fixtures/eci-election-archive.json')), true, 512, JSON_THROW_ON_ERROR);
 
+        $runtime = app(ElectionRuntimeCatalogue::class)->entries();
+
         return [
-            'ac' => array_column($assembly['entries'], 'url'),
+            'ac' => array_merge(array_column($assembly['entries'], 'url'), array_column(array_filter($runtime, fn (array $entry): bool => $entry['kind'] === 'ac'), 'url')),
             'pc' => array_column($elections['pc'], 1),
         ];
     }

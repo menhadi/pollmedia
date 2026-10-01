@@ -53,7 +53,7 @@ class ElectionGeographySummary
      */
     public function states(): Collection
     {
-        $archive = collect(json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR)['entries'])
+        $archive = collect(app(ElectionArchive::class)->nationalAssemblyEntries())
             ->groupBy('state');
 
         return collect(self::CURRENT_STATES_AND_UTS)->map(function (string $name, string $slug) use ($archive): array {

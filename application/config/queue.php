@@ -30,6 +30,13 @@ return [
     */
 
     'connections' => [
+        'election_sync' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'election-sync',
+            'retry_after' => 22000,
+            'after_commit' => true,
+        ],
         'pdf_storage' => [
             'driver' => 'database',
             'table' => 'jobs',

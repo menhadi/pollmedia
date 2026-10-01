@@ -29,8 +29,7 @@ class HistoricalElectionAnalytics
     {
         $entries = [];
         if ($kind === 'ac') {
-            $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
-            foreach ($catalogue['entries'] as $entry) {
+            foreach (app(ElectionArchive::class)->nationalAssemblyEntries() as $entry) {
                 if ($entry['state'] === $state) {
                     $entries[$entry['url']] = $entry['label'].' '.$state;
                 }

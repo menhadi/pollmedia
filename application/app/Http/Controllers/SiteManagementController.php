@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SyncElectionReleasesJob;
 use App\Services\DataCorrections;
 use App\Services\ManagedTasks;
 use App\Services\OfficialDownload;
@@ -151,6 +152,13 @@ class SiteManagementController extends Controller
         $settings->save('tasks', $all);
 
         return back()->with('status', 'Schedule saved for the next scheduler tick. Active jobs are not interrupted.');
+    }
+
+    public function syncElections(): RedirectResponse
+    {
+        SyncElectionReleasesJob::dispatch()->onConnection('election_sync')->onQueue('election-sync');
+
+        return back()->with('status', 'Election release check queued. The result will appear under monitoring after the dedicated worker runs.');
     }
 
     public function api(Request $request, SiteSettings $settings): RedirectResponse

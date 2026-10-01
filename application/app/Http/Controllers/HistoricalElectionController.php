@@ -22,7 +22,7 @@ class HistoricalElectionController extends Controller
 {
     public function sourceFiles(Request $request, string $archive, ElectionArchive $archives): View|BinaryFileResponse
     {
-        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
+        $catalogue = ['entries' => $archives->nationalAssemblyEntries()];
         $edition = collect($catalogue['entries'])->first(fn ($entry) => substr(hash('sha256', $entry['url']), 0, 24) === $archive);
         abort_unless($edition, 404);
         $collection = $archives->collection($edition['url']);
@@ -41,7 +41,7 @@ class HistoricalElectionController extends Controller
 
     public function sources(Request $request, ElectionArchive $archives): View
     {
-        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
+        $catalogue = ['entries' => $archives->nationalAssemblyEntries()];
         $entries = collect($catalogue['entries']);
         $states = $entries->pluck('state')->unique()->sort()->values();
         $years = $entries->pluck('year')->unique()->sortDesc()->values();

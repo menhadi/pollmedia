@@ -9,8 +9,7 @@ class HistoricalElectionArchive
         $entries = app(ElectionArchive::class)->catalogue()[$kind];
         if ($kind === 'ac') {
             $entries = array_map(fn ($entry) => [$entry[0].' Uttar Pradesh', $entry[1]], $entries);
-            $national = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
-            foreach ($national['entries'] as $entry) {
+            foreach (app(ElectionArchive::class)->nationalAssemblyEntries() as $entry) {
                 $entries[] = [$entry['label'].' '.$entry['state'], $entry['url']];
             }
         }

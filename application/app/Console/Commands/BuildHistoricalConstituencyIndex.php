@@ -3,13 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Services\ElectionArchive;
+use App\Services\ElectionRuntimeCatalogue;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class BuildHistoricalConstituencyIndex extends Command
 {
-    protected $signature = 'archive:index-constituencies {--check : Validate imported extraction JSON without writing the index}';
+    protected $signature = 'archive:index-constituencies {--check : Validate imported extraction JSON without writing the index} {--edition= : Index only this 24-character source edition}';
 
     protected $description = 'Index edition-specific historical PC and AC records without publishing accepted election results';
 
@@ -19,8 +20,13 @@ class BuildHistoricalConstituencyIndex extends Command
         $editions = $records = 0;
 
         try {
+            $editionOnly = $this->option('edition');
+            if ($editionOnly !== null && ! preg_match('/^[a-f0-9]{24}$/', $editionOnly)) {
+                throw new RuntimeException('Invalid edition ID.');
+            }
             DB::table('archive_json_files')->where('category', 'election-archive')
                 ->where('path', 'like', 'election-archive/%/extraction.json')
+                ->when($editionOnly, fn ($query) => $query->where('path_hash', hash('sha256', 'election-archive/'.$editionOnly.'/extraction.json')))
                 ->orderBy('path_hash')->chunkById(5, function ($files) use ($catalogue, &$editions, &$records): void {
                     foreach ($files as $file) {
                         if (! preg_match('~^election-archive/([a-f0-9]{24})/extraction\.json$~', $file->path, $match)
@@ -104,6 +110,12 @@ class BuildHistoricalConstituencyIndex extends Command
             return self::FAILURE;
         }
 
+        if ($this->option('edition') !== null && $editions !== 1) {
+            $this->error('Expected one imported extraction for the requested edition.');
+
+            return self::FAILURE;
+        }
+
         $this->info(($this->option('check') ? 'Verified' : 'Indexed')." {$records} PC/AC constituency tables in {$editions} source editions. These are not accepted election contests.");
 
         return self::SUCCESS;
@@ -125,11 +137,16 @@ class BuildHistoricalConstituencyIndex extends Command
                 ];
             }
         }
-        $national = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
-        foreach ($national['entries'] as $entry) {
+        foreach ($archives->nationalAssemblyEntries() as $entry) {
             $entries[substr(hash('sha256', $entry['url']), 0, 24)] = [
                 'url' => $entry['url'], 'kind' => 'ac', 'year' => (int) $entry['year'],
                 'label' => $entry['label'].' '.$entry['state'], 'state' => $entry['state'],
+            ];
+        }
+        foreach (app(ElectionRuntimeCatalogue::class)->entries(false) as $entry) {
+            $entries[substr(hash('sha256', $entry['url']), 0, 24)] = [
+                'url' => $entry['url'], 'kind' => $entry['kind'], 'year' => $entry['year'],
+                'label' => $entry['label'], 'state' => $entry['state'],
             ];
         }
 

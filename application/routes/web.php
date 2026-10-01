@@ -186,6 +186,7 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix(
     Route::post('/site/asset', [SiteManagementController::class, 'asset'])->name('site.asset');
     Route::post('/site/appearance', [SiteManagementController::class, 'appearance'])->name('site.appearance');
     Route::post('/site/tasks/{key}', [SiteManagementController::class, 'task'])->name('site.task');
+    Route::post('/site/elections/sync', [SiteManagementController::class, 'syncElections'])->middleware('throttle:2,1')->name('site.elections.sync');
     Route::post('/site/api', [SiteManagementController::class, 'api'])->name('site.api');
     Route::post('/site/seo', [SiteManagementController::class, 'seo'])->name('site.seo');
     Route::get('/source-correction', [SiteManagementController::class, 'sourceEditor'])->name('site.source-editor');

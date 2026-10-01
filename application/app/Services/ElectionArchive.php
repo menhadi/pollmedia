@@ -8,7 +8,26 @@ class ElectionArchive
 {
     public function catalogue(): array
     {
-        return json_decode(file_get_contents(database_path('fixtures/eci-election-archive.json')), true, 512, JSON_THROW_ON_ERROR);
+        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-election-archive.json')), true, 512, JSON_THROW_ON_ERROR);
+        foreach (app(ElectionRuntimeCatalogue::class)->entries() as $entry) {
+            if ($entry['kind'] === 'pc') {
+                $catalogue['pc'][] = [$entry['label'], $entry['url']];
+            }
+        }
+
+        return $catalogue;
+    }
+
+    public function nationalAssemblyEntries(): array
+    {
+        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR)['entries'];
+        foreach (app(ElectionRuntimeCatalogue::class)->entries() as $entry) {
+            if ($entry['kind'] === 'ac') {
+                $catalogue[] = ['state' => $entry['state'], 'year' => $entry['year'], 'label' => (string) $entry['year'], 'url' => $entry['url']];
+            }
+        }
+
+        return $catalogue;
     }
 
     public function collection(string $url): array
