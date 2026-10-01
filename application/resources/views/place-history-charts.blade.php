@@ -10,16 +10,21 @@ $chartRows=$rows->sortBy('entry.year')->values()->map(function($row){
  }
  return $point;
 })->values();
-$plotRows=$chartRows->map(function($point){
+$partyTotals=[];
+foreach($chartRows as $point){foreach($point['parties'] as $party){if(!in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT'])){$partyTotals[$party['party']]=($partyTotals[$party['party']]??0)+$party['votes'];}}}
+$fixedParties=collect($partyTotals)->map(fn($votes,$party)=>['party'=>(string)$party,'votes'=>$votes])->sortBy([['votes','desc'],['party','asc']])->take(3)->pluck('party')->values()->all();
+$plotRows=$chartRows->map(function($point)use($fixedParties){
  $ranked=collect($point['parties'])->reject(fn($party)=>in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT']))->sortBy([['votes','desc'],['party','asc']])->take(2)->values();
  foreach([0,1] as $i){$point['party'.$i]=$ranked[$i]['votes']??null;$point['party'.$i.'_name']=$ranked[$i]['party']??null;}
  $topParties=$ranked->pluck('party')->all();
  $point['others']=$point['parties']?collect($point['parties'])->reject(fn($party)=>in_array($party['party'],$topParties))->sum('votes'):null;
  $total=collect($point['parties'])->sum('votes');
+ foreach($fixedParties as $i=>$party){$point['fixed'.$i]=$total>0?collect($point['parties'])->where('party',$party)->sum('votes'):null;$point['fixed'.$i.'_share']=$total>0?100*$point['fixed'.$i]/$total:null;}
  foreach(['party0','party1','others'] as $key){$point[$key.'_share']=$total>0&&$point[$key]!==null?100*$point[$key]/$total:null;}
  return $point;
 });
 $plots=[
+ ['title'=>'Top three parties across the years','unit'=>'%','series'=>array_map(fn($party,$i)=>['key'=>'fixed'.$i.'_share','votes_key'=>'fixed'.$i,'label'=>$party],$fixedParties,array_keys($fixedParties))],
  ['title'=>'Party vote shares by year','unit'=>'%','series'=>[['key'=>'party0_share','votes_key'=>'party0','name_key'=>'party0_name','label'=>'1st party'],['key'=>'party1_share','votes_key'=>'party1','name_key'=>'party1_name','label'=>'2nd party'],['key'=>'others_share','votes_key'=>'others','label'=>'Others']]],
  ['title'=>'Voter turnout','unit'=>'%','series'=>[['key'=>'turnout','label'=>'Turnout']]],
  ['title'=>'Winning margin','unit'=>'votes','series'=>[['key'=>'margin','label'=>'Winning margin']]],
@@ -30,7 +35,8 @@ $plots=[
 <p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>
 @foreach($plots as $plot)
 <section class="history-line" data-history-chart><h3>{{ $plot['title'] }}</h3>
-@if($loop->first)<p class="small">The top two parties are selected separately for each year. Lines track rank, not the same party. Tap a point or open the table for the party name.</p>@endif
+@if($loop->first)<p class="small">The three parties with the most combined recorded votes across available years, counting each year once. Each line follows the same party label. Shares use all recorded candidate votes plus NOTA; these three lines need not total 100%.</p>@endif
+@if($loop->index===1)<p class="small">The top two parties are selected separately for each year. Lines track rank, not the same party. Tap a point or open the table for the party name.</p>@endif
 <script type="application/json" class="history-chart-data">{!! json_encode(['rows'=>$plotRows,'series'=>$plot['series'],'unit'=>$plot['unit']],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
 <div class="history-controls"><label>From <select data-chart-from>@foreach($chartRows as $point)<option value="{{ $point['year'] }}">{{ $point['year'] }}</option>@endforeach</select></label><label>To <select data-chart-to>@foreach($chartRows as $point)<option value="{{ $point['year'] }}" @selected($loop->last)>{{ $point['year'] }}</option>@endforeach</select></label></div>
 <div class="history-legend" aria-label="Chart series"></div><div class="history-plot"></div><p class="history-readout" role="status">Tap or focus a point to see the value.</p>

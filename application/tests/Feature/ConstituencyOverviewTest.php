@@ -106,7 +106,7 @@ class ConstituencyOverviewTest extends TestCase
         $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
         $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('281,501 †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $overview->getContent(), $charts);
-        $this->assertCount(4, $charts[1]);
+        $this->assertCount(5, $charts[1]);
         $chart = json_decode($charts[1][0], true);
         $this->assertSame([2009, 2019], array_column($chart['rows'], 'year'));
         $this->assertEquals(60, $chart['rows'][1]['polled']);
@@ -162,7 +162,16 @@ class ConstituencyOverviewTest extends TestCase
         ]);
         $html = view('place-history-charts', compact('rows'))->render();
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $html, $matches);
-        $party = json_decode($matches[1][0], true);
+        $fixed = json_decode($matches[1][0], true);
+        $this->assertCount(5, $matches[1]);
+        $this->assertSame(['C', 'A', 'D'], array_column($fixed['series'], 'label'));
+        $this->assertSame('%', $fixed['unit']);
+        $this->assertEquals(20, $fixed['rows'][0]['fixed0_share']);
+        $this->assertEquals(45, $fixed['rows'][2]['fixed0_share']);
+        $this->assertNull($fixed['rows'][1]['fixed0_share']);
+        $this->assertEquals(40, $fixed['rows'][0]['fixed0']);
+        $this->assertLessThan(strpos($html, '<h3>Party vote shares by year'), strpos($html, '<h3>Top three parties across the years'));
+        $party = json_decode($matches[1][1], true);
         $this->assertSame(['1st party', '2nd party', 'Others'], array_column($party['series'], 'label'));
         $this->assertCount(3, $party['rows']);
         $this->assertSame('A', $party['rows'][0]['party0_name']);
@@ -172,7 +181,7 @@ class ConstituencyOverviewTest extends TestCase
         $this->assertEquals(45, $party['rows'][2]['party0_share']);
         $this->assertEquals(20, $party['rows'][2]['others_share']);
         $this->assertLessThan(strpos($html, '<h3>Voter turnout'), strpos($html, '<h3>Party vote shares by year'));
-        $this->assertSame(['turnout', 'margin', 'electors'], array_map(fn ($json) => json_decode($json, true)['series'][0]['key'], array_slice($matches[1], 1)));
+        $this->assertSame(['turnout', 'margin', 'electors'], array_map(fn ($json) => json_decode($json, true)['series'][0]['key'], array_slice($matches[1], 2)));
         $this->assertStringContainsString('&amp;z=7&amp;', view('place-location-map', ['mapName' => 'Pilibhit', 'mapQuery' => 'Pilibhit, India'])->render());
         $this->assertEquals(80, $party['rows'][0]['party0']);
         $this->assertEquals(60, $party['rows'][0]['others']);
