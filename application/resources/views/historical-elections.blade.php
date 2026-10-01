@@ -79,9 +79,10 @@
 @php
     $summaryVoteLabel = ($selected['source_warning_code'] ?? '') === 'workbook_pdf_summary'
         ? (isset($selected['summary_totals']['nota_votes']) ? 'Valid candidate votes' : 'Source valid votes (including NOTA)')
-        : 'Valid candidate votes';
+        : (in_array($selected['source_warning_code'] ?? '', ['summary_turnout_with_detail_warnings', 'summary_only_turnout'], true)
+            ? 'Valid votes (official summary)' : 'Valid candidate votes');
 @endphp
-<div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>$summaryVoteLabel] as $key=>$label)@php $value = $key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings'], true) ? ($selected['summary_totals'][$key] ?? null) : ($selected[$key] ?? null); @endphp<div class="stat"><span>{{ $label }}</span><strong>{{ $value !== null ? number_format($value) : '—' }}</strong></div>@endforeach</div>
+<div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>$summaryVoteLabel] as $key=>$label)@php $value = $key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings', 'summary_only_turnout'], true) ? ($selected['summary_totals'][$key] ?? null) : ($selected[$key] ?? null); @endphp<div class="stat"><span>{{ $label }}</span><strong>{{ $value !== null ? number_format($value) : '—' }}</strong></div>@endforeach</div>
 @php
     $showSymbols = collect($selected['candidates'])->contains(fn ($row) => !empty($row['election_symbol']));
 @endphp

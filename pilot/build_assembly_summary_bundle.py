@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import re
 import tempfile
 import zipfile
 
@@ -14,7 +15,16 @@ from preserve_archive_json import package
 PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.'
 RECONCILED = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.'
 RECONCILED_WARNINGS = 'Official summary confirms constituency turnout and candidate-vote total; detailed candidate text still needs review.'
-NAME = 'pollmedia-ac-summary-corrections-20261001-v6'
+RECONCILED_SUMMARY_ONLY = 'Official summary confirms constituency turnout; detailed candidate rows remain unverified.'
+NAME = 'pollmedia-ac-summary-corrections-20261001-v7'
+
+
+def same_constituency(record, summary):
+    if record.get('code') != summary['code'] or type(record.get('electors')) is not int or record['electors'] != summary['electors']:
+        return False
+    def normalized(name):
+        return re.sub(r'[^a-z0-9]', '', re.sub(r'(?:\s*\((?:SC|ST)\))+\s*$', '', name or '', flags=re.I).casefold())
+    return bool(normalized(record.get('name'))) and normalized(record.get('name')) == normalized(summary['name'])
 
 
 def digest(body):
@@ -83,19 +93,24 @@ def revised_records(data, summaries, secondary_source=None):
             continue
         matched = corroborates(record, summary)
         detail_electors = record.get('electors')
+        summary_only = detail_warnings and not matched and same_constituency(record, summary)
+        summary_only = summary_only and type(record.get('detail_page')) is int and record['detail_page'] > 0
         elector_difference = (not matched and not detail_warnings and type(detail_electors) is int
                               and 0 < abs(detail_electors - summary['electors'])
                               and abs(detail_electors - summary['electors']) * 10000 <= summary['electors'] * 5
                               and corroborates(record, summary, allow_elector_difference=True))
-        if not matched and not elector_difference:
+        if not matched and not elector_difference and not summary_only:
             continue
-        if detail_warnings and (type(record.get('detail_page')) is not int or record['detail_page'] <= 0
+        if detail_warnings and not summary_only and (type(record.get('detail_page')) is not int or record['detail_page'] <= 0
                                 or len(record.get('candidates') or []) < 2
                                 or any(type(candidate.get('votes')) is not int or candidate['votes'] < 0
                                        for candidate in record['candidates'])):
             continue
         record['original_extraction_warning'] = record['error']
-        if detail_warnings:
+        if summary_only:
+            record['error'] = RECONCILED_SUMMARY_ONLY + ' ' + original_error[len(PENDING):].lstrip('; ')
+            record['source_warning_code'] = 'summary_only_turnout'
+        elif detail_warnings:
             record['error'] = RECONCILED_WARNINGS + ' ' + original_error[len(PENDING):].lstrip('; ')
             record['source_warning_code'] = 'summary_turnout_with_detail_warnings'
             record['electors'] = summary['electors']

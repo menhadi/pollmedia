@@ -1,7 +1,7 @@
 import copy
 import unittest
 
-from build_assembly_summary_bundle import PENDING, RECONCILED, RECONCILED_WARNINGS, revised_records
+from build_assembly_summary_bundle import PENDING, RECONCILED, RECONCILED_SUMMARY_ONLY, RECONCILED_WARNINGS, revised_records
 
 
 class AssemblySummaryBundleTest(unittest.TestCase):
@@ -94,6 +94,30 @@ class AssemblySummaryBundleTest(unittest.TestCase):
         self.assertIsNone(result['valid_candidate_votes'])
 
         record['candidates'][1]['votes'] = 29
+        unchanged, count = revised_records({'records': [record]}, summary)
+        self.assertEqual(count, 1)
+        self.assertEqual(unchanged['records'][0]['source_warning_code'], 'summary_only_turnout')
+        self.assertEqual(unchanged['records'][0]['candidates'], record['candidates'])
+
+    def test_independent_summary_turnout_survives_incomplete_candidate_rows(self):
+        record = {'code': 1, 'name': 'Rajmahal', 'status': 'needs_review',
+                  'error': PENDING + '; One or more candidate cells are missing or unreadable; original cells are retained.',
+                  'electors': 100, 'votes_polled': None, 'valid_candidate_votes': None,
+                  'detail_page': 9, 'candidates': [{'votes': 50}, {'votes': None}]}
+        summary = {1: {'code': 1, 'name': 'Rajmahal', 'electors': 100,
+                       'votes_polled': 82, 'valid_candidate_votes': 80, 'summary_page': 4}}
+
+        revised, count = revised_records({'records': [record]}, summary)
+
+        self.assertEqual(count, 1)
+        result = revised['records'][0]
+        self.assertEqual(result['votes_polled'], 82)
+        self.assertEqual(result['source_warning_code'], 'summary_only_turnout')
+        self.assertTrue(result['error'].startswith(RECONCILED_SUMMARY_ONLY))
+        self.assertEqual(result['candidates'], record['candidates'])
+        self.assertEqual(result['original_extraction_warning'], record['error'])
+
+        summary[1]['electors'] = 101
         unchanged, count = revised_records({'records': [record]}, summary)
         self.assertEqual(count, 0)
         self.assertEqual(unchanged['records'][0], record)

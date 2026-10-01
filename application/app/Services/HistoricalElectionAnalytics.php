@@ -319,7 +319,11 @@ class HistoricalElectionAnalytics
             && $summary['votes_polled'] === $record['votes_polled']
             && (($record['source_warning_code'] ?? '') !== 'summary_turnout_with_detail_warnings'
                 || ($this->count($summary['valid_candidate_votes'] ?? null)
-                    && array_sum(array_column($record['candidates'] ?? [], 'votes')) === $summary['valid_candidate_votes'] + ($summary['nota_votes'] ?? 0)));
+                    && array_sum(array_column($record['candidates'] ?? [], 'votes')) === $summary['valid_candidate_votes'] + ($summary['nota_votes'] ?? 0)))
+            && (($record['source_warning_code'] ?? '') !== 'summary_only_turnout'
+                || ($this->count($summary['valid_candidate_votes'] ?? null)
+                    && $this->count($summary['nota_votes'] ?? 0)
+                    && $summary['votes_polled'] >= $summary['valid_candidate_votes'] + ($summary['nota_votes'] ?? 0)));
     }
 
     private function hasDocumentedCandidateDifference(array $record, int $candidateVotes, int $summaryVotes): bool

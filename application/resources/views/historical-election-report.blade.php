@@ -15,9 +15,10 @@ body{max-width:900px;margin:2rem auto;padding:0 1rem;color:var(--palette-173d37)
 @php
     $summaryVoteLabel = ($selected['source_warning_code'] ?? '') === 'workbook_pdf_summary'
         ? (isset($selected['summary_totals']['nota_votes']) ? 'Valid candidate votes' : 'Source valid votes (including NOTA)')
-        : 'Valid candidate votes';
+        : (in_array($selected['source_warning_code'] ?? '', ['summary_turnout_with_detail_warnings', 'summary_only_turnout'], true)
+            ? 'Valid votes (official summary)' : 'Valid candidate votes');
 @endphp
-<div class="numbers">@foreach(['electors' => 'Electors', 'votes_polled' => 'Votes polled', 'valid_candidate_votes' => $summaryVoteLabel] as $key => $label)@php $value = $key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings'], true) ? ($selected['summary_totals'][$key] ?? null) : ($selected[$key] ?? null); @endphp<p><strong>{{ $label }}:</strong> {{ $value !== null ? number_format($value) : 'Not reported' }}</p>@endforeach</div>
+<div class="numbers">@foreach(['electors' => 'Electors', 'votes_polled' => 'Votes polled', 'valid_candidate_votes' => $summaryVoteLabel] as $key => $label)@php $value = $key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings', 'summary_only_turnout'], true) ? ($selected['summary_totals'][$key] ?? null) : ($selected[$key] ?? null); @endphp<p><strong>{{ $label }}:</strong> {{ $value !== null ? number_format($value) : 'Not reported' }}</p>@endforeach</div>
 @if($selected['display_result'])<p><strong>Winner:</strong> {{ $selected['display_result']['winner'] }}{{ $selected['has_warning'] ? ' †' : '' }} · <strong>Margin:</strong> {{ number_format($selected['display_result']['margin']) }} votes{{ $selected['has_warning'] ? ' †' : '' }}</p>@endif
 <table><caption>Candidate votes as recorded in the selected report edition</caption><thead><tr><th>Candidate</th><th>Party at election</th><th>General / EVM votes</th><th>Postal votes</th><th>Total votes</th></tr></thead><tbody>
 @forelse($selected['candidates'] as $candidate)<tr><td>{{ $candidate['candidate_name'] }}</td><td>{{ $candidate['party_at_election'] }}</td>@foreach(['general_votes', 'postal_votes', 'votes'] as $key)<td>{{ isset($candidate[$key]) ? number_format($candidate[$key]) : 'Not reported' }}</td>@endforeach</tr>

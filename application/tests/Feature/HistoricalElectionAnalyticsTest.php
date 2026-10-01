@@ -245,6 +245,28 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
     }
 
+    public function test_summary_only_turnout_does_not_publish_incomplete_candidate_metrics(): void
+    {
+        $record = $this->record(1, 100, 82, 50, 20);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Official summary confirms constituency turnout; detailed candidate rows remain unverified. Candidate cells are unreadable.';
+        $record['source_warning_code'] = 'summary_only_turnout';
+        $record['detail_page'] = 9;
+        $record['summary_page'] = 4;
+        $record['summary_totals'] = ['electors' => 100, 'votes_polled' => 82, 'valid_candidate_votes' => 80];
+        $record['valid_candidate_votes'] = null;
+
+        $summary = app(HistoricalElectionAnalytics::class)->summarize([$record]);
+
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(82, $summary['polled']);
+        $this->assertSame(0, $summary['party_count']);
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->singleSeatResult($record));
+
+        $record['summary_totals']['valid_candidate_votes'] = 83;
+        $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
+    }
+
     public function test_recovered_workbook_rows_use_official_voter_total_with_component_note(): void
     {
         $record = $this->record(87, 100, 82, 50, 30);
