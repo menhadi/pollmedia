@@ -616,6 +616,49 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->summarize([$record])['polled']);
     }
 
+    public function test_official_page_turnout_is_shown_when_imported_evidence_matches(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $record = [
+            'code' => 4,
+            'name' => 'Anjar',
+            'number_of_seats' => 1,
+            'status' => 'needs_review',
+            'error' => 'Official source prints the constituency turnout total; previous candidate/source warnings remain available for review.',
+            'source_warning_code' => 'official_turnout_from_residual_source',
+            'electors' => 191018,
+            'votes_polled' => 137376,
+            'turnout_totals' => ['electors' => 191018, 'votes_polled' => 137376, 'source_page' => 205, 'method' => 'visual transcription of official scanned turnout row; OCR geometry verified'],
+            'turnout_source_page' => 205,
+            'turnout_source_file' => '503135d3e838d38c93d3bce7-9045.pdf',
+            'turnout_source_sha256' => str_repeat('a', 64),
+            'candidates' => [],
+        ];
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(137376, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(0, $summary['party_count']);
+
+        $changed = $record;
+        $changed['turnout_totals']['votes_polled']++;
+        $this->assertNull($analytics->summarize([$changed])['polled']);
+        $changed = $record;
+        $changed['turnout_source_page']++;
+        $this->assertNull($analytics->summarize([$changed])['polled']);
+        $changed = $record;
+        $changed['turnout_source_sha256'] = '';
+        $this->assertNull($analytics->summarize([$changed])['polled']);
+        $changed = $record;
+        $changed['error'] = 'Different warning';
+        $this->assertNull($analytics->summarize([$changed])['polled']);
+
+        $record['source_warning_code'] = 'official_detailed_pdf_turnout';
+        $record['error'] = 'Official detailed-result PDF prints turnout. Original extraction and candidate warnings remain available for review.';
+        $record['turnout_totals']['method'] = 'official detailed-result PDF turnout row; candidates reconcile';
+        $this->assertSame(137376, $analytics->summarize([$record])['polled']);
+    }
+
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
     {
         $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);

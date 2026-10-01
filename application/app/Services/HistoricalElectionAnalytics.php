@@ -50,7 +50,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v9:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v10:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -105,9 +105,10 @@ class HistoricalElectionAnalytics
             $electorDifference = $this->hasDocumentedElectorDifference($record);
             $sourceDifference = $this->hasDocumentedSourceDifference($record);
             $workbookSummaryTurnout = $this->hasOfficialWorkbookSummaryTurnout($record);
+            $documentedTurnout = $this->hasDocumentedOfficialTurnout($record);
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $turnoutElectors
-                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout)) {
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout)) {
                 $electors += $turnoutElectors;
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
@@ -482,6 +483,35 @@ class HistoricalElectionAnalytics
             && $this->count($record['valid_candidate_votes'] ?? null)
             && $record['valid_candidate_votes'] > 0
             && $record['valid_candidate_votes'] <= $record['votes_polled'];
+    }
+
+    private function hasDocumentedOfficialTurnout(array $record): bool
+    {
+        $code = $record['source_warning_code'] ?? null;
+        $methods = match ($code) {
+            'official_turnout_from_residual_source' => ['official constituency summary', 'official detailed turnout row', 'visual transcription of official scanned turnout row; OCR geometry verified'],
+            'official_detailed_pdf_turnout' => ['official detailed-result PDF turnout row; candidates reconcile'],
+            default => [],
+        };
+        $expectedNote = match ($code) {
+            'official_turnout_from_residual_source' => 'Official source prints the constituency turnout total; previous candidate/source warnings remain available for review.',
+            'official_detailed_pdf_turnout' => 'Official detailed-result PDF prints turnout. Original extraction and candidate warnings remain available for review.',
+            default => null,
+        };
+        $totals = $record['turnout_totals'] ?? null;
+        $page = $record['turnout_source_page'] ?? null;
+
+        return ($record['status'] ?? '') === 'needs_review'
+            && $expectedNote !== null && ($record['error'] ?? null) === $expectedNote
+            && is_array($totals) && in_array($totals['method'] ?? null, $methods, true)
+            && $this->count($record['electors'] ?? null) && $record['electors'] > 0
+            && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] > 0
+            && $record['votes_polled'] <= $record['electors']
+            && ($totals['electors'] ?? null) === $record['electors']
+            && ($totals['votes_polled'] ?? null) === $record['votes_polled']
+            && $this->count($page) && $page > 0 && ($totals['source_page'] ?? null) === $page
+            && preg_match('/^[a-zA-Z0-9._-]+\.pdf$/', $record['turnout_source_file'] ?? '') === 1
+            && preg_match('/^[a-f0-9]{64}$/', $record['turnout_source_sha256'] ?? '') === 1;
     }
 
     private function hasDocumentedLegacyCandidateDifference(array $record, int $candidateVotes): bool
