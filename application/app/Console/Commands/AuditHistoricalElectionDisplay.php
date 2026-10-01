@@ -28,7 +28,7 @@ class AuditHistoricalElectionDisplay extends Command
                 if ($csv === false) {
                     throw new RuntimeException('CSV path must be new and its parent directory must exist.');
                 }
-                fputcsv($csv, ['kind', 'year', 'state', 'constituency', 'edition_id', 'code', 'issue', 'source_electors', 'source_votes_polled', 'displayed_votes_polled', 'source_candidate_count', 'displayed_winner', 'status', 'source_url', 'extraction_sha256', 'source_note']);
+                fputcsv($csv, ['kind', 'year', 'state', 'constituency', 'edition_id', 'code', 'issue', 'source_electors', 'source_votes_polled', 'displayed_votes_polled', 'source_candidate_count', 'displayed_winner', 'result_margin', 'chart_margin', 'status', 'source_url', 'extraction_sha256', 'source_note']);
             }
 
             DB::table('archive_json_files')->where('category', 'election-archive')
@@ -54,15 +54,23 @@ class AuditHistoricalElectionDisplay extends Command
                             throw new RuntimeException('Archived extraction metadata is incomplete: '.$file->path);
                         }
 
-                        $indexed = DB::table('historical_constituency_index')->where('edition_id', $edition)->count();
-                        $current = DB::table('historical_constituency_index')->where('edition_id', $edition)->where('extraction_sha256', $file->sha256)->count();
-                        if ($indexed !== count($data['records']) || $current !== $indexed) {
+                        $indexedRows = DB::table('historical_constituency_index')->where('edition_id', $edition)->get()->keyBy('record_code');
+                        if ($indexedRows->count() !== count($data['records'])
+                            || $indexedRows->contains(fn ($entry): bool => $entry->extraction_sha256 !== $file->sha256)) {
                             throw new RuntimeException('Constituency index differs from archived extraction: '.$file->path);
                         }
 
                         $editionReviews = DB::table('historical_election_reviews')->where('archive', $edition)->orderBy('id')->get()->keyBy('fingerprint');
                         $editions++;
                         foreach ($data['records'] as $source) {
+                            $indexed = $indexedRows->get($source['code'] ?? null);
+                            $sourceName = trim($source['constituency_name'] ?? $source['name'] ?? '');
+                            if (! $indexed || $indexed->kind !== $kind || (int) $indexed->year !== $year
+                                || $indexed->constituency_name !== $sourceName
+                                || $indexed->status !== ($source['status'] ?? null)
+                                || (int) $indexed->candidate_count !== count($source['candidates'] ?? [])) {
+                                throw new RuntimeException('Constituency identity differs from its index: '.$file->path);
+                            }
                             $fingerprint = $reviews->fingerprint($source, $data['source_sha256']);
                             $review = $editionReviews->get($fingerprint);
                             $record = $review ? json_decode($review->record, true, 512, JSON_THROW_ON_ERROR) : $source;
@@ -74,7 +82,7 @@ class AuditHistoricalElectionDisplay extends Command
                             $polled = $record['votes_polled'] ?? null;
                             $hasPositiveSourceTurnout = is_int($electors) && $electors > 0 && is_int($polled) && $polled > 0 && $polled <= $electors;
                             $key = $kind.':'.$year;
-                            $years[$key] ??= ['kind' => $kind, 'year' => $year, 'tables' => 0, 'source_turnout' => 0, 'shown_turnout' => 0, 'hidden_turnout' => 0, 'source_blank' => 0, 'source_invalid' => 0, 'shown_winner' => 0, 'hidden_winner_with_votes' => 0, 'uncontested' => 0];
+                            $years[$key] ??= ['kind' => $kind, 'year' => $year, 'tables' => 0, 'source_turnout' => 0, 'shown_turnout' => 0, 'hidden_turnout' => 0, 'source_blank' => 0, 'source_invalid' => 0, 'shown_winner' => 0, 'hidden_winner_with_votes' => 0, 'hidden_result_margin' => 0, 'hidden_chart_margin' => 0, 'uncontested' => 0];
                             $years[$key]['tables']++;
                             $tables++;
 
@@ -104,9 +112,22 @@ class AuditHistoricalElectionDisplay extends Command
                                 $issues[] = 'winner_hidden_with_candidate_votes';
                             }
 
+                            $ranked = collect($record['candidates'] ?? [])->reject(fn (array $candidate): bool => ($candidate['is_nota'] ?? false) || strtoupper(trim($candidate['party_at_election'] ?? '')) === 'NOTA')->sortByDesc('votes')->values();
+                            if ($ranked->count() >= 2 && $ranked->every(fn (array $candidate): bool => is_int($candidate['votes'] ?? null) && $candidate['votes'] >= 0)
+                                && $ranked[0]['votes'] > $ranked[1]['votes']) {
+                                if (! is_int($result['margin'] ?? null)) {
+                                    $years[$key]['hidden_result_margin']++;
+                                    $issues[] = 'result_margin_hidden_with_candidate_votes';
+                                }
+                                if ($summary['margin'] === null) {
+                                    $years[$key]['hidden_chart_margin']++;
+                                    $issues[] = 'chart_margin_hidden_with_candidate_votes';
+                                }
+                            }
+
                             if ($csv !== null) {
                                 foreach ($issues as $issue) {
-                                    fputcsv($csv, [$kind, $year, $record['state_name'] ?? $record['state_code'] ?? '', $record['constituency_name'] ?? $record['name'] ?? '', $edition, $record['code'] ?? '', $issue, $electors, $polled, $summary['polled'], count($record['candidates'] ?? []), $result['winner'] ?? '', $record['status'] ?? '', $data['source_url'], $file->sha256, $record['error'] ?? '']);
+                                    fputcsv($csv, [$kind, $year, $record['state_name'] ?? $record['state_code'] ?? '', $record['constituency_name'] ?? $record['name'] ?? '', $edition, $record['code'] ?? '', $issue, $electors, $polled, $summary['polled'], count($record['candidates'] ?? []), $result['winner'] ?? '', $result['margin'] ?? '', $summary['margin'], $record['status'] ?? '', $data['source_url'], $file->sha256, $record['error'] ?? '']);
                                 }
                             }
                         }
@@ -115,7 +136,7 @@ class AuditHistoricalElectionDisplay extends Command
 
             ksort($years);
             $this->line('Scope: imported PC/AC editions with matching constituency index; this checks display coverage, not every source figure against its PDF.');
-            $this->line('kind year tables source_turnout shown_turnout hidden_turnout source_blank source_invalid shown_winner hidden_winner_with_votes uncontested');
+            $this->line('kind year tables source_turnout shown_turnout hidden_turnout source_blank source_invalid shown_winner hidden_winner_with_votes hidden_result_margin hidden_chart_margin uncontested');
             foreach ($years as $row) {
                 $this->line(implode(' ', $row));
             }

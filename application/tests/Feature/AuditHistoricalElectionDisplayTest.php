@@ -43,10 +43,12 @@ class AuditHistoricalElectionDisplayTest extends TestCase
         $path = storage_path('app/election-display-audit-'.Str::random(16).'.csv');
         try {
             $this->assertSame(0, Artisan::call('archive:audit-election-display', ['--csv' => $path]));
-            $this->assertStringContainsString('pc 2007 3 2 1 1 1 0 1 1 0', Artisan::output());
+            $this->assertStringContainsString('pc 2007 3 2 1 1 1 0 1 1 1 1 0', Artisan::output());
             $csv = file_get_contents($path);
             $this->assertStringContainsString('source_turnout_hidden', $csv);
             $this->assertStringContainsString('winner_hidden_with_candidate_votes', $csv);
+            $this->assertStringContainsString('result_margin_hidden_with_candidate_votes', $csv);
+            $this->assertStringContainsString('chart_margin_hidden_with_candidate_votes', $csv);
             $this->assertStringContainsString('source_turnout_missing_or_zero', $csv);
             $this->assertStringContainsString('Example Two', $csv);
             $this->assertStringContainsString('Example Three', $csv);
