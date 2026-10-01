@@ -33,11 +33,11 @@ $plots=[
 ];
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>How voting has changed</h2></div><a class="place-action" href="#history">View the tables ↓</a></div>
-@if(!$reportMode)<p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>@else<p class="small">All available years. The tables include exact values and source-note markers. Historical names do not establish unchanged boundaries.</p>@endif
+@if(!$reportMode)<p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>@endif
 @foreach($plots as $plot)
-<section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>{{ $plot['title'] }}</h3>
-@if($loop->first)<p class="small">The three parties with the most combined recorded votes across available years, counting each year once. Each line follows the same party label. Shares use all recorded candidate votes plus NOTA; these three lines need not total 100%.</p>@endif
-@if($loop->index===1)<p class="small">The top two parties are selected separately for each year. Lines track rank, not the same party. The table identifies the party in each year.</p>@endif
+<section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
+@if(!$reportMode && $loop->first)<p class="small">The three parties with the most combined recorded votes across available years, counting each year once. Each line follows the same party label. Shares use all recorded candidate votes plus NOTA; these three lines need not total 100%.</p>@endif
+@if(!$reportMode && $loop->index===1)<p class="small">The top two parties are selected separately for each year. Lines track rank, not the same party. The table identifies the party in each year.</p>@endif
 @if($reportMode)
 @include('history-static-plot')
 @else
@@ -49,4 +49,4 @@ $plots=[
 @if(isset($series['votes_key']) && $point[$series['key']]!==null){{ number_format($point[$series['votes_key']]).' ('.number_format($point[$series['key']],2).'%)'.($point['review']?' †':'') }}@else{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0).($plot['unit']==='%'?'%':'').($point['review']?' †':'') }}@endif</td>@endforeach</tr>@endforeach</tbody></table></div>@if(!$reportMode)</details>@endif
 </section>
 @endforeach
-<p class="small">Absolute counts, not percentages, for margin and electors/votes polled. Turnout and party shares use percentages. Party shares divide each group’s votes by all recorded candidate votes plus NOTA for that year. Top two parties are ranked independently by recorded votes in each year. Equal votes use alphabetical party order; this does not establish an election winner. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p></section>
+@if(!$reportMode)<p class="small">Absolute counts, not percentages, for margin and electors/votes polled. Turnout and party shares use percentages. Party shares divide each group’s votes by all recorded candidate votes plus NOTA for that year. Top two parties are ranked independently by recorded votes in each year. Equal votes use alphabetical party order; this does not establish an election winner. Others includes remaining parties, independents and NOTA. Party labels remain as reported; alliances and renamed parties are not merged. † marks a figure with a source note. Conflicting editions in the same year are omitted from that chart value; their source records remain below.</p>@endif</section>
