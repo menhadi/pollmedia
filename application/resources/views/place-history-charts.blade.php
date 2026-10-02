@@ -40,6 +40,13 @@ $plots=[
 <section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
 @if(!$reportMode && $loop->first)<p class="small">The three parties with the most combined recorded votes across available years, counting each year once. Each line follows the same party label. Shares use all recorded candidate votes plus NOTA; these three lines need not total 100%.</p>@endif
 @if(!$reportMode && $loop->index===1)<p class="small">The top two parties are selected separately for each year. Lines track rank, not the same party. The table identifies the party in each year.</p>@endif
+<p class="small chart-explanation">@switch($loop->index)
+@case(0)Each colour follows one party across elections. The vertical axis shows its percentage of recorded votes; years run left to right.@break
+@case(1)The first and second lines show the leading two parties in each year, so party names can change. Others combines the remaining votes. Percentages appear on the vertical axis.@break
+@case(2)Turnout is the percentage of registered electors who voted. A higher point means a larger proportion voted that year.@break
+@case(3)The gap in votes between the winner and runner-up. A lower point indicates a closer contest.@if($isStateHistory) State figures show the average margin across constituencies with available results.@endif @break
+@case(4)One line shows registered electors; the other shows votes polled. The vertical axis shows counts, not percentages.@break
+@endswitch</p>
 @if($reportMode)
 @include('history-static-plot')
 @else

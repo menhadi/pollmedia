@@ -1,4 +1,6 @@
-document.querySelectorAll('table[data-sortable]').forEach((table) => {
+window.pollmediaSortTables = (root = document) => root.querySelectorAll('table[data-sortable]').forEach((table) => {
+    if (table.dataset.sortReady) return;
+    table.dataset.sortReady = 'true';
     const body = table.tBodies[0];
     if (!body || !table.tHead) return;
     const headers = Array.from(table.tHead.rows[0].cells);
@@ -38,3 +40,5 @@ document.querySelectorAll('table[data-sortable]').forEach((table) => {
         });
     });
 });
+
+window.pollmediaSortTables();

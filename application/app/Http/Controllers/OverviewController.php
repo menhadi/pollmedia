@@ -15,7 +15,7 @@ class OverviewController extends Controller
     public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View
     {
         $stateSummary = $state !== null ? $summary->state($state) : null;
-        $input = $request->validate(['seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'pc_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'ac_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
+        $input = $request->validate(['pc_q' => 'nullable|string|max:100', 'ac_q' => 'nullable|string|max:100', 'pc_scope' => 'nullable|in:current,archive', 'ac_scope' => 'nullable|in:current,archive', 'seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'pc_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'ac_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
         $query = trim($input['q'] ?? '');
         $type = $input['type'] ?? '';
         $available = DB::table('places')->where(function ($query): void {
@@ -54,15 +54,25 @@ class OverviewController extends Controller
 
             $seatQuery = trim($input['seat_q'] ?? '');
             $seatDirectories = [];
+            $seatScopes = [];
+            $seatQueries = [];
+            $seatLatestYears = [];
             foreach (['pc', 'ac'] as $seatKind) {
+                $seatQueries[$seatKind] = trim($input[$seatKind.'_q'] ?? $seatQuery);
+                $seatScopes[$seatKind] = $input[$seatKind.'_scope'] ?? 'current';
+                $base = DB::table('historical_constituency_index')->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)]);
+                $seatLatestYears[$seatKind] = (clone $base)->max('year');
+                $latestEdition = (clone $base)->where('year', $seatLatestYears[$seatKind])->select('edition_id')->groupBy('edition_id')->orderByRaw('COUNT(*) DESC')->orderByDesc('edition_id')->value('edition_id');
                 $seatDirectories[$seatKind] = DB::table('historical_constituency_index')
                     ->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)])
-                    ->when($seatQuery !== '', fn ($builder) => $builder->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($seatQuery).'%']))
+                    ->when($seatScopes[$seatKind] === 'current', fn ($builder) => $builder->where('edition_id', $latestEdition))
+                    ->when($seatScopes[$seatKind] === 'archive', fn ($builder) => $builder->where('year', '<', $seatLatestYears[$seatKind]))
+                    ->when($seatQueries[$seatKind] !== '', fn ($builder) => $builder->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($seatQueries[$seatKind]).'%']))
                     ->selectRaw('LOWER(constituency_name) as name, MIN(year) as first_year, MAX(year) as last_year')
-                    ->groupByRaw('LOWER(constituency_name)')->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment($seatKind.'-constituencies');
+                    ->groupByRaw('LOWER(constituency_name)')->when($seatScopes[$seatKind] === 'current', fn ($builder) => $builder->groupBy('record_code'))->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment($seatKind.'-constituencies');
             }
 
-            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories', 'electionSections'));
+            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories', 'seatScopes', 'seatQueries', 'seatLatestYears', 'electionSections'));
         }
 
         return view('overview', compact('title', 'state', 'stateSummary', 'states', 'nationalSummary', 'query', 'type', 'places', 'coverage', 'years', 'options', 'selected'));
