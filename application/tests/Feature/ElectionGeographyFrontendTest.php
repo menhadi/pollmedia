@@ -74,7 +74,7 @@ class ElectionGeographyFrontendTest extends TestCase
             $mock->shouldReceive('forState')->with('Maharashtra', 'ac')->andReturn([]);
         });
         $page = $this->get('/india/state/maharashtra')->assertOk()->assertSee('state-megamenu')->assertSee('Example Parliament')->assertSee('Example Assembly')->assertDontSee('Other State Seat')->assertSee(route('constituency.overview', ['kind' => 'pc', 'state' => 'Maharashtra', 'name' => 'example parliament']));
-        $page->assertSeeInOrder(['Elections <span', 'Census <span'], false)->assertSee(route('civic.index', ['state' => 'maharashtra']));
+        $page->assertSeeInOrder(['Elections <svg', 'Census <svg'], false)->assertSee(route('civic.index', ['state' => 'maharashtra']));
         $this->get('/india/state/maharashtra?election=ac&seat_q=Assembly')->assertOk()->assertSee('Example Assembly')->assertDontSee('Example Parliament');
     }
 }

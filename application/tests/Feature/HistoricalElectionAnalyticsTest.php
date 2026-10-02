@@ -525,8 +525,9 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $summary = app(HistoricalElectionAnalytics::class)->summarize([$this->record(1, 100, 80, 50, 30)]) + ['id' => str_repeat('a', 24), 'year' => 2022, 'label' => '2022 report', 'source_url' => 'https://www.eci.gov.in/report', 'state' => 'Uttar Pradesh'];
         $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($summary): void {
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
+            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn([]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('Lok Sabha voting history')->assertDontSee('Assembly voting history')->assertSee('Mean winning margin')->assertSee('Registered electors and votes polled')->assertSee('How turnout changed')->assertSee('80.00%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('data-history-chart')->assertSee('All parties')->assertSee('All available years')->assertSee('Map of Uttar Pradesh')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('Lok Sabha voting history')->assertDontSee('Assembly voting history')->assertSee('Mean winning margin')->assertSee('Registered electors and votes polled')->assertSee('2022 Lok Sabha results')->assertSee('80.00%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('data-history-chart')->assertSee('pc-results')->assertSee('ac-results')->assertSee('Map of Uttar Pradesh')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
         $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
     }
 
@@ -542,6 +543,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $older = app(HistoricalElectionAnalytics::class)->summarize([$candidateOnly]) + ['id' => str_repeat('b', 24), 'year' => 2011, 'label' => '2011 report', 'source_url' => 'https://www.eci.gov.in/older-report', 'state' => 'Assam', 'review_count' => 1];
         $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($known, $older): void {
             $mock->shouldReceive('forState')->with('Assam', 'ac')->andReturn([$known, $older]);
+            $mock->shouldReceive('forState')->with('Assam', 'pc')->andReturn([]);
         });
 
         $this->get('/india/state/assam?election=ac')

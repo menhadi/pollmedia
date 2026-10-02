@@ -15,7 +15,7 @@ class OverviewController extends Controller
     public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View
     {
         $stateSummary = $state !== null ? $summary->state($state) : null;
-        $input = $request->validate(['seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
+        $input = $request->validate(['seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'pc_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'ac_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
         $query = trim($input['q'] ?? '');
         $type = $input['type'] ?? '';
         $available = DB::table('places')->where(function ($query): void {
@@ -37,10 +37,18 @@ class OverviewController extends Controller
 
         if ($stateSummary) {
             $kind = $input['election'] ?? 'pc';
-            $history = app(HistoricalElectionAnalytics::class)->forState($title, $kind);
-            $edition = $input['edition'] ?? ($history[0]['id'] ?? null);
-            $election = collect($history)->firstWhere('id', $edition);
-            abort_if(isset($input['edition']) && ! $election, 404);
+            $electionSections = [];
+            foreach (['pc', 'ac'] as $sectionKind) {
+                $sectionHistory = app(HistoricalElectionAnalytics::class)->forState($title, $sectionKind);
+                $requestedEdition = $input[$sectionKind.'_edition'] ?? ($sectionKind === $kind ? ($input['edition'] ?? null) : null);
+                $sectionEdition = $requestedEdition ?? ($sectionHistory[0]['id'] ?? null);
+                $sectionElection = collect($sectionHistory)->firstWhere('id', $sectionEdition);
+                abort_if($requestedEdition !== null && ! $sectionElection, 404);
+                $electionSections[$sectionKind] = ['history' => $sectionHistory, 'edition' => $sectionEdition, 'election' => $sectionElection];
+            }
+            $history = $electionSections[$kind]['history'];
+            $edition = $electionSections[$kind]['edition'];
+            $election = $electionSections[$kind]['election'];
             $party = $input['party'] ?? null;
             $partyOptions = collect($history)->flatMap(fn (array $row): array => array_column($row['parties'], 'party'))->unique()->sort()->values();
 
@@ -54,7 +62,7 @@ class OverviewController extends Controller
                     ->groupByRaw('LOWER(constituency_name)')->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment('state-constituencies');
             }
 
-            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories'));
+            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories', 'electionSections'));
         }
 
         return view('overview', compact('title', 'state', 'stateSummary', 'states', 'nationalSummary', 'query', 'type', 'places', 'coverage', 'years', 'options', 'selected'));

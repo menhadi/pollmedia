@@ -34,7 +34,7 @@ $plots=[
  ['title'=>'Registered electors and votes polled','unit'=>'people','series'=>[['key'=>'electors','label'=>'Registered electors'],['key'=>'polled','label'=>'Votes polled']]]
 ];
 @endphp
-<section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div><a class="place-action" href="{{ $isStateHistory?'#turnout':'#history' }}">View the tables ↓</a></div>
+<section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div><a class="place-action" href="{{ $isStateHistory?'#'.($chartTableAnchor??'turnout'):'#history' }}">View the tables ↓</a></div>
 @if(!$reportMode)<p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>@endif
 @foreach($plots as $plot)
 <section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
