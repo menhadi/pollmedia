@@ -7,13 +7,16 @@ from pathlib import Path
 import tempfile
 import zipfile
 
+from audit_pc_ac_zero_values import correction_index, effective_body
 from build_assembly_summary_bundle import revised_records, source_summaries
 from build_pc_ac_zero_turnout_bundle import import_script
 from preserve_archive_json import package
 
 
-NAME = 'pollmedia-ac-2008-2009-summary-turnout-20261002'
+NAME = 'pollmedia-ac-2008-2009-summary-turnout-20261002-v2'
 AUDIT = 'pc-ac-display-audit-after-bdd282d.csv'
+EARLIER_REVISION = 'pollmedia-ac-summary-corrections-20261001-v2.zip'
+EARLIER_REVISED = {'163db19f7d25b7f62c9aa360', 'b56245f92253914a7569bae3'}
 TARGETS = {
     '1be9e8a7976ebdc44658c8e9': 224,
     '25c81eb8ee370d8948a1dc3c': 87,
@@ -22,8 +25,10 @@ TARGETS = {
     'c9e2b9c993bfe7d06547c8f2': 230,
     'd82c217822e367756f2aad6e': 60,
     'f6de544acb0c3ab5a0c23542': 200,
+    '163db19f7d25b7f62c9aa360': 17,
     '1901084c7189cfe9433f1842': 57,
     '4ac73455f798dcf3a8d2946f': 90,
+    'b56245f92253914a7569bae3': 17,
     'cc0185e917711e78c149abf4': 288,
 }
 ALLOWED_CHANGES = {
@@ -64,6 +69,7 @@ def build(root: Path) -> dict:
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
     targets = live_targets(exports / AUDIT)
+    earlier = correction_index(root, (EARLIER_REVISION,))
     details = []
     with tempfile.TemporaryDirectory(prefix='ac-2008-2009-', dir=exports) as temp:
         staged = Path(temp) / 'archive'
@@ -72,7 +78,8 @@ def build(root: Path) -> dict:
         for edition, expected_count in TARGETS.items():
             folder = root / 'application/storage/app/private/election-archive' / edition
             extraction = folder / 'extraction.json'
-            old_body = extraction.read_bytes()
+            old_body = (effective_body(extraction, earlier[edition])
+                        if edition in EARLIER_REVISED else extraction.read_bytes())
             old_sha = digest(old_body)
             if old_sha != targets[edition]['sha256']:
                 raise ValueError('Live and local election JSON checksums differ: ' + edition)
@@ -93,7 +100,7 @@ def build(root: Path) -> dict:
                 ):
                     raise ValueError('A candidate, identity, or unrelated field changed: ' + edition)
             new_body = json.dumps(revised, ensure_ascii=False, indent=2).encode('utf-8')
-            if extraction.read_bytes() != old_body:
+            if edition not in EARLIER_REVISED and extraction.read_bytes() != old_body:
                 raise ValueError('Local election JSON changed during source review: ' + edition)
             snapshot = f'election-archive/{edition}/extraction-{old_sha}.json'
             revision = f'election-archive/{edition}/extraction.json'
