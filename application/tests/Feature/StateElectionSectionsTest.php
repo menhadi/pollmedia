@@ -45,6 +45,8 @@ class StateElectionSectionsTest extends TestCase
         $this->get('/india/state/maharashtra')->assertOk()->assertSee('Present Pc')->assertSee('Present Ac')->assertDontSee('Former Pc')->assertDontSee('Former Ac')->assertSee('data-fragment-form', false);
         $this->get('/india/state/maharashtra?pc_scope=archive')->assertOk()->assertSee('Former Pc')->assertSee('Present Ac')->assertDontSee('Present Pc')->assertDontSee('Former Ac');
         $this->get('/india/state/maharashtra?ac_scope=archive')->assertOk()->assertSee('Former Ac')->assertSee('Present Pc')->assertDontSee('Present Ac');
+        $this->getJson('/india/state/maharashtra?suggest=pc&pc_q=Present')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.label', 'Present Pc')->assertJsonPath('suggestions.0.type', 'PC');
+        $this->getJson('/india/state/maharashtra?suggest=ac&ac_scope=archive&ac_q=Former')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.label', 'Former Ac')->assertJsonPath('suggestions.0.type', 'Archive · AC');
         $this->get('/india/state/maharashtra?pc_q=missing')->assertOk()->assertDontSee('Present Pc')->assertSee('Present Ac');
     }
 }

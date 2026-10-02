@@ -22,7 +22,9 @@
         });
         form.addEventListener('submit', () => clearTimeout(timer));
     });
-    document.querySelectorAll('[data-place-search]').forEach(form => {
+    window.pollmediaPlaceSearch = (root = document) => root.querySelectorAll('[data-place-search]').forEach(form => {
+    if (form.dataset.suggestionsReady) return;
+    form.dataset.suggestionsReady = 'true';
     const input = form.querySelector('[role=combobox]');
     const list = document.getElementById(input.getAttribute('aria-controls'));
     const status = form.querySelector('[role=status]');
@@ -40,7 +42,7 @@
             const active = new AbortController(); request = active;
             status.textContent = 'Searching…';
             try {
-                const url = new URL(input.form.action); url.searchParams.set('q', query);
+                const url = new URL(form.dataset.suggestUrl || input.form.action); url.searchParams.set(form.dataset.suggestQuery || 'q', query);
                 const response = await fetch(url, {headers:{Accept:'application/json'},signal:active.signal});
                 if (!response.ok) throw new Error('Search unavailable');
                 const data = await response.json();
@@ -73,4 +75,5 @@
     });
     document.addEventListener('click',event=>{if(!form.contains(event.target)){clearTimeout(timer);request?.abort();close();}});
     });
+    window.pollmediaPlaceSearch();
 })();

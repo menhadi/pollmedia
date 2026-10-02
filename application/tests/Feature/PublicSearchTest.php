@@ -36,8 +36,8 @@ class PublicSearchTest extends TestCase
             DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat($id, 24), 'record_code' => 26, 'kind' => 'pc', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => 'Uttar Pradesh', 'constituency_name' => $name, 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 2, 'extraction_sha256' => str_repeat('c', 64)]);
         }
         $matches = $this->getJson('/search?q=Pilibhit')->assertOk()->json('suggestions');
-        $this->assertSame(['Parliament (PC)', 'District', 'Assembly (AC)', 'Parliament (PC)'], array_slice(array_column($matches, 'type'), 0, 4));
-        $this->assertSame('Uttar Pradesh', $matches[3]['period']);
+        $this->assertSame(['Parliament (PC)', 'District', 'Assembly (AC)', 'Archive · Parliament (PC)'], array_slice(array_column($matches, 'type'), 0, 4));
+        $this->assertSame('Uttar Pradesh · 1962–1962', $matches[3]['period']);
         $this->assertSame('Pilibhit Old', $matches[3]['label']);
         $this->get('/search?q=Pilibhit')->assertSee('Pilibhit Old')->assertDontSee('Place profile');
     }

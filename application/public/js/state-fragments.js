@@ -18,6 +18,7 @@
             if (request.signal.aborted) return;
             panel.replaceWith(replacement);
             window.pollmediaSortTables?.(replacement);
+            window.pollmediaPlaceSearch?.(replacement);
             replacement.setAttribute('tabindex', '-1'); replacement.focus({preventScroll:true});
             // Keep each section's filters independent; a reload returns to the latest selections.
             const current = new URL(location.href), incoming = new URL(url, location.href);
