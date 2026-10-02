@@ -62,6 +62,105 @@
     "source_sha256": "4d9423c3e44dcae883e4985eea2782b36c5da177df73a4a274e59f08bbda5e9c",
     "pdf_page": 81
   },
+  "08d56c7504299ea9043a1782:11": {
+    "name": "SEPPA WEST (ST)",
+    "candidate": "MAMA NATUNG",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 23
+  },
+  "08d56c7504299ea9043a1782:12": {
+    "name": "PAKKE KESSANG (ST)",
+    "candidate": "KAMENG DOLO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 24
+  },
+  "08d56c7504299ea9043a1782:14": {
+    "name": "DOIMUKH (ST)",
+    "candidate": "NABAM REBIA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 26
+  },
+  "08d56c7504299ea9043a1782:15": {
+    "name": "SAGALEE (ST)",
+    "candidate": "NABAM TUKI",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 27
+  },
+  "08d56c7504299ea9043a1782:18": {
+    "name": "PALIN (ST)",
+    "candidate": "TAKAM PARIO",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 30
+  },
+  "08d56c7504299ea9043a1782:19": {
+    "name": "NYAPIN (ST)",
+    "candidate": "BAMANG FELIX",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 31
+  },
+  "08d56c7504299ea9043a1782:22": {
+    "name": "NACHO (ST)",
+    "candidate": "TANGA BYALING",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 34
+  },
+  "08d56c7504299ea9043a1782:23": {
+    "name": "TALIHA (ST)",
+    "candidate": "PUNJI MARA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 35
+  },
+  "08d56c7504299ea9043a1782:3": {
+    "name": "MUKTO (ST)",
+    "candidate": "PEMA KHANDU",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 15
+  },
+  "08d56c7504299ea9043a1782:39": {
+    "name": "MEBO (ST)",
+    "candidate": "LOMBO TAYENG",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 51
+  },
+  "08d56c7504299ea9043a1782:4": {
+    "name": "DIRANG (ST)",
+    "candidate": "PHURPA TSERING",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4040-arunachal-pradesh-2014/",
+    "source_file": "08d56c7504299ea9043a1782-9583.pdf",
+    "source_sha256": "6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4",
+    "pdf_page": 16
+  },
   "0e868a644d2c0c738dface6b:185": {
     "name": "KANGAYAM",
     "candidate": "A . K . SUBBARAYA GOUNDER",

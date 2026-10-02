@@ -232,11 +232,30 @@ class HistoricalElectionAnalytics
     private function uncontestedResult(array $record, ?string $edition): ?array
     {
         $candidates = $record['candidates'] ?? [];
-        if (count($candidates) !== 1 || ! is_array($candidates[0]) || ! in_array($candidates[0]['votes'] ?? null, [null, 0], true)
+        if (! is_array($candidates) || count($candidates) < 1 || count($candidates) > 2
             || ! in_array($record['votes_polled'] ?? null, [null, 0], true) || ! in_array($record['margin'] ?? null, [null, 0], true)) {
             return null;
         }
-        $candidate = $candidates[0];
+        $people = [];
+        $notaCount = 0;
+        foreach ($candidates as $row) {
+            if (! is_array($row) || ! in_array($row['votes'] ?? null, [null, 0], true)
+                || ! in_array($row['general_votes'] ?? null, [null, 0], true)
+                || ! in_array($row['postal_votes'] ?? null, [null, 0], true)) {
+                return null;
+            }
+            $rowName = strtoupper(trim($row['candidate_name'] ?? ''));
+            $rowParty = strtoupper(trim($row['party_at_election'] ?? ''));
+            if (($row['is_nota'] ?? false) || in_array($rowName, ['NOTA', 'NONE OF THE ABOVE'], true) || $rowParty === 'NOTA') {
+                $notaCount++;
+            } else {
+                $people[] = $row;
+            }
+        }
+        if (count($people) !== 1 || $notaCount > 1) {
+            return null;
+        }
+        $candidate = $people[0];
         $name = trim($candidate['candidate_name'] ?? '');
         $party = trim($candidate['party_at_election'] ?? '');
         if ($name === '' || $party === '' || ($candidate['is_nota'] ?? false) || strtoupper($name) === 'NOTA' || strtoupper($party) === 'NOTA') {
