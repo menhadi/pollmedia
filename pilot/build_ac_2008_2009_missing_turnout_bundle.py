@@ -137,7 +137,8 @@ def build(root: Path) -> dict:
             }, ensure_ascii=False, indent=2))
             archive.writestr('IMPORT.sh', import_script([detail['edition'] for detail in details]))
         partial.replace(output)
-    output.with_suffix('.sha256').write_text(f'{digest(output.read_bytes())}  {output.name}\n', encoding='ascii')
+    output.with_suffix('.sha256').write_bytes(
+        f'{digest(output.read_bytes())}  {output.name}\n'.encode('ascii'))
     return {'bundle': str(output), 'editions': len(details),
             'revised_records': sum(item['revised_records'] for item in details),
             'sha256': digest(output.read_bytes())}
