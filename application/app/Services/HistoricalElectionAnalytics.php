@@ -294,6 +294,10 @@ class HistoricalElectionAnalytics
             return false;
         }
 
+        if (($record['source_warning_code'] ?? null) === 'official_pc_summary_reconciled_serial_gap') {
+            return $this->hasReconciledPcSummaryResult($record);
+        }
+
         $error = $record['error'] ?? '';
         $documentedDifference = $this->hasDocumentedElectorDifference($record);
         $sourceDetail = ! isset($record['source_warning_code']) && $this->count($record['detail_page'] ?? null) && $record['detail_page'] > 0
@@ -384,6 +388,61 @@ class HistoricalElectionAnalytics
             && $candidate['votes'] === $candidate['general_votes'] + $candidate['postal_votes']
             && trim($candidate['source_sheet'] ?? '') !== ''
             && $this->count($candidate['workbook_row'] ?? null) && $candidate['workbook_row'] > 0);
+    }
+
+    private function hasReconciledPcSummaryResult(array $record): bool
+    {
+        $summary = $record['summary_totals'] ?? null;
+        $result = $record['summary_result'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        if (($record['number_of_seats'] ?? 1) !== 1 || ! is_array($summary) || ! is_array($result) || ! is_array($candidates)
+            || count($candidates) < 2 || ($record['summary_candidate_count'] ?? null) !== count($candidates)
+            || ! $this->count($record['summary_page'] ?? null) || $record['summary_page'] < 1
+            || ! is_string($record['summary_source_file'] ?? null) || ! str_ends_with($record['summary_source_file'], '.pdf')
+            || ! is_string($record['summary_source_sha256'] ?? null) || ! preg_match('/^[a-f0-9]{64}$/', $record['summary_source_sha256'])) {
+            return false;
+        }
+
+        foreach (['electors', 'votes_polled', 'valid_candidate_votes'] as $field) {
+            if (! $this->count($record[$field] ?? null) || $record[$field] < 1 || ($summary[$field] ?? null) !== $record[$field]) {
+                return false;
+            }
+        }
+        if ($record['valid_candidate_votes'] > $record['votes_polled'] || $record['votes_polled'] > $record['electors']) {
+            return false;
+        }
+        foreach ($candidates as $candidate) {
+            if (! is_array($candidate) || ! $this->count($candidate['votes'] ?? null)
+                || trim($candidate['candidate_name'] ?? '') === '' || trim($candidate['party_at_election'] ?? '') === ''
+                || ($candidate['is_nota'] ?? false)
+                || ($this->count($candidate['general_votes'] ?? null) && $this->count($candidate['postal_votes'] ?? null)
+                    && $candidate['votes'] !== $candidate['general_votes'] + $candidate['postal_votes'])) {
+                return false;
+            }
+        }
+        if (array_sum(array_column($candidates, 'votes')) !== $record['valid_candidate_votes']) {
+            return false;
+        }
+        $unique = collect($candidates)->map(fn (array $candidate): string => mb_strtolower(trim($candidate['candidate_name']).'|'.trim($candidate['party_at_election']).'|'.$candidate['votes']));
+        if ($unique->unique()->count() !== count($candidates)) {
+            return false;
+        }
+
+        $ranked = collect($candidates)->sortByDesc('votes')->values();
+        $winner = $ranked[0];
+        $runner = $ranked[1];
+        $margin = $winner['votes'] - $runner['votes'];
+        if ($margin <= 0) {
+            return false;
+        }
+
+        return ($result['winner'] ?? null) === $winner['candidate_name']
+            && ($result['winner_party'] ?? null) === $winner['party_at_election']
+            && ($result['winner_votes'] ?? null) === $winner['votes']
+            && ($result['runner'] ?? null) === $runner['candidate_name']
+            && ($result['runner_party'] ?? null) === $runner['party_at_election']
+            && ($result['runner_votes'] ?? null) === $runner['votes']
+            && ($result['margin'] ?? null) === $margin;
     }
 
     private function hasCorroboratedTurnout(array $record): bool
