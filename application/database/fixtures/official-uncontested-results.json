@@ -665,6 +665,42 @@
     "source_sha256": "737c30ec89723c61511b276cde309186d9aca9f333ebb04f7ae1bcfba593bc56",
     "pdf_page": 72
   },
+  "503520e18f2426da13ccb809:16": {
+    "name": "YACHULI",
+    "candidate": "TABA TEDIR",
+    "party": "BJP",
+    "source_url": "https://old.eci.gov.in/files/file/11675-arunachal-pradesh-legislative-assembly-election-2019/",
+    "source_file": "503520e18f2426da13ccb809-31359.pdf",
+    "source_sha256": "def810e7b8b6a63ea1fd98e8e82764ef1ee4ac26115f411ba65738003f39f5cb",
+    "pdf_page": 1,
+    "summary_source_file": "503520e18f2426da13ccb809-31387.pdf",
+    "summary_source_sha256": "29f8427cbd0efc7699cdd143cbf37c53305cd685f63f81d63b8e2a1c54ddd3d0",
+    "summary_pdf_page": 14
+  },
+  "503520e18f2426da13ccb809:31": {
+    "name": "ALONG EAST",
+    "candidate": "Kento Jini",
+    "party": "BJP",
+    "source_url": "https://old.eci.gov.in/files/file/11675-arunachal-pradesh-legislative-assembly-election-2019/",
+    "source_file": "503520e18f2426da13ccb809-31359.pdf",
+    "source_sha256": "def810e7b8b6a63ea1fd98e8e82764ef1ee4ac26115f411ba65738003f39f5cb",
+    "pdf_page": 1,
+    "summary_source_file": "503520e18f2426da13ccb809-31387.pdf",
+    "summary_source_sha256": "29f8427cbd0efc7699cdd143cbf37c53305cd685f63f81d63b8e2a1c54ddd3d0",
+    "summary_pdf_page": 27
+  },
+  "503520e18f2426da13ccb809:4": {
+    "name": "DIRANG",
+    "candidate": "Shri Phurpa Tsering",
+    "party": "BJP",
+    "source_url": "https://old.eci.gov.in/files/file/11675-arunachal-pradesh-legislative-assembly-election-2019/",
+    "source_file": "503520e18f2426da13ccb809-31359.pdf",
+    "source_sha256": "def810e7b8b6a63ea1fd98e8e82764ef1ee4ac26115f411ba65738003f39f5cb",
+    "pdf_page": 1,
+    "summary_source_file": "503520e18f2426da13ccb809-31387.pdf",
+    "summary_source_sha256": "29f8427cbd0efc7699cdd143cbf37c53305cd685f63f81d63b8e2a1c54ddd3d0",
+    "summary_pdf_page": 3
+  },
   "5076d09b00cbbe1a938da550:12": {
     "name": "ICHHAWAR",
     "candidate": "KESARIMAL JAIN",

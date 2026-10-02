@@ -64,6 +64,28 @@ class HistoricalElectionAnalyticsTest extends TestCase
         }
     }
 
+    public function test_official_2019_successful_candidates_with_one_contested_nominee_are_uncontested(): void
+    {
+        $edition = '503520e18f2426da13ccb809';
+        $evidence = json_decode(file_get_contents(database_path('fixtures/official-uncontested-results.json')), true, 512, JSON_THROW_ON_ERROR);
+        $results = array_filter($evidence, fn (array $source): bool => $source['source_file'] === $edition.'-31359.pdf');
+        $this->assertCount(3, $results);
+
+        $analytics = app(HistoricalElectionAnalytics::class);
+        foreach ($results as $key => $source) {
+            $record = ['code' => (int) substr($key, 25), 'name' => $source['name'], 'number_of_seats' => 1, 'votes_polled' => 0, 'margin' => null, 'candidates' => [
+                ['candidate_name' => $source['candidate'], 'party_at_election' => $source['party'], 'votes' => null],
+                ['candidate_name' => 'NOTA', 'party_at_election' => 'NOTA', 'is_nota' => true, 'votes' => null],
+            ]];
+
+            $this->assertSame(['winner' => $source['candidate'], 'party' => $source['party'], 'margin' => null, 'derived' => false, 'uncontested' => true], $analytics->singleSeatResult($record, $edition));
+            $this->assertNull($analytics->summarize([$record])['turnout']);
+
+            $record['candidates'][0]['candidate_name'] = 'Different candidate';
+            $this->assertNull($analytics->singleSeatResult($record, $edition));
+        }
+    }
+
     public function test_unverified_single_candidate_zero_does_not_become_an_uncontested_winner(): void
     {
         $record = ['code' => 144, 'name' => 'FALTA', 'candidates' => [
