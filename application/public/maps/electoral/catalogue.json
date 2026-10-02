@@ -1,0 +1,475 @@
+{
+  "metadata": {
+    "revision": "b3fbbde595310b397a55d718e0958ce249a4fa1f",
+    "prepared_at": "2026-10-02T19:07:12.644425+00:00",
+    "sources": [
+      {
+        "url": "https://raw.githubusercontent.com/datameet/maps/b3fbbde595310b397a55d718e0958ce249a4fa1f/parliamentary-constituencies/india_pc_2019_simplified.geojson",
+        "sha256": "54840686c3c5ceabb223940127f3067d921d052abd312e2eb4c6784c323ffc41"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/datameet/maps/b3fbbde595310b397a55d718e0958ce249a4fa1f/assembly-constituencies/India_AC.shp",
+        "sha256": "0e89b00a228b5500d0f7802492c615c34dcb67f72acaf6ec4a66575df0e31e70"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/datameet/maps/b3fbbde595310b397a55d718e0958ce249a4fa1f/assembly-constituencies/India_AC.shx",
+        "sha256": "a3149ac8f825771df09a6a956a485059cbba7d28eabfdf35b8b02d41c6d88561"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/datameet/maps/b3fbbde595310b397a55d718e0958ce249a4fa1f/assembly-constituencies/India_AC.dbf",
+        "sha256": "687d2487d4aec89a7371bd06e2a7f9566dd2df1dd6e6d8289adc4a0501b2c1fd"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/datameet/maps/b3fbbde595310b397a55d718e0958ce249a4fa1f/assembly-constituencies/India_AC.prj",
+        "sha256": "98aaf3d1c0ecadf1a424a4536de261c3daf4e373697cb86c40c43b989daf52eb"
+      }
+    ],
+    "pc_license": "CC0 1.0",
+    "ac_license": "CC BY 2.5 India",
+    "pc_reference_year": 2019,
+    "ac_reference_year": null,
+    "simplification_degrees": 0.002,
+    "flagged_geometry_policy": "Original coordinates; no repair or simplification",
+    "boundary_status": "Community source; official geometry and record joins unverified"
+  },
+  "totals": {
+    "pc": 543,
+    "ac": 4182,
+    "geometry_flagged": 23,
+    "review_flagged": 915
+  },
+  "states": {
+    "andaman-and-nicobar-islands": {
+      "slug": "andaman-and-nicobar-islands",
+      "name": "Andaman & Nicobar Islands",
+      "file": "andaman-and-nicobar-islands.json",
+      "sha256": "03159f86bbc871d4ade3bded1a5760eb37cd4a290c1a5f6d2057b487f2ed279e",
+      "counts": {
+        "pc": 1,
+        "ac": 0
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 1
+    },
+    "andhra-pradesh": {
+      "slug": "andhra-pradesh",
+      "name": "Andhra Pradesh",
+      "file": "andhra-pradesh.json",
+      "sha256": "35b0c6db782f1aae23b61bab4bf014b7d9ff22da163edc7a8e6f0fcf20eccafd",
+      "counts": {
+        "pc": 25,
+        "ac": 296
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 297
+    },
+    "arunachal-pradesh": {
+      "slug": "arunachal-pradesh",
+      "name": "Arunachal Pradesh",
+      "file": "arunachal-pradesh.json",
+      "sha256": "4b11638012fd2446d64126203192446e59f643f17b1eb65bc5794dd6aab3a71c",
+      "counts": {
+        "pc": 2,
+        "ac": 61
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 61
+    },
+    "assam": {
+      "slug": "assam",
+      "name": "Assam",
+      "file": "assam.json",
+      "sha256": "e5a30c60c7f7172f503706325ebce7093ef1c858f4b2a1c28b0c713b95ce26be",
+      "counts": {
+        "pc": 14,
+        "ac": 133
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 147
+    },
+    "bihar": {
+      "slug": "bihar",
+      "name": "Bihar",
+      "file": "bihar.json",
+      "sha256": "edf419167257a6f96adf0d902c0a87380596034f61cebd32de1155e1426d7046",
+      "counts": {
+        "pc": 40,
+        "ac": 243
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 2
+    },
+    "chandigarh": {
+      "slug": "chandigarh",
+      "name": "Chandigarh",
+      "file": "chandigarh.json",
+      "sha256": "bc1ee1b95cede9d13dba48bd3f294000ba461c0eec2ce2651d83f46f9b88caec",
+      "counts": {
+        "pc": 1,
+        "ac": 0
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "chhattisgarh": {
+      "slug": "chhattisgarh",
+      "name": "Chhattisgarh",
+      "file": "chhattisgarh.json",
+      "sha256": "03de9a63acff57176e83f6363e1dc0842f20719e88fd82faf275e743d945d34e",
+      "counts": {
+        "pc": 11,
+        "ac": 90
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "dadra-and-nagar-haveli-and-daman-and-diu": {
+      "slug": "dadra-and-nagar-haveli-and-daman-and-diu",
+      "name": "Dadra & Nagar Haveli and Daman & Diu",
+      "file": "dadra-and-nagar-haveli-and-daman-and-diu.json",
+      "sha256": "9fb5348a9d5aaba01c4f48e9bec27e7349b86c195052920e7bebeb6303691e4a",
+      "counts": {
+        "pc": 2,
+        "ac": 0
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 2
+    },
+    "delhi": {
+      "slug": "delhi",
+      "name": "Delhi",
+      "file": "delhi.json",
+      "sha256": "a041c323a0d1869dc65584fb67649ee9e9be3b12ec5df19799d0817a1dbe98ae",
+      "counts": {
+        "pc": 7,
+        "ac": 70
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "goa": {
+      "slug": "goa",
+      "name": "Goa",
+      "file": "goa.json",
+      "sha256": "e4593cb75c204fa511d16e4380d8148fcf066641a88e1dbca88d5d5a6e850ec0",
+      "counts": {
+        "pc": 2,
+        "ac": 41
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 1
+    },
+    "gujarat": {
+      "slug": "gujarat",
+      "name": "Gujarat",
+      "file": "gujarat.json",
+      "sha256": "316ede7674a046cd6f494f352721630f04c904bac93e72317495525d1388780a",
+      "counts": {
+        "pc": 26,
+        "ac": 172
+      },
+      "geometry_flagged": 4,
+      "review_flagged": 16
+    },
+    "haryana": {
+      "slug": "haryana",
+      "name": "Haryana",
+      "file": "haryana.json",
+      "sha256": "834adde9925e88e700643be4897462cb450847462008de29db2d0321383d6cd2",
+      "counts": {
+        "pc": 10,
+        "ac": 90
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "himachal-pradesh": {
+      "slug": "himachal-pradesh",
+      "name": "Himachal Pradesh",
+      "file": "himachal-pradesh.json",
+      "sha256": "04b67d0252c45a447e5e6ca2de5bc3b5ded82d9dac0628b9d56bce2a1b993757",
+      "counts": {
+        "pc": 4,
+        "ac": 68
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "jammu-and-kashmir": {
+      "slug": "jammu-and-kashmir",
+      "name": "Jammu & Kashmir",
+      "file": "jammu-and-kashmir.json",
+      "sha256": "48e557c5e8bc34478f3277dd61a6ff601f58e4078d1e1e1b0ddcf29029776c53",
+      "counts": {
+        "pc": 5,
+        "ac": 107
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 112
+    },
+    "jharkhand": {
+      "slug": "jharkhand",
+      "name": "Jharkhand",
+      "file": "jharkhand.json",
+      "sha256": "ab0c7830b4293d174b4a54ab1b5fc596c528bd32a7896cf559a570aca8f3c8c1",
+      "counts": {
+        "pc": 14,
+        "ac": 95
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 95
+    },
+    "karnataka": {
+      "slug": "karnataka",
+      "name": "Karnataka",
+      "file": "karnataka.json",
+      "sha256": "d1f95e7f7280a01f446d52c4f050884999bcad6789e94fc78054084d65c0cd59",
+      "counts": {
+        "pc": 28,
+        "ac": 225
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 1
+    },
+    "kerala": {
+      "slug": "kerala",
+      "name": "Kerala",
+      "file": "kerala.json",
+      "sha256": "904003b86ce0a602a25337056dfc4671b7d30242b701fd149f67f1b0c2ee542d",
+      "counts": {
+        "pc": 20,
+        "ac": 141
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 2
+    },
+    "ladakh": {
+      "slug": "ladakh",
+      "name": "Ladakh",
+      "file": "ladakh.json",
+      "sha256": "9b9f68b0decc8fb8740d95ce9139acf354ffacbeb7dd78a4c27442e20ccd8d5e",
+      "counts": {
+        "pc": 1,
+        "ac": 0
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 1
+    },
+    "lakshadweep": {
+      "slug": "lakshadweep",
+      "name": "Lakshadweep",
+      "file": "lakshadweep.json",
+      "sha256": "b95cd5816bdd67d5c2ecd2a1a64166382cce8d6242bbd904782deea3a7f35057",
+      "counts": {
+        "pc": 1,
+        "ac": 0
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 1
+    },
+    "madhya-pradesh": {
+      "slug": "madhya-pradesh",
+      "name": "Madhya Pradesh",
+      "file": "madhya-pradesh.json",
+      "sha256": "680241fd97dff53c3d5dcf7770ad64afb242627c3c12c6391349a15fa317d278",
+      "counts": {
+        "pc": 29,
+        "ac": 226
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 1
+    },
+    "maharashtra": {
+      "slug": "maharashtra",
+      "name": "Maharashtra",
+      "file": "maharashtra.json",
+      "sha256": "f178e1ae57336beae5aa42dd45bb3bc0b53bc904214818c98851b06c55aef4af",
+      "counts": {
+        "pc": 48,
+        "ac": 302
+      },
+      "geometry_flagged": 2,
+      "review_flagged": 18
+    },
+    "manipur": {
+      "slug": "manipur",
+      "name": "Manipur",
+      "file": "manipur.json",
+      "sha256": "b5178f8ede371e7faa385d9be9244d2a6d8072ac273cfa82fc2bcd47a1c226ae",
+      "counts": {
+        "pc": 2,
+        "ac": 68
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 68
+    },
+    "meghalaya": {
+      "slug": "meghalaya",
+      "name": "Meghalaya",
+      "file": "meghalaya.json",
+      "sha256": "38cfa494ccf708d3c2c99eaa22c843d450fc9fd6e9fb9e8c9b13b37df740816b",
+      "counts": {
+        "pc": 2,
+        "ac": 60
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "mizoram": {
+      "slug": "mizoram",
+      "name": "Mizoram",
+      "file": "mizoram.json",
+      "sha256": "e25c6a2ca7c6a3bb58a0d86bbe448f015441314257035f1f1c689ac9b6efbce5",
+      "counts": {
+        "pc": 1,
+        "ac": 40
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "nagaland": {
+      "slug": "nagaland",
+      "name": "Nagaland",
+      "file": "nagaland.json",
+      "sha256": "e1297f8dd9c6cb35a9102458a5b1fab102869b16beb5c732e443fd879b8d7f2e",
+      "counts": {
+        "pc": 1,
+        "ac": 60
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 60
+    },
+    "odisha": {
+      "slug": "odisha",
+      "name": "Odisha",
+      "file": "odisha.json",
+      "sha256": "f8f71dfb41125c8f0b00581fd20605573833086325b7f5cf9e0fb4b2eb99975f",
+      "counts": {
+        "pc": 21,
+        "ac": 147
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 1
+    },
+    "puducherry": {
+      "slug": "puducherry",
+      "name": "Puducherry",
+      "file": "puducherry.json",
+      "sha256": "e1a58088707842b97dd41566dbc5f6d140535ad88fb211a7f82a8659d0be8270",
+      "counts": {
+        "pc": 1,
+        "ac": 30
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 1
+    },
+    "punjab": {
+      "slug": "punjab",
+      "name": "Punjab",
+      "file": "punjab.json",
+      "sha256": "002008cf121870efafb858621465b1388b88025b1cc25ad83686c88967c2f0b1",
+      "counts": {
+        "pc": 13,
+        "ac": 117
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "rajasthan": {
+      "slug": "rajasthan",
+      "name": "Rajasthan",
+      "file": "rajasthan.json",
+      "sha256": "fcf5e7db57964c7fd9d4020e66d7cd0d9a67dbfeadeda58b53c6801242852aa2",
+      "counts": {
+        "pc": 25,
+        "ac": 201
+      },
+      "geometry_flagged": 2,
+      "review_flagged": 4
+    },
+    "sikkim": {
+      "slug": "sikkim",
+      "name": "Sikkim",
+      "file": "sikkim.json",
+      "sha256": "6b8441e4b151f88a8ac3a55d164feb73f04c2353faecac2a6d7d6c69c383df39",
+      "counts": {
+        "pc": 1,
+        "ac": 38
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 10
+    },
+    "tamil-nadu": {
+      "slug": "tamil-nadu",
+      "name": "Tamil Nadu",
+      "file": "tamil-nadu.json",
+      "sha256": "4dbc6339746e7396070f334a119df76ab93893b8ea817fb737e2d97966ccc55a",
+      "counts": {
+        "pc": 39,
+        "ac": 234
+      },
+      "geometry_flagged": 4,
+      "review_flagged": 10
+    },
+    "telangana": {
+      "slug": "telangana",
+      "name": "Telangana",
+      "file": "telangana.json",
+      "sha256": "7adb6435049604509704c941b27ee9811b22d97780e26f2afd9ae411d04fa849",
+      "counts": {
+        "pc": 17,
+        "ac": 0
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "tripura": {
+      "slug": "tripura",
+      "name": "Tripura",
+      "file": "tripura.json",
+      "sha256": "b5f40b5c2f0bcd616054cb1a1fa44f616720cfe036c8e997cd5bd57f89458db9",
+      "counts": {
+        "pc": 2,
+        "ac": 60
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "uttar-pradesh": {
+      "slug": "uttar-pradesh",
+      "name": "Uttar Pradesh",
+      "file": "uttar-pradesh.json",
+      "sha256": "e257a96a22114764d22acf48131c0732e7e4a8dd643f2b4ac8b56deb699e6460",
+      "counts": {
+        "pc": 80,
+        "ac": 403
+      },
+      "geometry_flagged": 2,
+      "review_flagged": 2
+    },
+    "uttarakhand": {
+      "slug": "uttarakhand",
+      "name": "Uttarakhand",
+      "file": "uttarakhand.json",
+      "sha256": "e249b6abcc13b737d43d23b033fa5aaa2bb8f7dc2cba4b15819c10e9b7be5677",
+      "counts": {
+        "pc": 5,
+        "ac": 70
+      },
+      "geometry_flagged": 0,
+      "review_flagged": 0
+    },
+    "west-bengal": {
+      "slug": "west-bengal",
+      "name": "West Bengal",
+      "file": "west-bengal.json",
+      "sha256": "9b07ae6ac51cb1b75928879e30e605a1487b376b43e536e9b7d73eaea1e8742f",
+      "counts": {
+        "pc": 42,
+        "ac": 294
+      },
+      "geometry_flagged": 1,
+      "review_flagged": 1
+    }
+  }
+}
