@@ -13,6 +13,320 @@ class OriginalHistoricalCensusPackageTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_nine_district_revision_retains_reported_discrepancy_and_exact_retry_counts(): void
+    {
+        $path = base_path('../exports/historical-1961-20261001/kerala-original-pca-evidence-1961-v7.zip');
+        if (! is_file($path)) {
+            $this->markTestSkipped('Nine-district original evidence unavailable.');
+        }
+        $service = app(OriginalHistoricalCensusPackage::class);
+        $data = $service->verify($path, hash_file('sha256', $path));
+        $this->assertCount(30, $data['rows']);
+        $this->assertSame(1428, array_sum(array_map(fn (array $row): int => count($row['values']), $data['rows'])));
+        $this->assertSame('I', $data['rows'][3]['original_serial']);
+        $this->assertSame(932007, $data['rows'][22]['values']['NON_WORK_P']);
+        $this->assertSame(398588, $data['rows'][22]['values']['NON_WORK_M']);
+        $this->assertSame(583419, $data['rows'][22]['values']['NON_WORK_F']);
+        $this->assertStringContainsString('932,007', implode(' ', $data['rows'][22]['flags']));
+        $this->assertSame('TRIVANDRUM DISTRICT', $data['rows'][27]['original_name']);
+        $this->assertSame('540166.42', $data['rows'][27]['values']['AREA_ACRES']);
+        $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'pca-'.bin2hex(random_bytes(8));
+        mkdir($directory);
+        try {
+            $pilot = dirname($path).DIRECTORY_SEPARATOR.'kerala-original-pca-evidence-1961-v5.zip';
+            $prior = $service->importDraftPackage($pilot, hash_file('sha256', $pilot), $directory, $data['retrieved_at'], true);
+            $result = $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true, $prior['edition_id']);
+            $this->assertSame(12, $result['before_rows']);
+            $this->assertSame(42, $result['after_rows']);
+            $this->assertSame(30, $result['added_rows']);
+            $this->assertSame(0, $result['corrected_rows']);
+            $this->assertSame(18, $result['publication']['new_observation_rows']);
+            $this->assertSame(12, $result['publication']['retained_observation_rows']);
+            $this->assertSame(864, $result['publication']['new_numeric_values']);
+            $this->assertSame($result['baseline_sha256'], hash_file('sha256', $result['baseline_backup']));
+            $this->get(route('census-catalogue.index', ['edition' => $result['edition_id'], 'field' => 'NON_WORK_P']))
+                ->assertOk()->assertSee('932,007')->assertSee('50,000');
+            $retry = $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true, $prior['edition_id']);
+            $this->assertSame(0, $retry['added_rows']);
+            $this->assertSame(30, $retry['unchanged_rows']);
+            $this->assertSame(0, $retry['publication']['new_observation_rows']);
+            $this->assertDatabaseCount('census_catalogue_rows', 42);
+            $this->assertDatabaseHas('census_editions', ['id' => $prior['edition_id'], 'status' => 'superseded']);
+        } finally {
+            foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $file) {
+                unlink($file);
+            }
+            rmdir($directory);
+        }
+    }
+
+    public function test_nine_district_warning_and_digit_evidence_cannot_be_dropped(): void
+    {
+        $original = base_path('../exports/historical-1961-20261001/kerala-original-pca-evidence-1961-v7.zip');
+        if (! is_file($original)) {
+            $this->markTestSkipped('Nine-district original evidence unavailable.');
+        }
+        foreach (['warning', 'crop'] as $case) {
+            $path = tempnam(sys_get_temp_dir(), 'pca-nine-');
+            try {
+                copy($original, $path);
+                $zip = new ZipArchive;
+                $zip->open($path);
+                $manifest = json_decode($zip->getFromName('manifest.json'), true, 512, JSON_THROW_ON_ERROR);
+                $member = $case === 'warning' ? 'evidence/pca-mapping-audit-20261001T1901.json' : 'evidence/kerala-pca-alleppey-full-verified-candidates.json';
+                $evidence = json_decode($zip->getFromName($member), true, 512, JSON_THROW_ON_ERROR);
+                if ($case === 'warning') {
+                    $evidence['rows'][22]['flags'] = array_values(array_filter($evidence['rows'][22]['flags'], fn (string $flag): bool => ! str_contains($flag, 'Source discrepancy')));
+                } else {
+                    $evidence['digit_review_render']['sha256'] = str_repeat('0', 64);
+                }
+                $raw = json_encode($evidence, JSON_THROW_ON_ERROR);
+                $manifest['files'][$member] = hash('sha256', $raw);
+                $zip->addFromString($member, $raw);
+                $zip->addFromString('manifest.json', json_encode($manifest, JSON_THROW_ON_ERROR));
+                $zip->close();
+                try {
+                    app(OriginalHistoricalCensusPackage::class)->verify($path, hash_file('sha256', $path));
+                    $this->fail('Missing source evidence accepted: '.$case);
+                } catch (HttpException $error) {
+                    $this->assertSame(422, $error->getStatusCode());
+                }
+            } finally {
+                unlink($path);
+            }
+        }
+        $this->assertDatabaseCount('census_catalogue_rows', 0);
+    }
+
+    public function test_expanded_verified_districts_preserve_decimal_acreage_and_published_pilot(): void
+    {
+        $path = $this->expandedPackagePath();
+        $service = app(OriginalHistoricalCensusPackage::class);
+        $data = $service->verify($path, hash_file('sha256', $path));
+        $this->assertCount(24, $data['rows']);
+        $this->assertSame('727694.88', $data['rows'][12]['values']['AREA_ACRES']);
+        $this->assertSame('TRICHUR DISTRICT', $data['rows'][12]['original_name']);
+        $this->assertSame(544439, $data['rows'][12]['values']['TOT_WORK_P']);
+        $this->assertSame(18989, $data['rows'][16]['values']['WORK_CATEGORY_IV_M']);
+        $this->assertArrayNotHasKey('NON_WORK_P', $data['rows'][18]['values']);
+        $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'pca-'.bin2hex(random_bytes(8));
+        mkdir($directory);
+        try {
+            $pilot = dirname($path).DIRECTORY_SEPARATOR.'kerala-original-pca-evidence-1961-v5.zip';
+            $prior = $service->importDraftPackage($pilot, hash_file('sha256', $pilot), $directory, $data['retrieved_at'], true);
+            $result = $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true, $prior['edition_id']);
+            $this->assertSame(12, $result['before_rows']);
+            $this->assertSame(36, $result['after_rows']);
+            $this->assertSame(12, $result['publication']['new_observation_rows']);
+            $this->assertSame(12, $result['publication']['retained_observation_rows']);
+            $this->assertSame(414, $result['publication']['new_numeric_values']);
+            $this->get(route('census-catalogue.index', ['edition' => $result['edition_id'], 'field' => 'AREA_ACRES']))
+                ->assertOk()->assertSee('Area in acres')->assertSee('727694.88')->assertSee('Not reported');
+            $this->get(route('census-catalogue.index', ['edition' => $prior['edition_id']]))
+                ->assertOk()->assertSee('Earlier snapshot');
+        } finally {
+            foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $file) {
+                unlink($file);
+            }
+            rmdir($directory);
+        }
+    }
+
+    public function test_expanded_evidence_rejects_identity_page_cell_and_unit_drift(): void
+    {
+        $original = $this->expandedPackagePath();
+        foreach (['identity', 'page', 'cell', 'unit', 'render'] as $case) {
+            $path = tempnam(sys_get_temp_dir(), 'pca-expanded-');
+            try {
+                copy($original, $path);
+                $zip = new ZipArchive;
+                $zip->open($path);
+                $manifest = json_decode($zip->getFromName('manifest.json'), true, 512, JSON_THROW_ON_ERROR);
+                $member = $case === 'cell' ? 'evidence/pca-mapping-audit-20261001T1901.json'
+                    : 'evidence/kerala-pca-trichur-full-verified-candidates.json';
+                $evidence = json_decode($zip->getFromName($member), true, 512, JSON_THROW_ON_ERROR);
+                if ($case === 'identity') {
+                    $evidence['rows'][0]['original_serial'] = '5';
+                } elseif ($case === 'page') {
+                    $evidence['physical_pages'][0] = 188;
+                } elseif ($case === 'cell') {
+                    $evidence['rows'][12]['values']['SC_P']++;
+                } elseif ($case === 'unit') {
+                    $manifest['measure_units']['AREA_ACRES'] = 'square kilometres';
+                } else {
+                    $evidence['render_hashes']['182'] = str_repeat('0', 64);
+                }
+                $raw = json_encode($evidence, JSON_THROW_ON_ERROR);
+                $manifest['files'][$member] = hash('sha256', $raw);
+                $zip->addFromString($member, $raw);
+                $zip->addFromString('manifest.json', json_encode($manifest, JSON_THROW_ON_ERROR));
+                $zip->close();
+                try {
+                    app(OriginalHistoricalCensusPackage::class)->verify($path, hash_file('sha256', $path));
+                    $this->fail('Unverified expansion accepted: '.$case);
+                } catch (HttpException $error) {
+                    $this->assertSame(422, $error->getStatusCode(), $case);
+                }
+                $this->assertDatabaseCount('census_editions', 0);
+            } finally {
+                unlink($path);
+            }
+        }
+    }
+
+    private function expandedPackagePath(): string
+    {
+        $path = base_path('../exports/historical-1961-20261001/kerala-original-pca-evidence-1961-v6-candidate.zip');
+        if (! is_file($path)) {
+            $this->markTestSkipped('Expanded original PCA evidence package is unavailable.');
+        }
+
+        return $path;
+    }
+
+    public function test_additive_revision_preserves_prior_snapshot_and_reports_coverage_separately(): void
+    {
+        $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'pca-'.bin2hex(random_bytes(8));
+        mkdir($directory);
+        try {
+            $service = app(OriginalHistoricalCensusPackage::class);
+            $path = $this->packagePath();
+            $data = $service->verify($path, hash_file('sha256', $path));
+            $priorData = $data;
+            $priorData['rows'] = array_slice($data['rows'], 0, 3);
+            $prior = $service->stageVerifiedEdition($this->createRun($priorData), $priorData, $data['retrieved_at']);
+            DB::table('census_editions')->where('id', $prior)->update(['status' => 'published']);
+            DB::table('census_publications')->insert(['source_key' => $data['manifest']['source_key'], 'edition_id' => $prior]);
+            $priorRows = DB::table('census_catalogue_rows')->where('edition_id', $prior)->get()->all();
+            $result = $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true, $prior);
+            $this->assertSame(3, $result['before_rows']);
+            $this->assertSame(9, $result['after_rows']);
+            $this->assertSame(6, $result['added_rows']);
+            $this->assertSame(3, $result['publication']['new_observation_rows']);
+            $this->assertSame(3, $result['publication']['retained_observation_rows']);
+            $this->assertSame(3, $result['publication']['active_before_rows']);
+            $this->assertSame(6, $result['publication']['active_after_rows']);
+            $this->assertSame(42, $result['publication']['new_numeric_values']);
+            $this->assertEquals($priorRows, DB::table('census_catalogue_rows')->where('edition_id', $prior)->get()->all());
+            $this->assertDatabaseHas('census_editions', ['id' => $prior, 'status' => 'superseded']);
+            $this->assertDatabaseHas('census_publications', ['edition_id' => $result['edition_id']]);
+            $backup = json_decode(file_get_contents($result['baseline_backup']), true, 512, JSON_THROW_ON_ERROR);
+            $this->assertSame($prior, $backup['publications'][0]['edition_id']);
+            $this->assertSame('published', $backup['editions'][0]['status']);
+            $this->assertSame($result['baseline_sha256'], hash_file('sha256', $result['baseline_backup']));
+            $retry = $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true, $prior);
+            $this->assertSame(0, $retry['added_rows']);
+            $this->assertSame(0, $retry['publication']['new_observation_rows']);
+            $this->assertSame(6, $retry['publication']['retained_observation_rows']);
+            $this->assertDatabaseCount('census_catalogue_reviews', 1);
+        } finally {
+            foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $file) {
+                unlink($file);
+            }
+            rmdir($directory);
+        }
+    }
+
+    public function test_revision_rejects_removed_rows_changed_values_identities_notes_and_stale_pointer(): void
+    {
+        $service = app(OriginalHistoricalCensusPackage::class);
+        $path = $this->packagePath();
+        $data = $service->verify($path, hash_file('sha256', $path));
+        foreach (['row', 'value', 'field', 'identity', 'note', 'source', 'pointer'] as $case) {
+            $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'pca-'.bin2hex(random_bytes(8));
+            mkdir($directory);
+            DB::beginTransaction();
+            try {
+                $priorData = $data;
+                if ($case === 'row') {
+                    $extra = $priorData['rows'][0];
+                    $extra['record_key'] = hash('sha256', 'synthetic-missing-row');
+                    $priorData['rows'][] = $extra;
+                } elseif ($case === 'value') {
+                    $priorData['rows'][0]['values']['P_LIT']++;
+                } elseif ($case === 'field') {
+                    $priorData['rows'][0]['values']['SC_P'] = 1;
+                } elseif ($case === 'identity') {
+                    $priorData['rows'][0]['original_name'] = 'Changed historical identity';
+                } elseif ($case === 'note') {
+                    $priorData['rows'][0]['flags'][] = 'Additional prior source warning';
+                } elseif ($case === 'source') {
+                    $priorData['manifest']['original_sha256'] = str_repeat('0', 64);
+                }
+                $prior = $service->stageVerifiedEdition($this->createRun($priorData), $priorData, $data['retrieved_at']);
+                DB::table('census_editions')->where('id', $prior)->update(['status' => 'published']);
+                DB::table('census_publications')->insert(['source_key' => $data['manifest']['source_key'], 'edition_id' => $prior]);
+                try {
+                    $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true,
+                        $case === 'pointer' ? $prior + 999 : $prior);
+                    $this->fail('Unsafe revision was accepted: '.$case);
+                } catch (HttpException $error) {
+                    $this->assertSame($case === 'pointer' ? 409 : 422, $error->getStatusCode(), $case);
+                }
+                $this->assertDatabaseCount('census_editions', 1);
+                $this->assertDatabaseCount('import_runs', 1);
+                $this->assertDatabaseCount('census_catalogue_rows', count($priorData['rows']));
+                $this->assertDatabaseCount('census_catalogue_reviews', 0);
+                $this->assertDatabaseHas('census_publications', ['edition_id' => $prior]);
+                $this->assertDatabaseHas('census_editions', ['id' => $prior, 'status' => 'published']);
+            } finally {
+                DB::rollBack();
+                foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $file) {
+                    unlink($file);
+                }
+                rmdir($directory);
+            }
+        }
+    }
+
+    public function test_retry_rejects_stored_value_drift_even_when_row_count_matches(): void
+    {
+        $service = app(OriginalHistoricalCensusPackage::class);
+        $data = $service->verify($this->packagePath(), hash_file('sha256', $this->packagePath()));
+        $run = $this->createRun($data);
+        $edition = $service->stageVerifiedEdition($run, $data, $data['retrieved_at']);
+        $row = DB::table('census_catalogue_rows')->where('edition_id', $edition)->first();
+        $values = json_decode($row->values, true, 512, JSON_THROW_ON_ERROR);
+        $values['P_LIT']++;
+        DB::table('census_catalogue_rows')->where('id', $row->id)->update(['values' => json_encode($values, JSON_THROW_ON_ERROR)]);
+        $this->expectException(HttpException::class);
+        $this->expectExceptionMessage('Existing original PCA stored evidence differs.');
+        $service->stageVerifiedEdition($run, $data, $data['retrieved_at']);
+    }
+
+    public function test_revision_can_add_measures_without_claiming_new_geography_rows(): void
+    {
+        $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'pca-'.bin2hex(random_bytes(8));
+        mkdir($directory);
+        try {
+            $service = app(OriginalHistoricalCensusPackage::class);
+            $path = $this->packagePath();
+            $data = $service->verify($path, hash_file('sha256', $path));
+            $priorData = $data;
+            foreach ($priorData['rows'] as &$row) {
+                unset($row['values']['No_HH']);
+            }
+            unset($row);
+            $prior = $service->stageVerifiedEdition($this->createRun($priorData), $priorData, $data['retrieved_at']);
+            DB::table('census_editions')->where('id', $prior)->update(['status' => 'published']);
+            DB::table('census_publications')->insert(['source_key' => $data['manifest']['source_key'], 'edition_id' => $prior]);
+            $result = $service->importDraftPackage($path, hash_file('sha256', $path), $directory, $data['retrieved_at'], true, $prior);
+            $this->assertSame(0, $result['publication']['new_observation_rows']);
+            $this->assertSame(6, $result['publication']['retained_observation_rows']);
+            $this->assertSame(6, $result['publication']['new_numeric_values']);
+            $this->assertSame(0, $result['corrected_rows']);
+            $this->assertDatabaseCount('census_catalogue_rows', 12);
+            $this->assertDatabaseHas('census_publications', ['edition_id' => $result['edition_id']]);
+            $priorRow = DB::table('census_catalogue_rows')->where('edition_id', $prior)->first();
+            $this->assertArrayNotHasKey('No_HH', json_decode($priorRow->values, true));
+        } finally {
+            foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $file) {
+                unlink($file);
+            }
+            rmdir($directory);
+        }
+    }
+
     public function test_publication_conflict_rolls_back_new_draft_and_preserves_pointer(): void
     {
         $directory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'pca-'.bin2hex(random_bytes(8));

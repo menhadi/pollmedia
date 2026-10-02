@@ -8,7 +8,7 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Throwable;
 
-#[Signature('census:import-original-pca {package} {sha256} {--archive= : Existing writable archive directory} {--retrieved-at= : Original official retrieval timestamp} {--check : Validate without database writes} {--publish : Publish with original definitions and warning notes}')]
+#[Signature('census:import-original-pca {package} {sha256} {--archive= : Existing writable archive directory} {--retrieved-at= : Original official retrieval timestamp} {--check : Validate without database writes} {--publish : Publish with original definitions and warning notes} {--expected-current= : Published edition ID required for a strictly additive revision}')]
 #[Description('Import source-separated original historical PCA measures with preserved PDF evidence')]
 class ImportOriginalHistoricalCensusPackage extends Command
 {
@@ -29,7 +29,12 @@ class ImportOriginalHistoricalCensusPackage extends Command
             $retrievedAt = $this->option('retrieved-at');
             abort_unless(is_string($directory) && is_string($retrievedAt) && strtotime($retrievedAt) !== false,
                 422, 'Original PCA import requires an archive directory and official retrieval timestamp.');
-            $result = $packages->importDraftPackage($path, $sha, $directory, $retrievedAt, (bool) $this->option('publish'));
+            $expected = $this->option('expected-current');
+            abort_unless($expected === null || (is_string($expected) && preg_match('/^(0|[1-9][0-9]*)$/', $expected)
+                && filter_var($expected, FILTER_VALIDATE_INT) !== false && $this->option('publish')),
+                422, 'Expected current edition requires --publish and a non-negative integer.');
+            $result = $packages->importDraftPackage($path, $sha, $directory, $retrievedAt, (bool) $this->option('publish'),
+                $expected === null ? null : (int) $expected);
             $this->line(json_encode($result, JSON_THROW_ON_ERROR));
 
             return self::SUCCESS;
