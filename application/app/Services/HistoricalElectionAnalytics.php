@@ -50,7 +50,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v10:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v11:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -106,9 +106,10 @@ class HistoricalElectionAnalytics
             $sourceDifference = $this->hasDocumentedSourceDifference($record);
             $workbookSummaryTurnout = $this->hasOfficialWorkbookSummaryTurnout($record);
             $documentedTurnout = $this->hasDocumentedOfficialTurnout($record);
+            $duplicateCandidateTurnout = $this->hasSummaryTurnoutWithDuplicateCandidates($record);
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $turnoutElectors
-                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout)) {
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout || $duplicateCandidateTurnout)) {
                 $electors += $turnoutElectors;
                 $polled += $record['votes_polled'];
                 $turnoutCount++;
@@ -512,6 +513,28 @@ class HistoricalElectionAnalytics
             && $this->count($page) && $page > 0 && ($totals['source_page'] ?? null) === $page
             && preg_match('/^[a-zA-Z0-9._-]+\.pdf$/', $record['turnout_source_file'] ?? '') === 1
             && preg_match('/^[a-f0-9]{64}$/', $record['turnout_source_sha256'] ?? '') === 1;
+    }
+
+    private function hasSummaryTurnoutWithDuplicateCandidates(array $record): bool
+    {
+        $summary = $record['summary_totals'] ?? null;
+        $seatName = preg_replace('/[^a-z0-9]/', '', strtolower($record['constituency_name'] ?? ''));
+        $locator = preg_replace('/[^a-z0-9]/', '', strtolower($record['summary_locator'] ?? ''));
+
+        return ($record['status'] ?? '') === 'needs_review'
+            && ($record['error'] ?? '') === 'Duplicate candidate identities require review'
+            && ! isset($record['source_warning_code'])
+            && is_array($summary) && $seatName !== '' && str_contains($locator, $seatName)
+            && trim($record['source_locator'] ?? '') !== ''
+            && $this->count($summary['electors'] ?? null) && $summary['electors'] > 0
+            && $summary['electors'] === ($record['electors'] ?? null)
+            && $this->count($summary['votes_polled'] ?? null) && $summary['votes_polled'] > 0
+            && $summary['votes_polled'] === ($record['votes_polled'] ?? null)
+            && $summary['votes_polled'] <= $summary['electors']
+            && $this->count($summary['valid_candidate_votes'] ?? null)
+            && $summary['valid_candidate_votes'] > 0
+            && $summary['valid_candidate_votes'] <= $summary['votes_polled']
+            && $summary['valid_candidate_votes'] === ($record['valid_candidate_votes'] ?? null);
     }
 
     private function hasDocumentedLegacyCandidateDifference(array $record, int $candidateVotes): bool

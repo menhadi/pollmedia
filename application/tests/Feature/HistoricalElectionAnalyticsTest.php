@@ -659,6 +659,22 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(137376, $analytics->summarize([$record])['polled']);
     }
 
+    public function test_2014_pc_summary_turnout_is_available_despite_duplicate_candidate_identities(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('3a136496a89deb7c38ecfe18', app(ElectionArchive::class));
+        $analytics = app(HistoricalElectionAnalytics::class);
+        foreach ([323 => 1089771, 508 => 1348744, 537 => 1090583, 541 => 1131254] as $code => $polled) {
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $summary = $analytics->summarize([$record]);
+            $this->assertSame($polled, $summary['polled']);
+            $this->assertSame(1, $summary['turnout_review_count']);
+            $this->assertSame(0, $summary['party_count']);
+
+            $record['summary_locator'] = 'Another constituency';
+            $this->assertNull($analytics->summarize([$record])['polled']);
+        }
+    }
+
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
     {
         $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);
