@@ -59,6 +59,7 @@ Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');
 Route::get('/sources', [SourceController::class, 'index'])->name('sources.index');
 Route::get('/india/elections/lok-sabha', [HistoricalElectionController::class, 'index'])->name('elections.history');
+Route::view('/india/elections/maps/uttar-pradesh', 'electoral-map-pilot')->name('elections.map-pilot');
 Route::get('/india/elections/constituencies', [HistoricalConstituencyFinderController::class, 'index'])->name('elections.constituencies');
 Route::get('/india/elections/by-elections', [ByElectionArchiveController::class, 'index'])->name('elections.by-elections');
 Route::get('/india/elections/by-elections/results', [ByElectionResultController::class, 'index'])->name('elections.by-election-results');
