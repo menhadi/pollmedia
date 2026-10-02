@@ -1,4 +1,4 @@
-"""Preserve page text from one official District Census Handbook PDF for review.
+"""Preserve page text from one supported official civic PDF for review.
 
 This does not turn extracted text into Census observations or OCR blank pages.
 """
@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+from urllib.parse import urlsplit
 
 
 def digest(path):
@@ -31,12 +32,26 @@ def iter_pages(stream):
         yield pending.decode('utf-8')
 
 
+def supported_official_pdf_url(url):
+    """Match the existing feeder's supported PDF publishers, without fetching."""
+    parsed = urlsplit(url)
+    if parsed.scheme != 'https':
+        return False
+    if parsed.netloc == 'censusindia.gov.in' and parsed.path.startswith('/'):
+        return True
+    if url == 'https://nhm.gov.in/New-Update-2024-26/CRM/16th_CRM_Report_2024.pdf':
+        return True
+    return (parsed.netloc == 'dashboard.udiseplus.gov.in'
+            and not parsed.query and not parsed.fragment
+            and re.fullmatch(r'/report2026/static/media/UDISE\+20\d{2}_\d{2}_Booklet_(nep|existing)\.[a-f0-9]+\.pdf', parsed.path) is not None)
+
+
 def extract(pdf, expected_sha256, source_url, destination):
     pdf, destination = Path(pdf), Path(destination)
     if not re.fullmatch('[a-f0-9]{64}', expected_sha256) or digest(pdf) != expected_sha256:
         raise ValueError('Original PDF checksum differs')
-    if not source_url.startswith('https://censusindia.gov.in/'):
-        raise ValueError('Expected an official Census source URL')
+    if not supported_official_pdf_url(source_url):
+        raise ValueError('Expected a supported official civic PDF source URL')
     if shutil.disk_usage(destination.parent).free < 10 * 1024**3:
         raise RuntimeError('Insufficient disk reserve')
     info = subprocess.run(['pdfinfo', str(pdf)], check=True, capture_output=True, text=True).stdout
