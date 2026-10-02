@@ -16,7 +16,7 @@ class Element {
 }
 
 async function setup(failed = false) {
-    const selectors = ['svg', '[data-layer]', '[data-seats]', '[data-selected]', '[data-records]', '[role=status]'];
+    const selectors = ['svg', '[data-layer]', '[data-seats]', '[data-selected]', '[data-records]', '[role=status]', '[data-geometry-warning]'];
     const nodes = Object.fromEntries(selectors.map(s => [s, new Element()]));
     nodes['[data-layer]'].value = 'pc';
     const root = {dataset: {source: '/maps/up-pilot.json', finder: '/india/elections/constituencies'}, querySelector: s => nodes[s]};
@@ -33,9 +33,13 @@ async function setup(failed = false) {
 
 test('PC/AC selection keeps seat codes separate and produces state-scoped record links', async () => {
     const n = await setup();
-    assert.equal(n.svg.children.length, 78);
+    assert.equal(n.svg.children.length, 80);
     assert.match(n['[data-selected]'].textContent, /Pilibhit.*PC 26/);
     assert.equal(new URL(n['[data-records]'].href).searchParams.get('state'), 'Uttar Pradesh');
+    n['[data-seats]'].value = '44'; n['[data-seats]'].events.change();
+    assert.equal(n['[data-geometry-warning]'].hidden, false);
+    assert.match(n['[data-geometry-warning]'].textContent, /Self-intersection/);
+    assert.equal(n.svg.children.find(p => p.dataset.code === '44').dataset.geometryStatus, 'flagged');
     n['[data-layer]'].value = 'ac'; n['[data-layer]'].events.change();
     assert.equal(n.svg.children.length, 403);
     assert.equal(n['[data-records]'].hidden, true);

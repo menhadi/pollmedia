@@ -14,11 +14,12 @@ class BoundaryMapPilotTest extends TestCase
         $data = json_decode(file_get_contents(public_path('maps/up-pilot.json')), true, flags: JSON_THROW_ON_ERROR);
         $pc = collect($data['features'])->where('properties.kind', 'pc');
         $ac = collect($data['features'])->where('properties.kind', 'ac');
-        $this->assertCount(78, $pc);
+        $this->assertCount(80, $pc);
         $this->assertCount(403, $ac);
         $this->assertCount(403, $ac->pluck('properties.code')->unique());
         $this->assertSame('Pilibhit', $pc->firstWhere('properties.code', 26)['properties']['name']);
-        $this->assertSame([44, 79], array_column($data['metadata']['rejected'], 'code'));
+        $this->assertSame([44, 79], array_column($data['metadata']['flagged'], 'code'));
+        $this->assertSame([44, 79], $pc->where('properties.geometry_status', 'flagged')->pluck('properties.code')->values()->all());
         foreach ($data['features'] as $feature) {
             $this->assertSame('unverified', $feature['properties']['join_status']);
             $this->assertContains($feature['geometry']['type'], ['Polygon', 'MultiPolygon']);
