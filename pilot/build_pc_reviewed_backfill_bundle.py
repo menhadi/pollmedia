@@ -22,15 +22,15 @@ def digest(body: bytes) -> str:
     return hashlib.sha256(body).hexdigest()
 
 
-def build(root: Path) -> dict:
+def build(root: Path, name: str = NAME, children: tuple[str, ...] = CHILDREN) -> dict:
     exports = root / 'exports'
-    output = exports / (NAME + '.zip')
+    output = exports / (name + '.zip')
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
     packages = {}
     editions = []
     revisions = []
-    for child_name in CHILDREN:
+    for child_name in children:
         path = exports / (child_name + '.zip')
         expected = (exports / (child_name + '.sha256')).read_text(encoding='ascii').split()[0]
         if digest(path.read_bytes()) != expected:
@@ -66,7 +66,7 @@ def build(root: Path) -> dict:
             archive.writestr('SHA256SUMS', ''.join(f'{digest(body)}  {filename}\n'
                                                 for filename, body in sorted(packages.items())))
             archive.writestr('ARCHIVES', ''.join(edition + '\n' for edition in editions))
-            archive.writestr('AUDIT.json', json.dumps({'scope': 'Four checksum-guarded PC election corrections',
+            archive.writestr('AUDIT.json', json.dumps({'scope': f'{len(revisions)} checksum-guarded PC election corrections',
                                                       'revisions': revisions}, indent=2))
             archive.writestr('IMPORT.sh', import_script(editions))
         partial.replace(output)
