@@ -17,7 +17,7 @@ class OverviewController extends Controller
     public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View|JsonResponse
     {
         $stateSummary = $state !== null ? $summary->state($state) : null;
-        $input = $request->validate(['suggest' => 'nullable|in:pc,ac', 'pc_q' => 'nullable|string|max:100', 'ac_q' => 'nullable|string|max:100', 'pc_scope' => 'nullable|in:current,archive', 'ac_scope' => 'nullable|in:current,archive', 'seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'pc_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'ac_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
+        $input = $request->validate(['format' => 'nullable|in:report', 'suggest' => 'nullable|in:pc,ac', 'pc_q' => 'nullable|string|max:100', 'ac_q' => 'nullable|string|max:100', 'pc_scope' => 'nullable|in:current,archive', 'ac_scope' => 'nullable|in:current,archive', 'seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'pc_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'ac_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
         $query = trim($input['q'] ?? '');
         $type = $input['type'] ?? '';
         $available = DB::table('places')->where(function ($query): void {
@@ -53,6 +53,12 @@ class OverviewController extends Controller
             $election = $electionSections[$kind]['election'];
             $party = $input['party'] ?? null;
             $partyOptions = collect($history)->flatMap(fn (array $row): array => array_column($row['parties'], 'party'))->unique()->sort()->values();
+
+            if (($input['format'] ?? null) === 'report') {
+                abort_if(! $history, 404);
+
+                return view('state-election-report', compact('title', 'state', 'kind', 'history'));
+            }
 
             $seatQuery = trim($input['seat_q'] ?? '');
             $seatDirectories = [];

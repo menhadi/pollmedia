@@ -15,7 +15,7 @@ class StateElectionSectionsTest extends TestCase
     {
         $analytics = app(HistoricalElectionAnalytics::class);
         $summary = function ($year, $id, $name, $electors, $polled) use ($analytics) {
-            return $analytics->summarize([['code' => 1, 'status' => 'validated', 'has_warning' => false, 'constituency_name' => $name, 'number_of_seats' => 1, 'electors' => $electors, 'votes_polled' => $polled, 'candidates' => [['candidate_name' => $name.' winner', 'party_at_election' => 'A', 'votes' => $polled * 0.75], ['candidate_name' => 'Runner up', 'party_at_election' => 'B', 'votes' => $polled * 0.25]]]]) + ['id' => str_repeat($id, 24), 'year' => $year, 'label' => $year.' source report', 'state' => 'Uttar Pradesh', 'source_url' => 'https://www.eci.gov.in/'.$id, 'review_count' => 0];
+            return $analytics->summarize([['code' => 1, 'status' => 'validated', 'has_warning' => false, 'constituency_name' => $name, 'number_of_seats' => 1, 'electors' => $electors, 'votes_polled' => $polled, 'candidates' => [['candidate_name' => $name.' winner', 'party_at_election' => 'A', 'votes' => (int) ($polled * 0.75)], ['candidate_name' => 'Runner up', 'party_at_election' => 'B', 'votes' => (int) ($polled * 0.25)]]]]) + ['id' => str_repeat($id, 24), 'year' => $year, 'label' => $year.' source report', 'state' => 'Uttar Pradesh', 'source_url' => 'https://www.eci.gov.in/'.$id, 'review_count' => 0];
         };
         $pc = [$summary(2024, 'a', 'Parliament Seat', 1000, 800), $summary(2019, 'b', 'Old Parliament Seat', 1000, 600)];
         $ac = [$summary(2022, 'c', 'Assembly Seat', 500, 400)];
@@ -24,6 +24,11 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
         });
         $page = $this->get('/india/state/uttar-pradesh')->assertOk()->assertSeeInOrder(['id="pc-history"', 'id="pc-results"', 'id="ac-history"', 'id="ac-results"'], false)->assertSee('2024 Lok Sabha results')->assertSee('2022 State Assembly results')->assertSee('name="pc_edition"', false)->assertSee('name="ac_edition"', false);
+        foreach (['pc' => 'Lok Sabha · PC', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {
+            $report = $this->get('/india/state/uttar-pradesh?format=report&election='.$reportKind)->assertOk()->assertSee($reportLabel)->assertSee('Print / Save as PDF')->assertSee('Sources and coverage by election year')->assertSee('Methodology & disclaimer', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('data-history-chart');
+            $this->assertSame(5, substr_count($report->getContent(), 'class="report-plot"'));
+            $report->assertSeeInOrder(['Chart values', 'Sources and coverage by election year', 'Methodology & disclaimer'], false);
+        }
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $page->getContent(), $charts);
         $this->assertCount(10, $charts[1]);
         $this->assertSame([2019, 2024], array_column(json_decode($charts[1][0], true)['rows'], 'year'));
