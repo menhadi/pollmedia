@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ElectionGeographySummary;
+use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionAnalytics;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class OverviewController extends Controller
     public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View
     {
         $stateSummary = $state !== null ? $summary->state($state) : null;
-        $input = $request->validate(['q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
+        $input = $request->validate(['seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
         $query = trim($input['q'] ?? '');
         $type = $input['type'] ?? '';
         $available = DB::table('places')->where(function ($query): void {
@@ -43,7 +44,17 @@ class OverviewController extends Controller
             $party = $input['party'] ?? null;
             $partyOptions = collect($history)->flatMap(fn (array $row): array => array_column($row['parties'], 'party'))->unique()->sort()->values();
 
-            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions'));
+            $seatQuery = trim($input['seat_q'] ?? '');
+            $seatDirectories = [];
+            foreach (['pc', 'ac'] as $seatKind) {
+                $seatDirectories[$seatKind] = DB::table('historical_constituency_index')
+                    ->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)])
+                    ->when($seatQuery !== '', fn ($builder) => $builder->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($seatQuery).'%']))
+                    ->selectRaw('LOWER(constituency_name) as name, MIN(year) as first_year, MAX(year) as last_year')
+                    ->groupByRaw('LOWER(constituency_name)')->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment('state-constituencies');
+            }
+
+            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories'));
         }
 
         return view('overview', compact('title', 'state', 'stateSummary', 'states', 'nationalSummary', 'query', 'type', 'places', 'coverage', 'years', 'options', 'selected'));

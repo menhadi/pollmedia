@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Services\HistoricalElectionAnalytics;
 use Database\Seeders\PilibhitElectionSeeder;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ElectionGeographyFrontendTest extends TestCase
@@ -59,5 +61,20 @@ class ElectionGeographyFrontendTest extends TestCase
             ->assertSee('Turnout by election year')
             ->assertSee('Electors and votes cast')
             ->assertSee('Recorded candidate + NOTA participation');
+    }
+
+    public function test_state_menus_and_directories_link_available_pc_and_ac_histories(): void
+    {
+        $this->seed(PilibhitSeeder::class);
+        foreach ([['pc', 'Example Parliament', 'Maharashtra'], ['ac', 'Example Assembly', 'Maharashtra'], ['pc', 'Other State Seat', 'Assam']] as [$kind,$name,$state]) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat($kind === 'pc' ? 'a' : 'b', 24), 'record_code' => $state === 'Assam' ? 2 : 1, 'kind' => $kind, 'year' => 2024, 'edition_label' => '2024', 'state_label' => $state, 'constituency_name' => $name, 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 0, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+        $this->mock(HistoricalElectionAnalytics::class, function ($mock) {
+            $mock->shouldReceive('forState')->with('Maharashtra', 'pc')->andReturn([]);
+            $mock->shouldReceive('forState')->with('Maharashtra', 'ac')->andReturn([]);
+        });
+        $page = $this->get('/india/state/maharashtra')->assertOk()->assertSee('state-megamenu')->assertSee('Example Parliament')->assertSee('Example Assembly')->assertDontSee('Other State Seat')->assertSee(route('constituency.overview', ['kind' => 'pc', 'state' => 'Maharashtra', 'name' => 'example parliament']));
+        $page->assertSeeInOrder(['Elections <span', 'Census <span'], false)->assertSee(route('civic.index', ['state' => 'maharashtra']));
+        $this->get('/india/state/maharashtra?election=ac&seat_q=Assembly')->assertOk()->assertSee('Example Assembly')->assertDontSee('Example Parliament');
     }
 }
