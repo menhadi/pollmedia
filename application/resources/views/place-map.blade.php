@@ -3,7 +3,7 @@
 <section id="geography" aria-labelledby="map-heading" data-scope="{{ $type }}">
     <div class="kicker">Explore the area</div>
     <h2 id="map-heading">Pilibhit on the map</h2>
-    <p class="lead">{{ $type === 'district' ? 'Select a source village to explore its location and geographic details.' : 'Regional context only. A verified parliamentary constituency boundary has not been imported yet.' }}</p>
+    <p class="lead">{{ $type === 'district' ? 'Select a source village to explore its location and geographic details.' : 'Regional context only. A verified parliamentary constituency boundary is not yet available.' }}</p>
     <div class="map-toolbar">
         <label>Map layer <select id="map-layer">
             <option value="villages" @selected($type === 'district')>SOI source villages</option>

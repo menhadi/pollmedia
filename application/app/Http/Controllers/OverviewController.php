@@ -59,7 +59,7 @@ class OverviewController extends Controller
                     ->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)])
                     ->when($seatQuery !== '', fn ($builder) => $builder->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($seatQuery).'%']))
                     ->selectRaw('LOWER(constituency_name) as name, MIN(year) as first_year, MAX(year) as last_year')
-                    ->groupByRaw('LOWER(constituency_name)')->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment('state-constituencies');
+                    ->groupByRaw('LOWER(constituency_name)')->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment($seatKind.'-constituencies');
             }
 
             return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'places', 'options', 'query', 'type', 'selected', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories', 'electionSections'));

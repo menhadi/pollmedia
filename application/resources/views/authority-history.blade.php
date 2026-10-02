@@ -17,7 +17,7 @@
 <a href="{{ $entry->url }}" target="_blank" rel="noopener noreferrer">Official evidence ↗</a>
 @if($entry->sha256)<details><summary>Evidence fingerprint</summary><p class="url">SHA-256: {{ $entry->sha256 }}</p></details>@endif
 @if($entry->reviewed_at)<section><h3>Publication review</h3><p>{{ $entry->reviewer_name }} · {{ $entry->reviewed_at }} UTC</p><p style="white-space:pre-wrap">{{ $entry->note }}</p></section>
-@else<p class="muted">Imported evidence; no publication review was recorded through this workflow.</p>@endif
+@else<p class="muted">The source record is available; its publication review is not recorded.</p>@endif
 </article>
 @empty<p>No assignments match this office.</p>@endforelse
 {{ $history->links() }}

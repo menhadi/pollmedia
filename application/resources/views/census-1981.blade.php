@@ -40,10 +40,10 @@ $breadcrumbs = ['India'=>route('home'), 'Pilibhit district'=>route('places.show'
 @endif
 <p class="edition-note">Source spellings are retained. Uninhabited rows have no numeric counts printed; these cells are shown as not tabulated, not zero. No current village or electoral mapping is implied.</p>
 @else
-<p>Select Puranpur or Bisalpur tahsil above to browse imported village records. Pilibhit village transcription remains pending; its official PDF links are available below.</p>
+<p>Village records are available for Puranpur and Bisalpur tahsils. Pilibhit village transcription remains pending; its official PDF links are available below.</p>
 @endif
 @else
-<p>Verified village transcription has not yet been imported.</p>
+<p>Verified village figures are not yet available.</p>
 @endif
 </section>
 <section class="edition-card"><h2>Village records in the official handbook</h2>

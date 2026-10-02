@@ -42,11 +42,17 @@
             });
             series.forEach(item => {
                 const index = data.series.indexOf(item), color = item.key === 'others_share' ? colors[3] : colors[index];
-                let path = '', connected = false;
+                let path = '', previous = null;
                 rows.forEach(row => {
                     const value = row[item.key];
-                    if (value === null || !Number.isFinite(value)) { connected=false; return; }
-                    path += `${connected?'L':'M'}${x(row.year)},${y(value)} `; connected=true;
+                    if (value === null || !Number.isFinite(value)) { previous=null; return; }
+                    const xx = x(row.year), yy = y(value);
+                    // Horizontal Bezier handles preserve every value and cannot overshoot either endpoint.
+                    if (previous) {
+                        const middle = (previous.x + xx) / 2;
+                        path += `C${middle},${previous.y} ${middle},${yy} ${xx},${yy} `;
+                    } else path += `M${xx},${yy} `;
+                    previous = {x:xx,y:yy};
                 });
                 svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':item.key==='others_share'?'6 4':'none'}));
                 rows.forEach(row => {

@@ -19,8 +19,15 @@ $y=fn($value)=>240-$value/$scale*220;
 @endforeach
 @foreach($plot['series'] as $series)
 @php
-$color=$series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index]; $path='';$connected=false;
-foreach($plotRows as $point){$value=$point[$series['key']];if($value===null){$connected=false;continue;}$path.=($connected?'L':'M').$x($point['year']).','.$y($value).' ';$connected=true;}
+$color=$series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index]; $path='';$previous=null;
+foreach($plotRows as $point){
+    $value=$point[$series['key']];
+    if($value===null){$previous=null;continue;}
+    $xx=$x($point['year']);$yy=$y($value);
+    if($previous!==null){$middle=($previous[0]+$xx)/2;$path.='C'.$middle.','.$previous[1].' '.$middle.','.$yy.' '.$xx.','.$yy.' ';}
+    else{$path.='M'.$xx.','.$yy.' ';}
+    $previous=[$xx,$yy];
+}
 @endphp
 <path d="{{ $path }}" fill="none" stroke="{{ $color }}" stroke-width="2.5" @if($series['key']==='others_share') stroke-dasharray="6 4" @endif/>
 @foreach($plotRows as $point)

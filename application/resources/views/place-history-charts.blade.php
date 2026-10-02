@@ -35,7 +35,7 @@ $plots=[
 ];
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div><a class="place-action" href="{{ $isStateHistory?'#'.($chartTableAnchor??'turnout'):'#history' }}">View the tables ↓</a></div>
-@if(!$reportMode)<p class="small">Choose a period and tap a point for its exact value. Toggle a legend to compare lines. Missing or conflicting figures leave a gap, not a zero. Historical names do not establish unchanged boundaries.</p>@endif
+@if(!$reportMode)<p class="small">The year filters control the period shown. Each point shows an election-year value; curves only connect those points. Gaps indicate missing or conflicting figures. Constituency boundaries may differ between years.</p>@endif
 @foreach($plots as $plot)
 <section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
 @if(!$reportMode && $loop->first)<p class="small">The three parties with the most combined recorded votes across available years, counting each year once. Each line follows the same party label. Shares use all recorded candidate votes plus NOTA; these three lines need not total 100%.</p>@endif
