@@ -294,7 +294,10 @@ class HistoricalElectionAnalytics
             return false;
         }
 
-        if (($record['source_warning_code'] ?? null) === 'official_pc_summary_reconciled_serial_gap') {
+        if (in_array($record['source_warning_code'] ?? null, [
+            'official_pc_summary_reconciled_serial_gap',
+            'official_pc_summary_reconciled_detail_warning',
+        ], true)) {
             return $this->hasReconciledPcSummaryResult($record);
         }
 
@@ -395,11 +398,18 @@ class HistoricalElectionAnalytics
         $summary = $record['summary_totals'] ?? null;
         $result = $record['summary_result'] ?? null;
         $candidates = $record['candidates'] ?? null;
+        $detailVerified = ($record['source_warning_code'] ?? null) === 'official_pc_summary_reconciled_detail_warning';
+        $candidateCount = $detailVerified ? ($record['detail_candidate_count'] ?? null) : ($record['summary_candidate_count'] ?? null);
         if (($record['number_of_seats'] ?? 1) !== 1 || ! is_array($summary) || ! is_array($result) || ! is_array($candidates)
-            || count($candidates) < 2 || ($record['summary_candidate_count'] ?? null) !== count($candidates)
+            || count($candidates) < 2 || $candidateCount !== count($candidates)
             || ! $this->count($record['summary_page'] ?? null) || $record['summary_page'] < 1
             || ! is_string($record['summary_source_file'] ?? null) || ! str_ends_with($record['summary_source_file'], '.pdf')
             || ! is_string($record['summary_source_sha256'] ?? null) || ! preg_match('/^[a-f0-9]{64}$/', $record['summary_source_sha256'])) {
+            return false;
+        }
+        if ($detailVerified && (! $this->count($record['detail_page'] ?? null) || $record['detail_page'] < 1
+            || ! is_string($record['detail_source_file'] ?? null) || ! str_ends_with($record['detail_source_file'], '.pdf')
+            || ! is_string($record['detail_source_sha256'] ?? null) || ! preg_match('/^[a-f0-9]{64}$/', $record['detail_source_sha256']))) {
             return false;
         }
 
