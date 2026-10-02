@@ -7,7 +7,7 @@ use ZipArchive;
 
 class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
 {
-    private const ReviewedManifestSha256 = '9a6b90c0814b2227144cb44b14dc506c0afba01de3435026caf1e9bd9f0eb351';
+    protected const ReviewedManifestSha256 = '9a6b90c0814b2227144cb44b14dc506c0afba01de3435026caf1e9bd9f0eb351';
 
     public function verify(string $path, string $expectedSha256): array
     {
@@ -18,8 +18,8 @@ class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
         try {
             $manifestRaw = $this->member($zip, 'manifest.json');
             /** This adapter admits only the reviewed batch; a new extraction needs a new reviewed manifest pin. */
-            abort_unless(hash_equals(self::ReviewedManifestSha256, hash('sha256', $manifestRaw)),
-                422, 'Original education manifest differs from the reviewed Tripura batch.');
+            abort_unless(hash_equals(static::ReviewedManifestSha256, hash('sha256', $manifestRaw)),
+                422, 'Original education manifest differs from the reviewed source batch.');
             $manifest = json_decode($manifestRaw, true, 512, JSON_THROW_ON_ERROR);
             $names = [];
             for ($index = 0; $index < $zip->numFiles; $index++) {
@@ -60,12 +60,8 @@ class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
             foreach ($rows as $index => $row) {
                 $expectedRows[$row['record_key']] = [
                     'record_key' => $row['record_key'], 'state_code' => $stateIdentity, 'district_code' => '000',
-                    'level' => $row['original_level'], 'residence' => $row['residence'], 'name' => $row['original_name'],
-                    'geography' => json_encode(['original_name' => $row['original_name'],
-                        'parent_original_name' => $row['parent_original_name'], 'original_table' => $row['table'],
-                        'source_record_identity' => $row['source_record_identity'], 'year' => $manifest['year'],
-                        'boundary_basis' => $manifest['boundary_basis'],
-                        'identifier_basis' => 'Source-scoped storage token; not Census or LGD code'], JSON_THROW_ON_ERROR),
+                    'level' => $row['original_level'], 'residence' => $row['residence'], 'name' => $this->storedName($row),
+                    'geography' => json_encode($this->storedGeography($row, $manifest), JSON_THROW_ON_ERROR),
                     'values' => json_encode($row['values'], JSON_THROW_ON_ERROR),
                     'flags' => json_encode($row['flags'], JSON_THROW_ON_ERROR), 'source_row' => $index + 1,
                 ];
@@ -99,7 +95,7 @@ class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
             }
             $edition = DB::table('census_editions')->insertGetId([
                 'import_run_id' => $runId, 'source_key' => $manifest['source_key'],
-                'name' => 'Original Census 1961 — Tripura educational levels (B-III A/B population)',
+                'name' => $this->editionName(),
                 'year' => $manifest['year'], 'status' => 'draft', 'sha256' => $manifest['original_sha256'],
                 'source_url' => $manifest['source_url'],
                 'landing_url' => 'https://censusindia.gov.in/nada/index.php/catalog/'.$manifest['catalogue'],
@@ -114,6 +110,25 @@ class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
 
             return $edition;
         });
+    }
+
+    protected function editionName(): string
+    {
+        return 'Original Census 1961 — Tripura educational levels (B-III A/B population)';
+    }
+
+    protected function storedName(array $row): string
+    {
+        return $row['original_name'];
+    }
+
+    protected function storedGeography(array $row, array $manifest): array
+    {
+        return ['original_name' => $row['original_name'],
+            'parent_original_name' => $row['parent_original_name'], 'original_table' => $row['table'],
+            'source_record_identity' => $row['source_record_identity'], 'year' => $manifest['year'],
+            'boundary_basis' => $manifest['boundary_basis'],
+            'identifier_basis' => 'Source-scoped storage token; not Census or LGD code'];
     }
 
     private function member(ZipArchive $zip, string $name): string
