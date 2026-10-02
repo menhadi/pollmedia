@@ -401,7 +401,7 @@ class OriginalHistoricalCensusPackageTest extends TestCase
     public function test_import_cannot_replace_official_retrieval_timestamp(): void
     {
         $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('Original PCA retrieval timestamp differs from preserved receipt.');
+        $this->expectExceptionMessage('Original Census retrieval timestamp differs from preserved receipt.');
         $path = $this->packagePath();
         app(OriginalHistoricalCensusPackage::class)->importDraftPackage($path, hash_file('sha256', $path), sys_get_temp_dir(), '2020-01-01T00:00:00Z');
     }

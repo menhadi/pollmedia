@@ -43,8 +43,15 @@ class CensusCatalogueController extends Controller
             ->whereIn('r.status', ['needs_review', 'accepted'])->whereIn('r.source_url', collect(config('census-sources'))->where('archive_only', '!=', true)->pluck('url'))
             ->select('r.id', 'r.status', 'c.name')->orderByDesc('r.id')->get() : collect();
         $current = $edition ? (DB::table('census_editions')->where('source_key', $edition->source_key)->where('status', 'published')->value('id') ?? 0) : 0;
+        $educationFields = [];
+        $educationRows = [];
+        if ($edition && str_starts_with($edition->source_key, 'census-original-education-')) {
+            $evidence = json_decode(DB::table('import_runs')->where('id', $edition->import_run_id)->value('extracted'), true, 512, JSON_THROW_ON_ERROR);
+            $educationFields = $evidence['fields'];
+            $educationRows = collect($evidence['rows'])->keyBy('record_key')->all();
+        }
 
-        return view('census-catalogue', compact('admin', 'editions', 'edition', 'fields', 'field', 'input', 'states', 'districts', 'levels', 'residences', 'rows', 'runs', 'current'));
+        return view('census-catalogue', compact('admin', 'editions', 'edition', 'fields', 'field', 'input', 'states', 'districts', 'levels', 'residences', 'rows', 'runs', 'current', 'educationFields', 'educationRows'));
     }
 
     public function prepare(int $run, CensusCatalogue $catalogue): RedirectResponse
