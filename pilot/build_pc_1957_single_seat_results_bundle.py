@@ -46,7 +46,9 @@ def source_total(text: str, section: str) -> int:
     return int(row[2])
 
 
-def verified_summary(summary: str, detail: str, record: dict) -> tuple[str, dict]:
+def verified_summary(summary: str, detail: str, record: dict, *,
+                     minimum_summary_prefix: int = 18,
+                     allow_wrapped_detail_name: bool = False) -> tuple[str, dict]:
     state = re.search(r'STATE/UT\s*:\s*([^\n]+?)\s+CODE\s*:\s*([A-Z]\d+)', summary, re.I)
     seat = re.search(r'CONSTITUENCY\s*:\s*(\d+)\s*-\s*(.*?)\s+NUMBER OF SEATS\s*:\s*(\d+)', summary, re.I | re.S)
     if (not state or not seat or normalized(state[1]) != normalized(record['state_name'])
@@ -55,11 +57,21 @@ def verified_summary(summary: str, detail: str, record: dict) -> tuple[str, dict
         raise ValueError('Official 1957 summary seat identity differs')
     summary_name = seat[2].strip()
     detail_base = re.sub(r'\s*\((?:SC|ST)\)\s*$', '', record['constituency_name'], flags=re.I)
-    if not (len(summary_name) >= 18 and normalized(detail_base).startswith(normalized(summary_name))):
+    if not ((normalized(detail_base) == normalized(summary_name)
+             or len(summary_name) >= minimum_summary_prefix)
+            and normalized(detail_base).startswith(normalized(summary_name))):
         raise ValueError('Official 1957 abbreviated constituency name differs')
     detail_heading = re.search(r'Constituency\s+' + str(record['official_pc_code'])
                                + r'\s+' + re.escape(record['constituency_name']).replace(r'\ ', r'\s+')
                                + r'\s+NUMBER OF SEATS\s+1', detail, re.I)
+    if not detail_heading and allow_wrapped_detail_name:
+        detail_heading = re.search(r'Constituency\s+' + str(record['official_pc_code'])
+                                   + r'\s+(.+?)\s+NUMBER OF SEATS\s+1', detail, re.I | re.S)
+        if detail_heading:
+            candidate_row = re.search(r'\n\s*\d+\s*\.\s+\S', detail[detail_heading.end():])
+            continuation = detail[detail_heading.end():detail_heading.end() + candidate_row.start()] if candidate_row else ''
+            if normalized(detail_heading[1] + continuation) != normalized(record['constituency_name']):
+                detail_heading = None
     if not detail_heading:
         raise ValueError('Official 1957 detailed seat identity differs')
     detailed = detail[detail_heading.end():]
