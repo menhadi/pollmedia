@@ -17,6 +17,7 @@ use App\Http\Controllers\DataFeedbackController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\ElectoralMapController;
+use App\Http\Controllers\ElectoralMapReviewController;
 use App\Http\Controllers\GeographyController;
 use App\Http\Controllers\HistoricalCensusTableController;
 use App\Http\Controllers\HistoricalConstituencyFinderController;
@@ -62,6 +63,7 @@ Route::get('/sources', [SourceController::class, 'index'])->name('sources.index'
 Route::get('/india/elections/lok-sabha', [HistoricalElectionController::class, 'index'])->name('elections.history');
 Route::get('/india/elections/maps/uttar-pradesh', [ElectoralMapController::class, 'index'])->defaults('state', 'uttar-pradesh')->name('elections.map-pilot');
 Route::get('/india/elections/maps', [ElectoralMapController::class, 'index'])->name('elections.maps.index');
+Route::get('/api/election-maps/results', [ElectoralMapController::class, 'results'])->middleware('throttle:120,1')->name('elections.maps.results');
 Route::get('/india/elections/maps/{state}', [ElectoralMapController::class, 'index'])->name('elections.maps.show');
 Route::get('/india/elections/constituencies', [HistoricalConstituencyFinderController::class, 'index'])->name('elections.constituencies');
 Route::get('/india/elections/by-elections', [ByElectionArchiveController::class, 'index'])->name('elections.by-elections');
@@ -117,6 +119,8 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 });
 
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
+    Route::get('/admin/election-maps', [ElectoralMapReviewController::class, 'index'])->name('elections.maps.review');
+    Route::post('/admin/election-maps/review', [ElectoralMapReviewController::class, 'save'])->middleware('throttle:30,1')->name('elections.maps.review-save');
     Route::get('/admin/pdf-storage', [PdfStorageController::class, 'index'])->name('pdf-storage.index');
     Route::post('/admin/pdf-storage/profiles', [PdfStorageController::class, 'save'])->middleware('throttle:10,1')->name('pdf-storage.save');
     Route::post('/admin/pdf-storage/profiles/{profile}/credentials', [PdfStorageController::class, 'credentials'])->whereNumber('profile')->middleware('throttle:10,1')->name('pdf-storage.credentials');

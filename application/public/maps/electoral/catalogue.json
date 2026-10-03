@@ -471,5 +471,17 @@
       "geometry_flagged": 1,
       "review_flagged": 1
     }
+  },
+  "national_layers": {
+    "pc": {
+      "file": "india-pc.json",
+      "sha256": "10b423176cf7b2fda04282c9a520181a60a1b406f593882b7cab35a101a09666",
+      "count": 543
+    },
+    "ac": {
+      "file": "india-ac.json",
+      "sha256": "5e3816b7326c006e2e19baaa39d8fb58d6fcc08ee8185e7ec851a8fbd45ec51e",
+      "count": 4182
+    }
   }
 }

@@ -101,6 +101,19 @@ def build(source, output):
     assert sum(s['counts']['pc'] for s in catalogue['states'].values()) == len(pc['features'])
     assert sum(s['counts']['ac'] for s in catalogue['states'].values()) == len(ac)
     assert len({f['id'] for g in groups.values() for f in g}) == len(records)
+    catalogue['national_layers'] = {}
+    for kind in ['pc', 'ac']:
+        national = []
+        for features in groups.values():
+            for feature in features:
+                if feature['properties']['kind'] != kind:
+                    continue
+                p = feature['properties']
+                geometry = feature['geometry'] if p['geometry_warning'] else mapping(shape(feature['geometry']).simplify(.006, preserve_topology=True))
+                national.append({'type': 'Feature', 'id': feature['id'], 'properties': {key: p[key] for key in ['kind', 'code', 'name', 'state', 'source_state']}, 'geometry': geometry})
+        target = output / f'india-{kind}.json'
+        target.write_text(json.dumps({'type': 'FeatureCollection', 'metadata': common | {'display_simplification_degrees': .006}, 'features': national}, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
+        catalogue['national_layers'][kind] = {'file': target.name, 'sha256': hashlib.sha256(target.read_bytes()).hexdigest(), 'count': len(national)}
     (output / 'catalogue.json').write_text(json.dumps(catalogue, ensure_ascii=False, indent=2), encoding='utf-8')
     print(json.dumps({'states': len(groups), 'totals': catalogue['totals']}))
 

@@ -8,6 +8,7 @@
 <p>Default: site name only. Upload PNG, JPG, WebP or ICO assets below, or use an existing local public image path. Clear the path to return to the name-only default.</p>
 <div class="grid">@foreach(['primary','background','surface','text','muted','border','accent','header_background','header_text'] as $key)<label>{{ ucfirst(str_replace('_',' ',$key)) }}<input type="color" name="{{ $key }}" value="{{ $appearance[$key] }}"></label>@endforeach</div>
 <label>Header template<select name="header_template">@foreach(['standard','compact'] as $value)<option @selected($appearance['header_template']===$value)>{{ $value }}</option>@endforeach</select></label>
+<h3>Election map party colours</h3><div class="filters">@foreach($appearance['party_colors'] as $party=>$color)<label>{{ $party }}<input type="color" name="party_colors[{{ $party }}]" value="{{ $color }}"></label>@endforeach</div>
 <label>Footer template<select name="footer_template">@foreach(['columns','compact'] as $value)<option @selected($appearance['footer_template']===$value)>{{ $value }}</option>@endforeach</select></label>
 <h3>Footer contact and social profiles</h3><p>Leave a profile empty to hide it. <a href="{{ route('static-pages.index') }}">Manage footer pages and policies</a>.</p>
 <label>Public contact email<input type="email" name="contact_email" value="{{ old('contact_email',$appearance['contact_email']) }}"></label>

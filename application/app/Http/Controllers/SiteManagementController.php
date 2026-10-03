@@ -54,6 +54,8 @@ class SiteManagementController extends Controller
         $rules['contact_email'] = 'nullable|email|max:254';
         $rules['socials'] = 'sometimes|array:Facebook,X,Instagram,YouTube,LinkedIn';
         $rules['socials.*'] = ['nullable', 'url:https', 'max:500'];
+        $rules['party_colors'] = 'nullable|array|max:100';
+        $rules['party_colors.*'] = ['required', 'regex:/^#[a-fA-F0-9]{6}$/'];
         $rules['palette'] = 'nullable|array';
         foreach (config('site.palette', []) as $key => $value) {
             $rules['palette.'.$key] = ['nullable', 'regex:/^#(?:[a-fA-F0-9]{3}|[a-fA-F0-9]{4}|[a-fA-F0-9]{6}|[a-fA-F0-9]{8})$/'];

@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Services\ElectoralMapCatalogue;
+use App\Services\ElectoralMapResults;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ElectoralMapController extends Controller
 {
+    public function results(Request $request, ElectoralMapCatalogue $maps, ElectoralMapResults $results): JsonResponse
+    {
+        $input = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'nullable|string|max:100', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/']);
+        $state = isset($input['state']) ? ($maps->all()['states'][$input['state']]['name'] ?? null) : null;
+        abort_if(isset($input['state']) && ! $state, 404);
+
+        return response()->json(['records' => $results->records($input['kind'], $state, $input['edition'] ?? null), 'colors' => $results->colors()]);
+    }
+
     public function index(Request $request, ElectoralMapCatalogue $maps, ?string $state = null): View
     {
         $input = $request->validate(['state' => 'nullable|string|max:100', 'kind' => 'nullable|in:pc,ac']);
