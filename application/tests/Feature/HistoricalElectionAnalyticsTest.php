@@ -1183,6 +1183,34 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee('Summary and detailed totals differ');
     }
 
+    public function test_official_1962_mahad_tie_uses_declared_winner_and_zero_margin(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('c6fecebc52d31001b62978a5', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 43);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official summary declares a winner after equal candidate votes; the winning margin is zero. Check the linked report.';
+        $record['source_warning_code'] = 'official_declared_tie';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_page'] = 61;
+        $record['summary_totals'] = ['electors' => 58162, 'votes_polled' => 36311, 'valid_candidate_votes' => 34013];
+        $record['summary_result'] = ['winner' => 'SHANKAR BABAJI SAWANT', 'winner_party' => 'INC', 'winner_votes' => 12664,
+            'runner' => 'SAKHARAM VITHOBA SALUNKE', 'runner_party' => 'PSP', 'runner_votes' => 12664, 'margin' => 0];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(0, $summary['margin']);
+        $this->assertSame(['winner' => 'SHANKAR BABAJI SAWANT', 'party' => 'INC', 'margin' => 0, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        $altered = $record;
+        $altered['summary_result']['winner_votes']++;
+        $this->assertNull($analytics->singleSeatResult($altered));
+    }
+
     public function test_official_1955_sattenpalli_result_is_shown_without_impossible_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('165392d9f968ef073166ef32', app(ElectionArchive::class));

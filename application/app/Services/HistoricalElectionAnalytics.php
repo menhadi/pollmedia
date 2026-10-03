@@ -146,6 +146,7 @@ class HistoricalElectionAnalytics
                 $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
                     ?? $this->officialWorkbookSummaryResult($record)
                     ?? $this->officialPdfSummaryResult($record)
+                    ?? $this->officialDeclaredTieResult($record)
                     ?? $verifiedDuplicatePreviewResult
                     ?? $this->officialResidualDetailResult($record)
                     ?? $this->officialInvalidTurnoutResult($record);
@@ -220,6 +221,7 @@ class HistoricalElectionAnalytics
 
         $officialResult = $this->officialRepeatedNameWorkbookResult($record)
             ?? $this->officialPdfSummaryResult($record)
+            ?? $this->officialDeclaredTieResult($record)
             ?? $this->officialResidualDetailResult($record)
             ?? $this->officialInvalidTurnoutResult($record);
         if ($officialResult !== null) {
@@ -1108,6 +1110,44 @@ class HistoricalElectionAnalytics
         }
 
         return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
+    }
+
+    /** The source declares a winner even though two candidates have equal votes. */
+    private function officialDeclaredTieResult(array $record): ?array
+    {
+        if (($record['source_warning_code'] ?? null) !== 'official_declared_tie'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['code'] ?? null) !== 43 || ($record['name'] ?? null) !== 'MAHAD'
+            || ($record['state_name'] ?? null) !== 'Maharashtra'
+            || ($record['number_of_seats'] ?? null) !== 1
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING
+            || ($record['error'] ?? null) !== 'The official summary declares a winner after equal candidate votes; the winning margin is zero. Check the linked report.'
+            || ($record['official_source_url'] ?? null) !== 'https://old.eci.gov.in/files/file/3714-maharashtra-1962/'
+            || ($record['summary_source_file'] ?? null) !== 'c6fecebc52d31001b62978a5-8744.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88'
+            || ($record['summary_page'] ?? null) !== 61 || ($record['detail_page'] ?? null) !== 289
+            || ($record['electors'] ?? null) !== 58162 || ($record['votes_polled'] ?? null) !== 36311
+            || ($record['valid_candidate_votes'] ?? null) !== 34013
+            || ($record['summary_totals'] ?? null) !== ['electors' => 58162, 'votes_polled' => 36311,
+                'valid_candidate_votes' => 34013]
+            || ($record['summary_result'] ?? null) !== ['winner' => 'SHANKAR BABAJI SAWANT',
+                'winner_party' => 'INC', 'winner_votes' => 12664, 'runner' => 'SAKHARAM VITHOBA SALUNKE',
+                'runner_party' => 'PSP', 'runner_votes' => 12664, 'margin' => 0]) {
+            return null;
+        }
+        $candidates = $record['candidates'] ?? [];
+        if (count($candidates) !== 5 || collect($candidates)->sum('votes') !== 34013
+            || collect($candidates)->where('votes', 12664)->count() !== 2
+            || ! collect($candidates)->contains(fn (array $candidate): bool =>
+                $candidate['candidate_name'] === 'SHANKAR BABAJI SAWANT'
+                && $candidate['party_at_election'] === 'INC' && $candidate['votes'] === 12664)
+            || ! collect($candidates)->contains(fn (array $candidate): bool =>
+                $candidate['candidate_name'] === 'SAKHARAM VITHOBA SALUNKE'
+                && $candidate['party_at_election'] === 'PSP' && $candidate['votes'] === 12664)) {
+            return null;
+        }
+
+        return ['winner' => 'SHANKAR BABAJI SAWANT', 'party' => 'INC', 'margin' => 0];
     }
 
     /** The official declaration can establish a result even when its voter total cannot establish turnout. */
