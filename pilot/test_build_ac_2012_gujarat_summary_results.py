@@ -10,7 +10,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, audit, audit_refined
-from build_ac_2012_gujarat_summary_results import NAME, NAME_V2, revised_edition
+from build_ac_2012_gujarat_summary_results import NAME, NAME_V2, NAME_V3, revised_edition
 
 
 class Gujarat2012SummaryResultsTest(unittest.TestCase):
@@ -110,6 +110,42 @@ class Gujarat2012RefinedSummaryResultsTest(unittest.TestCase):
             self.assertEqual(self.detail['previous_sha256'], audit_row['previous_sha256'])
             self.assertEqual(self.detail['new_sha256'], audit_row['new_sha256'])
             self.assertIn('10485760', outer.read('IMPORT.sh').decode())
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'snapshot-{EDITION}.zip'))) as inner:
+                old_path = f'election-archive/{EDITION}/extraction-{self.detail["previous_sha256"]}.json'
+                self.assertEqual(self.old_body, inner.read(old_path))
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'correction-{EDITION}.zip'))) as inner:
+                self.assertEqual(self.new_body, inner.read(f'election-archive/{EDITION}/extraction.json'))
+
+
+class Gujarat2012ShiftedPageSummaryResultsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.old_body, cls.new_body, cls.detail = revised_edition(refined=True, shifted_pages=True)
+        cls.new = json.loads(cls.new_body)
+
+    def test_all_official_summary_turnouts_have_evidence(self):
+        evidence = audit_refined(shifted_pages=True)
+        self.assertEqual(171, evidence['coverage']['source_totals_verified'])
+        self.assertEqual(11, evidence['coverage']['source_totals_verified_by_arithmetic'])
+        self.assertEqual(147, evidence['coverage']['source_result_verified'])
+        self.assertEqual([], self.detail['unresolved_codes'])
+        self.assertEqual(182, len(self.detail['changed']))
+        self.assertEqual(161100, self.new['records'][38]['votes_polled'])
+        self.assertEqual(160985, self.new['records'][38]['summary_totals']['valid_candidate_votes'])
+        self.assertEqual(153891, self.new['records'][39]['votes_polled'])
+        self.assertEqual(153772, self.new['records'][39]['summary_totals']['valid_candidate_votes'])
+
+    def test_latest_bundle_is_guarded_from_same_prior_extraction(self):
+        path = ROOT / 'exports' / (NAME_V3 + '.zip')
+        expected, name = path.with_suffix('.sha256').read_text(encoding='ascii').split()
+        self.assertEqual(name, path.name)
+        self.assertEqual(expected, hashlib.sha256(path.read_bytes()).hexdigest())
+        with zipfile.ZipFile(path) as outer:
+            self.assertEqual(self.detail['previous_sha256'], json.loads(outer.read('AUDIT.json'))['previous_sha256'])
+            script = outer.read('IMPORT.sh').decode()
+            self.assertIn('flock -n', script)
+            self.assertIn('10485760', script)
+            self.assertIn('--allow-revision', script)
             with zipfile.ZipFile(io.BytesIO(outer.read(f'snapshot-{EDITION}.zip'))) as inner:
                 old_path = f'election-archive/{EDITION}/extraction-{self.detail["previous_sha256"]}.json'
                 self.assertEqual(self.old_body, inner.read(old_path))

@@ -203,7 +203,7 @@ def audit(root: Path = ROOT) -> dict:
             'coverage': dict(reasons), 'rows': results}
 
 
-def classify_totals_refined(page: dict, companion: dict, record: dict) -> tuple[dict | None, str]:
+def classify_totals_refined(page: dict, companion: dict, record: dict, *, shifted_pages: bool = False) -> tuple[dict | None, str]:
     """Recover a low-confidence printed total only through independent source arithmetic."""
     existing, reason = classify_totals(page, companion, record)
     if existing is not None:
@@ -216,29 +216,31 @@ def classify_totals_refined(page: dict, companion: dict, record: dict) -> tuple[
         if not (record['code'] == 42 and len(heading) == 1
                 and re.search(r'CONSTITUENCY:\s*42\s+Vejalpur\s*$', heading[0], re.I)):
             return None, reason
-    electors = summary_field(page, companion, 'electors', 288)
+    # Pages 39 and 40 have a four-point vertical offset in the same printed rows.
+    shift = -4 if shifted_pages and page['code'] in (39, 40) else 0
+    electors = summary_field(page, companion, 'electors', 288 + shift)
     if electors is None or electors < 10000:
-        electors = at(page['words'], 288, 490, 545, r'\d{3,7}', 70)
+        electors = at(page['words'], 288 + shift, 490, 545, r'\d{3,7}', 70)
         if electors is None or electors != record.get('electors'):
             return None, reason
-    valid = summary_field(page, companion, 'valid_candidate_votes', 478)
+    valid = summary_field(page, companion, 'valid_candidate_votes', 478 + shift)
     if valid is None:
         return None, reason
-    voters = summary_field(page, companion, 'voters', 386)
-    general = at(page['words'], 334, 490, 545, r'\d{3,7}', 70)
-    postal = at(page['words'], 368, 490, 545, r'\d{1,7}', 70)
-    invalid = at(page['words'], 444, 490, 545, r'\d{1,7}', 70)
+    voters = summary_field(page, companion, 'voters', 386 + shift)
+    general = at(page['words'], 334 + shift, 490, 545, r'\d{3,7}', 70)
+    postal = at(page['words'], 368 + shift, 490, 545, r'\d{1,7}', 70)
+    invalid = at(page['words'], 444 + shift, 490, 545, r'\d{1,7}', 70)
     general_sum = general + postal if general is not None and postal is not None else None
     valid_sum = valid + invalid if invalid is not None else None
     if voters is None:
-        low_confidence_voters = at(page['words'], 386, 490, 545, r'\d{3,7}', 70)
+        low_confidence_voters = at(page['words'], 386 + shift, 490, 545, r'\d{3,7}', 70)
         if general_sum is not None and valid_sum == general_sum:
             voters = general_sum
         elif low_confidence_voters is not None and low_confidence_voters in (general_sum, valid_sum):
             voters = low_confidence_voters
     if voters is None or not 0 < valid <= voters <= electors:
         return None, reason
-    percent = [float(w[4]) for w in page['words'] if abs(w[1] - 410) <= 3.5
+    percent = [float(w[4]) for w in page['words'] if abs(w[1] - (410 + shift)) <= 3.5
                and 195 <= w[0] < 250 and w[5] >= 70 and re.fullmatch(r'\d{1,3}\.\d{2}', w[4])]
     percent_agrees = len(percent) == 1 and abs(100 * voters / electors - percent[0]) <= 0.011
     component_agrees = general_sum == voters and valid_sum == voters
@@ -256,13 +258,13 @@ def classify_totals_refined(page: dict, companion: dict, record: dict) -> tuple[
             'arithmetic_recovery': True}, 'source_totals_verified_by_arithmetic'
 
 
-def audit_refined(root: Path = ROOT) -> dict:
+def audit_refined(root: Path = ROOT, *, shifted_pages: bool = False) -> dict:
     extraction, pages, cells, numbers, prior = load(root)
     companion = {(cell['code'], cell['field']): cell for cell in cells}
     reasons = Counter()
     results = []
     for record, page, number in zip(extraction['records'], pages, numbers):
-        totals, reason = classify_totals_refined(page, companion, record)
+        totals, reason = classify_totals_refined(page, companion, record, shifted_pages=shifted_pages)
         reasons[reason] += 1
         result = None
         result_reason = 'turnout_unresolved'
