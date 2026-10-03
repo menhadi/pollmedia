@@ -1183,6 +1183,47 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee('Summary and detailed totals differ');
     }
 
+    public function test_official_1971_tamil_nadu_results_are_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('7a130d7480f6fd17a797d5aa', app(ElectionArchive::class));
+        $analytics = app(HistoricalElectionAnalytics::class);
+        foreach ([
+            152 => ['page' => 166, 'electors' => 55108, 'polled' => 74732, 'valid' => 70623,
+                'winner' => 'J. S. RAJU', 'party' => 'DMK', 'winner_votes' => 39043,
+                'runner' => 'K. PERIYANAN', 'runner_party' => 'NCO', 'runner_votes' => 23335, 'margin' => 15708],
+            195 => ['page' => 209, 'electors' => 58857, 'polled' => 75258, 'valid' => 73482,
+                'winner' => 'MALAIKANNAN V.', 'party' => 'DMK', 'winner_votes' => 45551,
+                'runner' => 'RAMAKRISHNA THEVAR S.', 'runner_party' => 'NCO', 'runner_votes' => 24138, 'margin' => 21413],
+        ] as $code => $expected) {
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $record['original_extraction_warning'] = $record['error'];
+            $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+            $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+            $record['official_summary_state'] = 'Tamil Nadu';
+            $record['official_source_url'] = $data['source_url'];
+            $record['summary_source_file'] = $data['source_file'];
+            $record['summary_source_sha256'] = $data['source_sha256'];
+            $record['summary_page'] = $expected['page'];
+            $record['summary_totals'] = ['electors' => $expected['electors'],
+                'votes_polled' => $expected['polled'], 'valid_candidate_votes' => $expected['valid']];
+            $record['summary_result'] = ['winner' => $expected['winner'], 'winner_party' => $expected['party'],
+                'winner_votes' => $expected['winner_votes'], 'runner' => $expected['runner'],
+                'runner_party' => $expected['runner_party'], 'runner_votes' => $expected['runner_votes'],
+                'margin' => $expected['margin']];
+
+            $summary = $analytics->summarize([$record]);
+            $this->assertNull($summary['turnout']);
+            $this->assertNull($summary['polled']);
+            $this->assertSame(1, $summary['margin_count']);
+            $this->assertSame(['winner' => $expected['winner'], 'party' => $expected['party'],
+                'margin' => $expected['margin'], 'derived' => false], $analytics->singleSeatResult($record));
+
+            $altered = $record;
+            $altered['summary_result']['winner_votes']++;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
+
     public function test_official_1971_deganga_summary_shows_result_and_documented_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('fed20e0bd380929811cd1a1f', app(ElectionArchive::class));

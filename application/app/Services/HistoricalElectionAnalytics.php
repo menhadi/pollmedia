@@ -1154,6 +1154,25 @@ class HistoricalElectionAnalytics
     private function officialInvalidTurnoutResult(array $record): ?array
     {
         $source = match ($record['summary_source_file'] ?? null) {
+            '7a130d7480f6fd17a797d5aa-7685.pdf' => match ($record['code'] ?? null) {
+                152 => [
+                    'code' => 152, 'name' => 'PERAMBALUR (SC)', 'state' => 'Tamil Nadu',
+                    'url' => 'https://old.eci.gov.in/files/file/3326-tamil-nadu-1971/',
+                    'sha256' => '9c57d16fc1e05bd43aa0896e80fe6fc946960eb115a360b6b8099fcd404a6dcd',
+                    'summary_page' => 166, 'detail_page' => 267, 'electors' => 55108,
+                    'votes_polled' => 74732, 'valid_candidate_votes' => 70623, 'candidates' => 4,
+                    'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+                ],
+                195 => [
+                    'code' => 195, 'name' => 'ILAYANGUDI', 'state' => 'Tamil Nadu',
+                    'url' => 'https://old.eci.gov.in/files/file/3326-tamil-nadu-1971/',
+                    'sha256' => '9c57d16fc1e05bd43aa0896e80fe6fc946960eb115a360b6b8099fcd404a6dcd',
+                    'summary_page' => 209, 'detail_page' => 272, 'electors' => 58857,
+                    'votes_polled' => 75258, 'valid_candidate_votes' => 73482, 'candidates' => 5,
+                    'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+                ],
+                default => null,
+            },
             '165392d9f968ef073166ef32-9588.pdf' => [
                 'code' => 96, 'name' => 'SATTENPALLI', 'state' => 'Andhra Pradesh',
                 'url' => 'https://old.eci.gov.in/files/file/4042-andhra-pradesh-1955/',
