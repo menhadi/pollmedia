@@ -1,0 +1,75 @@
+"""Source and preservation checks for the Gujarat 2012 summary revision."""
+
+import hashlib
+import io
+import json
+from pathlib import Path
+import sys
+import unittest
+import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, audit
+from build_ac_2012_gujarat_summary_results import NAME, revised_edition
+
+
+class Gujarat2012SummaryResultsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.old_body, cls.new_body, cls.detail = revised_edition()
+        cls.old = json.loads(cls.old_body)
+        cls.new = json.loads(cls.new_body)
+
+    def test_official_source_acceptance_and_unresolved_seats(self):
+        evidence = audit()
+        self.assertEqual(171, evidence['coverage']['source_totals_verified'])
+        self.assertEqual(140, evidence['coverage']['source_result_verified'])
+        self.assertEqual([4, 32, 39, 40, 42, 44, 78, 99, 106, 126, 149],
+                         self.detail['unresolved_codes'])
+        self.assertEqual(182, len(evidence['rows']))
+        self.assertEqual(140, sum(row['result'] is not None for row in evidence['rows']))
+
+    def test_previous_bytes_and_detail_evidence_are_preserved(self):
+        self.assertEqual(hashlib.sha256(self.old_body).hexdigest(), self.detail['previous_sha256'])
+        self.assertEqual(182, len(self.new['records']))
+        for before, after in zip(self.old['records'], self.new['records']):
+            self.assertEqual(before['code'], after['code'])
+            for field in ('name', 'candidates', 'turnout_totals', 'source_heading', 'detail_page',
+                          'number_of_seats', 'status', 'original_extraction_warning'):
+                self.assertEqual(before.get(field), after.get(field), (before['code'], field))
+            self.assertEqual(before.get('source_url'), after.get('source_url'))
+        self.assertEqual(self.old['records'][43], self.new['records'][43])  # Ellisbridge: OCR discrepancy held.
+
+    def test_correct_turnout_is_voters_including_invalid_ballots(self):
+        abdasa = self.new['records'][0]
+        self.assertEqual(143507, abdasa['votes_polled'])
+        self.assertEqual(143451, abdasa['summary_totals']['valid_candidate_votes'])
+        self.assertEqual(60704, abdasa['summary_result']['winner_votes'])
+        self.assertEqual(53091, abdasa['summary_result']['runner_votes'])
+        self.assertEqual(7613, abdasa['summary_result']['margin'])
+        self.assertEqual(22, abdasa['summary_page'])
+        self.assertEqual('official_summary_turnout_only', abdasa['source_warning_code'])
+
+    def test_data_only_bundle_is_checksum_verified_and_guarded(self):
+        bundle = ROOT / 'exports' / (NAME + '.zip')
+        expected, filename = bundle.with_suffix('.sha256').read_text(encoding='ascii').split()
+        self.assertEqual(filename, bundle.name)
+        self.assertEqual(expected, hashlib.sha256(bundle.read_bytes()).hexdigest())
+        with zipfile.ZipFile(bundle) as outer:
+            self.assertEqual(EDITION, outer.read('ARCHIVES').decode().strip())
+            self.assertIn('flock -n', outer.read('IMPORT.sh').decode())
+            self.assertIn('10485760', outer.read('IMPORT.sh').decode())
+            self.assertIn('--allow-revision', outer.read('IMPORT.sh').decode())
+            sums = [line.split() for line in outer.read('SHA256SUMS').decode().splitlines()]
+            self.assertEqual(2, len(sums))
+            for expected_sha, name in sums:
+                self.assertEqual(expected_sha, hashlib.sha256(outer.read(name)).hexdigest())
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'snapshot-{EDITION}.zip'))) as inner:
+                snapshot = f'election-archive/{EDITION}/extraction-{self.detail["previous_sha256"]}.json'
+                self.assertEqual(self.old_body, inner.read(snapshot))
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'correction-{EDITION}.zip'))) as inner:
+                self.assertEqual(self.new_body, inner.read(f'election-archive/{EDITION}/extraction.json'))
+
+
+if __name__ == '__main__':
+    unittest.main()
