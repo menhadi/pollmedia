@@ -27,6 +27,10 @@ class HistoricalElectionAnalytics
 
     private const WORKBOOK_REPEATED_NAMES_RESULT = 'Some separate candidate rows share a name. Candidate votes, including NOTA, reconcile with the official summary, which confirms turnout, winner and margin; candidate identities remain under review.';
 
+    private const PC_DETAIL_VERIFIED = 'Official detailed result prints turnout and candidate votes; no independent constituency summary was available. Review the official PDF.';
+
+    private const PC_DETAIL_PENDING = 'Matching state/constituency summary is unavailable; Independent summary totals could not be reconciled';
+
     public function forState(string $state, string $kind): array
     {
         $entries = [];
@@ -312,6 +316,9 @@ class HistoricalElectionAnalytics
         ], true)) {
             return $this->hasReconciledPcSummaryResult($record);
         }
+        if (($record['source_warning_code'] ?? null) === 'official_pc_detailed_result_verified') {
+            return $this->hasVerifiedPcDetailResult($record);
+        }
 
         $error = $record['error'] ?? '';
         $documentedDifference = $this->hasDocumentedElectorDifference($record);
@@ -467,6 +474,64 @@ class HistoricalElectionAnalytics
             && ($result['margin'] ?? null) === $margin;
     }
 
+    private function hasVerifiedPcDetailResult(array $record): bool
+    {
+        $totals = $record['detail_verified_totals'] ?? null;
+        $result = $record['detail_verified_result'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        if (($record['number_of_seats'] ?? null) !== 1 || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['error'] ?? null) !== self::PC_DETAIL_VERIFIED
+            || ($record['original_extraction_warning'] ?? null) !== self::PC_DETAIL_PENDING
+            || ! is_array($totals) || ! is_array($result) || ! is_array($candidates) || count($candidates) < 2
+            || ! $this->count($record['detail_page'] ?? null) || $record['detail_page'] < 1
+            || ! $this->count($totals['source_page'] ?? null)
+            || $totals['source_page'] < $record['detail_page'] || $totals['source_page'] > $record['detail_page'] + 3
+            || ($totals['method'] ?? null) !== 'official detailed-result PDF; top candidate rows and totals checked'
+            || ! is_string($record['detail_source_file'] ?? null) || preg_match('/^[a-zA-Z0-9._-]+\.pdf$/', $record['detail_source_file']) !== 1
+            || ! is_string($record['detail_source_sha256'] ?? null) || preg_match('/^[a-f0-9]{64}$/', $record['detail_source_sha256']) !== 1) {
+            return false;
+        }
+        foreach (['electors', 'votes_polled', 'valid_candidate_votes'] as $field) {
+            if (! $this->count($record[$field] ?? null) || $record[$field] < 1 || ($totals[$field] ?? null) !== $record[$field]) {
+                return false;
+            }
+        }
+        if ($record['valid_candidate_votes'] > $record['votes_polled'] || $record['votes_polled'] > $record['electors']) {
+            return false;
+        }
+        $keys = [];
+        foreach ($candidates as $candidate) {
+            if (! is_array($candidate) || ! $this->count($candidate['votes'] ?? null)
+                || trim($candidate['candidate_name'] ?? '') === '' || trim($candidate['party_at_election'] ?? '') === ''
+                || ($candidate['is_nota'] ?? false)
+                || ($this->count($candidate['general_votes'] ?? null) && $this->count($candidate['postal_votes'] ?? null)
+                    && $candidate['votes'] !== $candidate['general_votes'] + $candidate['postal_votes'])) {
+                return false;
+            }
+            $key = mb_strtolower(trim($candidate['candidate_name']).'|'.trim($candidate['party_at_election']).'|'.$candidate['votes']);
+            if (isset($keys[$key])) {
+                return false;
+            }
+            $keys[$key] = true;
+        }
+        if (array_sum(array_column($candidates, 'votes')) !== $record['valid_candidate_votes']) {
+            return false;
+        }
+        $ranked = collect($candidates)->sortByDesc('votes')->values();
+        $winner = $ranked[0];
+        $runner = $ranked[1];
+        $margin = $winner['votes'] - $runner['votes'];
+
+        return $margin > 0
+            && ($result['winner'] ?? null) === $winner['candidate_name']
+            && ($result['winner_party'] ?? null) === $winner['party_at_election']
+            && ($result['winner_votes'] ?? null) === $winner['votes']
+            && ($result['runner'] ?? null) === $runner['candidate_name']
+            && ($result['runner_party'] ?? null) === $runner['party_at_election']
+            && ($result['runner_votes'] ?? null) === $runner['votes']
+            && ($result['margin'] ?? null) === $margin;
+    }
+
     private function hasCorroboratedTurnout(array $record): bool
     {
         $summary = $record['summary_totals'] ?? null;
@@ -589,6 +654,9 @@ class HistoricalElectionAnalytics
     private function hasDocumentedOfficialTurnout(array $record): bool
     {
         $code = $record['source_warning_code'] ?? null;
+        if ($code === 'official_pc_detailed_result_verified') {
+            return $this->hasVerifiedPcDetailResult($record);
+        }
         $methods = match ($code) {
             'official_turnout_from_residual_source' => ['official constituency summary', 'official detailed turnout row', 'visual transcription of official scanned turnout row; OCR geometry verified'],
             'official_detailed_pdf_turnout' => ['official detailed-result PDF turnout row; candidates reconcile'],

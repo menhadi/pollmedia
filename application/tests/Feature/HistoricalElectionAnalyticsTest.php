@@ -785,6 +785,43 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(137376, $analytics->summarize([$record])['polled']);
     }
 
+    public function test_1996_pc_detailed_result_can_be_shown_with_review_note_but_not_without_matching_evidence(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('35f16085183f0c8bd7ef6124', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 43);
+        $this->assertSame('Matching state/constituency summary is unavailable; Independent summary totals could not be reconciled', $record['error']);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'Official detailed result prints turnout and candidate votes; no independent constituency summary was available. Review the official PDF.';
+        $record['source_warning_code'] = 'official_pc_detailed_result_verified';
+        $record['detail_source_file'] = $data['source_file'];
+        $record['detail_source_sha256'] = $data['source_sha256'];
+        $record['detail_verified_totals'] = ['electors' => 311147, 'votes_polled' => 169788,
+            'valid_candidate_votes' => 166591, 'source_page' => 217,
+            'method' => 'official detailed-result PDF; top candidate rows and totals checked'];
+        $record['detail_verified_result'] = ['winner' => 'TOMO RIBA', 'winner_party' => 'IND', 'winner_votes' => 88718,
+            'runner' => 'P.K. THUNGON', 'runner_party' => 'INC', 'runner_votes' => 49102, 'margin' => 39616];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(169788, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_review_count']);
+        $this->assertSame(1, $summary['party_count']);
+        $this->assertSame(39616, $analytics->singleSeatResult($record)['margin']);
+
+        foreach (['detail_source_sha256', 'original_extraction_warning', 'detail_verified_totals', 'detail_verified_result', 'number_of_seats'] as $field) {
+            $changed = $record;
+            $changed[$field] = null;
+            $this->assertNull($analytics->summarize([$changed])['polled'], $field);
+            $this->assertNull($analytics->singleSeatResult($changed), $field);
+        }
+        $changed = $record;
+        $changed['candidates'][0]['votes']++;
+        $this->assertNull($analytics->summarize([$changed])['polled']);
+        $changed = $record;
+        $changed['candidates'][] = $record['candidates'][0];
+        $this->assertNull($analytics->singleSeatResult($changed));
+    }
+
     public function test_2014_pc_summary_turnout_is_available_despite_duplicate_candidate_identities(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('3a136496a89deb7c38ecfe18', app(ElectionArchive::class));

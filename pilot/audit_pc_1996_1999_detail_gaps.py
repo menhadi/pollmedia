@@ -73,8 +73,16 @@ def source_check(year: int, edition: str) -> list[dict]:
                     raise ValueError(f'{year} {record["code"]}: top candidate source row differs')
             voter_at = heading.end() + section.index(VOTERS.search(section).group(0))
             printed_page = start + bisect_right(offsets, voter_at) - 1
-            verified.append({'code': record['code'], 'name': name, 'page': printed_page,
-                             'electors': electors, 'voters': voters, 'valid': valid})
+            verified.append({'code': record['code'], 'name': name, 'heading_page': start,
+                             'source_page': printed_page, 'electors': electors,
+                             'votes_polled': voters, 'valid_candidate_votes': valid,
+                             'result': {'winner': ranked[0]['candidate_name'],
+                                        'winner_party': ranked[0]['party_at_election'],
+                                        'winner_votes': ranked[0]['votes'],
+                                        'runner': ranked[1]['candidate_name'],
+                                        'runner_party': ranked[1]['party_at_election'],
+                                        'runner_votes': ranked[1]['votes'],
+                                        'margin': ranked[0]['votes'] - ranked[1]['votes']}})
     return verified
 
 
