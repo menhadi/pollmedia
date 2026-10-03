@@ -1,5 +1,6 @@
 @php
 $reportMode=$reportMode??false;
+$colors=['var(--palette-315d91)','var(--site-accent)','var(--site-primary)'];
 $isStateHistory=isset($stateHistory);
 $historyRows=$isStateHistory?collect($stateHistory)->map(fn($summary)=>['entry'=>(object)['year'=>$summary['year']],'summary'=>$summary]):$rows;
 $chartRows=$historyRows->sortBy('entry.year')->values()->map(function($row){
@@ -34,7 +35,7 @@ $plots=[
  ['title'=>'Registered electors and votes polled','unit'=>'people','series'=>[['key'=>'electors','label'=>'Registered electors'],['key'=>'polled','label'=>'Votes polled']]]
 ];
 @endphp
-<section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div>@if(!$isStateHistory)<a class="place-action" href="{{ $isStateHistory?'#'.($chartTableAnchor??'turnout'):'#history' }}">View the tables ↓</a>@endif</div>
+<section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div></div>
 
 @foreach($plots as $plot)
 <section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
@@ -45,7 +46,7 @@ $plots=[
 <div class="history-controls"><label>From <select data-chart-from>@foreach($chartRows as $point)<option value="{{ $point['year'] }}">{{ $point['year'] }}</option>@endforeach</select></label><label>To <select data-chart-to>@foreach($chartRows as $point)<option value="{{ $point['year'] }}" @selected($loop->last)>{{ $point['year'] }}</option>@endforeach</select></label></div>
 <div class="history-legend" aria-label="Chart series"></div><div class="history-plot"></div><p class="history-readout" role="status">Hover or focus a year to see the value.</p>
 @endif
-@if(!$reportMode)<details class="chart-values"><summary><span class="chart-values-closed">Show data table</span><span class="chart-values-open">Hide data table</span><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>@else<h4>Chart values</h4>@endif<div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':$plot['unit'] }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>@if(isset($series['name_key']) && $point[$series['name_key']])<strong>{{ $point[$series['name_key']] }}</strong><br>@endif
+@if(!$reportMode)<details class="chart-values"><summary><span class="chart-values-closed">Show data table</span><span class="chart-values-open">Hide data table</span><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>@else<h4>Chart values</h4>@endif<div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>@if($reportMode)<i class="report-series-swatch" style="background:{{ $series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index] }}"></i>@endif{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':$plot['unit'] }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>@if(isset($series['name_key']) && $point[$series['name_key']])<strong>{{ $point[$series['name_key']] }}</strong><br>@endif
 @if(isset($series['votes_key']) && $point[$series['key']]!==null){{ number_format($point[$series['votes_key']]).' ('.number_format($point[$series['key']],2).'%)'.($point['review']?' †':'') }}@else{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0).($plot['unit']==='%'?'%':'').($point['review']?' †':'') }}@endif</td>@endforeach</tr>@endforeach</tbody></table></div>@if(!$reportMode)</details>@endif
 </section>
 @endforeach

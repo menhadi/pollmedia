@@ -131,6 +131,16 @@
             });
         }
         drawNames();
+        root.querySelector('.map-print-details')?.remove();
+        const printDetails=document.createElement('div');printDetails.className='map-print-details';
+        features.forEach(feature=>{
+            const record=matches.get(feature.id),path=paths.get(feature.id);
+            const item=document.createElement('p'),swatch=document.createElement('i');
+            swatch.style.backgroundColor=path?.getAttribute('fill') || partyColor(record?.party,colors);
+            item.append(swatch,document.createTextNode(focusMode ? seatText(feature,record) : [record?.name || feature.properties.name,record?.party,record?.winner].filter(Boolean).join(' · ')));
+            printDetails.append(item);
+        });
+        root.append(printDetails);
         seats.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a constituency';seats.append(placeholder);
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});

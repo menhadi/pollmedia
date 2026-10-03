@@ -1,4 +1,15 @@
 (() => {
+    if (typeof window !== 'undefined') {
+        const closedTables = new Set();
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.chart-values, .home-chart-table').forEach(table => {
+                if (!table.open) { closedTables.add(table); table.open = true; }
+            });
+        });
+        window.addEventListener('afterprint', () => {
+            closedTables.forEach(table => table.open = false); closedTables.clear();
+        });
+    }
     const ns = 'http://www.w3.org/2000/svg';
     const colors = ['var(--palette-315d91)', 'var(--site-accent)', 'var(--site-primary)', 'var(--site-muted)', '#8b5c9e'];
     const element = (tag, attributes = {}, text = '') => {

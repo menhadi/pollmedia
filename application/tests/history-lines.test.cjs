@@ -40,3 +40,16 @@ test('history chart joins years with straight lines and retains invisible keyboa
     targets[1].events.keydown({key:'Escape'});
     assert.equal(tooltip.hidden,true);
 });
+
+test('printing reveals chart values and restores previously closed tables afterwards',()=>{
+    const closed={open:false}, alreadyOpen={open:true}, events={};
+    const document={querySelectorAll:selector=>selector==='[data-history-chart]'?[]:[closed,alreadyOpen]};
+    const window={addEventListener:(name,callback)=>events[name]=callback};
+    vm.runInNewContext(readFileSync(path.join(__dirname,'../public/js/history-lines.js'),'utf8'),{document,window});
+    events.beforeprint();
+    assert.equal(closed.open,true);
+    assert.equal(alreadyOpen.open,true);
+    events.afterprint();
+    assert.equal(closed.open,false);
+    assert.equal(alreadyOpen.open,true);
+});
