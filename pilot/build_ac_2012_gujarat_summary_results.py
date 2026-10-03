@@ -6,23 +6,26 @@ from pathlib import Path
 import tempfile
 import zipfile
 
-from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, SOURCE_SHA256, WORDS_SHA256, audit, load
+from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, SOURCE_SHA256, WORDS_SHA256, audit, audit_refined, load
 from build_pc_ac_zero_turnout_bundle import import_script
 from preserve_archive_json import package
 
 
 NAME = 'pollmedia-ac-gujarat-2012-summary-results-20261003'
+NAME_V2 = 'pollmedia-ac-gujarat-2012-summary-results-20261003-v2'
 
 
 def digest(body: bytes) -> str:
     return hashlib.sha256(body).hexdigest()
 
 
-def revised_edition(root: Path = ROOT) -> tuple[bytes, bytes, dict]:
-    evidence = audit(root)
+def revised_edition(root: Path = ROOT, *, refined: bool = False) -> tuple[bytes, bytes, dict]:
+    evidence = audit_refined(root) if refined else audit(root)
     old, _, _, _, old_body = load(root)
-    if (evidence['coverage'].get('source_totals_verified') != 171
-            or evidence['coverage'].get('source_result_verified') != 140):
+    total = evidence['coverage'].get('source_totals_verified', 0) + evidence['coverage'].get('source_totals_verified_by_arithmetic', 0)
+    expected_total, expected_result = (180, 146) if refined else (171, 140)
+    if (total != expected_total
+            or evidence['coverage'].get('source_result_verified') != expected_result):
         raise ValueError('Gujarat 2012 evidence inventory differs')
     revised = json.loads(old_body)
     changed = []
@@ -56,22 +59,28 @@ def revised_edition(root: Path = ROOT) -> tuple[bytes, bytes, dict]:
         if record.get('electors') is None:
             record['electors'] = totals['electors']
         elif record['electors'] != totals['electors']:
-            record['source_discrepancy'] = {
-                'field': 'electors', 'detail_value': record['electors'],
-                'summary_value': totals['electors'],
-            }
-            record['error'] += ' The source pages differ slightly on the elector total.'
+            if refined and record['electors'] <= 10 and totals['electors'] > 10000:
+                record['previous_detail_electors'] = record['electors']
+                record['electors'] = totals['electors']
+                record['error'] += ' The earlier extracted elector total was an incomplete OCR value.'
+            else:
+                record['source_discrepancy'] = {
+                    'field': 'electors', 'detail_value': record['electors'],
+                    'summary_value': totals['electors'],
+                }
+                record['error'] += ' The source pages differ slightly on the elector total.'
         if row['result'] is not None:
             record['summary_result'] = row['result']
         changed.append({'code': record['code'], 'name': record['name'], 'page': totals['source_page'],
                         'turnout': totals['votes_polled'], 'result': row['result'] is not None,
                         'earlier_detail_total': previous_polled})
-    if len(changed) != 171 or sum(row['result'] for row in changed) != 140:
+    if len(changed) != expected_total or sum(row['result'] for row in changed) != expected_result:
         raise ValueError('Gujarat 2012 packaged coverage differs')
     allowed = {'previous_summary_reconciliation_warning', 'error', 'previous_detail_votes_polled',
                'source_warning_code', 'votes_polled', 'summary_totals', 'summary_page',
                'summary_source_file', 'summary_source_sha256', 'summary_ocr_file',
-               'summary_ocr_sha256', 'electors', 'source_discrepancy', 'summary_result'}
+               'summary_ocr_sha256', 'electors', 'previous_detail_electors',
+               'source_discrepancy', 'summary_result'}
     for before, after in zip(old['records'], revised['records']):
         fields = {key for key in set(before) | set(after) if before.get(key) != after.get(key)}
         if fields - allowed or before['code'] != after['code']:
@@ -86,11 +95,11 @@ def revised_edition(root: Path = ROOT) -> tuple[bytes, bytes, dict]:
                                 'unresolved_codes': [row['code'] for row in evidence['rows'] if row['totals'] is None]}
 
 
-def build(root: Path = ROOT) -> dict:
-    output = root / 'exports' / (NAME + '.zip')
+def build(root: Path = ROOT, *, refined: bool = False) -> dict:
+    output = root / 'exports' / ((NAME_V2 if refined else NAME) + '.zip')
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
-    old_body, new_body, detail = revised_edition(root)
+    old_body, new_body, detail = revised_edition(root, refined=refined)
     old_sha = detail['previous_sha256']
     with tempfile.TemporaryDirectory(prefix='ac-gujarat-2012-summary-', dir=output.parent) as temporary:
         staged = Path(temporary) / 'archive'

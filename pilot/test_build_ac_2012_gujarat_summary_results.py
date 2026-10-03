@@ -9,8 +9,8 @@ import unittest
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, audit
-from build_ac_2012_gujarat_summary_results import NAME, revised_edition
+from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, audit, audit_refined
+from build_ac_2012_gujarat_summary_results import NAME, NAME_V2, revised_edition
 
 
 class Gujarat2012SummaryResultsTest(unittest.TestCase):
@@ -67,6 +67,52 @@ class Gujarat2012SummaryResultsTest(unittest.TestCase):
             with zipfile.ZipFile(io.BytesIO(outer.read(f'snapshot-{EDITION}.zip'))) as inner:
                 snapshot = f'election-archive/{EDITION}/extraction-{self.detail["previous_sha256"]}.json'
                 self.assertEqual(self.old_body, inner.read(snapshot))
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'correction-{EDITION}.zip'))) as inner:
+                self.assertEqual(self.new_body, inner.read(f'election-archive/{EDITION}/extraction.json'))
+
+
+class Gujarat2012RefinedSummaryResultsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.old_body, cls.new_body, cls.detail = revised_edition(refined=True)
+        cls.old = json.loads(cls.old_body)
+        cls.new = json.loads(cls.new_body)
+
+    def test_source_arithmetic_recovers_nine_more_turnouts(self):
+        evidence = audit_refined()
+        self.assertEqual(171, evidence['coverage']['source_totals_verified'])
+        self.assertEqual(9, evidence['coverage']['source_totals_verified_by_arithmetic'])
+        self.assertEqual(146, evidence['coverage']['source_result_verified'])
+        self.assertEqual([39, 40], self.detail['unresolved_codes'])
+        self.assertEqual([4, 32, 42, 44, 78, 99, 106, 126, 149],
+                         [r['code'] for r in evidence['rows']
+                          if r['totals_reason'] == 'source_totals_verified_by_arithmetic'])
+
+    def test_derived_values_reconcile_two_source_equations(self):
+        ellisbridge = self.new['records'][43]
+        self.assertEqual(151222, ellisbridge['votes_polled'])
+        self.assertEqual(151093, ellisbridge['summary_totals']['valid_candidate_votes'])
+        mahuva = self.new['records'][98]
+        self.assertEqual(3, mahuva['previous_detail_electors'])
+        self.assertEqual(181028, mahuva['electors'])
+        self.assertEqual(121740, mahuva['votes_polled'])
+        self.assertEqual(195162, self.new['records'][41]['votes_polled'])
+        self.assertEqual(self.old['records'][38], self.new['records'][38])
+        self.assertEqual(self.old['records'][39], self.new['records'][39])
+
+    def test_refined_bundle_starts_from_original_prior_checksum(self):
+        path = ROOT / 'exports' / (NAME_V2 + '.zip')
+        expected, filename = path.with_suffix('.sha256').read_text(encoding='ascii').split()
+        self.assertEqual(path.name, filename)
+        self.assertEqual(expected, hashlib.sha256(path.read_bytes()).hexdigest())
+        with zipfile.ZipFile(path) as outer:
+            audit_row = json.loads(outer.read('AUDIT.json'))
+            self.assertEqual(self.detail['previous_sha256'], audit_row['previous_sha256'])
+            self.assertEqual(self.detail['new_sha256'], audit_row['new_sha256'])
+            self.assertIn('10485760', outer.read('IMPORT.sh').decode())
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'snapshot-{EDITION}.zip'))) as inner:
+                old_path = f'election-archive/{EDITION}/extraction-{self.detail["previous_sha256"]}.json'
+                self.assertEqual(self.old_body, inner.read(old_path))
             with zipfile.ZipFile(io.BytesIO(outer.read(f'correction-{EDITION}.zip'))) as inner:
                 self.assertEqual(self.new_body, inner.read(f'election-archive/{EDITION}/extraction.json'))
 

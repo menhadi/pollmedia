@@ -203,6 +203,78 @@ def audit(root: Path = ROOT) -> dict:
             'coverage': dict(reasons), 'rows': results}
 
 
+def classify_totals_refined(page: dict, companion: dict, record: dict) -> tuple[dict | None, str]:
+    """Recover a low-confidence printed total only through independent source arithmetic."""
+    existing, reason = classify_totals(page, companion, record)
+    if existing is not None:
+        return existing, reason
+    if record.get('number_of_seats') != 1 or page['code'] != record['code'] or page['page'] != record['code'] + 21:
+        return None, reason
+    if not heading_matches(page, record):
+        # One scanned heading omits the hyphen; both its code and name are legible.
+        heading = [line for line in page['text'].splitlines()[:8] if 'CONSTITUENCY:' in line.upper()]
+        if not (record['code'] == 42 and len(heading) == 1
+                and re.search(r'CONSTITUENCY:\s*42\s+Vejalpur\s*$', heading[0], re.I)):
+            return None, reason
+    electors = summary_field(page, companion, 'electors', 288)
+    if electors is None or electors < 10000:
+        electors = at(page['words'], 288, 490, 545, r'\d{3,7}', 70)
+        if electors is None or electors != record.get('electors'):
+            return None, reason
+    valid = summary_field(page, companion, 'valid_candidate_votes', 478)
+    if valid is None:
+        return None, reason
+    voters = summary_field(page, companion, 'voters', 386)
+    general = at(page['words'], 334, 490, 545, r'\d{3,7}', 70)
+    postal = at(page['words'], 368, 490, 545, r'\d{1,7}', 70)
+    invalid = at(page['words'], 444, 490, 545, r'\d{1,7}', 70)
+    general_sum = general + postal if general is not None and postal is not None else None
+    valid_sum = valid + invalid if invalid is not None else None
+    if voters is None:
+        low_confidence_voters = at(page['words'], 386, 490, 545, r'\d{3,7}', 70)
+        if general_sum is not None and valid_sum == general_sum:
+            voters = general_sum
+        elif low_confidence_voters is not None and low_confidence_voters in (general_sum, valid_sum):
+            voters = low_confidence_voters
+    if voters is None or not 0 < valid <= voters <= electors:
+        return None, reason
+    percent = [float(w[4]) for w in page['words'] if abs(w[1] - 410) <= 3.5
+               and 195 <= w[0] < 250 and w[5] >= 70 and re.fullmatch(r'\d{1,3}\.\d{2}', w[4])]
+    percent_agrees = len(percent) == 1 and abs(100 * voters / electors - percent[0]) <= 0.011
+    component_agrees = general_sum == voters and valid_sum == voters
+    if not percent_agrees or not (component_agrees or general_sum == voters or valid_sum == voters):
+        return None, reason
+    old_electors = record.get('electors')
+    if old_electors not in (None, electors):
+        minor_difference = abs(old_electors - electors) * 10000 <= electors * 5
+        obvious_bad_detail = old_electors <= 10 and electors > 10000 and component_agrees
+        if not (minor_difference or obvious_bad_detail):
+            return None, reason
+    return {'electors': electors, 'votes_polled': voters, 'valid_candidate_votes': valid,
+            'source_page': page['page'], 'percent_agrees': True,
+            'components_agree': component_agrees,
+            'arithmetic_recovery': True}, 'source_totals_verified_by_arithmetic'
+
+
+def audit_refined(root: Path = ROOT) -> dict:
+    extraction, pages, cells, numbers, prior = load(root)
+    companion = {(cell['code'], cell['field']): cell for cell in cells}
+    reasons = Counter()
+    results = []
+    for record, page, number in zip(extraction['records'], pages, numbers):
+        totals, reason = classify_totals_refined(page, companion, record)
+        reasons[reason] += 1
+        result = None
+        result_reason = 'turnout_unresolved'
+        if totals is not None:
+            result, result_reason = source_result(page, number, record, totals)
+            reasons[result_reason] += 1
+        results.append({'code': record['code'], 'name': record['name'], 'totals': totals,
+                        'totals_reason': reason, 'result': result, 'result_reason': result_reason})
+    return {'source_sha256': SOURCE_SHA256, 'prior_sha256': digest(prior),
+            'coverage': dict(reasons), 'rows': results}
+
+
 if __name__ == '__main__':
     result = audit()
     print(json.dumps({'source_sha256': result['source_sha256'], 'prior_sha256': result['prior_sha256'],
