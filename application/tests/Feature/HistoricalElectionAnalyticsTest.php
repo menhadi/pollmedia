@@ -539,6 +539,32 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
     }
 
+    public function test_official_summary_can_supply_result_when_detailed_candidate_rows_are_incomplete(): void
+    {
+        $record = $this->record(1, 100, 82, 50, 20);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Official summary confirms constituency turnout; detailed candidate rows remain unverified.';
+        $record['source_warning_code'] = 'summary_only_turnout';
+        $record['detail_page'] = 9;
+        $record['summary_page'] = 4;
+        $record['summary_totals'] = ['electors' => 100, 'votes_polled' => 82, 'valid_candidate_votes' => 80];
+        $record['summary_source_file'] = 'official.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_result'] = ['winner' => 'A', 'winner_party' => 'AAA', 'winner_votes' => 50,
+            'runner' => 'B', 'runner_party' => 'BBB', 'runner_votes' => 30, 'margin' => 20];
+        $record['candidates'] = [];
+
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $this->assertSame(1, $analytics->summarize([$record])['turnout_count']);
+        $this->assertSame(1, $analytics->summarize([$record])['margin_count']);
+        $this->assertSame(0, $analytics->summarize([$record])['party_count']);
+        $this->assertSame('A', $analytics->singleSeatResult($record)['winner']);
+
+        unset($record['summary_source_sha256']);
+        $this->assertSame(0, $analytics->summarize([$record])['margin_count']);
+        $this->assertNull($analytics->singleSeatResult($record));
+    }
+
     public function test_recovered_workbook_rows_use_official_voter_total_with_component_note(): void
     {
         $record = $this->record(87, 100, 82, 50, 30);
