@@ -13,8 +13,9 @@ if(isset($printMapResult)) {
 }
 $labelX=300;
 $labelY=620;
+$labelWidth=min(540,max(120,max(array_map(fn($line)=>mb_strwidth($line),$mapLabelLines))*7+28));
 @endphp
-<g class="print-map-tooltip"><rect x="90" y="{{ $labelY-18 }}" width="420" height="{{ count($mapLabelLines)*17+12 }}" rx="7" fill="white" stroke="#809aa5"/>
+<g class="print-map-tooltip"><rect x="{{ $labelX-$labelWidth/2 }}" y="{{ $labelY-18 }}" width="{{ $labelWidth }}" height="{{ count($mapLabelLines)*17+12 }}" rx="7" fill="white" stroke="#809aa5"/>
 <text x="{{ $labelX }}" y="{{ $labelY }}" text-anchor="middle" fill="#123d35" font-family="sans-serif" font-size="12">@foreach($mapLabelLines as $line)<tspan x="{{ $labelX }}" dy="{{ $loop->first?0:17 }}">{{ $line }}</tspan>@endforeach</text></g>
 @elseif(!($printMapSeat??null))
 <text x="{{ $shape['label_x'] }}" y="{{ $shape['label_y'] }}" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#123d35" stroke="white" stroke-width="1.5" paint-order="stroke">{{ $shape['name'] }}</text>
