@@ -339,6 +339,9 @@ class HistoricalElectionAnalytics
             && isset($record['official_detail_result'])) {
             return $this->officialResidualDetailResult($record) !== null;
         }
+        if (($record['source_warning_code'] ?? null) === 'official_detailed_pdf_turnout') {
+            return $this->hasReconciledWorkbookDetailVotes($record);
+        }
 
         $error = $record['error'] ?? '';
         $documentedDifference = $this->hasDocumentedElectorDifference($record);
@@ -703,6 +706,64 @@ class HistoricalElectionAnalytics
             && $this->count($page) && $page > 0 && ($totals['source_page'] ?? null) === $page
             && preg_match('/^[a-zA-Z0-9._-]+\.pdf$/', $record['turnout_source_file'] ?? '') === 1
             && preg_match('/^[a-f0-9]{64}$/', $record['turnout_source_sha256'] ?? '') === 1;
+    }
+
+    /** The archived workbook rows must reconcile exactly with the official PDF turnout row. */
+    private function hasReconciledWorkbookDetailVotes(array $record): bool
+    {
+        if (! $this->hasDocumentedOfficialTurnout($record)
+            || ($record['number_of_seats'] ?? 1) !== 1) {
+            return false;
+        }
+        $candidates = $record['candidates'] ?? null;
+        if (! is_array($candidates) || count($candidates) < 2) {
+            return false;
+        }
+        $seen = [];
+        $total = $general = $postal = $valid = $nonNota = 0;
+        $previousRow = null;
+        foreach ($candidates as $candidate) {
+            $name = trim($candidate['candidate_name'] ?? '');
+            $party = trim($candidate['party_at_election'] ?? '');
+            $row = $candidate['source_values'] ?? null;
+            $rowNumber = $candidate['workbook_row'] ?? null;
+            $identity = mb_strtolower($name.'|'.$party);
+            if ($name === '' || $party === '' || isset($seen[$identity])
+                || ($candidate['source_sheet'] ?? null) !== 'DetailedResult'
+                || ! is_int($rowNumber) || $rowNumber < 1
+                || ($previousRow !== null && $rowNumber !== $previousRow + 1)
+                || ! is_array($row) || count($row) !== 13
+                || ($row[0] ?? null) !== ($record['code'] ?? null)
+                || trim((string) ($row[1] ?? '')) !== trim((string) ($record['name'] ?? ''))
+                || ($row[2] ?? null) !== $candidate['candidate_name']
+                || ($row[6] ?? null) !== $candidate['party_at_election']
+                || ! $this->count($candidate['votes'] ?? null)
+                || ! $this->count($candidate['general_votes'] ?? null)
+                || ! $this->count($candidate['postal_votes'] ?? null)
+                || $candidate['votes'] !== $candidate['general_votes'] + $candidate['postal_votes']
+                || $row[7] !== $candidate['general_votes']
+                || $row[8] !== $candidate['postal_votes']
+                || $row[9] !== $candidate['votes']
+                || $row[10] !== $record['electors']
+                || $row[11] !== $record['votes_polled']) {
+                return false;
+            }
+            $seen[$identity] = true;
+            $previousRow = $rowNumber;
+            $total += $candidate['votes'];
+            $general += $candidate['general_votes'];
+            $postal += $candidate['postal_votes'];
+            if (! ($candidate['is_nota'] ?? false)) {
+                $valid += $candidate['votes'];
+                $nonNota++;
+            }
+        }
+
+        return $nonNota >= 2
+            && $total === $record['votes_polled']
+            && $general === ($record['turnout_totals']['general_votes'] ?? null)
+            && $postal === ($record['turnout_totals']['postal_votes'] ?? null)
+            && (! isset($record['valid_candidate_votes']) || $valid === $record['valid_candidate_votes']);
     }
 
     private function hasSummaryTurnoutWithDuplicateCandidates(array $record): bool

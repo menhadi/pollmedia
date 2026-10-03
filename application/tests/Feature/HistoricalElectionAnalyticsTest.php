@@ -842,6 +842,57 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(137376, $analytics->summarize([$record])['polled']);
     }
 
+    public function test_reconciled_workbook_rows_and_official_pdf_turnout_show_reviewed_result(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $candidate = static function (int $workbookRow, string $name, string $party, int $general, int $postal, bool $nota = false): array {
+            $votes = $general + $postal;
+
+            return ['candidate_name' => $name, 'party_at_election' => $party,
+                'general_votes' => $general, 'postal_votes' => $postal, 'votes' => $votes,
+                'is_nota' => $nota, 'source_sheet' => 'DetailedResult', 'workbook_row' => $workbookRow,
+                'source_values' => [11, 'Sagolband ', $name, null, null, null, $party,
+                    $general, $postal, $votes, 23064, 19567, null]];
+        };
+        $record = [
+            'code' => 11, 'name' => 'Sagolband', 'number_of_seats' => 1,
+            'status' => 'needs_review',
+            'error' => 'Official detailed-result PDF prints turnout. Original extraction and candidate warnings remain available for review.',
+            'source_warning_code' => 'official_detailed_pdf_turnout',
+            'electors' => 23064, 'votes_polled' => 19567, 'valid_candidate_votes' => 19416,
+            'turnout_totals' => ['electors' => 23064, 'votes_polled' => 19567,
+                'general_votes' => 19283, 'postal_votes' => 284, 'source_page' => 3,
+                'method' => 'official detailed-result PDF turnout row; candidates reconcile'],
+            'turnout_source_page' => 3, 'turnout_source_file' => 'official.pdf',
+            'turnout_source_sha256' => str_repeat('a', 64),
+            'candidates' => [
+                $candidate(57, 'RAJKUMAR IMO SINGH', 'INC', 9056, 155),
+                $candidate(58, 'DR. KHWAIRAKPAM LOKEN SINGH', 'BJP', 9066, 126),
+                $candidate(59, 'G. SATYABATI DEVI', 'NPEP', 980, 2),
+                $candidate(60, 'None of the Above', 'NOTA', 151, 0, true),
+                $candidate(61, 'LAISHRAM GYANESHWAR', 'IND', 30, 1),
+            ],
+        ];
+
+        $this->assertSame(['winner' => 'RAJKUMAR IMO SINGH', 'party' => 'INC',
+            'margin' => 19, 'derived' => true], $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(19567, $summary['polled']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(1, $summary['party_count']);
+
+        $changed = $record;
+        $changed['candidates'][1]['source_values'][9]++;
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $this->assertSame(0, $analytics->summarize([$changed])['margin_count']);
+        $changed = $record;
+        $changed['turnout_totals']['postal_votes']++;
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $changed = $record;
+        $changed['number_of_seats'] = 2;
+        $this->assertNull($analytics->singleSeatResult($changed));
+    }
+
     public function test_reconciled_official_detail_can_show_a_reviewed_winner_and_margin(): void
     {
         $analytics = app(HistoricalElectionAnalytics::class);
