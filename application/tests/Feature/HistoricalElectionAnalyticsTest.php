@@ -874,6 +874,9 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNotNull($edition);
         $this->assertSame('Goa', $edition['state']);
         $this->assertSame(2, $edition['tables']);
+        $this->assertCount(2, $edition['constituency_results']);
+        $this->assertTrue($edition['constituency_results'][0]['has_warning']);
+        $this->assertNotNull($edition['constituency_results'][0]['result']);
         $this->assertSame(2, $edition['review_count']);
         $this->assertSame(2, $edition['turnout_count']);
         $this->assertSame(2, $edition['turnout_review_count']);

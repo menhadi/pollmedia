@@ -56,7 +56,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v12:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v13:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -82,7 +82,15 @@ class HistoricalElectionAnalytics
                     return null;
                 }
 
-                return $this->summarize($records) + ['review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
+                $constituencyResults = collect($records)->map(function (array $record) use ($id): array {
+                    $result = $this->singleSeatResult($record, $id);
+
+                    return ['code' => $record['code'], 'name' => $record['constituency_name'] ?? $record['name'],
+                        'result' => $result, 'source_candidate' => $result ? null : $this->sourceOnlyCandidate($record),
+                        'has_warning' => $record['has_warning'], 'note' => $record['error'] ?? null];
+                })->sortBy('name')->values()->all();
+
+                return $this->summarize($records) + ['constituency_results' => $constituencyResults, 'review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
             });
             if ($summary) {
                 $result[] = $summary;
