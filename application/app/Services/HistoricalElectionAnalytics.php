@@ -889,25 +889,47 @@ class HistoricalElectionAnalytics
     /** The official declaration can establish a result even when its voter total cannot establish turnout. */
     private function officialInvalidTurnoutResult(array $record): ?array
     {
+        $source = match ($record['summary_source_file'] ?? null) {
+            '7ce40cf47befc2b48ff776e3-7475.pdf' => [
+                'code' => 315, 'name' => 'CHHIBRAMAU', 'state' => 'Uttar Pradesh',
+                'url' => 'https://old.eci.gov.in/files/file/3247-uttar-pradesh-1969/',
+                'sha256' => '6149dddc726ecba33c63091f8452964cef9fd012248ba2ab313ecce77cb2c623',
+                'summary_page' => 337, 'detail_page' => 505, 'electors' => 73524,
+                'votes_polled' => 80269, 'valid_candidate_votes' => 78013, 'candidates' => 11,
+                'original_warning' => 'Electorate and voter totals are inconsistent',
+            ],
+            '3250a94d4b625ec2bea29016-7702.pdf' => [
+                'code' => 103, 'name' => 'THONDAMUTHUR', 'state' => 'Tamil Nadu',
+                'url' => 'https://old.eci.gov.in/files/file/3333-tamil-nadu-1989/',
+                'sha256' => 'f5ef0578ce8bbbbff6c4d7f53cfa29d4d592e9e1f06b56abef79517ddd162c27',
+                'summary_page' => 120, 'detail_page' => 285, 'electors' => 123266,
+                'votes_polled' => 151869, 'valid_candidate_votes' => 148168, 'candidates' => 16,
+                'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+            ],
+            default => null,
+        };
         $summary = $record['summary_totals'] ?? null;
         $result = $record['summary_result'] ?? null;
         $candidates = $record['candidates'] ?? null;
-        if (($record['source_warning_code'] ?? null) !== 'official_ac_declared_result_invalid_turnout'
+        if ($source === null || ($record['source_warning_code'] ?? null) !== 'official_ac_declared_result_invalid_turnout'
             || ($record['status'] ?? null) !== 'needs_review'
-            || ($record['code'] ?? null) !== 315 || ($record['name'] ?? null) !== 'CHHIBRAMAU'
+            || ($record['code'] ?? null) !== $source['code'] || ($record['name'] ?? null) !== $source['name']
             || ($record['number_of_seats'] ?? null) !== 1
-            || ($record['original_extraction_warning'] ?? null) !== 'Electorate and voter totals are inconsistent'
+            || ($record['original_extraction_warning'] ?? null) !== $source['original_warning']
             || ($record['error'] ?? null) !== 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.'
-            || ($record['official_summary_state'] ?? null) !== 'Uttar Pradesh'
-            || ($record['official_source_url'] ?? null) !== 'https://old.eci.gov.in/files/file/3247-uttar-pradesh-1969/'
-            || ($record['summary_source_file'] ?? null) !== '7ce40cf47befc2b48ff776e3-7475.pdf'
-            || ($record['summary_source_sha256'] ?? null) !== '6149dddc726ecba33c63091f8452964cef9fd012248ba2ab313ecce77cb2c623'
-            || ($record['summary_page'] ?? null) !== 337 || ($record['detail_page'] ?? null) !== 505
+            || ($record['official_summary_state'] ?? null) !== $source['state']
+            || (isset($record['state_name']) && $record['state_name'] !== $source['state'])
+            || ($record['official_source_url'] ?? null) !== $source['url']
+            || ($record['summary_source_sha256'] ?? null) !== $source['sha256']
+            || ($record['summary_page'] ?? null) !== $source['summary_page']
+            || ($record['detail_page'] ?? null) !== $source['detail_page']
             || ! is_array($summary) || ! is_array($result) || ! is_array($candidates)
-            || ($record['electors'] ?? null) !== 73524 || ($record['votes_polled'] ?? null) !== 80269
-            || ($record['valid_candidate_votes'] ?? null) !== 78013
-            || $summary !== ['electors' => 73524, 'votes_polled' => 80269, 'valid_candidate_votes' => 78013]
-            || count($candidates) !== 11) {
+            || ($record['electors'] ?? null) !== $source['electors']
+            || ($record['votes_polled'] ?? null) !== $source['votes_polled']
+            || ($record['valid_candidate_votes'] ?? null) !== $source['valid_candidate_votes']
+            || $summary !== ['electors' => $source['electors'], 'votes_polled' => $source['votes_polled'],
+                'valid_candidate_votes' => $source['valid_candidate_votes']]
+            || count($candidates) !== $source['candidates']) {
             return null;
         }
 
