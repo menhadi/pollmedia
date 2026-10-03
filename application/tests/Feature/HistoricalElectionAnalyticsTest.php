@@ -609,6 +609,42 @@ class HistoricalElectionAnalyticsTest extends TestCase
         }
     }
 
+    public function test_official_arunachal_result_is_visible_when_2004_report_omits_voter_total(): void
+    {
+        $record = $this->record(22, 100, 82, 50, 30);
+        $record['status'] = 'needs_review';
+        $record['votes_polled'] = null;
+        $record['valid_candidate_votes'] = 80;
+        $record['source_warning_code'] = 'official_summary_result_without_turnout';
+        $record['original_extraction_warning'] = 'Detailed candidate rows need review.';
+        $record['previous_review_note'] = 'Voter total is absent from the official summary.';
+        $record['summary_source_file'] = 'dc469be7915c7a5a9e699aac-9579.pdf';
+        $record['summary_source_sha256'] = 'a6a2d830c8969fc7364cd70457593b46bc5edf5b854284bae52668ee9d05f76b';
+        $record['summary_page'] = 34;
+        $record['summary_totals'] = ['electors' => 100, 'votes_polled' => null, 'valid_candidate_votes' => 80];
+        $record['summary_result'] = ['winner' => 'A', 'winner_party' => 'AAA', 'winner_votes' => 50,
+            'runner' => 'B', 'runner_party' => 'BBB', 'runner_votes' => 30, 'margin' => 20];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame(['winner' => 'A', 'party' => 'AAA', 'margin' => 20, 'derived' => false],
+            $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(0, $summary['turnout_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        foreach ([
+            ['code', 21],
+            ['summary_page', 35],
+            ['summary_source_sha256', str_repeat('0', 64)],
+            ['votes_polled', 80],
+            ['original_extraction_warning', null],
+            ['previous_review_note', null],
+        ] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
+
     public function test_recovered_workbook_rows_use_official_voter_total_with_component_note(): void
     {
         $record = $this->record(87, 100, 82, 50, 30);

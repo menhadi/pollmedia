@@ -946,10 +946,25 @@ class HistoricalElectionAnalytics
     /** @return array{winner: string, party: string, margin: int}|null */
     private function officialPdfSummaryResult(array $record): ?array
     {
-        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference', 'round_specific_summary'], true)
+        $missingVoterTotal = ($record['source_warning_code'] ?? null) === 'official_summary_result_without_turnout';
+        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference', 'round_specific_summary', 'official_summary_result_without_turnout'], true)
             || ! isset($record['summary_source_file'], $record['summary_source_sha256'])
-            || ! $this->hasCorroboratedTurnout($record)
+            || (! $missingVoterTotal && ! $this->hasCorroboratedTurnout($record))
             || ($record['number_of_seats'] ?? 1) !== 1) {
+            return null;
+        }
+        if ($missingVoterTotal
+            && (($record['status'] ?? null) !== 'needs_review'
+                || ! in_array($record['code'] ?? null, [22, 24, 33, 46], true)
+                || ($record['summary_page'] ?? null) !== $record['code'] + 12
+                || ($record['summary_source_file'] ?? null) !== 'dc469be7915c7a5a9e699aac-9579.pdf'
+                || ($record['summary_source_sha256'] ?? null) !== 'a6a2d830c8969fc7364cd70457593b46bc5edf5b854284bae52668ee9d05f76b'
+                || ($record['votes_polled'] ?? null) !== null
+                || ($record['summary_totals']['votes_polled'] ?? null) !== null
+                || ($record['summary_totals']['electors'] ?? null) !== ($record['electors'] ?? null)
+                || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== ($record['valid_candidate_votes'] ?? null)
+                || ! is_string($record['original_extraction_warning'] ?? null)
+                || ! is_string($record['previous_review_note'] ?? null))) {
             return null;
         }
         if (($record['source_warning_code'] ?? null) === 'round_specific_summary') {
