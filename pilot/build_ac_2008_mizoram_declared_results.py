@@ -35,6 +35,9 @@ class SourceConfig:
     state: str
     seats: int
     pdf_state: str | None = None
+    prior_packages: tuple[str, ...] | None = None
+    expected_revisions: int = 2
+    summary_only_codes: frozenset[int] = frozenset()
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -46,8 +49,9 @@ def digest(body: bytes) -> str:
 
 def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[bytes, bytes, dict]:
     folder = root / 'application/storage/app/private/election-archive' / config.edition
-    revisions = correction_index(root, PRIOR_PACKAGES)
-    if len(revisions.get(config.edition, [])) != 2:
+    packages = config.prior_packages or PRIOR_PACKAGES
+    revisions = correction_index(root, packages)
+    if len(revisions.get(config.edition, [])) != config.expected_revisions:
         raise ValueError(f'Prior {config.state} 2008 revisions are missing')
     old_body = effective_body(folder / 'extraction.json', revisions[config.edition])
     if digest(old_body) != config.prior_sha256:
@@ -69,10 +73,11 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
     with fitz.open(pdf_path) as pdf:
         for record in revised['records']:
             summary = summaries[record['code']]
+            summary_only = record['code'] in config.summary_only_codes
             if (record['status'] != 'needs_review' or record['state_name'] != config.state
                     or record['number_of_seats'] != 1
-                    or record['source_warning_code'] != 'summary_turnout_with_detail_warnings'
-                    or not record['error'].startswith(SOURCE_NOTE)
+                    or record['source_warning_code'] != ('summary_only_turnout' if summary_only else 'summary_turnout_with_detail_warnings')
+                    or not record['error'].startswith('Official summary confirms constituency turnout;' if summary_only else SOURCE_NOTE)
                     or record['summary_page'] != summary['summary_page']
                     or normalized(record['name']) != normalized(summary['name'])
                     or record['summary_totals'] != {k: summary[k] for k in ('electors', 'votes_polled', 'valid_candidate_votes')}
@@ -103,21 +108,26 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             record['summary_source_file'] = old['source_file']
             record['summary_source_sha256'] = old['source_sha256']
             record['summary_result'] = result
+            if summary_only:
+                record['original_source_warning_code'] = record['source_warning_code']
+                record['source_warning_code'] = 'official_summary_turnout_only'
             record['error'] += RESULT_NOTE
             results.append({'code': record['code'], 'page': summary['summary_page'], **result})
     if len(results) != config.seats or {item['code'] for item in results} != set(range(1, config.seats + 1)):
         raise ValueError(f'{config.state} 2008 result inventory differs')
     for before, after in zip(old['records'], revised['records']):
         changed = {key for key in set(before) | set(after) if before.get(key) != after.get(key)}
-        if before['code'] != after['code'] or changed != {'summary_source_file', 'summary_source_sha256',
-                                                          'summary_result', 'error'}:
+        expected = {'summary_source_file', 'summary_source_sha256', 'summary_result', 'error'}
+        if before['code'] in config.summary_only_codes:
+            expected |= {'source_warning_code', 'original_source_warning_code'}
+        if before['code'] != after['code'] or changed != expected:
             raise ValueError(f'Unrelated {config.state} evidence changed: {before["code"]}')
     new_body = json.dumps(revised, ensure_ascii=False, indent=2).encode('utf-8')
     return old_body, new_body, {'edition': config.edition, 'year': 2008,
                                 'source_url': old['source_url'], 'source_file': old['source_file'],
                                 'source_sha256': old['source_sha256'], 'previous_sha256': digest(old_body),
                                 'new_sha256': digest(new_body), 'results': results,
-                                'prior_packages': list(PRIOR_PACKAGES)}
+                                'prior_packages': list(packages)}
 
 
 def build(root: Path = ROOT, config: SourceConfig = CONFIG) -> dict:
