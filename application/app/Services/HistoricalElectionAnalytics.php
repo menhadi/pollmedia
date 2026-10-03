@@ -123,6 +123,8 @@ class HistoricalElectionAnalytics
             $workbookSummaryTurnout = $this->hasOfficialWorkbookSummaryTurnout($record);
             $documentedTurnout = $this->hasDocumentedOfficialTurnout($record);
             $duplicateCandidateTurnout = $this->hasSummaryTurnoutWithDuplicateCandidates($record);
+            $verifiedDuplicatePreviewResult = isset($record['official_detail_result']['duplicate_preview_page'])
+                ? $this->officialResidualDetailResult($record) : null;
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             $turnoutPolled = $polledDifference ? $record['summary_totals']['votes_polled'] : ($record['votes_polled'] ?? null);
             if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($turnoutPolled) && $turnoutPolled <= $turnoutElectors
@@ -140,10 +142,11 @@ class HistoricalElectionAnalytics
                     }
                 }
             }
-            if ($hasWarning && ! $provisionalCandidates) {
+            if ($hasWarning && (! $provisionalCandidates || $verifiedDuplicatePreviewResult !== null)) {
                 $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
                     ?? $this->officialWorkbookSummaryResult($record)
                     ?? $this->officialPdfSummaryResult($record)
+                    ?? $verifiedDuplicatePreviewResult
                     ?? $this->officialResidualDetailResult($record)
                     ?? $this->officialInvalidTurnoutResult($record);
                 if ($workbookResult !== null) {
@@ -912,12 +915,46 @@ class HistoricalElectionAnalytics
             return null;
         }
         $result = $record['official_detail_result'] ?? null;
-        $candidates = $record['candidates'] ?? null;
-        if (! is_array($result) || ! is_array($candidates) || count($candidates) < 2
+        $allCandidates = $record['candidates'] ?? null;
+        if (! is_array($result) || ! is_array($allCandidates) || count($allCandidates) < 2
             || ($result['source_file'] ?? null) !== ($record['turnout_source_file'] ?? null)
-            || ($result['source_sha256'] ?? null) !== ($record['turnout_source_sha256'] ?? null)
-            || ($result['source_page'] ?? null) !== ($record['detail_page'] ?? null)) {
+            || ($result['source_sha256'] ?? null) !== ($record['turnout_source_sha256'] ?? null)) {
             return null;
+        }
+        $duplicatePreview = isset($result['duplicate_preview_page']);
+        if ($duplicatePreview) {
+            if (($result['duplicate_preview_page'] ?? null) !== ($record['detail_page'] ?? null)
+                || ($result['source_page'] ?? null) !== ($record['turnout_source_page'] ?? null)
+                || $result['source_page'] <= $result['duplicate_preview_page']
+                || isset($result['source_pages'])
+                || ! $this->count($result['verified_valid_candidate_votes'] ?? null)) {
+                return null;
+            }
+            $candidates = array_values(array_filter($allCandidates,
+                fn (array $candidate): bool => ($candidate['source_page'] ?? null) === $result['source_page']));
+            $preview = array_values(array_filter($allCandidates,
+                fn (array $candidate): bool => ($candidate['source_page'] ?? null) === $result['duplicate_preview_page']));
+            if (count($candidates) < 2 || count($preview) < 1 || count($preview) > 2
+                || count($candidates) + count($preview) !== count($allCandidates)) {
+                return null;
+            }
+            foreach ($preview as $candidate) {
+                $matches = array_filter($candidates, fn (array $complete): bool =>
+                    ($candidate['candidate_name'] ?? null) === ($complete['candidate_name'] ?? null)
+                    && ($candidate['party_at_election'] ?? null) === ($complete['party_at_election'] ?? null)
+                    && ($candidate['votes'] ?? null) === ($complete['votes'] ?? null)
+                    && ($candidate['postal_votes'] ?? null) === ($complete['postal_votes'] ?? null)
+                    && (($candidate['general_votes'] ?? null) === null
+                        || $candidate['general_votes'] === ($complete['general_votes'] ?? null)));
+                if (count($matches) !== 1) {
+                    return null;
+                }
+            }
+        } else {
+            if (($result['source_page'] ?? null) !== ($record['detail_page'] ?? null)) {
+                return null;
+            }
+            $candidates = $allCandidates;
         }
         $pages = $result['source_pages'] ?? [$result['source_page']];
         if (! is_array($pages) || ! array_is_list($pages)
@@ -957,7 +994,9 @@ class HistoricalElectionAnalytics
             ->sortByDesc('votes')->values();
         if ($ranked->count() < 2 || $ranked[0]['votes'] <= $ranked[1]['votes']
             || $total !== ($record['votes_polled'] ?? null)
-            || $valid !== ($record['valid_candidate_votes'] ?? null)
+            || $valid !== ($duplicatePreview
+                ? ($result['verified_valid_candidate_votes'] ?? null)
+                : ($record['valid_candidate_votes'] ?? null))
             || $general !== ($record['turnout_totals']['general_votes'] ?? null)
             || $postal !== ($record['turnout_totals']['postal_votes'] ?? null)
             || ($result['winner'] ?? null) !== $ranked[0]['candidate_name']

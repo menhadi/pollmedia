@@ -901,6 +901,36 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $changed['candidates'][1]['source_page'] = 43;
         $changed['candidates'][2]['source_page'] = 42;
         $this->assertNull($analytics->singleSeatResult($changed));
+
+        $duplicatePreview = $record;
+        $duplicatePreview['detail_page'] = 16;
+        $duplicatePreview['turnout_source_page'] = 107;
+        $duplicatePreview['turnout_totals']['source_page'] = 107;
+        $duplicatePreview['valid_candidate_votes'] = null;
+        foreach ($duplicatePreview['candidates'] as &$candidate) {
+            $candidate['source_page'] = 107;
+        }
+        unset($candidate);
+        $previewRow = $duplicatePreview['candidates'][0];
+        $previewRow['source_page'] = 16;
+        $previewRow['general_votes'] = null;
+        array_unshift($duplicatePreview['candidates'], $previewRow);
+        $duplicatePreview['official_detail_result']['source_page'] = 107;
+        $duplicatePreview['official_detail_result']['duplicate_preview_page'] = 16;
+        $duplicatePreview['official_detail_result']['verified_valid_candidate_votes'] = 750;
+        $this->assertSame(50, $analytics->singleSeatResult($duplicatePreview)['margin']);
+        $this->assertSame(1, $analytics->summarize([$duplicatePreview])['margin_count']);
+        $this->assertSame(0, $analytics->summarize([$duplicatePreview])['party_count']);
+        $changed = $duplicatePreview;
+        $changed['candidates'][0]['votes']++;
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $this->assertSame(0, $analytics->summarize([$changed])['margin_count']);
+        $changed = $duplicatePreview;
+        unset($changed['official_detail_result']['duplicate_preview_page']);
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $changed = $duplicatePreview;
+        $changed['official_detail_result']['verified_valid_candidate_votes']++;
+        $this->assertNull($analytics->singleSeatResult($changed));
     }
 
     public function test_1996_pc_detailed_result_can_be_shown_with_review_note_but_not_without_matching_evidence(): void
