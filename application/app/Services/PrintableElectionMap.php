@@ -45,7 +45,11 @@ class PrintableElectionMap
                 $path .= 'Z ';
             }
 
-            return ['name' => $feature['properties']['name'], 'path' => $path, 'selected' => count($selected) === 1 && in_array($feature, $selected, true)];
+            $shapePoints = array_merge(...$rings($feature));
+            $labelX = (600 - $width * $scale) / 2 + ((min(array_column($shapePoints, 0)) + max(array_column($shapePoints, 0))) / 2 - $minX) * $cosine * $scale;
+            $labelY = (600 - $height * $scale) / 2 + ($maxY - (min(array_column($shapePoints, 1)) + max(array_column($shapePoints, 1))) / 2) * $scale;
+
+            return ['name' => $feature['properties']['name'], 'path' => $path, 'label_x' => round($labelX, 2), 'label_y' => round($labelY, 2), 'selected' => count($selected) === 1 && in_array($feature, $selected, true)];
         }, $features);
     }
 }

@@ -73,10 +73,11 @@
                 link.href=url.href;link.textContent='Find constituency records →';selection.append(link);
             }
         }
+        const tooltipText=(feature,record)=>focusMode ? `${seatText(feature,record)}\n${record?.state || root.dataset.state || feature.properties.state}` : [record?.name || feature.properties.name || 'Unnamed constituency', `${record?.state || root.dataset.state || feature.properties.state} · ${record?.year || root.dataset.year || ''}`, record?.party ? `${record.party}${record.winner ? ' · '+record.winner : ''}` : 'Result not available for this year'].join('\n');
         function showTooltip(feature, record, event) {
             if (!tooltip) return;
             const bounds=root.getBoundingClientRect(),anchor=event.currentTarget?.getBoundingClientRect?.() || bounds;
-            tooltip.textContent=focusMode ? `${seatText(feature,record)}\n${record?.state || root.dataset.state || feature.properties.state}` : [record?.name || feature.properties.name || 'Unnamed constituency', `${record?.state || root.dataset.state || feature.properties.state} · ${record?.year || root.dataset.year || ''}`, record?.party ? `${record.party}${record.winner ? ' · '+record.winner : ''}` : 'Result not available for this year'].join('\n');
+            tooltip.textContent=tooltipText(feature,record);
             tooltip.hidden=false;
             const x=event.clientX ?? ((anchor.left || 0)+anchor.width/2),y=event.clientY ?? ((anchor.top || 0)+(anchor.height || 0)/2);
             tooltip.style.left=Math.max(8,Math.min(bounds.width-(tooltip.offsetWidth || 240)-8,x-(bounds.left || 0)+12))+'px';
@@ -137,7 +138,7 @@
             const record=matches.get(feature.id),path=paths.get(feature.id);
             const item=document.createElement('p'),swatch=document.createElement('i');
             swatch.style.backgroundColor=path?.getAttribute('fill') || partyColor(record?.party,colors);
-            item.append(swatch,document.createTextNode(focusMode ? seatText(feature,record) : [record?.name || feature.properties.name,record?.party,record?.winner].filter(Boolean).join(' · ')));
+            item.append(swatch,document.createTextNode(tooltipText(feature,record)));
             printDetails.append(item);
         });
         root.append(printDetails);
