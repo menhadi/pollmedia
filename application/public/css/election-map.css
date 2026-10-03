@@ -10,4 +10,5 @@
 
 .election-map-current-label{font:600 13px system-ui;fill:var(--site-text);stroke:#fff;stroke-width:5;paint-order:stroke;stroke-linejoin:round}
 
-.state-map-tabs{display:flex;gap:8px;margin:18px 0 12px}.state-map-tabs a{padding:10px 18px;border:1px solid var(--site-border);border-radius:8px;background:var(--site-surface);text-decoration:none;font-weight:600}.state-map-tabs a[aria-current=page]{background:var(--site-primary);color:var(--site-surface);border-color:var(--site-primary)}.state-design .dashboard-main>.election-map{margin:0 0 28px}.state-design .dashboard-main>.election-map svg{max-height:560px}
+
+.state-election-section>.election-map{margin:16px 0 28px}.state-election-section>.election-map svg{max-height:560px}

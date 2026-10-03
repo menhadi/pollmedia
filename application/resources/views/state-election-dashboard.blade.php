@@ -5,11 +5,9 @@
 <div class="dashboard-shell">
 <main class="dashboard-main"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ route('home') }}">{{ \App\Services\PublicLanguage::text('India') }}</a><span>/</span><span aria-current="page">{{ $title }}</span></nav>
 <section class="place-intro"><div><p class="section-label">{{ $stateSummary['kind'] }} · {{ \App\Services\PublicLanguage::text('State overview') }}</p><h1>{{ $title }}</h1><div class="intro-links"><a href="#politics">{{ \App\Services\PublicLanguage::text('Find a district or constituency') }} ↓</a><a href="#state-evidence">{{ \App\Services\PublicLanguage::text('Sources') }} ↓</a></div></div></section>
-<nav class="state-map-tabs" aria-label="Constituency map type"><a href="{{ route('states.show',['state'=>$state,'election'=>'pc']) }}" @if($kind==='pc') aria-current="page" @endif>Lok Sabha</a><a href="{{ route('states.show',['state'=>$state,'election'=>'ac']) }}" @if($kind==='ac') aria-current="page" @endif>State Assembly</a></nav>
-@include('election-map',['mapKind'=>$kind,'mapStateName'=>$title,'mapMode'=>'focus'])
 <nav class="state-jump-links" aria-label="State topics"><a href="#pc-history">Lok Sabha</a><a href="#ac-history">State Assembly</a><a href="#politics">Districts & constituencies</a><a href="{{ route('elections.by-election-results') }}">By-elections ↗</a><a href="{{ route('civic.index',['state'=>$state]) }}">Census & places ↗</a></nav>
 <div id="election-analysis">
-@foreach(($kind==='ac'?['ac'=>'State Assembly','pc'=>'Lok Sabha']:['pc'=>'Lok Sabha','ac'=>'State Assembly']) as $sectionKind=>$sectionLabel)
+@foreach(['pc'=>'Lok Sabha','ac'=>'State Assembly'] as $sectionKind=>$sectionLabel)
 @include('state-election-section',['kind'=>$sectionKind,'sectionLabel'=>$sectionLabel,'history'=>$electionSections[$sectionKind]['history'],'edition'=>$electionSections[$sectionKind]['edition'],'election'=>$electionSections[$sectionKind]['election']])
 @endforeach
 </div>
