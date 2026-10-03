@@ -149,10 +149,37 @@ def result_number(cell: dict) -> int | None:
     return matches[0] if len(matches) == 1 else None
 
 
-def source_result(page: dict, numbers: dict, record: dict, totals: dict) -> tuple[dict | None, str]:
+def printed_result_numbers(page: dict) -> dict | None:
+    values = {}
+    for field, label, left, right in (('winner_votes', 'WINNER', 445, 515),
+                                      ('runner_votes', 'RUNNER-UP', 445, 515),
+                                      ('margin', 'MARGIN', 93, 165)):
+        anchors = [w for w in page['words'] if w[0] < 95 and w[1] > 660 and w[4].upper().startswith(label)]
+        if len(anchors) != 1:
+            return None
+        if field == 'margin':
+            matches = [int(w[4]) for w in page['words'] if abs(w[1] - anchors[0][1]) <= 7
+                       and left <= w[0] < right and w[5] >= 85 and re.fullmatch(r'\d{2,7}', w[4])]
+            value = matches[0] if len(matches) == 1 else None
+        else:
+            value = at(page['words'], anchors[0][1], left, right, r'\d{2,7}', 85)
+        if value is None:
+            return None
+        values[field] = value
+    return values
+
+
+def source_result(page: dict, numbers: dict, record: dict, totals: dict,
+                  *, allow_firstpass: bool = False) -> tuple[dict | None, str]:
     if numbers['page'] != page['page'] or numbers['code'] != page['code']:
         return None, 'result_page_mismatch'
     rows = {cell['field']: result_number(cell) for cell in numbers['cells']}
+    if allow_firstpass and (None in rows.values()
+                            or rows['winner_votes'] - rows['runner_votes'] != rows['margin']):
+        fallback = printed_result_numbers(page)
+        if (fallback is not None and fallback['winner_votes'] > fallback['runner_votes']
+                and fallback['winner_votes'] - fallback['runner_votes'] == fallback['margin']):
+            rows = fallback
     if any(rows.get(key) is None for key in ('winner_votes', 'runner_votes', 'margin')):
         return None, 'unclear_result_number'
     if not 0 < rows['runner_votes'] < rows['winner_votes'] <= totals['valid_candidate_votes']:
@@ -258,7 +285,8 @@ def classify_totals_refined(page: dict, companion: dict, record: dict, *, shifte
             'arithmetic_recovery': True}, 'source_totals_verified_by_arithmetic'
 
 
-def audit_refined(root: Path = ROOT, *, shifted_pages: bool = False) -> dict:
+def audit_refined(root: Path = ROOT, *, shifted_pages: bool = False,
+                  result_fallback: bool = False) -> dict:
     extraction, pages, cells, numbers, prior = load(root)
     companion = {(cell['code'], cell['field']): cell for cell in cells}
     reasons = Counter()
@@ -269,7 +297,8 @@ def audit_refined(root: Path = ROOT, *, shifted_pages: bool = False) -> dict:
         result = None
         result_reason = 'turnout_unresolved'
         if totals is not None:
-            result, result_reason = source_result(page, number, record, totals)
+            result, result_reason = source_result(page, number, record, totals,
+                                                  allow_firstpass=result_fallback)
             reasons[result_reason] += 1
         results.append({'code': record['code'], 'name': record['name'], 'totals': totals,
                         'totals_reason': reason, 'result': result, 'result_reason': result_reason})

@@ -14,6 +14,7 @@ from preserve_archive_json import package
 NAME = 'pollmedia-ac-gujarat-2012-summary-results-20261003'
 NAME_V2 = 'pollmedia-ac-gujarat-2012-summary-results-20261003-v2'
 NAME_V3 = 'pollmedia-ac-gujarat-2012-summary-results-20261003-v3'
+NAME_V4 = 'pollmedia-ac-gujarat-2012-summary-results-20261003-v4'
 
 
 def digest(body: bytes) -> str:
@@ -21,11 +22,14 @@ def digest(body: bytes) -> str:
 
 
 def revised_edition(root: Path = ROOT, *, refined: bool = False,
-                    shifted_pages: bool = False) -> tuple[bytes, bytes, dict]:
-    evidence = audit_refined(root, shifted_pages=shifted_pages) if refined else audit(root)
+                    shifted_pages: bool = False,
+                    result_fallback: bool = False) -> tuple[bytes, bytes, dict]:
+    evidence = audit_refined(root, shifted_pages=shifted_pages,
+                             result_fallback=result_fallback) if refined else audit(root)
     old, _, _, _, old_body = load(root)
     total = evidence['coverage'].get('source_totals_verified', 0) + evidence['coverage'].get('source_totals_verified_by_arithmetic', 0)
-    expected_total, expected_result = ((182, 147) if shifted_pages else (180, 146)) if refined else (171, 140)
+    expected_total, expected_result = ((182, 152 if result_fallback else 147)
+                                       if shifted_pages else (180, 146)) if refined else (171, 140)
     if (total != expected_total
             or evidence['coverage'].get('source_result_verified') != expected_result):
         raise ValueError('Gujarat 2012 evidence inventory differs')
@@ -97,12 +101,15 @@ def revised_edition(root: Path = ROOT, *, refined: bool = False,
                                 'unresolved_codes': [row['code'] for row in evidence['rows'] if row['totals'] is None]}
 
 
-def build(root: Path = ROOT, *, refined: bool = False, shifted_pages: bool = False) -> dict:
-    name = NAME_V3 if shifted_pages else NAME_V2 if refined else NAME
+def build(root: Path = ROOT, *, refined: bool = False, shifted_pages: bool = False,
+          result_fallback: bool = False) -> dict:
+    name = NAME_V4 if result_fallback else NAME_V3 if shifted_pages else NAME_V2 if refined else NAME
     output = root / 'exports' / (name + '.zip')
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
-    old_body, new_body, detail = revised_edition(root, refined=refined, shifted_pages=shifted_pages)
+    old_body, new_body, detail = revised_edition(root, refined=refined,
+                                                 shifted_pages=shifted_pages,
+                                                 result_fallback=result_fallback)
     old_sha = detail['previous_sha256']
     with tempfile.TemporaryDirectory(prefix='ac-gujarat-2012-summary-', dir=output.parent) as temporary:
         staged = Path(temporary) / 'archive'

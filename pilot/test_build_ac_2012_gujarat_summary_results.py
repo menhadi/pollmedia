@@ -10,7 +10,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audit_ac_2012_gujarat_summary_results import EDITION, ROOT, audit, audit_refined
-from build_ac_2012_gujarat_summary_results import NAME, NAME_V2, NAME_V3, revised_edition
+from build_ac_2012_gujarat_summary_results import NAME, NAME_V2, NAME_V3, NAME_V4, revised_edition
 
 
 class Gujarat2012SummaryResultsTest(unittest.TestCase):
@@ -137,6 +137,40 @@ class Gujarat2012ShiftedPageSummaryResultsTest(unittest.TestCase):
 
     def test_latest_bundle_is_guarded_from_same_prior_extraction(self):
         path = ROOT / 'exports' / (NAME_V3 + '.zip')
+        expected, name = path.with_suffix('.sha256').read_text(encoding='ascii').split()
+        self.assertEqual(name, path.name)
+        self.assertEqual(expected, hashlib.sha256(path.read_bytes()).hexdigest())
+        with zipfile.ZipFile(path) as outer:
+            self.assertEqual(self.detail['previous_sha256'], json.loads(outer.read('AUDIT.json'))['previous_sha256'])
+            script = outer.read('IMPORT.sh').decode()
+            self.assertIn('flock -n', script)
+            self.assertIn('10485760', script)
+            self.assertIn('--allow-revision', script)
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'snapshot-{EDITION}.zip'))) as inner:
+                old_path = f'election-archive/{EDITION}/extraction-{self.detail["previous_sha256"]}.json'
+                self.assertEqual(self.old_body, inner.read(old_path))
+            with zipfile.ZipFile(io.BytesIO(outer.read(f'correction-{EDITION}.zip'))) as inner:
+                self.assertEqual(self.new_body, inner.read(f'election-archive/{EDITION}/extraction.json'))
+
+
+class Gujarat2012NumericFallbackTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.old_body, cls.new_body, cls.detail = revised_edition(
+            refined=True, shifted_pages=True, result_fallback=True)
+
+    def test_five_additional_results_match_independent_source_arithmetic(self):
+        base = audit_refined(shifted_pages=True)
+        enhanced = audit_refined(shifted_pages=True, result_fallback=True)
+        added = [later['code'] for earlier, later in zip(base['rows'], enhanced['rows'])
+                 if earlier['result'] is None and later['result'] is not None]
+        self.assertEqual([13, 80, 102, 108, 172], added)
+        self.assertEqual(152, enhanced['coverage']['source_result_verified'])
+        self.assertEqual(182, len(self.detail['changed']))
+        self.assertEqual(28191, enhanced['rows'][79]['result']['margin'])
+
+    def test_latest_bundle_uses_preserved_prior_bytes(self):
+        path = ROOT / 'exports' / (NAME_V4 + '.zip')
         expected, name = path.with_suffix('.sha256').read_text(encoding='ascii').split()
         self.assertEqual(name, path.name)
         self.assertEqual(expected, hashlib.sha256(path.read_bytes()).hexdigest())
