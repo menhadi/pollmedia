@@ -104,22 +104,24 @@ class HistoricalElectionAnalytics
             $provisionalTurnout = $provisionalCandidates && ($record['error'] ?? '') === self::LEGACY_DETAIL_PENDING;
             $detailTurnoutWithTextWarning = $this->hasDetailTurnoutWithTextWarning($record);
             $electorDifference = $this->hasDocumentedElectorDifference($record);
+            $polledDifference = $this->hasDocumentedPolledDifference($record);
             $sourceDifference = $this->hasDocumentedSourceDifference($record);
             $workbookSummaryTurnout = $this->hasOfficialWorkbookSummaryTurnout($record);
             $documentedTurnout = $this->hasDocumentedOfficialTurnout($record);
             $duplicateCandidateTurnout = $this->hasSummaryTurnoutWithDuplicateCandidates($record);
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
-            if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($record['votes_polled'] ?? null) && $record['votes_polled'] <= $turnoutElectors
+            $turnoutPolled = $polledDifference ? $record['summary_totals']['votes_polled'] : ($record['votes_polled'] ?? null);
+            if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($turnoutPolled) && $turnoutPolled <= $turnoutElectors
                 && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout || $duplicateCandidateTurnout)) {
                 $electors += $turnoutElectors;
-                $polled += $record['votes_polled'];
+                $polled += $turnoutPolled;
                 $turnoutCount++;
                 if ($hasWarning) {
                     $turnoutReviewCount++;
                     if ($provisionalTurnout || $detailTurnoutWithTextWarning) {
                         $turnoutDetailCount++;
                     }
-                    if ($electorDifference || $sourceDifference) {
+                    if ($electorDifference || $polledDifference || $sourceDifference) {
                         $turnoutDiscrepancyCount++;
                     }
                 }
@@ -493,7 +495,7 @@ class HistoricalElectionAnalytics
                 && ($summary['electors'] === ($record['electors'] ?? null) || $this->hasDocumentedElectorDifference($record))
                 && $this->count($summary['votes_polled'] ?? null) && $summary['votes_polled'] > 0
                 && $summary['votes_polled'] <= $summary['electors']
-                && $summary['votes_polled'] === ($record['votes_polled'] ?? null)
+                && ($summary['votes_polled'] === ($record['votes_polled'] ?? null) || $this->hasDocumentedPolledDifference($record))
                 && $this->count($summary['valid_candidate_votes'] ?? null);
         }
 
@@ -810,5 +812,29 @@ class HistoricalElectionAnalytics
         $delta = abs($record['electors'] - $summary['electors']);
 
         return $delta > 0 && $delta * 10000 <= $summary['electors'] * 5;
+    }
+
+    private function hasDocumentedPolledDifference(array $record): bool
+    {
+        $summary = $record['summary_totals'] ?? null;
+        $difference = $record['source_discrepancy'] ?? null;
+        if (($record['status'] ?? '') !== 'needs_review'
+            || ($record['source_warning_code'] ?? '') !== 'official_summary_turnout_only'
+            || ! is_array($summary) || ! is_array($difference)
+            || ($difference['field'] ?? '') !== 'votes_polled'
+            || ! $this->count($record['votes_polled'] ?? null)
+            || ! $this->count($summary['votes_polled'] ?? null)
+            || ! $this->count($summary['electors'] ?? null)
+            || $summary['votes_polled'] < 1 || $summary['votes_polled'] > $summary['electors']
+            || ($difference['detail_value'] ?? null) !== $record['votes_polled']
+            || ($difference['summary_value'] ?? null) !== $summary['votes_polled']
+            || ($difference['valid_detail_value'] ?? null) !== ($record['valid_candidate_votes'] ?? null)
+            || ($difference['valid_summary_value'] ?? null) !== ($summary['valid_candidate_votes'] ?? null)) {
+            return false;
+        }
+
+        $delta = abs($summary['votes_polled'] - $record['votes_polled']);
+
+        return $delta > 0 && $delta * 1000 <= $summary['votes_polled'] * 2;
     }
 }
