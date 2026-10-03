@@ -42,15 +42,18 @@
             });
             series.forEach(item => {
                 const index = data.series.indexOf(item), color = item.key === 'others_share' ? colors[3] : colors[index];
-                let path = '', previous = null;
+                let path = '', area = '', previous = null, start = null;
+                const closeArea = () => { if (previous) area += `L${previous.x},${bottom} L${start},${bottom} Z `; };
                 rows.forEach(row => {
                     const value = row[item.key];
-                    if (value === null || !Number.isFinite(value)) { previous=null; return; }
+                    if (value === null || !Number.isFinite(value)) { closeArea(); previous=null; start=null; return; }
                     const xx = x(row.year), yy = y(value);
-                    if (previous) path += `L${xx},${yy} `;
-                    else path += `M${xx},${yy} `;
+                    if (previous) { path += `L${xx},${yy} `; area += `L${xx},${yy} `; }
+                    else { path += `M${xx},${yy} `; area += `M${xx},${yy} `; start = xx; }
                     previous = {x:xx,y:yy};
                 });
+                closeArea();
+                svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
                 svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':item.key==='others_share'?'6 4':'none'}));
                 rows.forEach(row => {
                     const value = row[item.key];

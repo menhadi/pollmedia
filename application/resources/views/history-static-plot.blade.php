@@ -19,16 +19,18 @@ $y=fn($value)=>240-$value/$scale*220;
 @endforeach
 @foreach($plot['series'] as $series)
 @php
-$color=$series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index]; $path='';$previous=null;
+$color=$series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index]; $path='';$area='';$previous=null;$start=null;
 foreach($plotRows as $point){
     $value=$point[$series['key']];
-    if($value===null){$previous=null;continue;}
+    if($value===null){if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}$previous=null;continue;}
     $xx=$x($point['year']);$yy=$y($value);
-    if($previous!==null){$path.='L'.$xx.','.$yy.' ';}
-    else{$path.='M'.$xx.','.$yy.' ';}
+    if($previous!==null){$path.='L'.$xx.','.$yy.' ';$area.='L'.$xx.','.$yy.' ';}
+    else{$path.='M'.$xx.','.$yy.' ';$area.='M'.$xx.','.$yy.' ';$start=$xx;}
     $previous=[$xx,$yy];
 }
+if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}
 @endphp
+<path d="{{ $area }}" fill="{{ $color }}" fill-opacity="0.09" stroke="none"/>
 <path d="{{ $path }}" fill="none" stroke="{{ $color }}" stroke-width="2.5" @if($series['key']==='others_share') stroke-dasharray="6 4" @endif/>
 @endforeach
 </svg>
