@@ -18,7 +18,7 @@ async function setup(features,records,options={}){
     const selectors=['svg','[data-map-seats]','[data-map-status]','[data-map-selection]','[data-map-legend]','[data-map-unplaced]','[data-map-tooltip]'];
     const nodes=Object.fromEntries(selectors.map(s=>[s,new Element()])),list=new Element();
     nodes['[data-map-unplaced]'].querySelector=()=>list;
-    const root=new Element();root.dataset={kind:'pc',mode:options.mode||'results',source:'/source',results:'/results',finder:'/india/elections/constituencies',state:options.state||'Uttar Pradesh',selected:options.selected||'',selectedCode:options.code||'',year:'1957'};root.querySelector=s=>nodes[s];root.querySelectorAll=()=>[];
+    const root=new Element();root.dataset={kind:'pc',mode:options.mode||'results',labels:options.labels?'true':'false',source:'/source',results:'/results',finder:'/india/elections/constituencies',state:options.state||'Uttar Pradesh',selected:options.selected||'',selectedCode:options.code||'',year:'1957'};root.querySelector=s=>nodes[s];root.querySelectorAll=()=>[];
     const window={},location={href:'https://pollmedia.example/',origin:'https://pollmedia.example',assign:url=>{location.assigned=url;}};
     vm.runInNewContext(readFileSync(path.join(__dirname,'../public/js/election-map.js'),'utf8'),{window,location,URL,console,document:{readyState:'complete',querySelectorAll:()=>[root],createElement:()=>new Element(),createElementNS:()=>new Element(),createTextNode:text=>({textContent:text})},fetch:async url=>({ok:!(options.failure===url),json:async()=>url==='/source'?{features}:{records,colors:{BJP:'#ff750f',INC:'#234da0'}}})});
     await new Promise(resolve=>setImmediate(resolve));
@@ -82,3 +82,13 @@ test('historical state name aliases preserve approximate high-level map matching
     assert.equal(n.nodes.svg.children[0].attributes.fill,'#234da0');
 });
 
+
+test('state maps show non-overlapping seat names without blocking clickable shapes',async()=>{
+    const n=await setup([shape('pc-1','Pilibhit',26),shape('pc-2','Bareilly',25)],[record('a:371','Pilibhit',371),record('a:370','Bareilly',370)],{mode:'focus',labels:true});
+    const names=n.nodes.svg.children.find(node=>node.attributes.class==='election-map-names');
+    assert.equal(names.attributes['pointer-events'],'none');
+    assert.equal(names.children.length,1);
+    assert.equal(names.children[0].textContent,'Pilibhit');
+    const seat=n.nodes.svg.children.find(node=>node.attributes.class==='election-map-seat');
+    seat.events.click();assert.match(n.location.assigned,/name=Pilibhit/);
+});

@@ -1,6 +1,6 @@
 <section id="{{ $kind }}-history" class="state-election-section" aria-label="{{ $sectionLabel }} history and results">
 <div class="state-section-heading"><div><p class="section-label">{{ $title }} · {{ $kind==='pc'?'Lok Sabha':'Assembly' }}</p><h2>{{ $sectionLabel }}</h2><p>Historical voting trends and results by election year</p></div><a class="state-jump-button" href="#{{ $kind }}-results">Jump to year results ↓</a>@if($history)<a class="state-jump-button" href="{{ route('states.show',['state'=>$state,'election'=>$kind,'format'=>'report']) }}" target="_blank" rel="noopener">PDF history report ↗</a>@endif</div>
-@include('election-map',['mapKind'=>$kind,'mapStateName'=>$title,'mapMode'=>'focus'])
+@include('election-map',['mapKind'=>$kind,'mapStateName'=>$title,'mapMode'=>'focus','mapLabels'=>true])
 @if($history)
 
 @include('place-history-charts',['stateHistory'=>$history,'chartTableAnchor'=>$kind.'-coverage'])

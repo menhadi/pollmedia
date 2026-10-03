@@ -104,6 +104,33 @@
             const label = svgElement('text',{x:xx,y:Math.max(18,yy),'text-anchor':'middle',class:'election-map-current-label','pointer-events':'none'});
             label.textContent = seatText(feature,matches.get(feature.id)); svg.append(label);
         });
+        const nameLayer = svgElement('g',{'pointer-events':'none','aria-hidden':'true',class:'election-map-names'});
+        if (root.dataset.labels === 'true') svg.append(nameLayer);
+        function drawNames(zoom=1) {
+            if (root.dataset.labels !== 'true') return;
+            nameLayer.replaceChildren();
+            const occupied=[], edge=(600-600/zoom)/2, font=9/zoom;
+            features.forEach(feature => {
+                const polygons=rings(feature).map(ring=>ring.map(project));
+                const area=ring=>Math.abs(ring.reduce((sum,p,i)=>{const next=ring[(i+1)%ring.length];return sum+p[0]*next[1]-next[0]*p[1];},0));
+                const ring=polygons.sort((a,b)=>area(b)-area(a))[0];
+                if (!ring?.length) return;
+                const yy=(Math.min(...ring.map(p=>p[1]))+Math.max(...ring.map(p=>p[1])))/2, crossings=[];
+                ring.forEach((p,i)=>{const next=ring[(i+1)%ring.length];if((p[1]>yy)!==(next[1]>yy)) crossings.push(p[0]+(yy-p[1])*(next[0]-p[0])/(next[1]-p[1]));});
+                crossings.sort((a,b)=>a-b);
+                let span=null;
+                for(let i=0;i+1<crossings.length;i+=2) if(!span || crossings[i+1]-crossings[i]>span[1]-span[0]) span=[crossings[i],crossings[i+1]];
+                if(!span) return;
+                const xx=(span[0]+span[1])/2, name=matches.get(feature.id)?.name || feature.properties.name;
+                if(!name || xx<edge || xx>600-edge || yy<edge || yy>600-edge) return;
+                const width=name.length*font*.52, box={left:xx-width/2-3/zoom,right:xx+width/2+3/zoom,top:yy-font,bottom:yy+font/2};
+                if(occupied.some(b=>box.left<b.right && box.right>b.left && box.top<b.bottom && box.bottom>b.top)) return;
+                occupied.push(box);
+                const label=svgElement('text',{x:xx,y:yy,'text-anchor':'middle','dominant-baseline':'middle',class:'election-map-seat-name','font-size':font,'stroke-width':2.5/zoom});
+                label.textContent=name; nameLayer.append(label);
+            });
+        }
+        drawNames();
         seats.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a constituency';seats.append(placeholder);
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});
@@ -118,7 +145,7 @@
             [...parties,null].forEach(party=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=partyColor(party,colors);swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(party||'Result not available'));legend.append(item);});
             if(root.dataset.selected){const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor='var(--site-accent)';item.append(swatch,document.createTextNode('Selected constituency'));legend.append(item);}
         }
-        let zoom=1;root.querySelectorAll('[data-map-zoom]').forEach(button=>button.addEventListener('click',()=>{zoom=button.dataset.mapZoom==='reset'?1:Math.max(1,Math.min(8,zoom*(button.dataset.mapZoom==='in'?1.5:1/1.5)));const size=600/zoom;svg.setAttribute('viewBox',`${(600-size)/2} ${(600-size)/2} ${size} ${size}`);svg.style.touchAction=zoom>1?'none':'pan-y';}));
+        let zoom=1;root.querySelectorAll('[data-map-zoom]').forEach(button=>button.addEventListener('click',()=>{zoom=button.dataset.mapZoom==='reset'?1:Math.max(1,Math.min(8,zoom*(button.dataset.mapZoom==='in'?1.5:1/1.5)));const size=600/zoom;svg.setAttribute('viewBox',`${(600-size)/2} ${(600-size)/2} ${size} ${size}`);svg.style.touchAction=zoom>1?'none':'pan-y';drawNames(zoom);}));
         // Drag a zoomed map; ordinary clicks still open a constituency.
         let drag=null,moved=false;
         svg.addEventListener('pointerdown',e=>{if(zoom<=1)return;drag={x:e.clientX,y:e.clientY,box:svg.getAttribute('viewBox').split(' ').map(Number)};moved=false;});
