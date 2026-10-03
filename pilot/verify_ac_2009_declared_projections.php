@@ -11,6 +11,7 @@ $editions = [
     'Haryana' => ['4ac73455f798dcf3a8d2946f', 'haryana', 90],
     'Jharkhand' => ['0882c0bd6b8d8738e38b6f06', 'jharkhand', 81],
     'Maharashtra' => ['cc0185e917711e78c149abf4', 'maharashtra', 288],
+    'Arunachal Pradesh' => ['1901084c7189cfe9433f1842', 'arunachal-pradesh', 60],
 ];
 $analytics = app(HistoricalElectionAnalytics::class);
 foreach ($editions as $state => [$id, $slug, $expected]) {
@@ -31,12 +32,22 @@ foreach ($editions as $state => [$id, $slug, $expected]) {
             throw new RuntimeException("$state correction checksum differs");
         }
         $records = json_decode($body, true, 512, JSON_THROW_ON_ERROR)['records'];
-        if (count($records) !== $expected || count($audit['results']) !== $expected) {
+        $uncontestedCodes = $state === 'Arunachal Pradesh' ? [1, 2, 3] : [];
+        if (count($records) !== $expected || count($audit['results']) !== $expected - count($uncontestedCodes)) {
             throw new RuntimeException("$state result coverage differs");
         }
         foreach ($records as $record) {
             $summary = $analytics->summarize([$record]);
-            $result = $analytics->singleSeatResult($record);
+            $result = $analytics->singleSeatResult($record, $id);
+            if (in_array($record['code'], $uncontestedCodes, true)) {
+                if ($summary['turnout_count'] !== 0 || $summary['margin_count'] !== 0
+                    || $result['uncontested'] !== true || $result['margin'] !== null
+                    || $result['winner'] !== $record['candidates'][0]['candidate_name']
+                    || $result['party'] !== $record['candidates'][0]['party_at_election']) {
+                    throw new RuntimeException("$state uncontested seat {$record['code']} differs");
+                }
+                continue;
+            }
             if ($summary['turnout_count'] !== 1 || $summary['margin_count'] !== 1
                 || $summary['polled'] !== $record['votes_polled']
                 || $result['winner'] !== $record['summary_result']['winner']

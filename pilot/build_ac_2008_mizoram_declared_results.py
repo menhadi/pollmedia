@@ -40,6 +40,7 @@ class SourceConfig:
     summary_only_codes: frozenset[int] = frozenset()
     year: int = 2008
     margin_discrepancies: tuple[tuple[int, int, int], ...] = ()
+    uncontested_codes: frozenset[int] = frozenset()
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -68,13 +69,24 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             or digest(pdf_path.read_bytes()) != old['source_sha256']):
         raise ValueError(f'Official {config.state} 2008 source identity differs')
     summaries = read_summary_pages(pdf_path)
-    if len(summaries) != config.seats or set(summaries) != set(range(1, config.seats + 1)):
+    contested_codes = set(range(1, config.seats + 1)) - config.uncontested_codes
+    if len(summaries) != len(contested_codes) or set(summaries) != contested_codes:
         raise ValueError(f'Official {config.state} 2008 summary coverage differs')
     revised = json.loads(old_body)
     results = []
     seen_margin_discrepancies = set()
     with fitz.open(pdf_path) as pdf:
         for record in revised['records']:
+            if record['code'] in config.uncontested_codes:
+                if (record['status'] != 'needs_review' or record['state_name'] != config.state
+                        or record['number_of_seats'] != 1 or record.get('summary_result') is not None
+                        or record.get('summary_page') is not None
+                        or record.get('votes_polled') not in (None, 0)
+                        or record.get('margin') not in (None, 0)
+                        or len(record['candidates']) != 1
+                        or record['candidates'][0].get('votes') not in (None, 0)):
+                    raise ValueError(f'Uncontested {config.state} source row differs: {record["code"]}')
+                continue
             summary = summaries[record['code']]
             summary_only = record['code'] in config.summary_only_codes
             if (record['status'] != 'needs_review' or record['state_name'] != config.state
@@ -129,13 +141,15 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                 record['error'] += (f' The printed margin is {margin_votes}, while the official winner and runner-up '
                                     f'votes differ by {calculated_margin}; the displayed margin uses that difference.')
             results.append({'code': record['code'], 'page': summary['summary_page'], **result})
-    if len(results) != config.seats or {item['code'] for item in results} != set(range(1, config.seats + 1)):
+    if len(results) != len(contested_codes) or {item['code'] for item in results} != contested_codes:
         raise ValueError(f'{config.state} 2008 result inventory differs')
     if seen_margin_discrepancies != set(config.margin_discrepancies):
         raise ValueError(f'{config.state} expected margin discrepancies differ')
     for before, after in zip(old['records'], revised['records']):
         changed = {key for key in set(before) | set(after) if before.get(key) != after.get(key)}
         expected = {'summary_source_file', 'summary_source_sha256', 'summary_result', 'error'}
+        if before['code'] in config.uncontested_codes:
+            expected = set()
         if before['code'] in config.summary_only_codes:
             expected |= {'source_warning_code', 'original_source_warning_code'}
         if before['code'] in {item[0] for item in config.margin_discrepancies}:
