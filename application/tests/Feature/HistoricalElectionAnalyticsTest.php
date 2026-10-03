@@ -1257,6 +1257,40 @@ class HistoricalElectionAnalyticsTest extends TestCase
         }
     }
 
+    public function test_official_1957_sausar_result_is_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('6dfd6b3caf24c34e288769cf', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 116);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+        $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+        $record['official_summary_state'] = 'Madhya Pradesh';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_page'] = 134;
+        $record['summary_totals'] = ['electors' => 52018, 'votes_polled' => 96630, 'valid_candidate_votes' => 96630];
+        $record['summary_result'] = ['winner' => 'RAICHANDBHAI NARSIBHAI', 'winner_party' => 'INC', 'winner_votes' => 25497,
+            'runner' => 'RANCHUSINGH DOMAJI (ST)', 'runner_party' => 'INC', 'runner_votes' => 24234, 'margin' => 1263];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame(['winner' => 'RAICHANDBHAI NARSIBHAI', 'party' => 'INC', 'margin' => 1263, 'derived' => false],
+            $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(0, $summary['turnout_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        foreach ([
+            ['summary_source_sha256', str_repeat('0', 64)],
+            ['summary_page', 133],
+            ['number_of_seats', 2],
+            ['valid_candidate_votes', 96629],
+        ] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
+
     public function test_official_1989_declared_result_is_shown_without_impossible_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('3250a94d4b625ec2bea29016', app(ElectionArchive::class));

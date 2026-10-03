@@ -1114,6 +1114,14 @@ class HistoricalElectionAnalytics
     private function officialInvalidTurnoutResult(array $record): ?array
     {
         $source = match ($record['summary_source_file'] ?? null) {
+            '6dfd6b3caf24c34e288769cf-8772.pdf' => [
+                'code' => 116, 'name' => 'SAUSAR (ST)', 'state' => 'Madhya Pradesh',
+                'url' => 'https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/',
+                'sha256' => '195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2',
+                'summary_page' => 134, 'detail_page' => 256, 'electors' => 52018,
+                'votes_polled' => 96630, 'valid_candidate_votes' => 96630, 'candidates' => 6,
+                'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+            ],
             'd31cb3f180e44ec4b9e59209-7464.pdf' => [
                 'code' => 234, 'name' => 'HATA', 'state' => 'Uttar Pradesh',
                 'url' => 'https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/',
