@@ -23,6 +23,9 @@ class ElectoralMapResults
             $query->joinSub($latest, 'latest_map_years', fn ($join) => $join->on('year', '=', 'latest_map_years.map_year')->whereRaw($stateSql.' = latest_map_years.map_state'));
         }
         $rows = $query->select('historical_constituency_index.*')->orderByDesc('year')->orderBy('edition_id')->orderBy('record_code')->get();
+        if ($edition) {
+            $rows = $rows->concat(app(ConstituencyArchiveHistory::class)->missingEntries($kind, $state, null, $rows, $edition));
+        }
         if (! $edition) {
             $rows = $rows->groupBy(fn ($r) => mb_strtolower(ElectionPlaceIdentity::state($r->state_label ?? '')))->flatMap(function ($group) {
                 $latest = $group->where('year', $group->max('year'))->groupBy('edition_id')->sortByDesc(fn ($entries) => $entries->count())->first();

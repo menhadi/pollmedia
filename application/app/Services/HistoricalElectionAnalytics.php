@@ -50,7 +50,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v11:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v12:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -61,7 +61,8 @@ class HistoricalElectionAnalytics
                 $sourceState = null;
                 foreach ($data['records'] as $record) {
                     $recordState = $record['state_name'] ?? $record['state_code'] ?? ($kind === 'ac' ? $state : '');
-                    if (mb_strtolower($recordState) !== mb_strtolower($state)) {
+                    if ((preg_match('/^[su][0-9]{2}$/i', $recordState) && $data['year'] < 1977)
+                        || mb_strtolower(ElectionPlaceIdentity::state($recordState)) !== mb_strtolower(ElectionPlaceIdentity::state($state))) {
                         continue;
                     }
                     $sourceState ??= $recordState;

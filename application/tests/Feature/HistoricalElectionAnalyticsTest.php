@@ -739,10 +739,10 @@ class HistoricalElectionAnalyticsTest extends TestCase
 
         $this->get('/india/state/goa?election=pc&edition='.$edition['id'])
             ->assertOk()
-            ->assertSee($edition['label'].' †')
-            ->assertSee('2 of 2 results have data notes')
-            ->assertSee('Turnout in 2 results has source notes')
-            ->assertSee('Map of Goa')
+            ->assertSee($edition['label'])
+            ->assertSee('This election includes records with data notes.')
+            ->assertSee('† marks figures with source notes.')
+            ->assertSee('Goa · Lok Sabha map')
             ->assertSee('View results and notes');
 
         $this->get('/india/elections/lok-sabha?edition='.$edition['id'].'&state=Goa')

@@ -3,7 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Services\ElectionArchive;
+use App\Services\ElectionPlaceIdentity;
 use App\Services\ElectoralMapCatalogue;
+use App\Services\HistoricalElectionAnalytics;
+use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +16,62 @@ use Tests\TestCase;
 class ElectoralMapIntegrationTest extends TestCase
 {
     use RefreshDatabase;
+
+    private function importedOlderEdition(string $state = 'Uttar Pradesh', string $name = 'Pilibhit'): array
+    {
+        [$label, $url] = collect(app(ElectionArchive::class)->catalogue()['pc'])->first(fn ($item) => str_starts_with($item[0], '1957'));
+        $edition = substr(hash('sha256', $url), 0, 24);
+        $data = ['kind' => 'pc', 'year' => 1957, 'source_url' => $url, 'source_file' => 'source.pdf', 'source_sha256' => str_repeat('f', 64), 'records' => [
+            ['code' => 16, 'name' => $name, 'constituency_name' => $name, 'state_name' => $state, 'state_code' => 'S12', 'status' => 'validated', 'number_of_seats' => 1, 'electors' => 200, 'votes_polled' => 150,
+                'winner' => 'Earlier winner', 'margin' => 50, 'candidates' => [['candidate_name' => 'Earlier winner', 'party_at_election' => 'INC', 'votes' => 100], ['candidate_name' => 'Earlier runner', 'party_at_election' => 'IND', 'votes' => 50]]],
+        ]];
+        foreach (['extraction.json' => $data, 'manifest.json' => ['url' => $url, 'files' => [['file' => 'source.pdf', 'sha256' => $data['source_sha256']]]]] as $file => $contents) {
+            $path = 'election-archive/'.$edition.'/'.$file;
+            $body = json_encode($contents);
+            DB::table('archive_json_files')->insert(['path_hash' => hash('sha256', $path), 'path' => $path, 'category' => 'election-archive', 'bytes' => strlen($body), 'sha256' => hash('sha256', $body), 'source_url' => $url, 'body' => $body]);
+        }
+
+        return [$edition, $data];
+    }
+
+    public function test_pre_1980_history_and_map_results_use_preserved_imports_when_the_index_is_missing(): void
+    {
+        Storage::fake('local');
+        [$edition, $data] = $this->importedOlderEdition();
+        $this->mock(HistoricalElectionArchive::class, function ($mock) use ($data) {
+            $mock->shouldReceive('load')->andReturn([$data]);
+        });
+        $this->get('/india/constituency?kind=pc&state=Uttar%20Pradesh&name=Pilibhit')->assertOk()->assertSee('1957')->assertSee('Earlier winner')->assertSee('1957 results');
+        $this->getJson('/api/election-maps/results?kind=pc&state=uttar-pradesh&edition='.$edition)->assertOk()->assertJsonCount(1, 'records')->assertJsonPath('records.0.year', 1957)->assertJsonPath('records.0.party', 'INC');
+        $this->assertDatabaseCount('historical_constituency_index', 0);
+    }
+
+    public function test_renamed_state_history_remains_available_under_current_navigation(): void
+    {
+        Storage::fake('local');
+        [$edition, $data] = $this->importedOlderEdition('Madras', 'Historical seat');
+        $history = app(HistoricalElectionAnalytics::class)->forState('Tamil Nadu', 'pc');
+        $this->assertSame(1957, $history[0]['year']);
+        $this->assertSame('Madras', $history[0]['state']);
+        $this->getJson('/api/election-maps/results?kind=pc&state=tamil-nadu&edition='.$edition)->assertOk()->assertJsonPath('records.0.state', 'Tamil Nadu');
+        $this->assertSame('Karnataka', ElectionPlaceIdentity::state('Mysore'));
+        $this->assertSame('tamil-nadu', app(ElectoralMapCatalogue::class)->stateFromQuery('Madras')['slug']);
+        $this->assertDatabaseCount('historical_constituency_index', 0);
+    }
+
+    public function test_unindexed_history_rejects_source_manifest_mismatch(): void
+    {
+        Storage::fake('local');
+        [$edition] = $this->importedOlderEdition();
+        $path = 'election-archive/'.$edition.'/manifest.json';
+        $row = DB::table('archive_json_files')->where('path', $path)->first();
+        $manifest = json_decode($row->body, true);
+        $manifest['files'][0]['sha256'] = str_repeat('0', 64);
+        $body = json_encode($manifest);
+        DB::table('archive_json_files')->where('path', $path)->update(['body' => $body, 'bytes' => strlen($body), 'sha256' => hash('sha256', $body)]);
+        $this->getJson('/api/election-maps/results?kind=pc&state=uttar-pradesh&edition='.$edition)->assertStatus(409);
+        $this->assertDatabaseCount('historical_constituency_index', 0);
+    }
 
     private function fixture(string $kind = 'pc', string $state = 'Uttar Pradesh', string $id = 'a', int $year = 2024): string
     {

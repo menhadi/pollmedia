@@ -4,6 +4,9 @@ namespace App\Services;
 
 class ElectionPlaceIdentity
 {
+    /** Navigation aliases only; original state labels and historical boundaries remain in source records. */
+    private const STATE_ALIASES = ['madras' => 'Tamil Nadu', 'mysore' => 'Karnataka', 'orissa' => 'Odisha', 'orrisa' => 'Odisha', 'uttaranchal' => 'Uttarakhand', 'pondicherry' => 'Puducherry', 'kerla' => 'Kerala', 'gujrat' => 'Gujarat'];
+
     private static function labels(): array
     {
         return json_decode(file_get_contents(database_path('fixtures/eci-state-search-labels.json')), true, 512, JSON_THROW_ON_ERROR)['labels'];
@@ -15,6 +18,9 @@ class ElectionPlaceIdentity
         foreach (self::labels() as $code => $label) {
             $sql .= " WHEN '".str_replace("'", "''", $code)."' THEN '".str_replace("'", "''", mb_strtolower($label))."'";
         }
+        foreach (self::STATE_ALIASES as $old => $label) {
+            $sql .= " WHEN '$old' THEN '".mb_strtolower($label)."'";
+        }
 
         return $sql.' ELSE LOWER(TRIM(state_label)) END';
     }
@@ -22,6 +28,9 @@ class ElectionPlaceIdentity
     public static function state(string $state): string
     {
         $key = mb_strtolower(trim($state));
+        if (isset(self::STATE_ALIASES[$key])) {
+            return self::STATE_ALIASES[$key];
+        }
         $labels = self::labels();
         if (isset($labels[$key])) {
             return $labels[$key];

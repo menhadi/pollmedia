@@ -1,7 +1,7 @@
 (() => {
     const requests = new Map(), ns = 'http://www.w3.org/2000/svg';
     const normalize = value => String(value || '').normalize('NFKD').toLowerCase().replace(/\((sc|st)\)|\b(sc|st)\b/g, '').replace(/[^a-z0-9\u0900-\u097f]/g, '');
-    const stateKey = value => ({orissa:'odisha',uttaranchal:'uttarakhand',nctofdelhi:'delhi',nationalcapitalterritoryofdelhi:'delhi',pondicherry:'puducherry'}[normalize(value)] || normalize(value));
+    const stateKey = value => ({orissa:'odisha',orrisa:'odisha',madras:'tamilnadu',mysore:'karnataka',kerla:'kerala',gujrat:'gujarat',uttaranchal:'uttarakhand',nctofdelhi:'delhi',nationalcapitalterritoryofdelhi:'delhi',pondicherry:'puducherry'}[normalize(value)] || normalize(value));
     function match(feature, records, context) {
         const p = feature.properties, state = stateKey(context || p.state), name = normalize(p.name);
         if (!name) return [];
@@ -20,7 +20,7 @@
     }
     const fallbacks = ['var(--palette-234da0)','var(--palette-258368)','var(--palette-b88100)','var(--palette-b97815)','var(--palette-4d6e62)','var(--palette-391800)'];
     function partyColor(party, colors) {
-        if (!party) return 'var(--site-border)';
+        if (!party) return 'var(--palette-d5dfd5)';
         const key = party.toUpperCase(), alias = {'BHARATIYA JANATA PARTY':'BJP','INDIAN NATIONAL CONGRESS':'INC'}[key] || key;
         if (colors[alias]) return colors[alias];
         let hash = 0; for (const c of key) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
@@ -31,6 +31,7 @@
     async function load(root) {
         const svg = root.querySelector('svg'), seats = root.querySelector('[data-map-seats]'), status = root.querySelector('[data-map-status]');
         const selection = root.querySelector('[data-map-selection]'), legend = root.querySelector('[data-map-legend]');
+        const tooltip = root.querySelector('[data-map-tooltip]');
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
@@ -64,14 +65,25 @@
                 link.href=url.href;link.textContent='Find constituency records →';selection.append(link);
             }
         }
+        function showTooltip(feature, record, event) {
+            if (!tooltip) return;
+            const bounds=root.getBoundingClientRect(),anchor=event.currentTarget?.getBoundingClientRect?.() || bounds;
+            tooltip.textContent=[record?.name || feature.properties.name || 'Unnamed constituency', `${record?.state || root.dataset.state || feature.properties.state} · ${record?.year || root.dataset.year || ''}`, record?.party ? `${record.party}${record.winner ? ' · '+record.winner : ''}` : 'Result not available for this year'].join('\n');
+            tooltip.hidden=false;
+            const x=event.clientX ?? ((anchor.left || 0)+anchor.width/2),y=event.clientY ?? ((anchor.top || 0)+(anchor.height || 0)/2);
+            tooltip.style.left=Math.max(8,Math.min(bounds.width-(tooltip.offsetWidth || 240)-8,x-(bounds.left || 0)+12))+'px';
+            tooltip.style.top=Math.max(8,y-(bounds.top || 0)-(tooltip.offsetHeight || 90)-12)+'px';
+        }
+        const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
             const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':record?recordText(record):(f.properties.name || 'Unnamed constituency'),class:'election-map-seat'});
             const title=svgElement('title');title.textContent=record?recordText(record):(f.properties.name||'Unnamed constituency');path.append(title);
-            path.addEventListener('pointerenter',()=>describe(f,record));path.addEventListener('focus',()=>describe(f,record));
+            path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
+            path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
             const open=()=>{describe(f,record);const url=record&&safeUrl(record.url);if(url) location.assign(url);else {const finder=new URL(root.dataset.finder,location.href);finder.searchParams.set('kind',root.dataset.kind);finder.searchParams.set('state',root.dataset.state || f.properties.state);finder.searchParams.set('q',f.properties.name || '');location.assign(finder.href);}};
             path.addEventListener('click',open);path.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
-            if(record&&selected(record)){path.classList.add('is-selected');describe(f,record);}
+            if((record&&selected(record)) || (!record&&root.dataset.selected&&normalize(f.properties.name)===normalize(root.dataset.selected)&&names.get(stateKey(f.properties.state)+':'+normalize(f.properties.name))===1)){path.classList.add('is-selected');path.setAttribute('aria-current','true');describe(f,record);}
             svg.append(path);paths.set(f.id,path);
         });
         // Raise the selected outline above adjacent shapes without changing source geometry.
@@ -85,6 +97,7 @@
         unplaced.forEach(r=>{const url=safeUrl(r.url);if(!url)return;const link=document.createElement('a');link.href=url;link.textContent=recordText(r);link.style.setProperty('--seat-party',partyColor(r.party,colors));if(selected(r)){link.classList.add('is-selected');section.open=true;selection.textContent=recordText(r)+' · historical seat shown in the schematic list.';}list.append(link);});
         const parties=[...new Set(records.map(r=>r.party).filter(Boolean))].sort();
         [...parties,null].forEach(party=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=partyColor(party,colors);swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(party||'Result not available'));legend.append(item);});
+        if(root.dataset.selected){const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor='var(--site-accent)';item.append(swatch,document.createTextNode('Selected constituency'));legend.append(item);}
         let zoom=1;root.querySelectorAll('[data-map-zoom]').forEach(button=>button.addEventListener('click',()=>{zoom=button.dataset.mapZoom==='reset'?1:Math.max(1,Math.min(8,zoom*(button.dataset.mapZoom==='in'?1.5:1/1.5)));const size=600/zoom;svg.setAttribute('viewBox',`${(600-size)/2} ${(600-size)/2} ${size} ${size}`);svg.style.touchAction=zoom>1?'none':'pan-y';}));
         // Drag a zoomed map; ordinary clicks still open a constituency.
         let drag=null,moved=false;

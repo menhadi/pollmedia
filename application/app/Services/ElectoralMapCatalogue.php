@@ -11,7 +11,8 @@ class ElectoralMapCatalogue
 
     public function stateFromQuery(string $query): ?array
     {
-        $segments = array_map(fn ($part) => mb_strtolower(trim($part)), explode(',', $query));
+        $aliases = ['madras' => 'tamil nadu', 'mysore' => 'karnataka', 'orrisa' => 'odisha', 'kerla' => 'kerala', 'gujrat' => 'gujarat', 'uttaranchal' => 'uttarakhand', 'pondicherry' => 'puducherry'];
+        $segments = array_map(fn ($part) => $aliases[mb_strtolower(trim($part))] ?? mb_strtolower(trim($part)), explode(',', $query));
         foreach ($this->all()['states'] as $state) {
             $names = [mb_strtolower($state['name']), str_replace('-', ' ', $state['slug'])];
             if ($state['slug'] === 'odisha') {

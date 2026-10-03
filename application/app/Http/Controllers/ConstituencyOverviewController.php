@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ConstituencyArchiveHistory;
 use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionAnalytics;
@@ -22,6 +23,7 @@ class ConstituencyOverviewController extends Controller
         $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
         $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($name)])->orderByDesc('year')->orderBy('edition_id')->get();
+        $entries = $entries->concat(app(ConstituencyArchiveHistory::class)->missingEntries($kind, $state, $name, $entries))->sortBy([['year', 'desc'], ['edition_id', 'asc']])->values();
         abort_if($entries->isEmpty(), 404);
         $ambiguousName = $entries->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1);
         $exactSeatOnly = false;
