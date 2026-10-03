@@ -27,6 +27,11 @@
         return fallbacks[hash % fallbacks.length];
     }
     function recordText(record) {return `${record.name} · ${record.state} · ${record.year}${record.party ? ' · '+record.party : ''}`;}
+    function locatorColor(name) {
+        const palette = ['#dbeafe','#e0e7ff','#cffafe','#ede9fe'];
+        let hash = 0; for (const c of normalize(name)) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
+        return palette[hash % palette.length];
+    }
     function safeUrl(value) {try {const url = new URL(value,location.href); return url.origin === location.origin ? url.href : null;} catch {return null;}}
     async function load(root) {
         const svg = root.querySelector('svg'), seats = root.querySelector('[data-map-seats]'), status = root.querySelector('[data-map-status]');
@@ -35,6 +40,13 @@
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
         const focusMode = root.dataset.mode === 'focus';
+        const seatText = (feature, record) => focusMode ? `${record?.name || feature.properties.name} · ${root.dataset.kind.toUpperCase()}` : (record ? recordText(record) : feature.properties.name);
+        const seatUrl = record => {
+            const safe = record && safeUrl(record.url);
+            if (!safe || !focusMode) return safe;
+            const url = new URL(safe); url.searchParams.delete('edition'); url.searchParams.delete('code');
+            return url.href;
+        };
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
         const matches = new Map(), used = new Set(), paths = new Map();
         // A boundary code is not an extraction row number. Name/state matches are approximate;
@@ -69,7 +81,7 @@
         function showTooltip(feature, record, event) {
             if (!tooltip) return;
             const bounds=root.getBoundingClientRect(),anchor=event.currentTarget?.getBoundingClientRect?.() || bounds;
-            tooltip.textContent=[record?.name || feature.properties.name || 'Unnamed constituency', `${record?.state || root.dataset.state || feature.properties.state} · ${record?.year || root.dataset.year || ''}`, record?.party ? `${record.party}${record.winner ? ' · '+record.winner : ''}` : 'Result not available for this year'].join('\n');
+            tooltip.textContent=focusMode ? `${seatText(feature,record)}\n${record?.state || root.dataset.state || feature.properties.state}` : [record?.name || feature.properties.name || 'Unnamed constituency', `${record?.state || root.dataset.state || feature.properties.state} · ${record?.year || root.dataset.year || ''}`, record?.party ? `${record.party}${record.winner ? ' · '+record.winner : ''}` : 'Result not available for this year'].join('\n');
             tooltip.hidden=false;
             const x=event.clientX ?? ((anchor.left || 0)+anchor.width/2),y=event.clientY ?? ((anchor.top || 0)+(anchor.height || 0)/2);
             tooltip.style.left=Math.max(8,Math.min(bounds.width-(tooltip.offsetWidth || 240)-8,x-(bounds.left || 0)+12))+'px';
@@ -78,11 +90,11 @@
         const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
-            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'var(--palette-d5dfd5)':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':record?recordText(record):(f.properties.name || 'Unnamed constituency'),class:'election-map-seat'});
-            const title=svgElement('title');title.textContent=record?recordText(record):(f.properties.name||'Unnamed constituency');path.append(title);
+            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?locatorColor(f.properties.name):partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
+            const title=svgElement('title');title.textContent=seatText(f,record);path.append(title);
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
-            const open=()=>{describe(f,record);const url=record&&safeUrl(record.url);if(url) location.assign(url);else {const finder=new URL(root.dataset.finder,location.href);finder.searchParams.set('kind',root.dataset.kind);finder.searchParams.set('state',root.dataset.state || f.properties.state);finder.searchParams.set('q',f.properties.name || '');location.assign(finder.href);}};
+            const open=()=>{describe(f,record);const url=seatUrl(record);if(url) location.assign(url);else {const finder=new URL(root.dataset.finder,location.href);finder.searchParams.set('kind',root.dataset.kind);finder.searchParams.set('state',root.dataset.state || f.properties.state);finder.searchParams.set('q',f.properties.name || '');location.assign(finder.href);}};
             path.addEventListener('click',open);path.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
             if((record&&selected(record)) || (!record&&root.dataset.selected&&normalize(f.properties.name)===normalize(root.dataset.selected)&&names.get(stateKey(f.properties.state)+':'+normalize(f.properties.name))===1)){path.classList.add('is-selected');path.setAttribute('aria-current','true');describe(f,record);}
             svg.append(path);paths.set(f.id,path);
@@ -94,7 +106,7 @@
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&safeUrl(r.url);if(url)location.assign(url);});
         const unplaced=records.filter(r=>!used.has(r.id)),section=root.querySelector('[data-map-unplaced]'),list=section.querySelector('.election-map-unplaced');
-        section.hidden=!unplaced.length;
+        section.hidden=focusMode || !unplaced.length;
         unplaced.forEach(r=>{const url=safeUrl(r.url);if(!url)return;const link=document.createElement('a');link.href=url;link.textContent=recordText(r);link.style.setProperty('--seat-party',focusMode?'var(--site-border)':partyColor(r.party,colors));if(selected(r)){link.classList.add('is-selected');section.open=true;selection.textContent=recordText(r)+' · historical seat shown in the schematic list.';}list.append(link);});
         if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
@@ -110,7 +122,7 @@
         svg.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>5)moved=true;const ratio=drag.box[2]/svg.getBoundingClientRect().width;svg.setAttribute('viewBox',`${drag.box[0]-dx*ratio} ${drag.box[1]-dy*ratio} ${drag.box[2]} ${drag.box[3]}`);});
         svg.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopImmediatePropagation();moved=false;}},true);
         ['pointerup','pointerleave','pointercancel'].forEach(name=>svg.addEventListener(name,()=>{drag=null;}));
-        status.textContent=source.status==='rejected'?'Map unavailable. Constituency records remain accessible below.':result.status==='rejected'?'Election results could not be loaded. Shapes remain available with neutral colours.':features.length?'Select a constituency to explore its election records.':'No separate boundary layer is available. Constituency records are listed below.';
+        status.textContent=focusMode && source.status==='fulfilled' && features.length ? 'Hover for a constituency name. Click to open its page.' : source.status==='rejected'?'Map unavailable. Constituency records remain accessible below.':result.status==='rejected'?'Election results could not be loaded. Shapes remain available with neutral colours.':features.length?'Select a constituency to explore its election records.':'No separate boundary layer is available. Constituency records are listed below.';
     }
     function init(container=document) {
         const roots=[...(container.matches?.('[data-election-map]')?[container]:[]),...container.querySelectorAll('[data-election-map]')];
