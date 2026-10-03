@@ -132,7 +132,7 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             record['summary_source_file'] = old['source_file']
             record['summary_source_sha256'] = old['source_sha256']
             record['summary_result'] = result
-            if config.result_warning_code is not None:
+            if config.result_warning_code is not None and not summary_only:
                 if record.get('source_warning_code') is not None:
                     raise ValueError(f'Cannot replace {config.state} source warning: {record["code"]}')
                 record['source_warning_code'] = config.result_warning_code
@@ -159,7 +159,7 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             expected = set()
         if before['code'] in config.summary_only_codes:
             expected |= {'source_warning_code', 'original_source_warning_code'}
-        if config.result_warning_code is not None and before['code'] not in config.uncontested_codes:
+        if config.result_warning_code is not None and before['code'] not in config.uncontested_codes and before['code'] not in config.summary_only_codes:
             expected |= {'source_warning_code'}
         if before['code'] in {item[0] for item in config.margin_discrepancies}:
             expected |= {'official_printed_margin', 'source_discrepancy'}
