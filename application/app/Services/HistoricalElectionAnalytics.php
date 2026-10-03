@@ -332,6 +332,10 @@ class HistoricalElectionAnalytics
         if (($record['source_warning_code'] ?? null) === 'official_pc_detailed_result_verified') {
             return $this->hasVerifiedPcDetailResult($record);
         }
+        if (($record['source_warning_code'] ?? null) === 'official_turnout_from_residual_source'
+            && isset($record['official_detail_result'])) {
+            return $this->officialResidualDetailResult($record) !== null;
+        }
 
         $error = $record['error'] ?? '';
         $documentedDifference = $this->hasDocumentedElectorDifference($record);

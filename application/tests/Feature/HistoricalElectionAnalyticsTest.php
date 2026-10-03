@@ -845,12 +845,14 @@ class HistoricalElectionAnalyticsTest extends TestCase
 
         $this->assertSame(1, $analytics->summarize([$record])['turnout_count']);
         $this->assertSame(1, $analytics->summarize([$record])['margin_count']);
+        $this->assertSame(1, $analytics->summarize([$record])['party_count']);
         $this->assertSame('First', $analytics->singleSeatResult($record)['winner']);
         $this->assertSame(50, $analytics->singleSeatResult($record)['margin']);
 
         $changed = $record;
         $changed['candidates'][0]['votes']++;
         $this->assertSame(0, $analytics->summarize([$changed])['margin_count']);
+        $this->assertSame(0, $analytics->summarize([$changed])['party_count']);
         $this->assertNull($analytics->singleSeatResult($changed));
         $changed = $record;
         $changed['official_detail_result']['source_sha256'] = str_repeat('b', 64);
