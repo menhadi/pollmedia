@@ -46,6 +46,8 @@ def source_check(year: int, edition: str) -> list[dict]:
             for page in pages[:-1]:
                 offsets.append(offsets[-1] + len(page) + 1)
             source_text = '\n'.join(pages)
+            if record['state_name'].casefold() not in pages[0].casefold():
+                raise ValueError(f'{year} {record["code"]}: printed state heading differs')
             name = record['constituency_name']
             code = record['official_pc_code']
             heading = re.search(r'Constituency\s*:?\s*' + str(code) + r'\s*\.?\s*' + re.escape(name) + r'(?=\s)', source_text, re.I)
