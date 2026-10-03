@@ -12,6 +12,7 @@ $editions = [
     'Manipur' => ['bd260e1e2bcf7658789e3a85', 'manipur', 60],
     'Punjab' => ['c2f44e0b0b38df67af4d4f6d', 'punjab', 117],
     'Uttarakhand' => ['ad5a2b4658b6047e9d0cd86b', 'uttarakhand', 70],
+    'Himachal Pradesh' => ['13651fccf222dbaabb514501', 'himachal-pradesh', 68],
 ];
 $analytics = app(HistoricalElectionAnalytics::class);
 foreach ($editions as $state => [$id, $slug, $expected]) {
@@ -47,6 +48,20 @@ foreach ($editions as $state => [$id, $slug, $expected]) {
                     || ! str_contains($record['error'], 'Review the linked source for the difference.')) {
                     throw new RuntimeException("Uttarakhand 2012 discrepancy note differs at seat {$record['code']}");
                 }
+            }
+            if ($state === 'Himachal Pradesh' && in_array($record['code'], [36, 37, 43, 57, 61, 62], true)) {
+                $discrepancy = $record['source_discrepancy'] ?? null;
+                if (($discrepancy['field'] ?? null) !== 'valid_candidate_votes'
+                    || $discrepancy['detail_candidate_sum'] !== array_sum(array_column($record['candidates'], 'votes'))
+                    || $discrepancy['official_summary_valid'] !== $record['summary_totals']['valid_candidate_votes']
+                    || $record['source_warning_code'] !== 'official_summary_turnout_only') {
+                    throw new RuntimeException("Himachal Pradesh 2012 candidate discrepancy differs at seat {$record['code']}");
+                }
+            }
+            if ($state === 'Himachal Pradesh' && $record['code'] === 51
+                && ($record['source_warning_code'] !== 'summary_elector_difference'
+                    || $record['source_discrepancy'] !== ['field' => 'electors', 'detail_value' => 74261, 'summary_value' => 74262])) {
+                throw new RuntimeException('Himachal Pradesh 2012 elector discrepancy differs at seat 51');
             }
             if ($summary['turnout_count'] !== 1 || $summary['margin_count'] !== 1
                 || $summary['polled'] !== $record['votes_polled']

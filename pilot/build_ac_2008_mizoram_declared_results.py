@@ -45,6 +45,8 @@ class SourceConfig:
     source_note_prefix: str = SOURCE_NOTE
     result_warning_code: str | None = None
     unreconciled_summary_rows: tuple[tuple[int, int, int, int], ...] = ()
+    warning_overrides: tuple[tuple[int, str, str], ...] = ()
+    elector_differences: tuple[tuple[int, int, int], ...] = ()
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -83,7 +85,14 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                     for code, detail_valid, summary_valid, summary_polled in config.unreconciled_summary_rows}
     if len(unreconciled) != len(config.unreconciled_summary_rows):
         raise ValueError(f'Duplicate {config.state} discrepancy code')
+    warning_overrides = {code: (warning, prefix) for code, warning, prefix in config.warning_overrides}
+    elector_differences = {code: (detail, summary) for code, detail, summary in config.elector_differences}
+    if (len(warning_overrides) != len(config.warning_overrides)
+            or len(elector_differences) != len(config.elector_differences)):
+        raise ValueError(f'Duplicate {config.state} source override code')
     seen_unreconciled = set()
+    seen_warning_overrides = set()
+    seen_elector_differences = set()
     with fitz.open(pdf_path) as pdf:
         for record in revised['records']:
             if record['code'] in config.uncontested_codes:
@@ -99,15 +108,29 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             summary = summaries[record['code']]
             summary_only = record['code'] in config.summary_only_codes
             discrepancy = unreconciled.get(record['code'])
+            warning_override = warning_overrides.get(record['code'])
+            elector_difference = elector_differences.get(record['code'])
+            expected_warning = ('summary_only_turnout' if summary_only else
+                                warning_override[0] if warning_override else config.source_warning_code)
+            expected_prefix = ('Official summary confirms constituency turnout;' if summary_only else
+                               warning_override[1] if warning_override else config.source_note_prefix)
             if (record['status'] != 'needs_review' or record['state_name'] != config.state
                     or record['number_of_seats'] != 1
-                    or record.get('source_warning_code') != ('summary_only_turnout' if summary_only else config.source_warning_code)
-                    or not record['error'].startswith('Official summary confirms constituency turnout;' if summary_only else config.source_note_prefix)
+                    or record.get('source_warning_code') != expected_warning
+                    or not record['error'].startswith(expected_prefix)
                     or normalized(record['name']) != normalized(summary['name'])
-                    or record['electors'] != summary['electors']
+                    or (record['electors'], summary['electors']) != (elector_difference or (summary['electors'], summary['electors']))
                     or record.get('summary_result') is not None
                     or record.get('summary_source_file') is not None):
                 raise ValueError(f'Reviewed {config.state} constituency differs: {record["code"]}')
+            if warning_override is not None:
+                seen_warning_overrides.add(record['code'])
+            if elector_difference is not None:
+                if record.get('source_discrepancy') != {'field': 'electors',
+                                                        'detail_value': elector_difference[0],
+                                                        'summary_value': elector_difference[1]}:
+                    raise ValueError(f'{config.state} elector discrepancy differs: {record["code"]}')
+                seen_elector_differences.add(record['code'])
             if discrepancy is None:
                 if (record.get('summary_page') != summary['summary_page']
                         or record.get('summary_totals') != {k: summary[k] for k in ('electors', 'votes_polled', 'valid_candidate_votes')}
@@ -159,7 +182,7 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                                                 'detail_candidate_sum': detail_valid,
                                                 'official_summary_valid': summary_valid,
                                                 'summary_page': summary['summary_page']}
-            elif config.result_warning_code is not None and not summary_only:
+            elif config.result_warning_code is not None and not summary_only and warning_override is None:
                 if record.get('source_warning_code') is not None:
                     raise ValueError(f'Cannot replace {config.state} source warning: {record["code"]}')
                 record['source_warning_code'] = config.result_warning_code
@@ -185,6 +208,8 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
         raise ValueError(f'{config.state} expected margin discrepancies differ')
     if seen_unreconciled != set(unreconciled):
         raise ValueError(f'{config.state} expected source discrepancies differ')
+    if seen_warning_overrides != set(warning_overrides) or seen_elector_differences != set(elector_differences):
+        raise ValueError(f'{config.state} expected source override coverage differs')
     for before, after in zip(old['records'], revised['records']):
         changed = {key for key in set(before) | set(after) if before.get(key) != after.get(key)}
         expected = {'summary_source_file', 'summary_source_sha256', 'summary_result', 'error'}
@@ -192,7 +217,8 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             expected = set()
         if before['code'] in config.summary_only_codes:
             expected |= {'source_warning_code', 'original_source_warning_code'}
-        if config.result_warning_code is not None and before['code'] not in config.uncontested_codes and before['code'] not in config.summary_only_codes:
+        if (config.result_warning_code is not None and before['code'] not in config.uncontested_codes
+                and before['code'] not in config.summary_only_codes and before['code'] not in warning_overrides):
             expected |= {'source_warning_code'}
         if before['code'] in unreconciled:
             expected |= {'summary_page', 'summary_totals', 'votes_polled', 'source_warning_code', 'source_discrepancy'}

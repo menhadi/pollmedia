@@ -608,6 +608,15 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(1, $result['party_review_count']);
         $this->assertSame(1, $result['margin_review_count']);
 
+        $record['summary_source_file'] = 'official.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_result'] = ['winner' => 'Declared A', 'winner_party' => 'AAA',
+            'winner_votes' => 90000, 'runner' => 'Declared B', 'runner_party' => 'BBB',
+            'runner_votes' => 62690, 'margin' => 27310];
+        $this->assertSame('Declared A', app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['winner']);
+        unset($record['summary_source_sha256']);
+        $this->assertNotSame('Declared A', app(HistoricalElectionAnalytics::class)->singleSeatResult($record)['winner'] ?? null);
+
         $record['source_discrepancy']['summary_value']++;
         $result = app(HistoricalElectionAnalytics::class)->summarize([$record]);
         $this->assertNull($result['turnout']);
