@@ -118,6 +118,38 @@ class ConstituencyOverviewTest extends TestCase
         $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
     }
 
+    public function test_source_vote_count_remains_visible_without_an_invalid_turnout_percentage(): void
+    {
+        $edition = str_repeat('e', 24);
+        DB::table('historical_constituency_index')->insert([
+            'edition_id' => $edition, 'record_code' => 7, 'kind' => 'ac', 'year' => 1957,
+            'edition_label' => '1957', 'state_label' => 'Example State', 'constituency_name' => 'Example Seat',
+            'status' => 'needs_review', 'has_warning' => true, 'candidate_count' => 2,
+            'extraction_sha256' => str_repeat('c', 64),
+        ]);
+        $this->mock(HistoricalElectionArchive::class, function ($mock): void {
+            $mock->shouldReceive('load')->andReturn([[
+                'source_url' => 'https://eci.gov.in/example-report.pdf',
+                'source_sha256' => str_repeat('c', 64),
+                'records' => [[
+                    'code' => 7, 'status' => 'needs_review', 'number_of_seats' => 2,
+                    'electors' => 100, 'votes_polled' => 150,
+                    'error' => 'Multi-member vote count exceeds electors',
+                    'candidates' => [
+                        ['candidate_name' => 'Candidate A', 'party_at_election' => 'AAA', 'votes' => 80],
+                        ['candidate_name' => 'Candidate B', 'party_at_election' => 'BBB', 'votes' => 70],
+                    ],
+                ]],
+            ]]);
+        });
+
+        $url = route('constituency.overview', ['kind' => 'ac', 'state' => 'Example State', 'name' => 'Example Seat']);
+        $this->get($url)->assertOk()->assertSee('150 ‡')->assertSee('Vote count from the linked source record')
+            ->assertSee('Multi-member vote count exceeds electors')->assertDontSee('150.00%');
+        $this->get($url.'&format=report')->assertOk()->assertSee('150 ‡')
+            ->assertSee('Vote count from the linked source record');
+    }
+
     public function test_puranpur_displays_documented_1996_and_2007_source_values_with_notes(): void
     {
         foreach ([['1cc8415ab4d57b66831417e8', 1996, 60, 6], ['174ec81b511a8fb1aeca553f', 2007, 44, 16]] as [$edition, $year, $code, $candidates]) {
