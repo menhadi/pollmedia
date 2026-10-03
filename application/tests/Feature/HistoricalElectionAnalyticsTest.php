@@ -1225,6 +1225,38 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($altered));
     }
 
+    public function test_official_1957_hata_result_is_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('d31cb3f180e44ec4b9e59209', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 234);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+        $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+        $record['official_summary_state'] = 'Uttar Pradesh';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_result'] = ['winner' => 'SURYA BALI', 'winner_party' => 'INC', 'winner_votes' => 11915,
+            'runner' => 'BANKEY LAL', 'runner_party' => 'PSP', 'runner_votes' => 11161, 'margin' => 754];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame(['winner' => 'SURYA BALI', 'party' => 'INC', 'margin' => 754, 'derived' => false],
+            $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(0, $summary['turnout_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        foreach ([
+            ['summary_source_sha256', str_repeat('0', 64)],
+            ['summary_page', 255],
+            ['number_of_seats', 2],
+            ['valid_candidate_votes', 30961],
+        ] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
+
     public function test_official_1989_declared_result_is_shown_without_impossible_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('3250a94d4b625ec2bea29016', app(ElectionArchive::class));

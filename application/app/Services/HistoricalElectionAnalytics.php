@@ -1114,6 +1114,14 @@ class HistoricalElectionAnalytics
     private function officialInvalidTurnoutResult(array $record): ?array
     {
         $source = match ($record['summary_source_file'] ?? null) {
+            'd31cb3f180e44ec4b9e59209-7464.pdf' => [
+                'code' => 234, 'name' => 'HATA', 'state' => 'Uttar Pradesh',
+                'url' => 'https://old.eci.gov.in/files/file/3242-uttar-pradesh-1957/',
+                'sha256' => '7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c',
+                'summary_page' => 256, 'detail_page' => 406, 'electors' => 7807,
+                'votes_polled' => 30962, 'valid_candidate_votes' => 30962, 'candidates' => 4,
+                'original_warning' => 'Electorate and voter totals are inconsistent',
+            ],
             '7ce40cf47befc2b48ff776e3-7475.pdf' => [
                 'code' => 315, 'name' => 'CHHIBRAMAU', 'state' => 'Uttar Pradesh',
                 'url' => 'https://old.eci.gov.in/files/file/3247-uttar-pradesh-1969/',
