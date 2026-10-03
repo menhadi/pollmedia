@@ -1183,6 +1183,35 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee('Summary and detailed totals differ');
     }
 
+    public function test_official_1955_sattenpalli_result_is_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('165392d9f968ef073166ef32', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 96);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+        $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+        $record['official_summary_state'] = 'Andhra Pradesh';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_page'] = 109;
+        $record['summary_totals'] = ['electors' => 2473, 'votes_polled' => 40566, 'valid_candidate_votes' => 40566];
+        $record['summary_result'] = ['winner' => 'VAVILAL GOPALKRISHNAIAH', 'winner_party' => 'CPI', 'winner_votes' => 19893,
+            'runner' => 'BANDARU VANDANAM', 'runner_party' => 'INC', 'runner_votes' => 19018, 'margin' => 875];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertNull($summary['turnout']);
+        $this->assertNull($summary['polled']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(['winner' => 'VAVILAL GOPALKRISHNAIAH', 'party' => 'CPI', 'margin' => 875, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        $altered = $record;
+        $altered['summary_result']['winner_votes']++;
+        $this->assertNull($analytics->singleSeatResult($altered));
+    }
+
     public function test_official_1951_kanpur_result_is_shown_without_impossible_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('402db61ff727c908b4ac3170', app(ElectionArchive::class));

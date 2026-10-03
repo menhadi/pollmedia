@@ -1114,6 +1114,14 @@ class HistoricalElectionAnalytics
     private function officialInvalidTurnoutResult(array $record): ?array
     {
         $source = match ($record['summary_source_file'] ?? null) {
+            '165392d9f968ef073166ef32-9588.pdf' => [
+                'code' => 96, 'name' => 'SATTENPALLI', 'state' => 'Andhra Pradesh',
+                'url' => 'https://old.eci.gov.in/files/file/4042-andhra-pradesh-1955/',
+                'sha256' => 'b087d7c7f4391e0a6c9b60cbd4cda3c1562d70a29e5b1a85c4723caa18b22255',
+                'summary_page' => 109, 'detail_page' => 194, 'electors' => 2473,
+                'votes_polled' => 40566, 'valid_candidate_votes' => 40566, 'candidates' => 3,
+                'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+            ],
             '402db61ff727c908b4ac3170-7462.pdf' => [
                 'code' => 130, 'name' => 'KANPUR CITY NORTH', 'state' => 'Uttar Pradesh',
                 'url' => 'https://old.eci.gov.in/files/file/3241-uttar-pradesh-1951/',
