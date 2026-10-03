@@ -27,11 +27,6 @@
         return fallbacks[hash % fallbacks.length];
     }
     function recordText(record) {return `${record.name} · ${record.state} · ${record.year}${record.party ? ' · '+record.party : ''}`;}
-    function locatorColor(name) {
-        const palette = ['#dbeafe','#e0e7ff','#cffafe','#ede9fe'];
-        let hash = 0; for (const c of normalize(name)) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
-        return palette[hash % palette.length];
-    }
     function safeUrl(value) {try {const url = new URL(value,location.href); return url.origin === location.origin ? url.href : null;} catch {return null;}}
     async function load(root) {
         const svg = root.querySelector('svg'), seats = root.querySelector('[data-map-seats]'), status = root.querySelector('[data-map-status]');
@@ -90,7 +85,7 @@
         const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
-            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?locatorColor(f.properties.name):partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
+            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'#dbe3e8':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
             const title=svgElement('title');title.textContent=seatText(f,record);path.append(title);
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);

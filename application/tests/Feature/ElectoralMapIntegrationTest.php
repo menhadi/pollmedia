@@ -143,6 +143,8 @@ class ElectoralMapIntegrationTest extends TestCase
         $this->assertStringContainsString('data-mode="focus"', $focused);
         $this->assertStringNotContainsString('edition=', $focused);
         $this->assertStringNotContainsString('1957', $focused);
+        $this->assertStringNotContainsString('Map sources & historical geography', $focused);
+        $this->assertStringNotContainsString('Source inventory and hashes', $focused);
         $this->assertStringContainsString('class="election-map-search"  hidden', $focused);
     }
 
