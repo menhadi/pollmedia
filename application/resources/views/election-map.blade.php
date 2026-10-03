@@ -22,6 +22,5 @@
 <p data-map-status role="status">Loading the map…</p>
 <div data-map-legend @if($isLocator) hidden @endif class="election-map-legend" aria-label="Map colours"></div>
 <div data-map-selection @if($isLocator) hidden @endif class="election-map-selection" aria-live="polite">Select a constituency to open its election history.</div>
-<details data-map-unplaced @if($isLocator) data-locator-list @endif hidden><summary>Additional historical constituencies · schematic list</summary><div class="election-map-unplaced"></div></details>
 <noscript><a href="{{ route('elections.constituencies',['kind'=>$mapKind,'state'=>$mapState['name']??null]) }}">Browse constituency records →</a></noscript>
 </section>

@@ -43,7 +43,7 @@
             return url.href;
         };
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
-        const matches = new Map(), used = new Set(), paths = new Map();
+        const matches = new Map(), paths = new Map();
         // A boundary code is not an extraction row number. Name/state matches are approximate;
         // multiple source shapes with the same name never establish a unique geographic join.
         const names = new Map(), codes = new Map();
@@ -52,8 +52,8 @@
             let candidates = match(f,records,root.dataset.state);
             const duplicate = names.get(stateKey(f.properties.state)+':'+normalize(f.properties.name)) > 1;
             if (candidates.length > 1 || duplicate) candidates = candidates.filter(r => r.official_code != null && String(r.official_code) === String(f.properties.code));
-            if (candidates.length === 1 && !duplicate) {matches.set(f.id,candidates[0]);used.add(candidates[0].id);}
-            else if (candidates.length === 1 && candidates[0].official_code != null && codes.get(stateKey(f.properties.state)+':'+normalize(f.properties.name)+':'+f.properties.code) === 1) {matches.set(f.id,candidates[0]);used.add(candidates[0].id);}
+            if (candidates.length === 1 && !duplicate) {matches.set(f.id,candidates[0]);}
+            else if (candidates.length === 1 && candidates[0].official_code != null && codes.get(stateKey(f.properties.state)+':'+normalize(f.properties.name)+':'+f.properties.code) === 1) {matches.set(f.id,candidates[0]);}
         });
         const rings = feature => feature.geometry.type === 'Polygon' ? feature.geometry.coordinates : feature.geometry.coordinates.flat();
         let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
@@ -135,9 +135,6 @@
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&safeUrl(r.url);if(url)location.assign(url);});
-        const unplaced=records.filter(r=>!used.has(r.id)),section=root.querySelector('[data-map-unplaced]'),list=section.querySelector('.election-map-unplaced');
-        section.hidden=focusMode || !unplaced.length;
-        unplaced.forEach(r=>{const url=safeUrl(r.url);if(!url)return;const link=document.createElement('a');link.href=url;link.textContent=recordText(r);link.style.setProperty('--seat-party',focusMode?'var(--site-border)':partyColor(r.party,colors));if(selected(r)){link.classList.add('is-selected');section.open=true;selection.textContent=recordText(r)+' · historical seat shown in the schematic list.';}list.append(link);});
         if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
         }else{
