@@ -801,6 +801,35 @@ class HistoricalElectionAnalyticsTest extends TestCase
         }
     }
 
+    public function test_2014_pc_official_summary_result_is_shown_without_accepting_repeated_candidate_names(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('3a136496a89deb7c38ecfe18', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 508);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'Some separate candidate rows share a name. Candidate votes, including NOTA, reconcile with the official summary, which confirms turnout, winner and margin; candidate identities remain under review.';
+        $record['summary_result_source_sheet'] = 'U05-WEST DELHI                ';
+        $record['summary_result_source_file'] = '51512f85716a7b6349923689-6469.xlsx';
+        $record['summary_result_source_sha256'] = str_repeat('a', 64);
+        $record['summary_totals']['nota_votes'] = 7932;
+        $record['summary_candidate_count'] = 17;
+        $record['summary_result'] = ['winner' => 'Parvesh Sahib Singh Verma', 'winner_party' => 'BJP', 'winner_votes' => 651395,
+            'runner' => 'Jarnail Singh', 'runner_party' => 'AAAP', 'runner_votes' => 382809, 'margin' => 268586];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1348744, $summary['polled']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(0, $summary['party_count']);
+        $this->assertSame(['winner' => 'Parvesh Sahib Singh Verma', 'party' => 'BJP', 'margin' => 268586, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        $record['summary_result_source_sha256'] = '';
+        $this->assertNull($analytics->singleSeatResult($record));
+        $record['summary_result_source_sha256'] = str_repeat('a', 64);
+        $record['summary_result']['runner_votes']++;
+        $this->assertNull($analytics->singleSeatResult($record));
+    }
+
     public function test_2009_source_state_heading_makes_goa_lok_sabha_tables_available(): void
     {
         $edition = collect(app(HistoricalElectionAnalytics::class)->forState('Goa', 'pc'))->firstWhere('year', 2009);

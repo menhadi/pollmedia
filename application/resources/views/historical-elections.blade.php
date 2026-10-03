@@ -119,6 +119,7 @@
 </section>
 @endif
 <section class="card" id="sources"><div class="kicker">Evidence</div><h2>Official sources & coverage</h2><p><a href="{{ $data['source_url'] }}" target="_blank" rel="noreferrer">ECI official {{ $data['year'] }} report edition ↗</a></p>
+@if(!empty($selected['summary_result_source_url']))<p><a href="{{ $selected['summary_result_source_url'] }}" target="_blank" rel="noreferrer">ECI constituency summary ↗</a></p>@endif
 @foreach($data['additional_sources'] ?? [] as $source)@if(!empty($source['source_url']))<p><a href="{{ $source['source_url'] }}" target="_blank" rel="noreferrer">{{ $source['name'] }} ↗</a></p>@endif
 @endforeach
 @if(!empty($data['coverage']['unmatched_summaries']))<p>{{ count($data['coverage']['unmatched_summaries']) }} summary entries have no matched detailed candidate table.</p>@endif

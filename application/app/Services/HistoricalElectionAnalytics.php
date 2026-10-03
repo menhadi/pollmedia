@@ -25,6 +25,8 @@ class HistoricalElectionAnalytics
 
     private const WORKBOOK_SUMMARY_RECOVERED = 'Official constituency summary confirms electors, voters and candidate votes; the source elector components differ slightly. Publication review pending.';
 
+    private const WORKBOOK_REPEATED_NAMES_RESULT = 'Some separate candidate rows share a name. Candidate votes, including NOTA, reconcile with the official summary, which confirms turnout, winner and margin; candidate identities remain under review.';
+
     public function forState(string $state, string $kind): array
     {
         $entries = [];
@@ -127,7 +129,9 @@ class HistoricalElectionAnalytics
                 }
             }
             if ($hasWarning && ! $provisionalCandidates) {
-                $workbookResult = $this->officialWorkbookSummaryResult($record) ?? $this->officialPdfSummaryResult($record);
+                $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
+                    ?? $this->officialWorkbookSummaryResult($record)
+                    ?? $this->officialPdfSummaryResult($record);
                 if ($workbookResult !== null) {
                     $margins[] = $workbookResult['margin'];
                     $marginReviewCount++;
@@ -197,7 +201,7 @@ class HistoricalElectionAnalytics
             return $uncontested;
         }
 
-        $officialResult = $this->officialPdfSummaryResult($record);
+        $officialResult = $this->officialRepeatedNameWorkbookResult($record) ?? $this->officialPdfSummaryResult($record);
         if ($officialResult !== null) {
             return $officialResult + ['derived' => false];
         }
@@ -618,7 +622,7 @@ class HistoricalElectionAnalytics
         $locator = preg_replace('/[^a-z0-9]/', '', strtolower($record['summary_locator'] ?? ''));
 
         return ($record['status'] ?? '') === 'needs_review'
-            && ($record['error'] ?? '') === 'Duplicate candidate identities require review'
+            && in_array($record['error'] ?? '', ['Duplicate candidate identities require review', self::WORKBOOK_REPEATED_NAMES_RESULT], true)
             && ! isset($record['source_warning_code'])
             && is_array($summary) && $seatName !== '' && str_contains($locator, $seatName)
             && trim($record['source_locator'] ?? '') !== ''
@@ -691,6 +695,58 @@ class HistoricalElectionAnalytics
     }
 
     /** @return array{winner: string, party: string|null, margin: int}|null */
+    /** @return array{winner: string, party: string, margin: int}|null */
+    private function officialRepeatedNameWorkbookResult(array $record): ?array
+    {
+        if (($record['error'] ?? '') !== self::WORKBOOK_REPEATED_NAMES_RESULT
+            || ! $this->hasSummaryTurnoutWithDuplicateCandidates($record)) {
+            return null;
+        }
+
+        $result = $record['summary_result'] ?? null;
+        $sheet = $record['summary_result_source_sheet'] ?? null;
+        if (! is_array($result) || ! is_string($sheet) || trim($sheet) === ''
+            || ! str_starts_with($record['summary_locator'] ?? '', $sheet.':')
+            || preg_match('/^[a-zA-Z0-9._-]+\.xlsx$/', $record['summary_result_source_file'] ?? '') !== 1
+            || preg_match('/^[a-f0-9]{64}$/', $record['summary_result_source_sha256'] ?? '') !== 1
+            || ! $this->count($result['winner_votes'] ?? null)
+            || ! $this->count($result['runner_votes'] ?? null)
+            || ! $this->count($result['margin'] ?? null)
+            || $result['winner_votes'] <= $result['runner_votes']
+            || $result['margin'] !== $result['winner_votes'] - $result['runner_votes']
+            || $result['winner_votes'] > ($record['summary_totals']['valid_candidate_votes'] ?? 0)) {
+            return null;
+        }
+
+        $candidates = collect($record['candidates'] ?? [])->sortByDesc('votes')->values();
+        if ($candidates->count() < 2 || $candidates[0]['votes'] <= $candidates[1]['votes']) {
+            return null;
+        }
+        $nota = $candidates->filter(fn (array $candidate): bool => ($candidate['is_nota'] ?? false) === true);
+        $sourceRows = $candidates->pluck('source_row');
+        if ($nota->count() !== 1
+            || ! $this->count($record['summary_totals']['nota_votes'] ?? null)
+            || $nota->first()['votes'] !== $record['summary_totals']['nota_votes']
+            || ! $this->count($record['summary_candidate_count'] ?? null)
+            || $candidates->count() - 1 !== $record['summary_candidate_count']
+            || $sourceRows->unique()->count() !== $candidates->count()
+            || $candidates->sum('votes') !== $record['summary_totals']['valid_candidate_votes'] + $record['summary_totals']['nota_votes']) {
+            return null;
+        }
+        foreach (['winner', 'runner'] as $index => $label) {
+            $candidate = $candidates[$index];
+            if (! is_string($result[$label] ?? null) || trim($result[$label]) === ''
+                || ! is_string($result[$label.'_party'] ?? null) || trim($result[$label.'_party']) === ''
+                || mb_strtolower(trim($result[$label])) !== mb_strtolower(trim($candidate['candidate_name'] ?? ''))
+                || trim($result[$label.'_party']) !== trim($candidate['party_at_election'] ?? '')
+                || $result[$label.'_votes'] !== $candidate['votes']) {
+                return null;
+            }
+        }
+
+        return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
+    }
+
     private function officialWorkbookSummaryResult(array $record): ?array
     {
         if (! $this->hasOfficialWorkbookSummaryTurnout($record)
