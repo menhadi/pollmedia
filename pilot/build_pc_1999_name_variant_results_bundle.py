@@ -111,7 +111,7 @@ def build(root: Path = ROOT) -> dict:
             zipped.writestr('IMPORT.sh', import_script([EDITION]))
         partial.replace(output)
     sha = digest(output.read_bytes())
-    output.with_suffix('.sha256').write_text(sha + '  ' + output.name + '\n', encoding='ascii')
+    output.with_suffix('.sha256').write_bytes((sha + '  ' + output.name + '\n').encode('ascii'))
     return {'bundle': str(output), 'sha256': sha, 'records': len(by_code),
             'previous_sha256': old_sha, 'new_sha256': new_sha}
 
