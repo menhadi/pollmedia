@@ -12,6 +12,7 @@ $editions = [
     'Kerala' => ['759495318f66052900b770f9', 'kerala', 140],
     'Puducherry' => ['d964b3bce62e657ee36db2cb', 'puducherry', 30],
     'Tamil Nadu' => ['23cc38bf6d2d08576d05c3ff', 'tamil-nadu', 234],
+    'West Bengal' => ['79ebd83ef86bed336cc3ef0f', 'west-bengal', 294],
 ];
 $analytics = app(HistoricalElectionAnalytics::class);
 foreach ($editions as $state => [$id, $slug, $expected]) {
@@ -38,6 +39,16 @@ foreach ($editions as $state => [$id, $slug, $expected]) {
         foreach ($records as $record) {
             $summary = $analytics->summarize([$record]);
             $result = $analytics->singleSeatResult($record, $id);
+            if ($state === 'West Bengal' && in_array($record['code'], [11, 98, 206, 211, 215], true)) {
+                $discrepancy = $record['source_discrepancy'] ?? null;
+                if (($discrepancy['field'] ?? null) !== 'valid_candidate_votes'
+                    || $discrepancy['detail_candidate_sum'] !== array_sum(array_column($record['candidates'], 'votes'))
+                    || $discrepancy['official_summary_valid'] !== $record['summary_totals']['valid_candidate_votes']
+                    || $record['source_warning_code'] !== 'official_summary_turnout_only'
+                    || ! str_contains($record['error'], 'Review the linked source for the difference.')) {
+                    throw new RuntimeException("West Bengal 2011 discrepancy note differs at seat {$record['code']}");
+                }
+            }
             if ($summary['turnout_count'] !== 1 || $summary['margin_count'] !== 1
                 || $summary['polled'] !== $record['votes_polled']
                 || $result['winner'] !== $record['summary_result']['winner']

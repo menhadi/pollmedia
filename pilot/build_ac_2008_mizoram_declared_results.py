@@ -44,6 +44,7 @@ class SourceConfig:
     source_warning_code: str | None = 'summary_turnout_with_detail_warnings'
     source_note_prefix: str = SOURCE_NOTE
     result_warning_code: str | None = None
+    unreconciled_summary_rows: tuple[tuple[int, int, int, int], ...] = ()
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -78,6 +79,11 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
     revised = json.loads(old_body)
     results = []
     seen_margin_discrepancies = set()
+    unreconciled = {code: (detail_valid, summary_valid, summary_polled)
+                    for code, detail_valid, summary_valid, summary_polled in config.unreconciled_summary_rows}
+    if len(unreconciled) != len(config.unreconciled_summary_rows):
+        raise ValueError(f'Duplicate {config.state} discrepancy code')
+    seen_unreconciled = set()
     with fitz.open(pdf_path) as pdf:
         for record in revised['records']:
             if record['code'] in config.uncontested_codes:
@@ -92,18 +98,30 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                 continue
             summary = summaries[record['code']]
             summary_only = record['code'] in config.summary_only_codes
+            discrepancy = unreconciled.get(record['code'])
             if (record['status'] != 'needs_review' or record['state_name'] != config.state
                     or record['number_of_seats'] != 1
                     or record.get('source_warning_code') != ('summary_only_turnout' if summary_only else config.source_warning_code)
                     or not record['error'].startswith('Official summary confirms constituency turnout;' if summary_only else config.source_note_prefix)
-                    or record['summary_page'] != summary['summary_page']
                     or normalized(record['name']) != normalized(summary['name'])
-                    or record['summary_totals'] != {k: summary[k] for k in ('electors', 'votes_polled', 'valid_candidate_votes')}
                     or record['electors'] != summary['electors']
-                    or record['votes_polled'] != summary['votes_polled']
                     or record.get('summary_result') is not None
                     or record.get('summary_source_file') is not None):
                 raise ValueError(f'Reviewed {config.state} constituency differs: {record["code"]}')
+            if discrepancy is None:
+                if (record.get('summary_page') != summary['summary_page']
+                        or record.get('summary_totals') != {k: summary[k] for k in ('electors', 'votes_polled', 'valid_candidate_votes')}
+                        or record.get('votes_polled') != summary['votes_polled']):
+                    raise ValueError(f'{config.state} reconciled summary differs: {record["code"]}')
+            else:
+                detail_valid, summary_valid, summary_polled = discrepancy
+                if (summary_only or record.get('summary_page') is not None or record.get('summary_totals') is not None
+                        or record.get('votes_polled') is not None
+                        or (record['valid_candidate_votes'], summary['valid_candidate_votes'], summary['votes_polled']) != discrepancy
+                        or sum(candidate.get('votes') or 0 for candidate in record['candidates']) != detail_valid
+                        or not 0 < summary_valid <= summary_polled <= summary['electors']):
+                    raise ValueError(f'{config.state} documented source discrepancy differs: {record["code"]}')
+                seen_unreconciled.add(record['code'])
             text = pdf[summary['summary_page'] - 1].get_text(sort=True)
             heading = re.search(r'CONSTITUENCY\s*:\s*(\d+)\s*-\s*([^\n]+)', text, re.I)
             winner = re.search(r'^\s*WINNER\s+(\S+)\s+(.+?)\s+(\d+)\s*$', text, re.I | re.M)
@@ -121,10 +139,10 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                     or not 0 < summary['valid_candidate_votes'] <= summary['votes_polled'] <= summary['electors']):
                 raise ValueError(f'Official {config.state} declaration arithmetic differs: {record["code"]}')
             if margin_votes != calculated_margin:
-                discrepancy = (record['code'], margin_votes, calculated_margin)
-                if discrepancy not in config.margin_discrepancies:
+                margin_difference = (record['code'], margin_votes, calculated_margin)
+                if margin_difference not in config.margin_discrepancies or discrepancy is not None:
                     raise ValueError(f'Undocumented official margin difference: {record["code"]}')
-                seen_margin_discrepancies.add(discrepancy)
+                seen_margin_discrepancies.add(margin_difference)
             result = {'winner': winner[2].strip(), 'winner_party': winner[1].strip(),
                       'winner_votes': winner_votes, 'runner': runner[2].strip(),
                       'runner_party': runner[1].strip(), 'runner_votes': runner_votes,
@@ -132,7 +150,16 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             record['summary_source_file'] = old['source_file']
             record['summary_source_sha256'] = old['source_sha256']
             record['summary_result'] = result
-            if config.result_warning_code is not None and not summary_only:
+            if discrepancy is not None:
+                record['summary_page'] = summary['summary_page']
+                record['summary_totals'] = {k: summary[k] for k in ('electors', 'votes_polled', 'valid_candidate_votes')}
+                record['votes_polled'] = summary_polled
+                record['source_warning_code'] = 'official_summary_turnout_only'
+                record['source_discrepancy'] = {'field': 'valid_candidate_votes',
+                                                'detail_candidate_sum': detail_valid,
+                                                'official_summary_valid': summary_valid,
+                                                'summary_page': summary['summary_page']}
+            elif config.result_warning_code is not None and not summary_only:
                 if record.get('source_warning_code') is not None:
                     raise ValueError(f'Cannot replace {config.state} source warning: {record["code"]}')
                 record['source_warning_code'] = config.result_warning_code
@@ -140,6 +167,10 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                 record['original_source_warning_code'] = record['source_warning_code']
                 record['source_warning_code'] = 'official_summary_turnout_only'
             record['error'] += RESULT_NOTE
+            if discrepancy is not None:
+                record['error'] += (f' Detailed candidate votes sum to {detail_valid}, while the official summary'
+                                    f' reports {summary_valid} valid candidate votes; turnout and the declared result'
+                                    f' use the official summary. Review the linked source for the difference.')
             if margin_votes != calculated_margin:
                 record['official_printed_margin'] = margin_votes
                 record['source_discrepancy'] = {'field': 'margin', 'printed_value': margin_votes,
@@ -152,6 +183,8 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
         raise ValueError(f'{config.state} 2008 result inventory differs')
     if seen_margin_discrepancies != set(config.margin_discrepancies):
         raise ValueError(f'{config.state} expected margin discrepancies differ')
+    if seen_unreconciled != set(unreconciled):
+        raise ValueError(f'{config.state} expected source discrepancies differ')
     for before, after in zip(old['records'], revised['records']):
         changed = {key for key in set(before) | set(after) if before.get(key) != after.get(key)}
         expected = {'summary_source_file', 'summary_source_sha256', 'summary_result', 'error'}
@@ -161,6 +194,8 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             expected |= {'source_warning_code', 'original_source_warning_code'}
         if config.result_warning_code is not None and before['code'] not in config.uncontested_codes and before['code'] not in config.summary_only_codes:
             expected |= {'source_warning_code'}
+        if before['code'] in unreconciled:
+            expected |= {'summary_page', 'summary_totals', 'votes_polled', 'source_warning_code', 'source_discrepancy'}
         if before['code'] in {item[0] for item in config.margin_discrepancies}:
             expected |= {'official_printed_margin', 'source_discrepancy'}
         if before['code'] != after['code'] or changed != expected:
