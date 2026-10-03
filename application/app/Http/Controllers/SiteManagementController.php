@@ -31,7 +31,7 @@ class SiteManagementController extends Controller
         foreach (Route::getRoutes() as $route) {
             if (str_starts_with($route->uri(), 'api/')) {
                 $result[$route->uri()] = ['methods' => implode(', ', $route->methods()), 'handler' => match ($route->uri()) {
-                    'api/sir' => 'Published electoral-roll context', 'api/census' => 'Published Pilibhit Census data', 'api/geography' => 'Published Survey of India geography', 'api/maps/pilibhit-villages' => 'Pilibhit village boundary GeoJSON', default => 'Public read-only data endpoint'
+                    'api/sir' => 'Published electoral-roll context', 'api/census' => 'Published Pilibhit Census data', 'api/geography' => 'Published Survey of India geography', 'api/maps/pilibhit-villages' => 'Pilibhit village boundary GeoJSON', 'api/election-maps/results' => 'Read recorded PC/AC winners, party colours and constituency links for the selected state and election year; no collection or publication.', default => 'Public read-only data endpoint'
                 }];
             }
         }
