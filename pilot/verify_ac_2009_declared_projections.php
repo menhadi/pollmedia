@@ -12,11 +12,13 @@ $editions = [
     'Jharkhand' => ['0882c0bd6b8d8738e38b6f06', 'jharkhand', 81],
     'Maharashtra' => ['cc0185e917711e78c149abf4', 'maharashtra', 288],
     'Arunachal Pradesh' => ['1901084c7189cfe9433f1842', 'arunachal-pradesh', 60],
+    'Sikkim' => ['172aba6298a6a9113d61177f', 'sikkim', 32],
 ];
 $analytics = app(HistoricalElectionAnalytics::class);
 foreach ($editions as $state => [$id, $slug, $expected]) {
     $outer = new ZipArchive;
-    if ($outer->open(__DIR__."/../exports/pollmedia-ac-2009-$slug-declared-results-20261003.zip") !== true) {
+    $suffix = $state === 'Sikkim' ? '-v2' : '';
+    if ($outer->open(__DIR__."/../exports/pollmedia-ac-2009-$slug-declared-results-20261003$suffix.zip") !== true) {
         throw new RuntimeException("$state correction bundle cannot be opened");
     }
     $audit = json_decode($outer->getFromName('AUDIT.json'), true, 512, JSON_THROW_ON_ERROR);
@@ -53,7 +55,11 @@ foreach ($editions as $state => [$id, $slug, $expected]) {
                 || $result['winner'] !== $record['summary_result']['winner']
                 || $result['party'] !== $record['summary_result']['winner_party']
                 || $result['margin'] !== $record['summary_result']['margin']) {
-                throw new RuntimeException("$state app projection differs at seat {$record['code']}");
+                throw new RuntimeException("$state app projection differs at seat {$record['code']}: ".json_encode([
+                    'turnout_count' => $summary['turnout_count'], 'margin_count' => $summary['margin_count'],
+                    'polled' => $summary['polled'], 'result' => $result,
+                    'expected_result' => $record['summary_result'],
+                ]));
             }
         }
         echo "$state: $expected AC declarations project with review notes\n";

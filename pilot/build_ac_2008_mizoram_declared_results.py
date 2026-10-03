@@ -41,6 +41,9 @@ class SourceConfig:
     year: int = 2008
     margin_discrepancies: tuple[tuple[int, int, int], ...] = ()
     uncontested_codes: frozenset[int] = frozenset()
+    source_warning_code: str | None = 'summary_turnout_with_detail_warnings'
+    source_note_prefix: str = SOURCE_NOTE
+    result_warning_code: str | None = None
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -91,8 +94,8 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             summary_only = record['code'] in config.summary_only_codes
             if (record['status'] != 'needs_review' or record['state_name'] != config.state
                     or record['number_of_seats'] != 1
-                    or record['source_warning_code'] != ('summary_only_turnout' if summary_only else 'summary_turnout_with_detail_warnings')
-                    or not record['error'].startswith('Official summary confirms constituency turnout;' if summary_only else SOURCE_NOTE)
+                    or record.get('source_warning_code') != ('summary_only_turnout' if summary_only else config.source_warning_code)
+                    or not record['error'].startswith('Official summary confirms constituency turnout;' if summary_only else config.source_note_prefix)
                     or record['summary_page'] != summary['summary_page']
                     or normalized(record['name']) != normalized(summary['name'])
                     or record['summary_totals'] != {k: summary[k] for k in ('electors', 'votes_polled', 'valid_candidate_votes')}
@@ -104,7 +107,7 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             text = pdf[summary['summary_page'] - 1].get_text(sort=True)
             heading = re.search(r'CONSTITUENCY\s*:\s*(\d+)\s*-\s*([^\n]+)', text, re.I)
             winner = re.search(r'^\s*WINNER\s+(\S+)\s+(.+?)\s+(\d+)\s*$', text, re.I | re.M)
-            runner = re.search(r'^\s*RUNNER-UP\s+(\S+)\s+(.+?)\s+(\d+)\s*$', text, re.I | re.M)
+            runner = re.search(r'^\s*RUNN?ER-UP\s+(\S+)\s+(.+?)\s+(\d+)\s*$', text, re.I | re.M)
             margin = re.search(r'^\s*MARGIN\s+(\d+)\b', text, re.I | re.M)
             if (not all((heading, winner, runner, margin))
                     or f'legislative assembly of {config.pdf_state or config.state}' not in text
@@ -129,6 +132,10 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             record['summary_source_file'] = old['source_file']
             record['summary_source_sha256'] = old['source_sha256']
             record['summary_result'] = result
+            if config.result_warning_code is not None:
+                if record.get('source_warning_code') is not None:
+                    raise ValueError(f'Cannot replace {config.state} source warning: {record["code"]}')
+                record['source_warning_code'] = config.result_warning_code
             if summary_only:
                 record['original_source_warning_code'] = record['source_warning_code']
                 record['source_warning_code'] = 'official_summary_turnout_only'
@@ -152,6 +159,8 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             expected = set()
         if before['code'] in config.summary_only_codes:
             expected |= {'source_warning_code', 'original_source_warning_code'}
+        if config.result_warning_code is not None and before['code'] not in config.uncontested_codes:
+            expected |= {'source_warning_code'}
         if before['code'] in {item[0] for item in config.margin_discrepancies}:
             expected |= {'official_printed_margin', 'source_discrepancy'}
         if before['code'] != after['code'] or changed != expected:
