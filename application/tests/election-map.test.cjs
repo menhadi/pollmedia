@@ -18,7 +18,7 @@ async function setup(features,records,options={}){
     const selectors=['svg','[data-map-seats]','[data-map-status]','[data-map-selection]','[data-map-legend]','[data-map-unplaced]','[data-map-tooltip]'];
     const nodes=Object.fromEntries(selectors.map(s=>[s,new Element()])),list=new Element();
     nodes['[data-map-unplaced]'].querySelector=()=>list;
-    const root=new Element();root.dataset={kind:'pc',source:'/source',results:'/results',finder:'/india/elections/constituencies',state:options.state||'Uttar Pradesh',selected:options.selected||'',selectedCode:options.code||'',year:'1957'};root.querySelector=s=>nodes[s];root.querySelectorAll=()=>[];
+    const root=new Element();root.dataset={kind:'pc',mode:options.mode||'results',source:'/source',results:'/results',finder:'/india/elections/constituencies',state:options.state||'Uttar Pradesh',selected:options.selected||'',selectedCode:options.code||'',year:'1957'};root.querySelector=s=>nodes[s];root.querySelectorAll=()=>[];
     const window={},location={href:'https://pollmedia.example/',origin:'https://pollmedia.example',assign:url=>{location.assigned=url;}};
     vm.runInNewContext(readFileSync(path.join(__dirname,'../public/js/election-map.js'),'utf8'),{window,location,URL,console,document:{readyState:'complete',querySelectorAll:()=>[root],createElement:()=>new Element(),createElementNS:()=>new Element(),createTextNode:text=>({textContent:text})},fetch:async url=>({ok:!(options.failure===url),json:async()=>url==='/source'?{features}:{records,colors:{BJP:'#ff750f',INC:'#234da0'}}})});
     await new Promise(resolve=>setImmediate(resolve));
@@ -56,6 +56,18 @@ test('missing names cannot match data; historical SC/ST suffixes are documented 
 test('reported party labels use configured colours, unknown parties use stable theme colours',async()=>{
     const n=await setup([],[]),color=n.window.pollmediaMapMatching.partyColor;
     assert.equal(color('Indian National Congress',{INC:'#123456'}),'#123456');assert.equal(color('New party',{}),color('New party',{}));assert.notEqual(color('INC',{}),undefined);
+});
+test('constituency focus map greys other seats, highlights the chosen seat, and keeps both clickable',async()=>{
+    const n=await setup([shape('pc-1','Pilibhit',26),shape('pc-2','Bareilly',25)],[record('a:371','Pilibhit',371),record('a:370','Bareilly',370,'INC')],{mode:'focus',selected:'Pilibhit',code:'371'});
+    const selected=n.nodes.svg.children.find(seat=>seat.classList.contains('is-selected'));
+    const other=n.nodes.svg.children.find(seat=>!seat.classList.contains('is-selected'));
+    assert.equal(selected.attributes.fill,'var(--palette-d5dfd5)');
+    assert.equal(other.attributes.fill,'var(--palette-d5dfd5)');
+    assert.match(n.nodes['[data-map-legend]'].children[0].children[1].textContent,/Selected constituency/);
+    other.events.pointerenter({clientX:100,clientY:200,currentTarget:other});
+    assert.match(n.nodes['[data-map-tooltip]'].textContent,/Bareilly/);
+    other.events.click();assert.match(n.location.assigned,/code=370/);
+    selected.events.click();assert.match(n.location.assigned,/code=371/);
 });
 test('hover and keyboard focus show a visible seat tooltip; missing results are explicit',async()=>{
     const n=await setup([shape('pc-1','Pilibhit',26)],[record('a:1','Pilibhit',371)]),seat=n.nodes.svg.children[0],tooltip=n.nodes['[data-map-tooltip]'];

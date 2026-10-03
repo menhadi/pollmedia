@@ -24,15 +24,12 @@ foreach($plotRows as $point){
     $value=$point[$series['key']];
     if($value===null){$previous=null;continue;}
     $xx=$x($point['year']);$yy=$y($value);
-    if($previous!==null){$middle=($previous[0]+$xx)/2;$path.='C'.$middle.','.$previous[1].' '.$middle.','.$yy.' '.$xx.','.$yy.' ';}
+    if($previous!==null){$path.='L'.$xx.','.$yy.' ';}
     else{$path.='M'.$xx.','.$yy.' ';}
     $previous=[$xx,$yy];
 }
 @endphp
 <path d="{{ $path }}" fill="none" stroke="{{ $color }}" stroke-width="2.5" @if($series['key']==='others_share') stroke-dasharray="6 4" @endif/>
-@foreach($plotRows as $point)
-@if($point[$series['key']]!==null)<circle cx="{{ $x($point['year']) }}" cy="{{ $y($point[$series['key']]) }}" r="3.5" fill="{{ $color }}"/>@endif
-@endforeach
 @endforeach
 </svg>
 @else<p>No usable figures are available for this chart.</p>@endif

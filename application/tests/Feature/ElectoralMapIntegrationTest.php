@@ -139,6 +139,8 @@ class ElectoralMapIntegrationTest extends TestCase
         $this->assertStringNotContainsString('Needs review', $html);
         $national = view('election-map', ['mapKind' => 'pc'])->render();
         $this->assertStringContainsString('india-pc.json', $national);
+        $focused = view('election-map', ['mapKind' => 'pc', 'mapStateName' => 'Uttar Pradesh', 'mapSelectedName' => 'Pilibhit', 'mapMode' => 'focus'])->render();
+        $this->assertStringContainsString('data-mode="focus"', $focused);
     }
 
     public function test_national_layers_preserve_all_records_and_flagged_geometry(): void

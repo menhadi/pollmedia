@@ -92,3 +92,4 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 .public-place-page .report-notes p,.public-place-page .report-notes li{font-size:13px;line-height:1.65;color:var(--site-muted)}
 .public-place-page .report-notes p{margin:10px 0}.public-place-page .report-notes ul{padding-left:20px;margin:12px 0}.public-place-page .report-notes li{margin-bottom:7px}.public-place-page .report-notes>:last-child{margin-bottom:0}
 @media(max-width:600px){.public-place-page .report-notes{padding:16px}}
+.history-hit-target{cursor:crosshair;fill:transparent;stroke:none}.history-hit-target:focus-visible{outline:2px solid var(--site-primary);outline-offset:2px}

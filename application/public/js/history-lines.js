@@ -20,7 +20,7 @@
             const series = data.series.filter(item => enabled.has(item.key));
             const values = rows.flatMap(row => series.map(item => row[item.key])).filter(value => value !== null && Number.isFinite(value));
             if (!values.length) { status.textContent = 'No available values for this selection.'; return; }
-            status.textContent = 'Tap or focus a point to see the value. † indicates a source note.';
+            status.textContent = 'Hover or focus a year to see the value. † indicates a source note.';
             const max = data.unit === '%' ? 100 : Math.max(1, ...values) * 1.08;
             const width = Math.max(240, plot.clientWidth), height = 270, left = width < 500 ? 42 : 62, right = width - (width < 500 ? 8 : 18), top = 16, bottom = 228;
             const first = rows[0].year, last = rows[rows.length - 1].year;
@@ -47,11 +47,8 @@
                     const value = row[item.key];
                     if (value === null || !Number.isFinite(value)) { previous=null; return; }
                     const xx = x(row.year), yy = y(value);
-                    // Horizontal Bezier handles preserve every value and cannot overshoot either endpoint.
-                    if (previous) {
-                        const middle = (previous.x + xx) / 2;
-                        path += `C${middle},${previous.y} ${middle},${yy} ${xx},${yy} `;
-                    } else path += `M${xx},${yy} `;
+                    if (previous) path += `L${xx},${yy} `;
+                    else path += `M${xx},${yy} `;
                     previous = {x:xx,y:yy};
                 });
                 svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':item.key==='others_share'?'6 4':'none'}));
@@ -61,10 +58,10 @@
                     const partyName = item.name_key && row[item.name_key] ? ` (${row[item.name_key]})` : '';
                     const votes = item.votes_key ? ` · ${format(row[item.votes_key])} votes` : '';
                     const label = `${row.year} · ${item.label}${partyName}: ${format(value)} ${data.unit}${votes}${row.review?' † — source note':''}`;
-                    const point = element('circle',{cx:x(row.year),cy:y(value),r:5,fill:color,tabindex:0,role:'img','aria-label':label,class:'history-point'});
-                    point.append(element('title',{},label));
-                    ['focus','pointerenter','click'].forEach(event => point.addEventListener(event,()=>status.textContent=label));
-                    svg.append(point);
+                    const hit = element('rect',{x:x(row.year)-12,y:y(value)-12,width:24,height:24,fill:'transparent',tabindex:0,role:'img','aria-label':label,class:'history-hit-target'});
+                    hit.append(element('title',{},label));
+                    ['focus','pointerenter','click'].forEach(event => hit.addEventListener(event,()=>status.textContent=label));
+                    svg.append(hit);
                 });
             });
             plot.append(svg);

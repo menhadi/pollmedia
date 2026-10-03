@@ -34,6 +34,7 @@
         const tooltip = root.querySelector('[data-map-tooltip]');
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
+        const focusMode = root.dataset.mode === 'focus';
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
         const matches = new Map(), used = new Set(), paths = new Map();
         // A boundary code is not an extraction row number. Name/state matches are approximate;
@@ -77,7 +78,7 @@
         const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
-            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':record?recordText(record):(f.properties.name || 'Unnamed constituency'),class:'election-map-seat'});
+            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'var(--palette-d5dfd5)':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':record?recordText(record):(f.properties.name || 'Unnamed constituency'),class:'election-map-seat'});
             const title=svgElement('title');title.textContent=record?recordText(record):(f.properties.name||'Unnamed constituency');path.append(title);
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
@@ -94,10 +95,14 @@
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&safeUrl(r.url);if(url)location.assign(url);});
         const unplaced=records.filter(r=>!used.has(r.id)),section=root.querySelector('[data-map-unplaced]'),list=section.querySelector('.election-map-unplaced');
         section.hidden=!unplaced.length;
-        unplaced.forEach(r=>{const url=safeUrl(r.url);if(!url)return;const link=document.createElement('a');link.href=url;link.textContent=recordText(r);link.style.setProperty('--seat-party',partyColor(r.party,colors));if(selected(r)){link.classList.add('is-selected');section.open=true;selection.textContent=recordText(r)+' · historical seat shown in the schematic list.';}list.append(link);});
-        const parties=[...new Set(records.map(r=>r.party).filter(Boolean))].sort();
-        [...parties,null].forEach(party=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=partyColor(party,colors);swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(party||'Result not available'));legend.append(item);});
-        if(root.dataset.selected){const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor='var(--site-accent)';item.append(swatch,document.createTextNode('Selected constituency'));legend.append(item);}
+        unplaced.forEach(r=>{const url=safeUrl(r.url);if(!url)return;const link=document.createElement('a');link.href=url;link.textContent=recordText(r);link.style.setProperty('--seat-party',focusMode?'var(--site-border)':partyColor(r.party,colors));if(selected(r)){link.classList.add('is-selected');section.open=true;selection.textContent=recordText(r)+' · historical seat shown in the schematic list.';}list.append(link);});
+        if(focusMode){
+            [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
+        }else{
+            const parties=[...new Set(records.map(r=>r.party).filter(Boolean))].sort();
+            [...parties,null].forEach(party=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=partyColor(party,colors);swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(party||'Result not available'));legend.append(item);});
+            if(root.dataset.selected){const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor='var(--site-accent)';item.append(swatch,document.createTextNode('Selected constituency'));legend.append(item);}
+        }
         let zoom=1;root.querySelectorAll('[data-map-zoom]').forEach(button=>button.addEventListener('click',()=>{zoom=button.dataset.mapZoom==='reset'?1:Math.max(1,Math.min(8,zoom*(button.dataset.mapZoom==='in'?1.5:1/1.5)));const size=600/zoom;svg.setAttribute('viewBox',`${(600-size)/2} ${(600-size)/2} ${size} ${size}`);svg.style.touchAction=zoom>1?'none':'pan-y';}));
         // Drag a zoomed map; ordinary clicks still open a constituency.
         let drag=null,moved=false;

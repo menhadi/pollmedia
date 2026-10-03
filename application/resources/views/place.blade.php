@@ -36,16 +36,16 @@
 <div class="hero"><h1>{{ $pageTitle }}</h1><p class="small">{{ strtoupper($type) }} {{ $code }}</p></div>
 @endif
 
-@if(in_array($place->slug, ['district-pilibhit','pc-pilibhit']))
-
-<a href="{{ route('places.show', ['type' => $type === 'district' ? 'pc' : 'district', 'slug' => 'pilibhit']) }}">View Pilibhit {{ $type === 'district' ? 'PC' : 'district' }} →</a>
-
-@include('place-map')
-
+@if($type==='district')
+    @if($place->slug==='district-pilibhit')
+        <a href="{{ route('places.show', ['type' => 'pc', 'slug' => 'pilibhit']) }}">View Pilibhit PC →</a>
+        @include('place-map')
+    @else
+        @include('place-location-map',['mapName'=>$place->name,'mapQuery'=>$place->name.', Uttar Pradesh, India','mapId'=>'geography'])
+    @endif
 @else
-
-@include('place-location-map',['mapName'=>$place->name,'mapQuery'=>$place->name.', Uttar Pradesh, India','mapId'=>'geography'])
-
+    @if($place->slug==='pc-pilibhit')<a href="{{ route('places.show', ['type' => 'district', 'slug' => 'pilibhit']) }}">View Pilibhit district →</a>@endif
+    @include('election-map',['mapKind'=>$type,'mapStateName'=>'Uttar Pradesh','mapSelectedName'=>$place->name,'mapMode'=>'focus'])
 @endif
 
 @if($type!=='district')

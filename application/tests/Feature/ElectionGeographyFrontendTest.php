@@ -31,6 +31,8 @@ class ElectionGeographyFrontendTest extends TestCase
         $this->get('/india/state/maharashtra')
             ->assertOk()
             ->assertSee('Maharashtra election coverage')
+            ->assertSee('data-election-map', false)
+            ->assertDontSee('google.com/maps')
             ->assertSee('Assembly archive')
             ->assertSee(route('elections.assembly'))
             ->assertSeeText('Browse Maharashtra Assembly sources');
@@ -47,6 +49,8 @@ class ElectionGeographyFrontendTest extends TestCase
 
         $this->get('/india/pc/pilibhit')
             ->assertOk()
+            ->assertSee('data-mode="focus"', false)
+            ->assertDontSee('google.com/maps')
             ->assertSee('Related administrative districts')
             ->assertSee('/india/district/pilibhit', false);
     }
