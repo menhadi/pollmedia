@@ -34,6 +34,7 @@ class SourceConfig:
     prior_sha256: str
     state: str
     seats: int
+    pdf_state: str | None = None
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -86,7 +87,7 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
             runner = re.search(r'^\s*RUNNER-UP\s+(\S+)\s+(.+?)\s+(\d+)\s*$', text, re.I | re.M)
             margin = re.search(r'^\s*MARGIN\s+(\d+)\b', text, re.I | re.M)
             if (not all((heading, winner, runner, margin))
-                    or f'legislative assembly of {config.state}' not in text
+                    or f'legislative assembly of {config.pdf_state or config.state}' not in text
                     or int(heading[1]) != record['code']
                     or normalized(heading[2]) != normalized(record['name'])):
                 raise ValueError(f'Official {config.state} declaration identity differs: {record["code"]}')
