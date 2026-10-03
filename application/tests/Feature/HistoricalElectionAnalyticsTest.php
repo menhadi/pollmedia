@@ -274,6 +274,30 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($record));
     }
 
+    public function test_official_summary_polled_only_difference_keeps_result_visible_with_review(): void
+    {
+        $record = $this->record(3, 10000, 6993, 4000, 1000);
+        $record['status'] = 'needs_review';
+        $record['source_warning_code'] = 'official_summary_turnout_only';
+        $record['summary_source_file'] = 'west-bengal-1982.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_page'] = 268;
+        $record['summary_totals'] = ['electors' => 10000, 'votes_polled' => 7000, 'valid_candidate_votes' => 6800];
+        $record['valid_candidate_votes'] = 6800;
+        $record['source_discrepancy'] = ['field' => 'votes_polled', 'detail_value' => 6993,
+            'summary_value' => 7000, 'valid_detail_value' => 6800, 'valid_summary_value' => 6800];
+        $record['summary_result'] = ['winner' => 'A', 'winner_party' => 'AAA', 'winner_votes' => 4000,
+            'runner' => 'B', 'runner_party' => 'BBB', 'runner_votes' => 2500, 'margin' => 1500];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(7000, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_discrepancy_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(['winner' => 'A', 'party' => 'AAA', 'margin' => 1500, 'derived' => false],
+            $analytics->singleSeatResult($record));
+    }
+
     public function test_official_detail_turnout_can_show_source_total_without_accepting_candidate_rows(): void
     {
         $record = $this->record(1, 195191, 143451, 60704, 53091);
