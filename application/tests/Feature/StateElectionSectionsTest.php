@@ -35,7 +35,7 @@ class StateElectionSectionsTest extends TestCase
         $this->assertCount(10, $charts[1]);
         $this->assertSame([2019, 2024], array_column(json_decode($charts[1][0], true)['rows'], 'year'));
         $this->assertSame([2022], array_column(json_decode($charts[1][5], true)['rows'], 'year'));
-        $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha results')->assertSee('2022 State Assembly results');
+        $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha results')->assertSee('2022 State Assembly results')->assertSee('data-year="2019"', false)->assertSee('data-year="2022"', false)->assertSee('edition='.str_repeat('b', 24), false);
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('c', 24))->assertNotFound();
         $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 State Assembly results');
     }

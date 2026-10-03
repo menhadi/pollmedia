@@ -3,7 +3,8 @@
 <link rel="stylesheet" href="/css/history-report.css?v={{ substr(hash_file('sha256',public_path('css/history-report.css')),0,12) }}"></head><body class="history-report">
 <div class="report-actions"><button onclick="window.print()">Print / Save as PDF</button><p>Choose “Save as PDF” in the print dialog. All chart values and sources are included.</p></div>
 <header class="report-masthead"><div class="report-brand">{{ app(\App\Services\SiteSettings::class)->appearance()['name'] }}<span>Historical election report</span></div><h1>{{ \Illuminate\Support\Str::title($name) }}</h1><p class="report-subtitle">{{ $state }} · {{ $kind==='pc'?'Parliamentary constituency':'Assembly constituency' }}</p><div class="report-meta"><span><strong>{{ $rows->min('entry.year') }}–{{ $rows->max('entry.year') }}</strong> Reference years</span><span><strong>{{ $rows->pluck('entry.year')->unique()->count() }}</strong> Available years</span><span>Prepared {{ now()->format('d M Y') }}</span></div></header>
-<main>@include('place-history-charts',['reportMode'=>true])
+<main>@include('printable-election-map',['printMapState'=>$state,'printMapSeat'=>$name])
+@include('place-history-charts',['reportMode'=>true])
 @php $hasSourceReportedPolled=false; @endphp
 <section id="history"><h2>Election history and official references</h2><table><thead><tr><th>Year</th><th>Winner / party</th><th>Votes polled</th><th>Turnout</th><th>Margin (votes)</th></tr></thead><tbody>
 @foreach($rows as $row)

@@ -29,4 +29,14 @@ test('history chart joins years with straight lines and retains invisible keyboa
     assert.equal(targets[0].attributes.fill,'transparent');
     targets[1].events.focus();
     assert.match(nodes['.history-readout'].textContent,/2021.*60/);
+    const tooltip=nodes['.history-plot'].children[1];
+    assert.equal(tooltip.hidden,false);
+    assert.match(tooltip.textContent,/2021.*60/);
+    assert.match(tooltip.style.left,/px$/);
+    targets[1].events.pointerleave();
+    assert.equal(tooltip.hidden,true);
+    targets[1].events.click();
+    assert.equal(tooltip.hidden,false);
+    targets[1].events.keydown({key:'Escape'});
+    assert.equal(tooltip.hidden,true);
 });

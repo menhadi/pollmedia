@@ -92,8 +92,10 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 .public-place-page .report-notes p,.public-place-page .report-notes li{font-size:13px;line-height:1.65;color:var(--site-muted)}
 .public-place-page .report-notes p{margin:10px 0}.public-place-page .report-notes ul{padding-left:20px;margin:12px 0}.public-place-page .report-notes li{margin-bottom:7px}.public-place-page .report-notes>:last-child{margin-bottom:0}
 @media(max-width:600px){.public-place-page .report-notes{padding:16px}}
-.history-hit-target{cursor:crosshair;fill:transparent;stroke:none}.history-hit-target:focus-visible{outline:2px solid var(--site-primary);outline-offset:2px}
+.history-hit-target{cursor:crosshair;fill:transparent;stroke:none}.history-hit-target:focus,.history-hit-target:focus-visible{outline:none}
 
 .constituency-page .representative-card{display:flex!important;align-items:flex-start;gap:14px;padding:20px}.constituency-page .representative-avatar{flex:0 0 48px;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:16px}.constituency-page .representative-card h2{font-size:20px;line-height:1.3;margin:8px 0}.constituency-page .representative-card p{margin:0 0 10px;font-size:14px;line-height:1.5}.constituency-page .representative-card .small{font-size:12px}.constituency-page .representative-card a{font-size:14px}
 
 .constituency-page .representative-card{display:flex!important;align-items:flex-start;gap:14px;padding:20px}.constituency-page .representative-avatar{flex:0 0 48px;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:16px}.constituency-page .representative-card h2{font-size:20px;line-height:1.3;margin:8px 0}.constituency-page .representative-card p{margin:0 0 10px;font-size:14px;line-height:1.5}.constituency-page .representative-card .small{font-size:12px}.constituency-page .representative-card a{font-size:14px}
+
+.history-plot{position:relative}.history-tooltip{position:absolute;z-index:3;pointer-events:none;max-width:min(290px,90%);padding:10px 13px;border:1px solid var(--site-border);border-radius:10px;background:#fff;color:var(--site-text);box-shadow:0 4px 16px #153e3422;font-size:13px;line-height:1.4}.history-tooltip[hidden]{display:none}

@@ -2,6 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Services\ArchiveFiles;
+use App\Services\ConstituencyArchiveHistory;
+use App\Services\ElectionArchive;
+use App\Services\ElectionGeographySummary;
 use App\Services\HistoricalElectionArchive;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +15,40 @@ use Tests\TestCase;
 class ConstituencyOverviewTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_delhi_source_history_does_not_repeat_geography_queries_for_each_record(): void
+    {
+        [$label, $url] = collect(app(ElectionArchive::class)->catalogue()['pc'])->first(fn ($entry) => str_starts_with($entry[0], '2004'));
+        $id = substr(hash('sha256', $url), 0, 24);
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $records = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $records[] = ['code' => $i, 'state_name' => 'NCT OF Delhi', 'constituency_name' => $i === 1 ? 'NEW DELHI' : 'Other seat '.$i, 'candidates' => []];
+        }
+        $body = json_encode(['source_url' => $url, 'kind' => 'pc', 'year' => 2004, 'source_file' => 'source.pdf', 'source_sha256' => str_repeat('f', 64), 'records' => $records]);
+        DB::table('archive_json_files')->insert(['path_hash' => hash('sha256', $path), 'path' => $path, 'category' => 'election-archive', 'sha256' => hash('sha256', $body), 'bytes' => strlen($body), 'body' => $body]);
+        $this->mock(ArchiveFiles::class, function ($mock) use ($path, $body, $id, $url): void {
+            $mock->shouldReceive('get')->with($path)->once()->andReturn($body);
+            $mock->shouldReceive('get')->with('election-archive/'.$id.'/manifest.json')->once()->andReturn(json_encode(['url' => $url, 'files' => [['file' => 'source.pdf', 'sha256' => str_repeat('f', 64)]]]));
+        });
+        $this->mock(ElectionGeographySummary::class)->shouldNotReceive('states');
+        $rows = app(ConstituencyArchiveHistory::class)->missingEntries('pc', 'Delhi', 'New Delhi', collect());
+        $this->assertCount(1, $rows);
+        $this->assertSame('NEW DELHI', $rows->first()->constituency_name);
+    }
+
+    public function test_new_delhi_overview_matches_official_delhi_labels_across_years(): void
+    {
+        foreach ([['a', 2024, 'NCT OF Delhi'], ['b', 2019, 'u05'], ['c', 2004, 'Delhi']] as [$id, $year, $state]) {
+            DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat($id, 24), 'record_code' => 1, 'kind' => 'pc', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => $state, 'constituency_name' => 'NEW DELHI', 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 1, 'extraction_sha256' => str_repeat('c', 64)]);
+        }
+        $this->mock(HistoricalElectionArchive::class, function ($mock) {
+            $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [['code' => 1, 'name' => 'NEW DELHI', 'status' => 'validated', 'winner' => 'Example winner', 'candidates' => [['candidate_name' => 'Example winner', 'party_at_election' => 'Example party', 'votes' => 100]], 'number_of_seats' => 1]]]]);
+        });
+        foreach (['Delhi', 'NCT OF Delhi', 'u05'] as $state) {
+            $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => $state, 'name' => 'NEW DELHI']))->assertOk()->assertSee('2024 results')->assertSee('2019')->assertSee('2004')->assertSee('Example winner');
+        }
+    }
 
     public function test_search_groups_years_and_overview_defaults_to_history(): void
     {

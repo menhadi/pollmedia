@@ -42,7 +42,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v2:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v3:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
@@ -56,11 +56,16 @@ class ConstituencyArchiveHistory
                     abort_unless($hashes->get($source['file'] ?? null) === ($source['sha256'] ?? null), 409, 'Historical additional source differs.');
                 }
                 $matches = [];
+                $wantedState = $state !== null ? $this->stateName($state) : null;
+                $wantedSeat = $name !== null ? $this->seatName($name) : null;
+                $stateNames = [];
+                $stateCodes = [];
                 foreach ($data['records'] ?? [] as $record) {
                     $recordName = $record['constituency_name'] ?? $record['name'] ?? '';
-                    $recordState = $record['state_name'] ?? ($edition['state'] ?? ($kind === 'ac' ? 'Uttar Pradesh' : ($edition['year'] >= 1977 ? ElectionPlaceIdentity::state($record['state_code'] ?? '') : '')));
+                    $code = $record['state_code'] ?? '';
+                    $recordState = $record['state_name'] ?? ($edition['state'] ?? ($kind === 'ac' ? 'Uttar Pradesh' : ($edition['year'] >= 1977 ? ($stateCodes[$code] ??= ElectionPlaceIdentity::state($code)) : '')));
                     // Old state codes have different meanings. Use original state names, never today's code list.
-                    if (($state !== null && $this->stateName($recordState) !== $this->stateName($state)) || ($name !== null && $this->seatName($recordName) !== $this->seatName($name))) {
+                    if (($wantedState !== null && ($stateNames[$recordState] ??= $this->stateName($recordState)) !== $wantedState) || ($wantedSeat !== null && $this->seatName($recordName) !== $wantedSeat)) {
                         continue;
                     }
                     $matches[] = ['edition_id' => $id, 'record_code' => (int) $record['code'], 'kind' => $kind, 'year' => $edition['year'], 'edition_label' => $edition['label'], 'state_label' => $recordState, 'constituency_name' => $recordName, 'status' => $record['status'] ?? 'needs_review', 'has_warning' => ($record['status'] ?? '') !== 'validated', 'candidate_count' => count($record['candidates'] ?? []), 'extraction_sha256' => $file->sha256];

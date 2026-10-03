@@ -15,7 +15,7 @@ class HomeElectionSummary
             ->groupBy('kind', 'year', 'state_label', 'edition_id', 'extraction_sha256')->orderBy('edition_id')->orderBy('state_label')->get();
         $version = DB::table('historical_election_reviews')->max('id') ?? 0;
 
-        return Cache::remember('home-election-v2:'.hash('sha256', $groups->toJson().$version), 3600, function () use ($groups): array {
+        return Cache::remember('home-election-v3:'.hash('sha256', $groups->toJson().$version), 3600, function () use ($groups): array {
             $selected = [];
             foreach ($groups as $group) {
                 if ($group->year < 1977 && preg_match('/^[su][0-9]{2}$/i', $group->state_label)) {

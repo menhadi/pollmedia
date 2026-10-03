@@ -5,7 +5,7 @@ namespace App\Services;
 class ElectionPlaceIdentity
 {
     /** Navigation aliases only; original state labels and historical boundaries remain in source records. */
-    private const STATE_ALIASES = ['madras' => 'Tamil Nadu', 'mysore' => 'Karnataka', 'orissa' => 'Odisha', 'orrisa' => 'Odisha', 'uttaranchal' => 'Uttarakhand', 'pondicherry' => 'Puducherry', 'kerla' => 'Kerala', 'gujrat' => 'Gujarat'];
+    private const STATE_ALIASES = ['madras' => 'Tamil Nadu', 'mysore' => 'Karnataka', 'orissa' => 'Odisha', 'orrisa' => 'Odisha', 'uttaranchal' => 'Uttarakhand', 'pondicherry' => 'Puducherry', 'kerla' => 'Kerala', 'gujrat' => 'Gujarat', 'delhi' => 'Delhi', 'nct of delhi' => 'Delhi', 'national capital territory of delhi' => 'Delhi'];
 
     private static function labels(): array
     {
@@ -16,6 +16,7 @@ class ElectionPlaceIdentity
     {
         $sql = 'CASE LOWER(TRIM(state_label))';
         foreach (self::labels() as $code => $label) {
+            $label = self::STATE_ALIASES[mb_strtolower($label)] ?? $label;
             $sql .= " WHEN '".str_replace("'", "''", $code)."' THEN '".str_replace("'", "''", mb_strtolower($label))."'";
         }
         foreach (self::STATE_ALIASES as $old => $label) {
@@ -33,7 +34,7 @@ class ElectionPlaceIdentity
         }
         $labels = self::labels();
         if (isset($labels[$key])) {
-            return $labels[$key];
+            return self::STATE_ALIASES[mb_strtolower($labels[$key])] ?? $labels[$key];
         }
         foreach ($labels as $label) {
             if (mb_strtolower($label) === $key) {

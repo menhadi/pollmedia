@@ -108,4 +108,11 @@ class HomeElectionDashboardTest extends TestCase
         $this->getJson('/?finder=1&kind=pc&state=Goa')->assertOk()->assertJsonCount(0, 'seats');
         $this->getJson('/?finder=1&kind=other&state=Punjab')->assertUnprocessable();
     }
+
+    public function test_delhi_finder_recognizes_both_official_state_labels_and_codes(): void
+    {
+        $this->edition('a', 'pc', 2019, 'u05', [$this->record(1, 'New Delhi', 100, 50)]);
+        $this->edition('b', 'pc', 2024, 'NCT OF Delhi', [$this->record(1, 'New Delhi', 100, 60)]);
+        $this->getJson('/?finder=1&kind=pc&state=Delhi')->assertOk()->assertJsonCount(1, 'seats')->assertJsonPath('seats.0.url', route('constituency.overview', ['kind' => 'pc', 'state' => 'Delhi', 'name' => 'New Delhi']));
+    }
 }

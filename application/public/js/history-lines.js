@@ -15,6 +15,7 @@
         const format = value => new Intl.NumberFormat(document.documentElement.lang === 'hi' ? 'hi-IN' : 'en-IN', {maximumFractionDigits: data.unit === '%' ? 2 : 0}).format(value);
         const render = () => {
             plot.replaceChildren();
+            status.style.visibility = '';
             const rows = data.rows.filter(row => row.year >= Number(from.value) && row.year <= Number(to.value));
             if (!rows.length) { status.textContent = 'No years in this range.'; return; }
             const series = data.series.filter(item => enabled.has(item.key));
@@ -26,6 +27,8 @@
             const first = rows[0].year, last = rows[rows.length - 1].year;
             const x = year => first === last ? (left + right) / 2 : left + (year - first) / (last - first) * (right - left);
             const y = value => bottom - value / max * (bottom - top);
+            const tooltip = document.createElement('div');
+            tooltip.className = 'history-tooltip'; tooltip.hidden = true; tooltip.setAttribute('role', 'tooltip');
             const svg = element('svg', {viewBox: `0 0 ${width} ${height}`, role: 'group', 'aria-label': chart.querySelector('h3').textContent + ', ' + data.unit});
             for (let i = 0; i <= 4; i++) {
                 const value = max * i / 4, yy = y(value);
@@ -62,12 +65,22 @@
                     const votes = item.votes_key ? ` · ${format(row[item.votes_key])} votes` : '';
                     const label = `${row.year} · ${item.label}${partyName}: ${format(value)} ${data.unit}${votes}${row.review?' † — source note':''}`;
                     const hit = element('rect',{x:x(row.year)-12,y:y(value)-12,width:24,height:24,fill:'transparent',tabindex:0,role:'img','aria-label':label,class:'history-hit-target'});
-                    hit.append(element('title',{},label));
-                    ['focus','pointerenter','click'].forEach(event => hit.addEventListener(event,()=>status.textContent=label));
+                    const show = () => {
+                        status.textContent = label;
+                        status.style.visibility = 'hidden';
+                        tooltip.textContent = label; tooltip.hidden = false;
+                        tooltip.style.left = `${Math.max(12, Math.min(width - 12, x(row.year)))}px`;
+                        tooltip.style.top = `${Math.max(4, y(value) - 12)}px`;
+                        tooltip.style.transform = x(row.year) > width * .65 ? 'translate(-100%, -100%)' : x(row.year) < width * .35 ? 'translate(0, -100%)' : 'translate(-50%, -100%)';
+                    };
+                    ['focus','pointerenter','click'].forEach(event => hit.addEventListener(event, show));
+                    const hide = () => { tooltip.hidden = true; status.style.visibility = ''; status.textContent = 'Hover or focus a year to see the value. † indicates a source note.'; };
+                    ['blur','pointerleave'].forEach(event => hit.addEventListener(event, hide));
+                    hit.addEventListener('keydown', event => { if (event.key === 'Escape') hide(); });
                     svg.append(hit);
                 });
             });
-            plot.append(svg);
+            plot.append(svg, tooltip);
         };
         data.series.forEach((series,index) => {
             const button = document.createElement('button'); button.type='button'; button.setAttribute('aria-pressed','true');
