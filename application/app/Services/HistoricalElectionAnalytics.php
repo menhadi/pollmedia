@@ -565,7 +565,9 @@ class HistoricalElectionAnalytics
                 && $turnout['votes_polled'] > 0 && $turnout['votes_polled'] <= $turnout['electors'];
         }
 
-        if (($record['source_warning_code'] ?? '') === 'official_summary_turnout_only') {
+        if (($record['source_warning_code'] ?? '') === 'official_summary_turnout_only'
+            || (($record['source_warning_code'] ?? '') === 'summary_turnout_with_detail_warnings'
+                && isset($record['summary_source_file'], $record['summary_source_sha256']))) {
             return ($record['status'] ?? '') === 'needs_review'
                 && is_array($summary)
                 && preg_match('/\.pdf$/i', $record['summary_source_file'] ?? '') === 1
@@ -872,7 +874,8 @@ class HistoricalElectionAnalytics
     /** @return array{winner: string, party: string, margin: int}|null */
     private function officialPdfSummaryResult(array $record): ?array
     {
-        if (($record['source_warning_code'] ?? '') !== 'official_summary_turnout_only'
+        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_turnout_with_detail_warnings'], true)
+            || ! isset($record['summary_source_file'], $record['summary_source_sha256'])
             || ! $this->hasCorroboratedTurnout($record)
             || ($record['number_of_seats'] ?? 1) !== 1) {
             return null;
