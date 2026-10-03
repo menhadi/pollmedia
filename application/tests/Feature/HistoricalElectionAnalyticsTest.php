@@ -894,4 +894,46 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee('South Goa')
             ->assertSee('Summary and detailed totals differ');
     }
+
+    public function test_official_1969_declared_result_is_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('7ce40cf47befc2b48ff776e3', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 315);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+        $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+        $record['official_summary_state'] = 'Uttar Pradesh';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_result'] = ['winner' => 'JAGDISHWAR DAYAL', 'winner_party' => 'INC', 'winner_votes' => 22690,
+            'runner' => 'RAM PRAKASH TRIPATHI', 'runner_party' => 'BJS', 'runner_votes' => 18485, 'margin' => 4205];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertNull($summary['turnout']);
+        $this->assertNull($summary['polled']);
+        $this->assertSame(0, $summary['party_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(4205, $summary['margin']);
+        $this->assertSame(['winner' => 'JAGDISHWAR DAYAL', 'party' => 'INC', 'margin' => 4205, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        foreach ([
+            ['summary_source_sha256', str_repeat('0', 64)],
+            ['number_of_seats', 2],
+            ['valid_candidate_votes', 78014],
+        ] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+            $this->assertSame(0, $analytics->summarize([$altered])['margin_count']);
+        }
+        $altered = $record;
+        $altered['summary_result']['winner_votes']++;
+        $this->assertNull($analytics->singleSeatResult($altered));
+        $altered = $record;
+        $altered['candidates'][0]['votes']++;
+        $this->assertNull($analytics->singleSeatResult($altered));
+    }
 }

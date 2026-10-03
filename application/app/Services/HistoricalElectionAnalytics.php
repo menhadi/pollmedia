@@ -135,7 +135,8 @@ class HistoricalElectionAnalytics
             if ($hasWarning && ! $provisionalCandidates) {
                 $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
                     ?? $this->officialWorkbookSummaryResult($record)
-                    ?? $this->officialPdfSummaryResult($record);
+                    ?? $this->officialPdfSummaryResult($record)
+                    ?? $this->officialInvalidTurnoutResult($record);
                 if ($workbookResult !== null) {
                     $margins[] = $workbookResult['margin'];
                     $marginReviewCount++;
@@ -205,7 +206,9 @@ class HistoricalElectionAnalytics
             return $uncontested;
         }
 
-        $officialResult = $this->officialRepeatedNameWorkbookResult($record) ?? $this->officialPdfSummaryResult($record);
+        $officialResult = $this->officialRepeatedNameWorkbookResult($record)
+            ?? $this->officialPdfSummaryResult($record)
+            ?? $this->officialInvalidTurnoutResult($record);
         if ($officialResult !== null) {
             return $officialResult + ['derived' => false];
         }
@@ -877,6 +880,48 @@ class HistoricalElectionAnalytics
             || $result['winner_votes'] <= $result['runner_votes']
             || $result['margin'] !== $result['winner_votes'] - $result['runner_votes']
             || $result['winner_votes'] > ($record['summary_totals']['valid_candidate_votes'] ?? 0)) {
+            return null;
+        }
+
+        return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
+    }
+
+    /** The official declaration can establish a result even when its voter total cannot establish turnout. */
+    private function officialInvalidTurnoutResult(array $record): ?array
+    {
+        $summary = $record['summary_totals'] ?? null;
+        $result = $record['summary_result'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        if (($record['source_warning_code'] ?? null) !== 'official_ac_declared_result_invalid_turnout'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['code'] ?? null) !== 315 || ($record['name'] ?? null) !== 'CHHIBRAMAU'
+            || ($record['number_of_seats'] ?? null) !== 1
+            || ($record['original_extraction_warning'] ?? null) !== 'Electorate and voter totals are inconsistent'
+            || ($record['error'] ?? null) !== 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.'
+            || ($record['official_summary_state'] ?? null) !== 'Uttar Pradesh'
+            || ($record['official_source_url'] ?? null) !== 'https://old.eci.gov.in/files/file/3247-uttar-pradesh-1969/'
+            || ($record['summary_source_file'] ?? null) !== '7ce40cf47befc2b48ff776e3-7475.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '6149dddc726ecba33c63091f8452964cef9fd012248ba2ab313ecce77cb2c623'
+            || ($record['summary_page'] ?? null) !== 337 || ($record['detail_page'] ?? null) !== 505
+            || ! is_array($summary) || ! is_array($result) || ! is_array($candidates)
+            || ($record['electors'] ?? null) !== 73524 || ($record['votes_polled'] ?? null) !== 80269
+            || ($record['valid_candidate_votes'] ?? null) !== 78013
+            || $summary !== ['electors' => 73524, 'votes_polled' => 80269, 'valid_candidate_votes' => 78013]
+            || count($candidates) !== 11) {
+            return null;
+        }
+
+        $ranked = collect($candidates)->sortByDesc('votes')->values();
+        if ($ranked->contains(fn ($candidate): bool => ! is_array($candidate)
+            || ! $this->count($candidate['votes'] ?? null)
+            || trim($candidate['candidate_name'] ?? '') === ''
+            || trim($candidate['party_at_election'] ?? '') === '')
+            || $ranked->sum('votes') !== $summary['valid_candidate_votes']
+            || $ranked[0]['votes'] <= $ranked[1]['votes']
+            || $result !== ['winner' => $ranked[0]['candidate_name'], 'winner_party' => $ranked[0]['party_at_election'],
+                'winner_votes' => $ranked[0]['votes'], 'runner' => $ranked[1]['candidate_name'],
+                'runner_party' => $ranked[1]['party_at_election'], 'runner_votes' => $ranked[1]['votes'],
+                'margin' => $ranked[0]['votes'] - $ranked[1]['votes']]) {
             return null;
         }
 
