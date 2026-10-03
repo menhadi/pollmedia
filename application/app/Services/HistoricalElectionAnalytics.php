@@ -1114,6 +1114,14 @@ class HistoricalElectionAnalytics
     private function officialInvalidTurnoutResult(array $record): ?array
     {
         $source = match ($record['summary_source_file'] ?? null) {
+            '402db61ff727c908b4ac3170-7462.pdf' => [
+                'code' => 130, 'name' => 'KANPUR CITY NORTH', 'state' => 'Uttar Pradesh',
+                'url' => 'https://old.eci.gov.in/files/file/3241-uttar-pradesh-1951/',
+                'sha256' => '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7',
+                'summary_page' => 150, 'detail_page' => 393, 'electors' => 5064,
+                'votes_polled' => 28326, 'valid_candidate_votes' => 28326, 'candidates' => 13,
+                'original_warning' => 'Electorate and voter totals are inconsistent',
+            ],
             '6dfd6b3caf24c34e288769cf-8772.pdf' => [
                 'code' => 116, 'name' => 'SAUSAR (ST)', 'state' => 'Madhya Pradesh',
                 'url' => 'https://old.eci.gov.in/files/file/3728-madhya-pradesh-1957/',

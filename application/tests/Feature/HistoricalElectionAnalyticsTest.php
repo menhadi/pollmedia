@@ -1183,6 +1183,33 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee('Summary and detailed totals differ');
     }
 
+    public function test_official_1951_kanpur_result_is_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('402db61ff727c908b4ac3170', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 130);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+        $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+        $record['official_summary_state'] = 'Uttar Pradesh';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_result'] = ['winner' => 'SURYA PRASAD AWASTHI', 'winner_party' => 'INC', 'winner_votes' => 12158,
+            'runner' => 'RAJA RAM SHASTRI', 'runner_party' => 'SP', 'runner_votes' => 11104, 'margin' => 1054];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertNull($summary['turnout']);
+        $this->assertNull($summary['polled']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(['winner' => 'SURYA PRASAD AWASTHI', 'party' => 'INC', 'margin' => 1054, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        $altered = $record;
+        $altered['summary_result']['winner_votes']++;
+        $this->assertNull($analytics->singleSeatResult($altered));
+    }
+
     public function test_official_1969_declared_result_is_shown_without_impossible_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('7ce40cf47befc2b48ff776e3', app(ElectionArchive::class));
