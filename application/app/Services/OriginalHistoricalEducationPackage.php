@@ -60,7 +60,7 @@ class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
             foreach ($rows as $index => $row) {
                 $expectedRows[$row['record_key']] = [
                     'record_key' => $row['record_key'], 'state_code' => $stateIdentity, 'district_code' => '000',
-                    'level' => $row['original_level'], 'residence' => $row['residence'], 'name' => $this->storedName($row),
+                    'level' => $this->storedLevel($row), 'residence' => $row['residence'], 'name' => $this->storedName($row),
                     'geography' => json_encode($this->storedGeography($row, $manifest), JSON_THROW_ON_ERROR),
                     'values' => json_encode($row['values'], JSON_THROW_ON_ERROR),
                     'flags' => json_encode($row['flags'], JSON_THROW_ON_ERROR), 'source_row' => $index + 1,
@@ -129,6 +129,11 @@ class OriginalHistoricalEducationPackage extends OriginalHistoricalCensusImport
             'source_record_identity' => $row['source_record_identity'], 'year' => $manifest['year'],
             'boundary_basis' => $manifest['boundary_basis'],
             'identifier_basis' => 'Source-scoped storage token; not Census or LGD code'];
+    }
+
+    protected function storedLevel(array $row): string
+    {
+        return $row['original_level'];
     }
 
     private function member(ZipArchive $zip, string $name): string
