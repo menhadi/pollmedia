@@ -1,6 +1,6 @@
 (() => {
     const ns = 'http://www.w3.org/2000/svg';
-    const colors = ['var(--palette-315d91)', 'var(--site-accent)', 'var(--site-primary)', 'var(--site-muted)'];
+    const colors = ['var(--palette-315d91)', 'var(--site-accent)', 'var(--site-primary)', 'var(--site-muted)', '#8b5c9e'];
     const element = (tag, attributes = {}, text = '') => {
         const node = document.createElementNS(ns, tag);
         Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, value));
@@ -12,7 +12,7 @@
         const from = chart.querySelector('[data-chart-from]'), to = chart.querySelector('[data-chart-to]');
         const plot = chart.querySelector('.history-plot'), status = chart.querySelector('.history-readout');
         const enabled = new Set(data.series.map(series => series.key));
-        const format = value => new Intl.NumberFormat(document.documentElement.lang, {maximumFractionDigits: data.unit === '%' ? 2 : 0}).format(value);
+        const format = value => new Intl.NumberFormat(document.documentElement.lang === 'hi' ? 'hi-IN' : 'en-IN', {maximumFractionDigits: data.unit === '%' ? 2 : 0}).format(value);
         const render = () => {
             plot.replaceChildren();
             const rows = data.rows.filter(row => row.year >= Number(from.value) && row.year <= Number(to.value));
