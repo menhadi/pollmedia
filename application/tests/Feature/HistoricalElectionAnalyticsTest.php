@@ -816,6 +816,47 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(137376, $analytics->summarize([$record])['polled']);
     }
 
+    public function test_reconciled_official_detail_can_show_a_reviewed_winner_and_margin(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $record = [
+            'code' => 288, 'name' => 'Satyavedu (SC)', 'number_of_seats' => 1,
+            'status' => 'needs_review',
+            'error' => 'Official source prints the constituency turnout total; previous candidate/source warnings remain available for review.',
+            'source_warning_code' => 'official_turnout_from_residual_source',
+            'electors' => 1000, 'votes_polled' => 800, 'valid_candidate_votes' => 750,
+            'detail_page' => 42,
+            'turnout_totals' => ['electors' => 1000, 'votes_polled' => 800, 'general_votes' => 790,
+                'postal_votes' => 10, 'source_page' => 42, 'method' => 'official detailed turnout row'],
+            'turnout_source_page' => 42, 'turnout_source_file' => 'official.pdf',
+            'turnout_source_sha256' => str_repeat('a', 64),
+            'candidates' => [
+                ['source_row' => 1, 'source_page' => 42, 'candidate_name' => 'First', 'party_at_election' => 'A',
+                    'general_votes' => 395, 'postal_votes' => 5, 'votes' => 400, 'is_nota' => false],
+                ['source_row' => 2, 'source_page' => 42, 'candidate_name' => 'Second', 'party_at_election' => 'B',
+                    'general_votes' => 345, 'postal_votes' => 5, 'votes' => 350, 'is_nota' => false],
+                ['source_row' => 3, 'source_page' => 42, 'candidate_name' => 'None of the Above', 'party_at_election' => 'NOTA',
+                    'general_votes' => 50, 'postal_votes' => 0, 'votes' => 50, 'is_nota' => true],
+            ],
+            'official_detail_result' => ['winner' => 'First', 'winner_party' => 'A', 'winner_votes' => 400,
+                'runner' => 'Second', 'runner_party' => 'B', 'runner_votes' => 350, 'margin' => 50,
+                'source_page' => 42, 'source_file' => 'official.pdf', 'source_sha256' => str_repeat('a', 64)],
+        ];
+
+        $this->assertSame(1, $analytics->summarize([$record])['turnout_count']);
+        $this->assertSame(1, $analytics->summarize([$record])['margin_count']);
+        $this->assertSame('First', $analytics->singleSeatResult($record)['winner']);
+        $this->assertSame(50, $analytics->singleSeatResult($record)['margin']);
+
+        $changed = $record;
+        $changed['candidates'][0]['votes']++;
+        $this->assertSame(0, $analytics->summarize([$changed])['margin_count']);
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $changed = $record;
+        $changed['official_detail_result']['source_sha256'] = str_repeat('b', 64);
+        $this->assertNull($analytics->singleSeatResult($changed));
+    }
+
     public function test_1996_pc_detailed_result_can_be_shown_with_review_note_but_not_without_matching_evidence(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('35f16085183f0c8bd7ef6124', app(ElectionArchive::class));

@@ -144,6 +144,7 @@ class HistoricalElectionAnalytics
                 $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
                     ?? $this->officialWorkbookSummaryResult($record)
                     ?? $this->officialPdfSummaryResult($record)
+                    ?? $this->officialResidualDetailResult($record)
                     ?? $this->officialInvalidTurnoutResult($record);
                 if ($workbookResult !== null) {
                     $margins[] = $workbookResult['margin'];
@@ -216,6 +217,7 @@ class HistoricalElectionAnalytics
 
         $officialResult = $this->officialRepeatedNameWorkbookResult($record)
             ?? $this->officialPdfSummaryResult($record)
+            ?? $this->officialResidualDetailResult($record)
             ?? $this->officialInvalidTurnoutResult($record);
         if ($officialResult !== null) {
             return $officialResult + ['derived' => false];
@@ -891,6 +893,65 @@ class HistoricalElectionAnalytics
             || $result['winner_votes'] <= $result['runner_votes']
             || $result['margin'] !== $result['winner_votes'] - $result['runner_votes']
             || $result['winner_votes'] > ($record['summary_totals']['valid_candidate_votes'] ?? 0)) {
+            return null;
+        }
+
+        return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
+    }
+
+    /** A fully reconciled detailed PDF page can establish a result without a separate summary page. */
+    private function officialResidualDetailResult(array $record): ?array
+    {
+        if (($record['source_warning_code'] ?? null) !== 'official_turnout_from_residual_source'
+            || ! $this->hasDocumentedOfficialTurnout($record)
+            || ($record['number_of_seats'] ?? 1) !== 1) {
+            return null;
+        }
+        $result = $record['official_detail_result'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        if (! is_array($result) || ! is_array($candidates) || count($candidates) < 2
+            || ($result['source_file'] ?? null) !== ($record['turnout_source_file'] ?? null)
+            || ($result['source_sha256'] ?? null) !== ($record['turnout_source_sha256'] ?? null)
+            || ($result['source_page'] ?? null) !== ($record['detail_page'] ?? null)
+            || $result['source_page'] !== ($record['turnout_source_page'] ?? null)) {
+            return null;
+        }
+        $seen = [];
+        $total = $valid = $general = $postal = 0;
+        foreach ($candidates as $index => $candidate) {
+            $name = trim($candidate['candidate_name'] ?? '');
+            $party = trim($candidate['party_at_election'] ?? '');
+            if ($name === '' || $party === '' || isset($seen[mb_strtolower($name.'|'.$party)])
+                || ($candidate['source_row'] ?? null) !== $index + 1
+                || ($candidate['source_page'] ?? null) !== $result['source_page']
+                || ! $this->count($candidate['votes'] ?? null)
+                || ! $this->count($candidate['general_votes'] ?? null)
+                || ! $this->count($candidate['postal_votes'] ?? null)
+                || $candidate['votes'] !== $candidate['general_votes'] + $candidate['postal_votes']) {
+                return null;
+            }
+            $seen[mb_strtolower($name.'|'.$party)] = true;
+            $total += $candidate['votes'];
+            $general += $candidate['general_votes'];
+            $postal += $candidate['postal_votes'];
+            if (! ($candidate['is_nota'] ?? false)) {
+                $valid += $candidate['votes'];
+            }
+        }
+        $ranked = collect($candidates)->reject(fn (array $candidate): bool => ($candidate['is_nota'] ?? false))
+            ->sortByDesc('votes')->values();
+        if ($ranked->count() < 2 || $ranked[0]['votes'] <= $ranked[1]['votes']
+            || $total !== ($record['votes_polled'] ?? null)
+            || $valid !== ($record['valid_candidate_votes'] ?? null)
+            || $general !== ($record['turnout_totals']['general_votes'] ?? null)
+            || $postal !== ($record['turnout_totals']['postal_votes'] ?? null)
+            || ($result['winner'] ?? null) !== $ranked[0]['candidate_name']
+            || ($result['winner_party'] ?? null) !== $ranked[0]['party_at_election']
+            || ($result['winner_votes'] ?? null) !== $ranked[0]['votes']
+            || ($result['runner'] ?? null) !== $ranked[1]['candidate_name']
+            || ($result['runner_party'] ?? null) !== $ranked[1]['party_at_election']
+            || ($result['runner_votes'] ?? null) !== $ranked[1]['votes']
+            || ($result['margin'] ?? null) !== $ranked[0]['votes'] - $ranked[1]['votes']) {
             return null;
         }
 
