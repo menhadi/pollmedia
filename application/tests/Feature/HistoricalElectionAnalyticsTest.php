@@ -1183,6 +1183,37 @@ class HistoricalElectionAnalyticsTest extends TestCase
             ->assertSee('Summary and detailed totals differ');
     }
 
+    public function test_official_1971_deganga_summary_shows_result_and_documented_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('fed20e0bd380929811cd1a1f', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 84);
+        $record['original_extracted_totals'] = ['electors' => 74781, 'votes_polled' => 47151, 'valid_candidate_votes' => 43369];
+        $record['original_extraction_warning'] = $record['error'];
+        $record['votes_polled'] = 46831;
+        $record['error'] = 'The official summary reports 46,831 votes polled and declares the winner. The detailed table prints 47,151 and repeats a 320-vote candidate row; review the linked report.';
+        $record['source_warning_code'] = 'summary_only_turnout';
+        $record['source_discrepancy'] = ['field' => 'votes_polled', 'detail_value' => 47151,
+            'summary_value' => 46831, 'difference' => 320];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_page'] = 100;
+        $record['summary_totals'] = ['electors' => 74781, 'votes_polled' => 46831, 'valid_candidate_votes' => 43369];
+        $record['summary_result'] = ['winner' => 'HARUN OP RASHID', 'winner_party' => 'IND', 'winner_votes' => 20142,
+            'runner' => 'M. SAWKFTALI', 'runner_party' => 'INC', 'runner_votes' => 9191, 'margin' => 10951];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(46831, $summary['polled']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(['winner' => 'HARUN OP RASHID', 'party' => 'IND', 'margin' => 10951, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        $altered = $record;
+        $altered['summary_result']['winner_votes']++;
+        $this->assertNull($analytics->singleSeatResult($altered));
+    }
+
     public function test_official_1962_mahad_tie_uses_declared_winner_and_zero_margin(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('c6fecebc52d31001b62978a5', app(ElectionArchive::class));
