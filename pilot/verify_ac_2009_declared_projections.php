@@ -10,6 +10,7 @@ $app->make(Kernel::class)->bootstrap();
 $editions = [
     'Haryana' => ['4ac73455f798dcf3a8d2946f', 'haryana', 90],
     'Jharkhand' => ['0882c0bd6b8d8738e38b6f06', 'jharkhand', 81],
+    'Maharashtra' => ['cc0185e917711e78c149abf4', 'maharashtra', 288],
 ];
 $analytics = app(HistoricalElectionAnalytics::class);
 foreach ($editions as $state => [$id, $slug, $expected]) {

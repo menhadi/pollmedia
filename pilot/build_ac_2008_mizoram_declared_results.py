@@ -39,6 +39,7 @@ class SourceConfig:
     expected_revisions: int = 2
     summary_only_codes: frozenset[int] = frozenset()
     year: int = 2008
+    margin_discrepancies: tuple[tuple[int, int, int], ...] = ()
 
 
 CONFIG = SourceConfig(EDITION, NAME, PRIOR_SHA256, 'Mizoram', 40)
@@ -71,6 +72,7 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
         raise ValueError(f'Official {config.state} 2008 summary coverage differs')
     revised = json.loads(old_body)
     results = []
+    seen_margin_discrepancies = set()
     with fitz.open(pdf_path) as pdf:
         for record in revised['records']:
             summary = summaries[record['code']]
@@ -99,14 +101,19 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                     or normalized(heading[2]) != normalized(record['name'])):
                 raise ValueError(f'Official {config.state} declaration identity differs: {record["code"]}')
             winner_votes, runner_votes, margin_votes = int(winner[3]), int(runner[3]), int(margin[1])
+            calculated_margin = winner_votes - runner_votes
             if (not 0 <= runner_votes < winner_votes <= summary['valid_candidate_votes']
-                    or winner_votes - runner_votes != margin_votes
                     or not 0 < summary['valid_candidate_votes'] <= summary['votes_polled'] <= summary['electors']):
                 raise ValueError(f'Official {config.state} declaration arithmetic differs: {record["code"]}')
+            if margin_votes != calculated_margin:
+                discrepancy = (record['code'], margin_votes, calculated_margin)
+                if discrepancy not in config.margin_discrepancies:
+                    raise ValueError(f'Undocumented official margin difference: {record["code"]}')
+                seen_margin_discrepancies.add(discrepancy)
             result = {'winner': winner[2].strip(), 'winner_party': winner[1].strip(),
                       'winner_votes': winner_votes, 'runner': runner[2].strip(),
                       'runner_party': runner[1].strip(), 'runner_votes': runner_votes,
-                      'margin': margin_votes}
+                      'margin': calculated_margin}
             record['summary_source_file'] = old['source_file']
             record['summary_source_sha256'] = old['source_sha256']
             record['summary_result'] = result
@@ -114,14 +121,25 @@ def revised_edition(root: Path = ROOT, config: SourceConfig = CONFIG) -> tuple[b
                 record['original_source_warning_code'] = record['source_warning_code']
                 record['source_warning_code'] = 'official_summary_turnout_only'
             record['error'] += RESULT_NOTE
+            if margin_votes != calculated_margin:
+                record['official_printed_margin'] = margin_votes
+                record['source_discrepancy'] = {'field': 'margin', 'printed_value': margin_votes,
+                                                'calculated_from_official_votes': calculated_margin,
+                                                'summary_page': summary['summary_page']}
+                record['error'] += (f' The printed margin is {margin_votes}, while the official winner and runner-up '
+                                    f'votes differ by {calculated_margin}; the displayed margin uses that difference.')
             results.append({'code': record['code'], 'page': summary['summary_page'], **result})
     if len(results) != config.seats or {item['code'] for item in results} != set(range(1, config.seats + 1)):
         raise ValueError(f'{config.state} 2008 result inventory differs')
+    if seen_margin_discrepancies != set(config.margin_discrepancies):
+        raise ValueError(f'{config.state} expected margin discrepancies differ')
     for before, after in zip(old['records'], revised['records']):
         changed = {key for key in set(before) | set(after) if before.get(key) != after.get(key)}
         expected = {'summary_source_file', 'summary_source_sha256', 'summary_result', 'error'}
         if before['code'] in config.summary_only_codes:
             expected |= {'source_warning_code', 'original_source_warning_code'}
+        if before['code'] in {item[0] for item in config.margin_discrepancies}:
+            expected |= {'official_printed_margin', 'source_discrepancy'}
         if before['code'] != after['code'] or changed != expected:
             raise ValueError(f'Unrelated {config.state} evidence changed: {before["code"]}')
     new_body = json.dumps(revised, ensure_ascii=False, indent=2).encode('utf-8')
