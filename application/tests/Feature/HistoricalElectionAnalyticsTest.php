@@ -221,6 +221,32 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertSame(7007, $summary['electors']);
     }
 
+    public function test_official_pdf_summary_result_is_shown_when_detailed_candidate_rows_are_incomplete(): void
+    {
+        $record = $this->record(6, 10000, 7000, 4000, 1000);
+        $record['status'] = 'needs_review';
+        $record['error'] = 'Official summary reports turnout and result; detailed candidate rows remain incomplete.';
+        $record['source_warning_code'] = 'official_summary_turnout_only';
+        $record['summary_source_file'] = 'official-summary.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_page'] = 22;
+        $record['summary_totals'] = ['electors' => 10000, 'votes_polled' => 7000, 'valid_candidate_votes' => 6900];
+        $record['summary_result'] = ['winner' => 'A', 'winner_party' => 'SAD', 'winner_votes' => 4000,
+            'runner' => 'B', 'runner_party' => 'INC', 'runner_votes' => 2500, 'margin' => 1500];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(0, $summary['party_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(['winner' => 'A', 'party' => 'SAD', 'margin' => 1500, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        $record['summary_result']['margin'] = 1501;
+        $this->assertSame(0, $analytics->summarize([$record])['margin_count']);
+        $this->assertNull($analytics->singleSeatResult($record));
+    }
+
     public function test_official_detail_turnout_can_show_source_total_without_accepting_candidate_rows(): void
     {
         $record = $this->record(1, 195191, 143451, 60704, 53091);

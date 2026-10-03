@@ -125,7 +125,7 @@ class HistoricalElectionAnalytics
                 }
             }
             if ($hasWarning && ! $provisionalCandidates) {
-                $workbookResult = $this->officialWorkbookSummaryResult($record);
+                $workbookResult = $this->officialWorkbookSummaryResult($record) ?? $this->officialPdfSummaryResult($record);
                 if ($workbookResult !== null) {
                     $margins[] = $workbookResult['margin'];
                     $marginReviewCount++;
@@ -193,6 +193,11 @@ class HistoricalElectionAnalytics
         $uncontested = $this->uncontestedResult($record, $edition);
         if ($uncontested !== null) {
             return $uncontested;
+        }
+
+        $officialResult = $this->officialPdfSummaryResult($record);
+        if ($officialResult !== null) {
+            return $officialResult + ['derived' => false];
         }
 
         if (is_string($record['winner'] ?? null) && trim($record['winner']) !== '' && $this->count($record['margin'] ?? null)) {
@@ -725,6 +730,31 @@ class HistoricalElectionAnalytics
         $candidate = collect($record['candidates'] ?? [])->firstWhere('candidate_name', $record['winner']);
 
         return ['winner' => $record['winner'], 'party' => $candidate['party_at_election'] ?? null, 'margin' => $sourceMargin];
+    }
+
+    /** @return array{winner: string, party: string, margin: int}|null */
+    private function officialPdfSummaryResult(array $record): ?array
+    {
+        if (($record['source_warning_code'] ?? '') !== 'official_summary_turnout_only'
+            || ! $this->hasCorroboratedTurnout($record)
+            || ($record['number_of_seats'] ?? 1) !== 1) {
+            return null;
+        }
+
+        $result = $record['summary_result'] ?? null;
+        if (! is_array($result) || ! is_string($result['winner'] ?? null)
+            || trim($result['winner']) === '' || ! is_string($result['winner_party'] ?? null)
+            || trim($result['winner_party']) === '' || ! is_string($result['runner'] ?? null)
+            || trim($result['runner']) === '' || ! is_string($result['runner_party'] ?? null)
+            || trim($result['runner_party']) === '' || ! $this->count($result['winner_votes'] ?? null)
+            || ! $this->count($result['runner_votes'] ?? null) || ! $this->count($result['margin'] ?? null)
+            || $result['winner_votes'] <= $result['runner_votes']
+            || $result['margin'] !== $result['winner_votes'] - $result['runner_votes']
+            || $result['winner_votes'] > ($record['summary_totals']['valid_candidate_votes'] ?? 0)) {
+            return null;
+        }
+
+        return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
     }
 
     private function hasDocumentedCandidateDifference(array $record, int $candidateVotes, int $summaryVotes): bool
