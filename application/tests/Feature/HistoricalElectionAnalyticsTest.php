@@ -746,7 +746,9 @@ class HistoricalElectionAnalyticsTest extends TestCase
     public function test_2019_and_2020_official_workbook_summary_turnout_survives_candidate_warnings(): void
     {
         $analytics = app(HistoricalElectionAnalytics::class);
-        foreach ([['267cd82b74f76a034f14dc7b', 4, 217768, 11335], ['eedecf943f2ac2ddf717246e', 1, 195791, 21585]] as [$edition, $code, $polled, $margin]) {
+        foreach ([['267cd82b74f76a034f14dc7b', 4, 217768, 11335],
+            ['eedecf943f2ac2ddf717246e', 1, 195791, 21585],
+            ['eedecf943f2ac2ddf717246e', 184, 188259, 18300]] as [$edition, $code, $polled, $margin]) {
             [$data] = app(HistoricalElectionArchive::class)->load($edition, app(ElectionArchive::class));
             $record = collect($data['records'])->firstWhere('code', $code);
             $this->assertSame($polled, $analytics->summarize([$record])['polled']);
@@ -764,6 +766,10 @@ class HistoricalElectionAnalyticsTest extends TestCase
 
             $record = collect($data['records'])->firstWhere('code', $code);
             $record['summary_totals']['valid_candidate_votes'] = $record['votes_polled'] + 1;
+            $this->assertNull($analytics->summarize([$record])['margin']);
+
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $record['winner'] = 'Different candidate';
             $this->assertNull($analytics->summarize([$record])['margin']);
         }
     }

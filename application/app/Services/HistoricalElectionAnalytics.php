@@ -917,8 +917,10 @@ class HistoricalElectionAnalytics
         $winnerRow = $rowFor('Winner');
         $runnerRow = $rowFor('Runner-Up');
         $marginRow = $rowFor('Margin');
+        $singleSpaced = static fn (string $name): string => trim(preg_replace('/\s+/u', ' ', $name));
         if ($winnerRow === null || $runnerRow === null || $marginRow === null
-            || ! in_array($record['winner'], $winnerRow, true)) {
+            || ! collect($winnerRow)->contains(fn ($cell): bool => is_string($cell)
+                && $singleSpaced($cell) === $singleSpaced($record['winner']))) {
             return null;
         }
 
