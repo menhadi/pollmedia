@@ -916,18 +916,28 @@ class HistoricalElectionAnalytics
         if (! is_array($result) || ! is_array($candidates) || count($candidates) < 2
             || ($result['source_file'] ?? null) !== ($record['turnout_source_file'] ?? null)
             || ($result['source_sha256'] ?? null) !== ($record['turnout_source_sha256'] ?? null)
-            || ($result['source_page'] ?? null) !== ($record['detail_page'] ?? null)
-            || $result['source_page'] !== ($record['turnout_source_page'] ?? null)) {
+            || ($result['source_page'] ?? null) !== ($record['detail_page'] ?? null)) {
+            return null;
+        }
+        $pages = $result['source_pages'] ?? [$result['source_page']];
+        if (! is_array($pages) || ! array_is_list($pages)
+            || (isset($result['source_pages']) && count($pages) !== 2)
+            || (! isset($result['source_pages']) && count($pages) !== 1)
+            || $pages[0] !== $result['source_page']
+            || $pages[count($pages) - 1] !== ($record['turnout_source_page'] ?? null)
+            || (count($pages) === 2 && $pages[1] !== $pages[0] + 1)) {
             return null;
         }
         $seen = [];
         $total = $valid = $general = $postal = 0;
+        $previousPage = $pages[0];
         foreach ($candidates as $index => $candidate) {
             $name = trim($candidate['candidate_name'] ?? '');
             $party = trim($candidate['party_at_election'] ?? '');
             if ($name === '' || $party === '' || isset($seen[mb_strtolower($name.'|'.$party)])
                 || ($candidate['source_row'] ?? null) !== $index + 1
-                || ($candidate['source_page'] ?? null) !== $result['source_page']
+                || ! in_array($candidate['source_page'] ?? null, $pages, true)
+                || $candidate['source_page'] < $previousPage
                 || ! $this->count($candidate['votes'] ?? null)
                 || ! $this->count($candidate['general_votes'] ?? null)
                 || ! $this->count($candidate['postal_votes'] ?? null)
@@ -935,6 +945,7 @@ class HistoricalElectionAnalytics
                 return null;
             }
             $seen[mb_strtolower($name.'|'.$party)] = true;
+            $previousPage = $candidate['source_page'];
             $total += $candidate['votes'];
             $general += $candidate['general_votes'];
             $postal += $candidate['postal_votes'];

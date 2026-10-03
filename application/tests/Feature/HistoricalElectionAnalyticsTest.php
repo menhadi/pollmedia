@@ -883,6 +883,24 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $changed = $record;
         $changed['official_detail_result']['source_sha256'] = str_repeat('b', 64);
         $this->assertNull($analytics->singleSeatResult($changed));
+
+        $split = $record;
+        $split['turnout_source_page'] = 43;
+        $split['turnout_totals']['source_page'] = 43;
+        $split['candidates'][2]['source_page'] = 43;
+        $split['official_detail_result']['source_pages'] = [42, 43];
+        $this->assertSame(50, $analytics->singleSeatResult($split)['margin']);
+
+        $changed = $split;
+        unset($changed['official_detail_result']['source_pages']);
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $changed = $split;
+        $changed['official_detail_result']['source_pages'] = [42, 44];
+        $this->assertNull($analytics->singleSeatResult($changed));
+        $changed = $split;
+        $changed['candidates'][1]['source_page'] = 43;
+        $changed['candidates'][2]['source_page'] = 42;
+        $this->assertNull($analytics->singleSeatResult($changed));
     }
 
     public function test_1996_pc_detailed_result_can_be_shown_with_review_note_but_not_without_matching_evidence(): void
