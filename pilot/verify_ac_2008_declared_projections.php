@@ -13,6 +13,7 @@ $editions = [
     'Meghalaya' => ['d82c217822e367756f2aad6e', 'meghalaya', 60],
     'Nagaland' => ['044bf7c98b9f57f1edb7ab5b', 'nagaland', 60],
     'Chhattisgarh' => ['0879916bcfd2b319f6728f33', 'chhattisgarh', 90],
+    'Jammu & Kashmir' => ['25c81eb8ee370d8948a1dc3c', 'jammu-kashmir', 87],
 ];
 $analytics = app(HistoricalElectionAnalytics::class);
 foreach ($editions as $state => [$id, $slug, $expected]) {
