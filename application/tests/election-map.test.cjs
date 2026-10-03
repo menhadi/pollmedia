@@ -62,6 +62,7 @@ test('constituency locator uses one muted colour and opens profiles without elec
     const selected=n.nodes.svg.children.find(seat=>seat.classList.contains('is-selected'));
     const other=n.nodes.svg.children.find(seat=>!seat.classList.contains('is-selected'));
     assert.equal(selected.attributes.fill,'#e4ebed');
+    assert(n.nodes.svg.children.some(node=>node.attributes.class==='election-map-current-label' && /Pilibhit.*Lok Sabha/.test(node.textContent)));
     assert.equal(other.attributes.fill,'#e4ebed');
     assert.match(n.nodes['[data-map-legend]'].children[0].children[1].textContent,/Selected constituency/);
     other.events.pointerenter({clientX:100,clientY:200,currentTarget:other});
@@ -80,3 +81,4 @@ test('historical state name aliases preserve approximate high-level map matching
     const n=await setup([shape('pc-1','Historical seat',1,'Tamil Nadu')],[record('a:1','Historical seat',16,'INC','Madras')],{state:'Tamil Nadu'});
     assert.equal(n.nodes.svg.children[0].attributes.fill,'#234da0');
 });
+

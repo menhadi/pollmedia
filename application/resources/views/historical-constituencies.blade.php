@@ -9,7 +9,7 @@
 @endif
 <form method="get" action="{{ route('elections.constituencies') }}" class="card filters">
 <div><label for="q">Constituency name</label><input id="q" name="q" type="search" value="{{ $input['q'] ?? '' }}" placeholder="Name as recorded in an election"></div>
-<div><label for="kind">Election type</label><select id="kind" name="kind"><option value="">PC and AC</option><option value="pc" @selected(($input['kind'] ?? '') === 'pc')>Lok Sabha (PC)</option><option value="ac" @selected(($input['kind'] ?? '') === 'ac')>Assembly (AC)</option></select></div>
+<div><label for="kind">Election type</label><select id="kind" name="kind"><option value="">Lok Sabha and AC</option><option value="pc" @selected(($input['kind'] ?? '') === 'pc')>Lok Sabha (Lok Sabha)</option><option value="ac" @selected(($input['kind'] ?? '') === 'ac')>Assembly (AC)</option></select></div>
 <div><label for="year">Election year</label><select id="year" name="year"><option value="">All available years</option>@foreach($years as $year)<option value="{{ $year }}" @selected(($input['year'] ?? '') == $year)>{{ $year }}</option>@endforeach</select></div>
 <div><label for="state">State / Union Territory</label><select id="state" name="state"><option value="">All recorded states</option>@foreach($states as $state)<option value="{{ $state }}" @selected(($input['state'] ?? '') === $state)>{{ $state }}</option>@endforeach</select></div>
 <button>Find results</button>

@@ -2,7 +2,7 @@
 @section('content')
 <h1>Official data imports</h1><p><a href="{{ route('official-hosts.index') }}">Manage official source hosts for any country</a></p><p>Connect a public official URL once. Pollmedia can download its latest file or API response, extract a table and flag changes for review.</p>
 <section class="card"><h2>Historical Census data</h2><p>Explore verified archive editions, historical population tables and village-data coverage.</p><a class="button" href="{{ route('census.archive') }}">Census history & archives</a></section>
-<section class="card"><h2>Election results</h2><p>Preview and publish verified PC and AC report editions, with candidate votes, parties, margins and rollback history.</p><a class="button" href="{{ route('election-imports.index') }}">Election imports & publishing</a></section>
+<section class="card"><h2>Election results</h2><p>Preview and publish verified Lok Sabha and AC report editions, with candidate votes, parties, margins and rollback history.</p><a class="button" href="{{ route('election-imports.index') }}">Election imports & publishing</a></section>
 <p class="notice">Automatic collection prepares staging snapshots. Reviewed snapshots become comparison baselines; publishing into election, Census or officeholder pages needs a dataset-specific mapping. PDF tables require visual review; scanned PDFs, paginated APIs and CAPTCHA downloads may need a dedicated connector or manual upload.</p>
 <details class="card"><summary><strong>Add an official source</strong></summary>
 <form method="post" action="{{ route('imports.store') }}">@csrf

@@ -2,7 +2,7 @@
 @section('title', 'Polling-station results and official Form 20 sources')
 @section('content')
 <h1>Polling-station results</h1>
-<p>Official Form 20 sources and extracted tables. <a href="{{ route('elections.assembly') }}">AC general elections</a> · <a href="{{ route('elections.history') }}">PC general elections</a> · <a href="{{ route('elections.by-election-results') }}">By-elections</a>.</p>
+<p>Official Form 20 sources and extracted tables. <a href="{{ route('elections.assembly') }}">AC general elections</a> · <a href="{{ route('elections.history') }}">Lok Sabha general elections</a> · <a href="{{ route('elections.by-election-results') }}">By-elections</a>.</p>
 <p class="notice">{{ $index['scope_note'] ?? 'The source collection has not yet been installed.' }}</p>
 <p class="notice">† Available source records are published with warnings while discrepancies are reviewed. Scanned or unreadable values remain identified as such, and the preserved original stays available for checking.</p>
 <p>{{ number_format($documentCount) }} preserved source-document references ({{ number_format($distinctDocumentCount) }} distinct {{ $distinctDocumentCount === 1 ? 'file' : 'files' }} by content hash); {{ number_format($pollingRowCount) }} extracted polling-row references. Duplicate files and overlapping editions can repeat rows. These counts do not establish unique polling stations, verified vote results, or state coverage.</p>

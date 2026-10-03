@@ -5,8 +5,8 @@
 <article><h3>{{ ucfirst($match[$kind]) }} {{ strtoupper($kind) }}</h3><p>{{ $label }}</p><div class="links"><a href="{{ route('places.show',['type'=>$kind,'slug'=>$match[$kind]]) }}">Constituency & election results →</a><a href="{{ route('places.show',['type'=>$kind,'slug'=>$match[$kind]]) }}#people">{{ $kind==='ac' ? 'MLA' : 'MP' }} & dated public profiles →</a><a href="{{ route('villages.index',['year'=>$year,$kind=>$match[$kind]]) }}">Browse linked Census villages →</a></div></article>
 @endforeach</div>
 @empty
-<p>No village-code match was found in the imported LGD electoral report. No AC or PC assignment is inferred from the village name or gram panchayat.</p>
+<p>No village-code match was found in the imported LGD electoral report. No AC or Lok Sabha assignment is inferred from the village name or gram panchayat.</p>
 @endforelse
 <p class="small">These are directory relationships checked {{ $electoral['checked_on'] }}, separate from Census {{ $year }} geography. Constituency results describe the whole constituency, not this village. Polling-part assignments and village-level voting results have not been verified.</p>
-<a href="{{ $electoral['url'] }}" target="_blank" rel="noreferrer">Official LGD PC/AC mapping report ↗</a>
+<a href="{{ $electoral['url'] }}" target="_blank" rel="noreferrer">Official LGD Lok Sabha/AC mapping report ↗</a>
 </section>

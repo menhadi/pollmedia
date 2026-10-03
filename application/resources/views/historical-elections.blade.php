@@ -25,7 +25,7 @@
 @if(!$state)<div class="table-scroll" role="region" aria-label="Edition data preview" tabindex="0"><table data-sortable><caption>Eight state groups with the most available election results</caption><thead><tr><th scope="col">State as recorded</th><th scope="col" data-sort-type="number">Tables</th><th scope="col" data-sort-type="number">Candidate rows</th></tr></thead><tbody>@foreach($coverage->sortByDesc('tables')->take(8) as $item)<tr><th scope="row">@if($item['state'])<a href="{{ route($archiveRoute,['edition'=>$edition,'state'=>$item['state']]) }}">{{ $item['state'] }}</a>@else State not identified @endif</th><td>{{ number_format($item['tables']) }}</td><td>{{ number_format($item['rows']) }}</td></tr>@endforeach</tbody></table></div>@endif</section>@endif
 @if($selected)@include('constituency-election-analysis')@endif
 @if(!$selected)<p class="lead">Choose a year, state and constituency to see results.</p>@endif
-<p><a href="{{ route('elections.constituencies') }}">Search historical PC and AC constituencies across editions →</a></p>
+<p><a href="{{ route('elections.constituencies') }}">Search historical Lok Sabha and AC constituencies across editions →</a></p>
 <p><a href="{{ route('elections.history') }}">Lok Sabha results</a> · <a href="{{ route('elections.assembly') }}">India Assembly results</a></p>
 @if($kind === 'ac')<p class="small">Assembly coverage includes available state election reports; use the edition selector for each state and year. Historical state and constituency boundaries belong to each edition.</p>@endif
 <p><a href="{{ route('elections.assembly-sources') }}">Assembly source reports: all listed states and historical years</a></p>

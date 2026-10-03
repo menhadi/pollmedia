@@ -1,7 +1,7 @@
 <aside class="dashboard-sidebar"><details open><summary>Related links</summary><h2 class="related-heading">Explore Pollmedia</h2><p class="small">Find election records, places and their official sources.</p><nav aria-label="Related records">
 @if(isset($relations, $type) && in_array($type,['pc','ac']))
 @php($electoralLinks=$relations->filter(fn($related)=>$related->relationship_type==='assembly_segment_of' && $related->type===($type==='pc'?'ac':'pc')))
-<p class="sidebar-label">{{ $type==='pc'?'Assembly seats in this PC':'Parent Parliament seat' }}</p>
+<p class="sidebar-label">{{ $type==='pc'?'Assembly seats in this Lok Sabha':'Parent Parliament seat' }}</p>
 @forelse($electoralLinks as $linked)<a href="{{ $linked->url }}">{{ $linked->name }} · {{ strtoupper($linked->type) }} →</a>@empty<p class="small">This electoral link is awaiting verification.</p>@endforelse
 <p class="small">Links follow the official relationship sources shown on this page.</p>
 <p class="sidebar-label">Explore election results</p>

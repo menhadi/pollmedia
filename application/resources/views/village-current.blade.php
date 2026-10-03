@@ -8,6 +8,6 @@
 @empty
 <p>No current LGD village record with this Census {{ $year }} code was found in the downloaded Pilibhit records.</p>
 @endforelse
-<p class="small">Downloaded {{ $lgd['checked_on'] }}. This snapshot is not a live feed. Available AC and PC connections appear in the electoral section below. Polling-part assignments remain pending.</p>
+<p class="small">Downloaded {{ $lgd['checked_on'] }}. This snapshot is not a live feed. Available AC and Lok Sabha connections appear in the electoral section below. Polling-part assignments remain pending.</p>
 <div class="links"><a href="{{ $lgd['url'] }}" target="_blank" rel="noreferrer">Official LGD exports ↗</a><a href="https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&amp;ReportType=Filled" target="_blank" rel="noreferrer">Official gram panchayat directory ↗</a><a href="https://pilibhit.nic.in/constituencies-2/" target="_blank" rel="noreferrer">Official constituency directory ↗</a></div>
 </section>

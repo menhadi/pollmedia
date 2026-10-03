@@ -38,7 +38,7 @@
 
 @if($type==='district')
     @if($place->slug==='district-pilibhit')
-        <a href="{{ route('places.show', ['type' => 'pc', 'slug' => 'pilibhit']) }}">View Pilibhit PC →</a>
+        <a href="{{ route('places.show', ['type' => 'pc', 'slug' => 'pilibhit']) }}">View Pilibhit Lok Sabha →</a>
         @include('place-map')
     @else
         @include('place-location-map',['mapName'=>$place->name,'mapQuery'=>$place->name.', Uttar Pradesh, India','mapId'=>'geography'])
@@ -62,7 +62,7 @@
 
 @if($type!=='district')<nav class="nav" aria-label="Page sections"><a href="#elections">Elections & SIR</a><a href="#people">Representatives & authorities</a><a href="#village-coverage">Villages & coverage</a><a href="#development">Development</a><a href="#issues">Citizen issues</a><a href="#geography">Geography</a><a href="#surveys">Community surveys</a></nav>@endif
 
-@if($place->slug === 'pc-pilibhit')<p class="notice">Pilibhit PC and Pilibhit district are different areas. Baheri AC is in Bareilly district. District Census totals are not shown as constituency totals.</p>@endif
+@if($place->slug === 'pc-pilibhit')<p class="notice">Pilibhit Lok Sabha and Pilibhit district are different areas. Baheri AC is in Bareilly district. District Census totals are not shown as constituency totals.</p>@endif
 
 @include('election-results')
 @if($type === 'pc')<section class="card"><h2>Lok Sabha election history</h2><p><a href="{{ route('elections.compare', ['slug' => substr($place->slug, 3)]) }}">Compare linked election years →</a></p><p>Browse available historical editions by state and constituency. Historical names and boundaries may differ from this constituency.</p><a href="{{ route('elections.history') }}">Explore the national election archive →</a></section>@endif

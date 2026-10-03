@@ -59,14 +59,14 @@ class PublicSearchController extends Controller
             $electoralIdentity = in_array($profile->type, ['pc', 'ac'], true)
                 && $identifiers->get($profile->id, collect())->contains('namespace', 'electoral:IN:UP:'.$profile->type);
 
-            return ['label' => $profile->name, 'type' => ['pc' => 'Parliament (PC)', 'ac' => 'Assembly (AC)', 'district' => 'District'][$profile->type],
+            return ['label' => $profile->name, 'type' => ['pc' => 'Lok Sabha', 'ac' => 'Assembly (AC)', 'district' => 'District'][$profile->type],
                 'rank' => ['pc' => 0, 'district' => 1, 'ac' => 2][$profile->type], 'period' => $electoralIdentity ? 'Uttar Pradesh' : '',
                 'identity' => $electoralIdentity ? $profile->type.'|uttar pradesh|'.mb_strtolower($profile->name) : null,
                 'url' => route('places.show', ['type' => $profile->type, 'slug' => substr($profile->slug, strlen($profile->type) + 1)])];
         });
         foreach ($results?->items() ?? [] as $r) {
             $earlier = $r->last_year < $r->latest_year;
-            $suggestions->push(['label' => Str::title($r->constituency_name), 'type' => ($earlier ? 'Archive · ' : '').['pc' => 'Parliament (PC)', 'ac' => 'Assembly (AC)'][$r->kind],
+            $suggestions->push(['label' => Str::title($r->constituency_name), 'type' => ($earlier ? 'Archive · ' : '').['pc' => 'Lok Sabha', 'ac' => 'Assembly (AC)'][$r->kind],
                 'rank' => ($earlier ? 3 : 0) + ($r->kind === 'pc' ? 0 : 2), 'period' => $r->state_label.($earlier ? ' · '.$r->first_year.'–'.$r->last_year : ''),
                 'identity' => $r->kind.'|'.mb_strtolower($r->state_label).'|'.mb_strtolower($r->constituency_name),
                 'url' => route('constituency.overview', ['kind' => $r->kind, 'state' => $r->state_label, 'name' => $r->constituency_name])]);

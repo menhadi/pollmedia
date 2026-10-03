@@ -12,7 +12,7 @@ $y=fn($value)=>240-$value/$scale*220;
 @for($tick=0;$tick<=4;$tick++)
 @php $value=$scale*$tick/4; @endphp
 <line x1="70" x2="760" y1="{{ $y($value) }}" y2="{{ $y($value) }}" stroke="var(--site-border)"/>
-<text x="60" y="{{ $y($value)+4 }}" text-anchor="end">{{ $plot['unit']==='%'?number_format($value,0).'%':($value>=1000000?round($value/1000000,1).'M':($value>=1000?round($value/1000,1).'K':round($value))) }}</text>
+<text x="60" y="{{ $y($value)+4 }}" text-anchor="end">{{ $plot['unit']==='%'?number_format($value,0).'%':($value>=10000000?round($value/10000000,1).' Cr.':($value>=100000?round($value/100000,1).' L':round($value))) }}</text>
 @endfor
 @foreach($plotRows as $point)
 @if($loop->first || $loop->last || ($loop->index%max(1,(int)ceil($plotRows->count()/9))===0 && $x($lastYear)-$x($point['year'])>45))<text x="{{ $x($point['year']) }}" y="265" text-anchor="middle">{{ $point['year'] }}</text>@endif

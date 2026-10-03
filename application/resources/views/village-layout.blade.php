@@ -30,7 +30,7 @@
 
 <h3>Current administration</h3><p><a href="{{ $lgd['url'] }}" target="_blank" rel="noreferrer">Local Government Directory · village, block and gram panchayat exports ↗</a></p><p class="small">Snapshot downloaded {{ $lgd['checked_on'] }}. Connections use the official Census identifiers recorded by LGD.</p>
 
-<h3>Electoral connections</h3><p><a href="{{ $electoral['url'] }}" target="_blank" rel="noreferrer">LGD · Pilibhit PC/AC mapping report ↗</a></p><p class="small">Checked {{ $electoral['checked_on'] }}. Unmatched villages remain unassigned. Constituency mappings do not provide village voting totals.</p>
+<h3>Electoral connections</h3><p><a href="{{ $electoral['url'] }}" target="_blank" rel="noreferrer">LGD · Pilibhit Lok Sabha/AC mapping report ↗</a></p><p class="small">Checked {{ $electoral['checked_on'] }}. Unmatched villages remain unassigned. Constituency mappings do not provide village voting totals.</p>
 
 <p><a href="{{ route('sources.index') }}">All sources & update status →</a></p>
 

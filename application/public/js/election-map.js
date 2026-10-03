@@ -35,7 +35,7 @@
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
         const focusMode = root.dataset.mode === 'focus';
-        const seatText = (feature, record) => focusMode ? `${record?.name || feature.properties.name} · ${root.dataset.kind.toUpperCase()}` : (record ? recordText(record) : feature.properties.name);
+        const seatText = (feature, record) => focusMode ? `${record?.name || feature.properties.name} · ${(root.dataset.kind === 'pc' ? 'Lok Sabha' : 'AC')}` : (record ? recordText(record) : feature.properties.name);
         const seatUrl = record => {
             const safe = record && safeUrl(record.url);
             if (!safe || !focusMode) return safe;
@@ -86,7 +86,7 @@
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
             const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'#e4ebed':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
-            const title=svgElement('title');title.textContent=seatText(f,record);path.append(title);
+            if (!focusMode) { const title=svgElement('title');title.textContent=seatText(f,record);path.append(title); }
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
             const open=()=>{describe(f,record);const url=seatUrl(record);if(url) location.assign(url);else {const finder=new URL(root.dataset.finder,location.href);finder.searchParams.set('kind',root.dataset.kind);finder.searchParams.set('state',root.dataset.state || f.properties.state);finder.searchParams.set('q',f.properties.name || '');location.assign(finder.href);}};
@@ -96,6 +96,14 @@
         });
         // Raise the selected outline above adjacent shapes without changing source geometry.
         paths.forEach(path=>{if(path.classList.contains('is-selected')) svg.append(path);});
+        if (focusMode) features.forEach(feature => {
+            if (!paths.get(feature.id)?.classList.contains('is-selected')) return;
+            const points = rings(feature).flat().map(project);
+            const xx = (Math.min(...points.map(p=>p[0])) + Math.max(...points.map(p=>p[0]))) / 2;
+            const yy = Math.min(...points.map(p=>p[1])) - 10;
+            const label = svgElement('text',{x:xx,y:Math.max(18,yy),'text-anchor':'middle',class:'election-map-current-label','pointer-events':'none'});
+            label.textContent = seatText(feature,matches.get(feature.id)); svg.append(label);
+        });
         seats.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a constituency';seats.append(placeholder);
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});

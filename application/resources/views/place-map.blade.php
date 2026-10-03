@@ -8,7 +8,7 @@
         <label>Map layer <select id="map-layer">
             <option value="villages" @selected($type === 'district')>SOI source villages</option>
             <option value="base" @selected($type === 'pc')>Street map</option>
-            <option disabled>PC / AC boundaries — pending</option>
+            <option disabled>Lok Sabha / AC boundaries — pending</option>
             <option disabled>Election results — pending</option>
             <option disabled>SIR / citizen issues — pending mapping</option>
         </select></label>
