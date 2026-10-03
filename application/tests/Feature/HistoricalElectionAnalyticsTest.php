@@ -565,6 +565,50 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($record));
     }
 
+    public function test_bihar_2005_february_and_october_summaries_keep_separate_declared_results(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $rounds = [
+            '2005-feb' => ['faf93ea0918e67d6bc68067a-9224.pdf', '61b09fc09a7d06373b63174ea5cda8f276cec6f2419b1b91415d7c3d8550ca84', 100000],
+            '2005-oct' => ['faf93ea0918e67d6bc68067a-9236.pdf', 'ff4f6192840cd830eabbac40ee7f06650e348f12e22b20ea4ee66575c44d963e', 200000],
+        ];
+        foreach ($rounds as $round => [$file, $sha, $offset]) {
+            $record = $this->record($offset + 1, 100, 82, 50, 20);
+            $record['name'] = 'Sample / '.$round;
+            $record['official_ac_code'] = 1;
+            $record['election_round'] = $round;
+            $record['number_of_seats'] = 1;
+            $record['status'] = 'needs_review';
+            $record['error'] = 'Official summary confirms turnout and the declared result; detailed candidate rows remain under review.';
+            $record['original_extraction_warning'] = 'Detailed candidate rows need review.';
+            $record['previous_review_note'] = 'Official summary confirms turnout.';
+            $record['source_warning_code'] = 'round_specific_summary';
+            $record['detail_page'] = 9;
+            $record['summary_page'] = 4;
+            $record['valid_candidate_votes'] = 80;
+            $record['summary_totals'] = ['electors' => 100, 'votes_polled' => 82, 'valid_candidate_votes' => 80];
+            $record['summary_source_file'] = $file;
+            $record['summary_source_sha256'] = $sha;
+            $record['summary_result'] = ['winner' => 'A', 'winner_party' => 'AAA', 'winner_votes' => 50,
+                'runner' => 'B', 'runner_party' => 'BBB', 'runner_votes' => 30, 'margin' => 20];
+
+            $this->assertSame(['winner' => 'A', 'party' => 'AAA', 'margin' => 20, 'derived' => false],
+                $analytics->singleSeatResult($record));
+            $this->assertSame(1, $analytics->summarize([$record])['turnout_count']);
+            foreach ([
+                ['election_round', '2005-other'],
+                ['code', 1],
+                ['summary_source_sha256', str_repeat('0', 64)],
+                ['original_extraction_warning', null],
+                ['previous_review_note', null],
+            ] as [$field, $value]) {
+                $altered = $record;
+                $altered[$field] = $value;
+                $this->assertNull($analytics->singleSeatResult($altered));
+            }
+        }
+    }
+
     public function test_recovered_workbook_rows_use_official_voter_total_with_component_note(): void
     {
         $record = $this->record(87, 100, 82, 50, 30);

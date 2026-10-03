@@ -946,11 +946,31 @@ class HistoricalElectionAnalytics
     /** @return array{winner: string, party: string, margin: int}|null */
     private function officialPdfSummaryResult(array $record): ?array
     {
-        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference'], true)
+        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference', 'round_specific_summary'], true)
             || ! isset($record['summary_source_file'], $record['summary_source_sha256'])
             || ! $this->hasCorroboratedTurnout($record)
             || ($record['number_of_seats'] ?? 1) !== 1) {
             return null;
+        }
+        if (($record['source_warning_code'] ?? null) === 'round_specific_summary') {
+            $round = $record['election_round'] ?? null;
+            $source = match ($round) {
+                '2005-feb' => ['faf93ea0918e67d6bc68067a-9224.pdf', '61b09fc09a7d06373b63174ea5cda8f276cec6f2419b1b91415d7c3d8550ca84', 100000],
+                '2005-oct' => ['faf93ea0918e67d6bc68067a-9236.pdf', 'ff4f6192840cd830eabbac40ee7f06650e348f12e22b20ea4ee66575c44d963e', 200000],
+                default => null,
+            };
+            if ($source === null || ! $this->count($record['official_ac_code'] ?? null)
+                || $record['official_ac_code'] < 1 || $record['official_ac_code'] > 243
+                || ($record['code'] ?? null) !== $source[2] + $record['official_ac_code']
+                || ! str_ends_with($record['name'] ?? '', ' / '.$round)
+                || ($record['summary_source_file'] ?? null) !== $source[0]
+                || ($record['summary_source_sha256'] ?? null) !== $source[1]
+                || ! $this->count($record['summary_page'] ?? null) || $record['summary_page'] < 1
+                || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== ($record['valid_candidate_votes'] ?? null)
+                || ! is_string($record['original_extraction_warning'] ?? null)
+                || ! is_string($record['previous_review_note'] ?? null)) {
+                return null;
+            }
         }
 
         $result = $record['summary_result'] ?? null;
