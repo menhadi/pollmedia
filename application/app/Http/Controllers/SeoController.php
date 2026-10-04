@@ -21,10 +21,13 @@ class SeoController extends Controller
 {
     public function index(Request $request, SeoPages $seo): View
     {
-        $input = $request->validate(['type' => 'nullable|in:village,ac,pc,district,census,sir', 'year' => 'nullable|in:2001,2011', 'page' => 'nullable|integer|min:1', 'mode' => 'nullable|in:all,missing,existing', 'size' => 'nullable|in:50,100,200,500,all']);
+        $input = $request->validate(['type' => 'nullable|in:village,ac,pc,district,census,sir', 'year' => 'nullable|integer|min:1800|max:2100', 'state' => 'nullable|string|max:100', 'q' => 'nullable|string|max:100', 'page' => 'nullable|integer|min:1', 'mode' => 'nullable|in:all,missing,existing', 'size' => 'nullable|in:50,100,200,500,all']);
         $type = $input['type'] ?? 'ac';
-        $year = $input['year'] ?? '2011';
-        $catalog = $this->filteredCatalog($seo, $type, $year, $input['mode'] ?? 'all')->values();
+        $year = (string) ($input['year'] ?? '');
+        $state = $input['state'] ?? '';
+        $search = $input['q'] ?? '';
+        $filters = $seo->filters($type, $state);
+        $catalog = $this->filteredCatalog($seo, $type, $year, $input['mode'] ?? 'all', $state, $search)->values();
         $size = ($input['size'] ?? '50') === 'all' ? max(1, $catalog->count()) : (int) ($input['size'] ?? 50);
         $page = (int) ($input['page'] ?? 1);
         $pages = new LengthAwarePaginator($catalog->slice(($page - 1) * $size, $size), $catalog->count(), $size, $page, ['path' => route('seo.index'), 'query' => $request->query()]);
@@ -32,14 +35,14 @@ class SeoController extends Controller
         $history = DB::table('seo_revisions')->orderByDesc('id')->paginate(20, ['*'], 'history_page');
         $current = DB::table('seo_metadata')->get()->keyBy('path');
 
-        return view('seo-index', compact('pages', 'type', 'year', 'batches', 'history', 'current') + ['aiProviders' => app(AiProviders::class)->options()]);
+        return view('seo-index', compact('pages', 'type', 'year', 'state', 'search', 'filters', 'batches', 'history', 'current') + ['aiProviders' => app(AiProviders::class)->options()]);
     }
 
-    private function filteredCatalog(SeoPages $seo, string $type, string $year, string $mode): Collection
+    private function filteredCatalog(SeoPages $seo, string $type, string $year, string $mode, string $state = '', string $search = ''): Collection
     {
         $current = DB::table('seo_metadata')->get()->keyBy('path');
 
-        return $seo->catalog($type, $year)->filter(function (array $item) use ($current, $mode): bool {
+        return $seo->catalog($type, $year, $state, $search)->filter(function (array $item) use ($current, $mode): bool {
             $saved = $current->get($item['path']);
             $complete = $saved && filled($saved->title) && filled($saved->description) && filled($saved->keywords);
 
@@ -47,21 +50,29 @@ class SeoController extends Controller
         });
     }
 
+    public function publish(Request $request, SeoPages $seo): RedirectResponse
+    {
+        $request->merge(['publish_now' => true]);
+
+        return $this->create($request, $seo);
+    }
+
     public function create(Request $request, SeoPages $seo): RedirectResponse
     {
-        $input = $request->validate(['type' => 'required|in:village,ac,pc,district,census,sir', 'year' => 'required|in:2001,2011', 'paths' => 'required_without:bulk|array|min:1', 'bulk' => 'nullable|in:50,100,200,500,all', 'mode' => 'nullable|in:all,missing,existing', 'paths.*' => 'required|string|distinct|max:255', 'generation' => 'nullable|in:template,ai', 'provider' => 'required_if:generation,ai|nullable|in:openai,deepseek,gemini,claude']);
-        $catalog = $this->filteredCatalog($seo, $input['type'], $input['year'], $input['mode'] ?? 'all');
+        $input = $request->validate(['type' => 'required|in:village,ac,pc,district,census,sir', 'year' => 'nullable|integer|min:1800|max:2100', 'state' => 'nullable|string|max:100', 'q' => 'nullable|string|max:100', 'paths' => 'required_without:bulk|array|min:1', 'bulk' => 'nullable|in:50,100,200,500,all', 'mode' => 'nullable|in:all,missing,existing', 'paths.*' => 'required|string|distinct|max:255', 'generation' => 'nullable|in:template,ai', 'provider' => 'required_if:generation,ai|nullable|in:openai,deepseek,gemini,claude']);
+        $catalog = $this->filteredCatalog($seo, $input['type'], (string) ($input['year'] ?? ''), $input['mode'] ?? 'all', $input['state'] ?? '', $input['q'] ?? '');
         if (! empty($input['bulk'])) {
             $input['paths'] = ($input['bulk'] === 'all' ? $catalog : $catalog->take((int) $input['bulk']))->keys()->all();
         }
         if (empty($input['paths'])) {
             throw ValidationException::withMessages(['paths' => 'No matching pages remain for this selection.']);
         }
+        $currentMetadata = DB::table('seo_metadata')->get()->keyBy('path');
         $items = [];
         foreach ($input['paths'] as $path) {
             abort_unless($catalog->has($path), 422, 'Select a page from the available catalog.');
             $item = $catalog[$path];
-            $current = $seo->current($path);
+            $current = $currentMetadata->get($path);
             $item['keywords'] = implode(', ', array_unique([$item['label'], 'Pollmedia', $input['type'] === 'pc' ? 'Lok Sabha' : ($input['type'] === 'ac' ? 'Assembly election' : ucfirst($input['type']))]));
             if (($input['mode'] ?? 'all') === 'missing' && $current) {
                 $item['title'] = filled($current->title) ? $current->title : $item['title'];
@@ -96,6 +107,26 @@ class SeoController extends Controller
             } finally {
                 $lock->release();
             }
+        }
+        if (($input['mode'] ?? 'all') === 'missing') {
+            foreach ($items as &$item) {
+                $current = $currentMetadata->get($item['path']);
+                foreach (['title', 'description', 'keywords'] as $field) {
+                    if (filled($current?->$field)) {
+                        $item[$field] = $current->$field;
+                    }
+                }
+            }
+            unset($item);
+        }
+        if ($request->boolean('publish_now')) {
+            DB::transaction(function () use ($items, $seo): void {
+                foreach ($items as $item) {
+                    $seo->apply($item['path'], $item['title'], $item['description'], $item['base_revision'], 'Direct bulk SEO publication', $item['keywords']);
+                }
+            });
+
+            return redirect()->route('seo.index', $request->only('type', 'year', 'state', 'q', 'mode', 'size'))->with('status', count($items).' listing SEO fields published, including keywords.');
         }
         $id = (string) Str::ulid();
         DB::table('seo_batches')->insert(['id' => $id, 'items' => json_encode($items, JSON_THROW_ON_ERROR), 'created_at' => now(), 'user_id' => $request->user()->id, 'ai_generation' => $generation]);

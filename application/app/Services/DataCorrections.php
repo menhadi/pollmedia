@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class DataCorrections
 {
-    public const FIELDS = ['sir_parts' => ['name', 'listed_records'], 'places' => ['name'], 'census_catalogue_rows' => ['name', 'values'], 'observations' => ['value', 'status'], 'election_candidate_results' => ['candidate_name', 'party_at_election', 'general_votes', 'postal_votes', 'votes'], 'election_contests' => ['electors', 'votes_polled', 'valid_candidate_votes']];
+    public const FIELDS = ['historical_constituency_index' => [], 'sir_parts' => ['name', 'listed_records'], 'places' => ['name'], 'census_catalogue_rows' => ['name', 'values'], 'observations' => ['value', 'status'], 'election_candidate_results' => ['candidate_name', 'party_at_election', 'general_votes', 'postal_votes', 'votes'], 'election_contests' => ['electors', 'votes_polled', 'valid_candidate_votes']];
 
     public function record(string $table, int $id): object
     {

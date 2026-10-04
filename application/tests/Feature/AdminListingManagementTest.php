@@ -27,7 +27,7 @@ class AdminListingManagementTest extends TestCase
         $this->get('/admin/listings/census')->assertRedirect(route('admin.login'));
         $this->admin();
         $id = DB::table('places')->insertGetId(['slug' => 'sample', 'name' => 'Sample', 'type' => 'district', 'country_code' => 'IN']);
-        $this->get('/admin/listings/elections')->assertOk()->assertSee('Election listings');
+        $this->get('/admin/listings/elections')->assertOk()->assertSee('Elections listing editor');
         $this->get('/admin/listings/census?table=places')->assertNotFound();
         $this->post('/admin/listings/attachments', ['table' => 'places', 'id' => $id, 'file' => UploadedFile::fake()->create('source.pdf', 10, 'application/pdf')])->assertSessionHasNoErrors();
         $key = DB::table('site_settings')->where('key', 'like', 'listing-file:%')->value('key');

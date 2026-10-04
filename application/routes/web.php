@@ -25,6 +25,7 @@ use App\Http\Controllers\HistoricalElectionController;
 use App\Http\Controllers\HistoricalExtractionController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\IndicatorController;
+use App\Http\Controllers\ListingController;
 use App\Http\Controllers\OfficialHostController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\PdfStorageController;
@@ -103,6 +104,7 @@ Route::get('/api/maps/pilibhit-villages', function (): BinaryFileResponse {
 
 Route::prefix('admin/seo')->middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
     Route::get('/', [SeoController::class, 'index'])->name('seo.index');
+    Route::post('/publish', [SeoController::class, 'publish'])->middleware('throttle:30,1')->name('seo.publish');
     Route::post('/drafts', [SeoController::class, 'create'])->middleware('throttle:30,1')->name('seo.create');
     Route::get('/drafts/{batch}', [SeoController::class, 'draft'])->whereUlid('batch')->name('seo.draft');
     Route::post('/drafts/{batch}/save', [SeoController::class, 'save'])->whereUlid('batch')->name('seo.save');
@@ -199,7 +201,8 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix(
     Route::post('/site/seo', [SiteManagementController::class, 'seo'])->name('site.seo');
     Route::get('/source-correction', [SiteManagementController::class, 'sourceEditor'])->name('site.source-editor');
     Route::post('/source-correction', [SiteManagementController::class, 'sourceSave'])->name('site.source-save');
-    Route::get('/listings/{section}', [SiteManagementController::class, 'editor'])->whereIn('section', ['elections', 'census', 'sir'])->name('listings.index');
+    Route::get('/listings/{section}', [ListingController::class, 'index'])->whereIn('section', ['elections', 'census', 'sir'])->name('listings.index');
+    Route::post('/listings/save', [ListingController::class, 'save'])->name('listings.save');
     Route::post('/listings/remove', [SiteManagementController::class, 'removeListing'])->name('listings.remove');
     Route::post('/listings/attachments', [SiteManagementController::class, 'attachListing'])->name('listings.attach');
     Route::get('/listings/attachments/{key}', [SiteManagementController::class, 'listingFile'])->name('listings.file');
