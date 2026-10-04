@@ -148,19 +148,16 @@ class HistoricalElectionAnalytics
                 $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
                     ?? $this->officialWorkbookSummaryResult($record)
                     ?? $this->officialPdfSummaryResult($record)
-                    ?? $this->officialPdfWinnerOnlyResult($record)
                     ?? $this->officialDeclaredTieResult($record)
                     ?? $verifiedDuplicatePreviewResult
                     ?? $this->officialResidualDetailResult($record)
                     ?? $this->officialInvalidTurnoutResult($record);
                 if ($workbookResult !== null) {
-                    if (is_int($workbookResult['margin'])) {
-                        $margins[] = $workbookResult['margin'];
-                        $marginReviewCount++;
-                        $validVotes = $record['summary_totals']['valid_candidate_votes'] ?? null;
-                        if ($this->count($validVotes) && $validVotes > 0) {
-                            $marginPercentages[] = 100 * $workbookResult['margin'] / $validVotes;
-                        }
+                    $margins[] = $workbookResult['margin'];
+                    $marginReviewCount++;
+                    $validVotes = $record['summary_totals']['valid_candidate_votes'] ?? null;
+                    if ($this->count($validVotes) && $validVotes > 0) {
+                        $marginPercentages[] = 100 * $workbookResult['margin'] / $validVotes;
                     }
                     $winners[] = ['constituency' => trim($record['constituency_name'] ?? $record['name'] ?? ''), 'candidate' => $workbookResult['winner'], 'party' => $workbookResult['party'], 'margin' => $workbookResult['margin']];
                 }
@@ -226,7 +223,6 @@ class HistoricalElectionAnalytics
 
         $officialResult = $this->officialRepeatedNameWorkbookResult($record)
             ?? $this->officialPdfSummaryResult($record)
-            ?? $this->officialPdfWinnerOnlyResult($record)
             ?? $this->officialDeclaredTieResult($record)
             ?? $this->officialResidualDetailResult($record)
             ?? $this->officialInvalidTurnoutResult($record);
@@ -1028,45 +1024,6 @@ class HistoricalElectionAnalytics
         }
 
         return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
-    }
-
-    /** @return array{winner: string, party: string, margin: null}|null */
-    private function officialPdfWinnerOnlyResult(array $record): ?array
-    {
-        $expected = match ($record['code'] ?? null) {
-            134 => ['name' => 'Bhiwandi Rural  (ST)', 'electors' => 239237, 'voters' => 135549,
-                'valid' => 135538, 'page' => 165,
-                'result' => ['winner' => 'Savara Vishnu Rama', 'winner_party' => 'BJP',
-                    'winner_votes' => 46996, 'runner' => 'Patil Shantaram Dundaram',
-                    'runner_party' => 'NCP', 'runner_votes' => 44804, 'margin' => 2291]],
-            178 => ['name' => 'Dharavi  (SC)', 'electors' => 268770, 'voters' => 105523,
-                'valid' => 105516, 'page' => 209,
-                'result' => ['winner' => 'Gaikwad Varsha Eknath', 'winner_party' => 'INC',
-                    'winner_votes' => 52492, 'runner' => 'Raibage Manohar Kedari',
-                    'runner_party' => 'SHS', 'runner_votes' => 42783, 'margin' => 9710]],
-            default => null,
-        };
-        if ($expected === null || ($record['status'] ?? null) !== 'needs_review'
-            || ($record['state_name'] ?? null) !== 'Maharashtra'
-            || ($record['name'] ?? null) !== $expected['name']
-            || ($record['number_of_seats'] ?? null) !== 1
-            || ($record['source_warning_code'] ?? null) !== 'official_summary_turnout_only'
-            || ($record['summary_source_file'] ?? null) !== 'cc0185e917711e78c149abf4-8764.pdf'
-            || ($record['summary_source_sha256'] ?? null) !== 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4'
-            || ($record['summary_page'] ?? null) !== $expected['page']
-            || ($record['electors'] ?? null) !== $expected['electors']
-            || ($record['votes_polled'] ?? null) !== $expected['voters']
-            || ($record['valid_candidate_votes'] ?? null) !== $expected['valid']
-            || ($record['summary_totals'] ?? null) !== ['electors' => $expected['electors'],
-                'votes_polled' => $expected['voters'], 'valid_candidate_votes' => $expected['valid']]
-            || ($record['summary_winner_only'] ?? null) !== $expected['result']
-            || isset($record['summary_result'])
-            || $expected['result']['margin'] === $expected['result']['winner_votes'] - $expected['result']['runner_votes']
-            || ! $this->hasCorroboratedTurnout($record)) {
-            return null;
-        }
-
-        return ['winner' => $expected['result']['winner'], 'party' => $expected['result']['winner_party'], 'margin' => null];
     }
 
     private function hasOfficialPostalSummary(array $record): bool

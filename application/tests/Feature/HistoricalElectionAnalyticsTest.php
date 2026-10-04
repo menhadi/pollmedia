@@ -247,39 +247,6 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($record));
     }
 
-    public function test_official_winner_is_shown_without_a_disputed_printed_margin(): void
-    {
-        $record = $this->record(134, 239237, 135549, 46996, 44804);
-        $record['name'] = 'Bhiwandi Rural  (ST)';
-        $record['state_name'] = 'Maharashtra';
-        $record['number_of_seats'] = 1;
-        $record['status'] = 'needs_review';
-        $record['error'] = 'The official summary margin differs from the printed candidate votes.';
-        $record['source_warning_code'] = 'official_summary_turnout_only';
-        $record['summary_source_file'] = 'cc0185e917711e78c149abf4-8764.pdf';
-        $record['summary_source_sha256'] = 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4';
-        $record['summary_page'] = 165;
-        $record['valid_candidate_votes'] = 135538;
-        $record['summary_totals'] = ['electors' => 239237, 'votes_polled' => 135549,
-            'valid_candidate_votes' => 135538];
-        $record['summary_winner_only'] = ['winner' => 'Savara Vishnu Rama', 'winner_party' => 'BJP',
-            'winner_votes' => 46996, 'runner' => 'Patil Shantaram Dundaram',
-            'runner_party' => 'NCP', 'runner_votes' => 44804, 'margin' => 2291];
-        $analytics = app(HistoricalElectionAnalytics::class);
-
-        $this->assertSame(['winner' => 'Savara Vishnu Rama', 'party' => 'BJP',
-            'margin' => null, 'derived' => false], $analytics->singleSeatResult($record));
-        $summary = $analytics->summarize([$record]);
-        $this->assertSame(1, $summary['turnout_count']);
-        $this->assertSame(0, $summary['margin_count']);
-        $this->assertSame('Savara Vishnu Rama', $summary['winners'][0]['candidate']);
-        $this->assertNull($summary['winners'][0]['margin']);
-
-        $record['summary_source_sha256'] = '';
-        $this->assertNull($analytics->singleSeatResult($record));
-        $this->assertNull($analytics->summarize([$record])['turnout']);
-    }
-
     public function test_official_summary_polled_total_can_replace_documented_detail_discrepancy(): void
     {
         $record = $this->record(3, 10000, 6990, 4000, 1000);
