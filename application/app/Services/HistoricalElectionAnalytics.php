@@ -1161,6 +1161,7 @@ class HistoricalElectionAnalytics
         $candidates = $record['candidates'] ?? [];
         if (count($candidates) !== $source['candidates']
             || collect($candidates)->sum('votes') !== $source['valid_candidate_votes']
+            || collect($candidates)->max('votes') !== $source['winner']['votes']
             || collect($candidates)->where('votes', $source['winner']['votes'])->count() !== 2
             || ! collect($candidates)->contains(fn (array $candidate): bool =>
                 $candidate['candidate_name'] === $source['winner']['name']
