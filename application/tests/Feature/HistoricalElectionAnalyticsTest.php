@@ -1595,4 +1595,49 @@ class HistoricalElectionAnalyticsTest extends TestCase
             $this->assertNull($analytics->singleSeatResult($altered));
         }
     }
+
+    public function test_1989_mandi_discrepant_official_reports_show_reviewed_turnout_and_declared_result(): void
+    {
+        $record = ['code' => 138, 'state_name' => 'HIMACHAL PRADESH', 'constituency_name' => 'MANDI',
+            'number_of_seats' => 1, 'status' => 'needs_review', 'has_warning' => true,
+            'detail_page' => 185, 'summary_page' => 144, 'electors' => 756145,
+            'votes_polled' => 470730, 'valid_candidate_votes' => 464947,
+            'summary_totals' => ['electors' => 756545, 'votes_polled' => 470730, 'valid_candidate_votes' => 464949],
+            'detailed_report_totals' => ['electors' => 756145, 'votes_polled' => 470730, 'valid_candidate_votes' => 464947],
+            'source_warning_code' => 'official_pc_1989_report_discrepancy',
+            'original_extraction_warning' => 'Detailed and summary electors differ; Detailed and summary valid candidate votes differ',
+            'error' => 'Official 1989 detailed candidate report and constituency summary disagree on some totals. Detailed turnout is shown; the declared winner and margin match both reports. Review the official source.',
+            'official_source_url' => 'https://old.eci.gov.in/files/file/4120-general-election-1989-vol-i-ii/',
+            'detail_source_file' => '92de082304013ee1f62be87a-9761.pdf',
+            'detail_source_sha256' => 'e67c8f9fa3058bbc51579dfe45c7665ea7eb5092378e412d85318d6350980b3b',
+            'summary_source_file' => '92de082304013ee1f62be87a-9762.pdf',
+            'summary_source_sha256' => '801ffa9db8ebe320968b17cc8195c83c94eefec94bc8368382392083ce5e15e3',
+            'summary_result' => ['winner' => 'MAHESHWAR SINGH', 'winner_party' => 'BJP', 'winner_votes' => 234164,
+                'runner' => 'SUKH RAM', 'runner_party' => 'INC', 'runner_votes' => 206095, 'margin' => 28069],
+            'candidates' => [
+                ['candidate_name' => 'MAHESHWAR SINGH', 'party_at_election' => 'BJP', 'votes' => 234164],
+                ['candidate_name' => 'SUKH RAM', 'party_at_election' => 'INC', 'votes' => 206095],
+                ['candidate_name' => 'D.N.KAPOOR', 'party_at_election' => 'CPM', 'votes' => 9736],
+                ['candidate_name' => 'OM PARKASH', 'party_at_election' => 'DDP', 'votes' => 5510],
+                ['candidate_name' => 'DHARAM SINGH', 'party_at_election' => 'BSP', 'votes' => 4489],
+                ['candidate_name' => 'NAVAL THAKUR', 'party_at_election' => 'JNP (JP)', 'votes' => 3423],
+                ['candidate_name' => 'RAJ KUMAR', 'party_at_election' => 'IND', 'votes' => 1530],
+            ]];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame(['winner' => 'MAHESHWAR SINGH', 'party' => 'BJP', 'margin' => 28069, 'derived' => false],
+            $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(470730, $summary['polled']);
+        $this->assertSame(1, $summary['turnout_discrepancy_count']);
+        $this->assertSame(1, $summary['margin_count']);
+
+        foreach ([['summary_totals', ['electors' => 756545, 'votes_polled' => 470730, 'valid_candidate_votes' => 464947]],
+            ['summary_source_sha256', str_repeat('0', 64)], ['number_of_seats', 2]] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+            $this->assertNull($analytics->summarize([$altered])['polled']);
+        }
+    }
 }

@@ -33,6 +33,8 @@ class HistoricalElectionAnalytics
 
     private const POSTAL_SUMMARY_NOTE = 'The official summary lists general valid votes separately from postal votes. Their sum reconciles with the detailed candidate rows; total voters, winner and margin are shown with the original figures retained for review.';
 
+    private const PC_1989_DISCREPANCY_NOTE = 'Official 1989 detailed candidate report and constituency summary disagree on some totals. Detailed turnout is shown; the declared winner and margin match both reports. Review the official source.';
+
     public function forState(string $state, string $kind): array
     {
         $entries = [];
@@ -124,13 +126,14 @@ class HistoricalElectionAnalytics
             $sourceDifference = $this->hasDocumentedSourceDifference($record);
             $workbookSummaryTurnout = $this->hasOfficialWorkbookSummaryTurnout($record);
             $documentedTurnout = $this->hasDocumentedOfficialTurnout($record);
+            $pc1989DiscrepancyResult = $this->officialPc1989DiscrepancyResult($record);
             $duplicateCandidateTurnout = $this->hasSummaryTurnoutWithDuplicateCandidates($record);
             $verifiedDuplicatePreviewResult = isset($record['official_detail_result']['duplicate_preview_page'])
                 ? $this->officialResidualDetailResult($record) : null;
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             $turnoutPolled = $polledDifference ? $record['summary_totals']['votes_polled'] : ($record['votes_polled'] ?? null);
             if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($turnoutPolled) && $turnoutPolled <= $turnoutElectors
-                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout || $duplicateCandidateTurnout)) {
+                && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout || $duplicateCandidateTurnout || $pc1989DiscrepancyResult !== null)) {
                 $electors += $turnoutElectors;
                 $polled += $turnoutPolled;
                 $turnoutCount++;
@@ -139,7 +142,7 @@ class HistoricalElectionAnalytics
                     if ($provisionalTurnout || $detailTurnoutWithTextWarning) {
                         $turnoutDetailCount++;
                     }
-                    if ($electorDifference || $polledDifference || $sourceDifference) {
+                    if ($electorDifference || $polledDifference || $sourceDifference || $pc1989DiscrepancyResult !== null) {
                         $turnoutDiscrepancyCount++;
                     }
                 }
@@ -151,7 +154,8 @@ class HistoricalElectionAnalytics
                     ?? $this->officialDeclaredTieResult($record)
                     ?? $verifiedDuplicatePreviewResult
                     ?? $this->officialResidualDetailResult($record)
-                    ?? $this->officialInvalidTurnoutResult($record);
+                    ?? $this->officialInvalidTurnoutResult($record)
+                    ?? $pc1989DiscrepancyResult;
                 if ($workbookResult !== null) {
                     $margins[] = $workbookResult['margin'];
                     $marginReviewCount++;
@@ -216,6 +220,15 @@ class HistoricalElectionAnalytics
             return null;
         }
 
+        if (($record['admin_listing_correction'] ?? false) && ($record['status'] ?? '') === 'corrected') {
+            $ranked = collect($record['candidates'] ?? [])->reject(fn (array $row): bool => ($row['is_nota'] ?? false) || strtoupper($row['party_at_election'] ?? '') === 'NOTA')->sortByDesc('votes')->values();
+            if ($ranked->count() > 1 && $ranked->every(fn (array $row): bool => $this->count($row['votes'] ?? null)) && $ranked[0]['votes'] > $ranked[1]['votes']) {
+                return ['winner' => $ranked[0]['candidate_name'], 'party' => $ranked[0]['party_at_election'] ?? null, 'margin' => $ranked[0]['votes'] - $ranked[1]['votes'], 'derived' => true];
+            }
+
+            return $this->uncontestedResult($record, $edition);
+        }
+
         $uncontested = $this->uncontestedResult($record, $edition);
         if ($uncontested !== null) {
             return $uncontested;
@@ -225,7 +238,8 @@ class HistoricalElectionAnalytics
             ?? $this->officialPdfSummaryResult($record)
             ?? $this->officialDeclaredTieResult($record)
             ?? $this->officialResidualDetailResult($record)
-            ?? $this->officialInvalidTurnoutResult($record);
+            ?? $this->officialInvalidTurnoutResult($record)
+            ?? $this->officialPc1989DiscrepancyResult($record);
         if ($officialResult !== null) {
             return $officialResult + ['derived' => false];
         }
@@ -1026,6 +1040,73 @@ class HistoricalElectionAnalytics
         return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
     }
 
+    /** Both 1989 volumes print the same declared result, while some aggregate totals differ. */
+    private function officialPc1989DiscrepancyResult(array $record): ?array
+    {
+        $source = match ($record['code'] ?? null) {
+            49 => ['state' => 'BIHAR', 'name' => 'SIWAN', 'detail_page' => 154, 'summary_page' => 55,
+                'detail' => ['electors' => 965656, 'votes_polled' => 562288, 'valid_candidate_votes' => 552892],
+                'summary' => ['electors' => 965656, 'votes_polled' => 562244, 'valid_candidate_votes' => 552798],
+                'candidate_count' => 20,
+                'warning' => 'Detailed and summary votes polled differ; Detailed and summary valid candidate votes differ',
+                'result' => ['winner' => 'JANARDAN TIWARI', 'winner_party' => 'BJP', 'winner_votes' => 334637,
+                    'runner' => 'ABDUL GAFFUR', 'runner_party' => 'INC', 'runner_votes' => 175686, 'margin' => 158951]],
+            138 => ['state' => 'HIMACHAL PRADESH', 'name' => 'MANDI', 'detail_page' => 185, 'summary_page' => 144,
+                'detail' => ['electors' => 756145, 'votes_polled' => 470730, 'valid_candidate_votes' => 464947],
+                'summary' => ['electors' => 756545, 'votes_polled' => 470730, 'valid_candidate_votes' => 464949],
+                'candidate_count' => 7,
+                'warning' => 'Detailed and summary electors differ; Detailed and summary valid candidate votes differ',
+                'result' => ['winner' => 'MAHESHWAR SINGH', 'winner_party' => 'BJP', 'winner_votes' => 234164,
+                    'runner' => 'SUKH RAM', 'runner_party' => 'INC', 'runner_votes' => 206095, 'margin' => 28069]],
+            default => null,
+        };
+        if ($source === null || ($record['source_warning_code'] ?? null) !== 'official_pc_1989_report_discrepancy'
+            || ($record['status'] ?? null) !== 'needs_review' || ($record['number_of_seats'] ?? 1) !== 1
+            || ($record['state_name'] ?? null) !== $source['state']
+            || ($record['constituency_name'] ?? null) !== $source['name']
+            || ($record['detail_page'] ?? null) !== $source['detail_page']
+            || ($record['summary_page'] ?? null) !== $source['summary_page']
+            || ($record['original_extraction_warning'] ?? null) !== $source['warning']
+            || ($record['error'] ?? null) !== self::PC_1989_DISCREPANCY_NOTE
+            || ($record['official_source_url'] ?? null) !== 'https://old.eci.gov.in/files/file/4120-general-election-1989-vol-i-ii/'
+            || ($record['detail_source_file'] ?? null) !== '92de082304013ee1f62be87a-9761.pdf'
+            || ($record['detail_source_sha256'] ?? null) !== 'e67c8f9fa3058bbc51579dfe45c7665ea7eb5092378e412d85318d6350980b3b'
+            || ($record['summary_source_file'] ?? null) !== '92de082304013ee1f62be87a-9762.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '801ffa9db8ebe320968b17cc8195c83c94eefec94bc8368382392083ce5e15e3'
+            || ($record['detailed_report_totals'] ?? null) !== $source['detail']
+            || ($record['summary_totals'] ?? null) !== $source['summary']
+            || ($record['summary_result'] ?? null) !== $source['result']
+            || ($record['electors'] ?? null) !== $source['detail']['electors']
+            || ($record['votes_polled'] ?? null) !== $source['detail']['votes_polled']
+            || ($record['valid_candidate_votes'] ?? null) !== $source['detail']['valid_candidate_votes']) {
+            return null;
+        }
+
+        $candidates = $record['candidates'] ?? null;
+        if (! is_array($candidates) || count($candidates) !== $source['candidate_count']
+            || collect($candidates)->contains(fn ($candidate): bool => ! is_array($candidate)
+                || trim($candidate['candidate_name'] ?? '') === ''
+                || trim($candidate['party_at_election'] ?? '') === ''
+                || ! $this->count($candidate['votes'] ?? null))
+            || array_sum(array_column($candidates, 'votes')) !== $source['detail']['valid_candidate_votes']) {
+            return null;
+        }
+        $ranked = collect($candidates)->sortByDesc('votes')->values();
+        $result = $source['result'];
+        if ($ranked[0]['votes'] <= $ranked[1]['votes']
+            || $ranked[0]['candidate_name'] !== $result['winner']
+            || $ranked[0]['party_at_election'] !== $result['winner_party']
+            || $ranked[0]['votes'] !== $result['winner_votes']
+            || $ranked[1]['candidate_name'] !== $result['runner']
+            || $ranked[1]['party_at_election'] !== $result['runner_party']
+            || $ranked[1]['votes'] !== $result['runner_votes']
+            || $ranked[0]['votes'] - $ranked[1]['votes'] !== $result['margin']) {
+            return null;
+        }
+
+        return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
+    }
+
     private function hasOfficialPostalSummary(array $record): bool
     {
         $source = match ($record['code'] ?? null) {
@@ -1109,8 +1190,7 @@ class HistoricalElectionAnalytics
                 return null;
             }
             foreach ($preview as $candidate) {
-                $matches = array_filter($candidates, fn (array $complete): bool =>
-                    ($candidate['candidate_name'] ?? null) === ($complete['candidate_name'] ?? null)
+                $matches = array_filter($candidates, fn (array $complete): bool => ($candidate['candidate_name'] ?? null) === ($complete['candidate_name'] ?? null)
                     && ($candidate['party_at_election'] ?? null) === ($complete['party_at_election'] ?? null)
                     && ($candidate['votes'] ?? null) === ($complete['votes'] ?? null)
                     && ($candidate['postal_votes'] ?? null) === ($complete['postal_votes'] ?? null)
@@ -1233,12 +1313,10 @@ class HistoricalElectionAnalytics
             || collect($candidates)->sum('votes') !== $source['valid_candidate_votes']
             || collect($candidates)->max('votes') !== $source['winner']['votes']
             || collect($candidates)->where('votes', $source['winner']['votes'])->count() !== 2
-            || ! collect($candidates)->contains(fn (array $candidate): bool =>
-                $candidate['candidate_name'] === $source['winner']['name']
+            || ! collect($candidates)->contains(fn (array $candidate): bool => $candidate['candidate_name'] === $source['winner']['name']
                 && $candidate['party_at_election'] === $source['winner']['party']
                 && $candidate['votes'] === $source['winner']['votes'])
-            || ! collect($candidates)->contains(fn (array $candidate): bool =>
-                $candidate['candidate_name'] === $source['runner']['name']
+            || ! collect($candidates)->contains(fn (array $candidate): bool => $candidate['candidate_name'] === $source['runner']['name']
                 && $candidate['party_at_election'] === $source['runner']['party']
                 && $candidate['votes'] === $source['runner']['votes'])) {
             return null;
