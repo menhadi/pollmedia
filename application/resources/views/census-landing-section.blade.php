@@ -1,0 +1,4 @@
+@php($censusLanding=app(\App\Services\CensusProfileSummary::class)->landing($censusState??null))
+<section id="census-places" class="census-landing"><div class="panel-heading"><div><p class="eyebrow">People & places</p><h2>Census & places</h2><p>Population, households, literacy and local places.</p></div><a class="button" href="{{ route('civic.index',isset($censusState)?['state'=>$censusState]:[]) }}">Explore Census →</a></div>
+@include('census-profile-charts',['censusSeries'=>$censusLanding['series']])
+<section class="panel"><h3>{{ isset($censusState)?'Choose a district':'Choose a state or union territory' }}</h3><div class="place-list">@foreach($censusLanding['places'] as $censusPlace)<a href="{{ route('civic.place',['record'=>$censusPlace->id]) }}"><strong>{{ \Illuminate\Support\Str::title($censusPlace->name) }}</strong> →</a>@endforeach</div></section></section>

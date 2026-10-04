@@ -33,16 +33,17 @@
             const values = rows.flatMap(row => series.map(item => row[item.key])).filter(value => value !== null && Number.isFinite(value));
             if (!values.length) { status.textContent = 'No available values for this selection.'; return; }
             status.textContent = 'Hover or focus a year to see the value. † indicates a source note.';
-            const max = data.unit === '%' ? 100 : Math.max(1, ...values) * 1.08;
+            const max = data.unit === '%' && !data.autoScale ? 100 : Math.max(1, ...values) * 1.08;
+            const min = data.autoScale ? Math.min(0, ...values) * 1.08 : 0;
             const width = Math.max(240, plot.clientWidth), height = 270, left = width < 500 ? 42 : 62, right = width - (width < 500 ? 8 : 18), top = 16, bottom = 228;
             const first = rows[0].year, last = rows[rows.length - 1].year;
             const x = year => first === last ? (left + right) / 2 : left + (year - first) / (last - first) * (right - left);
-            const y = value => bottom - value / max * (bottom - top);
+            const y = value => bottom - (value-min) / (max-min) * (bottom - top);
             const tooltip = document.createElement('div');
             tooltip.className = 'history-tooltip'; tooltip.hidden = true; tooltip.setAttribute('role', 'tooltip');
             const svg = element('svg', {viewBox: `0 0 ${width} ${height}`, role: 'group', 'aria-label': chart.querySelector('h3').textContent + ', ' + data.unit});
             for (let i = 0; i <= 4; i++) {
-                const value = max * i / 4, yy = y(value);
+                const value = min + (max-min) * i / 4, yy = y(value);
                 svg.append(element('line', {x1:left,x2:right,y1:yy,y2:yy,class:'history-grid'}));
                 const tick = (value >= 10000000 ? (value/10000000).toLocaleString('en-IN',{maximumFractionDigits:1})+' Cr.' : value >= 100000 ? (value/100000).toLocaleString('en-IN',{maximumFractionDigits:1})+' L' : value.toLocaleString('en-IN',{maximumFractionDigits:1})) + (data.unit === '%' ? '%' : '');
                 svg.append(element('text',{x:left-9,y:yy+4,'text-anchor':'end'},tick));

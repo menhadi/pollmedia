@@ -25,5 +25,5 @@
 <div class="home-state-grid" data-state-grid="{{ $kind }}">@foreach($states->filter(fn($item)=>$kind==='pc' || $item['kind']==='State' || in_array($item['slug'],['delhi','jammu-and-kashmir','puducherry'])) as $item)<a class="home-state-card" href="{{ route('states.show',['state'=>$item['slug']]) }}#{{ $kind }}-history"><div><span>{{ $item['kind'] }}</span><strong>{{ $item['name'] }}</strong></div><span class="home-card-arrow" aria-hidden="true">↗</span></a>@endforeach</div><p data-state-empty="{{ $kind }}" hidden>No matching states.</p>
 </section>
 @endforeach
-<section id="census-places" class="home-census-section"><div><p class="home-eyebrow">03 · People & places</p><h2>Census & places</h2><p>Explore population, households, literacy and work for your place.</p></div><div class="home-census-links"><a href="{{ route('civic.index') }}">Explore Census & places →</a><a href="{{ route('villages.index') }}">Find a village →</a></div></section>
+@include('census-landing-section')
 </main>@include('public-footer')</body></html>

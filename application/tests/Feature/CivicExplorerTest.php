@@ -53,13 +53,13 @@ class CivicExplorerTest extends TestCase
             ->assertDontSee('Wrong district child')->assertSee(route('civic.index'), false);
         $this->get('/india/census/places/'.$ids['STATE'])->assertOk()->assertSee('District Alpha')->assertDontSee('Tehsil Alpha');
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertSee('Tehsil Alpha')->assertDontSee('Wrong district child')
-            ->assertSee('State Alpha')->assertSee('Example review note')->assertSee('Map of District Alpha')->assertDontSee('Verified AC/PC associations are not available');
+            ->assertSee('State Alpha')->assertSee('Example review note')->assertSee('Map of District Alpha')->assertSee('block-navigation')->assertDontSee('Verified AC/PC associations are not available');
     }
 
     public function test_villages_and_towns_preserve_group_and_missing_values(): void
     {
         $ids = $this->fixture();
-        $this->get('/india/census/places/'.$ids['tehsil'].'?residence=Rural')->assertOk()->assertSee('Village Alpha')->assertDontSee('Town Alpha');
+        $this->get('/india/census/places/'.$ids['tehsil'].'?residence=Rural')->assertOk()->assertSee('Village Alpha')->assertSee('village-navigation')->assertDontSee('Town Alpha');
         $this->get('/india/census/places/'.$ids['tehsil'].'?residence=Urban')->assertOk()->assertSee('Town Alpha')->assertDontSee('Village Alpha');
         $this->get('/india/census/places/'.$ids['VILLAGE'].'?group=households')->assertOk()->assertSee('Not reported')->assertSee('Tehsil Alpha')
             ->assertViewHas('records', fn ($rows) => count($rows) === 1 && json_decode($rows[0]->values, true)['TOT_P'] === 0);
