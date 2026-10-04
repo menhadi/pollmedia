@@ -201,6 +201,32 @@ class HistoricalElectionPublicTest extends TestCase
             ->assertViewHas('partySummary', fn (array $summary): bool => $summary['counted'] === 1 && $summary['under_review'] === 1 && $summary['other'] === 1 && $summary['parties']->all() === ['PARTY' => 1]);
     }
 
+    public function test_multi_seat_result_labels_votes_across_seats_without_a_single_winner(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition(1951);
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0] = array_replace($data['records'][0], [
+            'number_of_seats' => 2,
+            'electors' => 713275,
+            'votes_polled' => 863273,
+            'valid_candidate_votes' => 863273,
+        ]);
+        Storage::disk('local')->put($path, json_encode($data));
+        $url = route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]);
+        $report = route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451, 'format' => 'report']);
+
+        foreach ([$url, $report] as $page) {
+            $this->get($page)->assertOk()
+                ->assertSee('This constituency elected 2 members.')
+                ->assertSee('Source votes polled across seats')
+                ->assertSee('863,273')
+                ->assertSee('This multi-seat constituency has no single winner')
+                ->assertDontSee('<strong>Winner:', false);
+        }
+    }
+
     public function test_reported_winner_and_margin_remain_visible_with_a_source_warning(): void
     {
         Storage::fake('local');

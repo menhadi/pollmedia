@@ -61,9 +61,11 @@
 </tbody></table></div><p class="small">Only this selected edition is counted. Missing states are not treated as zero results. Individual result pages show any unresolved data notes.</p></section>
 @endif
 @if($selected)
+@php $multiSeat = ($selected['number_of_seats'] ?? 1) > 1; @endphp
 
 <section class="card" id="results"><div class="kicker">{{ $data['year'] }} / {{ $state }}</div><h2>{{ $selected['name'] }} @if($selected['has_warning'])<a href="#data-note" aria-label="Data note">†</a>@endif</h2>
 <p>Official constituency code: {{ $selected['official_pc_code'] ?? $selected['official_ac_code'] ?? ($kind === 'ac' ? $selected['code'] : 'Not reported') }} · Seats: {{ $selected['number_of_seats'] ?? 1 }}</p>
+@if($multiSeat)<p class="notice">This constituency elected {{ $selected['number_of_seats'] }} members. The reported vote total can include votes for more than one seat, so it is not ordinary one-seat turnout. Confirm elected members separately in the official report.</p>@endif
 <p><a href="{{ route($archiveRoute, $filters + ['format' => 'csv']) }}">Download candidate results (CSV)</a></p><p class="small">Includes official references and current data notes. Blank cells mean not reported; constituency totals repeat on each candidate row and should not be added together.</p>
 <p><a href="{{ route($archiveRoute, $filters + ['format' => 'report']) }}">Open printable constituency result report</a> · <a href="{{ route('feedback.create',['path'=>route($archiveRoute,['edition'=>$edition,'state'=>$state,'code'=>$selected['code']],false),'category'=>'data']) }}">Report a problem with this result</a></p>
 @if($relatedPlace)
@@ -79,14 +81,15 @@
 @endif
 @endif
 @if($selected['display_result'])<p><strong>Winner: {{ $selected['display_result']['winner'] }}@if($selected['has_warning']) †@endif</strong> @if($selected['display_result']['uncontested'] ?? false) · Uncontested; no poll or winning margin @else · Margin: {{ number_format($selected['display_result']['margin']) }} votes @if($selected['has_warning'])†@endif @endif</p>@endif
-@if(!$selected['display_result'])<p class="notice">* @if(!empty($selected['candidates']))Available candidate rows are shown as recorded.@else Candidate rows could not be extracted reliably.@endif A winner has not been confirmed from this table. <a href="{{ $data['source_url'] }}">Check the official report ↗</a></p>@endif
+@if(!$selected['display_result'])<p class="notice">* @if(!empty($selected['candidates']))Available candidate rows are shown as recorded.@else Candidate rows could not be extracted reliably.@endif @if($multiSeat)This multi-seat constituency has no single winner or ordinary one-seat turnout; its elected members need separate verification.@else A winner has not been confirmed from this table.@endif <a href="{{ $data['source_url'] }}">Check the official report ↗</a></p>@endif
 @php
-    $summaryVoteLabel = ($selected['source_warning_code'] ?? '') === 'workbook_pdf_summary'
+    $summaryVoteLabel = $multiSeat ? 'Valid candidate votes across seats' : (($selected['source_warning_code'] ?? '') === 'workbook_pdf_summary'
         ? (isset($selected['summary_totals']['nota_votes']) ? 'Valid candidate votes' : 'Source valid votes (including NOTA)')
         : (in_array($selected['source_warning_code'] ?? '', ['summary_turnout_with_detail_warnings', 'summary_only_turnout'], true)
-            ? 'Valid votes (official summary)' : 'Valid candidate votes');
+            ? 'Valid votes (official summary)' : 'Valid candidate votes'));
+    $polledLabel = $multiSeat ? 'Source votes polled across seats' : 'Votes polled';
 @endphp
-<div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>'Votes polled','valid_candidate_votes'=>$summaryVoteLabel] as $key=>$label)@php $value = $selected[$key] ?? null; if ($key === 'votes_polled' && ($selected['source_discrepancy']['field'] ?? '') === 'votes_polled') $value = $selected['summary_totals'][$key] ?? $value; if ($key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings', 'summary_only_turnout'], true)) $value = $selected['summary_totals'][$key] ?? null; @endphp<div class="stat"><span>{{ $label }}</span><strong>{{ ($selected['display_result']['uncontested'] ?? false) && $value === 0 ? '—' : ($value !== null ? number_format($value) : '—') }}</strong></div>@endforeach</div>
+<div class="stats">@foreach(['electors'=>'Electors','votes_polled'=>$polledLabel,'valid_candidate_votes'=>$summaryVoteLabel] as $key=>$label)@php $value = $selected[$key] ?? null; if ($key === 'votes_polled' && ($selected['source_discrepancy']['field'] ?? '') === 'votes_polled') $value = $selected['summary_totals'][$key] ?? $value; if ($key === 'valid_candidate_votes' && in_array($selected['source_warning_code'] ?? '', ['workbook_pdf_summary', 'summary_turnout_with_detail_warnings', 'summary_only_turnout'], true)) $value = $selected['summary_totals'][$key] ?? null; @endphp<div class="stat"><span>{{ $label }}</span><strong>{{ ($selected['display_result']['uncontested'] ?? false) && $value === 0 ? '—' : ($value !== null ? number_format($value) : '—') }}</strong></div>@endforeach</div>
 @php
     $showSymbols = collect($selected['candidates'])->contains(fn ($row) => !empty($row['election_symbol']));
 @endphp
