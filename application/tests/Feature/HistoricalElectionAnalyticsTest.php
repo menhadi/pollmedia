@@ -1482,4 +1482,37 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $altered['summary_result']['winner_party'] = 'INC';
         $this->assertNull($analytics->singleSeatResult($altered));
     }
+
+    public function test_official_1982_champdani_result_is_shown_without_impossible_turnout(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('9982b63a332a67579dae045f', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 181);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official report prints more voters than electors; turnout is withheld. Its declared winner and margin are shown for review.';
+        $record['source_warning_code'] = 'official_ac_declared_result_invalid_turnout';
+        $record['official_summary_state'] = 'West Bengal';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_page'] = 197;
+        $record['summary_totals'] = ['electors' => 87335, 'votes_polled' => 91850, 'valid_candidate_votes' => 89899];
+        $record['summary_result'] = ['winner' => 'SAILENDRA NATH CHATTOPADHYAY', 'winner_party' => 'CPM',
+            'winner_votes' => 47301, 'runner' => 'SWARAJ MUKHOPADHYAY', 'runner_party' => 'INC',
+            'runner_votes' => 40682, 'margin' => 6619];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame(['winner' => 'SAILENDRA NATH CHATTOPADHYAY', 'party' => 'CPM', 'margin' => 6619, 'derived' => false],
+            $analytics->singleSeatResult($record));
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(0, $summary['turnout_count']);
+        $this->assertNull($summary['turnout']);
+        $this->assertSame(1, $summary['margin_count']);
+
+        foreach ([['summary_page', 196], ['summary_source_sha256', str_repeat('0', 64)],
+            ['valid_candidate_votes', 89898], ['number_of_seats', 2]] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
 }

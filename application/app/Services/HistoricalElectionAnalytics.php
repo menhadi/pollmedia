@@ -1221,6 +1221,14 @@ class HistoricalElectionAnalytics
                 'votes_polled' => 151869, 'valid_candidate_votes' => 148168, 'candidates' => 16,
                 'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
             ],
+            '9982b63a332a67579dae045f-7315.pdf' => [
+                'code' => 181, 'name' => 'CHAMPDANI', 'state' => 'West Bengal',
+                'url' => 'https://old.eci.gov.in/files/file/3189-west-bengal-1982/',
+                'sha256' => 'd7aa7423d5d0e2c252d758df89b7b0274f2303689bfc67d44a4e64732d0d81f3',
+                'summary_page' => 197, 'detail_page' => 335, 'electors' => 87335,
+                'votes_polled' => 91850, 'valid_candidate_votes' => 89899, 'candidates' => 4,
+                'original_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+            ],
             default => null,
         };
         $summary = $record['summary_totals'] ?? null;
