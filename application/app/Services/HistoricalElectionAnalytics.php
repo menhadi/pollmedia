@@ -31,6 +31,8 @@ class HistoricalElectionAnalytics
 
     private const PC_DETAIL_PENDING = 'Matching state/constituency summary is unavailable; Independent summary totals could not be reconciled';
 
+    private const POSTAL_SUMMARY_NOTE = 'The official summary lists general valid votes separately from postal votes. Their sum reconciles with the detailed candidate rows; total voters, winner and margin are shown with the original figures retained for review.';
+
     public function forState(string $state, string $kind): array
     {
         $entries = [];
@@ -561,6 +563,10 @@ class HistoricalElectionAnalytics
     {
         $summary = $record['summary_totals'] ?? null;
 
+        if (($record['source_warning_code'] ?? '') === 'official_general_valid_plus_postal') {
+            return $this->hasOfficialPostalSummary($record);
+        }
+
         if (($record['source_warning_code'] ?? '') === 'official_detail_turnout_only') {
             $turnout = $record['turnout_totals'] ?? null;
 
@@ -949,7 +955,8 @@ class HistoricalElectionAnalytics
     private function officialPdfSummaryResult(array $record): ?array
     {
         $missingVoterTotal = ($record['source_warning_code'] ?? null) === 'official_summary_result_without_turnout';
-        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference', 'round_specific_summary', 'official_summary_result_without_turnout'], true)
+        $postalSummary = ($record['source_warning_code'] ?? null) === 'official_general_valid_plus_postal';
+        if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference', 'round_specific_summary', 'official_summary_result_without_turnout', 'official_general_valid_plus_postal'], true)
             || ! isset($record['summary_source_file'], $record['summary_source_sha256'])
             || (! $missingVoterTotal && ! $this->hasCorroboratedTurnout($record))
             || ($record['number_of_seats'] ?? 1) !== 1) {
@@ -999,11 +1006,74 @@ class HistoricalElectionAnalytics
             || ! $this->count($result['runner_votes'] ?? null) || ! $this->count($result['margin'] ?? null)
             || $result['winner_votes'] <= $result['runner_votes']
             || $result['margin'] !== $result['winner_votes'] - $result['runner_votes']
-            || $result['winner_votes'] > ($record['summary_totals']['valid_candidate_votes'] ?? 0)) {
+            || $result['winner_votes'] > ($postalSummary
+                ? ($record['valid_candidate_votes'] ?? 0)
+                : ($record['summary_totals']['valid_candidate_votes'] ?? 0))) {
             return null;
         }
 
+        if ($postalSummary) {
+            $ranked = collect($record['candidates'] ?? [])->sortByDesc('votes')->values();
+            if ($ranked->count() < 2 || $ranked[0]['votes'] <= $ranked[1]['votes']
+                || $result !== ['winner' => $ranked[0]['candidate_name'],
+                    'winner_party' => $ranked[0]['party_at_election'], 'winner_votes' => $ranked[0]['votes'],
+                    'runner' => $ranked[1]['candidate_name'], 'runner_party' => $ranked[1]['party_at_election'],
+                    'runner_votes' => $ranked[1]['votes'], 'margin' => $ranked[0]['votes'] - $ranked[1]['votes']]) {
+                return null;
+            }
+        }
+
         return ['winner' => $result['winner'], 'party' => $result['winner_party'], 'margin' => $result['margin']];
+    }
+
+    private function hasOfficialPostalSummary(array $record): bool
+    {
+        $source = match ($record['code'] ?? null) {
+            22 => ['HABBAKADAL', 59329, 10188, 2998, 7004, 186, 3184, 104, 5],
+            23 => ['AMIRAKADAL', 56462, 7141, 6025, 640, 476, 6501, 104, 7],
+            43 => ['KOKERNAG', 58733, 23866, 21985, 943, 938, 22923, 108, 7],
+            default => null,
+        };
+        if ($source === null) {
+            return false;
+        }
+        [$name, $electors, $polled, $generalValid, $postal, $rejected, $detailPolled, $detailPage, $candidateCount] = $source;
+        $summary = $record['summary_totals'] ?? null;
+        $detail = $record['original_detail_totals'] ?? null;
+        $difference = $record['candidate_source_discrepancy'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        if (($record['source_warning_code'] ?? null) !== 'official_general_valid_plus_postal'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['name'] ?? null) !== $name
+            || ($record['state_name'] ?? null) !== 'Jammu & Kashmir'
+            || ($record['number_of_seats'] ?? null) !== 1
+            || ($record['detail_page'] ?? null) !== $detailPage
+            || ($record['summary_page'] ?? null) !== $record['code'] + 13
+            || ($record['summary_source_file'] ?? null) !== 'b837e6720774f65f5f1b0934-8930.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '5a87a21648681a2eed44228cf28c098dc38f34d2ec59fc858acdf49e7bedb4ee'
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING.'; Reported elector and voter totals are inconsistent.'
+            || ($record['error'] ?? null) !== self::POSTAL_SUMMARY_NOTE
+            || ($record['electors'] ?? null) !== $electors
+            || ($record['votes_polled'] ?? null) !== $polled
+            || ($record['valid_candidate_votes'] ?? null) !== $generalValid + $postal
+            || $summary !== ['electors' => $electors, 'votes_polled' => $polled,
+                'valid_candidate_votes' => $generalValid, 'postal_votes' => $postal,
+                'rejected_votes' => $rejected]
+            || $detail !== ['electors' => $electors, 'votes_polled' => $detailPolled,
+                'valid_candidate_votes' => $generalValid + $postal]
+            || $difference !== ['candidate_sum' => $generalValid + $postal,
+                'printed_general_valid_votes' => $generalValid, 'postal_votes' => $postal]
+            || ! is_array($candidates) || count($candidates) !== $candidateCount
+            || array_sum(array_column($candidates, 'votes')) !== $generalValid + $postal
+            || $polled !== $generalValid + $postal + $rejected
+            || $detailPolled + $postal !== $polled) {
+            return false;
+        }
+
+        return collect($candidates)->every(fn ($candidate): bool => is_array($candidate)
+            && $this->count($candidate['votes'] ?? null)
+            && trim($candidate['candidate_name'] ?? '') !== ''
+            && trim($candidate['party_at_election'] ?? '') !== '');
     }
 
     /** A fully reconciled detailed PDF page can establish a result without a separate summary page. */

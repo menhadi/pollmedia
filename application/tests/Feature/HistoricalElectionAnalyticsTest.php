@@ -1546,4 +1546,53 @@ class HistoricalElectionAnalyticsTest extends TestCase
             $this->assertNull($analytics->singleSeatResult($altered));
         }
     }
+
+    public function test_1996_jammu_kashmir_postal_votes_reconcile_three_declared_results(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('b837e6720774f65f5f1b0934', app(ElectionArchive::class));
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $cases = [
+            22 => [10188, 2998, 7004, 186, 3184, 'PIYARE LAL HANDOO', 'JKN', 5984, 'SARLA TAPLOO', 'BJP', 1969, 4015],
+            23 => [7141, 6025, 640, 476, 6501, 'MUHAMMED SHAFI BHAT', 'JKN', 4256, 'MOHD. ALTAF DAR', 'JD', 968, 3288],
+            43 => [23866, 21985, 943, 938, 22923, 'SYED ABDUL RASHID', 'JKN', 11436, 'ABDUL RASHID RATHER', 'JKAL', 4145, 7291],
+        ];
+        foreach ($cases as $code => [$polled, $generalValid, $postal, $rejected, $detailPolled,
+            $winner, $winnerParty, $winnerVotes, $runner, $runnerParty, $runnerVotes, $margin]) {
+            $record = collect($data['records'])->firstWhere('code', $code);
+            $record['original_detail_totals'] = ['electors' => $record['electors'],
+                'votes_polled' => $detailPolled, 'valid_candidate_votes' => $generalValid + $postal];
+            $record['original_extraction_warning'] = $record['error'];
+            $record['error'] = 'The official summary lists general valid votes separately from postal votes. Their sum reconciles with the detailed candidate rows; total voters, winner and margin are shown with the original figures retained for review.';
+            $record['source_warning_code'] = 'official_general_valid_plus_postal';
+            $record['votes_polled'] = $polled;
+            $record['summary_page'] = $code + 13;
+            $record['summary_totals'] = ['electors' => $record['electors'], 'votes_polled' => $polled,
+                'valid_candidate_votes' => $generalValid, 'postal_votes' => $postal,
+                'rejected_votes' => $rejected];
+            $record['summary_result'] = ['winner' => $winner, 'winner_party' => $winnerParty,
+                'winner_votes' => $winnerVotes, 'runner' => $runner, 'runner_party' => $runnerParty,
+                'runner_votes' => $runnerVotes, 'margin' => $margin];
+            $record['summary_source_file'] = $data['source_file'];
+            $record['summary_source_sha256'] = $data['source_sha256'];
+            $record['candidate_source_discrepancy'] = ['candidate_sum' => $generalValid + $postal,
+                'printed_general_valid_votes' => $generalValid, 'postal_votes' => $postal];
+
+            $this->assertSame(['winner' => $winner, 'party' => $winnerParty, 'margin' => $margin,
+                'derived' => false], $analytics->singleSeatResult($record));
+            $summary = $analytics->summarize([$record]);
+            $this->assertSame(1, $summary['turnout_count']);
+            $this->assertSame($polled, $summary['polled']);
+
+            $altered = $record;
+            $altered['summary_totals']['postal_votes']++;
+            $this->assertNull($analytics->singleSeatResult($altered));
+            $this->assertSame(0, $analytics->summarize([$altered])['turnout_count']);
+            $altered = $record;
+            $altered['summary_result']['winner_votes']++;
+            $this->assertNull($analytics->singleSeatResult($altered));
+            $altered = $record;
+            $altered['candidates'][0]['votes']++;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
 }
