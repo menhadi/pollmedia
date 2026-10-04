@@ -14,7 +14,8 @@ RESUME = 'pollmedia-election-corrections-20261003-resume-v1'
 WAVES = ([f'pollmedia-election-corrections-20261003-wave{i}' for i in range(8, 24)]
          + ['pollmedia-election-corrections-20261004-wave24-v2',
             'pollmedia-election-corrections-20261004-wave25-v2',
-            'pollmedia-election-corrections-20261004-wave26'])
+            'pollmedia-election-corrections-20261004-wave26',
+            'pollmedia-election-corrections-20261004-wave27'])
 
 
 def verified_release(name: str) -> zipfile.ZipFile:
@@ -44,6 +45,8 @@ class ElectionReleaseChainTests(unittest.TestCase):
                     self.assertIn(b'ee2c43a', script)
                 if wave.endswith('wave26'):
                     self.assertIn(b'247bcc8', script)
+                if wave.endswith('wave27'):
+                    self.assertIn(b'9dfacf1', script)
                 self.assertNotIn('pollmedia-ac-karnataka-1983-bagewadi-summary-result-20261004', names)
                 self.assertNotIn('pollmedia-ac-west-bengal-1982-champdani-declared-result-20261004', names)
                 for name in names:
@@ -60,7 +63,7 @@ class ElectionReleaseChainTests(unittest.TestCase):
                             self.assertIn(edition['previous_sha256'],
                                           (revisions[key], edition['new_sha256']), (wave, name, key))
                         revisions[key] = edition['new_sha256']
-        self.assertEqual(len(revisions), 83)
+        self.assertEqual(len(revisions), 84)
 
 
 if __name__ == '__main__':
