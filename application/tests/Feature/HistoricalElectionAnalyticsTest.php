@@ -1283,6 +1283,37 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($altered));
     }
 
+    public function test_official_1988_kherapara_tie_uses_declared_winner_and_zero_margin(): void
+    {
+        [$data] = app(HistoricalElectionArchive::class)->load('59e71c23b10c39b1a339d4c9', app(ElectionArchive::class));
+        $record = collect($data['records'])->firstWhere('code', 54);
+        $record['original_extraction_warning'] = $record['error'];
+        $record['error'] = 'The official summary declares a winner after equal candidate votes; the winning margin is zero. Check the linked report.';
+        $record['source_warning_code'] = 'official_declared_tie';
+        $record['official_source_url'] = $data['source_url'];
+        $record['summary_source_file'] = $data['source_file'];
+        $record['summary_source_sha256'] = $data['source_sha256'];
+        $record['summary_page'] = 65;
+        $record['summary_totals'] = ['electors' => 12209, 'votes_polled' => 8947, 'valid_candidate_votes' => 8623];
+        $record['summary_result'] = ['winner' => 'CHAMBERUN MARAK', 'winner_party' => 'IND', 'winner_votes' => 2591,
+            'runner' => 'ROSTER M. SANGMA', 'runner_party' => 'INC', 'runner_votes' => 2591, 'margin' => 0];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(1, $summary['turnout_count']);
+        $this->assertSame(1, $summary['margin_count']);
+        $this->assertSame(0, $summary['margin']);
+        $this->assertSame(['winner' => 'CHAMBERUN MARAK', 'party' => 'IND', 'margin' => 0, 'derived' => false],
+            $analytics->singleSeatResult($record));
+
+        foreach ([['summary_result', ['winner' => 'ROSTER M. SANGMA']],
+            ['summary_source_sha256', str_repeat('0', 64)], ['number_of_seats', 2]] as [$field, $value]) {
+            $altered = $record;
+            $altered[$field] = $value;
+            $this->assertNull($analytics->singleSeatResult($altered));
+        }
+    }
+
     public function test_official_1955_sattenpalli_result_is_shown_without_impossible_turnout(): void
     {
         [$data] = app(HistoricalElectionArchive::class)->load('165392d9f968ef073166ef32', app(ElectionArchive::class));

@@ -1115,39 +1115,65 @@ class HistoricalElectionAnalytics
     /** The source declares a winner even though two candidates have equal votes. */
     private function officialDeclaredTieResult(array $record): ?array
     {
-        if (($record['source_warning_code'] ?? null) !== 'official_declared_tie'
+        $source = match ($record['summary_source_file'] ?? null) {
+            'c6fecebc52d31001b62978a5-8744.pdf' => [
+                'code' => 43, 'name' => 'MAHAD', 'state' => 'Maharashtra',
+                'url' => 'https://old.eci.gov.in/files/file/3714-maharashtra-1962/',
+                'sha256' => '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88',
+                'summary_page' => 61, 'detail_page' => 289, 'electors' => 58162,
+                'votes_polled' => 36311, 'valid_candidate_votes' => 34013, 'candidates' => 5,
+                'winner' => ['name' => 'SHANKAR BABAJI SAWANT', 'party' => 'INC', 'votes' => 12664],
+                'runner' => ['name' => 'SAKHARAM VITHOBA SALUNKE', 'party' => 'PSP', 'votes' => 12664],
+            ],
+            '59e71c23b10c39b1a339d4c9-8623.pdf' => [
+                'code' => 54, 'name' => 'KHERAPARA (ST)', 'state' => 'Meghalaya',
+                'url' => 'https://old.eci.gov.in/files/file/3674-meghalaya-1988/',
+                'sha256' => '0db3e9f2e504d3dc1c1599a22a8bbb7a0d82b8a68dc5ecd1b4dd64e6f8b9bd24',
+                'summary_page' => 65, 'detail_page' => 79, 'electors' => 12209,
+                'votes_polled' => 8947, 'valid_candidate_votes' => 8623, 'candidates' => 4,
+                'winner' => ['name' => 'CHAMBERUN MARAK', 'party' => 'IND', 'votes' => 2591],
+                'runner' => ['name' => 'ROSTER M. SANGMA', 'party' => 'INC', 'votes' => 2591],
+            ],
+            default => null,
+        };
+        if ($source === null || ($record['source_warning_code'] ?? null) !== 'official_declared_tie'
             || ($record['status'] ?? null) !== 'needs_review'
-            || ($record['code'] ?? null) !== 43 || ($record['name'] ?? null) !== 'MAHAD'
-            || ($record['state_name'] ?? null) !== 'Maharashtra'
+            || ($record['code'] ?? null) !== $source['code'] || ($record['name'] ?? null) !== $source['name']
+            || ($record['state_name'] ?? null) !== $source['state']
             || ($record['number_of_seats'] ?? null) !== 1
             || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING
             || ($record['error'] ?? null) !== 'The official summary declares a winner after equal candidate votes; the winning margin is zero. Check the linked report.'
-            || ($record['official_source_url'] ?? null) !== 'https://old.eci.gov.in/files/file/3714-maharashtra-1962/'
-            || ($record['summary_source_file'] ?? null) !== 'c6fecebc52d31001b62978a5-8744.pdf'
-            || ($record['summary_source_sha256'] ?? null) !== '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88'
-            || ($record['summary_page'] ?? null) !== 61 || ($record['detail_page'] ?? null) !== 289
-            || ($record['electors'] ?? null) !== 58162 || ($record['votes_polled'] ?? null) !== 36311
-            || ($record['valid_candidate_votes'] ?? null) !== 34013
-            || ($record['summary_totals'] ?? null) !== ['electors' => 58162, 'votes_polled' => 36311,
-                'valid_candidate_votes' => 34013]
-            || ($record['summary_result'] ?? null) !== ['winner' => 'SHANKAR BABAJI SAWANT',
-                'winner_party' => 'INC', 'winner_votes' => 12664, 'runner' => 'SAKHARAM VITHOBA SALUNKE',
-                'runner_party' => 'PSP', 'runner_votes' => 12664, 'margin' => 0]) {
+            || ($record['official_source_url'] ?? null) !== $source['url']
+            || ($record['summary_source_sha256'] ?? null) !== $source['sha256']
+            || ($record['summary_page'] ?? null) !== $source['summary_page']
+            || ($record['detail_page'] ?? null) !== $source['detail_page']
+            || ($record['electors'] ?? null) !== $source['electors']
+            || ($record['votes_polled'] ?? null) !== $source['votes_polled']
+            || ($record['valid_candidate_votes'] ?? null) !== $source['valid_candidate_votes']
+            || ($record['summary_totals'] ?? null) !== ['electors' => $source['electors'],
+                'votes_polled' => $source['votes_polled'], 'valid_candidate_votes' => $source['valid_candidate_votes']]
+            || ($record['summary_result'] ?? null) !== ['winner' => $source['winner']['name'],
+                'winner_party' => $source['winner']['party'], 'winner_votes' => $source['winner']['votes'],
+                'runner' => $source['runner']['name'], 'runner_party' => $source['runner']['party'],
+                'runner_votes' => $source['runner']['votes'], 'margin' => 0]) {
             return null;
         }
         $candidates = $record['candidates'] ?? [];
-        if (count($candidates) !== 5 || collect($candidates)->sum('votes') !== 34013
-            || collect($candidates)->where('votes', 12664)->count() !== 2
+        if (count($candidates) !== $source['candidates']
+            || collect($candidates)->sum('votes') !== $source['valid_candidate_votes']
+            || collect($candidates)->where('votes', $source['winner']['votes'])->count() !== 2
             || ! collect($candidates)->contains(fn (array $candidate): bool =>
-                $candidate['candidate_name'] === 'SHANKAR BABAJI SAWANT'
-                && $candidate['party_at_election'] === 'INC' && $candidate['votes'] === 12664)
+                $candidate['candidate_name'] === $source['winner']['name']
+                && $candidate['party_at_election'] === $source['winner']['party']
+                && $candidate['votes'] === $source['winner']['votes'])
             || ! collect($candidates)->contains(fn (array $candidate): bool =>
-                $candidate['candidate_name'] === 'SAKHARAM VITHOBA SALUNKE'
-                && $candidate['party_at_election'] === 'PSP' && $candidate['votes'] === 12664)) {
+                $candidate['candidate_name'] === $source['runner']['name']
+                && $candidate['party_at_election'] === $source['runner']['party']
+                && $candidate['votes'] === $source['runner']['votes'])) {
             return null;
         }
 
-        return ['winner' => 'SHANKAR BABAJI SAWANT', 'party' => 'INC', 'margin' => 0];
+        return ['winner' => $source['winner']['name'], 'party' => $source['winner']['party'], 'margin' => 0];
     }
 
     /** The official declaration can establish a result even when its voter total cannot establish turnout. */
