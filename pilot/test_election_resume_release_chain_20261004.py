@@ -21,8 +21,8 @@ WAVES = ([f'pollmedia-election-corrections-20261003-wave{i}' for i in range(8, 2
 
 def verified_release(name: str) -> zipfile.ZipFile:
     path = EXPORTS / (name + '.zip')
-    expected = path.with_suffix('.sha256').read_text(encoding='ascii').split()[0]
-    if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+    expected = hashlib.sha256(path.read_bytes()).hexdigest()
+    if path.with_suffix('.sha256').read_bytes() != f'{expected}  {path.name}\n'.encode('ascii'):
         raise ValueError('Outer checksum differs: ' + name)
     return zipfile.ZipFile(path)
 
@@ -86,8 +86,9 @@ class ElectionReleaseChainTests(unittest.TestCase):
                 self.assertNotIn('pollmedia-ac-west-bengal-1982-champdani-declared-result-20261004', names)
                 for name in names:
                     body = release.read(name + '.zip')
-                    expected = release.read(name + '.sha256').decode('ascii').split()[0]
-                    self.assertEqual(hashlib.sha256(body).hexdigest(), expected)
+                    expected = hashlib.sha256(body).hexdigest()
+                    self.assertEqual(release.read(name + '.sha256'),
+                                     f'{expected}  {name}.zip\n'.encode('ascii'))
                     with zipfile.ZipFile(io.BytesIO(body)) as bundle:
                         self.assertIn(b'--allow-revision', bundle.read('IMPORT.sh'))
                         self.assertIn(b'check_disk', bundle.read('IMPORT.sh'))
