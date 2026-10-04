@@ -13,9 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPORTS = ROOT / 'exports'
 RESUME = 'pollmedia-election-corrections-20261003-resume-v1'
 WAVES = ([f'pollmedia-election-corrections-20261003-wave{i}' for i in range(8, 11)]
-         + ['pollmedia-election-corrections-20261004-wave11-v2']
-         + [f'pollmedia-election-corrections-20261003-wave{i}' for i in range(12, 24)]
-         + ['pollmedia-election-corrections-20261004-wave24-v2',
+         + [f'pollmedia-election-corrections-20261004-wave{i}-v2' for i in range(11, 14)]
+         + [f'pollmedia-election-corrections-20261003-wave{i}' for i in range(14, 24)]
+         + ['pollmedia-election-corrections-20261004-wave24-v3',
             'pollmedia-election-corrections-20261004-wave25-v2',
             'pollmedia-election-corrections-20261004-wave26',
             'pollmedia-election-corrections-20261004-wave27'])
@@ -78,10 +78,12 @@ class ElectionReleaseChainTests(unittest.TestCase):
                 script = release.read('IMPORT_ALL.sh')
                 for guard in (b'flock', b'check_disk', b'sha256sum -c', b'git -c safe.directory'):
                     self.assertIn(guard, script)
-                if wave.endswith(('wave24-v2', 'wave25-v2')):
+                if wave.endswith('wave25-v2'):
                     self.assertIn(b'ee2c43a', script)
                 if wave.endswith('wave11-v2'):
                     self.assertIn(b'526e30e', script)
+                if wave.endswith(('wave12-v2', 'wave13-v2', 'wave24-v3')):
+                    self.assertIn(b'db633d8', script)
                 if wave.endswith('wave26'):
                     self.assertIn(b'247bcc8', script)
                 if wave.endswith('wave27'):
