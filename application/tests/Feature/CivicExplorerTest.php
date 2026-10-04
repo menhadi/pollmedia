@@ -72,7 +72,7 @@ class CivicExplorerTest extends TestCase
         $ids = $this->fixture();
         $this->get('/india/census/places/'.$ids['tehsil'].'?residence=Rural')->assertOk()->assertSee('Village Alpha')->assertSee('village-navigation')->assertDontSee('Town Alpha');
         $this->get('/india/census/places/'.$ids['tehsil'].'?residence=Urban')->assertOk()->assertSee('Town Alpha')->assertDontSee('Village Alpha');
-        $this->get('/india/census/places/'.$ids['VILLAGE'].'?group=households')->assertOk()->assertSee('Not reported')->assertSee('Tehsil Alpha')
+        $this->get('/india/census/places/'.$ids['VILLAGE'].'?group=households')->assertOk()->assertSee('NA')->assertSee('Tehsil Alpha')
             ->assertViewHas('records', fn ($rows) => count($rows) === 1 && json_decode($rows[0]->values, true)['TOT_P'] === 0);
     }
 

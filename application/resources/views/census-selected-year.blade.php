@@ -8,7 +8,7 @@ $pointFields=['TOT_P'=>'population','TOT_M'=>'male','TOT_F'=>'female','No_HH'=>'
 @endphp
 @foreach($measures as $code=>$label)
 @php($cardValue=$currentValues[$code]??$point[$pointFields[$code]??'']??null)
-<article class="metric"><span>{{ $label }}</span><strong>{{ $cardValue===null?'Not reported':number_format($cardValue) }}</strong><span>{{ $point['year'] }} · {{ $residence }}</span></article>
+<article class="metric"><span>{{ $label }}</span><strong>{{ $cardValue===null?'NA':number_format($cardValue) }}</strong><span>{{ $point['year'] }} · {{ $residence }}</span></article>
 @endforeach</div>
 <details class="census-source-notes"><summary>Sources & data notes · {{ $point['year'] }}</summary>@foreach($point['notes'] as $note)<p>† {{ $note }}</p>@endforeach<a href="{{ $point['year']===$year?$edition?->source_url:($point['source_url']??$censusSeries['source']['url']??route('census.source-tables',['year'=>$point['year']])) }}" target="_blank" rel="noopener">Official Census source ↗</a></details></div>
 @endforeach</section>@endif
