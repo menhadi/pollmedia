@@ -302,6 +302,31 @@ class HistoricalElectionAnalytics
                 $people[] = $row;
             }
         }
+        if (count($people) === 2 && $notaCount === 0 && $edition === 'a1b887ea9c50978fe4cf8e5c') {
+            static $historicalEvidence = null;
+            $historicalEvidence ??= json_decode(file_get_contents(database_path('fixtures/official-uncontested-results.json')), true, 512, JSON_THROW_ON_ERROR);
+            $source = $historicalEvidence[$edition.':'.($record['code'] ?? '')] ?? null;
+            $recordName = trim($record['constituency_name'] ?? basename(str_replace(' / ', '/', $record['name'] ?? '')));
+            if ($source !== null && isset($source['other_candidate'], $source['other_party'], $source['electors'], $source['pdf_page'])
+                && $source['name'] === $recordName && $source['electors'] === ($record['electors'] ?? null)
+                && $source['pdf_page'] === ($record['summary_page'] ?? null)
+                && ($record['source_warning_code'] ?? null) === 'official_uncontested_with_zero_vote_rows'
+                && ($record['official_source_url'] ?? null) === $source['source_url']
+                && ($record['summary_source_file'] ?? null) === $source['source_file']
+                && ($record['summary_source_sha256'] ?? null) === $source['source_sha256']
+                && ($record['valid_candidate_votes'] ?? null) === 0) {
+                $printedWinner = collect($people)->first(fn (array $row): bool =>
+                    ($row['candidate_name'] ?? null) === $source['candidate']
+                    && ($row['party_at_election'] ?? null) === $source['party']);
+                $printedOther = collect($people)->first(fn (array $row): bool =>
+                    ($row['candidate_name'] ?? null) === $source['other_candidate']
+                    && ($row['party_at_election'] ?? null) === $source['other_party']);
+                if ($printedWinner !== null && $printedOther !== null && $printedWinner !== $printedOther) {
+                    return ['winner' => $source['candidate'], 'party' => $source['party'],
+                        'margin' => null, 'derived' => false, 'uncontested' => true];
+                }
+            }
+        }
         if (count($people) !== 1 || $notaCount > 1) {
             return null;
         }

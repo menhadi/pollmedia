@@ -39,6 +39,41 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->singleSeatResult($record, '00fa45113ca5b5cde46a2802'));
     }
 
+    public function test_1957_official_uncontested_declarations_override_two_zero_vote_detail_rows(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $edition = 'a1b887ea9c50978fe4cf8e5c';
+        $source = json_decode(file_get_contents(database_path('fixtures/official-uncontested-results.json')), true, 512, JSON_THROW_ON_ERROR);
+        foreach ([
+            [18, 'RAJAMPET', 417694, 21, 'T.N. VISWANATH REDDY', 'S. HUSSAIN SHAH'],
+            [215, 'TIRUCHENDUR', 448411, 218, 'T. GANAPATHY', 'N. DURIPANDI'],
+        ] as [$code, $seat, $electors, $page, $winner, $other]) {
+            $record = ['code' => $code, 'name' => $seat, 'number_of_seats' => 1,
+                'electors' => $electors, 'votes_polled' => 0, 'valid_candidate_votes' => 0,
+                'summary_page' => $page, 'status' => 'needs_review',
+                'source_warning_code' => 'official_uncontested_with_zero_vote_rows',
+                'official_source_url' => $source[$edition.':'.$code]['source_url'],
+                'summary_source_file' => $source[$edition.':'.$code]['source_file'],
+                'summary_source_sha256' => $source[$edition.':'.$code]['source_sha256'],
+                'candidates' => [
+                    ['candidate_name' => $other, 'party_at_election' => 'IND', 'votes' => 0],
+                    ['candidate_name' => $winner, 'party_at_election' => 'INC', 'votes' => 0],
+                ]];
+            $this->assertSame(['winner' => $winner, 'party' => 'INC', 'margin' => null,
+                'derived' => false, 'uncontested' => true], $analytics->singleSeatResult($record, $edition));
+            $this->assertNull($analytics->summarize([$record])['turnout']);
+
+            $record['candidates'][0]['candidate_name'] = 'Another person';
+            $this->assertNull($analytics->singleSeatResult($record, $edition));
+            $record['candidates'][0]['candidate_name'] = $other;
+            $record['summary_page']++;
+            $this->assertNull($analytics->singleSeatResult($record, $edition));
+            $record['summary_page'] = $page;
+            $record['number_of_seats'] = 2;
+            $this->assertNull($analytics->singleSeatResult($record, $edition));
+        }
+    }
+
     public function test_officially_uncontested_arunachal_winners_with_nota_rows_are_shown_without_turnout(): void
     {
         $edition = '08d56c7504299ea9043a1782';

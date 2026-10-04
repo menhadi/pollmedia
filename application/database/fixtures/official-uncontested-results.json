@@ -1772,6 +1772,18 @@
     "source_sha256": "2ff5e4ca85bdaffacb2dace0df5e887a5c387b8cb6223bc4d0b58b18c5d24ba1",
     "pdf_page": 17
   },
+  "a1b887ea9c50978fe4cf8e5c:18": {
+    "name": "RAJAMPET",
+    "candidate": "T.N. VISWANATH REDDY",
+    "party": "INC",
+    "other_candidate": "S. HUSSAIN SHAH",
+    "other_party": "IND",
+    "electors": 417694,
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 21
+  },
   "a1b887ea9c50978fe4cf8e5c:180": {
     "name": "MANDLA (ST)",
     "candidate": "MANGRUBABU UIKE (S.T.)",
@@ -1780,6 +1792,18 @@
     "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
     "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
     "pdf_page": 183
+  },
+  "a1b887ea9c50978fe4cf8e5c:215": {
+    "name": "TIRUCHENDUR",
+    "candidate": "T. GANAPATHY",
+    "party": "INC",
+    "other_candidate": "N. DURIPANDI",
+    "other_party": "IND",
+    "electors": 448411,
+    "source_url": "https://old.eci.gov.in/files/file/4112-general-election-1957-vol-i-ii/",
+    "source_file": "a1b887ea9c50978fe4cf8e5c-9738.pdf",
+    "source_sha256": "c9ab7014c3399762f85a1fc7fc0d001061b675ec83c482a29f8ddc77f85b7726",
+    "pdf_page": 218
   },
   "a1b887ea9c50978fe4cf8e5c:239": {
     "name": "HASSAN",
