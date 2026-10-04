@@ -10,9 +10,11 @@
 <nav class="tabs" aria-label="Data group">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy','work'=>'Work'] as $key=>$label)<a href="{{ request()->fullUrlWithQuery(['group'=>$key,'page'=>null]) }}" @if($group===$key) aria-current="page" @endif>{{ \App\Services\PublicLanguage::text($label) }}</a>@endforeach<a href="#evidence">{{ \App\Services\PublicLanguage::text('Sources') }}</a></nav>
 <section class="panel"><form method="get" action="{{ route('civic.index') }}" class="filters"><input type="hidden" name="group" value="{{ $group }}"><div><label for="year">Census year</label><select name="year" id="year">@foreach($years as $option)<option value="{{ $option }}" @selected($year===$option)>{{ $option }}</option>@endforeach</select></div><button>Choose year →</button></form>
 <div class="filters"><div><label for="state-navigation">State</label><select id="state-navigation" onchange="if(this.value) window.location.assign(this.value)"><option value="">Choose a state</option>@foreach($stateOptions as $option)<option value="{{ route('civic.place',['record'=>$option->id,'group'=>$group]) }}" @selected($place?->state_code===$option->state_code)>{{ $option->display_name }}</option>@endforeach</select></div>@if($districtOptions->isNotEmpty())<div><label for="district-navigation">District</label><select id="district-navigation" onchange="if(this.value) window.location.assign(this.value)"><option value="">Choose a district</option>@foreach($districtOptions as $option)<option value="{{ route('civic.place',['record'=>$option->id,'group'=>$group]) }}">{{ $option->name }}</option>@endforeach</select></div>@endif</div></section>
-@include('census-area-navigation')
+
 <details><summary>Other source records and population groups</summary><section class="panel"><form method="get" class="filters"><input type="hidden" name="group" value="{{ $group }}">@if(!$place)<input type="hidden" name="year" value="{{ $year }}">@endif<div><label for="edition">{{ \App\Services\PublicLanguage::text('Census year and source') }}</label><select name="edition" id="edition">@foreach($availableEditions as $option)<option value="{{ $option->id }}" @selected($edition?->id===$option->id)>{{ $option->year }} · {{ $option->name }}</option>@endforeach</select></div><div><label for="residence">{{ \App\Services\PublicLanguage::text('Population group') }}</label><select name="residence" id="residence">@foreach($residenceOptions as $option)<option value="{{ $option }}" @selected($residence===$option)>{{ \App\Services\PublicLanguage::text($option) }}</option>@endforeach</select></div><button @disabled(!$edition)>{{ \App\Services\PublicLanguage::text('View results') }} →</button></form></section>
 </details>
+@include('census-profile-charts')
+@include('census-year-figures')
 @if($place)
 @forelse($records as $row)
 @php($values=json_decode($row->values,true))
@@ -20,7 +22,8 @@
 @foreach(json_decode($row->flags,true) as $flag)<p class="coverage-note">Pending review: {{ $flag }}</p>@endforeach
 @empty<p class="panel">No figures for this selection. Try another year, source or population group.</p>@endforelse
 @endif
-@include('census-profile-charts')
+
+@include('census-area-navigation')
 <section class="panel" id="areas"><div class="panel-heading"><h2>{{ $place ? 'Explore within '.$place->name : 'Choose a state or union territory' }}</h2><span class="small">{{ $children->total() }} available records</span></div>
 @if($childLevels)<form method="get" class="filters"><input type="hidden" name="edition" value="{{ $edition?->id }}"><input type="hidden" name="residence" value="{{ $residence }}"><input type="hidden" name="group" value="{{ $group }}">@if(!$place)<input type="hidden" name="year" value="{{ $year }}">@endif<div><label for="q">Find a place in this selection</label><input id="q" name="q" type="search" value="{{ $input['q']??'' }}" maxlength="100"></div><button>Find place</button></form>@endif
 @if($villageBrowse)<p><a class="button" href="{{ route('villages.index',$villageBrowse) }}">Open available village profiles, maps & local associations →</a></p>@endif
@@ -31,6 +34,7 @@
 @if($matchedPlace)<p><a href="{{ route('geography.show',$matchedPlace->slug) }}">All linked indicators, authorities and identifiers for {{ $matchedPlace->name }} →</a></p>@endif</section>
 </main><aside class="dashboard-sidebar civic-sidebar" aria-label="Map, related places and years">@if($place)@php($location=collect([$place->name,...$parents->pluck('name')->reverse()->all(),'India'])->implode(', '))@include('place-location-map',['mapName'=>$place->name,'mapQuery'=>$location])@endif
 @include('census-authorities')
+@include('census-related-navigation')
 <section class="panel"><p class="eyebrow">Explore another year</p><h2>Census years</h2><nav class="sidebar-links" aria-label="Census years">@foreach($years as $option)<a class="civic-year" href="{{ route('civic.index',['year'=>$option,'group'=>$group]) }}" @if($year===$option) aria-current="page" @endif>{{ $option }} →</a>@endforeach<a href="{{ route('census.national-history') }}">National history, 1901–2011 →</a></nav></section>
 @if($linked->isNotEmpty())<section class="panel"><p class="eyebrow">Related places</p><h2>AC, PC & other areas</h2><nav class="sidebar-links" aria-label="Related places">@foreach($linked as $item)<a href="{{ in_array($item['place']->type,['ac','pc','district']) && str_starts_with($item['place']->slug,$item['place']->type.'-') ? route('places.show',['type'=>$item['place']->type,'slug'=>substr($item['place']->slug,strlen($item['place']->type)+1)]) : route('geography.show',$item['place']->slug) }}">{{ $item['place']->name }} · {{ strtoupper($item['place']->type) }} →</a>@endforeach</nav></section>@endif
 </aside></div>@include('public-footer')</body></html>

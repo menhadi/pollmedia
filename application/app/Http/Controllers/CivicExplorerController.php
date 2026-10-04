@@ -176,9 +176,16 @@ class CivicExplorerController extends Controller
         }
         $areaOptions = collect();
         if ($anchor && $depth >= 2 && $depth <= 3) {
-            $areaOptions = $this->scope(clone $base, $codes, $depth, $year)->whereIn('level', $depth === 2 ? ['SUB-DISTRICT', 'SUBDISTRICT', 'TEHSIL', 'VILLAGE', 'TOWN'] : ['VILLAGE', 'TOWN'])->when($depth === 3, fn ($query) => $query->where('residence', $residence))->orderByRaw("CASE WHEN residence = 'Total' THEN 0 ELSE 1 END")->orderBy('name')->get()->unique(fn ($row) => $row->level.':'.implode(':', $this->codes($row)))->values();
+            $areaOptions = $this->scope(clone $base, $codes, $depth, $year)->whereIn('level', $depth === 2 ? ['SUB-DISTRICT', 'SUBDISTRICT', 'TEHSIL', 'VILLAGE', 'TOWN'] : ['VILLAGE', 'TOWN'])->when($depth === 3 && $residence !== 'Total', fn ($query) => $query->where('residence', $residence))->orderByRaw("CASE WHEN residence = 'Total' THEN 0 ELSE 1 END")->orderBy('name')->get()->unique(fn ($row) => $row->level.':'.implode(':', $this->codes($row)))->values();
         }
         $authorities = collect();
+        $adjacentPlaces = collect();
+        if ($anchor && $depth >= 2) {
+            $siblings = $this->scope(clone $base, $codes, $depth - 1, $year)->where('level', $anchor->level)->where('residence', $anchor->residence);
+            $previous = (clone $siblings)->where('name', '<', $anchor->name)->orderByDesc('name')->first();
+            $next = (clone $siblings)->where('name', '>', $anchor->name)->orderBy('name')->first();
+            $adjacentPlaces = collect([$previous, $next])->filter()->values();
+        }
         if ($matchedPlace) {
             $authorities = DB::table('office_assignments as a')->join('offices as o', 'o.id', '=', 'a.office_id')->leftJoin('people as p', 'p.id', '=', 'a.person_id')->join('office_jurisdictions as j', 'j.office_id', '=', 'o.id')->join('source_releases as r', 'r.id', '=', 'a.source_release_id')->join('source_releases as jr', 'jr.id', '=', 'j.source_release_id')
                 ->where('j.place_id', $matchedPlace->id)->where('r.status', 'accepted')->where('jr.status', 'accepted')->whereNull('a.superseded_at')->whereIn('a.status', ['last_verified', 'confirmed', 'acting', 'additional_charge'])
@@ -186,6 +193,6 @@ class CivicExplorerController extends Controller
                 ->where(fn ($q) => $q->whereNull('j.valid_from')->orWhere('j.valid_from', '<=', today()->toDateString()))->where(fn ($q) => $q->whereNull('j.valid_to')->orWhere('j.valid_to', '>', today()->toDateString()))->select('o.title', 'p.display_name', 'r.url')->distinct()->get();
         }
 
-        return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions', 'censusSeries', 'areaOptions', 'authorities'));
+        return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions', 'censusSeries', 'areaOptions', 'authorities', 'adjacentPlaces'));
     }
 }

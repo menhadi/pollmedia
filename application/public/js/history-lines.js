@@ -70,6 +70,10 @@
                 closeArea();
                 svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
                 svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':item.key==='others_share'?'6 4':'none'}));
+                if (data.singleValueBar && rows.length === 1 && Number.isFinite(rows[0][item.key])) {
+                    const value=rows[0][item.key], baseline=y(0), yy=y(value);
+                    svg.append(element('rect',{x:x(rows[0].year)-18+index*8,y:Math.min(yy,baseline),width:24,height:Math.max(2,Math.abs(baseline-yy)),fill:color,'fill-opacity':0.7,class:'history-single-value'}));
+                }
                 rows.forEach(row => {
                     const value = row[item.key];
                     if (value === null || !Number.isFinite(value)) return;

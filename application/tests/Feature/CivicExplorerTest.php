@@ -46,6 +46,17 @@ class CivicExplorerTest extends TestCase
         return [...$ids, 'edition' => $edition];
     }
 
+    public function test_district_history_loads_published_retrospective_rows_before_local_navigation(): void
+    {
+        $current = $this->fixture();
+        $historical = $this->fixture(1901);
+        DB::table('census_editions')->where('id', $historical['edition'])->update(['source_key' => 'census-a02-example-1901']);
+        DB::table('census_catalogue_rows')->where('id', $historical['DISTRICT'])->update(['geography' => json_encode(['year' => 1901, 'boundary_basis' => 'Retrospective 2011 boundaries']), 'values' => '{"TOT_P":1200,"TOT_M":700,"TOT_F":500}']);
+        $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertSeeInOrder(['People through the years', 'Year-wise Census figures', 'Block / subdistrict'])->assertSee('Explore related places')->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [1901, 2011]);
+        DB::table('census_editions')->where('id', $historical['edition'])->update(['status' => 'draft']);
+        $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [2011]);
+    }
+
     public function test_header_and_explorer_lead_from_state_to_district_and_tehsil(): void
     {
         $ids = $this->fixture();
