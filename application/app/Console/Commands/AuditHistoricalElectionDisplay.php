@@ -82,9 +82,20 @@ class AuditHistoricalElectionDisplay extends Command
                             $polled = $record['votes_polled'] ?? null;
                             $hasPositiveSourceTurnout = is_int($electors) && $electors > 0 && is_int($polled) && $polled > 0 && $polled <= $electors;
                             $key = $kind.':'.$year;
-                            $years[$key] ??= ['kind' => $kind, 'year' => $year, 'tables' => 0, 'source_turnout' => 0, 'shown_turnout' => 0, 'hidden_turnout' => 0, 'source_blank' => 0, 'source_invalid' => 0, 'shown_winner' => 0, 'hidden_winner_with_votes' => 0, 'hidden_result_margin' => 0, 'hidden_chart_margin' => 0, 'uncontested' => 0];
+                            $years[$key] ??= ['kind' => $kind, 'year' => $year, 'tables' => 0, 'source_turnout' => 0, 'shown_turnout' => 0, 'hidden_turnout' => 0, 'source_blank' => 0, 'source_invalid' => 0, 'shown_winner' => 0, 'hidden_winner_with_votes' => 0, 'hidden_result_margin' => 0, 'hidden_chart_margin' => 0, 'uncontested' => 0, 'multi_seat' => 0, 'invalid_seat_count' => 0];
                             $years[$key]['tables']++;
                             $tables++;
+
+                            $seats = $record['number_of_seats'] ?? 1;
+                            if ($seats !== 1) {
+                                $issue = is_int($seats) && $seats > 1
+                                    ? 'multi_seat_requires_separate_handling' : 'invalid_seat_count';
+                                $years[$key][$issue === 'invalid_seat_count' ? 'invalid_seat_count' : 'multi_seat']++;
+                                if ($csv !== null) {
+                                    fputcsv($csv, [$kind, $year, $record['state_name'] ?? $record['state_code'] ?? '', $record['constituency_name'] ?? $record['name'] ?? '', $edition, $record['code'] ?? '', $issue, $electors, $polled, null, count($record['candidates'] ?? []), '', '', '', $record['status'] ?? '', $data['source_url'], $file->sha256, $record['error'] ?? '']);
+                                }
+                                continue;
+                            }
 
                             if ($result['uncontested'] ?? false) {
                                 $years[$key]['uncontested']++;
@@ -136,7 +147,7 @@ class AuditHistoricalElectionDisplay extends Command
 
             ksort($years);
             $this->line('Scope: imported PC/AC editions with matching constituency index; this checks display coverage, not every source figure against its PDF.');
-            $this->line('kind year tables source_turnout shown_turnout hidden_turnout source_blank source_invalid shown_winner hidden_winner_with_votes hidden_result_margin hidden_chart_margin uncontested');
+            $this->line('kind year tables source_turnout shown_turnout hidden_turnout source_blank source_invalid shown_winner hidden_winner_with_votes hidden_result_margin hidden_chart_margin uncontested multi_seat invalid_seat_count');
             foreach ($years as $row) {
                 $this->line(implode(' ', $row));
             }

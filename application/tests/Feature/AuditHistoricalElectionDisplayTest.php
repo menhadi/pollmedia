@@ -25,6 +25,14 @@ class AuditHistoricalElectionDisplayTest extends TestCase
                 ['candidate_name' => 'Candidate D', 'party_at_election' => 'DDD', 'votes' => 20],
             ]],
             ['code' => 3, 'name' => 'Example Three', 'status' => 'needs_review', 'electors' => 100, 'votes_polled' => null, 'candidates' => []],
+            ['code' => 4, 'name' => 'Two Seat Example', 'number_of_seats' => 2, 'status' => 'needs_review', 'electors' => 100, 'votes_polled' => 80, 'candidates' => [
+                ['candidate_name' => 'Candidate E', 'party_at_election' => 'EEE', 'votes' => 50],
+                ['candidate_name' => 'Candidate F', 'party_at_election' => 'FFF', 'votes' => 30],
+            ]],
+            ['code' => 5, 'name' => 'Unknown Seat Count', 'number_of_seats' => 0, 'status' => 'needs_review', 'electors' => 100, 'votes_polled' => 80, 'candidates' => [
+                ['candidate_name' => 'Candidate G', 'party_at_election' => 'GGG', 'votes' => 50],
+                ['candidate_name' => 'Candidate H', 'party_at_election' => 'HHH', 'votes' => 30],
+            ]],
         ];
         $body = json_encode(['kind' => 'pc', 'year' => 2007, 'source_url' => 'https://www.eci.gov.in/example.pdf', 'source_sha256' => str_repeat('b', 64), 'records' => $records], JSON_THROW_ON_ERROR);
         $path = 'election-archive/'.$edition.'/extraction.json';
@@ -43,7 +51,7 @@ class AuditHistoricalElectionDisplayTest extends TestCase
         $path = storage_path('app/election-display-audit-'.Str::random(16).'.csv');
         try {
             $this->assertSame(0, Artisan::call('archive:audit-election-display', ['--csv' => $path]));
-            $this->assertStringContainsString('pc 2007 3 2 1 1 1 0 1 1 1 1 0', Artisan::output());
+            $this->assertStringContainsString('pc 2007 5 2 1 1 1 0 1 1 1 1 0 1 1', Artisan::output());
             $csv = file_get_contents($path);
             $this->assertStringContainsString('source_turnout_hidden', $csv);
             $this->assertStringContainsString('winner_hidden_with_candidate_votes', $csv);
@@ -52,6 +60,9 @@ class AuditHistoricalElectionDisplayTest extends TestCase
             $this->assertStringContainsString('source_turnout_missing_or_zero', $csv);
             $this->assertStringContainsString('Example Two', $csv);
             $this->assertStringContainsString('Example Three', $csv);
+            $this->assertStringContainsString('multi_seat_requires_separate_handling', $csv);
+            $this->assertStringContainsString('invalid_seat_count', $csv);
+            $this->assertSame(1, substr_count($csv, 'source_turnout_hidden'));
         } finally {
             @unlink($path);
         }
