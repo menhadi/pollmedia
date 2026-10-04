@@ -27,9 +27,10 @@
 @if($matchedPlace)<p><a href="{{ route('geography.show',$matchedPlace->slug) }}">All linked indicators, authorities and identifiers for {{ $matchedPlace->name }} →</a></p>@endif</details>
 </main><aside class="dashboard-sidebar civic-sidebar" aria-label="Map, related places and years">@if($place)@php($location=collect([$place->name,...$parents->pluck('name')->reverse()->all(),'India'])->implode(', '))@include('place-location-map',['mapName'=>$place->name,'mapQuery'=>$location])@endif
 @include('census-authorities')
+@if($linked->isNotEmpty())<section class="panel"><p class="eyebrow">Related places</p><h2>Lok Sabha & State Assembly</h2><nav class="sidebar-links" aria-label="Related constituencies">@foreach($linked as $item)<a href="{{ in_array($item['place']->type,['ac','pc']) ? route('constituency.overview',['kind'=>$item['place']->type,'state'=>$electoralState,'name'=>$item['place']->name]) : route('geography.show',$item['place']->slug) }}">{{ $item['place']->name }} · {{ ['pc'=>'Lok Sabha','ac'=>'State Assembly','district'=>'District'][$item['place']->type] ?? ucfirst($item['place']->type) }} →</a>@endforeach</nav></section>@endif
 @include('census-related-navigation')
 <section class="panel"><p class="eyebrow">Explore another year</p><h2>Census years</h2><nav class="sidebar-links" aria-label="Census years">@foreach($years as $option)<a class="civic-year" href="{{ route('civic.index',['year'=>$option,'group'=>$group]) }}" @if($year===$option) aria-current="page" @endif>{{ $option }} →</a>@endforeach<a href="{{ route('census.national-history') }}">National history, 1901–2011 →</a></nav></section>
-@if($linked->isNotEmpty())<section class="panel"><p class="eyebrow">Related places</p><h2>AC, PC & other areas</h2><nav class="sidebar-links" aria-label="Related places">@foreach($linked as $item)<a href="{{ in_array($item['place']->type,['ac','pc','district']) && str_starts_with($item['place']->slug,$item['place']->type.'-') ? route('places.show',['type'=>$item['place']->type,'slug'=>substr($item['place']->slug,strlen($item['place']->type)+1)]) : route('geography.show',$item['place']->slug) }}">{{ $item['place']->name }} · {{ strtoupper($item['place']->type) }} →</a>@endforeach</nav></section>@endif
+
 </aside></div>@include('public-footer')</body></html>
 
 

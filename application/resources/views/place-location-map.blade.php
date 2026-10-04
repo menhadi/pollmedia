@@ -4,6 +4,9 @@
     <p class="small">Map location is approximate; it does not show historical boundaries.</p>
     @php($boundaryState = app(\App\Services\ElectoralMapCatalogue::class)->stateFromQuery($mapQuery))
     @if($boundaryState)
-        <a class="button" href="{{ route('elections.maps.show',['state'=>$boundaryState['slug']]) }}">Explore constituency boundaries →</a>
+        <nav class="sidebar-links constituency-state-links" aria-label="Explore state constituencies">
+            <a href="{{ route('states.show',['state'=>$boundaryState['slug']]) }}#pc-history">Explore Lok Sabha constituencies →</a>
+            <a href="{{ route('states.show',['state'=>$boundaryState['slug']]) }}#ac-history">Explore State Assembly constituencies →</a>
+        </nav>
     @endif
 </section>

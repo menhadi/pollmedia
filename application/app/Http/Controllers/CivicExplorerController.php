@@ -110,6 +110,7 @@ class CivicExplorerController extends Controller
         $parents = collect();
         $linked = collect();
         $matchedPlace = null;
+        $electoralState = null;
         $codes = $anchor ? $this->codes($anchor) : [];
         $depth = $anchor ? $this->depth($anchor->level) : 0;
         abort_if($anchor && $depth === 0, 404);
@@ -132,6 +133,7 @@ class CivicExplorerController extends Controller
                     ->where('i.code', $anchor->district_code)->distinct()->pluck('i.place_id');
                 if ($matches->count() === 1) {
                     $matchedPlace = DB::table('places')->find($matches->first());
+                    $electoralState = 'Uttar Pradesh';
                     $relations = DB::table('place_relationships as l')->join('source_releases as r', 'r.id', '=', 'l.source_release_id')
                         ->where('r.status', 'accepted')->where(fn ($q) => $q->where('l.from_place_id', $matchedPlace->id)->orWhere('l.to_place_id', $matchedPlace->id))
                         ->where(fn ($q) => $q->whereNull('l.valid_from')->orWhere('l.valid_from', '<=', today()->toDateString()))
@@ -193,6 +195,6 @@ class CivicExplorerController extends Controller
                 ->where(fn ($q) => $q->whereNull('j.valid_from')->orWhere('j.valid_from', '<=', today()->toDateString()))->where(fn ($q) => $q->whereNull('j.valid_to')->orWhere('j.valid_to', '>', today()->toDateString()))->select('o.title', 'p.display_name', 'r.url')->distinct()->get();
         }
 
-        return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions', 'censusSeries', 'areaOptions', 'authorities', 'adjacentPlaces'));
+        return view('civic-explorer', compact('input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'electoralState', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions', 'censusSeries', 'areaOptions', 'authorities', 'adjacentPlaces'));
     }
 }

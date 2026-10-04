@@ -96,10 +96,11 @@ class CivicExplorerTest extends TestCase
         $this->seed(PilibhitSeeder::class);
         $district = DB::table('places')->where('slug', 'district-pilibhit')->value('id');
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertSee('Barkhera')
+            ->assertSee('State Assembly')->assertSee(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Barkhera']))
             ->assertSee('Browse village profiles')->assertViewHas('linked', fn ($items) => $items->pluck('place.id')->unique()->count() === $items->count());
         DB::table('place_relationships')->where(fn ($q) => $q->where('from_place_id', $district)->orWhere('to_place_id', $district))->update(['valid_to' => '2000-01-01']);
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertDontSee('Barkhera')
-            ->assertDontSee('AC, PC & other areas');
+            ->assertDontSee('Lok Sabha & State Assembly');
         DB::table('place_identifiers')->where('namespace', 'census:district:IN:UP')->delete();
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertViewHas('matchedPlace', null);
     }
