@@ -12,7 +12,9 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 EXPORTS = ROOT / 'exports'
 RESUME = 'pollmedia-election-corrections-20261003-resume-v1'
-WAVES = ([f'pollmedia-election-corrections-20261003-wave{i}' for i in range(8, 24)]
+WAVES = ([f'pollmedia-election-corrections-20261003-wave{i}' for i in range(8, 11)]
+         + ['pollmedia-election-corrections-20261004-wave11-v2']
+         + [f'pollmedia-election-corrections-20261003-wave{i}' for i in range(12, 24)]
          + ['pollmedia-election-corrections-20261004-wave24-v2',
             'pollmedia-election-corrections-20261004-wave25-v2',
             'pollmedia-election-corrections-20261004-wave26',
@@ -78,6 +80,8 @@ class ElectionReleaseChainTests(unittest.TestCase):
                     self.assertIn(guard, script)
                 if wave.endswith(('wave24-v2', 'wave25-v2')):
                     self.assertIn(b'ee2c43a', script)
+                if wave.endswith('wave11-v2'):
+                    self.assertIn(b'526e30e', script)
                 if wave.endswith('wave26'):
                     self.assertIn(b'247bcc8', script)
                 if wave.endswith('wave27'):
