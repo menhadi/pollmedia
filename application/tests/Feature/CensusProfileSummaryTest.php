@@ -39,5 +39,15 @@ class CensusProfileSummaryTest extends TestCase
         $this->assertStringContainsString('Females per 1,000 males', $html);
         $this->assertStringContainsString('Official population history', $html);
         $this->assertStringNotContainsString('<h3>Households</h3>', $html);
+        $this->assertStringContainsString('<details class="census-source-notes">', $html);
+        $this->assertStringNotContainsString('census-source-notes" open', $html);
+    }
+
+    public function test_empty_census_values_do_not_render_charts_or_controls(): void
+    {
+        $html = view('census-profile-charts', ['censusSeries' => ['rows' => [['year' => 2011, 'population' => null, 'male' => null, 'female' => null, 'households' => null, 'literates' => null, 'growth' => null, 'ratio' => null, 'notes' => []]], 'source' => null]])->render();
+        $this->assertStringNotContainsString('data-history-chart', $html);
+        $this->assertStringNotContainsString('data-chart-from', $html);
+        $this->assertStringNotContainsString('View figures', $html);
     }
 }

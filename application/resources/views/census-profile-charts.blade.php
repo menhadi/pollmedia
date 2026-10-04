@@ -1,4 +1,4 @@
-@if($censusSeries['rows'])
+@if(collect($censusSeries['rows'])->contains(fn($point)=>collect(['population','male','female','growth','ratio','households','literates'])->contains(fn($key)=>($point[$key]??null)!==null)))
 <link rel="stylesheet" href="/css/census-profile.css?v={{ substr(hash_file('sha256',public_path('css/census-profile.css')),0,12) }}">
 <section class="panel census-history"><h2>People through the years</h2>
 @php($censusPlots=[['title'=>'Population','unit'=>'people','series'=>[['key'=>'population','label'=>'Population']]],['title'=>'Male and female population','unit'=>'people','series'=>[['key'=>'male','label'=>'Male'],['key'=>'female','label'=>'Female']]],['title'=>'Decadal population growth','unit'=>'%','series'=>[['key'=>'growth','label'=>'Growth']]],['title'=>'Females per 1,000 males','unit'=>'ratio','series'=>[['key'=>'ratio','label'=>'Females per 1,000 males']]],['title'=>'Households','unit'=>'households','series'=>[['key'=>'households','label'=>'Households']]],['title'=>'Literacy','unit'=>'people','series'=>[['key'=>'literates','label'=>'Literate persons']]]])
@@ -9,5 +9,5 @@
 <div class="history-legend" aria-label="Chart series"></div><div class="history-plot"></div><p class="history-readout" role="status">Hover or focus a year to see its value.</p>
 <details class="chart-values"><summary>View figures</summary><div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>{{ $series['label'] }}</th>@endforeach</tr></thead><tbody>@foreach(array_reverse($censusSeries['rows']) as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>{{ ($point[$series['key']]??null)===null?'—':number_format($point[$series['key']],$plot['unit']==='%'?2:0) }}@if($point['notes']) †@endif</td>@endforeach</tr>@endforeach</tbody></table></div></details></section>
 @endif @endforeach</div>
-@foreach($censusSeries['rows'] as $point)@foreach($point['notes'] as $note)<p class="small">† {{ $point['year'] }}: {{ $note }}</p>@endforeach @endforeach
-@if($censusSeries['source'])<p class="small">{{ $censusSeries['source']['boundary_basis'] }} <a href="{{ $censusSeries['source']['url'] }}" target="_blank" rel="noopener">Official population history ↗</a></p>@endif</section>@endif
+<details class="census-source-notes"><summary>Sources & data notes</summary>@foreach($censusSeries['rows'] as $point)@foreach($point['notes'] as $note)<p class="small">† {{ $point['year'] }}: {{ $note }}</p>@endforeach @endforeach
+@if($censusSeries['source'])<p class="small">{{ $censusSeries['source']['boundary_basis'] }} <a href="{{ $censusSeries['source']['url'] }}" target="_blank" rel="noopener">Official population history ↗</a></p>@endif</details></section>@endif

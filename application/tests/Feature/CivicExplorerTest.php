@@ -52,7 +52,7 @@ class CivicExplorerTest extends TestCase
         $historical = $this->fixture(1901);
         DB::table('census_editions')->where('id', $historical['edition'])->update(['source_key' => 'census-a02-example-1901']);
         DB::table('census_catalogue_rows')->where('id', $historical['DISTRICT'])->update(['geography' => json_encode(['year' => 1901, 'boundary_basis' => 'Retrospective 2011 boundaries']), 'values' => '{"TOT_P":1200,"TOT_M":700,"TOT_F":500}']);
-        $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertSeeInOrder(['People through the years', 'Year-wise Census figures', 'Block / subdistrict'])->assertSee('Explore related places')->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [1901, 2011]);
+        $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertSeeInOrder(['People through the years', 'Year-wise data', 'Block / subdistrict'])->assertSee('Explore related places')->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [1901, 2011]);
         DB::table('census_editions')->where('id', $historical['edition'])->update(['status' => 'draft']);
         $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [2011]);
     }
@@ -64,7 +64,7 @@ class CivicExplorerTest extends TestCase
             ->assertDontSee('Wrong district child')->assertSee(route('civic.index'), false);
         $this->get('/india/census/places/'.$ids['STATE'])->assertOk()->assertSee('District Alpha')->assertDontSee('Tehsil Alpha');
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertSee('Tehsil Alpha')->assertDontSee('Wrong district child')
-            ->assertSee('State Alpha')->assertSee('Example review note')->assertSee('Map of District Alpha')->assertSee('block-navigation')->assertDontSee('Verified AC/PC associations are not available');
+            ->assertSee('State Alpha')->assertSee('Example review note')->assertSee('Map of District Alpha')->assertSee('block-navigation')->assertSee('data-census-year')->assertDontSee('Choose year →')->assertDontSee('Verified AC/PC associations are not available');
     }
 
     public function test_villages_and_towns_preserve_group_and_missing_values(): void
@@ -87,7 +87,7 @@ class CivicExplorerTest extends TestCase
         $this->get('/india/census/places/'.$draft['DISTRICT'])->assertNotFound();
         $this->get('/india/census/places/'.$older['tehsil'].'?residence=Rural')->assertOk()->assertSee('Village Alpha');
         $this->get('/india/census/places/999999')->assertNotFound();
-        $this->get('/india/census/explore?year=1901')->assertOk()->assertSee('No lower-level records');
+        $this->get('/india/census/explore?year=1901')->assertOk()->assertViewHas('children', fn ($rows) => $rows->total() === 0)->assertDontSee('Find place');
     }
 
     public function test_related_constituencies_require_an_accepted_identifier_and_unexpired_source_link(): void
@@ -96,7 +96,7 @@ class CivicExplorerTest extends TestCase
         $this->seed(PilibhitSeeder::class);
         $district = DB::table('places')->where('slug', 'district-pilibhit')->value('id');
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertSee('Barkhera')
-            ->assertSee('Open available village profiles')->assertViewHas('linked', fn ($items) => $items->pluck('place.id')->unique()->count() === $items->count());
+            ->assertSee('Browse village profiles')->assertViewHas('linked', fn ($items) => $items->pluck('place.id')->unique()->count() === $items->count());
         DB::table('place_relationships')->where(fn ($q) => $q->where('from_place_id', $district)->orWhere('to_place_id', $district))->update(['valid_to' => '2000-01-01']);
         $this->get('/india/census/places/'.$ids['DISTRICT'])->assertOk()->assertDontSee('Barkhera')
             ->assertDontSee('AC, PC & other areas');
