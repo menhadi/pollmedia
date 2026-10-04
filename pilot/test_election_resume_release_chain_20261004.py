@@ -1,5 +1,6 @@
-"""Verify the deployment chain from observed live bytes through waves 8-25."""
+"""Verify the selected deployment chain and preservation of source records."""
 
+from collections import Counter
 import hashlib
 import io
 import json
@@ -27,12 +28,46 @@ def verified_release(name: str) -> zipfile.ZipFile:
 
 
 class ElectionReleaseChainTests(unittest.TestCase):
+    def assert_source_records_preserved(self, release: zipfile.ZipFile, edition: dict):
+        key = edition['edition']
+        with zipfile.ZipFile(io.BytesIO(release.read(f'snapshot-{key}.zip'))) as snapshot:
+            original_paths = [path for path in snapshot.namelist()
+                              if path.startswith(f'election-archive/{key}/') and path.endswith('.json')]
+            self.assertEqual(len(original_paths), 1)
+            original_bytes = snapshot.read(original_paths[0])
+        with zipfile.ZipFile(io.BytesIO(release.read(f'correction-{key}.zip'))) as correction:
+            revised_bytes = correction.read(f'election-archive/{key}/extraction.json')
+        self.assertEqual(hashlib.sha256(original_bytes).hexdigest(), edition['previous_sha256'])
+        self.assertEqual(hashlib.sha256(revised_bytes).hexdigest(), edition['new_sha256'])
+
+        original = json.loads(original_bytes)
+        revised = json.loads(revised_bytes)
+        for field in ('kind', 'year', 'source_url', 'source_file', 'source_sha256', 'identity_scope'):
+            self.assertEqual(original.get(field), revised.get(field), (key, field))
+        original_records = {record['code']: record for record in original['records']}
+        revised_records = {record['code']: record for record in revised['records']}
+        self.assertLessEqual(original_records.keys(), revised_records.keys(), key)
+        for code, before in original_records.items():
+            after = revised_records[code]
+            previous_candidates = Counter(json.dumps(candidate, sort_keys=True)
+                                          for candidate in before.get('candidates', []))
+            current_candidates = Counter(json.dumps(candidate, sort_keys=True)
+                                         for candidate in after.get('candidates', []))
+            self.assertFalse(previous_candidates - current_candidates, (key, code))
+            if before.get('original_extraction_warning'):
+                self.assertEqual(before['original_extraction_warning'],
+                                 after.get('original_extraction_warning'), (key, code))
+            if before.get('error') and before['error'] != after.get('error'):
+                self.assertTrue(after.get('error'), (key, code))
+
     def test_resume_and_subsequent_waves_have_no_revision_conflicts(self):
         with verified_release(RESUME) as resume:
             self.assertIn(b'--allow-revision', resume.read('IMPORT.sh'))
             self.assertIn(b'check_disk', resume.read('IMPORT.sh'))
-            revisions = {row['edition']: row['new_sha256']
-                         for row in json.loads(resume.read('AUDIT.json'))['editions']}
+            resume_editions = json.loads(resume.read('AUDIT.json'))['editions']
+            for edition in resume_editions:
+                self.assert_source_records_preserved(resume, edition)
+            revisions = {row['edition']: row['new_sha256'] for row in resume_editions}
             self.assertEqual(len(revisions), 31)
         for wave in WAVES:
             with verified_release(wave) as release:
@@ -57,6 +92,8 @@ class ElectionReleaseChainTests(unittest.TestCase):
                         self.assertIn(b'--allow-revision', bundle.read('IMPORT.sh'))
                         self.assertIn(b'check_disk', bundle.read('IMPORT.sh'))
                         audit = json.loads(bundle.read('AUDIT.json'))
+                        for edition in audit.get('editions') or [audit]:
+                            self.assert_source_records_preserved(bundle, edition)
                     for edition in audit.get('editions') or [audit]:
                         key = edition['edition']
                         if key in revisions:
