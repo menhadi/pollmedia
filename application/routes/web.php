@@ -199,6 +199,10 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix(
     Route::post('/site/seo', [SiteManagementController::class, 'seo'])->name('site.seo');
     Route::get('/source-correction', [SiteManagementController::class, 'sourceEditor'])->name('site.source-editor');
     Route::post('/source-correction', [SiteManagementController::class, 'sourceSave'])->name('site.source-save');
+    Route::get('/listings/{section}', [SiteManagementController::class, 'editor'])->whereIn('section', ['elections', 'census', 'sir'])->name('listings.index');
+    Route::post('/listings/remove', [SiteManagementController::class, 'removeListing'])->name('listings.remove');
+    Route::post('/listings/attachments', [SiteManagementController::class, 'attachListing'])->name('listings.attach');
+    Route::get('/listings/attachments/{key}', [SiteManagementController::class, 'listingFile'])->name('listings.file');
     Route::get('/corrections', [SiteManagementController::class, 'editor'])->name('site.editor');
     Route::post('/corrections', [SiteManagementController::class, 'correct'])->name('site.correct');
     Route::get('/feedback', [DataFeedbackController::class, 'index'])->name('feedback.queue');

@@ -5,6 +5,7 @@
 @endphp
 <title>{{ $seoTitle }}</title>
 <meta name="description" content="{{ $seoDescription }}">
+@if($override?->keywords)<meta name="keywords" content="{{ $override->keywords }}">@endif
 <link rel="canonical" href="{{ $canonical }}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ $seoTitle }}">

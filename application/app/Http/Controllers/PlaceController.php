@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CensusHistory;
+use App\Services\DataCorrections;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\ElectionResults;
 use Illuminate\Contracts\View\View;
@@ -142,7 +143,7 @@ class PlaceController extends Controller
         $data = $this->payload('sir-pilibhit');
         $page = (int) ($input['page'] ?? 1);
         $valid = ($input['state'] ?? '') === '09' && in_array($input['pc'] ?? '', ['', '26']) && in_array($input['ac'] ?? '', ['', '127']) && (($input['pc'] ?? '') !== '' || ($input['ac'] ?? '') !== '');
-        $rows = collect($valid ? $data['parts'] : []);
+        $rows = ($valid ? app(DataCorrections::class)->sirRows()->map(fn (object $row): array => (array) $row) : collect());
         if ($q = mb_strtolower(trim($input['q'] ?? ''))) {
             $rows = $rows->filter(fn ($p) => str_contains(mb_strtolower($p['name']), $q) || (string) $p['part'] === $q);
         }

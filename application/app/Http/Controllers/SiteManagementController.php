@@ -10,13 +10,16 @@ use App\Services\SeoPages;
 use App\Services\SiteSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SiteManagementController extends Controller
 {
@@ -183,15 +186,38 @@ class SiteManagementController extends Controller
 
     public function editor(Request $request, DataCorrections $corrections): View
     {
-        $table = $request->string('table', 'census_catalogue_rows')->toString();
+        $section = $request->route('section') ?? $request->input('section', 'all');
+        $collections = match ($section) {
+            'elections' => ['election_contests', 'election_candidate_results'],
+            'census' => ['census_catalogue_rows', 'observations'],
+            'sir' => ['sir_parts'],
+            default => array_merge(['census_catalogue_rows'], array_diff(array_keys(DataCorrections::FIELDS), ['census_catalogue_rows'])),
+        };
+        $table = $request->string('table', $collections[0])->toString();
+        abort_unless(in_array($table, $collections, true), 404);
         abort_unless(isset(DataCorrections::FIELDS[$table]), 404);
         $id = $request->integer('id');
         $record = $id ? $corrections->record($table, $id) : null;
         $search = $request->validate(['q' => 'nullable|string|max:100'])['q'] ?? '';
         $nameColumn = in_array('name', DataCorrections::FIELDS[$table], true) ? 'name' : (in_array('candidate_name', DataCorrections::FIELDS[$table], true) ? 'candidate_name' : null);
-        $records = DB::table($table)->when($search !== '' && $nameColumn, fn ($q) => $q->where($nameColumn, 'like', '%'.$search.'%'))->orderByDesc('id')->paginate(25)->withQueryString();
+        $filters = $request->validate(['page' => 'nullable|integer|min:1', 'year' => 'nullable|integer|min:1800|max:2100', 'kind' => 'nullable|in:pc,ac']);
+        if ($table === 'sir_parts') {
+            $rows = $corrections->sirRows()->filter(fn (object $row): bool => $search === '' || str_contains(mb_strtolower($row->name), mb_strtolower($search)))->values();
+            $page = $request->integer('page', 1);
+            $records = new LengthAwarePaginator($rows->slice(($page - 1) * 25, 25), $rows->count(), 25, $page, ['path' => $request->url(), 'query' => $request->query()]);
+        } else {
+            $query = DB::table($table)->when($search !== '' && $nameColumn, fn ($query) => $query->where($nameColumn, 'like', '%'.$search.'%'));
+            if (in_array($table, ['election_contests', 'election_candidate_results'], true)) {
+                $contests = DB::table('election_contests')->when(! empty($filters['year']), fn ($query) => $query->where('year', $filters['year']))
+                    ->when(! empty($filters['kind']), fn ($query) => $query->whereIn('place_id', DB::table('places')->where('type', $filters['kind'])->select('id')))->select('id');
+                $query->whereIn($table === 'election_contests' ? 'id' : 'election_contest_id', $contests);
+            } elseif ($table === 'census_catalogue_rows' && ! empty($filters['year'])) {
+                $query->whereIn('edition_id', DB::table('census_editions')->where('year', $filters['year'])->select('id'));
+            }
+            $records = $query->orderByDesc('id')->paginate(25)->withQueryString();
+        }
 
-        return view('data-editor', ['table' => $table, 'record' => $record, 'records' => $records, 'fields' => DataCorrections::FIELDS[$table], 'history' => $id ? DB::table('site_changes')->where('target', $table.':'.$id)->orderByDesc('id')->get() : collect()]);
+        return view('data-editor', ['section' => $section, 'collections' => $collections, 'attachments' => $id ? DB::table('site_settings')->where('key', 'like', 'listing-file:'.$table.':'.$id.':%')->get() : collect(), 'table' => $table, 'record' => $record, 'records' => $records, 'fields' => DataCorrections::FIELDS[$table], 'history' => $id ? DB::table('site_changes')->where('target', $table.':'.$id)->orderByDesc('id')->get() : collect()]);
     }
 
     public function correct(Request $request, DataCorrections $corrections): RedirectResponse
@@ -216,5 +242,44 @@ class SiteManagementController extends Controller
         $corrections->save($data['table'], (int) $data['id'], $fields, $data['expected'], $data['reason']);
 
         return back()->with('status', 'Correction saved with its previous value and reason. Original source files are unchanged.');
+    }
+
+    public function removeListing(Request $request, DataCorrections $corrections): RedirectResponse
+    {
+        $input = $request->validate(['table' => ['required', Rule::in(array_keys(DataCorrections::FIELDS))], 'id' => 'required|integer|min:1', 'expected' => 'required|string|size:64', 'reason' => 'required|string|min:10|max:2000']);
+        $corrections->remove($input['table'], (int) $input['id'], $input['expected'], $input['reason']);
+
+        return redirect()->route('site.editor', ['table' => $input['table']])->with('status', 'Record removed. Its previous values are retained in the audit history.');
+    }
+
+    public function attachListing(Request $request, DataCorrections $corrections): RedirectResponse
+    {
+        $input = $request->validate(['table' => ['required', Rule::in(array_keys(DataCorrections::FIELDS))], 'id' => 'required|integer|min:1', 'file' => 'required|file|mimes:pdf,xls,xlsx,csv,txt|max:20480']);
+        $corrections->record($input['table'], (int) $input['id']);
+        $file = $request->file('file');
+        abort_unless(in_array(strtolower($file->getClientOriginalExtension()), ['pdf', 'xls', 'xlsx', 'csv'], true), 422);
+        $path = $file->store('listing-attachments', 'local');
+        $key = 'listing-file:'.$input['table'].':'.$input['id'].':'.Str::uuid();
+        try {
+            DB::transaction(function () use ($key, $file, $path, $input): void {
+                DB::table('site_settings')->insert(['key' => $key, 'value' => json_encode(['name' => $file->getClientOriginalName(), 'path' => $path], JSON_THROW_ON_ERROR), 'created_at' => now(), 'updated_at' => now()]);
+                DB::table('site_changes')->insert(['target' => $input['table'].':'.$input['id'], 'before_value' => 'null', 'after_value' => json_encode(['attachment' => $key, 'name' => $file->getClientOriginalName()]), 'reason' => 'Source attachment uploaded', 'user_id' => auth()->id(), 'created_at' => now()]);
+            });
+        } catch (\Throwable $exception) {
+            Storage::disk('local')->delete($path);
+            throw $exception;
+        }
+
+        return back()->with('status', 'Source attachment saved for this record.');
+    }
+
+    public function listingFile(string $key): StreamedResponse
+    {
+        abort_unless(str_starts_with($key, 'listing-file:'), 404);
+        $record = DB::table('site_settings')->where('key', $key)->first();
+        abort_unless($record, 404);
+        $file = json_decode($record->value, true, 512, JSON_THROW_ON_ERROR);
+
+        return Storage::disk('local')->download($file['path'], $file['name'], ['X-Content-Type-Options' => 'nosniff']);
     }
 }

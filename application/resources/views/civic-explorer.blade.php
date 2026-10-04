@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{ $title }} · Census & civic data · Pollmedia</title>
+<html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">@include('seo-metadata',['canonical'=>$place ? route('civic.place',['record'=>$place->id]) : route('civic.index'), 'seoTitle'=>$title.' Census and civic data | Pollmedia', 'seoDescription'=>'Explore published Census data with dated official sources.', 'breadcrumbs'=>['India'=>url('/india'),'Census'=>route('civic.index')]])
 <link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')),0,12) }}">
 <link rel="stylesheet" href="/css/civic-explorer.css?v={{ substr(hash_file('sha256', public_path('css/civic-explorer.css')),0,12) }}">
 <script src="{{ asset('js/instant-filters.js') }}" defer></script>@include('site-theme')</head><body class="election-ui civic-ui public-place-page">@include('public-header')

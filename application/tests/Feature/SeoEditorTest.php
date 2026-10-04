@@ -70,7 +70,7 @@ class SeoEditorTest extends TestCase
         $this->assertDatabaseMissing('seo_metadata', ['path' => $paths[0]]);
         $this->assertDatabaseHas('seo_batches', ['id' => $stale, 'applied_at' => null]);
         $this->post('/admin/seo/drafts', ['type' => 'ac', 'year' => '2011', 'paths' => ['/reports/pilibhit']])->assertStatus(422);
-        $this->post('/admin/seo/drafts', ['type' => 'ac', 'year' => '2011', 'paths' => array_fill(0, 51, $paths[0])])->assertSessionHasErrors('paths');
+        $this->post('/admin/seo/drafts', ['type' => 'ac', 'year' => '2011', 'paths' => array_fill(0, 51, $paths[0])])->assertSessionHasErrors('paths.0');
         $this->post('/admin/seo/drafts/'.$stale.'/save', ['version' => 1, 'items' => [['title' => str_repeat('x', 181), 'description' => 'test']]])->assertSessionHasErrors('items.0.title');
     }
 

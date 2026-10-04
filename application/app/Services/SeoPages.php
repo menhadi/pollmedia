@@ -11,6 +11,14 @@ class SeoPages
 {
     public function catalog(string $type, string $year): Collection
     {
+        if ($type === 'sir') {
+            return collect([['path' => '/india/sir', 'label' => 'SIR electoral roll listings', 'title' => 'SIR electoral roll source data | Pollmedia', 'description' => 'Explore published SIR enumeration data, constituency coverage and official source documents.']])->keyBy('path');
+        }
+        if ($type === 'census') {
+            return DB::table('census_catalogue_rows as r')->join('census_editions as e', 'e.id', '=', 'r.edition_id')->where('e.status', 'published')->where('e.year', (int) $year)->orderBy('r.id')->select('r.id', 'r.name', 'e.year')->get()->map(function (object $row): array {
+                return ['path' => route('civic.place', ['record' => $row->id], false), 'label' => $row->name.' Census '.$row->year, 'title' => $row->name.' Census '.$row->year.' | Pollmedia', 'description' => 'Explore '.$row->name.' Census '.$row->year.': published population measures and official source records. Historical figures, not current estimates.'];
+            })->keyBy('path');
+        }
         if ($type === 'village') {
             $dataset = app(PlaceController::class)->payload('census-pilibhit-villages-'.$year);
 
@@ -40,17 +48,18 @@ class SeoPages
         return DB::table('seo_metadata')->where('path', $path.($query ? '?'.$query : ''))->first();
     }
 
-    public function apply(string $path, ?string $title, ?string $description, int $expected, string $action): void
+    public function apply(string $path, ?string $title, ?string $description, int $expected, string $action, ?string $keywords = null): void
     {
         $current = DB::table('seo_metadata')->where('path', $path)->lockForUpdate()->first();
         abort_unless((int) ($current->revision_id ?? 0) === $expected, 409, 'This page changed after this draft was created. Create a fresh draft to review the latest version.');
         $revision = DB::table('seo_revisions')->insertGetId([
             'path' => $path, 'title' => $title, 'description' => $description,
+            'keywords' => $keywords, 'before_keywords' => $current->keywords ?? null,
             'before_title' => $current->title ?? null, 'before_description' => $current->description ?? null,
             'action' => $action, 'created_at' => now(), 'user_id' => auth()->id(),
         ]);
         DB::table('seo_metadata')->updateOrInsert(['path' => $path], [
-            'title' => $title, 'description' => $description, 'revision_id' => $revision, 'updated_at' => now(),
+            'title' => $title, 'description' => $description, 'keywords' => $keywords, 'revision_id' => $revision, 'updated_at' => now(),
         ]);
     }
 }
