@@ -243,6 +243,50 @@ class HistoricalElectionPublicTest extends TestCase
         }
     }
 
+    public function test_incomplete_official_multi_seat_list_is_labeled_on_page_and_report(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition(1951);
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0] = array_replace($data['records'][0], [
+            'number_of_seats' => 3,
+            'status' => 'needs_review',
+            'source_warning_code' => 'official_multi_seat_reviewed_declaration',
+            'original_extraction_warning' => 'Original candidate rows retained.',
+            'official_summary_constituency_name' => 'Source constituency',
+            'summary_page' => 133,
+            'summary_source_file' => 'summary.pdf',
+            'summary_source_sha256' => str_repeat('a', 64),
+            'summary_totals' => ['valid_candidate_votes' => 396690],
+            'official_multi_seat_review_reason' => 'incomplete_official_list',
+            'official_multi_seat_review_members' => [
+                ['name' => 'HUKAM SINGH', 'party' => 'SAD', 'votes' => 210067],
+                ['name' => 'AJIT SINGH', 'party' => 'SAD', 'votes' => 186623],
+            ],
+            'candidates' => [
+                ['candidate_name' => 'HUKAM SINGH', 'party_at_election' => 'SAD', 'votes' => 210067],
+                ['candidate_name' => 'AJIT SINGH', 'party_at_election' => 'SAD', 'votes' => 186623],
+            ],
+        ]);
+        Storage::disk('local')->put($path, json_encode($data));
+
+        foreach (['', 'report'] as $format) {
+            $parameters = ['edition' => $id, 'state' => 'S24', 'code' => 451];
+            if ($format !== '') {
+                $parameters['format'] = $format;
+            }
+            $this->get(route('elections.history', $parameters))->assertOk()
+                ->assertSee('This constituency elected 3 members.')
+                ->assertSee('Members named in the official summary (under review)')
+                ->assertSee('The summary names 2 of 3 members; the remaining seat is not identified there.')
+                ->assertSee('HUKAM SINGH')->assertSee('AJIT SINGH')
+                ->assertSee('Official report')
+                ->assertDontSee('<strong>Winner:', false)
+                ->assertDontSee('Source-declared elected members');
+        }
+    }
+
     public function test_reported_winner_and_margin_remain_visible_with_a_source_warning(): void
     {
         Storage::fake('local');

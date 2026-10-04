@@ -218,6 +218,48 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($analytics->multiSeatDeclaredWinners($wrong));
     }
 
+    public function test_reviewed_multi_seat_declarations_keep_partial_and_conflicting_sources_separate(): void
+    {
+        $record = $this->record(3, 300000, 396690, 210067, 186623);
+        $record['number_of_seats'] = 3;
+        $record['status'] = 'needs_review';
+        $record['source_warning_code'] = 'official_multi_seat_reviewed_declaration';
+        $record['original_extraction_warning'] = 'Earlier candidate-row warning';
+        $record['official_summary_constituency_name'] = 'Official name';
+        $record['summary_page'] = 133;
+        $record['summary_source_file'] = 'official.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_totals'] = ['valid_candidate_votes' => 396690];
+        $record['official_multi_seat_review_reason'] = 'incomplete_official_list';
+        $record['official_multi_seat_review_members'] = [
+            ['name' => $record['candidates'][0]['candidate_name'], 'party' => $record['candidates'][0]['party_at_election'], 'votes' => 210067],
+            ['name' => $record['candidates'][1]['candidate_name'], 'party' => $record['candidates'][1]['party_at_election'], 'votes' => 186623],
+        ];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame(['members' => $record['official_multi_seat_review_members'], 'seats' => 3, 'reason' => 'incomplete_official_list'], $analytics->multiSeatReviewedDeclarations($record));
+        $this->assertNull($analytics->multiSeatDeclaredWinners($record));
+        $this->assertNull($analytics->singleSeatResult($record));
+        $this->assertSame(0, $analytics->summarize([$record])['turnout_count']);
+
+        $conflicting = $record;
+        $conflicting['number_of_seats'] = 2;
+        $conflicting['official_multi_seat_review_reason'] = 'candidate_rows_conflict';
+        $conflicting['candidates'] = array_merge($record['candidates'], $record['candidates']);
+        $this->assertSame(['members' => $record['official_multi_seat_review_members'], 'seats' => 2, 'reason' => 'candidate_rows_conflict'], $analytics->multiSeatReviewedDeclarations($conflicting));
+        $this->assertNull($analytics->multiSeatDeclaredWinners($conflicting));
+
+        $wrong = $conflicting;
+        $wrong['summary_source_sha256'] = 'unverified';
+        $this->assertNull($analytics->multiSeatReviewedDeclarations($wrong));
+        $wrong = $conflicting;
+        $wrong['official_multi_seat_review_members'][0]['votes']++;
+        $this->assertNull($analytics->multiSeatReviewedDeclarations($wrong));
+        $wrong = $conflicting;
+        $wrong['candidates'] = $record['candidates'];
+        $this->assertNull($analytics->multiSeatReviewedDeclarations($wrong));
+    }
+
     public function test_same_official_seat_in_separate_election_rounds_counts_each_round_once(): void
     {
         $february = $this->record(100001, 100, 80, 50, 30);

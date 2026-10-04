@@ -306,6 +306,67 @@ class HistoricalElectionAnalytics
         return $winners;
     }
 
+    /** @return array{members: list<array{name: string, party: string, votes: int}>, seats: int, reason: string}|null */
+    public function multiSeatReviewedDeclarations(array $record): ?array
+    {
+        $seats = $record['number_of_seats'] ?? null;
+        $members = $record['official_multi_seat_review_members'] ?? null;
+        $reason = $record['official_multi_seat_review_reason'] ?? null;
+        $summary = $record['summary_totals'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        if (! is_int($seats) || $seats < 2 || ! is_array($members) || ! array_is_list($members)
+            || $members === [] || count($members) > $seats || ! is_array($summary) || ! is_array($candidates)
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['source_warning_code'] ?? null) !== 'official_multi_seat_reviewed_declaration'
+            || ! is_string($record['original_extraction_warning'] ?? null)
+            || ! is_string($record['official_summary_constituency_name'] ?? null)
+            || trim($record['official_summary_constituency_name']) === ''
+            || preg_match('/\.pdf$/i', $record['summary_source_file'] ?? '') !== 1
+            || preg_match('/^[a-f0-9]{64}$/', $record['summary_source_sha256'] ?? '') !== 1
+            || ! is_int($record['summary_page'] ?? null) || $record['summary_page'] < 1
+            || ! is_int($summary['valid_candidate_votes'] ?? null)
+            || $summary['valid_candidate_votes'] < 0) {
+            return null;
+        }
+
+        if ($reason === 'incomplete_official_list') {
+            if (count($members) >= $seats) {
+                return null;
+            }
+        } elseif ($reason === 'candidate_rows_conflict') {
+            if (count($members) !== $seats
+                || array_sum(array_column($candidates, 'votes')) === $summary['valid_candidate_votes']) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+        $seen = [];
+        foreach ($members as $member) {
+            if (! is_array($member) || ! is_string($member['name'] ?? null)
+                || trim($member['name']) === '' || ! is_string($member['party'] ?? null)
+                || trim($member['party']) === '' || ! is_int($member['votes'] ?? null)
+                || $member['votes'] < 0) {
+                return null;
+            }
+            $key = implode('|', [$member['name'], $member['party'], $member['votes']]);
+            if (isset($seen[$key])) {
+                return null;
+            }
+            $seen[$key] = true;
+            $matches = collect($candidates)->filter(fn ($candidate): bool => is_array($candidate)
+                && ($candidate['candidate_name'] ?? null) === $member['name']
+                && ($candidate['party_at_election'] ?? null) === $member['party']
+                && ($candidate['votes'] ?? null) === $member['votes']);
+            if ($matches->count() !== ($reason === 'incomplete_official_list' ? 1 : 2)) {
+                return null;
+            }
+        }
+
+        return ['members' => $members, 'seats' => $seats, 'reason' => $reason];
+    }
+
     /** @return array{name: string, party: string|null}|null A source row, never a declared winner. */
     public function sourceOnlyCandidate(array $record): ?array
     {
@@ -359,11 +420,9 @@ class HistoricalElectionAnalytics
                 && ($record['summary_source_file'] ?? null) === $source['source_file']
                 && ($record['summary_source_sha256'] ?? null) === $source['source_sha256']
                 && ($record['valid_candidate_votes'] ?? null) === 0) {
-                $printedWinner = collect($people)->first(fn (array $row): bool =>
-                    ($row['candidate_name'] ?? null) === $source['candidate']
+                $printedWinner = collect($people)->first(fn (array $row): bool => ($row['candidate_name'] ?? null) === $source['candidate']
                     && ($row['party_at_election'] ?? null) === $source['party']);
-                $printedOther = collect($people)->first(fn (array $row): bool =>
-                    ($row['candidate_name'] ?? null) === $source['other_candidate']
+                $printedOther = collect($people)->first(fn (array $row): bool => ($row['candidate_name'] ?? null) === $source['other_candidate']
                     && ($row['party_at_election'] ?? null) === $source['other_party']);
                 if ($printedWinner !== null && $printedOther !== null && $printedWinner !== $printedOther) {
                     return ['winner' => $source['candidate'], 'party' => $source['party'],
