@@ -185,6 +185,39 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull($result['margin']);
     }
 
+    public function test_multi_seat_declarations_require_a_sourced_list_matching_candidate_rows(): void
+    {
+        $record = $this->record(3, 300000, 396690, 210067, 186623);
+        $record['number_of_seats'] = 2;
+        $record['status'] = 'needs_review';
+        $record['source_warning_code'] = 'official_multi_seat_summary';
+        $record['original_extraction_warning'] = 'Original multi-seat review note';
+        $record['summary_page'] = 349;
+        $record['summary_source_file'] = 'official.pdf';
+        $record['summary_source_sha256'] = str_repeat('a', 64);
+        $record['summary_totals'] = ['valid_candidate_votes' => 396690];
+        $record['official_multi_seat_winners'] = [
+            ['name' => $record['candidates'][0]['candidate_name'], 'party' => $record['candidates'][0]['party_at_election'], 'votes' => 210067],
+            ['name' => $record['candidates'][1]['candidate_name'], 'party' => $record['candidates'][1]['party_at_election'], 'votes' => 186623],
+        ];
+        $analytics = app(HistoricalElectionAnalytics::class);
+
+        $this->assertSame($record['official_multi_seat_winners'], $analytics->multiSeatDeclaredWinners($record));
+        $this->assertNull($analytics->singleSeatResult($record));
+        $this->assertSame(0, $analytics->summarize([$record])['turnout_count']);
+        $printedZero = $record;
+        $printedZero['candidates'][0]['votes'] = 0;
+        $printedZero['official_multi_seat_winners'][0]['votes'] = 0;
+        $printedZero['summary_totals']['valid_candidate_votes'] = 186623;
+        $this->assertSame($printedZero['official_multi_seat_winners'], $analytics->multiSeatDeclaredWinners($printedZero));
+        $wrong = $record;
+        $wrong['official_multi_seat_winners'][1]['votes']++;
+        $this->assertNull($analytics->multiSeatDeclaredWinners($wrong));
+        $wrong = $record;
+        $wrong['summary_source_sha256'] = 'unverified';
+        $this->assertNull($analytics->multiSeatDeclaredWinners($wrong));
+    }
+
     public function test_same_official_seat_in_separate_election_rounds_counts_each_round_once(): void
     {
         $february = $this->record(100001, 100, 80, 50, 30);

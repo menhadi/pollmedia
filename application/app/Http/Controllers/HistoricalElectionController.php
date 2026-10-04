@@ -124,6 +124,7 @@ class HistoricalElectionController extends Controller
                 $original = $selected;
                 $selected = $reviews->apply($edition, $selected, $data['source_sha256']);
                 $selected['display_result'] = $analytics->singleSeatResult($selected, $edition);
+                $selected['display_multi_seat_winners'] = $analytics->multiSeatDeclaredWinners($selected);
                 $selected['source_candidate'] = $selected['display_result'] ? null : $analytics->sourceOnlyCandidate($selected);
                 if ($download) {
                     return $this->download($data, [$selected], $state, $kind, $edition, (string) $selected['code']);

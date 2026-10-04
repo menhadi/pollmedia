@@ -262,6 +262,50 @@ class HistoricalElectionAnalytics
         return ['winner' => $ranked[0]['candidate_name'], 'party' => $ranked[0]['party_at_election'], 'margin' => $ranked[0]['votes'] - $ranked[1]['votes'], 'derived' => true];
     }
 
+    /** @return list<array{name: string, party: string, votes: int}>|null Source-declared elected members, without a one-seat margin or turnout. */
+    public function multiSeatDeclaredWinners(array $record): ?array
+    {
+        $seats = $record['number_of_seats'] ?? null;
+        $winners = $record['official_multi_seat_winners'] ?? null;
+        $candidates = $record['candidates'] ?? null;
+        $summary = $record['summary_totals'] ?? null;
+        if (! is_int($seats) || $seats < 2 || ! is_array($winners) || ! array_is_list($winners)
+            || count($winners) !== $seats || ! is_array($candidates) || ! is_array($summary)
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['source_warning_code'] ?? null) !== 'official_multi_seat_summary'
+            || ! is_string($record['original_extraction_warning'] ?? null)
+            || preg_match('/\.pdf$/i', $record['summary_source_file'] ?? '') !== 1
+            || preg_match('/^[a-f0-9]{64}$/', $record['summary_source_sha256'] ?? '') !== 1
+            || ! $this->count($record['summary_page'] ?? null) || $record['summary_page'] < 1
+            || ! $this->count($summary['valid_candidate_votes'] ?? null)
+            || array_sum(array_column($candidates, 'votes')) !== $summary['valid_candidate_votes']) {
+            return null;
+        }
+
+        $seen = [];
+        foreach ($winners as $winner) {
+            if (! is_array($winner) || ! is_string($winner['name'] ?? null)
+                || trim($winner['name']) === '' || ! is_string($winner['party'] ?? null)
+                || trim($winner['party']) === '' || ! $this->count($winner['votes'] ?? null)) {
+                return null;
+            }
+            $key = implode('|', [$winner['name'], $winner['party'], $winner['votes']]);
+            if (isset($seen[$key])) {
+                return null;
+            }
+            $seen[$key] = true;
+            $matches = collect($candidates)->filter(fn ($candidate): bool => is_array($candidate)
+                && ($candidate['candidate_name'] ?? null) === $winner['name']
+                && ($candidate['party_at_election'] ?? null) === $winner['party']
+                && ($candidate['votes'] ?? null) === $winner['votes']);
+            if ($matches->count() !== 1) {
+                return null;
+            }
+        }
+
+        return $winners;
+    }
+
     /** @return array{name: string, party: string|null}|null A source row, never a declared winner. */
     public function sourceOnlyCandidate(array $record): ?array
     {

@@ -209,9 +209,23 @@ class HistoricalElectionPublicTest extends TestCase
         $data = json_decode(Storage::disk('local')->get($path), true);
         $data['records'][0] = array_replace($data['records'][0], [
             'number_of_seats' => 2,
-            'electors' => 713275,
-            'votes_polled' => 863273,
-            'valid_candidate_votes' => 863273,
+            'electors' => 300000,
+            'votes_polled' => 396690,
+            'valid_candidate_votes' => 396690,
+            'source_warning_code' => 'official_multi_seat_summary',
+            'original_extraction_warning' => 'Two seats require separate review.',
+            'summary_page' => 349,
+            'summary_source_file' => 'summary.pdf',
+            'summary_source_sha256' => str_repeat('a', 64),
+            'summary_totals' => ['electors' => 300000, 'votes_polled' => 396690, 'valid_candidate_votes' => 396690],
+            'official_multi_seat_winners' => [
+                ['name' => 'HUKAM SINGH', 'party' => 'SAD', 'votes' => 210067],
+                ['name' => 'AJIT SINGH', 'party' => 'SAD', 'votes' => 186623],
+            ],
+            'candidates' => [
+                ['candidate_name' => 'HUKAM SINGH', 'party_at_election' => 'SAD', 'votes' => 210067],
+                ['candidate_name' => 'AJIT SINGH', 'party_at_election' => 'SAD', 'votes' => 186623],
+            ],
         ]);
         Storage::disk('local')->put($path, json_encode($data));
         $url = route('elections.history', ['edition' => $id, 'state' => 'S24', 'code' => 451]);
@@ -221,8 +235,10 @@ class HistoricalElectionPublicTest extends TestCase
             $this->get($page)->assertOk()
                 ->assertSee('This constituency elected 2 members.')
                 ->assertSee('Source votes polled across seats')
-                ->assertSee('863,273')
+                ->assertSee('396,690')
                 ->assertSee('This multi-seat constituency has no single winner')
+                ->assertSee('Source-declared elected members')
+                ->assertSee('HUKAM SINGH')->assertSee('AJIT SINGH')
                 ->assertDontSee('<strong>Winner:', false);
         }
     }
