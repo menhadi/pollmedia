@@ -17,7 +17,9 @@ class HistoricalElectionAnalyticsTest extends TestCase
     public function test_historical_goa_daman_and_diu_label_routes_to_goa_navigation(): void
     {
         $this->assertSame('Goa', ElectionPlaceIdentity::state('Goa Daman And Diu'));
+        $this->assertSame('Goa', ElectionPlaceIdentity::state('Goa Daman & Diu'));
         $this->assertStringContainsString("WHEN 'goa daman and diu' THEN 'goa'", ElectionPlaceIdentity::stateSql());
+        $this->assertStringContainsString("WHEN 'goa daman & diu' THEN 'goa'", ElectionPlaceIdentity::stateSql());
     }
 
     private function record(int $code, int $electors, int $polled, int $winner, int $runner): array
