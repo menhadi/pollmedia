@@ -155,6 +155,7 @@ class HistoricalElectionAnalytics
                     ?? $verifiedDuplicatePreviewResult
                     ?? $this->officialResidualDetailResult($record)
                     ?? $this->officialInvalidTurnoutResult($record)
+                    ?? $this->officialAc1971WestBengalVoterConflict($record)
                     ?? $pc1989DiscrepancyResult;
                 if ($workbookResult !== null) {
                     $margins[] = $workbookResult['margin'];
@@ -239,6 +240,7 @@ class HistoricalElectionAnalytics
             ?? $this->officialDeclaredTieResult($record)
             ?? $this->officialResidualDetailResult($record)
             ?? $this->officialInvalidTurnoutResult($record)
+            ?? $this->officialAc1971WestBengalVoterConflict($record)
             ?? $this->officialPc1989DiscrepancyResult($record);
         if ($officialResult !== null) {
             return $officialResult + ['derived' => false];
@@ -1451,6 +1453,61 @@ class HistoricalElectionAnalytics
         }
 
         return ['winner' => $source['winner']['name'], 'party' => $source['winner']['party'], 'margin' => 0];
+    }
+
+    /** Three official summaries disagree with their own vote arithmetic; show declarations without turnout. */
+    private function officialAc1971WestBengalVoterConflict(array $record): ?array
+    {
+        $source = match ($record['code'] ?? null) {
+            84 => ['DEGANGA', 100, 309, 74781, 47151, 46831, 43369, 3782, 8,
+                'HARUN OP RASHID', 'IND', 20142, 'M. SAWKFTALI', 'INC', 9191, 10951],
+            92 => ['SANDESHKHALI (ST)', 108, 311, 73851, 51512, 51422, 49289, 2223, 5,
+                'SARAT SARDER', 'CPM', 20053, 'DEBENDRA NATH SINHA', 'INC', 20006, 47],
+            98 => ['BARUIPUR (SC)', 114, 312, 78104, 57293, 87293, 54571, 2722, 5,
+                'BIMAL MISTRY', 'CPM', 19711, 'RAM KANTA MANDAL', 'INC', 19265, 446],
+            default => null,
+        };
+        if ($source === null || ($record['source_warning_code'] ?? null) !== 'official_ac_voter_total_conflict'
+            || ($record['status'] ?? null) !== 'needs_review' || ($record['number_of_seats'] ?? null) !== 1
+            || ($record['state_name'] ?? null) !== 'West Bengal' || ($record['name'] ?? null) !== $source[0]
+            || ($record['summary_page'] ?? null) !== $source[1]
+            || ($record['detail_page'] ?? null) !== $source[2]
+            || ($record['electors'] ?? null) !== $source[3]
+            || ($record['votes_polled'] ?? null) !== $source[4]
+            || ($record['valid_candidate_votes'] ?? null) !== $source[6]
+            || ($record['summary_source_file'] ?? null) !== 'fed20e0bd380929811cd1a1f-7309.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '6350616cdca377cb5fe5e77006e098e966e2bdbcdc60a08d25d4b0cae832a305'
+            || ($record['official_source_url'] ?? null) !== 'https://old.eci.gov.in/files/file/3186-west-bengal-general-legislative-election-1971/'
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING
+            || ($record['error'] ?? null) !== 'The official summary voter total conflicts with its valid and rejected vote totals. The declared winner and margin are shown for review; turnout is withheld.'
+            || ($record['summary_totals'] ?? null) !== ['electors' => $source[3], 'votes_polled' => $source[5], 'valid_candidate_votes' => $source[6]]
+            || ($record['source_discrepancy'] ?? null) !== ['field' => 'votes_polled', 'detail_value' => $source[4],
+                'summary_value' => $source[5], 'valid_votes' => $source[6], 'rejected_votes' => $source[7]]
+            || ($record['summary_result'] ?? null) !== ['winner' => $source[9], 'winner_party' => $source[10],
+                'winner_votes' => $source[11], 'runner' => $source[12], 'runner_party' => $source[13],
+                'runner_votes' => $source[14], 'margin' => $source[15]]) {
+            return null;
+        }
+
+        $candidates = $record['candidates'] ?? null;
+        if (! is_array($candidates) || count($candidates) !== $source[8]
+            || array_sum(array_column($candidates, 'votes')) !== $source[6]
+            || $source[6] + $source[7] !== $source[4]
+            || $source[5] === $source[4]
+            || $source[11] - $source[14] !== $source[15]) {
+            return null;
+        }
+        $ranked = collect($candidates)->sortByDesc('votes')->values();
+        if (($ranked[0]['candidate_name'] ?? null) !== $source[9]
+            || ($ranked[0]['party_at_election'] ?? null) !== $source[10]
+            || ($ranked[0]['votes'] ?? null) !== $source[11]
+            || ($ranked[1]['candidate_name'] ?? null) !== $source[12]
+            || ($ranked[1]['party_at_election'] ?? null) !== $source[13]
+            || ($ranked[1]['votes'] ?? null) !== $source[14]) {
+            return null;
+        }
+
+        return ['winner' => $source[9], 'party' => $source[10], 'margin' => $source[15]];
     }
 
     /** The official declaration can establish a result even when its voter total cannot establish turnout. */
