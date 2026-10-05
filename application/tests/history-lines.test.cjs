@@ -71,3 +71,20 @@ test('a Census chart with one year draws a visible value bar',()=>{
     hit.events.focus();
     assert.match(nodes['.history-readout'].textContent,/20,31,007/);
 });
+
+test('a single available value remains visible among years without data',()=>{
+    const data={unit:'people',singleValueBar:true,autoScale:true,rows:[{year:1901,population:null},{year:2001,population:null},{year:2011,population:2031007}],series:[{key:'population',label:'Population'}]};
+    const nodes={'.history-chart-data':{textContent:JSON.stringify(data)},'[data-chart-from]':new Element('select'),'[data-chart-to]':new Element('select'),'.history-plot':new Element(),'.history-readout':new Element(),'.history-legend':new Element(),'h3':{textContent:'Population'}};
+    nodes['[data-chart-from]'].value='1901';nodes['[data-chart-to]'].value='2011';
+    const chart={querySelector:selector=>nodes[selector]};
+    const document={documentElement:{lang:'en'},querySelectorAll:()=>[chart],createElementNS:(_namespace,tag)=>new Element(tag),createElement:tag=>new Element(tag),createTextNode:text=>({textContent:text})};
+    vm.runInNewContext(readFileSync(path.join(__dirname,'../public/js/history-lines.js'),'utf8'),{document,ResizeObserver:class{observe(){}},Intl});
+    const svg=nodes['.history-plot'].children[0];
+    const dot=svg.children.find(child=>child.attributes.class==='history-single-point');
+    assert.equal(dot.tag,'circle');
+    assert.equal(dot.attributes.r,5);
+    assert.equal(svg.children.filter(child=>child.attributes.class==='history-hit-target').length,1);
+    const hit=svg.children.find(child=>child.attributes.class==='history-hit-target');
+    hit.events.focus();
+    assert.match(nodes['.history-readout'].textContent,/20,31,007/);
+});
