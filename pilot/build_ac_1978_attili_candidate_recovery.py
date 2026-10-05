@@ -1,0 +1,254 @@
+"""Corroborate 1978 Andhra Pradesh AC declarations with the official report."""
+
+import io
+import hashlib
+import json
+from pathlib import Path
+import re
+import tempfile
+import zipfile
+
+import fitz
+
+from build_pc_1951_multi_seat_declared_members import multi_seat_import_script
+from preserve_archive_json import package
+
+
+ROOT = Path(__file__).resolve().parents[1]
+EDITION = '5ceb07b4b18fc2ea5dcb6112'
+NAME = 'pollmedia-ac-1978-attili-candidate-recovery-20261006'
+PRIOR = 'pollmedia-ac-1978-andhra-pradesh-declared-results-20261006'
+PRIOR_SHA = '82c66971d833d28ce9133a6f1be092401c0fec8c67673f32b2daf5ab1ffce40f'
+PREDECESSOR = 'de17de09099b5f0afed9a44cf53d3f8e5a6eeb30dc116a41ec69bf56775174f9'
+SOURCE_URL = 'https://old.eci.gov.in/files/file/4047-andhra-pradesh-1978/'
+SOURCE_FILE = f'{EDITION}-9598.pdf'
+SOURCE_SHA = 'd9c006a204df72781b7c0271282c8946e4b105d156709ce4ccf81fda29e6a3ed'
+PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Some candidate text could not be parsed; see the original PDF.; Candidate serial numbers are incomplete or duplicated.; Extracted candidate votes do not match the reported valid votes.'
+UNCONTESTED = PENDING + '; Reported elector and voter totals are inconsistent.'
+
+
+def digest(body: bytes) -> str:
+    return hashlib.sha256(body).hexdigest()
+
+
+def section(text: str, start: str, end: str) -> str:
+    match = re.search(start + r'\b(.*?)' + end, text, re.I | re.S)
+    if match is None:
+        raise ValueError(f'Official 1978 Andhra Pradesh summary section missing: {start}')
+    return match[1]
+
+
+def total(text: str) -> int:
+    line = re.search(r'(?m)^\s*3\. TOTAL[^\n]*$', text)
+    values = re.findall(r'\d+', line[0]) if line else []
+    if len(values) < 2:
+        raise ValueError('Official 1978 Andhra Pradesh summary total missing')
+    return int(values[-1])
+
+
+def reconcile(row: dict, page: int, text: str) -> str:
+    code = row['code']
+    identity = re.search(r'CONSTITUENCY\s*:\s*(\d+)\s*-\s*([^\n]+)', text, re.I)
+    if (identity is None or int(identity[1]) != code
+            or re.sub(r'\s+', ' ', identity[2]).strip() != re.sub(r'\s+', ' ', row['name']).strip()
+            or page != code + 17 or 'CONSTITUENCY DATA - SUMMARY' not in text
+            or 'LEGISLATIVE ASSEMBLY OF ANDHRA PRADESH' not in text.upper()
+            or row['state_name'] != 'Andhra Pradesh' or row['number_of_seats'] != 1
+            or row['status'] != 'needs_review' or row.get('summary_page') is not None
+            or row.get('source_warning_code') is not None):
+        raise ValueError(f'Official 1978 Andhra Pradesh identity differs: {code}')
+    electors = total(section(text, r'II\. ELECTORS', r'III\. ELECTORS WHO VOTED'))
+    voters_section = section(text, r'III\. ELECTORS WHO VOTED', r'IV\. VOTES')
+    votes_section = section(text, r'IV\. VOTES', r'V\. POLLING STATIONS')
+    results = section(text, r'VII\. RESULT', r'rptConstituencySummary')
+    if electors != row['electors'] or len(row['candidates']) < 1:
+        raise ValueError(f'Official 1978 Andhra Pradesh electors differ: {code}')
+    row['previous_review_note'] = row['error']
+    row['original_extraction_warning'] = row['error']
+    row['summary_page'] = page
+    row['summary_source_file'] = SOURCE_FILE
+    row['summary_source_sha256'] = SOURCE_SHA
+    row['detail_source_file'] = SOURCE_FILE
+    row['detail_source_sha256'] = SOURCE_SHA
+    row['official_source_url'] = SOURCE_URL
+    row['official_summary_constituency_name'] = identity[2].strip()
+    row['official_summary_state'] = 'Andhra Pradesh'
+    if 'Uncontested' in text:
+        declaration = re.search(r'Winner\s*:?\s*(\S+)\s+(.+?)\s+Returned\s+Uncontested',
+                                results, re.I | re.S)
+        candidate = row['candidates'][0]
+        if (row['error'] != UNCONTESTED or len(row['candidates']) != 1
+                or row['votes_polled'] != 0 or row['valid_candidate_votes'] != 0
+                or candidate['votes'] != 0 or declaration is None
+                or (declaration[1], re.sub(r'\s+', ' ', declaration[2]).strip()) !=
+                (candidate['party_at_election'], re.sub(r'\s+', ' ', candidate['candidate_name']).strip())
+                or 'Uncontested' not in voters_section or 'Uncontested' not in votes_section
+                or re.search(r'(?m)^[ \t]*3\. TOTAL[ \t]+\d+', voters_section)
+                or re.search(r'(?m)^[ \t]*(1\. POLLED|2\. VALID)[ \t]+\d+', votes_section)
+                or re.search(r'Runner up|MARGIN\s*:', results, re.I)):
+            raise ValueError(f'Official 1978 Andhra Pradesh uncontested result differs: {code}')
+        row['error'] = (f'Official 1978 Andhra Pradesh summary declares {candidate["candidate_name"]} '
+                        f'({candidate["party_at_election"]}) returned uncontested. No voter, valid-vote '
+                        'or margin total is reported; archived zero candidate/voter fields are extraction '
+                        'placeholders, not measured turnout.')
+        row['source_warning_code'] = 'official_uncontested_summary'
+        row['summary_source_rows'] = [f'Winner {candidate["party_at_election"]} '
+                                      f'{candidate["candidate_name"]} Returned Uncontested']
+        row['summary_totals'] = {'electors': electors, 'votes_polled': None,
+                                 'valid_candidate_votes': None}
+        return 'uncontested'
+    if row['error'] != PENDING or len(row['candidates']) < 2:
+        raise ValueError(f'Official 1978 Andhra Pradesh contested state differs: {code}')
+    voters = total(voters_section)
+    printed = {}
+    for ordinal, label in ((1, 'POLLED'), (2, 'VALID'), (3, 'REJECTED'), (4, 'MISSING')):
+        match = re.search(r'(?m)^\s*' + str(ordinal) + r'\. ' + label + r'\s+(\d+)', votes_section)
+        if match is None:
+            raise ValueError(f'Official 1978 Andhra Pradesh {label} missing: {code}')
+        printed[label] = int(match[1])
+    if (voters < 1 or voters > electors or voters != printed['POLLED']
+            or (voters, printed['VALID']) != (row['votes_polled'], row['valid_candidate_votes'])
+            or printed['VALID'] + printed['REJECTED'] != voters or printed['MISSING'] != 0):
+        raise ValueError(f'Official 1978 Andhra Pradesh totals differ: {code}')
+    declared = []
+    for label, stop in (('Winner', 'Runner up'), ('Runner up', 'MARGIN')):
+        block_match = re.search(re.escape(label) + r'\s*:(.*?)' + re.escape(stop), results, re.S)
+        if block_match is None:
+            raise ValueError(f'Official declaration missing: {code} {label}')
+        block = block_match[1]
+        parsed = re.fullmatch(r'\s*(\S+)[ \t]+([^\n]+?)[ \t]+(\d+)[ \t]*(?:\n(.*))?', block, re.S)
+        if parsed is None:
+            raise ValueError(f'Official declaration layout differs: {code} {label}')
+        continuation = re.sub(r'\s+', ' ', parsed[4] or '').strip()
+        if re.search(r'\d', continuation):
+            raise ValueError(f'Unexpected numeric continuation: {code}')
+        name = re.sub(r'\s+', ' ', parsed[2] + ' ' + continuation).strip()
+        declared.append((label, parsed[1], name, parsed[3]))
+    margin = re.search(r'MARGIN\s*:\s*(\d+)', results, re.I)
+    ranked = sorted(row['candidates'], key=lambda candidate: candidate['votes'], reverse=True)
+    if (len(declared) != 2 or margin is None or sum(candidate['votes'] for candidate in ranked) != printed['VALID']
+            or ranked[0]['votes'] <= ranked[1]['votes']
+            or int(margin[1]) != ranked[0]['votes'] - ranked[1]['votes']
+            or len({(candidate['candidate_name'], candidate['party_at_election'], candidate['votes'])
+                    for candidate in ranked}) != len(ranked)):
+        raise ValueError(f'Official 1978 Andhra Pradesh result differs: {code}')
+    for source, candidate in zip(declared, ranked[:2], strict=True):
+        if (source[2].strip(), source[1], int(source[3])) != (
+                candidate['candidate_name'], candidate['party_at_election'], candidate['votes']):
+            raise ValueError(f'Official 1978 Andhra Pradesh candidate differs: {code}')
+    row['error'] = ('Official summary corroborates the detailed electors, voters, valid votes, '
+                    'declared winner and margin; archived review warning retained.')
+    row['source_warning_code'] = 'official_summary_turnout_only'
+    row['summary_totals'] = {'electors': electors, 'votes_polled': voters,
+                             'valid_candidate_votes': printed['VALID']}
+    row['summary_result'] = {'winner': ranked[0]['candidate_name'],
+                             'winner_party': ranked[0]['party_at_election'],
+                             'winner_votes': ranked[0]['votes'],
+                             'runner': ranked[1]['candidate_name'],
+                             'runner_party': ranked[1]['party_at_election'],
+                             'runner_votes': ranked[1]['votes'], 'margin': int(margin[1])}
+    return 'contested'
+
+
+def build(root: Path = ROOT) -> dict:
+    output = root / 'exports' / (NAME + '.zip')
+    if output.exists() or output.with_suffix('.sha256').exists():
+        raise FileExistsError(output)
+    folder = root / 'application/storage/app/private/election-archive' / EDITION
+    source = folder / SOURCE_FILE
+    original = folder / 'extraction.json'
+    if (source.is_symlink() or original.is_symlink() or digest(source.read_bytes()) != SOURCE_SHA):
+        raise ValueError('1978 Andhra Pradesh official source differs')
+    prior = root / 'exports' / (PRIOR + '.zip')
+    if digest(prior.read_bytes()) != PRIOR_SHA:
+        raise ValueError('Prior release checksum differs')
+    with zipfile.ZipFile(prior) as release:
+        with zipfile.ZipFile(io.BytesIO(release.read(f'correction-{EDITION}.zip'))) as inner:
+            old_body = inner.read(f'election-archive/{EDITION}/extraction.json')
+    manifest = json.loads((folder / 'manifest.json').read_bytes())
+    before = json.loads(old_body)
+    after = json.loads(old_body)
+    if (digest(old_body) != PREDECESSOR or manifest['url'] != SOURCE_URL
+            or next(file for file in manifest['files'] if file['file'] == SOURCE_FILE)['sha256'] != SOURCE_SHA
+            or before['kind'] != 'ac' or before['year'] != 1978
+            or before['source_url'] != SOURCE_URL or before['source_file'] != SOURCE_FILE
+            or before['source_sha256'] != SOURCE_SHA or len(before['records']) != 294
+            or [row['code'] for row in before['records']] != list(range(1, 295))):
+        raise ValueError('1978 Andhra Pradesh extraction provenance differs')
+    kinds = {'contested': [66], 'uncontested': []}
+    row = after['records'][65]
+    if row['code'] != 66 or row['name'] != 'ATTILI' or [c['source_row'] for c in row['candidates']] != [1, 3]:
+        raise ValueError('Attili predecessor candidate rows differ')
+    with fitz.open(source) as pdf:
+        if len(pdf) != 359:
+            raise ValueError('Andhra Pradesh PDF coverage differs')
+        detail = pdf[321].get_text(sort=True)
+        block = re.search(r'Constituency\s*:\s*66\s*\. ATTILI(.*?)(?=Constituency\s*:|rptDetailedResults)', detail, re.S)
+        if block is None:
+            raise ValueError('Attili detailed block missing')
+        found = re.search(r'^\s*2\s*\.\s*(.+?)\s+M\s+INC\s+(\d+)\s+(\d+\.\d+)%', block[1], re.M)
+        if found is None or (found[1].strip(), int(found[2]), found[3]) != ('VEGESBA KANKA DURGAVENKATA SATYANARAYANA RAJU', 23637, '29.84'):
+            raise ValueError('Attili missing runner source differs')
+        candidate = {'candidate_name': found[1].strip(), 'sex': 'M', 'party_at_election': 'INC',
+                     'votes': int(found[2]), 'reported_vote_percent': float(found[3]), 'source_row': 2,
+                     'general_votes': None, 'postal_votes': None}
+        row['candidates'].insert(1, candidate)
+        reconcile(row, 83, pdf[82].get_text(sort=True))
+    row['error'] = ('Official detailed row 2 restores the missing runner with 23637 votes; summary '
+                    'independently confirms the runner, winner and margin. Original candidate rows '
+                    'and extraction warning are preserved in the prior-byte snapshot.')
+    fields = {'previous_review_note', 'original_extraction_warning', 'summary_page',
+              'summary_source_file', 'summary_source_sha256', 'detail_source_file',
+              'detail_source_sha256', 'official_source_url', 'official_summary_constituency_name',
+              'official_summary_state', 'error', 'source_warning_code', 'summary_totals',
+              'summary_result', 'candidates'}
+    for old, new in zip(before['records'], after['records'], strict=True):
+        changed = {key for key in set(old) | set(new) if old.get(key) != new.get(key)}
+        if old['code'] != 66:
+            if old != new:
+                raise ValueError('Unrelated constituency changed')
+        elif changed != fields or [new['candidates'][0], new['candidates'][2]] != old['candidates']:
+            raise ValueError('Attili original candidate rows or unrelated fields changed')
+    new_body = json.dumps(after, ensure_ascii=False, indent=2).encode('utf-8')
+    snapshot = f'election-archive/{EDITION}/extraction-{PREDECESSOR}.json'
+    revision = f'election-archive/{EDITION}/extraction.json'
+    with tempfile.TemporaryDirectory(prefix='ac-1978-andhra-pradesh-', dir=root / 'exports') as temporary:
+        staged = Path(temporary) / 'archive'
+        packages = Path(temporary) / 'packages'
+        packages.mkdir()
+        archives = []
+        for kind, relative, body in (('snapshot', snapshot, old_body), ('correction', revision, new_body)):
+            path = staged / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(body)
+            bucket = hashlib.sha256(relative.encode()).digest()[0] % 8
+            archive = packages / f'{kind}-{EDITION}.zip'
+            package(staged, archive, 'election-archive', bucket, 8, [relative],
+                    PREDECESSOR if kind == 'correction' else None,
+                    snapshot if kind == 'correction' else None)
+            archives.append(archive)
+        partial = output.with_suffix('.zip.partial')
+        with zipfile.ZipFile(partial, 'w', compression=zipfile.ZIP_STORED) as release:
+            for archive in archives:
+                release.write(archive, archive.name)
+            release.writestr('SHA256SUMS', ''.join(f'{digest(archive.read_bytes())}  {archive.name}\n'
+                                                for archive in archives))
+            release.writestr('ARCHIVES', EDITION + '\n')
+            release.writestr('AUDIT.json', json.dumps({
+                'scope': 'Recover one source-backed Attili 1978 runner candidate and corroborate declaration',
+                'edition': EDITION, 'source_url': SOURCE_URL, 'source_file': SOURCE_FILE,
+                'source_sha256': SOURCE_SHA, 'previous_sha256': PREDECESSOR,
+                'new_sha256': digest(new_body), 'contested_codes': kinds['contested'],
+                'uncontested_codes': kinds['uncontested'],
+            }, indent=2))
+            release.writestr('IMPORT.sh', multi_seat_import_script())
+        partial.replace(output)
+    sha = digest(output.read_bytes())
+    output.with_suffix('.sha256').write_bytes(f'{sha}  {output.name}\n'.encode('ascii'))
+    return {'bundle': str(output), 'sha256': sha, 'previous_sha256': PREDECESSOR,
+            'new_sha256': digest(new_body),
+            'contested': len(kinds['contested']), 'uncontested': len(kinds['uncontested'])}
+
+
+if __name__ == '__main__':
+    print(json.dumps(build()))
