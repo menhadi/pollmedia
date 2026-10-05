@@ -36,6 +36,7 @@ use App\Http\Controllers\ReportArchiveController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportScopeController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\SirRecordController;
 use App\Http\Controllers\SiteManagementController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
@@ -93,6 +94,8 @@ Route::get('/india/village/{code}-{slug}', [VillageController::class, 'show'])->
 Route::get('/india/{type}/{slug}', [PlaceController::class, 'show'])->whereIn('type', ['district', 'pc', 'ac'])->name('places.show');
 Route::view('/india/sir', 'sir');
 Route::get('/api/sir', [PlaceController::class, 'sir']);
+Route::get('/api/sir/editions', [SirRecordController::class, 'options']);
+Route::post('/api/sir/records/search', [SirRecordController::class, 'search'])->middleware('throttle:20,1');
 Route::get('/api/census', fn (PlaceController $c) => response()->json($c->payload('census-pilibhit')));
 Route::get('/api/geography', fn (PlaceController $c) => response()->json($c->payload('soi-up')));
 Route::get('/api/maps/pilibhit-villages', function (): BinaryFileResponse {
