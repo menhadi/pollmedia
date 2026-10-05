@@ -15,8 +15,18 @@ class ImportSirRecords extends Command
     public function handle(): int
     {
         $file = $this->argument('file');
-        if (! is_file($file) || filesize($file) > 50000000 || ! preg_match('/^[a-f0-9]{64}$/', $this->option('sha256') ?? '') || ! hash_equals($this->option('sha256'), hash_file('sha256', $file))) {
-            $this->error('Missing file, invalid size or checksum mismatch.');
+        if (! is_file($file) || ! is_readable($file)) {
+            $this->error('Import file is missing or unreadable: '.$file.'. Upload the extracted JSON first; git pull only transfers code.');
+
+            return self::FAILURE;
+        }
+        if (filesize($file) > 50000000) {
+            $this->error('Import file exceeds the 50 MB limit.');
+
+            return self::FAILURE;
+        }
+        if (! preg_match('/^[a-f0-9]{64}$/', $this->option('sha256') ?? '') || ! hash_equals($this->option('sha256'), hash_file('sha256', $file))) {
+            $this->error('Checksum mismatch. Use the exact extracted JSON and its supplied SHA-256.');
 
             return self::FAILURE;
         }
