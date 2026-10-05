@@ -155,7 +155,7 @@ def reconcile(row: dict, page: int, text: str) -> str:
                         f'({ranked[1]["party_at_election"]}), {ranked[1]["votes"]:,}; margin {int(margin[1]):,}. '
                         'Declaration retained for review; aggregate result projection is withheld.')
         return 'discrepancy'
-    return 'contested' 
+    return 'contested'
 
 
 def build(root: Path = ROOT) -> dict:
