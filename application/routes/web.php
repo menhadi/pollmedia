@@ -192,6 +192,7 @@ Route::get('/report-problem', [DataFeedbackController::class, 'create'])->name('
 Route::post('/report-problem', [DataFeedbackController::class, 'store'])->middleware('throttle:3,10')->name('feedback.store');
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix('admin')->group(function () {
     Route::get('/site', [SiteManagementController::class, 'index'])->name('site.manage');
+    Route::post('/site/analytics', [SiteManagementController::class, 'analytics'])->middleware('throttle:10,1')->name('site.analytics');
     Route::post('/site/connectors/{id}', [SiteManagementController::class, 'connector'])->whereNumber('id')->name('site.connector');
     Route::post('/site/asset', [SiteManagementController::class, 'asset'])->name('site.asset');
     Route::post('/site/appearance', [SiteManagementController::class, 'appearance'])->name('site.appearance');

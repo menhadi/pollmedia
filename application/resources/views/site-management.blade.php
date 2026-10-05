@@ -1,8 +1,19 @@
 @extends('seo-layout')
 @section('content')
 <h1>Site management</h1><p>Manage the civic platform’s appearance, public APIs and application schedules.</p>
+@if(session('status'))<p class="notice" role="status">{{ session('status') }}</p>@endif
+@if($errors->any())<ul role="alert">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>@endif
+<section class="card" id="analytics"><h2>Google Analytics 4</h2>
+@php $analytics=app(\App\Services\GoogleAnalyticsSettings::class)->current(); @endphp
+<p>Track visits and public-page engagement. Administration pages are excluded. Save a Measurement ID to connect this site; no script pasting is needed.</p>
+<form method="post" action="{{ route('site.analytics') }}">@csrf
+<label>Tracking<select name="enabled"><option value="0" @selected(!old('enabled',$analytics['enabled']))>Disabled</option><option value="1" @selected(old('enabled',$analytics['enabled']))>Enabled</option></select></label>
+<label>Measurement ID<input name="measurement_id" value="{{ old('measurement_id',$analytics['measurement_id']) }}" placeholder="G-8LY5L8DFSS" pattern="G-[A-Z0-9]{4,20}" maxlength="22"></label>
+<p>New Pollmedia property: <strong>G-8LY5L8DFSS</strong>. Use this ID for pollmedia.org.</p>
+<button @disabled(!$ready)>Save analytics</button></form>
+<p>Saving connects the tag; it does not confirm receipt. Visit a public page, then check <a href="https://analytics.google.com/analytics/web/#/a254227929p557131740/realtime/overview" target="_blank" rel="noopener">GA4 Realtime</a>. Enhanced measurement options are managed in GA4’s web-stream settings.</p></section>
 @if(!$ready)<p class="notice">Site management requires the pending database migration. Settings cannot be saved yet.</p>@endif
-<nav class="admin-section-links"><a href="#appearance">Appearance</a> · <a href="#seo">Page SEO</a> · <a href="#operations">APIs & schedules</a> · <a href="#health">Monitoring</a></nav>
+<nav class="admin-section-links"><a href="#analytics">Analytics</a> · <a href="#appearance">Appearance</a> · <a href="#seo">Page SEO</a> · <a href="#operations">APIs & schedules</a> · <a href="#health">Monitoring</a></nav>
 <section class="card" id="appearance"><h2>Brand, header, footer and theme</h2><form method="post" action="{{ route('site.appearance') }}">@csrf
 @foreach(['name'=>'Site name','tagline'=>'Tagline','logo'=>'Logo image path (optional)','favicon'=>'Favicon image path (optional)','footer_text'=>'Footer description'] as $key=>$label)<div class="field"><label>{{ $label }}<input name="{{ $key }}" value="{{ $appearance[$key] }}" @if(in_array($key,['name','tagline','footer_text'])) required @endif></label></div>@endforeach
 <p>Default: site name only. Upload PNG, JPG, WebP or ICO assets below, or use an existing local public image path. Clear the path to return to the name-only default.</p>

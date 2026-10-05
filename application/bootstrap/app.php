@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\GoogleAnalytics;
 use App\Http\Middleware\ManagedApi;
 use App\Http\Middleware\PageMetadata;
 use App\Http\Middleware\PublicLocale;
@@ -15,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->web(append: [PublicLocale::class, ManagedApi::class, PageMetadata::class]);
+        $middleware->web(append: [PublicLocale::class, ManagedApi::class, PageMetadata::class, GoogleAnalytics::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->dontFlash(['api_key', 'access_key', 'secret_key']);

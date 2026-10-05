@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SyncElectionReleasesJob;
 use App\Services\DataCorrections;
+use App\Services\GoogleAnalyticsSettings;
 use App\Services\ManagedTasks;
 use App\Services\OfficialDownload;
 use App\Services\SeoPages;
@@ -23,6 +24,18 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SiteManagementController extends Controller
 {
+    public function analytics(Request $request, GoogleAnalyticsSettings $settings): RedirectResponse
+    {
+        abort_unless(Schema::hasTable('site_settings'), 503, 'Analytics settings require the pending application migration.');
+        $data = $request->validate([
+            'enabled' => 'required|boolean',
+            'measurement_id' => ['nullable', 'required_if:enabled,1', 'string', 'regex:/^G-[A-Z0-9]{4,20}$/D'],
+        ]);
+        $settings->save($request->boolean('enabled'), $data['measurement_id'] ?? null);
+
+        return redirect(route('site.manage').'#analytics')->with('status', 'Google Analytics settings saved. Verify incoming visits in GA4 Realtime.');
+    }
+
     public function index(SiteSettings $settings, ManagedTasks $tasks): View
     {
         return view('site-management', ['appearance' => $settings->appearance(), 'tasks' => $tasks->all(), 'apis' => $this->apis(), 'apiSettings' => $settings->get('apis', []), 'health' => Schema::hasTable('task_health') ? DB::table('task_health')->get() : collect(), 'connectors' => DB::table('import_connectors')->orderBy('name')->get(), 'ready' => Schema::hasTable('site_settings'), 'changes' => Schema::hasTable('site_changes') ? DB::table('site_changes')->orderByDesc('id')->limit(20)->get() : collect()]);
