@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Services\ElectionArchive;
+use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
 use Database\Seeders\PilibhitSeeder;
@@ -12,6 +13,12 @@ use Tests\TestCase;
 class HistoricalElectionAnalyticsTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_historical_goa_daman_and_diu_label_routes_to_goa_navigation(): void
+    {
+        $this->assertSame('Goa', ElectionPlaceIdentity::state('Goa Daman And Diu'));
+        $this->assertStringContainsString("WHEN 'goa daman and diu' THEN 'goa'", ElectionPlaceIdentity::stateSql());
+    }
 
     private function record(int $code, int $electors, int $polled, int $winner, int $runner): array
     {

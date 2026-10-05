@@ -5,7 +5,7 @@ namespace App\Services;
 class ElectionPlaceIdentity
 {
     /** Navigation aliases only; original state labels and historical boundaries remain in source records. */
-    private const STATE_ALIASES = ['madras' => 'Tamil Nadu', 'mysore' => 'Karnataka', 'orissa' => 'Odisha', 'orrisa' => 'Odisha', 'uttaranchal' => 'Uttarakhand', 'pondicherry' => 'Puducherry', 'kerla' => 'Kerala', 'gujrat' => 'Gujarat', 'delhi' => 'Delhi', 'nct of delhi' => 'Delhi', 'national capital territory of delhi' => 'Delhi'];
+    private const STATE_ALIASES = ['madras' => 'Tamil Nadu', 'mysore' => 'Karnataka', 'orissa' => 'Odisha', 'orrisa' => 'Odisha', 'uttaranchal' => 'Uttarakhand', 'pondicherry' => 'Puducherry', 'kerla' => 'Kerala', 'gujrat' => 'Gujarat', 'goa daman and diu' => 'Goa', 'delhi' => 'Delhi', 'nct of delhi' => 'Delhi', 'national capital territory of delhi' => 'Delhi'];
 
     private static function labels(): array
     {
