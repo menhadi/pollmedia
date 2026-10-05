@@ -105,3 +105,5 @@ body{background:var(--site-background);color:var(--site-text)}a{color:var(--site
 @media print{.map-print-details{display:block;columns:2;font-size:10px}.map-print-details p{break-inside:avoid;margin:4px 0}.map-print-details i{display:inline-block;width:10px;height:10px;margin-right:6px;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 
 body .public-footer .footer-grid h2{font-size:13px;line-height:1.4;font-weight:700;letter-spacing:.08em;margin:0 0 16px;color:inherit}
+
+.public-header.site-header{position:relative;z-index:110;overflow:visible}.public-header.site-header .search-suggestions{z-index:120}

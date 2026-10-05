@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CensusHistory;
+use App\Services\CensusPlaceNavigation;
 use App\Services\DataCorrections;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\ElectionResults;
@@ -19,6 +20,10 @@ class PlaceController extends Controller
         abort_unless(in_array($type, ['district', 'pc', 'ac']), 404);
         $place = DB::table('places')->where('slug', $type.'-'.$slug)->first();
         abort_unless($place, 404);
+        $censusRecord = app(CensusPlaceNavigation::class)->record($place);
+        if ($censusRecord) {
+            return redirect()->route('civic.place', ['record' => $censusRecord]);
+        }
         if (in_array($type, ['pc', 'ac']) && Schema::hasTable('historical_constituency_index') && DB::table('place_identifiers')->where('place_id', $place->id)->where('namespace', 'electoral:IN:UP:'.$type)->exists()) {
             $entry = DB::table('historical_constituency_index')->where('kind', $type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', ['uttar pradesh'])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
             if ($entry) {

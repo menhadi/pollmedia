@@ -69,7 +69,7 @@ class CensusProfileSummary
         $districtCounts = DB::table('census_catalogue_rows')->whereIn('edition_id', $editionIds)->where('level', 'DISTRICT')->where('residence', 'Total')->select('edition_id', 'state_code')->selectRaw('COUNT(*) as total')->groupBy('edition_id', 'state_code')->get()->keyBy(fn ($row) => $row->edition_id.':'.$row->state_code);
         $states = DB::table('census_catalogue_rows')->whereIn('edition_id', $editionIds)->where('level', 'STATE')->where('residence', 'Total')->orderBy('name')->get()->groupBy('state_code')->map(fn ($rows) => $rows->sortByDesc(fn ($row) => $districtCounts->get($row->edition_id.':'.$row->state_code)?->total ?? 0)->first())->values();
         $place = $state ? $states->first(fn ($row) => Str::slug(trim(preg_replace('/[\s@*#†‡]+$/u', '', $row->name))) === $state) : null;
-        $children = $place ? DB::table('census_catalogue_rows')->where('edition_id', $place->edition_id)->where('state_code', $place->state_code)->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('name')->get() : $states;
+        $children = $place ? DB::table('census_catalogue_rows')->where('edition_id', $place->edition_id)->where('state_code', $place->state_code)->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('id')->get()->unique('district_code')->sortBy('name')->values() : $states;
         if ($state && ! $place) {
             $children = collect();
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CensusPlaceNavigation;
 use App\Services\ElectionPlaceIdentity;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -62,7 +63,7 @@ class PublicSearchController extends Controller
             return ['label' => $profile->name, 'type' => ['pc' => 'Lok Sabha', 'ac' => 'Assembly (AC)', 'district' => 'District'][$profile->type],
                 'rank' => ['pc' => 0, 'district' => 1, 'ac' => 2][$profile->type], 'period' => $electoralIdentity ? 'Uttar Pradesh' : '',
                 'identity' => $electoralIdentity ? $profile->type.'|uttar pradesh|'.mb_strtolower($profile->name) : null,
-                'url' => route('places.show', ['type' => $profile->type, 'slug' => substr($profile->slug, strlen($profile->type) + 1)])];
+                'url' => $profile->type === 'district' ? app(CensusPlaceNavigation::class)->url($profile) : (str_starts_with($profile->slug, $profile->type.'-') ? route('places.show', ['type' => $profile->type, 'slug' => substr($profile->slug, strlen($profile->type) + 1)]) : route('geography.show', $profile->slug))];
         });
         foreach ($results?->items() ?? [] as $r) {
             $earlier = $r->last_year < $r->latest_year;
@@ -75,7 +76,7 @@ class PublicSearchController extends Controller
             $suggestions->push(['label' => $v['name'], 'type' => 'Village', 'rank' => 6, 'period' => 'Pilibhit, Uttar Pradesh', 'url' => $v['url']]);
         }
         $suggestions = $suggestions->sortBy([['rank', 'asc'], ['label', 'asc']])
-            ->unique(fn (array $suggestion): string => $suggestion['identity'] ?? $suggestion['url'])
+            ->unique(fn (array $suggestion): string => $suggestion['type'] === 'District' ? $suggestion['url'] : ($suggestion['identity'] ?? $suggestion['url']))
             ->map(function (array $suggestion): array {
                 unset($suggestion['identity']);
 

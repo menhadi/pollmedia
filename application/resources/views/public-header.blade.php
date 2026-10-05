@@ -9,3 +9,5 @@
 @endforeach
 @foreach($site['links'] as $link)@if(!in_array($link['url'],['/india#states','/india/census/explore','/india/elections/lok-sabha']))<a href="{{ $link['url'] }}">{{ \App\Services\PublicLanguage::text($link['label']) }}</a>@endif @endforeach
 </nav><div class="language-switch" aria-label="Language / भाषा"><a href="{{ request()->fullUrlWithQuery(['lang'=>'en']) }}" lang="en" @if(app()->getLocale()==='en') aria-current="true" @endif>English</a><span aria-hidden="true">/</span><a href="{{ request()->fullUrlWithQuery(['lang'=>'hi']) }}" lang="hi" @if(app()->getLocale()==='hi') aria-current="true" @endif>हिन्दी</a></div></header>
+
+<script src="{{ asset('js/header-search.js') }}?v={{ substr(hash_file('sha256',public_path('js/header-search.js')),0,12) }}" defer></script>

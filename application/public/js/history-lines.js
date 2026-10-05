@@ -85,9 +85,11 @@
                         status.textContent = label;
                         status.style.visibility = 'hidden';
                         tooltip.textContent = label; tooltip.hidden = false;
-                        tooltip.style.left = `${Math.max(12, Math.min(width - 12, x(row.year)))}px`;
-                        tooltip.style.top = `${Math.max(4, y(value) - 12)}px`;
-                        tooltip.style.transform = x(row.year) > width * .65 ? 'translate(-100%, -100%)' : x(row.year) < width * .35 ? 'translate(0, -100%)' : 'translate(-50%, -100%)';
+                        const tipWidth = tooltip.offsetWidth || 200, tipHeight = tooltip.offsetHeight || 70;
+                        const pointX = x(row.year), pointY = y(value);
+                        tooltip.style.left = `${Math.max(4, Math.min(width-tipWidth-4, pointX-tipWidth/2))}px`;
+                        tooltip.style.top = `${pointY-tipHeight-12 >= 4 ? pointY-tipHeight-12 : pointY+12}px`;
+                        tooltip.style.transform = 'none';
                     };
                     ['focus','pointerenter','click'].forEach(event => hit.addEventListener(event, show));
                     const hide = () => { tooltip.hidden = true; status.style.visibility = ''; status.textContent = 'Hover or focus a year to see the value. † indicates a source note.'; };

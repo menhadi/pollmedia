@@ -90,6 +90,33 @@ class CivicExplorerTest extends TestCase
         $this->get('/india/census/explore?year=1901')->assertOk()->assertViewHas('children', fn ($rows) => $rows->total() === 0)->assertDontSee('Find place');
     }
 
+    public function test_district_routes_share_one_census_page_and_nonstandard_slugs_stay_valid(): void
+    {
+        $ids = $this->fixture();
+        $this->seed(PilibhitSeeder::class);
+        $district = DB::table('places')->where('slug', 'district-pilibhit')->first();
+        $duplicate = DB::table('places')->insertGetId(['country_code' => 'IN', 'type' => 'district', 'name' => 'Pilibhit', 'slug' => 'lgd-district-duplicate']);
+        $release = DB::table('place_identifiers')->where('place_id', $district->id)->where('namespace', 'census:district:IN:UP')->value('source_release_id');
+        DB::table('place_identifiers')->insert(['place_id' => $duplicate, 'namespace' => 'lgd:IN:district', 'version' => 'snapshot-test', 'code' => '173', 'source_release_id' => $release]);
+        $target = route('civic.place', ['record' => $ids['DISTRICT']]);
+        $this->get('/india/district/pilibhit')->assertRedirect($target);
+        $this->get(route('geography.show', 'district-pilibhit'))->assertRedirect($target);
+        $this->get(route('geography.show', 'lgd-district-duplicate'))->assertRedirect($target);
+        $matches = collect($this->getJson('/search?q=Pilibhit&kind=district')->assertOk()->json('suggestions'));
+        $this->assertCount(1, $matches);
+        $this->assertTrue($matches->contains('url', $target));
+        DB::table('place_identifiers')->where('place_id', $duplicate)->delete();
+        $matches = collect($this->getJson('/search?q=Pilibhit&kind=district')->assertOk()->json('suggestions'));
+        $this->assertTrue($matches->contains('url', route('geography.show', 'lgd-district-duplicate')));
+        $row = (array) DB::table('census_catalogue_rows')->find($ids['DISTRICT']);
+        unset($row['id']);
+        $row['record_key'] = hash('sha256', 'duplicate-district');
+        DB::table('census_catalogue_rows')->insert($row);
+        $this->get(route('civic.place', ['record' => $ids['STATE']]))->assertOk()
+            ->assertViewHas('districtOptions', fn ($rows) => $rows->count() === 1);
+
+    }
+
     public function test_related_constituencies_require_an_accepted_identifier_and_unexpired_source_link(): void
     {
         $ids = $this->fixture();

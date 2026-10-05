@@ -85,7 +85,7 @@ class CivicExplorerController extends Controller
             })->sortBy('display_name')->values();
         $districtOptions = $anchor && $anchor->level === 'STATE'
             ? DB::table('census_catalogue_rows')->where('edition_id', $anchor->edition_id)->where('state_code', $anchor->state_code)
-                ->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('name')->get()
+                ->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('id')->get()->unique('district_code')->sortBy('name')->values()
             : collect();
         if (! $residenceOptions->contains($residence) && $residenceOptions->isNotEmpty()) {
             $residence = $residenceOptions->contains('Total') ? 'Total' : $residenceOptions->first();

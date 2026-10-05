@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CensusPlaceNavigation;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,10 +46,14 @@ class GeographyController extends Controller
         return view('geography-index', compact('countries', 'types', 'places', 'country', 'type', 'areas', 'area', 'indiaContext'));
     }
 
-    public function show(string $slug): View
+    public function show(string $slug): View|RedirectResponse
     {
         $place = DB::table('places')->where('slug', $slug)->first();
         abort_unless($place, 404);
+        $censusRecord = app(CensusPlaceNavigation::class)->record($place);
+        if ($censusRecord) {
+            return redirect()->route('civic.place', ['record' => $censusRecord]);
+        }
         $identifiers = DB::table('place_identifiers as i')->join('source_releases as r', 'r.id', '=', 'i.source_release_id')
             ->where('i.place_id', $place->id)->where('r.status', 'accepted')
             ->select('i.namespace', 'i.code', 'i.version', 'r.url')->orderBy('i.namespace')->get();
