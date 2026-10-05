@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Services\CensusPlaceNavigation;
 use App\Services\ElectionPlaceIdentity;
+use App\Services\SirReferences;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -15,14 +17,20 @@ class PublicSearchController extends Controller
 {
     public function index(Request $request): View|JsonResponse
     {
-        $input = $request->validate(['q' => 'nullable|string|max:100', 'kind' => 'nullable|in:pc,ac,village,district', 'page' => 'nullable|integer|min:1|max:10000']);
+        $input = $request->validate(['q' => 'nullable|string|max:100', 'kind' => 'nullable|in:pc,ac,village,district,sir', 'year' => 'nullable|integer|min:1800|max:2100', 'page' => 'nullable|integer|min:1|max:10000', 'sir_page' => 'nullable|integer|min:1|max:10000']);
         $q = trim($input['q'] ?? '');
         $kind = $input['kind'] ?? '';
         $profiles = collect();
         $villages = collect();
         $results = null;
+        $year = isset($input['year']) ? (int) $input['year'] : null;
+        $sirDocuments = in_array($kind, ['', 'sir']) ? app(SirReferences::class)->documents() : collect();
+        $sirYears = $sirDocuments->pluck('year')->filter()->unique()->sortDesc()->values();
+        $sirMatches = mb_strlen($q) >= 2 ? app(SirReferences::class)->search($sirDocuments, $q, $year) : collect();
+        $sirPage = (int) ($input['sir_page'] ?? 1);
+        $sirResults = new LengthAwarePaginator($sirMatches->slice(($sirPage - 1) * 20, 20)->values(), $sirMatches->count(), 20, $sirPage, ['path' => $request->url(), 'query' => $request->query(), 'pageName' => 'sir_page']);
         if (mb_strlen($q) >= 2) {
-            if ($kind !== 'village') {
+            if (! in_array($kind, ['village', 'sir'])) {
                 $profiles = DB::table('places')->whereIn('type', ['pc', 'ac', 'district'])
                     ->when($kind !== '', fn ($query) => $query->where('type', $kind))
                     ->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($q).'%'])->orderByRaw("CASE type WHEN 'pc' THEN 0 WHEN 'district' THEN 1 ELSE 2 END")->orderBy('name')->limit(20)->get();
@@ -83,9 +91,11 @@ class PublicSearchController extends Controller
                 return $suggestion;
             })->values();
         if ($request->expectsJson()) {
+            $suggestions = $suggestions->concat($sirMatches->take(5));
+
             return response()->json(['suggestions' => $suggestions->take(20)->values()]);
         }
 
-        return view('public-search', compact('q', 'kind', 'profiles', 'villages', 'results', 'suggestions'));
+        return view('public-search', compact('q', 'kind', 'profiles', 'villages', 'results', 'suggestions', 'sirResults', 'sirYears', 'year'));
     }
 }
