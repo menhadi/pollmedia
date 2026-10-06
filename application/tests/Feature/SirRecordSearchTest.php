@@ -12,7 +12,7 @@ class SirRecordSearchTest extends TestCase
 
     private function row(): array
     {
-        return ['edition_key' => str_repeat('a', 64), 'state_code' => '09', 'ac_code' => '127', 'ac_name' => 'Test AC', 'year' => 2003, 'edition' => 'Final roll', 'document_date' => '2003-01-01', 'part' => 1, 'station' => 'Test station', 'serial' => 19, 'name' => 'Test Elector', 'relative_name' => 'Test Parent', 'relationship' => 'Father', 'pdf_page' => 4, 'source_url' => 'https://www.eci.gov.in/test.pdf'];
+        return ['document_type' => 'electoral_roll', 'edition_key' => str_repeat('a', 64), 'state_code' => '09', 'ac_code' => '127', 'ac_name' => 'Test AC', 'year' => 2003, 'edition' => 'Final roll', 'document_date' => '2003-01-01', 'part' => 1, 'station' => 'Test station', 'serial' => 19, 'name' => 'Test Elector', 'relative_name' => 'Test Parent', 'relationship' => 'Father', 'pdf_page' => 4, 'source_url' => 'https://www.eci.gov.in/test.pdf'];
     }
 
     public function test_search_filters_names_and_editions_and_preserves_provenance(): void
@@ -78,5 +78,37 @@ class SirRecordSearchTest extends TestCase
         } finally {
             unlink($file);
         }
+    }
+
+    public function test_uncollected_form_records_are_excluded_from_the_voter_roll_browser(): void
+    {
+        DB::table('sir_records')->insert(array_merge($this->row(), ['document_type' => 'uncollected_forms']));
+        $this->getJson('/api/sir/editions')->assertOk()->assertJsonCount(0, 'editions')->assertJsonCount(0, 'periods');
+        $this->postJson('/api/sir/records/search', ['state_code' => '09'])->assertOk()->assertJsonCount(0, 'data');
+    }
+
+    public function test_voter_roll_import_requires_the_matching_original_pdf(): void
+    {
+        $row = $this->row();
+        $data = array_intersect_key($row, array_flip(['edition_key', 'state_code', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'source_url', 'document_type']));
+        $data['pdf_sha256'] = str_repeat('0', 64);
+        $data['records'] = [array_intersect_key($row, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page']))];
+        $file = tempnam(sys_get_temp_dir(), 'sir-roll-test-');
+        file_put_contents($file, json_encode($data));
+        try {
+            $this->artisan('sir:import-records', ['file' => $file, '--sha256' => hash_file('sha256', $file)])->expectsOutputToContain('matching original PDF')->assertFailed();
+            $this->assertDatabaseCount('sir_records', 0);
+        } finally {
+            unlink($file);
+        }
+    }
+
+    public function test_pdf_links_are_generated_from_the_preserved_document_hash(): void
+    {
+        $row = array_merge($this->row(), ['pdf_sha256' => str_repeat('b', 64)]);
+        DB::table('sir_records')->insert($row);
+        $this->postJson('/api/sir/records/search', ['ac_code' => '127'])->assertOk()->assertJsonPath('data.0.pdf_url', route('sir.document', ['hash' => str_repeat('b', 64)]).'#page=4');
+        $this->get('/sir/documents/'.str_repeat('a', 64))->assertNotFound();
+        $this->get('/sir/documents/'.str_repeat('b', 64))->assertNotFound();
     }
 }

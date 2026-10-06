@@ -95,6 +95,7 @@ Route::get('/india/{type}/{slug}', [PlaceController::class, 'show'])->whereIn('t
 Route::view('/india/sir', 'sir');
 Route::get('/api/sir', [PlaceController::class, 'sir']);
 Route::get('/api/sir/editions', [SirRecordController::class, 'options']);
+Route::get('/sir/documents/{hash}', [SirRecordController::class, 'document'])->where('hash', '[a-f0-9]{64}')->name('sir.document');
 Route::post('/api/sir/records/search', [SirRecordController::class, 'search'])->middleware('throttle:20,1');
 Route::get('/api/census', fn (PlaceController $c) => response()->json($c->payload('census-pilibhit')));
 Route::get('/api/geography', fn (PlaceController $c) => response()->json($c->payload('soi-up')));

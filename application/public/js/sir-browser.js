@@ -25,7 +25,7 @@
     }
     async function refreshOptions() {
         optionsRequest?.abort();
-        const active = new AbortController(); optionsRequest = active;
+        const active = new AbortController(); optionsRequest = active; let timedOut=false; const timeout=setTimeout(()=>{timedOut=true;active.abort();},20000);
         $('record-status').textContent = 'Loading available filters...';
         try {
             const response = await fetch('/api/sir/editions?' + new URLSearchParams(scope()), {signal:active.signal, headers:{Accept:'application/json'}});
@@ -41,11 +41,13 @@
             options('record-station', data.stations, $('record-ac').value ? 'All polling stations in this AC' : 'Choose an AC to list stations');
             $('record-station').disabled = !$('record-ac').value;
             $('scope-note').textContent = data.pcs.length ? 'Browse all imported names in the selected scope, or narrow the optional filters.' : 'PC grouping has no verified mapping for these records. Choose an AC directly. Document-year choices are labelled separately from verified revision years.';
-            $('record-status').textContent = data.editions.length ? 'Choose any geographic filter, or enter a name, to show available records.' : 'No imported records for this selection. Check the data import before browsing.';
+            if(data.editions.length===1 && data.editions[0].printed_electors){const e=data.editions[0];$('scope-note').textContent+=' Pilot coverage: '+fmt(e.indexed_records)+' of '+fmt(e.printed_electors)+' entries indexed; '+fmt(e.held_records_count)+' held for review.';}
+            $('record-status').textContent = data.editions.length ? 'Choose any geographic filter, or enter a name, to show available records.' : 'No voter-roll data imported for this selection. The older uncollected-form sample is excluded.';
             return true;
         } catch (error) {
-            if (error.name !== 'AbortError') $('record-status').textContent = error.message;
+            if (timedOut) $('record-status').textContent='Filters took too long to load. Press Retry loading filters.'; else if (error.name !== 'AbortError') $('record-status').textContent = error.message;
             return false;
+        } finally {clearTimeout(timeout);
         }
     }
     function cell(row, value) { const element=document.createElement('td'); element.textContent=value; row.append(element); return element; }
@@ -64,8 +66,8 @@
                 const row=document.createElement('tr'); cell(row,record.name); cell(row,record.relative_name); cell(row,record.relationship);
                 cell(row,(record.year ? record.year+' (revision)' : record.document_date.slice(0,4)+' (document year; revision unverified)')+' / '+record.edition+' / '+record.document_date);
                 cell(row,'AC '+record.ac_code+' - '+record.ac_name+' / Part '+record.part+' - '+record.station);
-                const link=document.createElement('a'); link.href=record.source_url.split('#')[0]+'#page='+record.pdf_page;
-                link.textContent='PDF page '+record.pdf_page+' / serial '+record.serial; link.target='_blank'; link.rel='noopener noreferrer'; cell(row,'').append(link); $('record-rows').append(row);
+                const link=document.createElement('a'); link.href=record.pdf_url;
+                link.textContent='PDF page '+record.pdf_page+' / serial '+record.serial; link.target='_blank'; link.rel='noopener noreferrer'; const sourceCell=cell(row,''); sourceCell.append(link); const official=document.createElement('a'); official.href=record.source_landing_url||record.source_url; official.textContent='Official publication'; official.target='_blank'; official.rel='noopener noreferrer'; sourceCell.append(document.createElement('br'),official); if(record.extraction_status==='ocr_candidate'){const note=document.createElement('small'); note.textContent='OCR text - verify PDF';sourceCell.append(document.createElement('br'),note);} $('record-rows').append(row);
             });
             $('record-status').textContent=data.total ? fmt(data.total)+' imported records match this scope. Names are optional.' : 'No imported records match this selection. This does not establish absence from the official electoral roll.';
             $('record-page-info').textContent=data.total ? 'Page '+data.current_page+' of '+data.last_page : '';
@@ -95,5 +97,25 @@
     for (const id of ['record-name','record-relative']) $(id).addEventListener('input', () => {clearResults(); $('record-status').textContent='Press Show records to apply the optional name filters.';});
     $('record-prev').onclick=() => {page--; showRecords();}; $('record-next').onclick=() => {page++; showRecords();};
     $('record-reset').onclick=() => {clearResults(); filters.forEach(id => $(id).value=''); $('record-name').value=''; $('record-relative').value=''; criteria=null; page=1; refreshOptions();};
-    refreshOptions();
+    $('record-retry').onclick=()=>refreshOptions();
+    async function startPilot() {
+        if (!await refreshOptions()) return;
+        const acChoices=Array.from($('record-ac').options).filter(option=>option.value);
+        if(acChoices.length===1){
+            $('record-ac').value=acChoices[0].value;
+            $('record-state').value=acChoices[0].value.split('|')[0];
+            for(const id of ['record-year','record-pc']){
+                const choices=Array.from($(id).options).filter(option=>option.value);
+                if(choices.length===1) $(id).value=choices[0].value;
+            }
+            if(await refreshOptions()) {
+                for(const id of ['record-station','record-edition']){
+                    const choices=Array.from($(id).options).filter(option=>option.value);
+                    if(choices.length===1) $(id).value=choices[0].value;
+                }
+                submit();
+            }
+        }
+    }
+    startPilot();
 })();

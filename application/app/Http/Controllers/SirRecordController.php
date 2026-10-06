@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SirRecordController extends Controller
 {
@@ -20,7 +21,7 @@ class SirRecordController extends Controller
 
     private function scope(array $input): Builder
     {
-        $query = DB::table('sir_records');
+        $query = DB::table('sir_records')->where('document_type', 'electoral_roll');
         if (! empty($input['period'])) {
             [$kind,$year] = explode(':', $input['period']);
             if ($kind === 'revision') {
@@ -52,7 +53,7 @@ class SirRecordController extends Controller
             return response()->json(['periods' => [], 'states' => [], 'pcs' => [], 'acs' => [], 'stations' => [], 'editions' => []]);
         }
         $metadata = ['edition_key', 'state_code', 'state_name', 'pc_code', 'pc_name', 'pc_source_url', 'ac_code', 'ac_name', 'year', 'edition', 'document_date'];
-        $all = DB::table('sir_records')->select('year', 'document_date')->distinct()->get();
+        $all = $this->scope([])->select('year', 'document_date')->distinct()->get();
         $periods = $all->map(fn ($row) => ['value' => ($row->year ? 'revision:'.$row->year : 'document:'.substr($row->document_date, 0, 4)), 'label' => $row->year ? (string) $row->year.' (revision year)' : substr($row->document_date, 0, 4).' (document year; revision unverified)'])->unique('value')->sortByDesc('value')->values();
         $stateRows = $this->scope(array_intersect_key($input, array_flip(['period'])))->select('state_code', 'state_name')->distinct()->get();
         $states = $stateRows->map(fn ($row) => ['value' => $row->state_code, 'label' => $row->state_name ?? ($row->state_code === '09' ? 'Uttar Pradesh' : 'State '.$row->state_code)])->unique('value')->sortBy('label')->values();
@@ -61,6 +62,13 @@ class SirRecordController extends Controller
         $acRows = $this->scope(array_intersect_key($input, array_flip(['period', 'state_code', 'pc_code'])))->select('state_code', 'ac_code', 'ac_name')->distinct()->get();
         $acs = $acRows->map(fn ($row) => ['value' => $row->state_code.'|'.$row->ac_code, 'label' => $row->ac_code.' - '.$row->ac_name])->sortBy('label')->values();
         $editions = $this->scope(array_diff_key($input, array_flip(['station_key', 'edition_key'])))->select($metadata)->distinct()->orderBy('document_date', 'desc')->get();
+        $coverage = DB::table('site_settings')->whereIn('key', $editions->pluck('edition_key')->map(fn (string $key): string => 'sir-roll-meta:'.$key))->pluck('value', 'key');
+        foreach ($editions as $edition) {
+            $details = json_decode($coverage->get('sir-roll-meta:'.$edition->edition_key, '{}'), true, 512, JSON_THROW_ON_ERROR);
+            $edition->indexed_records = $details['indexed_records'] ?? null;
+            $edition->printed_electors = $details['printed_electors'] ?? null;
+            $edition->held_records_count = $details['held_records_count'] ?? null;
+        }
         $stations = collect();
         if (! empty($input['ac_code'])) {
             $stations = $this->scope(array_diff_key($input, array_flip(['station_key'])))->select('edition_key', 'part', 'station', 'document_date')->distinct()->orderBy('part')->get()->map(fn ($row) => ['value' => $row->edition_key.':'.$row->part, 'label' => 'Part '.$row->part.' - '.$row->station.' ('.$row->document_date.')']);
@@ -87,8 +95,22 @@ class SirRecordController extends Controller
         if (! empty($input['part'])) {
             $query->where('part', $input['part']);
         }
-        $rows = $query->select('name', 'relative_name', 'relationship', 'year', 'edition', 'edition_key', 'document_date', 'state_code', 'state_name', 'pc_code', 'pc_name', 'ac_name', 'ac_code', 'part', 'station', 'serial', 'pdf_page', 'source_url')->orderBy('document_date', 'desc')->orderBy('state_code')->orderBy('ac_code')->orderBy('edition_key')->orderBy('part')->orderBy('serial')->orderBy('id')->paginate(25);
+        $rows = $query->select('name', 'relative_name', 'relationship', 'year', 'edition', 'edition_key', 'document_date', 'state_code', 'state_name', 'pc_code', 'pc_name', 'ac_name', 'ac_code', 'part', 'station', 'serial', 'pdf_page', 'source_url', 'source_landing_url', 'pdf_sha256', 'extraction_status')->orderBy('document_date', 'desc')->orderBy('state_code')->orderBy('ac_code')->orderBy('edition_key')->orderBy('part')->orderBy('serial')->orderBy('id')->paginate(25);
+        $rows->through(function (object $row): object {
+            $row->pdf_url = $row->pdf_sha256 ? route('sir.document', ['hash' => $row->pdf_sha256]).'#page='.$row->pdf_page : $row->source_url.'#page='.$row->pdf_page;
+
+            return $row;
+        });
 
         return response()->json($rows)->header('Cache-Control', 'private, no-store')->header('X-Robots-Tag', 'noindex, nofollow');
+    }
+
+    public function document(string $hash): BinaryFileResponse
+    {
+        abort_unless(DB::table('sir_records')->where('document_type', 'electoral_roll')->where('pdf_sha256', $hash)->exists(), 404);
+        $path = storage_path('app/private/sir-pdfs/'.$hash.'.pdf');
+        abort_unless(is_file($path), 404);
+
+        return response()->file($path, ['Content-Type' => 'application/pdf', 'X-Robots-Tag' => 'noindex, nofollow']);
     }
 }
