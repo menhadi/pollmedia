@@ -20,6 +20,12 @@ ROOT = Path(__file__).resolve().parent
 PDF_RENDER_LOCK = threading.Lock()
 
 
+def serial_at(context, page_number, cell):
+    page = context.get("page_cards", {}).get(str(page_number))
+    first = page["first_serial"] if page else (page_number-context["first_page"])*30+1
+    return first+cell-1
+
+
 def serial_ocr(image, left, top, tessdata, cache):
     if cache.exists():
         value = cache.read_text(encoding="ascii").strip()
@@ -67,7 +73,11 @@ def ocr_page(pdf_path, page_number, work, tessdata, context=None):
         top = groups[row*2][-1]
         for col in range(3):
             left = 40+col*571
-            expected = (page_number-context["first_page"])*30+row*3+col+1
+            cell_number = row*3+col+1
+            page_cards = context.get("page_cards", {}).get(str(page_number))
+            if page_cards and cell_number > page_cards["count"]:
+                continue
+            expected = serial_at(context, page_number, cell_number)
             if expected > context["printed_electors"]:
                 continue
             cell = [w for w in words if left <= w["x"] < left+420 and top-4 <= w["y"] < top+155]
@@ -135,6 +145,15 @@ if __name__ == "__main__":
         for page in range(context["first_page"], context["last_page"]+1):
             if str(page) not in context["sections"]:
                 raise ValueError("Every card page needs source-verified section metadata")
+        if "page_cards" in context:
+            next_serial = 1
+            for page in range(context["first_page"], context["last_page"]+1):
+                cards = context["page_cards"][str(page)]
+                if cards["first_serial"] != next_serial or not 1 <= cards["count"] <= 30:
+                    raise ValueError("Verified page card ranges must be contiguous")
+                next_serial += cards["count"]
+            if next_serial != context["printed_electors"]+1:
+                raise ValueError("Verified page card ranges do not reconcile with printed totals")
     else:
         if sha != "a5e5374f0e051ae58301471262ca5bd815ab8880fdb62000c27008e70decdbac":
             raise ValueError("Supply verified --metadata for other official parts")
@@ -161,7 +180,7 @@ if __name__ == "__main__":
             raise ValueError("Duplicate visual review serial")
         remaining = []
         for cell in held:
-            serial = (cell["pdf_page"]-context["first_page"])*30+cell["cell"]
+            serial = serial_at(context, cell["pdf_page"], cell["cell"])
             if serial not in reviewed:
                 remaining.append(cell)
                 continue
@@ -181,7 +200,7 @@ if __name__ == "__main__":
                 raise ValueError("Checked candidate differs from the source review")
             record["extraction_status"] = "reviewed"
     for cell in held:
-        serial = (cell["pdf_page"]-context["first_page"])*30+cell["cell"]
+        serial = serial_at(context, cell["pdf_page"], cell["cell"])
         details = {key:cell[key] for key in ["section_number", "section_name", "ward_number", "house_number", "age", "age_text", "gender", "elector_id", "field_notes", "serial_verified"]}
         records.append(dict(part=context["part"], station=context["station"], serial=serial,
                             name=cell["name"] or "[Unreadable name in OCR]", relative_name=cell["relative_name"] or "[Unreadable relative name in OCR]",

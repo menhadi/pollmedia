@@ -1,0 +1,229 @@
+{
+  "layout": "eci-hindi-three-column-v1",
+  "pdf_sha256": "e0138a47782c8fbaa4cf30ddad69a5e890584de9cbe1845f75ebcd505bb8cf2e",
+  "first_page": 3,
+  "last_page": 26,
+  "part": 6,
+  "station": "प्रा० वि० बड़ापुरा",
+  "printed_electors": 687,
+  "sections": {
+    "3": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "4": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "5": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "6": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "7": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "8": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "9": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "10": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "11": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "12": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "13": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "14": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "15": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "16": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "17": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "18": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "19": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "20": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "21": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "22": {
+      "number": "1",
+      "name": "बड़ापुरा"
+    },
+    "23": {
+      "number": "2",
+      "name": "हेमनाडी"
+    },
+    "24": {
+      "number": "2",
+      "name": "हेमनाडी"
+    },
+    "25": {
+      "number": "2",
+      "name": "हेमनाडी"
+    },
+    "26": {
+      "number": "2",
+      "name": "हेमनाडी"
+    }
+  },
+  "state_code": "09",
+  "state_name": "Uttar Pradesh",
+  "pc_code": "26",
+  "pc_name": "पीलीभीत / Pilibhit",
+  "pc_source_url": "https://pilibhit.nic.in/meeting-blo-bla/",
+  "ac_code": "127",
+  "ac_name": "पीलीभीत / Pilibhit",
+  "year": 2026,
+  "edition": "SIR 2026 draft roll - published 6 January 2026",
+  "document_date": "2026-01-06",
+  "source_url": "https://drive.google.com/file/d/14MYTjeyq4cEFetIEEhKN-_lMnuQCwY5q/view",
+  "source_landing_url": "https://pilibhit.nic.in/meeting-blo-bla/",
+  "roll_language": "Hindi",
+  "qualifying_date": "2026-01-01",
+  "official_statistics": [
+    {
+      "part": 6,
+      "male": 380,
+      "female": 307,
+      "third_gender": 0,
+      "total": 687,
+      "pdf_page": 27
+    }
+  ],
+  "page_cards": {
+    "3": {
+      "first_serial": 1,
+      "count": 30
+    },
+    "4": {
+      "first_serial": 31,
+      "count": 30
+    },
+    "5": {
+      "first_serial": 61,
+      "count": 30
+    },
+    "6": {
+      "first_serial": 91,
+      "count": 30
+    },
+    "7": {
+      "first_serial": 121,
+      "count": 30
+    },
+    "8": {
+      "first_serial": 151,
+      "count": 30
+    },
+    "9": {
+      "first_serial": 181,
+      "count": 30
+    },
+    "10": {
+      "first_serial": 211,
+      "count": 30
+    },
+    "11": {
+      "first_serial": 241,
+      "count": 30
+    },
+    "12": {
+      "first_serial": 271,
+      "count": 30
+    },
+    "13": {
+      "first_serial": 301,
+      "count": 30
+    },
+    "14": {
+      "first_serial": 331,
+      "count": 30
+    },
+    "15": {
+      "first_serial": 361,
+      "count": 30
+    },
+    "16": {
+      "first_serial": 391,
+      "count": 30
+    },
+    "17": {
+      "first_serial": 421,
+      "count": 30
+    },
+    "18": {
+      "first_serial": 451,
+      "count": 30
+    },
+    "19": {
+      "first_serial": 481,
+      "count": 30
+    },
+    "20": {
+      "first_serial": 511,
+      "count": 30
+    },
+    "21": {
+      "first_serial": 541,
+      "count": 30
+    },
+    "22": {
+      "first_serial": 571,
+      "count": 9
+    },
+    "23": {
+      "first_serial": 580,
+      "count": 30
+    },
+    "24": {
+      "first_serial": 610,
+      "count": 30
+    },
+    "25": {
+      "first_serial": 640,
+      "count": 30
+    },
+    "26": {
+      "first_serial": 670,
+      "count": 18
+    }
+  }
+}
