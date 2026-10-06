@@ -1,0 +1,131 @@
+{
+  "layout": "eci-hindi-three-column-v1",
+  "pdf_sha256": "519bf75777aa9be2c6ab481651f2afe5bd2c31cbef5eb3d023fbdc3736a3fb6d",
+  "first_page": 3,
+  "last_page": 26,
+  "part": 5,
+  "station": "जू० हा० स्कूल वांसखेड़ा कक्ष सं० 2",
+  "printed_electors": 691,
+  "sections": {
+    "3": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "4": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "5": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "6": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "7": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "8": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "9": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "10": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "11": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "12": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "13": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "14": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "15": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "16": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "17": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "18": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "19": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "20": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "21": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "22": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "23": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "24": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "25": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    },
+    "26": {
+      "number": "1",
+      "name": "वांसखेड़ा आं०"
+    }
+  },
+  "state_code": "09",
+  "state_name": "Uttar Pradesh",
+  "pc_code": "26",
+  "pc_name": "पीलीभीत / Pilibhit",
+  "pc_source_url": "https://pilibhit.nic.in/meeting-blo-bla/",
+  "ac_code": "127",
+  "ac_name": "पीलीभीत / Pilibhit",
+  "year": 2026,
+  "edition": "SIR 2026 draft roll - published 6 January 2026",
+  "document_date": "2026-01-06",
+  "source_url": "https://drive.google.com/file/d/14MYTjeyq4cEFetIEEhKN-_lMnuQCwY5q/view",
+  "source_landing_url": "https://pilibhit.nic.in/meeting-blo-bla/",
+  "roll_language": "Hindi",
+  "qualifying_date": "2026-01-01",
+  "official_statistics": [
+    {
+      "part": 5,
+      "male": 403,
+      "female": 288,
+      "third_gender": 0,
+      "total": 691,
+      "pdf_page": 27
+    }
+  ]
+}
