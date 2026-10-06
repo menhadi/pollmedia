@@ -133,12 +133,25 @@ class ImportSirRecords extends Command
                     throw new \RuntimeException('Unable to preserve original source PDF.');
                 }
             }
-            DB::transaction(function () use ($data, $rows) {
-                DB::table('sir_records')->where('edition_key', $data['edition_key'])->delete();
-                foreach (array_chunk($rows, 100) as $chunk) {
-                    DB::table('sir_records')->insert($chunk);
+            DB::transaction(function () use ($data, $rows, $keys): void {
+                $existing = DB::table('sir_records')->where('edition_key', $data['edition_key'])->lockForUpdate()->get();
+                foreach ($existing as $record) {
+                    if (! isset($keys[$record->part.'|'.$record->serial])) {
+                        throw new \RuntimeException('Replacement package omits an existing entry. Import a complete edition package.');
+                    }
+                    foreach (['pdf_sha256', 'state_code', 'ac_code', 'document_type', 'year', 'document_date'] as $field) {
+                        if ((string) $record->$field !== (string) ($data[$field] ?? '')) {
+                            throw new \RuntimeException('An existing edition cannot be assigned different source provenance.');
+                        }
+                    }
                 }
-                DB::table('site_settings')->updateOrInsert(['key' => 'sir-roll-meta:'.$data['edition_key']], ['value' => json_encode(['indexed_records' => count($rows), 'printed_electors' => $data['printed_electors'] ?? null, 'held_records_count' => count($data['held_rows'] ?? []), 'uncertain_records' => count(array_filter($rows, fn (array $row): bool => ($row['extraction_status'] ?? '') === 'ocr_uncertain')), 'roll_language' => $data['roll_language'] ?? null, 'qualifying_date' => $data['qualifying_date'] ?? null, 'official_statistics' => array_map(fn (array $statistics): array => array_intersect_key($statistics, array_flip(['part', 'male', 'female', 'third_gender', 'total', 'pdf_page'])), $data['official_statistics'] ?? [])], JSON_THROW_ON_ERROR), 'updated_at' => now()]);
+                $protectedIds = DB::table('sir_extraction_reviews')->whereIn('record_id', $existing->pluck('id'))->whereIn('status', ['approved', 'approved_flagged'])->pluck('record_id')->all();
+                $protectedKeys = $existing->whereIn('id', $protectedIds)->map(fn (object $row): string => $row->part.'|'.$row->serial)->all();
+                $updates = array_values(array_filter($rows, fn (array $row): bool => ! in_array($row['part'].'|'.$row['serial'], $protectedKeys, true)));
+                foreach (array_chunk($updates, 100) as $chunk) {
+                    DB::table('sir_records')->upsert($chunk, ['edition_key', 'part', 'serial']);
+                }
+                DB::table('site_settings')->updateOrInsert(['key' => 'sir-roll-meta:'.$data['edition_key']], ['value' => json_encode(['indexed_records' => count($rows), 'printed_electors' => $data['printed_electors'] ?? null, 'held_records_count' => count($data['held_rows'] ?? []), 'uncertain_records' => DB::table('sir_records')->where('edition_key', $data['edition_key'])->where('extraction_status', 'ocr_uncertain')->count(), 'roll_language' => $data['roll_language'] ?? null, 'qualifying_date' => $data['qualifying_date'] ?? null, 'official_statistics' => array_map(fn (array $statistics): array => array_intersect_key($statistics, array_flip(['part', 'male', 'female', 'third_gender', 'total', 'pdf_page'])), $data['official_statistics'] ?? [])], JSON_THROW_ON_ERROR), 'updated_at' => now()]);
             });
             $this->info('Imported '.count($rows).' SIR records.');
 

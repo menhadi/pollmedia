@@ -15,3 +15,6 @@ auth.json
 *.pem
 *.key
 /exports/
+
+# Local progress for resumable official SIR batches
+pilot/sir_rollout/*.checkpoint.json

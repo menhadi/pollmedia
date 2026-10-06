@@ -5,9 +5,10 @@
 @php
 $groups = [
     ['Workspace','WS',[['Overview','admin.dashboard'],['Your account','admin.account']]],
-    ['Published listings','LS',[['Election listings','listings.index','elections'],['Census listings','listings.index','census'],['SIR listings','listings.index','sir']]],
+    ['Published listings','LS',[['Election listings','listings.index','elections'],['Census listings','listings.index','census']]],
+    ['SIR','SR',[['Voter records','sir.admin.index'],['AI correction & review','sir.review'],['Nationwide imports','sir.imports.index']]],
     ['Sources & imports','SI',[['Data imports','imports.index'],['Census archives','census.archive'],['Census publication','census-catalogue.review'],['Election archives','election-imports.index'],['Election batches','election-batches.index'],['Manual data corrections','site.editor'],['PDF storage','pdf-storage.index']]],
-    ['Review & community','RV',[['SIR extraction review','sir.review'],['Constituency map checks','elections.maps.review'],['Data and website reports','feedback.queue'],['Citizen issues','issues.queue'],['Representatives & authorities','authorities.index'],['Report drafts','reports.archive']]],
+    ['Review & community','RV',[['Constituency map checks','elections.maps.review'],['Data and website reports','feedback.queue'],['Citizen issues','issues.queue'],['Representatives & authorities','authorities.index'],['Report drafts','reports.archive']]],
     ['Website & SEO','SE',[['Page SEO','seo.index'],['Static pages','static-pages.index'],['Hindi translations','translations.index']]],
     ['Settings & operations','ST',[['Appearance, APIs & monitoring','site.manage'],['AI providers','ai.settings']]],
 ];

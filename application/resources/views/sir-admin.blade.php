@@ -1,0 +1,25 @@
+@extends('seo-layout')
+@section('content')
+<h1>SIR voter records</h1>
+<p>Browse official electoral rolls, find records needing correction, and compare details against the source PDF.</p>
+<div class="actions"><a class="button" href="{{ route('sir.imports.index') }}">Nationwide imports</a><a class="button secondary" href="{{ route('sir.review') }}">AI correction & review</a></div>
+<form class="card filters" method="get" data-sir-admin-filters>
+@foreach(['year'=>['Year',$years->map(fn($v)=>(object)['value'=>$v,'label'=>$v])],'state_code'=>['State',$states->map(fn($v)=>(object)['value'=>$v->state_code,'label'=>$v->state_name ?: $v->state_code])],'pc_code'=>['PC',$pcs->map(fn($v)=>(object)['value'=>$v->pc_code,'label'=>$v->pc_code.' - '.$v->pc_name])],'ac_code'=>['AC',$acs->map(fn($v)=>(object)['value'=>$v->ac_code,'label'=>$v->ac_code.' - '.$v->ac_name])],'part'=>['Polling station / part',$parts->map(fn($v)=>(object)['value'=>$v->part,'label'=>$v->part.' - '.$v->station])]] as $field=>[$label,$options])
+<div><label for="filter-{{ $field }}">{{ $label }}</label><select id="filter-{{ $field }}" name="{{ $field }}"><option value="">All available</option>@foreach($options as $option)<option value="{{ $option->value }}" @selected((string)request($field)===(string)$option->value)>{{ $option->label }}</option>@endforeach</select></div>
+@endforeach
+<div><label for="status">Review status</label><select name="status" id="status">@foreach(['all'=>'All records','correction'=>'Needs correction','pending'=>'Pending AI review'] as $value=>$label)<option value="{{ $value }}" @selected(request('status','all')===$value)>{{ $label }}</option>@endforeach</select></div>
+<div><label for="name">Name / relative name</label><input name="name" id="name" value="{{ request('name') }}" placeholder="Original script or English"></div>
+<div><label for="serial">Sequence number</label><input type="number" min="1" name="serial" id="serial" value="{{ request('serial') }}"></div>
+<div><label for="per-page">Rows</label><select name="per_page" id="per-page">@foreach([50,100,500] as $size)<option @selected((int)request('per_page',50)===$size)>{{ $size }}</option>@endforeach</select></div><button>Filter records</button><a href="{{ route('sir.admin.index') }}">Reset</a></form>
+<p><strong>{{ number_format($records->total()) }}</strong> matching entries</p>
+<style>.sir-table-wrap{overflow:auto}.sir-admin-table{width:100%;border-collapse:collapse;background:white}.sir-admin-table th{background:#123d35;color:#fff;text-align:left;padding:14px;white-space:nowrap}.sir-admin-table td{padding:14px;border-bottom:1px solid #dce7df;vertical-align:top}.sir-admin-table tr:nth-child(even){background:#edf4ef}.sir-admin-table .button{white-space:nowrap;padding:7px 12px;margin:3px}.sir-review-flag{color:#8b4e00;font-weight:600}</style>
+<div class="sir-table-wrap"><table class="sir-admin-table"><thead><tr><th>Year / location</th><th>Part / sequence</th><th>Elector / relative</th><th>House / ward / section</th><th>Age / gender</th><th>Review / actions</th></tr></thead><tbody>
+@forelse($records as $record)<tr><td>{{ $record->year }}<br>{{ $record->state_name ?: $record->state_code }}<br>PC {{ $record->pc_code ?? 'Not mapped' }} / AC {{ $record->ac_code }}<br><small>{{ $record->edition }}</small></td><td>Part {{ $record->part }} / {{ $record->serial }}<br><small>{{ $record->station }}</small></td><td><strong>{{ $record->name }}</strong><br>{{ $record->relationship }}: {{ $record->relative_name }}<br><small>{{ $record->elector_id }}</small></td><td>{{ $record->house_number ?? 'Not available' }}<br>Ward {{ $record->ward_number ?? 'Not published' }}<br>{{ $record->section_number }} {{ $record->section_name }}</td><td>{{ $record->age ?? 'Unreadable' }} / {{ $record->gender ?? 'Unreadable' }}</td><td><span @class(['sir-review-flag'=>$record->extraction_status==='ocr_uncertain'])>{{ $record->extraction_status==='reviewed'?'Reviewed':($record->extraction_status==='ocr_uncertain'?'Needs correction':'Imported') }}</span><br><small>{{ $record->field_notes }}</small><br>@if($record->pdf_sha256)<a href="{{ route('sir.document',['hash'=>$record->pdf_sha256]) }}#page={{ $record->pdf_page }}" target="_blank" rel="noopener">PDF page {{ $record->pdf_page }}</a>@endif<br><a class="button" href="{{ route('sir.admin.edit',['record'=>$record->id]) }}">Edit manually</a><a class="button secondary" href="{{ route('sir.review',['status'=>'all','edition_key'=>$record->edition_key,'part'=>$record->part,'serial'=>$record->serial]) }}">AI correction</a></td></tr>
+@empty<tr><td colspan="6">No imported records match these filters.</td></tr>@endforelse</tbody></table></div>
+{{ $records->links() }}
+<script>
+const sirFilters=document.querySelector('[data-sir-admin-filters]');
+const hierarchy=['year','state_code','pc_code','ac_code','part'];
+sirFilters.addEventListener('change',event=>{const index=hierarchy.indexOf(event.target.name);if(index>=0){hierarchy.slice(index+1).forEach(name=>sirFilters.elements[name].value='');}},true);
+</script>
+@endsection

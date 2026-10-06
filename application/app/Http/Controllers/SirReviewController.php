@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AiProviders;
-use App\Services\SirNameSearch;
+use App\Services\SirRecordCorrection;
 use App\Services\SirVisionExtractor;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -82,30 +82,21 @@ class SirReviewController extends Controller
         return response()->file($path, ['Content-Type' => $proposal->image_mime, 'X-Content-Type-Options' => 'nosniff']);
     }
 
-    public function decide(Request $request, int $review): RedirectResponse
+    public function decide(Request $request, int $review, SirRecordCorrection $correction): RedirectResponse
     {
         $input = $request->validate(['decision' => 'required|in:approve,reject']);
         $values = [];
         if ($input['decision'] === 'approve') {
-            $values = $request->validate(['verified' => 'accepted', 'name' => 'required|string|max:255', 'relative_name' => 'required|string|max:255', 'relationship' => 'required|in:Father,Mother,Husband,Wife,Other', 'house_number' => 'nullable|string|max:255', 'age' => 'nullable|integer|between:0,120', 'gender' => 'nullable|string|max:100', 'section_number' => 'nullable|string|max:50', 'section_name' => 'nullable|string|max:255', 'ward_number' => 'nullable|string|max:50', 'elector_id' => 'nullable|string|max:100']);
+            $values = $request->validate(SirRecordCorrection::rules());
             unset($values['verified']);
         }
-        DB::transaction(function () use ($request, $review, $input, $values): void {
+        DB::transaction(function () use ($request, $review, $input, $values, $correction): void {
             $proposal = DB::table('sir_extraction_reviews')->where('id', $review)->lockForUpdate()->first();
             abort_unless($proposal && $proposal->status === 'pending', 409, 'This suggestion is no longer pending.');
             if ($input['decision'] === 'approve') {
                 $record = DB::table('sir_records')->where('id', $proposal->record_id)->lockForUpdate()->first();
                 abort_unless($record && self::fingerprint($record) === $proposal->record_hash, 409, 'Source row changed. This stale suggestion cannot be applied.');
-                $name = SirNameSearch::latin($values['name']);
-                $relative = SirNameSearch::latin($values['relative_name']);
-                DB::table('sir_records')->where('id', $record->id)->update($values + ['name_latin' => $name, 'relative_name_latin' => $relative, 'name_latin_key' => SirNameSearch::key($name), 'relative_name_latin_key' => SirNameSearch::key($relative), 'extraction_status' => 'reviewed', 'serial_verified' => true, 'field_notes' => null, 'extraction_note' => 'Admin verified against original PDF.']);
-                $key = 'sir-roll-meta:'.$record->edition_key;
-                $meta = DB::table('site_settings')->where('key', $key)->lockForUpdate()->first();
-                if ($meta) {
-                    $details = json_decode($meta->value, true, 512, JSON_THROW_ON_ERROR);
-                    $details['uncertain_records'] = DB::table('sir_records')->where('edition_key', $record->edition_key)->where('extraction_status', 'ocr_uncertain')->count();
-                    DB::table('site_settings')->where('key', $key)->update(['value' => json_encode($details, JSON_THROW_ON_ERROR), 'updated_at' => now()]);
-                }
+                $correction->apply($record, $values);
             }
             DB::table('sir_extraction_reviews')->where('id', $review)->update(['status' => $input['decision'] === 'approve' ? 'approved' : 'rejected', 'accepted_values' => $input['decision'] === 'approve' ? json_encode($values, JSON_THROW_ON_ERROR) : null, 'reviewed_by' => $request->user()->id, 'reviewed_at' => now(), 'updated_at' => now()]);
         });

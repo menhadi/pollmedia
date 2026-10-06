@@ -1,0 +1,14 @@
+@extends('seo-layout')
+@section('content')
+<h1>Correct SIR record</h1><p><a href="{{ route('sir.admin.index') }}">Voter records</a> / {{ $record->year }} / AC {{ $record->ac_code }} / Part {{ $record->part }} / Sequence {{ $record->serial }}</p>
+<p>{{ $record->name }} — {{ $record->edition }}</p>
+<div class="actions">@if($record->pdf_sha256)<a class="button" href="{{ route('sir.document',['hash'=>$record->pdf_sha256]) }}#page={{ $record->pdf_page }}" target="_blank" rel="noopener">Open PDF page {{ $record->pdf_page }}</a>@endif<a class="button secondary" href="{{ route('sir.review',['status'=>'all','edition_key'=>$record->edition_key,'part'=>$record->part,'serial'=>$record->serial]) }}">AI correction</a></div>
+<form class="card" method="post" action="{{ route('sir.admin.update',['record'=>$record->id]) }}" data-manual-submit>@csrf<input type="hidden" name="record_hash" value="{{ \App\Http\Controllers\SirReviewController::fingerprint($record) }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+@foreach(['name'=>'Elector name (as printed)','relative_name'=>'Relative name (as printed)','relationship'=>'Relationship','house_number'=>'House number','ward_number'=>'Ward number','section_number'=>'Section number','section_name'=>'Section name','age'=>'Age','gender'=>'Gender (as printed)','elector_id'=>'Voter ID'] as $field=>$label)
+<div class="field"><label for="edit-{{ $field }}">{{ $label }}</label>@if($field==='relationship')<select name="{{ $field }}" id="edit-{{ $field }}">@foreach(['Father','Mother','Husband','Wife','Other'] as $relationship)<option @selected(old($field,$record->$field)===$relationship)>{{ $relationship }}</option>@endforeach</select>@else<input id="edit-{{ $field }}" name="{{ $field }}" value="{{ old($field,$record->$field) }}" type="{{ $field==='age'?'number':'text' }}" @if($field==='age') min="0" max="120" @endif @if(in_array($field,['name','relative_name'])) required @endif>@endif</div>
+@endforeach</div>
+<label><input type="checkbox" name="keep_flagged" value="1" @checked(old('keep_flagged',$record->extraction_status==='ocr_uncertain'))>Some details remain unclear — keep in Needs correction</label><div class="field"><label for="note">Details still needing review (required when flagged)</label><textarea name="note" id="note" maxlength="2000">{{ old('note',$record->field_notes) }}</textarea></div>
+<label><input type="checkbox" name="verified" value="1" required>I compared these details with the original PDF.</label><p><button>Save correction</button></p><p class="muted">The original source, year, part and sequence remain attached. Saving updates English search aliases and records your changes in the review history.</p></form>
+<h2>Review history</h2>@forelse($history as $item)<p>{{ $item->created_at }} · {{ ucfirst($item->provider) }} · {{ $item->status }}</p>@empty<p>No corrections yet.</p>@endforelse
+@endsection

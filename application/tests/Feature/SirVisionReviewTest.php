@@ -69,7 +69,7 @@ class SirVisionReviewTest extends TestCase
         $this->post('https://localhost/admin/sir/review/1/vision')->assertForbidden();
         Http::assertNothingSent();
         $this->administrator();
-        $this->get('https://localhost/admin/sir/review')->assertOk()->assertSee('Extract card with Vision');
+        $this->get('https://localhost/admin/sir/review')->assertOk()->assertSee('AI correction');
     }
 
     public function test_vision_suggestion_is_staged_then_explicitly_reviewed_and_audited(): void
@@ -179,5 +179,16 @@ class SirVisionReviewTest extends TestCase
         $this->assertDatabaseHas('sir_records', ['name' => 'Newer correction']);
         $this->post('https://localhost/admin/sir/proposals/1', ['decision' => 'reject'])->assertRedirect();
         $this->assertDatabaseHas('sir_extraction_reviews', ['status' => 'rejected']);
+    }
+
+    public function test_review_decisions_do_not_consume_ai_request_allowance(): void
+    {
+        $this->administrator();
+        for ($attempt = 0; $attempt < 3; $attempt++) {
+            $this->post('https://localhost/admin/sir/proposals/999', ['decision' => 'reject'])->assertStatus(409);
+        }
+        $this->fakeResponse();
+        $this->post('https://localhost/admin/sir/review/1/vision')->assertRedirect()->assertSessionHasNoErrors();
+        Http::assertSentCount(1);
     }
 }

@@ -17,8 +17,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ListingController extends Controller
 {
-    public function index(Request $request, string $section): View
+    public function index(Request $request, string $section): View|RedirectResponse
     {
+        if ($section === 'sir') {
+            return redirect()->route('sir.admin.index');
+        }
         abort_if($request->has('table'), 404);
         $input = $request->validate(['q' => 'nullable|string|max:100', 'kind' => 'nullable|in:pc,ac', 'state' => 'nullable|string|max:100', 'year' => 'nullable|integer|min:1800|max:2100', 'id' => 'nullable|integer|min:1', 'page' => 'nullable|integer|min:1']);
         $documents = collect();

@@ -1,6 +1,6 @@
 @extends('seo-layout')
 @section('content')
-<h1>SIR extraction review</h1>
+<h1>SIR correction review</h1><p><a href="{{ route('sir.admin.index',['status'=>'correction']) }}">Browse records needing correction</a></p>
 <p>Review doubtful voter cards against their original PDF. Vision suggestions remain separate until you verify and apply them.</p>
 <p class="notice">Select DeepSeek or OpenAI using the API key from <a href="{{ route('ai.settings') }}">AI Settings</a>. DeepSeek reads an image of the selected PDF page; OpenAI reads the original PDF. Requests may incur API charges. Suggestions need your verification before publication. For DeepSeek, use <code>deepseek-flash</code>.</p>
 <form method="get" class="filters card" data-manual-submit>
@@ -11,7 +11,7 @@
 @forelse($records as $record)
 <section class="card"><h2>{{ $record->name }}</h2><p class="muted">AC {{ $record->ac_code }} / Part {{ $record->part }} / Sequence {{ $record->serial }} / {{ $record->year }} / {{ $record->extraction_status }}</p>
 @if($record->pdf_sha256)<a class="button secondary" href="{{ route('sir.document',['hash'=>$record->pdf_sha256]) }}#page={{ $record->pdf_page }}" target="_blank" rel="noopener">Compare PDF page {{ $record->pdf_page }}</a>@endif
-<p class="muted">{{ $record->extraction_note }} {{ $record->field_notes }}</p>
+<p><a class="button secondary" href="{{ route('sir.admin.edit',['record'=>$record->id]) }}">Edit manually</a></p><p class="muted">{{ $record->extraction_note }} {{ $record->field_notes }}</p>
 @php($history=$reviews->get($record->id,collect()))
 @php($pending=$history->firstWhere('status','pending'))
 @if(!$pending)
@@ -19,7 +19,7 @@
 <div class="filters"><div class="field"><label for="vision-provider-{{ $record->id }}">Vision provider</label><select id="vision-provider-{{ $record->id }}" name="provider" class="vision-provider">@foreach(['deepseek','openai'] as $provider)<option value="{{ $provider }}" data-model="{{ $providerOptions[$provider]['model'] ?: ($provider==='deepseek'?'deepseek-flash':'') }}" data-key="{{ $providerOptions[$provider]['has_key']?'1':'0' }}">{{ $providerOptions[$provider]['label'] }}{{ $providerOptions[$provider]['has_key']?'':' — API key needed' }}</option>@endforeach</select></div>
 <div class="field"><label for="vision-model-{{ $record->id }}">Vision model ID</label><input id="vision-model-{{ $record->id }}" name="model" maxlength="120" value="{{ $providerOptions['deepseek']['model'] ?: 'deepseek-flash' }}" required><small class="muted">Uses your saved provider model. You may override it for this request.</small></div></div>
 <div class="field"><label for="vision-image-{{ $record->id }}">PDF page or card image (optional for DeepSeek)</label><input id="vision-image-{{ $record->id }}" name="page_image" type="file" accept="image/png,image/jpeg,image/webp"><small class="muted">The server normally creates this image from the original PDF. If rendering is unavailable, attach the matching page/card image (PNG, JPEG or WebP, below 8 MB). Include the sequence number.</small></div>
-<button @disabled(!$providerOptions['deepseek']['has_key'] || !$record->pdf_sha256) data-has-pdf="{{ $record->pdf_sha256?'1':'0' }}">Extract card with Vision</button></form>
+<button @disabled(!$providerOptions['deepseek']['has_key'] || !$record->pdf_sha256) data-has-pdf="{{ $record->pdf_sha256?'1':'0' }}">AI correction</button></form>
 @endif
 @if($pending)
 @php($suggestion=json_decode($pending->suggestion,true))

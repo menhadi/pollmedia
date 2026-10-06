@@ -1,4 +1,8 @@
-"""OCR every card in the reviewed Pilibhit Part 1 PDF; retain uncertain text."""
+"""Extract ECI Hindi three-column roll parts using verified source metadata.
+
+Retain every card, cache work by PDF checksum, and flag uncertain text.
+Other layouts/languages require a separate verified adapter.
+"""
 import argparse
 import concurrent.futures
 import csv
@@ -26,7 +30,8 @@ def serial_ocr(image, left, top, tessdata, cache):
     return int(value) if value.isdigit() else None
 
 
-def ocr_page(pdf_path, page_number, work, tessdata):
+def ocr_page(pdf_path, page_number, work, tessdata, context=None):
+    context = context or dict(first_page=3, part=1, station="जूनियर हाई स्कूल फुलैया", printed_electors=933, sections={str(page_number):dict(number="1", name="फुलैया")})
     tsv = work/f"page-{page_number}.tsv"
     image_path = work/f"page-{page_number}.png"
     if not tsv.exists():
@@ -52,7 +57,9 @@ def ocr_page(pdf_path, page_number, work, tessdata):
         top = groups[row*2][-1]
         for col in range(3):
             left = 40+col*571
-            expected = (page_number-3)*30+row*3+col+1
+            expected = (page_number-context["first_page"])*30+row*3+col+1
+            if expected > context["printed_electors"]:
+                continue
             cell = [w for w in words if left <= w["x"] < left+420 and top-4 <= w["y"] < top+155]
             name_words = sorted([w for w in cell if top+43 <= w["y"] < top+75], key=lambda w:w["x"])
             relative_words = sorted([w for w in cell if top+75 <= w["y"] < top+105], key=lambda w:w["x"])
@@ -78,7 +85,7 @@ def ocr_page(pdf_path, page_number, work, tessdata):
             gender = gender_match[1].strip() if gender_match else None
             epic_words = sorted([w for w in field_words if w["x"] >= left+420 and top <= w["y"] < top+40], key=lambda w:w["x"])
             epic = " ".join(w["text"] for w in epic_words).strip() or None
-            details = dict(section_number="1", section_name="फुलैया", ward_number=None, house_number=house or None,
+            details = dict(section_number=context["sections"][str(page_number)]["number"], section_name=context["sections"][str(page_number)]["name"], ward_number=None, house_number=house or None,
                            age=age if age is not None and 0 <= age <= 120 else None, age_text=age_line or None,
                            gender=gender, elector_id=epic, field_notes="Age, gender, house number and voter ID are OCR text; verify the original PDF.")
             serial_words = [w for w in cell if w["x"] < left+190 and top <= w["y"] < top+40]
@@ -95,7 +102,7 @@ def ocr_page(pdf_path, page_number, work, tessdata):
                 held.append(dict(pdf_page=page_number, cell=row*3+col+1, reason="Name or relative name OCR is uncertain; verify PDF", name=name, relative_name=relative[2].strip() if relative else relative_text,
                                  relationship={"पिता":"Father", "पति":"Husband", "माता":"Mother"}[relative[1]] if relative else "Other", serial_verified=serial == expected, **details))
                 continue
-            records.append(dict(part=1, station="जूनियर हाई स्कूल फुलैया", serial=serial, serial_verified=True, name=name, relative_name=relative[2].strip(), relationship={"पिता":"Father", "पति":"Husband", "माता":"Mother"}[relative[1]], pdf_page=page_number, extraction_status="ocr_candidate", **details))
+            records.append(dict(part=context["part"], station=context["station"], serial=serial, serial_verified=True, name=name, relative_name=relative[2].strip(), relationship={"पिता":"Father", "पति":"Husband", "माता":"Mother"}[relative[1]], pdf_page=page_number, extraction_status="ocr_candidate", **details))
     return records, held
 
 
@@ -105,21 +112,34 @@ if __name__ == "__main__":
     parser.add_argument("--output", required=True)
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--reviews")
+    parser.add_argument("--metadata", help="Source-verified metadata and page sections for the Hindi three-column ECI layout")
     args = parser.parse_args()
     pdf_path = Path(args.pdf)
     sha = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
-    if sha != "a5e5374f0e051ae58301471262ca5bd815ab8880fdb62000c27008e70decdbac":
-        raise ValueError("This reviewed parser supports only the acquired Pilibhit Part 1 draft PDF")
-    work = ROOT/"tmp"/"sir-draft-ocr"
+    if args.metadata:
+        context = json.loads(Path(args.metadata).read_text(encoding="utf-8"))
+        if context.get("pdf_sha256") != sha or context.get("layout") != "eci-hindi-three-column-v1" or context.get("roll_language") != "Hindi":
+            raise ValueError("Source checksum or supported layout/language does not match")
+        if context["printed_electors"] != sum(item["total"] for item in context["official_statistics"]):
+            raise ValueError("Printed totals do not reconcile")
+        for page in range(context["first_page"], context["last_page"]+1):
+            if str(page) not in context["sections"]:
+                raise ValueError("Every card page needs source-verified section metadata")
+    else:
+        if sha != "a5e5374f0e051ae58301471262ca5bd815ab8880fdb62000c27008e70decdbac":
+            raise ValueError("Supply verified --metadata for other official parts")
+        context = dict(first_page=3, last_page=34, part=1, station="जूनियर हाई स्कूल फुलैया", printed_electors=933,
+                       sections={str(page):dict(number="1", name="फुलैया") for page in range(3,35)})
+    work = ROOT/"tmp"/"sir-draft-ocr"/sha if args.metadata else ROOT/"tmp"/"sir-draft-ocr"
     work.mkdir(parents=True, exist_ok=True)
     records, held = [], []
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
-        for extracted, rejected in pool.map(lambda n:ocr_page(pdf_path, n, work, ROOT/"tmp"/"sir-tessdata"), range(3, 35)):
+        for extracted, rejected in pool.map(lambda n:ocr_page(pdf_path, n, work, ROOT/"tmp"/"sir-tessdata", context), range(context["first_page"], context["last_page"]+1)):
             records.extend(extracted)
             held.extend(rejected)
             print(f"processed {len(records)} candidates, {len(held)} held", flush=True)
     records.sort(key=lambda r:r["serial"])
-    if len({r["serial"] for r in records}) != len(records) or len(records)+len(held) != 933:
+    if len({r["serial"] for r in records}) != len(records) or len(records)+len(held) != context["printed_electors"]:
         raise ValueError("Card count does not reconcile with printed elector total")
     review_count = 0
     if args.reviews:
@@ -131,7 +151,7 @@ if __name__ == "__main__":
             raise ValueError("Duplicate visual review serial")
         remaining = []
         for cell in held:
-            serial = (cell["pdf_page"]-3)*30+cell["cell"]
+            serial = (cell["pdf_page"]-context["first_page"])*30+cell["cell"]
             if serial not in reviewed:
                 remaining.append(cell)
                 continue
@@ -139,7 +159,7 @@ if __name__ == "__main__":
             if len(item)!=4 or not item[1] or not item[2] or item[3] not in ["Father","Mother","Husband","Wife","Other"]:
                 raise ValueError("Invalid reviewed record")
             details = {key:cell[key] for key in ["section_number", "section_name", "ward_number", "house_number", "age", "age_text", "gender", "elector_id", "field_notes"]}
-            records.append(dict(part=1, station="जूनियर हाई स्कूल फुलैया", serial=serial, serial_verified=True, name=item[1], relative_name=item[2], relationship=item[3], pdf_page=cell["pdf_page"], extraction_status="reviewed", **details))
+            records.append(dict(part=context["part"], station=context["station"], serial=serial, serial_verified=True, name=item[1], relative_name=item[2], relationship=item[3], pdf_page=cell["pdf_page"], extraction_status="reviewed", **details))
             review_count += 1
         if reviewed:
             raise ValueError("Reviewed serial is not in the held inventory")
@@ -151,15 +171,15 @@ if __name__ == "__main__":
                 raise ValueError("Checked candidate differs from the source review")
             record["extraction_status"] = "reviewed"
     for cell in held:
-        serial = (cell["pdf_page"]-3)*30+cell["cell"]
+        serial = (cell["pdf_page"]-context["first_page"])*30+cell["cell"]
         details = {key:cell[key] for key in ["section_number", "section_name", "ward_number", "house_number", "age", "age_text", "gender", "elector_id", "field_notes", "serial_verified"]}
-        records.append(dict(part=1, station="जूनियर हाई स्कूल फुलैया", serial=serial,
+        records.append(dict(part=context["part"], station=context["station"], serial=serial,
                             name=cell["name"] or "[Unreadable name in OCR]", relative_name=cell["relative_name"] or "[Unreadable relative name in OCR]",
                             relationship=cell["relationship"], pdf_page=cell["pdf_page"], extraction_status="ocr_uncertain", extraction_note=cell["reason"], **details))
     uncertain_count = len(held)
     held = []
     records.sort(key=lambda r:r["serial"])
-    if len(records) != 933 or {r["serial"] for r in records} != set(range(1, 934)):
+    if len(records) != context["printed_electors"] or {r["serial"] for r in records} != set(range(1, context["printed_electors"]+1)):
         raise ValueError("Every printed card must appear exactly once")
     if args.reviews:
         allowed_fields = {"house_number", "age", "gender", "elector_id", "serial_verified"}
@@ -174,6 +194,9 @@ if __name__ == "__main__":
                 raise ValueError("Field review refers to a missing card")
             record.update({key:value for key,value in checked.items() if key in allowed_fields})
     result = dict(edition_key=sha, state_code="09", state_name="Uttar Pradesh", pc_code="26", pc_name="पीलीभीत / Pilibhit", pc_source_url="https://pilibhit.nic.in/meeting-blo-bla/", ac_code="127", ac_name="पीलीभीत / Pilibhit", year=2026, edition="SIR 2026 draft roll - published 6 January 2026", document_type="electoral_roll", document_date="2026-01-06", source_url="https://drive.google.com/file/d/14MYTjeyq4cEFetIEEhKN-_lMnuQCwY5q/view", source_landing_url="https://pilibhit.nic.in/meeting-blo-bla/", pdf_sha256=sha, records=records, held_rows=held, printed_electors=933, roll_language="Hindi", qualifying_date="2026-01-01", official_statistics=[dict(part=1, male=507, female=426, third_gender=0, total=933, pdf_page=35)])
+    if args.metadata:
+        for key in ["state_code", "state_name", "pc_code", "pc_name", "pc_source_url", "ac_code", "ac_name", "year", "edition", "document_date", "source_url", "source_landing_url", "roll_language", "qualifying_date", "printed_electors", "official_statistics"]:
+            result[key] = context[key]
     result["visual_review_cells"] = review_count
     result["uncertain_records"] = uncertain_count
     output = Path(args.output)
