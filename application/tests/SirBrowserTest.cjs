@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../public/js/sir-browser.js'),'utf8');
 class Element {
-    constructor(tag='div'){this.tag=tag;this.children=[];this.listeners={};this.value='';this.disabled=false;this.hidden=false;this._text='';}
+    constructor(tag='div'){this.tag=tag;this.style={};this.children=[];this.listeners={};this.value='';this.disabled=false;this.hidden=false;this._text='';}
     append(...items){this.children.push(...items);}
     replaceChildren(...items){this.children=items;this._text='';}
     set textContent(value){this._text=String(value);this.children=[];}
@@ -64,4 +64,12 @@ test('non-JSON server failures show a plain retry message',async()=>{
     const h=setup();await settle();h.setHandler(()=>Promise.resolve({ok:false,status:500,json:async()=>{throw new Error('HTML body');}}));
     h.el('record-name').value='again';h.el('record-name').emit('input');await h.flush(500);
     assert.match(h.el('record-status').textContent,/could not be loaded/);assert.equal(h.el('record-retry').hidden,false);
+});
+
+test('summary cards preserve counts and age bars use a common scale',async()=>{
+    const h=setup();await settle();h.setHandler(body=>Promise.resolve(h.response({...h.result(body),summary:{total:20,male:12,female:8,third_gender:0,unknown_gender:0,uncertain:2,age_groups:[{label:'18–30',count:10},{label:'31–40',count:5},{label:'Above 80',count:0}]}})));
+    h.el('record-name').value='summary';h.el('record-name').emit('input');await h.flush(500);
+    assert.equal(h.el('gender-summary').children.length,6);assert.match(h.el('gender-summary').textContent,/Total voters20Male12Female8/);
+    const bars=h.el('age-summary').children;assert.equal(bars.length,3);assert.equal(bars[0].children[1].children[0].style.width,'100%');assert.equal(bars[1].children[1].children[0].style.width,'50%');assert.equal(bars[2].children[1].children[0].style.width,'0%');
+    h.el('methodology-link').click();assert.equal(h.el('sir-methodology').open,true);
 });

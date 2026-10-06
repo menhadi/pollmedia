@@ -65,14 +65,26 @@
     function renderSummary(summary) {
         if(!summary){$('filtered-summary').hidden=true;return;}
         $('filtered-summary').hidden=false;
-        const row=document.createElement('tr');
-        for(const field of ['total','male','female','third_gender','unknown_gender','uncertain']) cell(row,fmt(summary[field] || 0));
-        $('gender-summary').replaceChildren(row);
-        $('age-summary').replaceChildren(); $('age-labels').replaceChildren();
-        const ages=document.createElement('tr');
-        for(const group of summary.age_groups || []) {const label=document.createElement('th');label.textContent=group.label;$('age-labels').append(label);cell(ages,fmt(group.count));}
-        $('age-summary').append(ages);
+        $('gender-summary').replaceChildren();
+        for(const [field,label] of [['total','Total voters'],['male','Male'],['female','Female'],['third_gender','Third gender'],['unknown_gender','Gender not available'],['uncertain','Names to check']]) {
+            const card=document.createElement('div');card.className='voter-card';
+            const title=document.createElement('span');title.textContent=label;
+            const count=document.createElement('b');count.textContent=fmt(summary[field] || 0);
+            card.append(title,count);$('gender-summary').append(card);
+        }
+        $('age-summary').replaceChildren();
+        const groups=summary.age_groups || [],maximum=Math.max(1,...groups.map(group=>Number(group.count)||0));
+        for(const group of groups) {
+            const row=document.createElement('div'),label=document.createElement('div');label.className='age-bar-label';
+            const title=document.createElement('span');title.textContent=group.label;
+            const count=document.createElement('b');count.textContent=fmt(group.count);
+            label.append(title,count);
+            const track=document.createElement('div');track.className='age-track';
+            const fill=document.createElement('span');fill.className='age-fill';fill.style.width=Math.max(0,Math.min(100,(Number(group.count)||0)/maximum*100))+'%';
+            track.append(fill);row.append(label,track);$('age-summary').append(row);
+        }
     }
+    $('methodology-link').onclick=()=>{$('sir-methodology').open=true;};
     function renderStatistics(rows) {
         officialStatistics=rows;
         $('statistics-rows').replaceChildren();
