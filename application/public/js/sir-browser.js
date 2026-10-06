@@ -1,7 +1,7 @@
 (() => {
     const $ = id => document.getElementById(id);
     const filters = ['record-year', 'record-state', 'record-pc', 'record-ac', 'record-station', 'record-edition'];
-    let page = 1, criteria = null, optionsRequest, recordsRequest, generation = 0, officialStatistics = [];
+    let page = 1, criteria = null, optionsRequest, recordsRequest, generation = 0, officialStatistics = [], searchTimer;
     const fmt = value => Number(value).toLocaleString('en-IN');
     function scope() {
         const input = {};
@@ -19,14 +19,14 @@
         $(id).value = rows.some(row => row.value === value) ? value : '';
     }
     function clearResults() {
-        recordsRequest?.abort(); generation++;
+        clearTimeout(searchTimer); recordsRequest?.abort(); generation++; $('filtered-summary').hidden=true;
         $('record-rows').replaceChildren(); $('record-page-info').textContent = '';
         $('record-prev').disabled = true; $('record-next').disabled = true;
     }
     async function refreshOptions() {
         optionsRequest?.abort();
         const active = new AbortController(); optionsRequest = active; let timedOut=false; const timeout=setTimeout(()=>{timedOut=true;active.abort();},20000);
-        $('record-status').textContent = 'Loading available filters...';
+        $('record-status').textContent = 'Loading available filters...'; $('record-retry').hidden=true;
         officialStatistics=[]; $('statistics-rows').replaceChildren(); $('statistics-download').disabled=true; $('statistics-status').textContent='Loading official totals...';
         try {
             const response = await fetch('/api/sir/editions?' + new URLSearchParams(scope()), {signal:active.signal, headers:{Accept:'application/json'}});
@@ -47,10 +47,22 @@
             $('record-status').textContent = data.editions.length ? 'Choose any geographic filter, or enter a name, to show available records.' : 'No voter-roll data imported for this selection. The older uncollected-form sample is excluded.';
             return true;
         } catch (error) {
+            if (active !== optionsRequest) return false; $('record-retry').hidden=false;
             if (timedOut) $('record-status').textContent='Filters took too long to load. Press Retry loading filters.'; else if (error.name !== 'AbortError') $('record-status').textContent = error.message;
             return false;
         } finally {clearTimeout(timeout);
         }
+    }
+    function renderSummary(summary) {
+        if(!summary){$('filtered-summary').hidden=true;return;}
+        $('filtered-summary').hidden=false;
+        const row=document.createElement('tr');
+        for(const field of ['total','male','female','third_gender','unknown_gender','uncertain']) cell(row,fmt(summary[field] || 0));
+        $('gender-summary').replaceChildren(row);
+        $('age-summary').replaceChildren(); $('age-labels').replaceChildren();
+        const ages=document.createElement('tr');
+        for(const group of summary.age_groups || []) {const label=document.createElement('th');label.textContent=group.label;$('age-labels').append(label);cell(ages,fmt(group.count));}
+        $('age-summary').append(ages);
     }
     function renderStatistics(rows) {
         officialStatistics=rows;
@@ -83,13 +95,14 @@
                 body:JSON.stringify({...criteria, page, per_page:Number($('record-page-size').value)})});
             const data=await response.json(); if (ticket!==generation) return;
             if (!response.ok) throw Error(data.message || 'Unable to load records.');
+            renderSummary(data.summary);
             data.data.forEach(record => {
                 const row=document.createElement('tr');
                 const sequence=cell(row,record.serial); if(!record.serial_verified) small(sequence,'Card order; verify serial');
                 const name=cell(row,record.name); if(record.extraction_status==='ocr_uncertain') {const badge=small(name,'Uncertain OCR');badge.className='ocr-badge';badge.title=record.extraction_note || 'Verify the original PDF';}
                 const relative=cell(row,record.relative_name); small(relative,record.relationship==='Other' ? 'Other / unclear relationship' : record.relationship);
                 cell(row,record.house_number || 'Unreadable');
-                const age=cell(row,record.age ?? 'Unreadable'); if(record.age==null && record.age_text) small(age,record.age_text);
+                const age=cell(row,record.age ?? 'Unreadable'); if(record.age==null && record.age_text) small(age,record.age_text); if(record.age!=null && record.age<18 && (record.field_notes || record.extraction_status!=='reviewed')) small(age,'Check age in PDF');
                 cell(row,record.gender || 'Unreadable');
                 const section=cell(row,record.section_number ? 'Section '+record.section_number+(record.section_name ? ' - '+record.section_name : '') : 'Section not published'); small(section,record.ward_number ? 'Ward '+record.ward_number : 'Ward not published');
                 cell(row,record.elector_id || 'Unreadable');
@@ -108,6 +121,7 @@
         } catch (error) { if (ticket===generation && error.name!=='AbortError') $('record-status').textContent=error.message; }
     }
     function submit() {
+        clearTimeout(searchTimer);
         criteria={...scope(), name:$('record-name').value.trim(), relative_name:$('record-relative').value.trim()};
         page=1;
         if (!Object.values(criteria).some(Boolean)) { $('record-status').textContent='Choose a year, state or constituency, or enter a name. No need to fill every field.'; return; }
@@ -127,7 +141,14 @@
         if (await refreshOptions()) submit();
     }));
     $('record-form').onsubmit=event => {event.preventDefault(); submit();};
-    for (const id of ['record-name','record-relative']) $(id).addEventListener('input', () => {clearResults(); $('record-status').textContent='Press Show records to apply the optional name filters.';});
+    function scheduleSearch(event) {
+        clearResults();
+        if(event?.isComposing) return;
+        $('record-status').textContent='Searching names...';
+        searchTimer=setTimeout(submit,500);
+    }
+    for (const id of ['record-name','record-relative']) {$(id).addEventListener('input', scheduleSearch); $(id).addEventListener('compositionend', scheduleSearch);}
+
     $('record-page-size').onchange=()=>{clearResults();page=1;if(criteria) submit();};
     $('record-prev').onclick=() => {page--; showRecords();}; $('record-next').onclick=() => {page++; showRecords();};
     $('record-reset').onclick=() => {clearResults(); filters.forEach(id => $(id).value=''); $('record-name').value=''; $('record-relative').value=''; criteria=null; page=1; refreshOptions();};

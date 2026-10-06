@@ -172,6 +172,27 @@ class SirRecordSearchTest extends TestCase
         $this->postJson('/api/sir/records/search', ['name' => '...'])->assertOk()->assertJsonPath('total', 0);
     }
 
+    public function test_short_english_search_and_alias_rebuilding_work_for_existing_rows(): void
+    {
+        DB::table('sir_records')->insert(array_merge($this->row(), ['name' => 'भारत', 'relative_name' => 'परीक्षण']));
+        $this->artisan('sir:rebuild-search-aliases')->assertSuccessful();
+        $this->postJson('/api/sir/records/search', ['name' => 'bh'])->assertOk()->assertJsonPath('total', 1)->assertJsonPath('data.0.name', 'भारत');
+        $this->postJson('/api/sir/records/search', ['name' => 'Bharat'])->assertOk()->assertJsonPath('total', 1);
+    }
+
+    public function test_filter_summary_counts_all_pages_and_non_overlapping_age_groups(): void
+    {
+        foreach ([18, 30, 31, 40, 41, 80, 81, null] as $index => $age) {
+            DB::table('sir_records')->insert(array_merge($this->row(), ['serial' => $index + 1, 'age' => $age, 'gender' => $index % 2 ? 'महिला' : 'पुरुष']));
+        }
+        DB::table('sir_records')->insert(array_merge($this->row(), ['edition_key' => str_repeat('b', 64), 'ac_code' => '128', 'gender' => 'Unknown']));
+        $response = $this->postJson('/api/sir/records/search', ['ac_code' => '127']);
+        $response->assertOk()->assertJsonPath('summary.total', 8)->assertJsonPath('summary.male', 4)->assertJsonPath('summary.female', 4)->assertJsonPath('summary.unknown_gender', 0)->assertJsonPath('summary.age_groups.0.count', 2)->assertJsonPath('summary.age_groups.1.count', 2)->assertJsonPath('summary.age_groups.6.count', 1)->assertJsonPath('summary.age_groups.8.count', 1);
+        $this->assertSame(8, array_sum(array_column($response->json('summary.age_groups'), 'count')));
+        $this->postJson('/api/sir/records/search', ['ac_code' => '128'])->assertOk()->assertJsonPath('summary.total', 1)->assertJsonPath('summary.unknown_gender', 1);
+        $this->postJson('/api/sir/records/search', ['name' => 'No such name'])->assertOk()->assertJsonPath('summary.total', 0)->assertJsonPath('summary.male', 0);
+    }
+
     public function test_page_size_options_have_stable_boundaries_and_reject_unbounded_requests(): void
     {
         $rows = [];
@@ -182,7 +203,7 @@ class SirRecordSearchTest extends TestCase
             DB::table('sir_records')->insert($chunk);
         }
         foreach ([50, 100, 500] as $perPage) {
-            $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => $perPage])->assertOk()->assertJsonCount($perPage, 'data')->assertJsonPath('total', 501)->assertJsonPath('data.0.serial', 1);
+            $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => $perPage])->assertOk()->assertJsonCount($perPage, 'data')->assertJsonPath('total', 501)->assertJsonPath('summary.total', 501)->assertJsonPath('data.0.serial', 1);
         }
         $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => 500, 'page' => 2])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.serial', 501);
         $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => 10000])->assertUnprocessable();

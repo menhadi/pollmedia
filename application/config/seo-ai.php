@@ -2,6 +2,7 @@
 
 return [
     'key' => env('OPENAI_API_KEY'),
+    'sir_vision_model' => env('SIR_VISION_MODEL'),
     'model' => env('OPENAI_SEO_MODEL', 'gpt-5.4-nano'),
     'providers' => [
         'deepseek' => ['key' => env('DEEPSEEK_API_KEY'), 'model' => env('DEEPSEEK_SEO_MODEL')],

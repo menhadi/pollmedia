@@ -118,7 +118,7 @@ class SirRecordController extends Controller
                         $latin = SirNameSearch::latin($value);
                         $key = SirNameSearch::key($latin);
                         $match->orWhereRaw($field."_latin LIKE ? ESCAPE '!'", [SirNameSearch::pattern($latin)]);
-                        if (strlen($key) >= 2 && strlen(preg_replace('/[^a-z]/', '', $latin)) >= 3) {
+                        if (strlen($key) >= 1 && strlen(preg_replace('/[^a-z]/', '', $latin)) >= 2) {
                             $match->orWhereRaw($field."_latin_key LIKE ? ESCAPE '!'", [SirNameSearch::pattern($key)]);
                         }
                     }
@@ -128,6 +128,7 @@ class SirRecordController extends Controller
         if (! empty($input['part'])) {
             $query->where('part', $input['part']);
         }
+        $summary = $this->summary(clone $query);
         $rows = $query->select('name', 'relative_name', 'relationship', 'year', 'edition', 'edition_key', 'document_date', 'state_code', 'state_name', 'pc_code', 'pc_name', 'ac_name', 'ac_code', 'part', 'station', 'serial', 'pdf_page', 'source_url', 'source_landing_url', 'pdf_sha256', 'extraction_status', 'section_number', 'section_name', 'ward_number', 'house_number', 'age', 'age_text', 'gender', 'elector_id', 'serial_verified', 'field_notes', 'extraction_note')->orderBy('document_date', 'desc')->orderBy('state_code')->orderBy('ac_code')->orderBy('edition_key')->orderBy('part')->orderBy('serial')->orderBy('id')->paginate((int) ($input['per_page'] ?? 50));
         $rows->through(function (object $row): object {
             $row->pdf_url = $row->pdf_sha256 ? route('sir.document', ['hash' => $row->pdf_sha256]).'#page='.$row->pdf_page : $row->source_url.'#page='.$row->pdf_page;
@@ -135,7 +136,32 @@ class SirRecordController extends Controller
             return $row;
         });
 
-        return response()->json($rows)->header('Cache-Control', 'private, no-store')->header('X-Robots-Tag', 'noindex, nofollow');
+        return response()->json($rows->toArray() + ['summary' => $summary])->header('Cache-Control', 'private, no-store')->header('X-Robots-Tag', 'noindex, nofollow');
+    }
+
+    private function summary(Builder $query): array
+    {
+        $genders = ['male' => ['male', 'm', 'पुरुष', 'ஆண்'], 'female' => ['female', 'f', 'महिला', 'स्त्री', 'பெண்'], 'third_gender' => ['third gender', 'other', 'तृतीय लिंग', 'திருநங்கை']];
+        $query->selectRaw('COUNT(*) AS total');
+        foreach ($genders as $key => $values) {
+            $query->selectRaw('SUM(CASE WHEN LOWER(TRIM(gender)) IN ('.implode(',', array_fill(0, count($values), '?')).') THEN 1 ELSE 0 END) AS '.$key, $values);
+        }
+        $groups = [['18–30', 18, 30], ['31–40', 31, 40], ['41–50', 41, 50], ['51–60', 51, 60], ['61–70', 61, 70], ['71–80', 71, 80], ['Above 80', 81, 120], ['Below 18 / verify PDF', 0, 17]];
+        foreach ($groups as $index => [$label, $minimum, $maximum]) {
+            $query->selectRaw('SUM(CASE WHEN age BETWEEN ? AND ? THEN 1 ELSE 0 END) AS age_'.$index, [$minimum, $maximum]);
+        }
+        $query->selectRaw('SUM(CASE WHEN age IS NULL THEN 1 ELSE 0 END) AS age_unknown');
+        $query->selectRaw("SUM(CASE WHEN extraction_status = 'ocr_uncertain' THEN 1 ELSE 0 END) AS uncertain");
+        $counts = (array) $query->first();
+        $summary = array_map(fn ($value): int => (int) $value, array_intersect_key($counts, array_flip(['total', 'male', 'female', 'third_gender', 'uncertain'])));
+        $summary['unknown_gender'] = $summary['total'] - $summary['male'] - $summary['female'] - $summary['third_gender'];
+        $summary['age_groups'] = [];
+        foreach ($groups as $index => [$label]) {
+            $summary['age_groups'][] = ['label' => $label, 'count' => (int) $counts['age_'.$index]];
+        }
+        $summary['age_groups'][] = ['label' => 'Age unreadable / missing', 'count' => (int) $counts['age_unknown']];
+
+        return $summary;
     }
 
     public function document(string $hash): BinaryFileResponse

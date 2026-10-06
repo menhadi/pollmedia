@@ -37,6 +37,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportScopeController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SirRecordController;
+use App\Http\Controllers\SirReviewController;
 use App\Http\Controllers\SiteManagementController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
@@ -96,7 +97,7 @@ Route::view('/india/sir', 'sir');
 Route::get('/api/sir', [PlaceController::class, 'sir']);
 Route::get('/api/sir/editions', [SirRecordController::class, 'options']);
 Route::get('/sir/documents/{hash}', [SirRecordController::class, 'document'])->where('hash', '[a-f0-9]{64}')->name('sir.document');
-Route::post('/api/sir/records/search', [SirRecordController::class, 'search'])->middleware('throttle:20,1');
+Route::post('/api/sir/records/search', [SirRecordController::class, 'search'])->middleware('throttle:60,1');
 Route::get('/api/census', fn (PlaceController $c) => response()->json($c->payload('census-pilibhit')));
 Route::get('/api/geography', fn (PlaceController $c) => response()->json($c->payload('soi-up')));
 Route::get('/api/maps/pilibhit-villages', function (): BinaryFileResponse {
@@ -153,6 +154,9 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(f
     Route::get('/admin/authorities/history', [AuthorityReviewController::class, 'history'])->name('authorities.history');
     Route::post('/admin/authorities/replace', [AuthorityReviewController::class, 'replace'])->middleware('throttle:5,1')->name('authorities.replace');
     Route::post('/admin/authorities/{key}/check', [AuthorityReviewController::class, 'check'])->middleware('throttle:3,1')->name('authorities.check');
+    Route::get('/admin/sir/review', [SirReviewController::class, 'index'])->name('sir.review');
+    Route::post('/admin/sir/review/{record}/vision', [SirReviewController::class, 'extract'])->whereNumber('record')->middleware('throttle:2,1')->name('sir.review.extract');
+    Route::post('/admin/sir/proposals/{review}', [SirReviewController::class, 'decide'])->whereNumber('review')->middleware('throttle:20,1')->name('sir.review.decide');
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/account', [AdminAuthController::class, 'account'])->name('admin.account');
     Route::post('/admin/account/password', [AdminAuthController::class, 'updatePassword'])->middleware('throttle:5,1')->name('admin.password');
