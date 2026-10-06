@@ -35,6 +35,10 @@ class ImportSirRecords extends Command
             Validator::make($data, [
                 'edition_key' => 'required|regex:/^[a-f0-9]{64}$/', 'state_code' => 'required|string|max:10',
                 'ac_code' => 'required|string|max:10', 'ac_name' => 'required|string|max:255',
+                'state_name' => 'nullable|string|max:255',
+                'pc_code' => 'nullable|required_with:pc_name,pc_source_url|string|max:10',
+                'pc_name' => 'nullable|required_with:pc_code,pc_source_url|string|max:255',
+                'pc_source_url' => 'nullable|required_with:pc_code,pc_name|url:https|max:2000',
                 'year' => 'nullable|integer|between:1800,2100', 'edition' => 'required|string|max:255',
                 'document_date' => 'required|date_format:Y-m-d', 'source_url' => 'required|url:https|max:2000',
                 'records' => 'required|array|min:1|max:100000', 'records.*.part' => 'required|integer|min:1',
@@ -47,6 +51,12 @@ class ImportSirRecords extends Command
             if (! (str_ends_with($host, '.gov.in') || str_ends_with($host, '.nic.in'))) {
                 throw new \RuntimeException('An official government source URL is required.');
             }
+            if (! empty($data['pc_source_url'])) {
+                $pcHost = strtolower(parse_url($data['pc_source_url'], PHP_URL_HOST) ?? '');
+                if (! (str_ends_with($pcHost, '.gov.in') || str_ends_with($pcHost, '.nic.in'))) {
+                    throw new \RuntimeException('PC grouping requires an official mapping source URL.');
+                }
+            }
             $keys = [];
             $rows = [];
             foreach ($data['records'] as $record) {
@@ -55,7 +65,7 @@ class ImportSirRecords extends Command
                     throw new \RuntimeException('Duplicate part/serial in extraction.');
                 }
                 $keys[$key] = true;
-                $rows[] = array_merge(array_intersect_key($data, array_flip(['edition_key', 'state_code', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'source_url'])), array_intersect_key($record, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page'])));
+                $rows[] = array_merge(array_intersect_key($data, array_flip(['edition_key', 'state_code', 'state_name', 'pc_code', 'pc_name', 'pc_source_url', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'source_url'])), array_intersect_key($record, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page'])));
             }
             DB::transaction(function () use ($data, $rows) {
                 DB::table('sir_records')->where('edition_key', $data['edition_key'])->delete();
