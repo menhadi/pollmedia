@@ -1,7 +1,7 @@
 (() => {
     const $ = id => document.getElementById(id);
     const filters = ['record-year', 'record-state', 'record-pc', 'record-ac', 'record-station', 'record-edition'];
-    let page = 1, criteria = null, optionsRequest, recordsRequest, generation = 0, officialStatistics = [], searchTimer, lastPage=1, retryMode='filters';
+    let page = 1, criteria = null, optionsRequest, recordsRequest, generation = 0, officialStatistics = [], searchTimer, lastPage=1, retryMode='filters', sortField='', sortDirection='asc';
     const fmt = value => Number(value).toLocaleString('en-IN');
     function scope() {
         const input = {};
@@ -116,7 +116,7 @@
         try {
             const response=await fetch('/api/sir/records/search', {method:'POST', signal:active.signal,
                 headers:{'Content-Type':'application/json', Accept:'application/json', 'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content},
-                body:JSON.stringify({...criteria, page, per_page:Number($('record-page-size').value)})});
+                body:JSON.stringify({...criteria, page, sort:sortField || undefined, direction:sortField ? sortDirection : undefined, per_page:Number($('record-page-size').value)})});
             if(!response.ok) throw Error(response.status===419 ? 'Your session expired. Refresh the page and search again.' : response.status===429 ? 'Please pause briefly, then try your search again.' : 'The records could not be loaded. Please try again.');
             const data=await response.json(); if (ticket!==generation) return false;
             if(active.signal.aborted){if(timedOut) retry('The search took too long. Please try again.','records');return false;}
@@ -183,13 +183,25 @@
     }
     for (const id of ['record-name','record-relative']) {$(id).addEventListener('input', scheduleSearch); $(id).addEventListener('compositionend', scheduleSearch);}
 
+    const sortButtons=Array.from(document.querySelectorAll('.sort-heading'));
+    function updateSortHeadings() {
+        sortButtons.forEach(button=>{
+            const active=button.dataset.sort===sortField;
+            button.closest('th').setAttribute('aria-sort',active ? (sortDirection==='asc'?'ascending':'descending') : 'none');
+            button.querySelector('.sort-arrow').textContent=active ? (sortDirection==='asc'?'↑':'↓') : '↕';
+        });
+    }
+    sortButtons.forEach(button=>button.addEventListener('click',()=>{
+        sortDirection=sortField===button.dataset.sort && sortDirection==='asc' ? 'desc' : 'asc';
+        sortField=button.dataset.sort;updateSortHeadings();submit();
+    }));
     $('record-page-size').onchange=()=>{clearResults();page=1;if(criteria) submit();};
     async function goToPage(target) {page=Math.max(1,Math.min(target,lastPage));if(await showRecords()) $('records-top').scrollIntoView({behavior:'smooth',block:'start'});}
     for(const suffix of ['', '-top']) {
         $('record-first'+suffix).onclick=()=>goToPage(1);$('record-prev'+suffix).onclick=()=>goToPage(page-1);
         $('record-next'+suffix).onclick=()=>goToPage(page+1);$('record-last'+suffix).onclick=()=>goToPage(lastPage);
     }
-    $('record-reset').onclick=() => {clearResults(); filters.forEach(id => $(id).value=''); $('record-name').value=''; $('record-relative').value=''; criteria=null; page=1; lastPage=1; startPilot();};
+    $('record-reset').onclick=() => {clearResults(); filters.forEach(id => $(id).value=''); $('record-name').value=''; $('record-relative').value=''; criteria=null; page=1; lastPage=1; sortField='';sortDirection='asc';updateSortHeadings(); startPilot();};
     $('record-retry').onclick=async()=>{if(retryMode==='records') submit();else if(await refreshOptions()) submit();};
     async function startPilot() {
         if (!await refreshOptions()) return;

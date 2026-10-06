@@ -236,4 +236,18 @@ class SirRecordSearchTest extends TestCase
             @unlink(storage_path('app/private/sir-pdfs/'.$data['pdf_sha256'].'.pdf'));
         }
     }
+
+    public function test_sorting_applies_across_pages_and_keeps_missing_ages_last(): void
+    {
+        for ($serial = 1; $serial <= 27; $serial++) {
+            DB::table('sir_records')->insert(array_merge($this->row(), ['serial' => $serial, 'age' => $serial === 27 ? null : 27 - $serial]));
+        }
+        $input = ['state_code' => '09', 'per_page' => 25, 'sort' => 'age', 'direction' => 'asc'];
+        $this->postJson('/api/sir/records/search', $input)->assertOk()->assertJsonPath('data.0.serial', 26)->assertJsonPath('summary.total', 27);
+        $this->postJson('/api/sir/records/search', $input + ['page' => 2])->assertOk()->assertJsonPath('data.0.serial', 1)->assertJsonPath('data.1.age', null);
+        $input['direction'] = 'desc';
+        $this->postJson('/api/sir/records/search', $input)->assertOk()->assertJsonPath('data.0.serial', 1);
+        $this->postJson('/api/sir/records/search', $input + ['page' => 2])->assertOk()->assertJsonPath('data.0.serial', 26)->assertJsonPath('data.1.age', null);
+        $this->postJson('/api/sir/records/search', ['state_code' => '09', 'sort' => 'invalid'])->assertUnprocessable();
+    }
 }

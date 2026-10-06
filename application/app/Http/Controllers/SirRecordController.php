@@ -102,7 +102,7 @@ class SirRecordController extends Controller
 
     public function search(Request $request): JsonResponse
     {
-        $input = $request->validate($this->rules() + ['name' => 'nullable|string|max:100', 'relative_name' => 'nullable|string|max:100', 'part' => 'nullable|integer|min:1', 'page' => 'nullable|integer|between:1,10000', 'per_page' => 'nullable|integer|in:25,50,100,500']);
+        $input = $request->validate($this->rules() + ['name' => 'nullable|string|max:100', 'relative_name' => 'nullable|string|max:100', 'part' => 'nullable|integer|min:1', 'page' => 'nullable|integer|between:1,10000', 'per_page' => 'nullable|integer|in:25,50,100,500', 'sort' => 'nullable|in:serial,name,relative_name,house_number,age,gender,section,elector_id,year,station,pdf_page', 'direction' => 'nullable|in:asc,desc']);
         $name = trim($input['name'] ?? '');
         $relative = trim($input['relative_name'] ?? '');
         abort_unless(collect($input)->only(['period', 'state_code', 'pc_code', 'ac_code', 'edition_key', 'station_key'])->filter()->isNotEmpty() || $name !== '' || $relative !== '', 422, 'Choose a year or geographic scope, or enter a name.');
@@ -129,6 +129,10 @@ class SirRecordController extends Controller
             $query->where('part', $input['part']);
         }
         $summary = $this->summary(clone $query);
+        $sortColumns = ['serial' => ['serial'], 'name' => ['name'], 'relative_name' => ['relative_name', 'relationship'], 'house_number' => ['house_number'], 'age' => ['age'], 'gender' => ['gender'], 'section' => ['section_number', 'ward_number'], 'elector_id' => ['elector_id'], 'year' => ['year', 'document_date', 'edition'], 'station' => ['ac_name', 'part', 'station'], 'pdf_page' => ['pdf_page']];
+        foreach ($sortColumns[$input['sort'] ?? ''] ?? [] as $column) {
+            $query->orderByRaw('CASE WHEN '.$column.' IS NULL THEN 1 ELSE 0 END')->orderBy($column, $input['direction'] ?? 'asc');
+        }
         $rows = $query->select('name', 'relative_name', 'relationship', 'year', 'edition', 'edition_key', 'document_date', 'state_code', 'state_name', 'pc_code', 'pc_name', 'ac_name', 'ac_code', 'part', 'station', 'serial', 'pdf_page', 'source_url', 'source_landing_url', 'pdf_sha256', 'extraction_status', 'section_number', 'section_name', 'ward_number', 'house_number', 'age', 'age_text', 'gender', 'elector_id', 'serial_verified', 'field_notes', 'extraction_note')->orderBy('document_date', 'desc')->orderBy('state_code')->orderBy('ac_code')->orderBy('edition_key')->orderBy('part')->orderBy('serial')->orderBy('id')->paginate((int) ($input['per_page'] ?? 50));
         $rows->through(function (object $row): object {
             $row->pdf_url = $row->pdf_sha256 ? route('sir.document', ['hash' => $row->pdf_sha256]).'#page='.$row->pdf_page : $row->source_url.'#page='.$row->pdf_page;
