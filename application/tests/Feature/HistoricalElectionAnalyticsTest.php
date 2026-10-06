@@ -30,6 +30,28 @@ class HistoricalElectionAnalyticsTest extends TestCase
         ]];
     }
 
+    public function test_court_withheld_placeholder_is_not_an_uncontested_winner(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $record = ['code' => 48, 'name' => 'DODA', 'number_of_seats' => 1,
+            'status' => 'needs_review', 'electors' => 1, 'votes_polled' => 0,
+            'valid_candidate_votes' => 0, 'detail_page' => 94,
+            'error' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.; Reported elector and voter totals are inconsistent.',
+            'candidates' => [['candidate_name' => 'RESULT WHITHHEAL BY HIGH COURT OF J AND K',
+                'party_at_election' => 'IND', 'votes' => 0]]];
+        $original = $record;
+        $this->assertNull($analytics->singleSeatResult($record, '2f28536c3658989c7519ffc4'));
+        $this->assertSame($original, $record);
+
+        $record['source_warning_code'] = 'official_result_withheld_by_court';
+        $record['summary_source_rows'] = ['RESULT WHITHHEAL BY HIGH COURT OF J AND K Returned Uncontested'];
+        $record['winner'] = 'RESULT WHITHHEAL BY HIGH COURT OF J AND K';
+        $record['margin'] = 0;
+        $this->assertNull($analytics->singleSeatResult($record, '2f28536c3658989c7519ffc4'));
+        $this->assertNull($analytics->summarize([$record])['turnout']);
+        $this->assertSame([], $analytics->summarize([$record])['winners']);
+    }
+
     public function test_officially_uncontested_winner_is_shown_without_votes_or_margin(): void
     {
         $analytics = app(HistoricalElectionAnalytics::class);

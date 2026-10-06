@@ -217,6 +217,11 @@ class HistoricalElectionAnalytics
     /** @return array{winner: string, party: string|null, margin: int|null, derived: bool, uncontested?: bool}|null */
     public function singleSeatResult(array $record, ?string $edition = null): ?array
     {
+        if (($record['source_warning_code'] ?? null) === 'official_result_withheld_by_court'
+            || collect($record['candidates'] ?? [])->contains(fn (array $candidate): bool => strtoupper(trim($candidate['candidate_name'] ?? '')) === 'RESULT WHITHHEAL BY HIGH COURT OF J AND K')) {
+            return null;
+        }
+
         if (($record['number_of_seats'] ?? 1) !== 1) {
             return null;
         }
@@ -1492,9 +1497,9 @@ class HistoricalElectionAnalytics
         $candidates = $record['candidates'] ?? null;
         if (! is_array($candidates) || count($candidates) !== $source[8]
             || array_sum(array_column($candidates, 'votes')) !== $source[6]
-            || $source[6] + $source[7] !== $source[4]
+            || $source[4] !== $source[6] + $source[7]
             || $source[5] === $source[4]
-            || $source[11] - $source[14] !== $source[15]) {
+            || $source[15] !== $source[11] - $source[14]) {
             return null;
         }
         $ranked = collect($candidates)->sortByDesc('votes')->values();
