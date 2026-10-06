@@ -61,4 +61,14 @@ class SirAdminTest extends TestCase
         $this->assertDatabaseHas('sir_records', ['id' => $id, 'extraction_status' => 'ocr_uncertain', 'field_notes' => 'Final letter unclear']);
         $this->assertDatabaseHas('sir_extraction_reviews', ['status' => 'approved_flagged']);
     }
+    public function test_general_source_advice_does_not_flag_every_imported_record(): void
+    {
+        $id = $this->setupRecords();
+        $this->admin();
+        DB::table('sir_records')->where('id', $id)->update(['extraction_status' => 'ocr_candidate', 'age' => 35, 'gender' => 'Male', 'serial_verified' => true, 'field_notes' => 'Age, gender, house number and voter ID are OCR text; verify the original PDF.']);
+        $this->get('https://localhost/admin/sir?status=correction')->assertOk()->assertDontSee('Unclear name');
+        DB::table('sir_records')->where('id', $id)->update(['age' => 5]);
+        $this->get('https://localhost/admin/sir?status=correction')->assertOk()->assertSee('Unclear name');
+    }
+
 }
