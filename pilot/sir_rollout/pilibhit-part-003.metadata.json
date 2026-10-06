@@ -1,0 +1,119 @@
+{
+  "layout": "eci-hindi-three-column-v1",
+  "pdf_sha256": "e1ade0131a4d2d53de375c4131b7f6d9ff4c4dff95f6dbdd6ef18be857defbfd",
+  "first_page": 3,
+  "last_page": 23,
+  "part": 3,
+  "station": "जू० हा० स्कूल बगनेरा बगनेरी कक्ष सं० 2",
+  "printed_electors": 607,
+  "sections": {
+    "3": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "4": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "5": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "6": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "7": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "8": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "9": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "10": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "11": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "12": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "13": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "14": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "15": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "16": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "17": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "18": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "19": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "20": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "21": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "22": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    },
+    "23": {
+      "number": "1",
+      "name": "बगनेरा बगनेरी आं"
+    }
+  },
+  "state_code": "09",
+  "state_name": "Uttar Pradesh",
+  "pc_code": "26",
+  "pc_name": "पीलीभीत / Pilibhit",
+  "pc_source_url": "https://pilibhit.nic.in/meeting-blo-bla/",
+  "ac_code": "127",
+  "ac_name": "पीलीभीत / Pilibhit",
+  "year": 2026,
+  "edition": "SIR 2026 draft roll - published 6 January 2026",
+  "document_date": "2026-01-06",
+  "source_url": "https://drive.google.com/file/d/14MYTjeyq4cEFetIEEhKN-_lMnuQCwY5q/view",
+  "source_landing_url": "https://pilibhit.nic.in/meeting-blo-bla/",
+  "roll_language": "Hindi",
+  "qualifying_date": "2026-01-01",
+  "official_statistics": [
+    {
+      "part": 3,
+      "male": 339,
+      "female": 268,
+      "third_gender": 0,
+      "total": 607,
+      "pdf_page": 24
+    }
+  ]
+}

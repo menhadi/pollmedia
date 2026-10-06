@@ -61,6 +61,7 @@ class SirAdminTest extends TestCase
         $this->assertDatabaseHas('sir_records', ['id' => $id, 'extraction_status' => 'ocr_uncertain', 'field_notes' => 'Final letter unclear']);
         $this->assertDatabaseHas('sir_extraction_reviews', ['status' => 'approved_flagged']);
     }
+
     public function test_general_source_advice_does_not_flag_every_imported_record(): void
     {
         $id = $this->setupRecords();
@@ -70,5 +71,4 @@ class SirAdminTest extends TestCase
         DB::table('sir_records')->where('id', $id)->update(['age' => 5]);
         $this->get('https://localhost/admin/sir?status=correction')->assertOk()->assertSee('Unclear name');
     }
-
 }

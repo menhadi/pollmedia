@@ -18,7 +18,10 @@ class SirImportController extends Controller
         $batches = DB::table('sir_import_batches')->orderByDesc('id')->paginate(25);
         $coverage = DB::table('sir_records')->where('document_type', 'electoral_roll')->select('state_code', 'state_name', 'year')->selectRaw('COUNT(*) AS records_count, COUNT(DISTINCT ac_code) AS acs_count, COUNT(DISTINCT edition_key) AS editions_count')->groupBy('state_code', 'state_name', 'year')->orderBy('state_name')->orderBy('year')->get();
 
-        return view('sir-imports', compact('batches', 'coverage'));
+        $uploadLimit = ini_get('upload_max_filesize');
+        $postLimit = ini_get('post_max_size');
+
+        return view('sir-imports', compact('batches', 'coverage', 'uploadLimit', 'postLimit'));
     }
 
     public function store(Request $request): RedirectResponse
