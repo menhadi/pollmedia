@@ -50,9 +50,9 @@ class SirRecordController extends Controller
     {
         $input = $request->validate($this->rules());
         if (! Schema::hasTable('sir_records')) {
-            return response()->json(['periods' => [], 'states' => [], 'pcs' => [], 'acs' => [], 'stations' => [], 'editions' => []]);
+            return response()->json(['periods' => [], 'states' => [], 'pcs' => [], 'acs' => [], 'stations' => [], 'editions' => [], 'statistics' => []]);
         }
-        $metadata = ['edition_key', 'state_code', 'state_name', 'pc_code', 'pc_name', 'pc_source_url', 'ac_code', 'ac_name', 'year', 'edition', 'document_date'];
+        $metadata = ['pdf_sha256', 'source_landing_url', 'source_url', 'edition_key', 'state_code', 'state_name', 'pc_code', 'pc_name', 'pc_source_url', 'ac_code', 'ac_name', 'year', 'edition', 'document_date'];
         $all = $this->scope([])->select('year', 'document_date')->distinct()->get();
         $periods = $all->map(fn ($row) => ['value' => ($row->year ? 'revision:'.$row->year : 'document:'.substr($row->document_date, 0, 4)), 'label' => $row->year ? (string) $row->year.' (revision year)' : substr($row->document_date, 0, 4).' (document year; revision unverified)'])->unique('value')->sortByDesc('value')->values();
         $stateRows = $this->scope(array_intersect_key($input, array_flip(['period'])))->select('state_code', 'state_name')->distinct()->get();
@@ -63,18 +63,39 @@ class SirRecordController extends Controller
         $acs = $acRows->map(fn ($row) => ['value' => $row->state_code.'|'.$row->ac_code, 'label' => $row->ac_code.' - '.$row->ac_name])->sortBy('label')->values();
         $editions = $this->scope(array_diff_key($input, array_flip(['station_key', 'edition_key'])))->select($metadata)->distinct()->orderBy('document_date', 'desc')->get();
         $coverage = DB::table('site_settings')->whereIn('key', $editions->pluck('edition_key')->map(fn (string $key): string => 'sir-roll-meta:'.$key))->pluck('value', 'key');
+        $statistics = [];
         foreach ($editions as $edition) {
             $details = json_decode($coverage->get('sir-roll-meta:'.$edition->edition_key, '{}'), true, 512, JSON_THROW_ON_ERROR);
             $edition->indexed_records = $details['indexed_records'] ?? null;
             $edition->printed_electors = $details['printed_electors'] ?? null;
             $edition->held_records_count = $details['held_records_count'] ?? null;
+            $edition->roll_language = $details['roll_language'] ?? null;
+            if (! empty($input['edition_key']) && $input['edition_key'] !== $edition->edition_key) {
+                continue;
+            }
+            foreach ($details['official_statistics'] ?? [] as $partStatistics) {
+                if (! empty($input['station_key']) && $input['station_key'] !== $edition->edition_key.':'.$partStatistics['part']) {
+                    continue;
+                }
+                $statistics[] = array_merge($partStatistics, [
+                    'year' => $edition->year, 'document_date' => $edition->document_date,
+                    'edition' => $edition->edition, 'edition_key' => $edition->edition_key,
+                    'state_code' => $edition->state_code, 'state_name' => $edition->state_name,
+                    'pc_code' => $edition->pc_code, 'ac_code' => $edition->ac_code, 'ac_name' => $edition->ac_name,
+                    'roll_language' => $details['roll_language'] ?? null,
+                    'qualifying_date' => $details['qualifying_date'] ?? null,
+                    'pdf_sha256' => $edition->pdf_sha256,
+                    'pdf_url' => $edition->pdf_sha256 ? route('sir.document', ['hash' => $edition->pdf_sha256]).'#page='.$partStatistics['pdf_page'] : $edition->source_url.'#page='.$partStatistics['pdf_page'],
+                    'official_publication_url' => $edition->source_landing_url ?? $edition->source_url,
+                ]);
+            }
         }
         $stations = collect();
         if (! empty($input['ac_code'])) {
             $stations = $this->scope(array_diff_key($input, array_flip(['station_key'])))->select('edition_key', 'part', 'station', 'document_date')->distinct()->orderBy('part')->get()->map(fn ($row) => ['value' => $row->edition_key.':'.$row->part, 'label' => 'Part '.$row->part.' - '.$row->station.' ('.$row->document_date.')']);
         }
 
-        return response()->json(compact('periods', 'states', 'pcs', 'acs', 'stations', 'editions'));
+        return response()->json(compact('periods', 'states', 'pcs', 'acs', 'stations', 'editions', 'statistics'));
     }
 
     public function search(Request $request): JsonResponse

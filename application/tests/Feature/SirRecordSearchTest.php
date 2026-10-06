@@ -111,4 +111,50 @@ class SirRecordSearchTest extends TestCase
         $this->get('/sir/documents/'.str_repeat('a', 64))->assertNotFound();
         $this->get('/sir/documents/'.str_repeat('b', 64))->assertNotFound();
     }
+
+    public function test_names_are_searchable_in_their_original_hindi_and_tamil_scripts(): void
+    {
+        DB::table('sir_records')->insert(array_merge($this->row(), ['name' => 'परीक्षण नाम', 'relative_name' => 'परीक्षण पिता']));
+        DB::table('sir_records')->insert(array_merge($this->row(), ['edition_key' => str_repeat('b', 64), 'state_code' => '33', 'name' => 'சோதனை பெயர்', 'relative_name' => 'சோதனை தந்தை']));
+        $this->postJson('/api/sir/records/search', ['name' => 'परीक्षण', 'relative_name' => 'पिता'])->assertOk()->assertJsonPath('total', 1)->assertJsonPath('data.0.name', 'परीक्षण नाम');
+        $this->postJson('/api/sir/records/search', ['name' => 'சோதனை', 'relative_name' => 'தந்தை'])->assertOk()->assertJsonPath('total', 1)->assertJsonPath('data.0.name', 'சோதனை பெயர்');
+    }
+
+    public function test_official_totals_preserve_editions_and_part_scope_without_guessing_missing_counts(): void
+    {
+        DB::table('sir_records')->insert($this->row());
+        DB::table('sir_records')->insert(array_merge($this->row(), ['edition_key' => str_repeat('b', 64), 'year' => 2026, 'document_date' => '2026-01-06']));
+        DB::table('site_settings')->insert(['key' => 'sir-roll-meta:'.str_repeat('b', 64), 'value' => json_encode(['roll_language' => 'Hindi', 'qualifying_date' => '2026-01-01', 'official_statistics' => [['part' => 1, 'male' => 507, 'female' => 426, 'third_gender' => 0, 'total' => 933, 'pdf_page' => 35]]])]);
+        $this->getJson('/api/sir/editions?period=revision:2026')->assertOk()->assertJsonCount(1, 'statistics')->assertJsonPath('statistics.0.total', 933)->assertJsonPath('statistics.0.male', 507)->assertJsonPath('statistics.0.female', 426)->assertJsonPath('statistics.0.third_gender', 0)->assertJsonPath('statistics.0.qualifying_date', '2026-01-01')->assertJsonPath('statistics.0.pdf_page', 35);
+        $this->getJson('/api/sir/editions?period=revision:2003')->assertOk()->assertJsonCount(0, 'statistics');
+        $this->getJson('/api/sir/editions?station_key='.str_repeat('b', 64).':2')->assertOk()->assertJsonCount(0, 'statistics');
+        $this->getJson('/api/sir/editions?edition_key='.str_repeat('a', 64))->assertOk()->assertJsonCount(0, 'statistics');
+    }
+
+    public function test_import_preserves_official_counts_and_rejects_inconsistent_gender_totals(): void
+    {
+        $row = $this->row();
+        $data = array_intersect_key($row, array_flip(['edition_key', 'state_code', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'source_url', 'document_type']));
+        $pdf = tempnam(sys_get_temp_dir(), 'sir-pdf-');
+        $file = tempnam(sys_get_temp_dir(), 'sir-stats-');
+        file_put_contents($pdf, '%PDF-test-'.uniqid());
+        $data['pdf_sha256'] = hash_file('sha256', $pdf);
+        $data['printed_electors'] = 1;
+        $data['roll_language'] = 'Tamil';
+        $data['official_statistics'] = [['part' => 1, 'male' => 1, 'female' => 0, 'third_gender' => 0, 'total' => 1, 'pdf_page' => 1]];
+        $data['records'] = [array_intersect_key($row, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page']))];
+        try {
+            file_put_contents($file, json_encode($data));
+            $this->artisan('sir:import-records', ['file' => $file, '--sha256' => hash_file('sha256', $file), '--pdf' => $pdf])->assertSuccessful();
+            $this->getJson('/api/sir/editions')->assertOk()->assertJsonPath('statistics.0.male', 1)->assertJsonPath('statistics.0.roll_language', 'Tamil');
+            $data['official_statistics'][0]['female'] = 1;
+            file_put_contents($file, json_encode($data));
+            $this->artisan('sir:import-records', ['file' => $file, '--sha256' => hash_file('sha256', $file), '--pdf' => $pdf])->expectsOutputToContain('gender counts must reconcile')->assertFailed();
+            $this->getJson('/api/sir/editions')->assertOk()->assertJsonPath('statistics.0.female', 0);
+        } finally {
+            unlink($file);
+            unlink($pdf);
+            @unlink(storage_path('app/private/sir-pdfs/'.$data['pdf_sha256'].'.pdf'));
+        }
+    }
 }

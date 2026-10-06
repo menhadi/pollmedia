@@ -45,6 +45,15 @@ class ImportSirRecords extends Command
                 'source_landing_url' => 'nullable|url:https|max:2000',
                 'pdf_sha256' => 'nullable|regex:/^[a-f0-9]{64}$/',
                 'printed_electors' => 'nullable|integer|min:1',
+                'roll_language' => 'nullable|string|max:50',
+                'qualifying_date' => 'nullable|date_format:Y-m-d',
+                'official_statistics' => 'nullable|array|min:1',
+                'official_statistics.*.part' => 'required|integer|min:1|distinct',
+                'official_statistics.*.male' => 'required|integer|min:0',
+                'official_statistics.*.female' => 'required|integer|min:0',
+                'official_statistics.*.third_gender' => 'required|integer|min:0',
+                'official_statistics.*.total' => 'required|integer|min:0',
+                'official_statistics.*.pdf_page' => 'required|integer|min:1',
                 'held_rows' => 'nullable|array',
                 'document_date' => 'required|date_format:Y-m-d', 'source_url' => 'required|url:https|max:2000',
                 'records' => 'required|array|min:1|max:100000', 'records.*.part' => 'required|integer|min:1',
@@ -57,6 +66,19 @@ class ImportSirRecords extends Command
             $data['document_type'] ??= 'uncollected_forms';
             if (isset($data['printed_electors']) && count($data['records']) + count($data['held_rows'] ?? []) !== (int) $data['printed_electors']) {
                 throw new \RuntimeException('Indexed and held records must reconcile with the printed elector total.');
+            }
+            if (! empty($data['official_statistics'])) {
+                if ($data['document_type'] !== 'electoral_roll' || empty($data['pdf_sha256']) || ! isset($data['printed_electors'])) {
+                    throw new \RuntimeException('Official statistics require an electoral roll, preserved PDF and printed total.');
+                }
+                foreach ($data['official_statistics'] as $statistics) {
+                    if ((int) $statistics['male'] + (int) $statistics['female'] + (int) $statistics['third_gender'] !== (int) $statistics['total']) {
+                        throw new \RuntimeException('Official gender counts must reconcile with the printed total.');
+                    }
+                }
+                if (array_sum(array_column($data['official_statistics'], 'total')) !== (int) $data['printed_electors']) {
+                    throw new \RuntimeException('Official part totals must reconcile with the printed elector total.');
+                }
             }
             $host = strtolower(parse_url($data['source_url'], PHP_URL_HOST) ?? '');
             $landingHost = strtolower(parse_url($data['source_landing_url'] ?? '', PHP_URL_HOST) ?? '');
@@ -100,7 +122,7 @@ class ImportSirRecords extends Command
                 foreach (array_chunk($rows, 100) as $chunk) {
                     DB::table('sir_records')->insert($chunk);
                 }
-                DB::table('site_settings')->updateOrInsert(['key' => 'sir-roll-meta:'.$data['edition_key']], ['value' => json_encode(['indexed_records' => count($rows), 'printed_electors' => $data['printed_electors'] ?? null, 'held_records_count' => count($data['held_rows'] ?? [])], JSON_THROW_ON_ERROR), 'updated_at' => now()]);
+                DB::table('site_settings')->updateOrInsert(['key' => 'sir-roll-meta:'.$data['edition_key']], ['value' => json_encode(['indexed_records' => count($rows), 'printed_electors' => $data['printed_electors'] ?? null, 'held_records_count' => count($data['held_rows'] ?? []), 'roll_language' => $data['roll_language'] ?? null, 'qualifying_date' => $data['qualifying_date'] ?? null, 'official_statistics' => array_map(fn (array $statistics): array => array_intersect_key($statistics, array_flip(['part', 'male', 'female', 'third_gender', 'total', 'pdf_page'])), $data['official_statistics'] ?? [])], JSON_THROW_ON_ERROR), 'updated_at' => now()]);
             });
             $this->info('Imported '.count($rows).' SIR records.');
 

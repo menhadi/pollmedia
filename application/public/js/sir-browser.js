@@ -1,7 +1,7 @@
 (() => {
     const $ = id => document.getElementById(id);
     const filters = ['record-year', 'record-state', 'record-pc', 'record-ac', 'record-station', 'record-edition'];
-    let page = 1, criteria = null, optionsRequest, recordsRequest, generation = 0;
+    let page = 1, criteria = null, optionsRequest, recordsRequest, generation = 0, officialStatistics = [];
     const fmt = value => Number(value).toLocaleString('en-IN');
     function scope() {
         const input = {};
@@ -27,11 +27,13 @@
         optionsRequest?.abort();
         const active = new AbortController(); optionsRequest = active; let timedOut=false; const timeout=setTimeout(()=>{timedOut=true;active.abort();},20000);
         $('record-status').textContent = 'Loading available filters...';
+        officialStatistics=[]; $('statistics-rows').replaceChildren(); $('statistics-download').disabled=true; $('statistics-status').textContent='Loading official totals...';
         try {
             const response = await fetch('/api/sir/editions?' + new URLSearchParams(scope()), {signal:active.signal, headers:{Accept:'application/json'}});
             if (!response.ok) throw Error('Unable to load available filters. Confirm the SIR geography migration has run.');
             const data = await response.json();
             if (active.signal.aborted) return false;
+            renderStatistics(data.statistics || []);
             options('record-year', data.periods, 'All available years');
             options('record-state', data.states, 'All available states');
             options('record-pc', data.pcs, data.pcs.length ? 'All available PCs' : 'PC mapping unavailable - choose AC directly');
@@ -50,6 +52,24 @@
         } finally {clearTimeout(timeout);
         }
     }
+    function renderStatistics(rows) {
+        officialStatistics=rows;
+        $('statistics-rows').replaceChildren();
+        $('statistics-download').disabled=!rows.length;
+        $('statistics-status').textContent=rows.length ? 'Official PDF totals for '+rows.length+' imported part/edition summaries. Coverage is incomplete.' : 'No verified printed totals available for this selection.';
+        rows.forEach(stats=>{
+            const row=document.createElement('tr');
+            cell(row,(stats.year || 'Revision year unverified')+' / '+stats.edition+' / published '+stats.document_date);
+            cell(row,'AC '+stats.ac_code+' / Part '+stats.part);
+            for(const field of ['male','female','third_gender','total']) cell(row,stats[field] == null ? 'Unknown' : fmt(stats[field]));
+            const source=cell(row,''); const link=document.createElement('a');link.href=stats.pdf_url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='PDF page '+stats.pdf_page;source.append(link);
+            $('statistics-rows').append(row);
+        });
+    }
+    $('statistics-download').onclick=()=>{
+        const blob=new Blob([JSON.stringify({coverage:'Imported parts only; editions must not be added together',statistics:officialStatistics},null,2)],{type:'application/json;charset=utf-8'});
+        const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='sir-official-totals.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    };
     function cell(row, value) { const element=document.createElement('td'); element.textContent=value; row.append(element); return element; }
     async function showRecords() {
         recordsRequest?.abort(); const active=new AbortController(); recordsRequest=active;

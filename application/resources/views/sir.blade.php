@@ -8,6 +8,7 @@
 <main><div class="eyebrow">Elections / Special Intensive Revision</div><h1>Search the SIR voter list.</h1><p class="intro">Pilibhit pilot: browse the official SIR voter roll by year, constituency and polling station. Search your name or relative name as printed in the roll. You can stop at any geographic level.</p>
 <p class="notice">Only electoral-roll editions appear here. The Pilibhit pilot starts with Part 1 of the 2026 draft roll. OCR results need checking against the linked PDF; uncollected-form lists are excluded.</p>
 <section class="panel" id="individual-search"><div class="record-heading"><h2>Find an area or a name</h2><p>Year → State → Parliamentary constituency → Assembly constituency → Polling station. AC selection does not require a PC.</p></div>
+<p class="status small">Use the script printed in the official roll, such as Hindi or Tamil. English transliteration is not matched automatically.</p>
 <form id="record-form" class="filters" method="post" data-manual-submit>
 <div><label for="record-year">Year</label><select id="record-year"><option value="">All available years</option></select></div>
 <div><label for="record-state">State</label><select id="record-state"><option value="">All available states</option></select></div>
@@ -15,13 +16,14 @@
 <div><label for="record-ac">Assembly constituency (AC)</label><select id="record-ac"><option value="">All available ACs</option></select></div>
 <div><label for="record-station">Polling station / part</label><select id="record-station" disabled><option value="">Choose an AC to list stations</option></select></div>
 <div><label for="record-edition">Document edition</label><select id="record-edition"><option value="">All available editions</option></select></div>
-<div><label for="record-name">Elector name in Hindi (optional)</label><input id="record-name" maxlength="100" autocomplete="off"></div>
-<div><label for="record-relative">Relative name in Hindi (optional)</label><input id="record-relative" maxlength="100" autocomplete="off"></div>
+<div><label for="record-name">Elector name (original language, optional)</label><input id="record-name" maxlength="100" autocomplete="off"></div>
+<div><label for="record-relative">Relative name (original language, optional)</label><input id="record-relative" maxlength="100" autocomplete="off"></div>
 <div><button type="submit">Show records</button> <button id="record-reset" type="button">Reset</button> <button id="record-retry" type="button">Retry loading filters</button></div>
 </form><p id="scope-note" class="status small"></p><p id="record-status" class="status" role="status">Loading available filters...</p>
 <div class="table-scroll"><table><thead><tr><th>Name</th><th>Relative name</th><th>Relationship</th><th>Year / edition</th><th>Constituency / polling station</th><th>PDF reference</th></tr></thead><tbody id="record-rows"></tbody></table></div>
 <div class="pager"><span id="record-page-info" class="small"></span><button id="record-prev" disabled>Previous</button><button id="record-next" disabled>Next</button></div>
 <div class="source"><a href="https://voters.eci.gov.in/download-eroll" target="_blank" rel="noopener noreferrer">ECI electoral-roll PDFs</a><a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener noreferrer">Current voter search on ECI</a></div></section>
+<section class="panel"><div class="record-heading"><h2>Official voter totals by year and part</h2><p class="small">Printed totals for imported parts only. Each edition is separate; these totals do not change when you search a name. Missing statistics are unknown, not zero.</p><button type="button" id="statistics-download" disabled>Download totals (JSON)</button></div><p id="statistics-status" class="status small"></p><div class="table-scroll"><table><thead><tr><th>Year / edition</th><th>AC / part</th><th>Male</th><th>Female</th><th>Third gender</th><th>Total</th><th>Source</th></tr></thead><tbody id="statistics-rows"></tbody></table></div></section>
 <footer>PDF links open the preserved original part file. Official publication links identify its source. A draft entry does not confirm current registration.</footer>
 </main><script src="{{ asset('js/sir-browser.js') }}?v={{ substr(hash_file('sha256',public_path('js/sir-browser.js')),0,12) }}" defer></script>
 @include('public-footer')</body></html>

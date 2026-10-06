@@ -127,7 +127,7 @@ if __name__ == "__main__":
             if record is None or (record["name"], record["relative_name"]) != (checked[1], checked[2]):
                 raise ValueError("Checked candidate differs from the source review")
             record["extraction_status"] = "reviewed"
-    result = dict(edition_key=sha, state_code="09", state_name="Uttar Pradesh", pc_code="26", pc_name="पीलीभीत / Pilibhit", pc_source_url="https://pilibhit.nic.in/meeting-blo-bla/", ac_code="127", ac_name="पीलीभीत / Pilibhit", year=2026, edition="SIR 2026 draft roll - published 6 January 2026", document_type="electoral_roll", document_date="2026-01-06", source_url="https://drive.google.com/file/d/14MYTjeyq4cEFetIEEhKN-_lMnuQCwY5q/view", source_landing_url="https://pilibhit.nic.in/meeting-blo-bla/", pdf_sha256=sha, records=records, held_rows=held, printed_electors=933)
+    result = dict(edition_key=sha, state_code="09", state_name="Uttar Pradesh", pc_code="26", pc_name="पीलीभीत / Pilibhit", pc_source_url="https://pilibhit.nic.in/meeting-blo-bla/", ac_code="127", ac_name="पीलीभीत / Pilibhit", year=2026, edition="SIR 2026 draft roll - published 6 January 2026", document_type="electoral_roll", document_date="2026-01-06", source_url="https://drive.google.com/file/d/14MYTjeyq4cEFetIEEhKN-_lMnuQCwY5q/view", source_landing_url="https://pilibhit.nic.in/meeting-blo-bla/", pdf_sha256=sha, records=records, held_rows=held, printed_electors=933, roll_language="Hindi", qualifying_date="2026-01-01", official_statistics=[dict(part=1, male=507, female=426, third_gender=0, total=933, pdf_page=35)])
     result["visual_review_cells"] = review_count
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
