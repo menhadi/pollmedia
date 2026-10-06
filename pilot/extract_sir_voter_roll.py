@@ -11,11 +11,13 @@ import io
 import json
 import re
 import subprocess
+import threading
 from pathlib import Path
 import numpy as np
 import pypdfium2 as pdfium
 from PIL import Image
 ROOT = Path(__file__).resolve().parent
+PDF_RENDER_LOCK = threading.Lock()
 
 
 def serial_ocr(image, left, top, tessdata, cache):
@@ -35,8 +37,16 @@ def ocr_page(pdf_path, page_number, work, tessdata, context=None):
     tsv = work/f"page-{page_number}.tsv"
     image_path = work/f"page-{page_number}.png"
     if not tsv.exists():
-        pdf = pdfium.PdfDocument(pdf_path)
-        image = pdf[page_number-1].render(scale=3).to_pil().convert("RGB")
+        # PDFium is not thread-safe; keep native rendering serialized while
+        # independent recognition subprocesses can still run concurrently.
+        with PDF_RENDER_LOCK:
+            pdf = pdfium.PdfDocument(pdf_path)
+            page = pdf[page_number-1]
+            bitmap = page.render(scale=3)
+            image = bitmap.to_pil().convert("RGB")
+            bitmap.close()
+            page.close()
+            pdf.close()
         image.save(image_path)
         subprocess.run(["tesseract", str(image_path), str(work/f"page-{page_number}"), "--tessdata-dir", str(tessdata), "-l", "hin+eng", "--psm", "11", "-c", "tessedit_create_tsv=1"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     with tsv.open(encoding="utf-8") as stream:
