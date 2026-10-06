@@ -159,7 +159,7 @@ class SirRecordController extends Controller
         foreach ($groups as $index => [$label]) {
             $summary['age_groups'][] = ['label' => $label, 'count' => (int) $counts['age_'.$index]];
         }
-        $summary['age_groups'][] = ['label' => 'Age unreadable / missing', 'count' => (int) $counts['age_unknown']];
+        $summary['age_groups'][] = ['label' => 'Age not available', 'count' => (int) $counts['age_unknown']];
 
         return $summary;
     }

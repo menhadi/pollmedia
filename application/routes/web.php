@@ -156,6 +156,7 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(f
     Route::post('/admin/authorities/{key}/check', [AuthorityReviewController::class, 'check'])->middleware('throttle:3,1')->name('authorities.check');
     Route::get('/admin/sir/review', [SirReviewController::class, 'index'])->name('sir.review');
     Route::post('/admin/sir/review/{record}/vision', [SirReviewController::class, 'extract'])->whereNumber('record')->middleware('throttle:2,1')->name('sir.review.extract');
+    Route::get('/admin/sir/proposals/{review}/image', [SirReviewController::class, 'image'])->whereNumber('review')->name('sir.review.image');
     Route::post('/admin/sir/proposals/{review}', [SirReviewController::class, 'decide'])->whereNumber('review')->middleware('throttle:20,1')->name('sir.review.decide');
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/account', [AdminAuthController::class, 'account'])->name('admin.account');

@@ -16,6 +16,11 @@ class SirRecordSearchTest extends TestCase
         return ['document_type' => 'electoral_roll', 'edition_key' => str_repeat('a', 64), 'state_code' => '09', 'ac_code' => '127', 'ac_name' => 'Test AC', 'year' => 2003, 'edition' => 'Final roll', 'document_date' => '2003-01-01', 'part' => 1, 'station' => 'Test station', 'serial' => 19, 'name' => 'Test Elector', 'relative_name' => 'Test Parent', 'relationship' => 'Father', 'pdf_page' => 4, 'source_url' => 'https://www.eci.gov.in/test.pdf'];
     }
 
+    public function test_public_page_has_first_last_navigation_and_plain_labels(): void
+    {
+        $this->get('/india/sir')->assertOk()->assertSee('record-first-top', false)->assertSee('record-last-top', false)->assertSee('record-first', false)->assertSee('record-last', false)->assertDontSeeText('OCR')->assertDontSeeText('indexed')->assertDontSeeText('extracted');
+    }
+
     public function test_search_filters_names_and_editions_and_preserves_provenance(): void
     {
         DB::table('sir_records')->insert($this->row());

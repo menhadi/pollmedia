@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
@@ -14,6 +16,8 @@ class SirVisionReviewTest extends TestCase
     use RefreshDatabase;
 
     private string $hash;
+
+    private array $images = [];
 
     protected function setUp(): void
     {
@@ -34,6 +38,9 @@ class SirVisionReviewTest extends TestCase
     protected function tearDown(): void
     {
         @unlink(storage_path('app/private/sir-pdfs/'.$this->hash.'.pdf'));
+        foreach ($this->images as $hash) {
+            @unlink(storage_path('app/private/sir-vision-images/'.$hash.'.image'));
+        }
         parent::tearDown();
     }
 
@@ -128,6 +135,38 @@ class SirVisionReviewTest extends TestCase
         } finally {
             $lock->release();
         }
+    }
+
+    public function test_deepseek_uses_saved_credentials_and_an_image_and_stages_a_review(): void
+    {
+        $this->administrator();
+        DB::table('ai_provider_settings')->insert(['provider' => 'deepseek', 'model' => 'deepseek-flash', 'encrypted_key' => Crypt::encryptString('saved-deepseek-test-key'), 'updated_by' => auth()->id(), 'updated_at' => now()]);
+        $image = UploadedFile::fake()->image('official-card.png', 400, 250);
+        $this->images[] = hash_file('sha256', $image->getRealPath());
+        Http::fake(['api.deepseek.com/*' => Http::response(['id' => 'deepseek-test-response', 'choices' => [['finish_reason' => 'stop', 'message' => ['content' => json_encode($this->suggestion())]]]])]);
+        $this->post('https://localhost/admin/sir/review/1/vision', ['provider' => 'deepseek', 'page_image' => $image])->assertRedirect()->assertSessionHasNoErrors();
+        Http::assertSent(fn ($request) => $request->header('Authorization')[0] === 'Bearer saved-deepseek-test-key' && $request['model'] === 'deepseek-flash' && $request['messages'][1]['content'][1]['type'] === 'image_url' && str_starts_with($request['messages'][1]['content'][1]['image_url']['url'], 'data:image/png;base64,'));
+        $this->assertDatabaseHas('sir_records', ['name' => 'Unclear OCR']);
+        $this->assertDatabaseHas('sir_extraction_reviews', ['provider' => 'deepseek', 'status' => 'pending', 'image_source' => 'admin_upload']);
+        $this->get('https://localhost/admin/sir/proposals/1/image')->assertOk()->assertHeader('Content-Type', 'image/png');
+        $this->actingAs(User::factory()->create())->get('https://localhost/admin/sir/proposals/1/image')->assertForbidden();
+    }
+
+    public function test_deepseek_text_model_missing_renderer_and_invalid_upload_make_no_api_call(): void
+    {
+        $this->administrator();
+        config(['seo-ai.providers.deepseek.key' => 'test-key', 'seo-ai.providers.deepseek.model' => 'deepseek-v4-pro', 'seo-ai.sir_pdf_renderer' => 'missing-sir-renderer']);
+        $this->post('https://localhost/admin/sir/review/1/vision', ['provider' => 'deepseek'])->assertSessionHasErrors('vision');
+        config(['seo-ai.providers.deepseek.model' => 'deepseek-flash']);
+        $this->post('https://localhost/admin/sir/review/1/vision', ['provider' => 'deepseek'])->assertSessionHasErrors('vision');
+        Http::assertNothingSent();
+    }
+
+    public function test_invalid_upload_is_rejected_before_calling_the_provider(): void
+    {
+        $this->administrator();
+        $this->post('https://localhost/admin/sir/review/1/vision', ['provider' => 'deepseek', 'page_image' => UploadedFile::fake()->create('file.html', 1, 'text/html')])->assertSessionHasErrors('page_image');
+        Http::assertNothingSent();
     }
 
     public function test_stale_suggestions_cannot_overwrite_changed_records_and_rejection_preserves_them(): void
