@@ -40,6 +40,7 @@ use App\Http\Controllers\SirAdminController;
 use App\Http\Controllers\SirImportController;
 use App\Http\Controllers\SirRecordController;
 use App\Http\Controllers\SirReviewController;
+use App\Http\Controllers\SirUploadController;
 use App\Http\Controllers\SiteManagementController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SourceController;
@@ -159,6 +160,8 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(f
     Route::get('/admin/sir', [SirAdminController::class, 'index'])->name('sir.admin.index');
     Route::get('/admin/sir/records/{record}', [SirAdminController::class, 'edit'])->whereNumber('record')->name('sir.admin.edit');
     Route::post('/admin/sir/records/{record}', [SirAdminController::class, 'update'])->whereNumber('record')->middleware('throttle:sir-decisions')->name('sir.admin.update');
+    Route::post('/admin/sir/uploads', [SirUploadController::class, 'start'])->middleware('throttle:sir-imports')->name('sir.upload.start');
+    Route::post('/admin/sir/uploads/{token}', [SirUploadController::class, 'chunk'])->whereUuid('token')->middleware('throttle:sir-upload-chunks')->name('sir.upload.chunk');
     Route::get('/admin/sir/imports', [SirImportController::class, 'index'])->name('sir.imports.index');
     Route::post('/admin/sir/imports', [SirImportController::class, 'store'])->middleware('throttle:sir-imports')->name('sir.imports.store');
     Route::get('/admin/sir/review', [SirReviewController::class, 'index'])->name('sir.review');

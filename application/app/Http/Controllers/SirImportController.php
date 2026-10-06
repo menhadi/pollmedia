@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SirPartUpload;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class SirImportController extends Controller
@@ -24,8 +26,14 @@ class SirImportController extends Controller
         return view('sir-imports', compact('batches', 'coverage', 'uploadLimit', 'postLimit'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, SirPartUpload $uploads): RedirectResponse
     {
+        $tokens = Validator::make(['records_token' => $request->input('records_token'), 'pdf_token' => $request->input('pdf_token')], ['records_token' => 'nullable|uuid', 'pdf_token' => 'nullable|uuid'])->validate();
+        foreach (['records' => 'records_file', 'pdf' => 'pdf_file'] as $kind => $field) {
+            if (! empty($tokens[$kind.'_token'])) {
+                $request->files->set($field, $uploads->resolve($request->user()->id, $tokens[$kind.'_token'], $kind));
+            }
+        }
         $input = $request->validate(['records_file' => 'required|file|max:48828', 'pdf_file' => 'required|file|mimes:pdf|max:97656', 'sha256' => 'required|regex:/^[a-f0-9]{64}$/']);
         $json = $request->file('records_file')->getRealPath();
         $pdf = $request->file('pdf_file')->getRealPath();
@@ -66,6 +74,11 @@ class SirImportController extends Controller
                 File::deleteDirectory($folder);
             }
             $lock->release();
+            foreach ($tokens as $token) {
+                if ($token) {
+                    $uploads->discard($request->user()->id, $token);
+                }
+            }
         }
     }
 }

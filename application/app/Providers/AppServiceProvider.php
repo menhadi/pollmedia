@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->terminating(fn () => app(ArchiveFiles::class)->cleanup());
-        foreach (['sir-vision' => 2, 'sir-decisions' => 20, 'sir-imports' => 5] as $name => $maximum) {
+        foreach (['sir-vision' => 2, 'sir-decisions' => 20, 'sir-imports' => 10, 'sir-upload-chunks' => 400] as $name => $maximum) {
             RateLimiter::for($name, fn (Request $request) => Limit::perMinute($maximum)->by($name.':'.$request->user()?->id));
         }
         Queue::after(fn () => app(ArchiveFiles::class)->cleanup());
