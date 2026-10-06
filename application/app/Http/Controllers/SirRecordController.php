@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SirNameSearch;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -69,6 +70,7 @@ class SirRecordController extends Controller
             $edition->indexed_records = $details['indexed_records'] ?? null;
             $edition->printed_electors = $details['printed_electors'] ?? null;
             $edition->held_records_count = $details['held_records_count'] ?? null;
+            $edition->uncertain_records = $details['uncertain_records'] ?? 0;
             $edition->roll_language = $details['roll_language'] ?? null;
             if (! empty($input['edition_key']) && $input['edition_key'] !== $edition->edition_key) {
                 continue;
@@ -100,7 +102,7 @@ class SirRecordController extends Controller
 
     public function search(Request $request): JsonResponse
     {
-        $input = $request->validate($this->rules() + ['name' => 'nullable|string|max:100', 'relative_name' => 'nullable|string|max:100', 'part' => 'nullable|integer|min:1', 'page' => 'nullable|integer|between:1,10000']);
+        $input = $request->validate($this->rules() + ['name' => 'nullable|string|max:100', 'relative_name' => 'nullable|string|max:100', 'part' => 'nullable|integer|min:1', 'page' => 'nullable|integer|between:1,10000', 'per_page' => 'nullable|integer|in:25,50,100,500']);
         $name = trim($input['name'] ?? '');
         $relative = trim($input['relative_name'] ?? '');
         abort_unless(collect($input)->only(['period', 'state_code', 'pc_code', 'ac_code', 'edition_key', 'station_key'])->filter()->isNotEmpty() || $name !== '' || $relative !== '', 422, 'Choose a year or geographic scope, or enter a name.');
@@ -110,13 +112,23 @@ class SirRecordController extends Controller
         $query = $this->scope($input);
         foreach (['name' => $name, 'relative_name' => $relative] as $field => $value) {
             if ($value !== '') {
-                $query->whereRaw('LOWER('.$field.") LIKE ? ESCAPE '!'", ['%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($value)).'%']);
+                $query->where(function (Builder $match) use ($field, $value): void {
+                    $match->whereRaw('LOWER('.$field.") LIKE ? ESCAPE '!'", [SirNameSearch::pattern($value)]);
+                    if (preg_match('/^[a-zA-Z\s.\x{2019}\x{0027}-]+$/u', $value) && preg_match('/[a-zA-Z]/', $value)) {
+                        $latin = SirNameSearch::latin($value);
+                        $key = SirNameSearch::key($latin);
+                        $match->orWhereRaw($field."_latin LIKE ? ESCAPE '!'", [SirNameSearch::pattern($latin)]);
+                        if (strlen($key) >= 2 && strlen(preg_replace('/[^a-z]/', '', $latin)) >= 3) {
+                            $match->orWhereRaw($field."_latin_key LIKE ? ESCAPE '!'", [SirNameSearch::pattern($key)]);
+                        }
+                    }
+                });
             }
         }
         if (! empty($input['part'])) {
             $query->where('part', $input['part']);
         }
-        $rows = $query->select('name', 'relative_name', 'relationship', 'year', 'edition', 'edition_key', 'document_date', 'state_code', 'state_name', 'pc_code', 'pc_name', 'ac_name', 'ac_code', 'part', 'station', 'serial', 'pdf_page', 'source_url', 'source_landing_url', 'pdf_sha256', 'extraction_status')->orderBy('document_date', 'desc')->orderBy('state_code')->orderBy('ac_code')->orderBy('edition_key')->orderBy('part')->orderBy('serial')->orderBy('id')->paginate(25);
+        $rows = $query->select('name', 'relative_name', 'relationship', 'year', 'edition', 'edition_key', 'document_date', 'state_code', 'state_name', 'pc_code', 'pc_name', 'ac_name', 'ac_code', 'part', 'station', 'serial', 'pdf_page', 'source_url', 'source_landing_url', 'pdf_sha256', 'extraction_status', 'section_number', 'section_name', 'ward_number', 'house_number', 'age', 'age_text', 'gender', 'elector_id', 'serial_verified', 'field_notes', 'extraction_note')->orderBy('document_date', 'desc')->orderBy('state_code')->orderBy('ac_code')->orderBy('edition_key')->orderBy('part')->orderBy('serial')->orderBy('id')->paginate((int) ($input['per_page'] ?? 50));
         $rows->through(function (object $row): object {
             $row->pdf_url = $row->pdf_sha256 ? route('sir.document', ['hash' => $row->pdf_sha256]).'#page='.$row->pdf_page : $row->source_url.'#page='.$row->pdf_page;
 

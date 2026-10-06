@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Services\SirNameSearch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -53,8 +54,8 @@ class SirRecordSearchTest extends TestCase
         }
         $this->getJson('/api/sir/editions')->assertOk()->assertJsonPath('periods.0.value', 'document:2025');
         $this->postJson('/api/sir/records/search', ['period' => 'revision:2025'])->assertOk()->assertJsonCount(0, 'data');
-        $this->postJson('/api/sir/records/search', ['period' => 'document:2025'])->assertOk()->assertJsonCount(25, 'data')->assertJsonPath('total', 26);
-        $this->postJson('/api/sir/records/search', ['period' => 'document:2025', 'page' => 2])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.serial', 26);
+        $this->postJson('/api/sir/records/search', ['period' => 'document:2025', 'per_page' => 25])->assertOk()->assertJsonCount(25, 'data')->assertJsonPath('total', 26);
+        $this->postJson('/api/sir/records/search', ['period' => 'document:2025', 'per_page' => 25, 'page' => 2])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.serial', 26);
     }
 
     public function test_import_validates_checksum_and_is_repeatable(): void
@@ -151,6 +152,58 @@ class SirRecordSearchTest extends TestCase
             file_put_contents($file, json_encode($data));
             $this->artisan('sir:import-records', ['file' => $file, '--sha256' => hash_file('sha256', $file), '--pdf' => $pdf])->expectsOutputToContain('gender counts must reconcile')->assertFailed();
             $this->getJson('/api/sir/editions')->assertOk()->assertJsonPath('statistics.0.female', 0);
+        } finally {
+            unlink($file);
+            unlink($pdf);
+            @unlink(storage_path('app/private/sir-pdfs/'.$data['pdf_sha256'].'.pdf'));
+        }
+    }
+
+    public function test_english_aliases_match_original_names_without_exposing_aliases(): void
+    {
+        $name = SirNameSearch::latin('वीरपाल');
+        $relative = SirNameSearch::latin('छोटेलाल');
+        DB::table('sir_records')->insert(array_merge($this->row(), ['name' => 'वीरपाल', 'relative_name' => 'छोटेलाल', 'name_latin' => $name, 'name_latin_key' => SirNameSearch::key($name), 'relative_name_latin' => $relative, 'relative_name_latin_key' => SirNameSearch::key($relative)]));
+        $response = $this->postJson('/api/sir/records/search', ['name' => 'Veerpal', 'relative_name' => 'Chhotelal']);
+        $response->assertOk()->assertJsonPath('total', 1)->assertJsonPath('data.0.name', 'वीरपाल')->assertJsonPath('data.0.relative_name', 'छोटेलाल');
+        $this->assertArrayNotHasKey('name_latin', $response->json('data.0'));
+        $this->assertArrayNotHasKey('name_latin_key', $response->json('data.0'));
+        $this->postJson('/api/sir/records/search', ['name' => '%%'])->assertOk()->assertJsonPath('total', 0);
+        $this->postJson('/api/sir/records/search', ['name' => '...'])->assertOk()->assertJsonPath('total', 0);
+    }
+
+    public function test_page_size_options_have_stable_boundaries_and_reject_unbounded_requests(): void
+    {
+        $rows = [];
+        for ($serial = 1; $serial <= 501; $serial++) {
+            $rows[] = array_merge($this->row(), ['serial' => $serial]);
+        }
+        foreach (array_chunk($rows, 50) as $chunk) {
+            DB::table('sir_records')->insert($chunk);
+        }
+        foreach ([50, 100, 500] as $perPage) {
+            $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => $perPage])->assertOk()->assertJsonCount($perPage, 'data')->assertJsonPath('total', 501)->assertJsonPath('data.0.serial', 1);
+        }
+        $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => 500, 'page' => 2])->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.serial', 501);
+        $this->postJson('/api/sir/records/search', ['ac_code' => '127', 'per_page' => 10000])->assertUnprocessable();
+    }
+
+    public function test_import_keeps_uncertain_names_and_printed_fields_alongside_reviewed_rows(): void
+    {
+        $row = $this->row();
+        $data = array_intersect_key($row, array_flip(['edition_key', 'state_code', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'source_url', 'document_type']));
+        $pdf = tempnam(sys_get_temp_dir(), 'sir-fields-pdf-');
+        $file = tempnam(sys_get_temp_dir(), 'sir-fields-');
+        file_put_contents($pdf, '%PDF-test-'.uniqid());
+        $data['pdf_sha256'] = hash_file('sha256', $pdf);
+        $data['printed_electors'] = 2;
+        $base = array_intersect_key($row, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page']));
+        $data['records'] = [$base, array_merge($base, ['serial' => 20, 'name' => 'अस्पष्ट OCR', 'extraction_status' => 'ocr_uncertain', 'extraction_note' => 'Unclear name; verify PDF', 'serial_verified' => false, 'section_number' => '1', 'house_number' => '12/A', 'age' => 57, 'gender' => 'पुरुष', 'elector_id' => 'OCR-ID'])];
+        try {
+            file_put_contents($file, json_encode($data));
+            $this->artisan('sir:import-records', ['file' => $file, '--sha256' => hash_file('sha256', $file), '--pdf' => $pdf])->assertSuccessful();
+            $this->postJson('/api/sir/records/search', ['ac_code' => '127'])->assertOk()->assertJsonPath('total', 2)->assertJsonPath('data.1.name', 'अस्पष्ट OCR')->assertJsonPath('data.1.extraction_status', 'ocr_uncertain')->assertJsonPath('data.1.house_number', '12/A')->assertJsonPath('data.1.age', 57)->assertJsonPath('data.1.ward_number', null);
+            $this->getJson('/api/sir/editions')->assertOk()->assertJsonPath('editions.0.indexed_records', 2)->assertJsonPath('editions.0.uncertain_records', 1)->assertJsonPath('editions.0.held_records_count', 0);
         } finally {
             unlink($file);
             unlink($pdf);

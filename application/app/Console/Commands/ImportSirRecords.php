@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\SirNameSearch;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -61,7 +62,18 @@ class ImportSirRecords extends Command
                 'records.*.name' => 'required|string|max:255', 'records.*.relative_name' => 'required|string|max:255',
                 'records.*.relationship' => 'required|in:Father,Mother,Husband,Wife,Other',
                 'records.*.pdf_page' => 'required|integer|min:1',
-                'records.*.extraction_status' => 'nullable|in:reviewed,ocr_candidate',
+                'records.*.extraction_status' => 'nullable|in:reviewed,ocr_candidate,ocr_uncertain',
+                'records.*.section_number' => 'nullable|string|max:50',
+                'records.*.section_name' => 'nullable|string|max:255',
+                'records.*.ward_number' => 'nullable|string|max:50',
+                'records.*.house_number' => 'nullable|string|max:255',
+                'records.*.age' => 'nullable|integer|between:0,120',
+                'records.*.age_text' => 'nullable|string|max:255',
+                'records.*.gender' => 'nullable|string|max:100',
+                'records.*.elector_id' => 'nullable|string|max:100',
+                'records.*.serial_verified' => 'nullable|boolean',
+                'records.*.field_notes' => 'nullable|string|max:2000',
+                'records.*.extraction_note' => 'nullable|string|max:2000',
             ])->validate();
             $data['document_type'] ??= 'uncollected_forms';
             if (isset($data['printed_electors']) && count($data['records']) + count($data['held_rows'] ?? []) !== (int) $data['printed_electors']) {
@@ -100,7 +112,11 @@ class ImportSirRecords extends Command
                     throw new \RuntimeException('Duplicate part/serial in extraction.');
                 }
                 $keys[$key] = true;
-                $rows[] = array_merge(array_intersect_key($data, array_flip(['edition_key', 'state_code', 'state_name', 'pc_code', 'pc_name', 'pc_source_url', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'document_type', 'source_url', 'source_landing_url', 'pdf_sha256'])), array_intersect_key($record, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page', 'extraction_status'])));
+                $record += array_fill_keys(['section_number', 'section_name', 'ward_number', 'house_number', 'age', 'age_text', 'gender', 'elector_id', 'field_notes', 'extraction_note'], null);
+                $record += ['serial_verified' => true, 'extraction_status' => 'reviewed'];
+                $nameLatin = SirNameSearch::latin($record['name']);
+                $relativeLatin = SirNameSearch::latin($record['relative_name']);
+                $rows[] = array_merge(array_intersect_key($data, array_flip(['edition_key', 'state_code', 'state_name', 'pc_code', 'pc_name', 'pc_source_url', 'ac_code', 'ac_name', 'year', 'edition', 'document_date', 'document_type', 'source_url', 'source_landing_url', 'pdf_sha256'])), array_intersect_key($record, array_flip(['part', 'station', 'serial', 'name', 'relative_name', 'relationship', 'pdf_page', 'extraction_status', 'section_number', 'section_name', 'ward_number', 'house_number', 'age', 'age_text', 'gender', 'elector_id', 'serial_verified', 'field_notes', 'extraction_note'])), ['name_latin' => $nameLatin, 'relative_name_latin' => $relativeLatin, 'name_latin_key' => SirNameSearch::key($nameLatin), 'relative_name_latin_key' => SirNameSearch::key($relativeLatin)]);
             }
             if ($data['document_type'] === 'electoral_roll') {
                 $pdf = $this->option('pdf');
@@ -122,7 +138,7 @@ class ImportSirRecords extends Command
                 foreach (array_chunk($rows, 100) as $chunk) {
                     DB::table('sir_records')->insert($chunk);
                 }
-                DB::table('site_settings')->updateOrInsert(['key' => 'sir-roll-meta:'.$data['edition_key']], ['value' => json_encode(['indexed_records' => count($rows), 'printed_electors' => $data['printed_electors'] ?? null, 'held_records_count' => count($data['held_rows'] ?? []), 'roll_language' => $data['roll_language'] ?? null, 'qualifying_date' => $data['qualifying_date'] ?? null, 'official_statistics' => array_map(fn (array $statistics): array => array_intersect_key($statistics, array_flip(['part', 'male', 'female', 'third_gender', 'total', 'pdf_page'])), $data['official_statistics'] ?? [])], JSON_THROW_ON_ERROR), 'updated_at' => now()]);
+                DB::table('site_settings')->updateOrInsert(['key' => 'sir-roll-meta:'.$data['edition_key']], ['value' => json_encode(['indexed_records' => count($rows), 'printed_electors' => $data['printed_electors'] ?? null, 'held_records_count' => count($data['held_rows'] ?? []), 'uncertain_records' => count(array_filter($rows, fn (array $row): bool => ($row['extraction_status'] ?? '') === 'ocr_uncertain')), 'roll_language' => $data['roll_language'] ?? null, 'qualifying_date' => $data['qualifying_date'] ?? null, 'official_statistics' => array_map(fn (array $statistics): array => array_intersect_key($statistics, array_flip(['part', 'male', 'female', 'third_gender', 'total', 'pdf_page'])), $data['official_statistics'] ?? [])], JSON_THROW_ON_ERROR), 'updated_at' => now()]);
             });
             $this->info('Imported '.count($rows).' SIR records.');
 

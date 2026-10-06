@@ -43,7 +43,7 @@
             options('record-station', data.stations, $('record-ac').value ? 'All polling stations in this AC' : 'Choose an AC to list stations');
             $('record-station').disabled = !$('record-ac').value;
             $('scope-note').textContent = data.pcs.length ? 'Browse all imported names in the selected scope, or narrow the optional filters.' : 'PC grouping has no verified mapping for these records. Choose an AC directly. Document-year choices are labelled separately from verified revision years.';
-            if(data.editions.length===1 && data.editions[0].printed_electors){const e=data.editions[0];$('scope-note').textContent+=' Pilot coverage: '+fmt(e.indexed_records)+' of '+fmt(e.printed_electors)+' entries indexed; '+fmt(e.held_records_count)+' held for review.';}
+            if(data.editions.length===1 && data.editions[0].printed_electors){const e=data.editions[0];$('scope-note').textContent+=' Pilot coverage: '+fmt(e.indexed_records)+' of '+fmt(e.printed_electors)+' entries indexed; '+fmt(e.held_records_count)+' held for review; '+fmt(e.uncertain_records || 0)+' uncertain OCR entries included.';}
             $('record-status').textContent = data.editions.length ? 'Choose any geographic filter, or enter a name, to show available records.' : 'No voter-roll data imported for this selection. The older uncollected-form sample is excluded.';
             return true;
         } catch (error) {
@@ -71,6 +71,7 @@
         const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='sir-official-totals.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
     };
     function cell(row, value) { const element=document.createElement('td'); element.textContent=value; row.append(element); return element; }
+    function small(parent,value) {const item=document.createElement('small');item.textContent=value;parent.append(item);return item;}
     async function showRecords() {
         recordsRequest?.abort(); const active=new AbortController(); recordsRequest=active;
         const ticket=++generation;
@@ -79,18 +80,30 @@
         try {
             const response=await fetch('/api/sir/records/search', {method:'POST', signal:active.signal,
                 headers:{'Content-Type':'application/json', Accept:'application/json', 'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content},
-                body:JSON.stringify({...criteria, page})});
+                body:JSON.stringify({...criteria, page, per_page:Number($('record-page-size').value)})});
             const data=await response.json(); if (ticket!==generation) return;
             if (!response.ok) throw Error(data.message || 'Unable to load records.');
             data.data.forEach(record => {
-                const row=document.createElement('tr'); cell(row,record.name); cell(row,record.relative_name); cell(row,record.relationship);
-                cell(row,(record.year ? record.year+' (revision)' : record.document_date.slice(0,4)+' (document year; revision unverified)')+' / '+record.edition+' / '+record.document_date);
-                cell(row,'AC '+record.ac_code+' - '+record.ac_name+' / Part '+record.part+' - '+record.station);
+                const row=document.createElement('tr');
+                const sequence=cell(row,record.serial); if(!record.serial_verified) small(sequence,'Card order; verify serial');
+                const name=cell(row,record.name); if(record.extraction_status==='ocr_uncertain') {const badge=small(name,'Uncertain OCR');badge.className='ocr-badge';badge.title=record.extraction_note || 'Verify the original PDF';}
+                const relative=cell(row,record.relative_name); small(relative,record.relationship==='Other' ? 'Other / unclear relationship' : record.relationship);
+                cell(row,record.house_number || 'Unreadable');
+                const age=cell(row,record.age ?? 'Unreadable'); if(record.age==null && record.age_text) small(age,record.age_text);
+                cell(row,record.gender || 'Unreadable');
+                const section=cell(row,record.section_number ? 'Section '+record.section_number+(record.section_name ? ' - '+record.section_name : '') : 'Section not published'); small(section,record.ward_number ? 'Ward '+record.ward_number : 'Ward not published');
+                cell(row,record.elector_id || 'Unreadable');
+                const edition=cell(row,record.year ? record.year+' (revision)' : record.document_date.slice(0,4)+' (document year)'); small(edition,record.edition);
+                const station=cell(row,'AC '+record.ac_code+' - '+record.ac_name); small(station,'Part '+record.part+' - '+record.station);
                 const link=document.createElement('a'); link.href=record.pdf_url;
-                link.textContent='PDF page '+record.pdf_page+' / serial '+record.serial; link.target='_blank'; link.rel='noopener noreferrer'; const sourceCell=cell(row,''); sourceCell.append(link); const official=document.createElement('a'); official.href=record.source_landing_url||record.source_url; official.textContent='Official publication'; official.target='_blank'; official.rel='noopener noreferrer'; sourceCell.append(document.createElement('br'),official); if(record.extraction_status==='ocr_candidate'){const note=document.createElement('small'); note.textContent='OCR text - verify PDF';sourceCell.append(document.createElement('br'),note);} $('record-rows').append(row);
+                link.textContent='PDF page '+record.pdf_page; link.target='_blank'; link.rel='noopener noreferrer'; const sourceCell=cell(row,''); sourceCell.append(link);
+                const official=document.createElement('a'); official.href=record.source_landing_url||record.source_url; official.textContent='Official publication'; official.target='_blank'; official.rel='noopener noreferrer'; sourceCell.append(document.createElement('br'),official);
+                if(record.extraction_status!=='reviewed') small(sourceCell,'OCR text - verify PDF');
+                if(record.field_notes) sourceCell.title=record.field_notes;
+                $('record-rows').append(row);
             });
             $('record-status').textContent=data.total ? fmt(data.total)+' imported records match this scope. Names are optional.' : 'No imported records match this selection. This does not establish absence from the official electoral roll.';
-            $('record-page-info').textContent=data.total ? 'Page '+data.current_page+' of '+data.last_page : '';
+            $('record-page-info').textContent=data.total ? fmt(data.from)+'–'+fmt(data.to)+' of '+fmt(data.total)+' · Page '+data.current_page+' of '+data.last_page : '';
             $('record-prev').disabled=page<=1; $('record-next').disabled=!data.next_page_url;
         } catch (error) { if (ticket===generation && error.name!=='AbortError') $('record-status').textContent=error.message; }
     }
@@ -115,6 +128,7 @@
     }));
     $('record-form').onsubmit=event => {event.preventDefault(); submit();};
     for (const id of ['record-name','record-relative']) $(id).addEventListener('input', () => {clearResults(); $('record-status').textContent='Press Show records to apply the optional name filters.';});
+    $('record-page-size').onchange=()=>{clearResults();page=1;if(criteria) submit();};
     $('record-prev').onclick=() => {page--; showRecords();}; $('record-next').onclick=() => {page++; showRecords();};
     $('record-reset').onclick=() => {clearResults(); filters.forEach(id => $(id).value=''); $('record-name').value=''; $('record-relative').value=''; criteria=null; page=1; refreshOptions();};
     $('record-retry').onclick=()=>refreshOptions();
