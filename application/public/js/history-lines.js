@@ -23,30 +23,40 @@
         const from = chart.querySelector('[data-chart-from]'), to = chart.querySelector('[data-chart-to]');
         const plot = chart.querySelector('.history-plot'), status = chart.querySelector('.history-readout');
         const enabled = new Set(data.series.map(series => series.key));
-        const format = value => new Intl.NumberFormat(document.documentElement.lang === 'hi' ? 'hi-IN' : 'en-IN', {maximumFractionDigits: data.unit === '%' ? 2 : 0}).format(value);
+        const format = (value, unit = data.unit) => new Intl.NumberFormat(document.documentElement.lang === 'hi' ? 'hi-IN' : 'en-IN', {maximumFractionDigits: unit === '%' ? 2 : 0}).format(value);
         const render = () => {
             plot.replaceChildren();
             status.style.visibility = '';
             const rows = data.rows.filter(row => row.year >= Number(from.value) && row.year <= Number(to.value));
             if (!rows.length) { status.textContent = 'No years in this range.'; return; }
             const series = data.series.filter(item => enabled.has(item.key));
-            const values = rows.flatMap(row => series.map(item => row[item.key])).filter(value => value !== null && Number.isFinite(value));
+            let values = rows.flatMap(row => series.filter(item => item.axis !== 'right').map(item => row[item.key])).filter(value => value !== null && Number.isFinite(value));
+            if (!values.length && series.some(item => item.axis === 'right')) values = [0,100];
             if (!values.length) { status.textContent = 'No available values for this selection.'; return; }
             status.textContent = 'Hover or focus a year to see the value. † indicates a source note.';
-            const max = data.unit === '%' && !data.autoScale ? 100 : Math.max(1, ...values) * 1.08;
-            const min = data.autoScale ? Math.min(0, ...values) * 1.08 : 0;
-            const width = Math.max(240, plot.clientWidth), height = 270, left = width < 500 ? 42 : 62, right = width - (width < 500 ? 8 : 18), top = 16, bottom = 228;
+            const rawMax = data.unit === '%' && !data.autoScale ? 100 : Math.max(1, ...values) * 1.08;
+            const rawMin = data.autoScale ? Math.min(0, ...values) * 1.08 : 0;
+            const rawStep = (rawMax-rawMin)/4, magnitude = 10 ** Math.floor(Math.log10(rawStep));
+            const tickStep = Math.max(1, [1,2,5,10].find(multiplier => multiplier*magnitude >= rawStep)*magnitude);
+            const min = Math.floor(rawMin/tickStep)*tickStep, max = Math.ceil(rawMax/tickStep)*tickStep;
+            const hasRightAxis = data.series.some(item => item.axis === 'right');
+            const width = Math.max(240, plot.clientWidth), height = 270, left = width < 500 ? 42 : 62, right = width - (hasRightAxis ? 48 : (width < 500 ? 8 : 18)), top = 16, bottom = 228;
             const first = rows[0].year, last = rows[rows.length - 1].year;
             const x = year => first === last ? (left + right) / 2 : left + (year - first) / (last - first) * (right - left);
-            const y = value => bottom - (value-min) / (max-min) * (bottom - top);
+            const y = (value, item = {}) => bottom - (item.axis === 'right' ? value/100 : (value-min)/(max-min)) * (bottom-top);
             const tooltip = document.createElement('div');
             tooltip.className = 'history-tooltip'; tooltip.hidden = true; tooltip.setAttribute('role', 'tooltip');
             const svg = element('svg', {viewBox: `0 0 ${width} ${height}`, role: 'group', 'aria-label': chart.querySelector('h3').textContent + ', ' + data.unit});
-            for (let i = 0; i <= 4; i++) {
-                const value = min + (max-min) * i / 4, yy = y(value);
+            const tickDivisor = tickStep >= 10000000 ? 10000000 : tickStep >= 100000 ? 100000 : 1;
+            const tickSuffix = tickDivisor === 10000000 ? ' Cr.' : tickDivisor === 100000 ? ' L' : '';
+            for (let value = min; value <= max; value += tickStep) {
+                const yy = y(value);
                 svg.append(element('line', {x1:left,x2:right,y1:yy,y2:yy,class:'history-grid'}));
-                const tick = (value >= 10000000 ? (value/10000000).toLocaleString('en-IN',{maximumFractionDigits:1})+' Cr.' : value >= 100000 ? (value/100000).toLocaleString('en-IN',{maximumFractionDigits:1})+' L' : value.toLocaleString('en-IN',{maximumFractionDigits:1})) + (data.unit === '%' ? '%' : '');
+                const tick = (value/tickDivisor).toLocaleString('en-IN',{maximumFractionDigits:0}) + tickSuffix + (data.unit === '%' ? '%' : '');
                 svg.append(element('text',{x:left-9,y:yy+4,'text-anchor':'end'},tick));
+            }
+            if (hasRightAxis) {
+                [0,25,50,75,100].forEach(value => svg.append(element('text',{x:right+8,y:y(value,{axis:'right'})+4,'text-anchor':'start'},value+'%')));
             }
             const step = Math.max(1, Math.ceil(rows.length / Math.max(2, Math.floor((right-left)/62))));
             rows.forEach((row,index) => {
@@ -62,21 +72,21 @@
                 rows.forEach(row => {
                     const value = row[item.key];
                     if (value === null || !Number.isFinite(value)) { closeArea(); previous=null; start=null; return; }
-                    const xx = x(row.year), yy = y(value);
+                    const xx = x(row.year), yy = y(value, item);
                     if (previous) { path += `L${xx},${yy} `; area += `L${xx},${yy} `; }
                     else { path += `M${xx},${yy} `; area += `M${xx},${yy} `; start = xx; }
                     previous = {x:xx,y:yy};
                 });
                 closeArea();
                 svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
-                svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':item.key==='others_share'?'6 4':'none'}));
+                svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':(item.axis==='right'||item.key==='others_share')?'6 4':'none'}));
                 const availableRows = rows.filter(row => Number.isFinite(row[item.key]));
                 if (availableRows.length === 1) {
                     const point = availableRows[0];
-                    svg.append(element('circle',{cx:x(point.year),cy:y(point[item.key]),r:5,fill:color,stroke:'#fff','stroke-width':2,'pointer-events':'none',class:'history-single-point'}));
+                    svg.append(element('circle',{cx:x(point.year),cy:y(point[item.key], item),r:5,fill:color,stroke:'#fff','stroke-width':2,'pointer-events':'none',class:'history-single-point'}));
                 }
                 if (data.singleValueBar && rows.length === 1 && Number.isFinite(rows[0][item.key])) {
-                    const value=rows[0][item.key], baseline=y(0), yy=y(value);
+                    const value=rows[0][item.key], baseline=y(0, item), yy=y(value, item);
                     svg.append(element('rect',{x:x(rows[0].year)-18+index*8,y:Math.min(yy,baseline),width:24,height:Math.max(2,Math.abs(baseline-yy)),fill:color,'fill-opacity':0.7,class:'history-single-value'}));
                 }
                 rows.forEach(row => {
@@ -84,14 +94,14 @@
                     if (value === null || !Number.isFinite(value)) return;
                     const partyName = item.name_key && row[item.name_key] ? ` (${row[item.name_key]})` : '';
                     const votes = item.votes_key ? ` · ${format(row[item.votes_key])} votes` : '';
-                    const label = `${row.year} · ${item.label}${partyName}: ${format(value)} ${data.unit}${votes}${row.review?' † — source note':''}`;
-                    const hit = element('rect',{x:x(row.year)-12,y:y(value)-12,width:24,height:24,fill:'transparent',tabindex:0,role:'img','aria-label':label,class:'history-hit-target'});
+                    const label = `${row.year} · ${item.label}${partyName}: ${format(value, item.axis === 'right' ? '%' : data.unit)} ${item.axis === 'right' ? '%' : data.unit}${votes}${row.review?' † — source note':''}`;
+                    const hit = element('rect',{x:x(row.year)-12,y:y(value, item)-12,width:24,height:24,fill:'transparent',tabindex:0,role:'img','aria-label':label,class:'history-hit-target'});
                     const show = () => {
                         status.textContent = label;
                         status.style.visibility = 'hidden';
                         tooltip.textContent = label; tooltip.hidden = false;
                         const tipWidth = tooltip.offsetWidth || 200, tipHeight = tooltip.offsetHeight || 70;
-                        const pointX = x(row.year), pointY = y(value);
+                        const pointX = x(row.year), pointY = y(value, item);
                         tooltip.style.left = `${Math.max(4, Math.min(width-tipWidth-4, pointX-tipWidth/2))}px`;
                         tooltip.style.top = `${pointY-tipHeight-12 >= 4 ? pointY-tipHeight-12 : pointY+12}px`;
                         tooltip.style.transform = 'none';
