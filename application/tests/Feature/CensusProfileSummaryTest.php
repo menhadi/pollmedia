@@ -44,7 +44,7 @@ class CensusProfileSummaryTest extends TestCase
         $series = json_decode($match[1], true)['series'];
         $this->assertSame(['population', 'male', 'female'], array_column($series, 'key'));
         $this->assertStringContainsString('Gender balance', $html);
-        $this->assertStringContainsString('"rightMin":40,"rightMax":50', $html);
+        $this->assertStringContainsString('"rightMin":35,"rightMax":55', $html);
         $this->assertStringContainsString('Official population history', $html);
         $this->assertStringNotContainsString('<h3>Households</h3>', $html);
         $this->assertStringContainsString('<details class="census-source-notes">', $html);

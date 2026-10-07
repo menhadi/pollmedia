@@ -59,7 +59,7 @@
                 svg.append(element('text',{x:left-9,y:yy+4,'text-anchor':'end'},tick));
             }
             if (hasRightAxis) {
-                const rightTickStep = Math.max(1, Math.ceil((rightMax-rightMin)/5));
+                const rightTickStep = [1,2,5,10,20,25,50,100].find(step => step >= (rightMax-rightMin)/5) || Math.ceil((rightMax-rightMin)/5);
                 const rightTicks = [];
                 for (let value=rightMin; value<rightMax; value+=rightTickStep) rightTicks.push(value);
                 rightTicks.push(rightMax);
