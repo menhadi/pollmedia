@@ -60,7 +60,7 @@ class ConstituencyOverviewTest extends TestCase
             $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [['code' => 1, 'status' => 'validated', 'winner' => 'Example winner', 'candidates' => [['candidate_name' => 'Example winner', 'party_at_election' => 'Example party', 'votes' => 100]], 'number_of_seats' => 1]]]]);
         });
         $url = '/india/constituency?kind=pc&state=UTTAR%20PRADESH&name=lucknow';
-        $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Election winners may differ from current representatives')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('data-selected="lucknow"', false)->assertSee('data-mode="focus"', false)->assertSeeInOrder(['Lok Sabha map', 'How voting has changed'])->assertDontSee('google.com/maps')->assertSee('Registered electors and votes polled')->assertSee('Margin, registered electors and votes polled are absolute counts.');
+        $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Election winners may differ from current representatives')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('data-selected="lucknow"', false)->assertSee('data-mode="focus"', false)->assertSeeInOrder(['Lok Sabha map', 'How voting has changed'])->assertDontSee('google.com/maps')->assertSee('Registered electors, votes polled and turnout')->assertSee('Margin, registered electors and votes polled are absolute counts.');
         $this->get($url.'&edition='.str_repeat('a', 24))->assertOk()->assertSee('2024 results')->assertSee('Example party');
         $this->get($url.'&edition='.str_repeat('d', 24))->assertNotFound();
         $this->get($url.'&format=report')->assertOk()->assertSee('Print / Save as PDF')->assertSee('Sources and data notes')->assertSee('https://eci.gov.in')->assertSee('<svg', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('history-lines.js')->assertDontSee('data-history-chart');
@@ -145,7 +145,7 @@ class ConstituencyOverviewTest extends TestCase
         $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
         $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('281,501 †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $overview->getContent(), $charts);
-        $this->assertCount(5, $charts[1]);
+        $this->assertCount(4, $charts[1]);
         $chart = json_decode($charts[1][0], true);
         $this->assertSame([2009, 2019], array_column($chart['rows'], 'year'));
         $this->assertEquals(60, $chart['rows'][1]['polled']);
@@ -234,7 +234,7 @@ class ConstituencyOverviewTest extends TestCase
         $html = view('place-history-charts', compact('rows'))->render();
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $html, $matches);
         $fixed = json_decode($matches[1][0], true);
-        $this->assertCount(5, $matches[1]);
+        $this->assertCount(4, $matches[1]);
         $this->assertSame(['C', 'A', 'D'], array_column($fixed['series'], 'label'));
         $this->assertSame('%', $fixed['unit']);
         $this->assertEquals(20, $fixed['rows'][0]['fixed0_share']);
@@ -251,8 +251,12 @@ class ConstituencyOverviewTest extends TestCase
         $this->assertSame('D', $party['rows'][2]['party1_name']);
         $this->assertEquals(45, $party['rows'][2]['party0_share']);
         $this->assertEquals(20, $party['rows'][2]['others_share']);
-        $this->assertLessThan(strpos($html, '<h3>Voter turnout'), strpos($html, '<h3>Party vote shares by year'));
-        $this->assertSame(['turnout', 'margin', 'electors'], array_map(fn ($json) => json_decode($json, true)['series'][0]['key'], array_slice($matches[1], 2)));
+        $this->assertLessThan(strpos($html, '<h3>Registered electors, votes polled and turnout'), strpos($html, '<h3>Party vote shares by year'));
+        $combined = json_decode($matches[1][2], true);
+        $this->assertSame(['electors', 'polled', 'turnout'], array_column($combined['series'], 'key'));
+        $this->assertSame('right', $combined['series'][2]['axis']);
+        $this->assertTrue($combined['rightAutoScale']);
+        $this->assertSame(['electors', 'margin'], array_map(fn ($json) => json_decode($json, true)['series'][0]['key'], array_slice($matches[1], 2)));
         $this->assertStringContainsString('&amp;z=7&amp;', view('place-location-map', ['mapName' => 'Pilibhit', 'mapQuery' => 'Pilibhit, India'])->render());
         $this->assertEquals(80, $party['rows'][0]['party0']);
         $this->assertEquals(60, $party['rows'][0]['others']);
@@ -266,8 +270,8 @@ class ConstituencyOverviewTest extends TestCase
         $this->assertStringContainsString('80 (40.00%)', $html);
         $this->assertStringContainsString('60 (30.00%)', $html);
         $report = view('place-history-charts', ['rows' => $rows, 'reportMode' => true])->render();
-        $this->assertSame(5, substr_count($report, '<svg'));
-        $this->assertSame(5, substr_count($report, '<table>'));
+        $this->assertSame(4, substr_count($report, '<svg'));
+        $this->assertSame(4, substr_count($report, '<table>'));
         $this->assertStringNotContainsString('<details', $report);
         $this->assertStringNotContainsString('data-history-chart', $report);
         $this->assertStringContainsString('60 (30.00%)', $report);

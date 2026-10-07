@@ -121,3 +121,21 @@ test('population near 20 lakh uses a tight 20 lakh axis',()=>{
     percentage.events.focus();
     assert.match(nodes['.history-readout'].textContent,/60 %/);
 });
+
+test('turnout right axis fits its data instead of using zero to 100',()=>{
+    const data={unit:'people',autoScale:true,rightAutoScale:true,rows:[{year:1901,population:1900000,male_share:62},{year:2011,population:1950000,male_share:68}],series:[{key:'population',label:'Population'},{key:'male_share',label:'Male share',axis:'right'}]};
+    const nodes={'.history-chart-data':{textContent:JSON.stringify(data)},'[data-chart-from]':new Element('select'),'[data-chart-to]':new Element('select'),'.history-plot':new Element(),'.history-readout':new Element(),'.history-legend':new Element(),'h3':{textContent:'Population'}};
+    nodes['[data-chart-from]'].value='1901';nodes['[data-chart-to]'].value='2011';
+    const chart={querySelector:selector=>nodes[selector]};
+    const document={documentElement:{lang:'en'},querySelectorAll:()=>[chart],createElementNS:(_namespace,tag)=>new Element(tag),createElement:tag=>new Element(tag),createTextNode:text=>({textContent:text})};
+    vm.runInNewContext(readFileSync(path.join(__dirname,'../public/js/history-lines.js'),'utf8'),{document,ResizeObserver:class{observe(){}},Intl});
+    const svg=nodes['.history-plot'].children[0];
+    const ticks=svg.children.filter(child=>child.tag==='text');
+    assert.ok(ticks.some(tick=>tick.textContent==='55%'));
+    assert.ok(ticks.some(tick=>tick.textContent==='75%'));
+    assert.ok(!ticks.some(tick=>tick.textContent==='100%'));
+    assert.ok(ticks.every(tick=>!tick.textContent.includes('.')));
+    const percentage=svg.children.filter(child=>child.attributes.class==='history-hit-target').at(-1);
+    percentage.events.focus();
+    assert.match(nodes['.history-readout'].textContent,/68 %/);
+});

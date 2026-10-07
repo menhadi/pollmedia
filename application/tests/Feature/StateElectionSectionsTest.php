@@ -29,13 +29,13 @@ class StateElectionSectionsTest extends TestCase
         $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()->assertSeeInOrder(['id="pc-history"', 'id="ac-history"', 'data-mode="focus" data-kind="ac"'], false);
         foreach (['pc' => 'Lok Sabha', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {
             $report = $this->get('/india/state/uttar-pradesh?format=report&election='.$reportKind)->assertOk()->assertSee($reportLabel)->assertSee('Print / Save as PDF')->assertSee('Sources and coverage by election year')->assertSee('Methodology & disclaimer', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('data-history-chart');
-            $this->assertSame(5, substr_count($report->getContent(), 'class="report-plot"'));
+            $this->assertSame(4, substr_count($report->getContent(), 'class="report-plot"'));
             $report->assertSeeInOrder(['Chart values', 'Sources and coverage by election year', 'Methodology & disclaimer'], false);
         }
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $page->getContent(), $charts);
-        $this->assertCount(10, $charts[1]);
+        $this->assertCount(8, $charts[1]);
         $this->assertSame([2019, 2024], array_column(json_decode($charts[1][0], true)['rows'], 'year'));
-        $this->assertSame([2022], array_column(json_decode($charts[1][5], true)['rows'], 'year'));
+        $this->assertSame([2022], array_column(json_decode($charts[1][4], true)['rows'], 'year'));
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha results')->assertSee('2022 State Assembly results')->assertSee('data-year="2019"', false)->assertSee('data-year="2022"', false)->assertSee('edition='.str_repeat('b', 24), false);
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('c', 24))->assertNotFound();
         $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 State Assembly results');

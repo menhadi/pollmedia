@@ -1,6 +1,6 @@
 @php
 $colors=['var(--palette-315d91)','var(--site-accent)','var(--site-primary)'];
-$chartValues=$plotRows->flatMap(fn($point)=>array_map(fn($series)=>$point[$series['key']],$plot['series']))->filter(fn($value)=>$value!==null);
+$chartValues=$plotRows->flatMap(fn($point)=>array_map(fn($series)=>$point[$series['key']],array_values(array_filter($plot['series'],fn($series)=>($series['axis']??null)!=='right'))))->filter(fn($value)=>$value!==null);
 $scale=$plot['unit']==='%'?100:max(1,($chartValues->max()??1)*1.08);
 $tickValues=collect(range(0,4))->map(fn($tick)=>$scale*$tick/4);
 if($plot['autoScale']??false){
@@ -10,17 +10,23 @@ if($plot['autoScale']??false){
     $tickStep=max(1,$multiplier*$magnitude); $scale=ceil($rawMax/$tickStep)*$tickStep;
     $tickValues=collect(range(0,(int)round($scale/$tickStep)))->map(fn($tick)=>$tick*$tickStep);
 }
+$rightValues=$plotRows->flatMap(fn($point)=>array_map(fn($series)=>$point[$series['key']],array_values(array_filter($plot['series'],fn($series)=>($series['axis']??null)==='right'))))->filter(fn($value)=>$value!==null);
+$rightMin=$rightValues->isNotEmpty()?floor(($rightValues->min()-3)/5)*5:0;
+$rightMax=$rightValues->isNotEmpty()?ceil(($rightValues->max()+3)/5)*5:100;
+$rightStep=collect([1,2,5,10,20,25,50,100])->first(fn($step)=>$step>=($rightMax-$rightMin)/5)??100;
+$rightTicks=collect(); for($value=$rightMin;$value<$rightMax;$value+=$rightStep){$rightTicks->push($value);} $rightTicks->push($rightMax);
 $firstYear=$plotRows->first()['year']??0; $lastYear=$plotRows->last()['year']??0;
 $x=fn($year)=>$firstYear===$lastYear?410:70+($year-$firstYear)/($lastYear-$firstYear)*690;
 $y=fn($value)=>240-$value/$scale*220;
 @endphp
 @if($chartValues->isNotEmpty())
 <div class="report-legend">@foreach($plot['series'] as $series)<span><i style="background:{{ $series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index] }}"></i>{{ $series['label'] }}</span>@endforeach</div>
-<svg class="report-plot" viewBox="0 0 800 280" role="img" aria-label="{{ $plot['title'] }}; exact values in the following table">
+<svg class="report-plot" viewBox="0 0 {{ $rightValues->isNotEmpty()?840:800 }} 280" role="img" aria-label="{{ $plot['title'] }}; exact values in the following table">
 @foreach($tickValues as $value)
 <line x1="70" x2="760" y1="{{ $y($value) }}" y2="{{ $y($value) }}" stroke="var(--site-border)"/>
 <text x="60" y="{{ $y($value)+4 }}" text-anchor="end">{{ $plot['unit']==='%'?number_format($value,0).'%':($value>=10000000?round($value/10000000,1).' Cr.':($value>=100000?round($value/100000,1).' L':round($value))) }}</text>
 @endforeach
+@if($rightValues->isNotEmpty())@foreach($rightTicks as $value)<text x="770" y="{{ 240-($value-$rightMin)/max(1,$rightMax-$rightMin)*220+4 }}">{{ $value }}%</text>@endforeach @endif
 @foreach($plotRows as $point)
 @if($loop->first || $loop->last || ($loop->index%max(1,(int)ceil($plotRows->count()/9))===0 && $x($lastYear)-$x($point['year'])>45))<text x="{{ $x($point['year']) }}" y="265" text-anchor="middle">{{ $point['year'] }}</text>@endif
 @endforeach
@@ -30,7 +36,7 @@ $color=$series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index]
 foreach($plotRows as $point){
     $value=$point[$series['key']];
     if($value===null){if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}$previous=null;continue;}
-    $xx=$x($point['year']);$yy=$y($value);
+    $xx=$x($point['year']);$yy=($series['axis']??null)==='right'?240-($value-$rightMin)/max(1,$rightMax-$rightMin)*220:$y($value);
     if($previous!==null){$path.='L'.$xx.','.$yy.' ';$area.='L'.$xx.','.$yy.' ';}
     else{$path.='M'.$xx.','.$yy.' ';$area.='M'.$xx.','.$yy.' ';$start=$xx;}
     $previous=[$xx,$yy];
