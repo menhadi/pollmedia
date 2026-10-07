@@ -34,10 +34,10 @@
             if (!values.length && series.some(item => item.axis === 'right')) values = [0,100];
             if (!values.length) { status.textContent = 'No available values for this selection.'; return; }
             status.textContent = 'Hover or focus a year to see the value. † indicates a source note.';
-            const rawMax = data.unit === '%' && !data.autoScale ? 100 : Math.max(1, ...values) * 1.08;
-            const rawMin = data.autoScale ? Math.min(0, ...values) * 1.08 : 0;
-            const rawStep = (rawMax-rawMin)/4, magnitude = 10 ** Math.floor(Math.log10(rawStep));
-            const tickStep = Math.max(1, [1,2,5,10].find(multiplier => multiplier*magnitude >= rawStep)*magnitude);
+            const rawMax = data.unit === '%' && !data.autoScale ? 100 : Math.max(1, ...values) * 1.02;
+            const rawMin = data.autoScale ? Math.min(0, ...values) * 1.02 : 0;
+            const rawStep = (rawMax-rawMin)/6, magnitude = 10 ** Math.floor(Math.log10(rawStep));
+            const tickStep = Math.max(1, [10,5,2,1].find(multiplier => multiplier*magnitude <= rawStep)*magnitude);
             const min = Math.floor(rawMin/tickStep)*tickStep, max = Math.ceil(rawMax/tickStep)*tickStep;
             const hasRightAxis = data.series.some(item => item.axis === 'right');
             const rightValues = rows.flatMap(row => data.series.filter(item => item.axis === 'right').map(item => row[item.key])).filter(Number.isFinite);
