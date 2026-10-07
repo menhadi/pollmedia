@@ -40,10 +40,13 @@
             const tickStep = Math.max(1, [1,2,5,10].find(multiplier => multiplier*magnitude >= rawStep)*magnitude);
             const min = Math.floor(rawMin/tickStep)*tickStep, max = Math.ceil(rawMax/tickStep)*tickStep;
             const hasRightAxis = data.series.some(item => item.axis === 'right');
+            const rightValues = rows.flatMap(row => data.series.filter(item => item.axis === 'right').map(item => row[item.key])).filter(Number.isFinite);
+            const rightMin = Math.min(data.rightMin ?? 0, ...rightValues.map(value => Math.floor(value/5)*5));
+            const rightMax = Math.max(data.rightMax ?? 100, ...rightValues.map(value => Math.ceil(value/5)*5));
             const width = Math.max(240, plot.clientWidth), height = 270, left = width < 500 ? 42 : 62, right = width - (hasRightAxis ? 48 : (width < 500 ? 8 : 18)), top = 16, bottom = 228;
             const first = rows[0].year, last = rows[rows.length - 1].year;
             const x = year => first === last ? (left + right) / 2 : left + (year - first) / (last - first) * (right - left);
-            const y = (value, item = {}) => bottom - (item.axis === 'right' ? value/100 : (value-min)/(max-min)) * (bottom-top);
+            const y = (value, item = {}) => bottom - (item.axis === 'right' ? (value-rightMin)/Math.max(1,rightMax-rightMin) : (value-min)/(max-min)) * (bottom-top);
             const tooltip = document.createElement('div');
             tooltip.className = 'history-tooltip'; tooltip.hidden = true; tooltip.setAttribute('role', 'tooltip');
             const svg = element('svg', {viewBox: `0 0 ${width} ${height}`, role: 'group', 'aria-label': chart.querySelector('h3').textContent + ', ' + data.unit});
@@ -56,7 +59,11 @@
                 svg.append(element('text',{x:left-9,y:yy+4,'text-anchor':'end'},tick));
             }
             if (hasRightAxis) {
-                [0,25,50,75,100].forEach(value => svg.append(element('text',{x:right+8,y:y(value,{axis:'right'})+4,'text-anchor':'start'},value+'%')));
+                const rightTickStep = Math.max(1, Math.ceil((rightMax-rightMin)/5));
+                const rightTicks = [];
+                for (let value=rightMin; value<rightMax; value+=rightTickStep) rightTicks.push(value);
+                rightTicks.push(rightMax);
+                rightTicks.forEach(value => svg.append(element('text',{x:right+8,y:y(value,{axis:'right'})+4,'text-anchor':'start'},value.toLocaleString('en-IN',{maximumFractionDigits:1})+'%')));
             }
             const step = Math.max(1, Math.ceil(rows.length / Math.max(2, Math.floor((right-left)/62))));
             rows.forEach((row,index) => {

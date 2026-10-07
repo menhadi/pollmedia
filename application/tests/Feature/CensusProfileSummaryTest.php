@@ -36,14 +36,15 @@ class CensusProfileSummaryTest extends TestCase
         $this->assertStringContainsString('data-chart-from', $html);
         $this->assertStringContainsString('data-chart-to', $html);
         $this->assertStringContainsString('Decadal population growth', $html);
-        $this->assertStringNotContainsString('Females per 1,000 males', $html);
+        $this->assertStringContainsString('Females per 1,000 males', $html);
         $this->assertStringNotContainsString('<h3>Male and female population</h3>', $html);
         $this->assertStringContainsString('<th>Male share (%)</th>', $html);
         $this->assertStringContainsString('<th>Female share (%)</th>', $html);
         preg_match('/class="history-chart-data">(.*?)<\/script>/s', $html, $match);
         $series = json_decode($match[1], true)['series'];
-        $this->assertSame(['population', 'male', 'female', 'female_share'], array_column($series, 'key'));
-        $this->assertFalse($series[3]['dashed']);
+        $this->assertSame(['population', 'male', 'female'], array_column($series, 'key'));
+        $this->assertStringContainsString('Gender balance', $html);
+        $this->assertStringContainsString('"rightMin":40,"rightMax":50', $html);
         $this->assertStringContainsString('Official population history', $html);
         $this->assertStringNotContainsString('<h3>Households</h3>', $html);
         $this->assertStringContainsString('<details class="census-source-notes">', $html);
