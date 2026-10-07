@@ -227,4 +227,3 @@ def build(root: Path = ROOT) -> dict:
 
 if __name__ == '__main__':
     print(json.dumps(build()))
-
