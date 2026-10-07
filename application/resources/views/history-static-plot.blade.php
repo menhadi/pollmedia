@@ -11,8 +11,8 @@ if($plot['autoScale']??false){
     $tickValues=collect(range(0,(int)round($scale/$tickStep)))->map(fn($tick)=>$tick*$tickStep);
 }
 $rightValues=$plotRows->flatMap(fn($point)=>array_map(fn($series)=>$point[$series['key']],array_values(array_filter($plot['series'],fn($series)=>($series['axis']??null)==='right'))))->filter(fn($value)=>$value!==null);
-$rightMin=$rightValues->isNotEmpty()?floor(($rightValues->min()-3)/5)*5:0;
-$rightMax=$rightValues->isNotEmpty()?ceil(($rightValues->max()+3)/5)*5:100;
+$rightMin=$rightValues->isNotEmpty()?max(min(0,$rightValues->min()),floor(($rightValues->min()-15)/10)*10):0;
+$rightMax=$rightValues->isNotEmpty()?min(max(100,$rightValues->max()),ceil(($rightValues->max()+15)/10)*10):100;
 $rightStep=collect([1,2,5,10,20,25,50,100])->first(fn($step)=>$step>=($rightMax-$rightMin)/5)??100;
 $rightTicks=collect(); for($value=$rightMin;$value<$rightMax;$value+=$rightStep){$rightTicks->push($value);} $rightTicks->push($rightMax);
 $firstYear=$plotRows->first()['year']??0; $lastYear=$plotRows->last()['year']??0;
@@ -43,7 +43,7 @@ foreach($plotRows as $point){
 }
 if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}
 @endphp
-<path d="{{ $area }}" fill="{{ $color }}" fill-opacity="0.09" stroke="none"/>
+@if(($series['axis']??null)!=='right')<path d="{{ $area }}" fill="{{ $color }}" fill-opacity="0.09" stroke="none"/>@endif
 <path d="{{ $path }}" fill="none" stroke="{{ $color }}" stroke-width="2.5" @if($series['key']==='others_share') stroke-dasharray="6 4" @endif/>
 @endforeach
 </svg>

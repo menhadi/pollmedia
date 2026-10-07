@@ -131,8 +131,8 @@ test('turnout right axis fits its data instead of using zero to 100',()=>{
     vm.runInNewContext(readFileSync(path.join(__dirname,'../public/js/history-lines.js'),'utf8'),{document,ResizeObserver:class{observe(){}},Intl});
     const svg=nodes['.history-plot'].children[0];
     const ticks=svg.children.filter(child=>child.tag==='text');
-    assert.ok(ticks.some(tick=>tick.textContent==='55%'));
-    assert.ok(ticks.some(tick=>tick.textContent==='75%'));
+    assert.ok(ticks.some(tick=>tick.textContent==='40%'));
+    assert.ok(ticks.some(tick=>tick.textContent==='90%'));
     assert.ok(!ticks.some(tick=>tick.textContent==='100%'));
     assert.ok(ticks.every(tick=>!tick.textContent.includes('.')));
     const percentage=svg.children.filter(child=>child.attributes.class==='history-hit-target').at(-1);

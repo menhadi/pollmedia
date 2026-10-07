@@ -41,8 +41,8 @@
             const min = Math.floor(rawMin/tickStep)*tickStep, max = Math.ceil(rawMax/tickStep)*tickStep;
             const hasRightAxis = data.series.some(item => item.axis === 'right');
             const rightValues = rows.flatMap(row => data.series.filter(item => item.axis === 'right').map(item => row[item.key])).filter(Number.isFinite);
-            const rightMin = Math.min(data.rightAutoScale && rightValues.length ? Math.floor((Math.min(...rightValues)-3)/5)*5 : (data.rightMin ?? 0), ...rightValues.map(value => Math.floor(value/5)*5));
-            const rightMax = Math.max(data.rightAutoScale && rightValues.length ? Math.ceil((Math.max(...rightValues)+3)/5)*5 : (data.rightMax ?? 100), ...rightValues.map(value => Math.ceil(value/5)*5));
+            const rightMin = Math.min(data.rightAutoScale && rightValues.length ? Math.max(Math.min(0,Math.min(...rightValues)),Math.floor((Math.min(...rightValues)-15)/10)*10) : (data.rightMin ?? 0), ...rightValues.map(value => Math.floor(value/5)*5));
+            const rightMax = Math.max(data.rightAutoScale && rightValues.length ? Math.min(Math.max(100,Math.max(...rightValues)),Math.ceil((Math.max(...rightValues)+15)/10)*10) : (data.rightMax ?? 100), ...rightValues.map(value => Math.ceil(value/5)*5));
             const width = Math.max(240, plot.clientWidth), height = 270, left = width < 500 ? 42 : 62, right = width - (hasRightAxis ? 48 : (width < 500 ? 8 : 18)), top = 16, bottom = 228;
             const first = rows[0].year, last = rows[rows.length - 1].year;
             const x = year => first === last ? (left + right) / 2 : left + (year - first) / (last - first) * (right - left);
@@ -85,7 +85,7 @@
                     previous = {x:xx,y:yy};
                 });
                 closeArea();
-                svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
+                if (item.axis !== 'right') svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
                 svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':(item.dashed ?? (item.axis==='right'||item.key==='others_share'))?'6 4':'none'}));
                 const availableRows = rows.filter(row => Number.isFinite(row[item.key]));
                 if (availableRows.length === 1) {
