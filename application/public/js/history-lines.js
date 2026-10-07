@@ -66,7 +66,7 @@
                 }
             });
             series.forEach(item => {
-                const index = data.series.indexOf(item), color = item.key === 'others_share' ? colors[3] : colors[index];
+                const index = data.series.indexOf(item), color = item.color || (item.key === 'others_share' ? colors[3] : colors[index]);
                 let path = '', area = '', previous = null, start = null;
                 const closeArea = () => { if (previous) area += `L${previous.x},${bottom} L${start},${bottom} Z `; };
                 rows.forEach(row => {
@@ -79,7 +79,7 @@
                 });
                 closeArea();
                 svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
-                svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':(item.axis==='right'||item.key==='others_share')?'6 4':'none'}));
+                svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':(item.dashed ?? (item.axis==='right'||item.key==='others_share'))?'6 4':'none'}));
                 const availableRows = rows.filter(row => Number.isFinite(row[item.key]));
                 if (availableRows.length === 1) {
                     const point = availableRows[0];
@@ -117,7 +117,7 @@
         };
         data.series.forEach((series,index) => {
             const button = document.createElement('button'); button.type='button'; button.setAttribute('aria-pressed','true');
-            const swatch=document.createElement('span'); swatch.style.background=series.key==='others_share'?colors[3]:colors[index]; swatch.setAttribute('aria-hidden','true');
+            const swatch=document.createElement('span'); swatch.style.background=series.color || (series.key==='others_share'?colors[3]:colors[index]); swatch.setAttribute('aria-hidden','true');
             button.append(swatch,document.createTextNode(series.label));
             button.addEventListener('click',()=>{ enabled.has(series.key)?enabled.delete(series.key):enabled.add(series.key); button.setAttribute('aria-pressed',String(enabled.has(series.key))); render(); });
             chart.querySelector('.history-legend').append(button);
