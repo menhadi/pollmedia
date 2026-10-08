@@ -86,7 +86,7 @@
         const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
-            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'#e4ebed':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
+            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'#ead59e':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
             if (!focusMode) { const title=svgElement('title');title.textContent=seatText(f,record);path.append(title); }
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
@@ -110,7 +110,7 @@
         function drawNames(zoom=1) {
             if (root.dataset.labels !== 'true') return;
             nameLayer.replaceChildren();
-            const occupied=[], edge=(600-600/zoom)/2, font=9/zoom;
+            const occupied=[], edge=(600-600/zoom)/2, font=11/Math.sqrt(zoom);
             features.forEach(feature => {
                 const polygons=rings(feature).map(ring=>ring.map(project));
                 const area=ring=>Math.abs(ring.reduce((sum,p,i)=>{const next=ring[(i+1)%ring.length];return sum+p[0]*next[1]-next[0]*p[1];},0));
@@ -127,7 +127,7 @@
                 const width=name.length*font*.52, box={left:xx-width/2-3/zoom,right:xx+width/2+3/zoom,top:yy-font,bottom:yy+font/2};
                 if(occupied.some(b=>box.left<b.right && box.right>b.left && box.top<b.bottom && box.bottom>b.top)) return;
                 occupied.push(box);
-                const label=svgElement('text',{x:xx,y:yy,'text-anchor':'middle','dominant-baseline':'middle',class:'election-map-seat-name','font-size':font,'stroke-width':2.5/zoom});
+                const label=svgElement('text',{x:xx,y:yy,'text-anchor':'middle','dominant-baseline':'middle',class:'election-map-seat-name','font-size':font,'stroke-width':1.5/Math.sqrt(zoom)});
                 label.textContent=name; nameLayer.append(label);
             });
         }
