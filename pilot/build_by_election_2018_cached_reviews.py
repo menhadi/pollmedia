@@ -165,13 +165,18 @@ echo "PASS: exact live predecessors or completed revision verified.\\n";
 
 def build(root=ROOT):
     old, new, originals, additions, reviews = revised_files(root)
-    output = root / 'exports' / (NAME + '.zip')
+    return build_package(root, NAME, old, new, originals, additions, reviews)
+
+
+def build_package(root, name, old, new, originals, additions, reviews):
+    prior_index_sha = digest(old)
+    output = root / 'exports' / (name + '.zip')
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
-    snapshot = PREFIX + 'index-' + INDEX_SHA + '.json'
-    audit = {'reviews': reviews, 'prior_index_sha256': INDEX_SHA, 'new_index_sha256': digest(new),
-             'required_live': {PREFIX + 'index.json': [INDEX_SHA, digest(new)], **{p: [digest(b)] for p, b in originals.items()}},
-             'additions': {p: digest(b) for p, b in additions.items()}, 'scope': 'Two reviewed by-election workbooks; not accepted contests.'}
+    snapshot = PREFIX + 'index-' + prior_index_sha + '.json'
+    audit = {'reviews': reviews, 'prior_index_sha256': prior_index_sha, 'new_index_sha256': digest(new),
+             'required_live': {PREFIX + 'index.json': [prior_index_sha, digest(new)], **{p: [digest(b)] for p, b in originals.items()}},
+             'additions': {p: digest(b) for p, b in additions.items()}, 'scope': 'Reviewed by-election source records; not accepted contests.'}
     with tempfile.TemporaryDirectory(dir=output.parent, prefix='by-election-review-') as tmp:
         staged = Path(tmp) / 'staged'
         files = {snapshot: old, PREFIX + 'index.json': new, **originals, **additions}
@@ -185,7 +190,7 @@ def build(root=ROOT):
         for name, path in ordered:
             z = Path(tmp) / (name + '.zip')
             revision = name == 'correction-index'
-            package(staged, z, 'election-by-elections', 0, 1, [path], INDEX_SHA if revision else None, snapshot if revision else None)
+            package(staged, z, 'election-by-elections', 0, 1, [path], prior_index_sha if revision else None, snapshot if revision else None)
             packages.append(z)
         content = {'AUDIT.json': json.dumps(audit, indent=2).encode(), 'PREFLIGHT.php': preflight().encode()}
         content.update({p.name: p.read_bytes() for p in packages})
@@ -193,10 +198,10 @@ def build(root=ROOT):
             for name, body in content.items():
                 bundle.writestr(name, body)
             bundle.writestr('SHA256SUMS', ''.join(f'{digest(b)}  {n}\n' for n, b in content.items()))
-            bundle.writestr('IMPORT.sh', import_script())
+            bundle.writestr('IMPORT.sh', import_script().replace('Two by-election source reviews imported', 'By-election source reviews imported'))
     sha = digest(output.read_bytes())
     output.with_suffix('.sha256').write_bytes(f'{sha}  {output.name}\n'.encode())
-    return {'bundle': str(output), 'sha256': sha, 'prior_index_sha256': INDEX_SHA, 'new_index_sha256': digest(new)}
+    return {'bundle': str(output), 'sha256': sha, 'prior_index_sha256': prior_index_sha, 'new_index_sha256': digest(new)}
 
 
 if __name__ == '__main__':
