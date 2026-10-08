@@ -132,7 +132,8 @@ class HistoricalElectionAnalytics
                 ? $this->officialResidualDetailResult($record) : null;
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             $turnoutPolled = $polledDifference ? $record['summary_totals']['votes_polled'] : ($record['votes_polled'] ?? null);
-            if ($this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($turnoutPolled) && $turnoutPolled <= $turnoutElectors
+            if ($this->uncontestedResult($record, null) === null
+                && $this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($turnoutPolled) && $turnoutPolled <= $turnoutElectors
                 && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout || $duplicateCandidateTurnout || $pc1989DiscrepancyResult !== null)) {
                 $electors += $turnoutElectors;
                 $polled += $turnoutPolled;

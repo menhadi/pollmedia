@@ -176,14 +176,26 @@ class HistoricalElectionAnalyticsTest extends TestCase
 
     public function test_source_summary_can_confirm_a_recent_uncontested_winner(): void
     {
-        $record = ['code' => 31, 'name' => 'Akuluto (ST)', 'candidates' => [
-            ['candidate_name' => 'Kazheto', 'party_at_election' => 'BJP', 'votes' => 0],
-        ], 'summary_source_rows' => [
-            ['Constituency Name', '31-Akuluto-(ST)'],
-            ['Winner', 'BJP', 'Kazheto'],
-            ['*THE ELECTION IN AC-31: AKULUTO (ST) WAS UNCONTESTED.'],
-        ]];
+        $record = ['code' => 31, 'name' => 'Akuluto (ST)', 'status' => 'validated',
+            'electors' => 10725, 'votes_polled' => 0, 'candidates' => [
+                ['candidate_name' => 'Kazheto', 'party_at_election' => 'BJP', 'votes' => 0],
+            ], 'summary_source_rows' => [
+                ['Constituency Name', '31-Akuluto-(ST)'],
+                ['Winner', 'BJP', 'Kazheto'],
+                ['*THE ELECTION IN AC-31: AKULUTO (ST) WAS UNCONTESTED.'],
+            ]];
         $this->assertTrue(app(HistoricalElectionAnalytics::class)->singleSeatResult($record, '060caae725598a42799ba636')['uncontested']);
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $summary = $analytics->summarize([$record]);
+        $this->assertSame(0, $summary['turnout_count']);
+        $this->assertNull($summary['turnout']);
+        $this->assertNull($summary['electors']);
+        $this->assertNull($summary['polled']);
+        $combined = $analytics->summarize([$record, $this->record(1, 100, 80, 50, 30)]);
+        $this->assertSame(1, $combined['turnout_count']);
+        $this->assertEquals(80, $combined['turnout']);
+        $this->assertSame(0, $record['votes_polled']);
+
     }
 
     public function test_turnout_is_weighted_and_missing_or_disputed_rows_are_not_zero(): void
