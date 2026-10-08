@@ -1,4 +1,13 @@
 {
+  "349e04305ee4652986f79497:543": {
+    "name": "Surat",
+    "candidate": "MUKESHKUMAR CHANDRAKAANT DALAL",
+    "party": "BHARATIYA JANATA PARTY",
+    "source_url": "https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports",
+    "source_file": "46f7185d55024895c2933a0f.pdf",
+    "source_sha256": "44e4741b6f64174bc508b499f75459e8a6721ca0efc043d8099616c5d12371f6",
+    "pdf_page": 1
+  },
   "001934254d54998b613f156e:425": {
     "name": "CHAKRATA (ST)",
     "candidate": "GULAB SINGH",
