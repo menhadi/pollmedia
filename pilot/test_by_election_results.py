@@ -12,6 +12,24 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_misspelled_assembly_heading_preserves_printed_state_and_code(self):
+        for heading, state, code in [
+                ('Legislative Assemby of Uttat Pradesh Code - S24', 'Uttat Pradesh', 'S24'),
+                ('Legislative Assembly of Tamil Nadu Code - S22', 'Tamil Nadu', 'S22'),
+                ('Legislative Assemby of Maharashtra Code - S13', 'Maharashtra', 'S13')]:
+            with self.subTest(heading=heading):
+                result = index_card([table([['MP-234-LA'], [heading],
+                    ['Legislative Constituency - 234-Example'],
+                    ['S.No.', 'Candidate', 'Party', 'Votes'], [1, 'A', 'P', 12]])], 1997)
+                self.assertEqual((result['kind'], result['state'], result['source_state_code']), ('ac', state, code))
+                self.assertEqual(result['source_identity_heading'], heading)
+                self.assertTrue(any('Original spelling' in n for n in result['notes']))
+
+    def test_directory_style_label_alone_does_not_supply_state(self):
+        result = index_card([table([['S24/UP-42-LA.html'], ['Legislative Constituency - 42-Sahaswan'],
+            ['S.No.', 'Candidate', 'Party', 'Votes'], [1, 'A', 'P', 12]])], 1997)
+        self.assertIsNone(result['state'])
+
     def test_blank_result_does_not_consume_the_next_index_card_metadata(self):
         cells = [['Assembly Constituency of Kerala'], ['Assembly Constituency- 85-Piravom'],
                  ['S.No.', 'Candidate', 'Sex', 'Party', 'Votes'], [1, None, None, None, None],

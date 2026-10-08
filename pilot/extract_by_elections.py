@@ -45,6 +45,11 @@ def index_card(tables, year):
     record = {'year': year, 'kind': None, 'state': None, 'constituency': None, 'candidates': [], 'metadata_rows': [], 'notes': []}
     for row in rows:
         line = ' '.join(text(v) for v in row['cells'] if text(v))
+        assembly_heading = re.fullmatch(r'Legislative\s+Assemb(?:l)?y\s+of\s+(.+?)\s+Code\s*[-:]\s*([SU]\d+)', line, re.I)
+        if assembly_heading and record['state'] is None:
+            record.update(kind='ac', state=assembly_heading[1].strip(),
+                          source_state_code=assembly_heading[2], source_identity_heading=line)
+            record['notes'].append('State name and code are taken from the source body heading. Original spelling is retained; no present-day jurisdiction mapping is inferred.')
         heading = re.fullmatch(r'(\d+)\s*[-–]\s*(.+?)\s*\(([^()]+)\)', line)
         if heading and record['constituency'] is None:
             record.update(code=int(heading[1]), constituency=heading[2].strip(), state=heading[3].strip())
