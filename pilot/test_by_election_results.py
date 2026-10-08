@@ -12,6 +12,43 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_historical_placeholders_do_not_become_candidates_or_cross_states(self):
+        source = table([[None]*11 for _ in range(5)] + [
+            ['HP', 1, 1956, 'GHUMARWIN', 'INC', 100, 'A', 'IND', 50, 'B'],
+            [None, 2, None, '-', '-', '-', '-', '-', '-', '-'],
+            ['KUTCH', None, None, '-', '-', '-', '-', '-', '-', '-'],
+            [None, None, None, '-', 'IND', 20, 'Unassigned named result'],
+            ['VP', 1, 1956, 'NEXT', 'INC', 0, 'C']], 'Assembly')
+        from copy import deepcopy
+        original = deepcopy(source)
+        records = historical_summary(source)
+        self.assertEqual(source, original)
+        self.assertEqual(len(records), 2)
+        self.assertEqual([c['name'] for c in records[0]['candidates']], ['A', 'B'])
+        self.assertFalse(any('Additional member' in n for n in records[0]['notes']))
+        self.assertEqual(records[1]['state'], 'VP')
+        self.assertEqual(records[1]['candidates'][0]['votes'], 0)
+
+    def test_historical_named_additional_members_retain_separate_source_rows(self):
+        source = table([[None]*11 for _ in range(5)] + [
+            ['BOMBAY', 4, 1952, 'NAWAPUR SAKRI', 'INC', 26520, 'D.Y. SAKHARAM'],
+            [None, 5, None, '-', 'INC', 25759, 'K.B. SUKARAM']], 'Assembly')
+        record, = historical_summary(source)
+        self.assertEqual([c['votes'] for c in record['candidates']], [26520, 25759])
+        self.assertEqual([c['source_row'] for c in record['candidates']], [6, 7])
+        self.assertTrue(any('no single-seat winner or margin' in n for n in record['notes']))
+        self.assertEqual(record['status'], 'needs_review')
+
+    def test_historical_state_label_alone_does_not_discard_named_continuations(self):
+        source = table([[None]*11 for _ in range(5)] + [
+            ['UP', 17, 1952, 'BAREILLY MUNICIPALITY', 'INC', 15282, 'J. SARAN'],
+            ['WB', None, None, None, None, None, None, 'IND', 8561, 'L. NARAIN'],
+            [None, 1, None, 'GOGHAT', 'IND', 14821, 'P.R. KRISHNA']], 'Assembly')
+        first, second = historical_summary(source)
+        self.assertEqual([c['name'] for c in first['candidates']], ['J. SARAN', 'L. NARAIN'])
+        self.assertEqual(first['candidates'][1]['source_cells'], source['rows'][6]['cells'])
+        self.assertEqual((first['state'], second['state']), ('UP', 'WB'))
+
     def test_misspelled_assembly_heading_preserves_printed_state_and_code(self):
         for heading, state, code in [
                 ('Legislative Assemby of Uttat Pradesh Code - S24', 'Uttat Pradesh', 'S24'),

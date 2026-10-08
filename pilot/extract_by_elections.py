@@ -167,6 +167,9 @@ def historical_summary(table):
                 source_year_text = date_text
                 year, source_date, date_warning = None, None, 'The source date format is unclear; its election year has not been inferred.'
         if text(cells[0]):
+            if current and text(cells[0]) != state and text(cells[3]) == '-':
+                records.append(finish(current))
+                current = None
             state = text(cells[0])
         if text(cells[3]) and text(cells[3]) != '-':
             if current:
@@ -178,10 +181,11 @@ def historical_summary(table):
                 current['notes'].append(date_warning)
         if current is None:
             continue
-        if text(cells[3]) == '-':
+        named_result = any(text(cells[column]) not in ['', '-'] for column in [6, 9])
+        if text(cells[3]) == '-' and named_result:
             current['notes'].append('Additional member/result row appears under this constituency; no single-seat winner or margin is inferred.')
         for party_col, votes_col, name_col, role in [(4, 5, 6, 'reported_winner'), (7, 8, 9, 'reported_other')]:
-            if text(cells[name_col]):
+            if text(cells[name_col]) not in ['', '-']:
                 current['candidates'].append({'name': text(cells[name_col]), 'party': text(cells[party_col]), 'votes': number(cells[votes_col]),
                                              'raw_votes': cells[votes_col], 'role': role, 'source_row': row['row'], 'table': table['name'],
                                              'source_cells': row['cells']})
