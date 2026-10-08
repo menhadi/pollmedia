@@ -1,0 +1,177 @@
+[
+  {
+    "id": "4a2832b6004cb56c34f3d89a",
+    "prior_sha256": "cf812b182a2e8f070cd0523b51162efa77ca1e9c9e4b851e3f8e96eefc4642f8",
+    "source_sha256": "bf38e642c74a234d4f4ec4dbca75386d3a909b9e256d6af3ed8bbd39932c2440",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "8",
+        "2",
+        "10"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        ""
+      ],
+      [
+        "2.",
+        "VALID",
+        ""
+      ]
+    ],
+    "note": "All ten candidate vote cells and the source polled/valid totals are blank. No vote total or winner is available; missing votes are not zero."
+  },
+  {
+    "id": "e0214b31e696a41e62d91a5d",
+    "prior_sha256": "8797a2d82c5a913da4897798d9099288dc6ebdc541506bc20bd7bbb93b3afe9f",
+    "source_sha256": "8f764516eb5d41d3ecd1da5cd41f8a83207826b4913d84d4347d6771c7224d48",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "7",
+        "0",
+        "7"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        "114670"
+      ],
+      [
+        "2.",
+        "VALID",
+        "111106"
+      ]
+    ],
+    "note": "The official candidate rows sum to 111,075, while the source prints 111,106 valid votes. The discrepancy is present in the source; all candidate votes and printed totals are preserved without balancing values."
+  },
+  {
+    "id": "bcbbac3e5c3f570a8b61cbdf",
+    "prior_sha256": "691cac29357736c265091da49e1f5388aeae3dfb68b875be03b71eb88baf6f8f",
+    "source_sha256": "7e292e183e0c9d2bbd039ef9a13781591d7e4d1ee525ad12b98e2f79927f8f64",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        "0"
+      ],
+      [
+        "2.",
+        "VALID",
+        "0"
+      ]
+    ],
+    "note": "The official source explicitly marks JOBOM BASAR (IND) as ELECTED UNOPPOSED. Printed zero vote cells are preserved and do not establish ordinary turnout or a winning margin."
+  },
+  {
+    "id": "9c2e6929128b6544dd429117",
+    "prior_sha256": "3248f6cde46c4e148852b6b9ca0722077846874b2ec6cb179f464bd1bdcffe3c",
+    "source_sha256": "9a95cbed5c82012c0a225fa40a3c630e8e904e58e621df43574c8823d333b06d",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "10",
+        "1",
+        "11"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        "122030"
+      ],
+      [
+        "2.",
+        "VALID",
+        "119331"
+      ]
+    ],
+    "note": "The official candidate rows sum to 115,704, while the source prints 119,331 valid votes. The discrepancy is present in the source; all candidate votes and printed totals are preserved without balancing values."
+  },
+  {
+    "id": "bb09be574ef6ba3a4f375733",
+    "prior_sha256": "68c51b7cd596ea276dd61c50f031fb89366fb13bc1c9e1b02175d1caceca180b",
+    "source_sha256": "54cd507ad46e5b740f75634a5c86813c1665e947d026a5cf7e5eb8f3f650723a",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "19",
+        "2",
+        "21"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        "117301"
+      ],
+      [
+        "2.",
+        "VALID",
+        "115404"
+      ]
+    ],
+    "note": "The official candidate rows sum to 115,394, while the source prints 115,404 valid votes. The discrepancy is present in the source; all candidate votes and printed totals are preserved without balancing values."
+  },
+  {
+    "id": "ce5157ac5462aafb932bc2e0",
+    "prior_sha256": "f0e454e7024de0c5ccaeb2c8b4a9a95083896cd3ccbb77d0ba7f675262cd18c1",
+    "source_sha256": "b367da26252ead0574adceb8f938ca5767a9ebb5432107797e041ab9f5fee88c",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "5",
+        "0",
+        "5"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        "76401"
+      ],
+      [
+        "2.",
+        "VALID",
+        "75087"
+      ]
+    ],
+    "note": "The source heading names Dharampur (ST) without a readable constituency code. The code in the filename is not treated as a code printed in the source body."
+  },
+  {
+    "id": "b1c64f5c61cad7a45ab239ef",
+    "prior_sha256": "ded8ca1ee4a565e8b82d6a6b27a4fe49fa93f3e4bfb4d7016aaf197d6b1995b4",
+    "source_sha256": "567c3677b5e09ad8175295efdae57dddc7478344363a98a1a376bcc4c9855199",
+    "source_summary_rows": [
+      [
+        "4.",
+        "CONTESTED",
+        "7",
+        "0",
+        "7"
+      ],
+      [
+        "1.",
+        "TOTAL POLLED",
+        "123440"
+      ],
+      [
+        "2.",
+        "VALID",
+        "121374"
+      ]
+    ],
+    "note": "Eight named source candidate rows sum to the printed valid-vote total of 121,374, but the source contested count says seven. Both are retained; no candidate is removed to force agreement."
+  }
+]
