@@ -12,6 +12,25 @@ def table(cells, name='Worksheet'):
 
 
 class ResultsTest(unittest.TestCase):
+    def test_blank_result_does_not_consume_the_next_index_card_metadata(self):
+        cells = [['Assembly Constituency of Kerala'], ['Assembly Constituency- 85-Piravom'],
+                 ['S.No.', 'Candidate', 'Sex', 'Party', 'Votes'], [1, None, None, None, None],
+                 ['Election Commission of India'], ['BYE- ELECTION- 2012'],
+                 ['I. CANDIDATE'], [1, 'NOMINATED', None, None, None],
+                 [2, 'REJECTED', None, None, None], ['II. ELECTORS'], [1, 'GENERAL', None, None, None]]
+        self.assertIsNone(index_card([table(cells)], 2009))
+        cells[3] = [1, 'A', 'M', 'P', 100]
+        result = index_card([table(cells)], 2009)
+        self.assertEqual([c['name'] for c in result['candidates']], ['A'])
+        self.assertEqual(result['candidates'][0]['votes'], 100)
+
+    def test_candidate_parser_does_not_cross_worksheet_boundary(self):
+        first = table([['Assembly Constituency of Kerala'], ['Assembly Constituency- 85-Piravom'],
+                       ['S.No.', 'Candidate', 'Party', 'Votes'], [1, 'A', 'P', 100]], 'First')
+        second = table([[1, 'NOMINATED', None, None]], 'Next form')
+        result = index_card([first, second], 2012)
+        self.assertEqual([c['name'] for c in result['candidates']], ['A'])
+
     def test_by_election_list_is_navigation_only_when_it_has_no_result_cells(self):
         navigation = [table([['STATE', 'CONSTITUENCY'],
                              ['GUJARAT', '23-BROACH'],

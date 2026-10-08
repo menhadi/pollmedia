@@ -109,6 +109,10 @@ def index_card(tables, year):
         return None
     for row in rows[header_index+1:]:
         cells = row['cells']
+        line = ' '.join(text(v) for v in cells if text(v))
+        if (row['table'] != rows[header_index]['table']
+                or re.match(r'^(?:Election Commission of India|BYE\s*[- ]?\s*ELECTION\b|I\.\s*CANDIDATE\b|II\.\s*ELECTORS\b)', line, re.I)):
+            break
         padded = cells + [None]*max(0, vote_col+1-len(cells))
         if any(text(v).lower() in ['total', 'grand total'] for v in cells[:2]):
             record['reported_candidate_total'] = number(padded[vote_col])
