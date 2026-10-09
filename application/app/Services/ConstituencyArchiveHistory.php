@@ -55,6 +55,10 @@ class ConstituencyArchiveHistory
      * Sugnoo has the same two candidates/parties as ECI 2017 Sugnu:
      * https://ceomanipur.nic.in/Affidavits/AssemblyElection/2017/SE/39/AC39.htm
      * The distinct 1967 Hiyanglam Sugnoo compound seat is not an alias.
+     * Tipalmukh (ST) is printed in the 1974 report above (PDF p79); recurring
+     * candidate Hmangkhum Joute corroborates Tipaimukh (ST) in 1980 (PDF p81).
+     * Its public directory route and 2022 report omit ST; only this explicit seat
+     * bridge accepts those labels, retaining all raw reservation annotations.
      * Historical identity inference is not a delimitation crosswalk.
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
@@ -70,6 +74,11 @@ class ConstituencyArchiveHistory
         }
 
         return match (self::generalCategoryNames($name)[0]) {
+            'tipaimukh', 'tipaimukh (st)', 'tipaimukh  (st)', 'tipalmukh', 'tipalmukh (st)' => [
+                ['names' => ['tipalmukh (st)', 'tipalmukh'], 'code' => 55, 'edition' => '48bac24675875f468956cf9e'],
+                ['names' => ['tipaimukh', 'tipaimukh (st)', 'tipaimukh  (st)'], 'code' => 55, 'after' => 1974],
+                ['names' => ['tipaimukh', 'tipaimukh (st)'], 'code' => 56, 'edition' => '496d7edbfe44e6b6cf4b312b'],
+            ],
             'sugnoo' => [['names' => self::generalCategoryNames('sugnu'), 'code' => 39]],
             'sugnu' => [
                 ['names' => self::generalCategoryNames('sugnoo'), 'code' => 39],
@@ -131,7 +140,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v9:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v10:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
