@@ -542,6 +542,7 @@ class HistoricalElectionAnalytics
      * Agartala p73 heading continues onto p74; Asharambari p77 continues onto p78
      * and reconciles with summary p37. Badharghat detail p75 matches summary p26;
      * the two Subrata Chakraborty rows have different parties and remain separate.
+     * Bagma detail p78 matches all three candidates and summary p42.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -585,6 +586,16 @@ class HistoricalElectionAnalytics
                     ['7 DILIP DUTTA', 'AIFB', 379, 1, 380],
                     ['5 DWIJENDRA SAHAJI', 'NCP', 307, 3, 310],
                     ['4 DEBASISH DATTA', 'AITC', 188, 0, 188],
+                ],
+            ],
+            30 => [
+                'name' => 'Bagma  (ST)', 'detail' => 78, 'summary' => 42,
+                'electors' => 30930, 'polled' => 28829, 'valid' => 28779,
+                'result' => ['winner' => 'NARESH CHANDRA JAMATIA', 'winner_party' => 'CPM', 'winner_votes' => 14979, 'runner' => 'RATI MOHAN JAMATIA', 'runner_party' => 'INC', 'runner_votes' => 13064, 'margin' => 1915],
+                'candidates' => [
+                    ['NARESH CHANDRA JAMATIA', 'CPM', 14809, 170, 14979],
+                    ['1 RATI MOHAN JAMATIA', 'INC', 12962, 102, 13064],
+                    ['3 RAJ KUMAR JAMATIA', 'BJP', 733, 3, 736],
                 ],
             ],
             default => null,
