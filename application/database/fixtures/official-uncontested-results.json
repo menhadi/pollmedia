@@ -2704,5 +2704,23 @@
     "source_file": "fc893b0a5e63a3d13e3e848e-8613.pdf",
     "source_sha256": "9e35640ce02e1cab08c123df2ca591ba8865dc0107f54115106c54daac92d0cb",
     "pdf_page": 70
+  },
+  "e6e3a615a5fc51328d154069:144": {
+    "name": "SRINAGAR",
+    "candidate": "FAROOQ ABDULLAH",
+    "party": "JKN",
+    "source_url": "https://old.eci.gov.in/files/file/4117-general-election-1980-vol-i-ii/",
+    "source_file": "e6e3a615a5fc51328d154069-9753.pdf",
+    "source_sha256": "0f4261853971b6dda919c84704c533cc3a1f6a6b41e573aff66a738b6af2f44d",
+    "pdf_page": 149
+  },
+  "92de082304013ee1f62be87a:142": {
+    "name": "SRINAGAR",
+    "candidate": "MOHAMMAD SHAFI BHAT",
+    "party": "JKN",
+    "source_url": "https://old.eci.gov.in/files/file/4120-general-election-1989-vol-i-ii/",
+    "source_file": "92de082304013ee1f62be87a-9762.pdf",
+    "source_sha256": "801ffa9db8ebe320968b17cc8195c83c94eefec94bc8368382392083ce5e15e3",
+    "pdf_page": 148
   }
 }

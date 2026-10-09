@@ -85,12 +85,12 @@ echo "PASS: live predecessors and winner-only capability verified.\n";
 '''
 
 
-def build(root=ROOT, name=NAME, specs=None):
+def build(root=ROOT, name=NAME, specs=None, revised_data=None, preflight_body=None):
     output = root/'exports'/(name+'.zip')
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
-    revised = revised_files(root, specs)
-    content = {'PREFLIGHT.php': preflight().encode()}
+    revised = revised_files(root, specs) if revised_data is None else revised_data
+    content = {'PREFLIGHT.php': (preflight() if preflight_body is None else preflight_body).encode()}
     audit = []
     with tempfile.TemporaryDirectory(dir=root/'exports') as temporary:
         stage = Path(temporary)/'stage'
