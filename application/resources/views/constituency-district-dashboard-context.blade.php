@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143'];
+$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143','Prayagraj'=>'175'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seat && $districtNames->contains(fn(string $district):bool=>isset($codes[$district])))
@@ -15,6 +15,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
+@if($districtNames->contains('Prayagraj'))<p class="notice">Census 2011 records use Allahabad. The electoral fixture uses Prayagraj, following the 18 October 2018 district renaming. This dated name correspondence does not establish matching boundary editions. <a href="https://prayagrajdivision.nic.in/about-department/introduction/">Official rename source</a>.</p>@endif
 <div class="source-grid">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
