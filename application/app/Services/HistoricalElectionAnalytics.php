@@ -60,7 +60,7 @@ class HistoricalElectionAnalytics
             }
             $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v13:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+            $key = 'election-analysis-v14:'.hash('sha256', $body.$state.$kind.$reviewVersion);
             $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
                 $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
                 if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
@@ -504,10 +504,45 @@ class HistoricalElectionAnalytics
         return is_int($value) && $value >= 0;
     }
 
+    private function hasReconciledDeclaredCandidateVotes(array $record): bool
+    {
+        if (! in_array($record['source_warning_code'] ?? null, ['official_summary_turnout_only', 'summary_turnout_with_detail_warnings'], true)
+            || ! in_array($record['original_extraction_warning'] ?? null, [self::LEGACY_DETAIL_PENDING, self::LEGACY_DETAIL_RECONCILED], true)
+            || $this->officialPdfSummaryResult($record) === null) {
+            return false;
+        }
+
+        $candidateRecord = $record;
+        unset($candidateRecord['source_warning_code']);
+        $candidateRecord['error'] = self::LEGACY_DETAIL_RECONCILED;
+        if (! $this->hasProvisionalCandidateVotes($candidateRecord)) {
+            return false;
+        }
+
+        $ranked = collect($record['candidates'])->reject(fn (array $row): bool => ($row['is_nota'] ?? false) || strtoupper($row['party_at_election']) === 'NOTA')->sortByDesc('votes')->values();
+        if ($ranked->count() < 2) {
+            return false;
+        }
+        $result = $record['summary_result'];
+        foreach (['winner' => 0, 'runner' => 1] as $role => $index) {
+            if (mb_strtolower(trim($result[$role])) !== mb_strtolower(trim($ranked[$index]['candidate_name']))
+                || $result[$role.'_party'] !== $ranked[$index]['party_at_election']
+                || $result[$role.'_votes'] !== $ranked[$index]['votes']) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private function hasProvisionalCandidateVotes(array $record, bool $includeReviewed = false): bool
     {
         if (($record['status'] ?? '') !== 'needs_review' && (! $includeReviewed || ! in_array($record['status'] ?? '', ['validated', 'accepted', 'corrected'], true))) {
             return false;
+        }
+
+        if ($this->hasReconciledDeclaredCandidateVotes($record)) {
+            return true;
         }
 
         if (in_array($record['source_warning_code'] ?? null, [
