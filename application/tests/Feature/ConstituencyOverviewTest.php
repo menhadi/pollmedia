@@ -8,6 +8,7 @@ use App\Services\ElectionArchive;
 use App\Services\ElectionGeographySummary;
 use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
+use App\Services\HistoricalElectionReview;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class ConstituencyOverviewTest extends TestCase
 
     public function test_only_identical_results_in_the_known_2019_revision_pair_are_displayed_once(): void
     {
-        $record = ['code' => 255, 'state_name' => 'Manipur', 'constituency_name' => 'Inner Manipur',
+        $record = ['code' => 255, 'status' => 'validated', 'state_name' => 'Manipur', 'constituency_name' => 'Inner Manipur',
             'detail_page' => 311, 'votes_polled' => 100, 'candidates' => [
                 ['candidate_name' => 'Winner', 'party_at_election' => 'A', 'votes' => 60, 'source_row' => 1],
                 ['candidate_name' => 'Runner', 'party_at_election' => 'B', 'votes' => 40, 'source_row' => 2],
@@ -31,16 +32,24 @@ class ConstituencyOverviewTest extends TestCase
         $second['record']['detail_page'] = 310;
         $second['record']['candidates'] = array_reverse($record['candidates']);
         $second['record']['candidates'][0]['source_row'] = 9;
+        $reviews = app(HistoricalElectionReview::class);
+        $first['record'] = $reviews->apply($first['entry']->edition_id, $first['record'], str_repeat('a', 64));
+        $second['record'] = $reviews->apply($second['entry']->edition_id, $second['record'], str_repeat('b', 64));
+        $this->assertNotSame($first['record']['review_fingerprint'], $second['record']['review_fingerprint']);
         $rows = collect([$first, $second]);
         $analytics = app(HistoricalElectionAnalytics::class);
         $this->assertCount(1, $analytics->distinctConstituencyHistoryRows($rows));
         $this->assertCount(2, $rows);
-        foreach (['votes', 'round', 'warning', 'unknown_edition'] as $difference) {
+        $this->assertSame($first['record']['review_fingerprint'], $rows[0]['record']['review_fingerprint']);
+        $this->assertSame($second['record']['review_fingerprint'], $rows[1]['record']['review_fingerprint']);
+        foreach (['votes', 'round', 'warning', 'review_id', 'unknown_edition'] as $difference) {
             $different = $second;
             if ($difference === 'unknown_edition') {
                 $different['entry'] = (object) ['year' => 2019, 'record_code' => 255, 'edition_id' => str_repeat('a', 24)];
             } elseif ($difference === 'votes') {
                 $different['record']['candidates'][0]['votes']++;
+            } elseif ($difference === 'review_id') {
+                $different['record']['review_id'] = 1;
             } else {
                 $different['record'][$difference] = 'Different source information';
             }
