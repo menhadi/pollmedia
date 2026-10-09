@@ -1,0 +1,1 @@
+<section id="history"><p class="notice">@if($data['data_mode']==='live_published')Reading published database records. Reload after publication to see updated figures.@else Local preview uses a preserved snapshot of published records. The dashboard reads the database directly when published records are available.@endif</p>@include('census-profile-charts')</section>
