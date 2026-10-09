@@ -1,0 +1,370 @@
+[
+  {
+    "edition": "d6406685c07eb45be92daa3d",
+    "prior_bundle": "pollmedia-ac-2006-assam-declared-results-20261008",
+    "outer_sha": "fa4daa68779aaef575afa44edba3d92789af6c0e967ad1404ebf82fafb24d8fa",
+    "prior_sha": "942a1eab1f20459d536d16095830e05a6f84cef7cc71698576490b5ef9984c5a",
+    "source_file": "d6406685c07eb45be92daa3d-9502.pdf",
+    "source_sha": "55e6b4bdeefab8e7be45ca6e586a78230f74184c48ffd7762a71d1a5d06b12ad",
+    "source_url": "https://old.eci.gov.in/files/file/4009-assam-2006/",
+    "targets": [
+      {
+        "code": 44,
+        "page": 61,
+        "declared": [
+          [
+            "ABDUL KHALEQUE",
+            "INC",
+            26706
+          ],
+          [
+            "MOZIBOR RAHMAN KHAN",
+            "AUDF",
+            26616
+          ]
+        ],
+        "printed_margin": 92,
+        "detail_margin": 90
+      }
+    ]
+  },
+  {
+    "edition": "fb76cebe74b1c87526369724",
+    "prior_bundle": "pollmedia-ac-2006-ankamali-name-review-20261009",
+    "outer_sha": "08531abad48c2a2395105f737354a33dd32537b3a9c292565730be319818f84e",
+    "prior_sha": "b986ee1128199d3db5cd863ecd0ef7dfd17c186fabf2f87de253223ca5c6f3ed",
+    "source_file": "fb76cebe74b1c87526369724-8845.pdf",
+    "source_sha": "bae58505ed29beb58f4df2941119074b6bc1a83f7ede776f3a557bdd9c8d8d93",
+    "source_url": "https://old.eci.gov.in/files/file/3762-kerala-2006/",
+    "targets": [
+      {
+        "code": 43,
+        "page": 61,
+        "declared": [
+          [
+            "P. BALAN",
+            "INC",
+            52144
+          ],
+          [
+            "VILATHUR KRISHNAN KUTTY",
+            "BJP",
+            8108
+          ]
+        ],
+        "printed_margin": 44036,
+        "detail_margin": 6949
+      },
+      {
+        "code": 82,
+        "page": 100,
+        "declared": [
+          [
+            "P J JOSEPH",
+            "KEC",
+            68641
+          ],
+          [
+            "ADV P T THOMAS",
+            "INC",
+            54860
+          ]
+        ],
+        "printed_margin": 13689,
+        "detail_margin": 13781
+      },
+      {
+        "code": 83,
+        "page": 101,
+        "declared": [
+          [
+            "S RAJENDRAN",
+            "CPM",
+            52795
+          ],
+          [
+            "A K MONI",
+            "INC",
+            46908
+          ]
+        ],
+        "printed_margin": 5833,
+        "detail_margin": 5887
+      },
+      {
+        "code": 86,
+        "page": 104,
+        "declared": [
+          [
+            "E S BIJIMOL",
+            "CPI",
+            45465
+          ],
+          [
+            "ADV. E M AUGASTHY",
+            "INC",
+            40161
+          ]
+        ],
+        "printed_margin": 5294,
+        "detail_margin": 5304
+      }
+    ]
+  },
+  {
+    "edition": "1bec8e5043378d3d7ee107b2",
+    "prior_bundle": "pollmedia-ac-2006-tn-declared-results-20261008",
+    "outer_sha": "b76001570fb476364767fb81e64b889760c062a0f3978b9cdc3741e5cbc6dc03",
+    "prior_sha": "8709055ba04151f4ad95f6c60f45173a93ca5b414bd9a8b178945453956596c8",
+    "source_file": "1bec8e5043378d3d7ee107b2-7714.pdf",
+    "source_sha": "f6e57759f46d1b87c3dcda5d90716cc874763e0bff8e4f98a71ebc5387da9340",
+    "source_url": "https://old.eci.gov.in/files/file/3339-tamil-nadu-2006/",
+    "targets": [
+      {
+        "code": 6,
+        "page": 31,
+        "declared": [
+          [
+            "BABU, V.S.",
+            "DMK",
+            90168
+          ],
+          [
+            "VENKATESHBABU",
+            "ADMK",
+            82783
+          ]
+        ],
+        "printed_margin": 7363,
+        "detail_margin": 7385
+      },
+      {
+        "code": 9,
+        "page": 34,
+        "declared": [
+          [
+            "KALAIRAJAN, V.P.",
+            "ADMK",
+            74131
+          ],
+          [
+            "ANBAZHAGAN, J.",
+            "DMK",
+            57654
+          ]
+        ],
+        "printed_margin": 16483,
+        "detail_margin": 16477
+      },
+      {
+        "code": 11,
+        "page": 36,
+        "declared": [
+          [
+            "KARUNANIDHI, M.",
+            "DMK",
+            34188
+          ],
+          [
+            "DAWOON MIAKHAN",
+            "IND",
+            25662
+          ]
+        ],
+        "printed_margin": 8522,
+        "detail_margin": 8526
+      },
+      {
+        "code": 49,
+        "page": 74,
+        "declared": [
+          [
+            "SIVANANDAM. R",
+            "DMK",
+            69722
+          ],
+          [
+            "SANTHANAM. A",
+            "ADMK",
+            57420
+          ]
+        ],
+        "printed_margin": 12393,
+        "detail_margin": 12302
+      },
+      {
+        "code": 61,
+        "page": 86,
+        "declared": [
+          [
+            "THIRUNAVUKARASU.K",
+            "DMK",
+            65662
+          ],
+          [
+            "VIJAYARAGHAVAN. E",
+            "VCK",
+            46878
+          ]
+        ],
+        "printed_margin": 18683,
+        "detail_margin": 18784
+      },
+      {
+        "code": 94,
+        "page": 122,
+        "declared": [
+          [
+            "RAMASWAMY.K.P",
+            "DMK",
+            62629
+          ],
+          [
+            "SUNDARAM.P.R.",
+            "ADMK",
+            57660
+          ]
+        ],
+        "printed_margin": 4966,
+        "detail_margin": 4969
+      },
+      {
+        "code": 180,
+        "page": 208,
+        "declared": [
+          [
+            "VEERAKAPILAN.M.V.R",
+            "ADMK",
+            54183
+          ],
+          [
+            "THIRUGNANASAMBANDAM.S.V",
+            "INC",
+            50577
+          ]
+        ],
+        "printed_margin": 3606,
+        "detail_margin": 3606
+      },
+      {
+        "code": 221,
+        "page": 249,
+        "declared": [
+          [
+            "AVUDAIYAPPAN . R.",
+            "DMK",
+            49345
+          ],
+          [
+            "MURUGAIAH PANDIAN. R.",
+            "ADMK",
+            33614
+          ]
+        ],
+        "printed_margin": 15381,
+        "detail_margin": 15731
+      }
+    ]
+  },
+  {
+    "edition": "47d0505498dc2d0ffce6c308",
+    "prior_bundle": "pollmedia-ac-2006-wb-declared-results-20261008",
+    "outer_sha": "6adf4ec9989037c224b4774eb3b53d357de0b0456e87819b27a881d4745dfd04",
+    "prior_sha": "8214d29e7887ef7389b396b0bf97f7ee2f19314599ee6bcb25d35f2993ff4520",
+    "source_file": "47d0505498dc2d0ffce6c308-7325.pdf",
+    "source_sha": "2331cc5d4ac3ff20beb29bc777b3f332afe2ea85012edb7f1a6f8a5cf9081903",
+    "source_url": "https://old.eci.gov.in/files/file/3194-west-bengal-2006/",
+    "targets": [
+      {
+        "code": 15,
+        "page": 40,
+        "declared": [
+          [
+            "LAKSHMI KANTA ROY",
+            "CPM",
+            66040
+          ],
+          [
+            "ASHOK KUMAR BARMAN",
+            "AITC",
+            49175
+          ]
+        ],
+        "printed_margin": 16863,
+        "detail_margin": 16865
+      },
+      {
+        "code": 48,
+        "page": 73,
+        "declared": [
+          [
+            "RUBI NOOR",
+            "INC",
+            62869
+          ],
+          [
+            "HAMIDUR RAHMAN",
+            "CPM",
+            45229
+          ]
+        ],
+        "printed_margin": 17550,
+        "detail_margin": 17640
+      },
+      {
+        "code": 122,
+        "page": 147,
+        "declared": [
+          [
+            "DR. TAPATI SAHA",
+            "CPM",
+            63751
+          ],
+          [
+            "CHOUDHURY MOHAN JATUA",
+            "AITC",
+            62399
+          ]
+        ],
+        "printed_margin": 1490,
+        "detail_margin": 1352
+      },
+      {
+        "code": 243,
+        "page": 268,
+        "declared": [
+          [
+            "SUBHAS CHANDRA MAHATA",
+            "CPM",
+            53566
+          ],
+          [
+            "BAGHAMBAR MAHATO",
+            "AITC",
+            31476
+          ]
+        ],
+        "printed_margin": 22340,
+        "detail_margin": 22090
+      },
+      {
+        "code": 253,
+        "page": 278,
+        "declared": [
+          [
+            "SWAPAN GHOSH",
+            "CPM",
+            76334
+          ],
+          [
+            "SUBHASIS BATABAYAL",
+            "AITC",
+            27655
+          ]
+        ],
+        "printed_margin": 48675,
+        "detail_margin": 48679
+      }
+    ]
+  }
+]
