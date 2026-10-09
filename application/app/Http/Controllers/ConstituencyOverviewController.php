@@ -23,7 +23,13 @@ class ConstituencyOverviewController extends Controller
         $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
         $names = ConstituencyArchiveHistory::generalCategoryNames($name);
-        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereIn(DB::raw('LOWER(TRIM(constituency_name))'), $names)->orderByDesc('year')->orderBy('edition_id')->get();
+        $aliases = ConstituencyArchiveHistory::manipurAssemblyAliasNames($kind, $state, $name);
+        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->where(function ($query) use ($names, $aliases): void {
+            $query->whereIn(DB::raw('LOWER(TRIM(constituency_name))'), $names);
+            if ($aliases !== []) {
+                $query->orWhere(fn ($aliasQuery) => $aliasQuery->where('record_code', 4)->whereIn(DB::raw('LOWER(TRIM(constituency_name))'), $aliases));
+            }
+        })->orderByDesc('year')->orderBy('edition_id')->get();
         $entries = $entries->concat(app(ConstituencyArchiveHistory::class)->missingEntries($kind, $state, $name, $entries))->sortBy([['year', 'desc'], ['edition_id', 'asc']])->values();
         abort_if($entries->isEmpty(), 404);
         $ambiguousName = $entries->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1);

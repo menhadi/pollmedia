@@ -17,6 +17,27 @@ class ConstituencyArchiveHistory
         return [$base, $base.' (gen)', $base.'(gen)'];
     }
 
+    /**
+     * Exact official spelling variation, not fuzzy matching or a boundary equivalence claim.
+     * 2022 district notice: https://imphaleast.nic.in/document/notice-of-election-in-respect-of-4-kshetrigao-ac/
+     * CEO result sheet: https://ceomanipur.nic.in/ResultSheets/StateLegislativeAssembly/2022/04.pdf
+     * Additional alias records must also have AC code 4; original-name matches remain unchanged.
+     */
+    public static function manipurAssemblyAliasNames(string $kind, ?string $state, string $name): array
+    {
+        if ($kind !== 'ac' || mb_strtolower(trim($state ?? '')) !== 'manipur') {
+            return [];
+        }
+        $base = self::generalCategoryNames($name)[0];
+        $alias = match ($base) {
+            'kshetrigao' => 'khetrigao',
+            'khetrigao' => 'kshetrigao',
+            default => null,
+        };
+
+        return $alias === null ? [] : self::generalCategoryNames($alias);
+    }
+
     /** Read preserved imported editions omitted from the search index; never write or extract data. */
     public function missingEntries(string $kind, ?string $state, ?string $name, Collection $indexed, ?string $editionOnly = null): Collection
     {
@@ -50,7 +71,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v4:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v5:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
@@ -66,6 +87,7 @@ class ConstituencyArchiveHistory
                 $matches = [];
                 $wantedState = $state !== null ? $this->stateName($state) : null;
                 $wantedSeat = $name !== null ? $this->seatName($name) : null;
+                $aliases = $name !== null ? self::manipurAssemblyAliasNames($kind, $state, $name) : [];
                 $stateNames = [];
                 $stateCodes = [];
                 foreach ($data['records'] ?? [] as $record) {
@@ -73,7 +95,8 @@ class ConstituencyArchiveHistory
                     $code = $record['state_code'] ?? '';
                     $recordState = $record['state_name'] ?? ($edition['state'] ?? ($kind === 'ac' ? 'Uttar Pradesh' : ($edition['year'] >= 1977 ? ($stateCodes[$code] ??= ElectionPlaceIdentity::state($code)) : '')));
                     // Old state codes have different meanings. Use original state names, never today's code list.
-                    if (($wantedState !== null && ($stateNames[$recordState] ??= $this->stateName($recordState)) !== $wantedState) || ($wantedSeat !== null && $this->seatName($recordName) !== $wantedSeat)) {
+                    $aliasMatches = (int) ($record['code'] ?? 0) === 4 && in_array(mb_strtolower(trim($recordName)), $aliases, true);
+                    if (($wantedState !== null && ($stateNames[$recordState] ??= $this->stateName($recordState)) !== $wantedState) || ($wantedSeat !== null && $this->seatName($recordName) !== $wantedSeat && ! $aliasMatches)) {
                         continue;
                     }
                     $matches[] = ['edition_id' => $id, 'record_code' => (int) $record['code'], 'kind' => $kind, 'year' => $edition['year'], 'edition_label' => $edition['label'], 'state_label' => $recordState, 'constituency_name' => $recordName, 'status' => $record['status'] ?? 'needs_review', 'has_warning' => ($record['status'] ?? '') !== 'validated', 'candidate_count' => count($record['candidates'] ?? []), 'extraction_sha256' => $file->sha256];
