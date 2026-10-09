@@ -26,7 +26,7 @@ class ArchiveFiles
         return $this->pdfs->allowed($path) ? DB::table('pdf_storage_files')->where('path_hash', hash('sha256', $path))->first() : null;
     }
 
-    private function jsonRecord(string $path): ?object
+    private function jsonRecord(string $path, bool $includeBody = false): ?object
     {
         if (str_contains($path, '..') || str_contains($path, '\\') || str_contains($path, "\0")
             || ! preg_match('~^(election-archive|election-by-elections)/[a-zA-Z0-9_./-]+\.json$~', $path)
@@ -34,7 +34,7 @@ class ArchiveFiles
             return null;
         }
 
-        return DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))->first();
+        return DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))->first($includeBody ? ['*'] : ['path', 'sha256', 'bytes']);
     }
 
     private function originalRecord(string $path): ?object
@@ -60,7 +60,7 @@ class ArchiveFiles
         if ($local->exists($path)) {
             return $local->readStream($path);
         }
-        $json = $this->jsonRecord($path);
+        $json = $this->jsonRecord($path, true);
         if ($json) {
             if ($json->path !== $path || (int) $json->bytes !== strlen($json->body)
                 || ! hash_equals($json->sha256, hash('sha256', $json->body))) {
