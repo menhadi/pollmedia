@@ -7,6 +7,7 @@ $placeTrail=[['label'=>'India','url'=>route('home')],['label'=>$state,'url'=>$st
 @endphp
 @include('place-heading',['headingName'=>\Illuminate\Support\Str::title($name),'headingType'=>$kind==='pc'?'Lok Sabha constituency':'Assembly constituency (AC)','placeTrail'=>$placeTrail])
 <nav class="seat-tabs seat-page-actions" aria-label="On this page"><a href="#representative">Representative</a><a href="#history">Election history</a><a href="#year-detail">Results by year</a><a href="{{ route('constituency.overview',array_filter(['kind'=>$kind,'state'=>$state,'name'=>$name,'format'=>'report','edition'=>$exactSeatOnly?$chosen['entry']->edition_id:null,'code'=>$exactSeatOnly?$chosen['entry']->record_code:null])) }}" target="_blank" rel="noopener">Historical report / PDF ↗</a></nav>
+@include('constituency-dashboard-switcher')
 @include('election-map',['mapKind'=>$kind,'mapStateName'=>$state,'mapSelectedName'=>$name,'mapMode'=>'focus'])
 @include('constituency-district-dashboard-context')
 @include('place-history-charts')

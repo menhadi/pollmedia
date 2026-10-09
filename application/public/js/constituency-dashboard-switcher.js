@@ -1,0 +1,1 @@
+document.querySelectorAll('[data-constituency-switcher]').forEach(select=>select.addEventListener('change',()=>{if(select.value){const target=new URL(select.value,location.href);if(target.origin===location.origin)location.assign(target.href);}}));
