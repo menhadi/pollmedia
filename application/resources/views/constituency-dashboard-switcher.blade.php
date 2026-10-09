@@ -5,17 +5,17 @@ $switchNormalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*
 $switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district_rows'])->filter(fn(array $seat):bool=>$switchNormalize($seat['name'])===$switchNormalize($name));
 $switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
 $switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
-$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Agra','Rampur','Pilibhit'],true));
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Agra','Rampur','Pilibhit','Aligarh'],true));
 @endphp
 @if($switchDistricts->isNotEmpty())
 <link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">
-<nav class="constituency-dashboard-switcher" aria-label="District and constituency dashboards"><a href="{{ route('district-dashboard-directory') }}">Change district →</a><label>Change constituency<select data-constituency-switcher><option value="" selected>{{ strtoupper($kind) }} · {{ $name }}</option>
+<nav class="constituency-dashboard-switcher" aria-label="District and constituency dashboards"><a href="{{ route('district-dashboard-directory') }}">Change district â†’</a><label>Change constituency<select data-constituency-switcher><option value="" selected>{{ strtoupper($kind) }} Â· {{ $name }}</option>
 @foreach($switchDistricts as $switchDistrict)
 @php($switchLinks=app(\App\Services\DistrictConstituencyLinks::class)->forDistrict($switchDistrict))
 @foreach(['parliamentary'=>'PC','assembly'=>'AC'] as $switchKey=>$switchLabel)
-<optgroup label="{{ $switchDistrict }} · {{ $switchLabel }}">
+<optgroup label="{{ $switchDistrict }} Â· {{ $switchLabel }}">
 @foreach($switchLinks[$switchKey] as $switchOption)
-<option value="{{ route('constituency.overview',['kind'=>$switchKey==='assembly'?'ac':'pc','state'=>$state,'name'=>trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$switchOption['name']))],false) }}">{{ $switchLabel }} {{ $switchOption['code'] }} · {{ $switchOption['name'] }}</option>
+<option value="{{ route('constituency.overview',['kind'=>$switchKey==='assembly'?'ac':'pc','state'=>$state,'name'=>trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$switchOption['name']))],false) }}">{{ $switchLabel }} {{ $switchOption['code'] }} Â· {{ $switchOption['name'] }}</option>
 @endforeach
 </optgroup>
 @endforeach

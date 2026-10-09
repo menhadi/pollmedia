@@ -20,7 +20,9 @@ class DistrictDashboardController extends Controller
         abort_unless($data, 404, 'No published Census district records are available for this code.');
         $censusSeries = $data['history'];
         $constituencyLinks = $state === '09' ? app(DistrictConstituencyLinks::class)->forDistrict($data['name']) : ['available' => false];
-        $sourceMap = $state === '09' && $district === '146' && is_file(public_path('maps/agra-villages.geojson')) ? 'maps/agra-villages.geojson' : null;
+        $mapFiles = ['146' => 'maps/agra-villages.geojson', '143' => 'maps/aligarh-villages.geojson'];
+        $mapFile = $state === '09' ? ($mapFiles[$district] ?? null) : null;
+        $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
     }
