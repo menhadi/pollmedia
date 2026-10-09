@@ -228,7 +228,7 @@ class HistoricalElectionAnalytics
                 if ($hasWarning) {
                     $marginReviewCount++;
                 }
-                $name = trim($ranked[0]['candidate_name'] ?? '');
+                $name = $this->hasVerifiedAgartala2008CandidateVotes($record) ? $record['summary_result']['winner'] : trim($ranked[0]['candidate_name'] ?? '');
                 $place = trim($record['constituency_name'] ?? $record['name'] ?? '');
                 if ($name !== '' && $place !== '') {
                     $winners[] = ['constituency' => $place, 'candidate' => $name, 'party' => $ranked[0]['party_at_election'], 'margin' => $margin];
@@ -537,6 +537,51 @@ class HistoricalElectionAnalytics
         return is_int($value) && $value >= 0;
     }
 
+    /**
+     * Tripura 2008 Agartala: five rows on PDF p74 reconcile with summary p18.
+     * The p73 heading continues onto p74; serial/header text polluted names only.
+     * https://old.eci.gov.in/files/file/3309-tripura-2008/
+     * Preserve the extraction and its warnings; this grants only reviewed analytics.
+     */
+    private function hasVerifiedAgartala2008CandidateVotes(array $record): bool
+    {
+        if (($record['code'] ?? null) !== 6 || ($record['name'] ?? null) !== 'Agartala'
+            || ($record['state_name'] ?? null) !== 'Tripura'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['source_warning_code'] ?? null) !== 'summary_turnout_with_detail_warnings'
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING.'; Some candidate text could not be parsed; see the original PDF.; Detailed totals are missing or use an unsupported layout.'
+            || ($record['detail_page'] ?? null) !== 73 || ($record['summary_page'] ?? null) !== 18
+            || ($record['summary_source_file'] ?? null) !== 'c2b9ef2bc73bbcc70a271a58-7626.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '0a3374adf6618574adb8268d9282c13dd30fa388b537696e94642b5447d9ca43'
+            || ($record['electors'] ?? null) !== 47407 || ($record['votes_polled'] ?? null) !== 41788
+            || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== 41361
+            || $this->officialPdfSummaryResult($record) !== ['winner' => 'SUDIP ROY BARMAN', 'party' => 'INC', 'margin' => 1825]
+            || ($record['summary_result']['winner_votes'] ?? null) !== 21019
+            || ($record['summary_result']['runner'] ?? null) !== 'BIKASH ROY'
+            || ($record['summary_result']['runner_party'] ?? null) !== 'CPM'
+            || ($record['summary_result']['runner_votes'] ?? null) !== 19194) {
+            return false;
+        }
+        $expected = [
+            ['CAND SL. as per form 7 SUDIP ROY BARMAN', 'INC', 20758, 261, 21019],
+            ['3 BIKASH ROY', 'CPM', 18858, 336, 19194],
+            ['1 MILAN CHAKRABORTY', 'BJP', 523, 5, 528],
+            ['2 SHIBANI BHOWMIK', 'IND', 387, 2, 389],
+            ['5 LALIT MOHAN GOSWAMI', 'AITC', 230, 1, 231],
+        ];
+        $candidates = $record['candidates'] ?? [];
+        if (count($candidates) !== count($expected)) {
+            return false;
+        }
+        foreach (array_values($candidates) as $index => $candidate) {
+            if (($candidate['is_nota'] ?? false) || array_map(fn ($key) => $candidate[$key] ?? null, ['candidate_name', 'party_at_election', 'general_votes', 'postal_votes', 'votes']) !== $expected[$index]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private function hasReconciledDeclaredCandidateVotes(array $record): bool
     {
         if (! in_array($record['source_warning_code'] ?? null, ['official_summary_turnout_only', 'summary_turnout_with_detail_warnings'], true)
@@ -574,7 +619,7 @@ class HistoricalElectionAnalytics
             return false;
         }
 
-        if ($this->hasReconciledDeclaredCandidateVotes($record)) {
+        if ($this->hasReconciledDeclaredCandidateVotes($record) || $this->hasVerifiedAgartala2008CandidateVotes($record)) {
             return true;
         }
 
