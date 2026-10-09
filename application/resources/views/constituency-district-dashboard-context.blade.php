@@ -9,8 +9,8 @@ $codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seat && $districtNames->contains(fn(string $district):bool=>isset($codes[$district])))
-<section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard Â· Census context</p><h2>District demographics & geographic scope</h2>
-<p>{{ strtoupper($kind) }} {{ $seat['code'] }} Â· {{ $seat['name'] }}. Links use the dated districtâ€“Assembly gazette and parliamentary delimitation fixture.</p>
+<section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District demographics & geographic scope</h2>
+<p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Links use the dated district–Assembly gazette and parliamentary delimitation fixture.</p>
 <p class="notice">Constituency Census population is not established by this district link. District figures below are contextual, not AC/PC totals. Population is never divided by polygon area. Electoral maps, Census geography and historical constituencies may describe different years.</p>
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
@@ -26,7 +26,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @else
 <p>Published district Census records are unavailable here. No population is inferred.</p>
 @endif
-<a href="{{ route('district-dashboard',['state'=>'09','district'=>$codes[$district]]) }}">District map, Census history & graphs â†’</a>
+<a href="{{ route('district-dashboard',['state'=>'09','district'=>$codes[$district]]) }}">District map, Census history & graphs →</a>
 @else
 <p>District code crosswalk is not established in this panel. See the dated geographic source.</p>
 @endif
@@ -36,6 +36,6 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($kind==='pc')
 <p>Assembly segments: {{ $segments->map(fn(array $row):string=>$row['name'].' (AC '.$row['code'].')')->implode(', ') }}.</p>
 @endif
-<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">Districtâ€“Assembly source â†—</a> Â· <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source â†—</a></details></section>
+<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">District–Assembly source ↗</a> · <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source ↗</a></details></section>
 @endif
 @endif
