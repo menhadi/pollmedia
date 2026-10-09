@@ -547,6 +547,8 @@ class HistoricalElectionAnalytics
      * Banamalipur detail p74 matches six candidates and summary p21, including CPI.
      * Barjala detail p73 matches six candidates and summary p16.
      * Belonia detail p80 matches six candidates and summary p48.
+     * Bishalgarh detail p76 matches four candidates and summary p28.
+     * Boxanagar detail p76 matches five candidates and summary p31.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -651,6 +653,29 @@ class HistoricalElectionAnalytics
                     ['5 SUDEB SEN CHOUDHURY', 'AITC', 293, 1, 294],
                     ['4 KESHAB CHANDRA SARKAR', 'BJP', 288, 5, 293],
                     ['3 RATAN ROY', 'AMB', 100, 2, 102],
+                ],
+            ],
+            16 => [
+                'name' => 'Bishalgarh', 'detail' => 76, 'summary' => 28,
+                'electors' => 32449, 'polled' => 30670, 'valid' => 30609,
+                'result' => ['winner' => 'BHANULAL SAHA', 'winner_party' => 'CPM', 'winner_votes' => 15457, 'runner' => 'SAMIR RANJAN BARMAN', 'runner_party' => 'INC', 'runner_votes' => 14543, 'margin' => 914],
+                'candidates' => [
+                    ['BHANULAL SAHA', 'CPM', 15246, 211, 15457],
+                    ['1 SAMIR RANJAN BARMAN', 'INC', 14308, 235, 14543],
+                    ['2 SUBRATA SARKAR', 'BJP', 320, 0, 320],
+                    ['3 SUBRATA BHOWMIK', 'IND', 288, 1, 289],
+                ],
+            ],
+            19 => [
+                'name' => 'Boxanagar', 'detail' => 76, 'summary' => 31,
+                'electors' => 29627, 'polled' => 27986, 'valid' => 27832,
+                'result' => ['winner' => 'SAHID CHOUDHURI', 'winner_party' => 'CPM', 'winner_votes' => 13791, 'runner' => 'BILLAL MIA', 'runner_party' => 'INC', 'runner_votes' => 13099, 'margin' => 692],
+                'candidates' => [
+                    ['SAHID CHOUDHURI', 'CPM', 13731, 60, 13791],
+                    ['3 BILLAL MIA', 'INC', 13057, 42, 13099],
+                    ['2 GOPAL CHANDRA DAS', 'BJP', 328, 2, 330],
+                    ['1 CHALE AHAMMED', 'CPI(ML)(L)', 309, 0, 309],
+                    ['4 BAHAR MIA KHANDAKAR', 'IND', 303, 0, 303],
                 ],
             ],
             default => null,
