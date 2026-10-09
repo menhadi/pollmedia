@@ -19,10 +19,10 @@ SPECS = [
 ]
 
 
-def revised_files(root=ROOT):
+def revised_files(root=ROOT, specs=None):
     fixture = json.loads((root/'application/database/fixtures/official-successful-candidates.json').read_text())
     result = []
-    for eid, name, outer_sha, prior_sha, codes in SPECS:
+    for eid, name, outer_sha, prior_sha, codes in (SPECS if specs is None else specs):
         path = root/'exports'/(name+'.zip')
         if digest(path.read_bytes()) != outer_sha:
             raise ValueError('Prior bundle differs')
@@ -85,11 +85,11 @@ echo "PASS: live predecessors and winner-only capability verified.\n";
 '''
 
 
-def build(root=ROOT):
-    output = root/'exports'/(NAME+'.zip')
+def build(root=ROOT, name=NAME, specs=None):
+    output = root/'exports'/(name+'.zip')
     if output.exists() or output.with_suffix('.sha256').exists():
         raise FileExistsError(output)
-    revised = revised_files(root)
+    revised = revised_files(root, specs)
     content = {'PREFLIGHT.php': preflight().encode()}
     audit = []
     with tempfile.TemporaryDirectory(dir=root/'exports') as temporary:

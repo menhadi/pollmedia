@@ -42,5 +42,71 @@
     "source_sha256": "32ea1bcc14d115ecdf173213d5f9da89ec819ea00ec4b6a8bec13b8d8a32007a",
     "source_url": "https://old.eci.gov.in/files/file/4116-general-election-1977-vol-i-ii/",
     "pdf_page": 76
+  },
+  "d7365c7939cfc38b09eb9581:13": {
+    "state": "Andhra Pradesh",
+    "name": "VIJAYAWADA",
+    "official_pc_code": 13,
+    "winner": "K.L. RAO",
+    "party": "INC",
+    "source_file": "d7365c7939cfc38b09eb9581-9743.pdf",
+    "source_sha256": "f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946",
+    "source_url": "https://old.eci.gov.in/files/file/4114-general-election-1967-vol-i-ii/",
+    "pdf_page": 65
+  },
+  "d7365c7939cfc38b09eb9581:46": {
+    "state": "Assam",
+    "name": "KOKRAJHAR (ST)",
+    "official_pc_code": 5,
+    "winner": "R. BRAHMA",
+    "party": "INC",
+    "source_file": "d7365c7939cfc38b09eb9581-9743.pdf",
+    "source_sha256": "f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946",
+    "source_url": "https://old.eci.gov.in/files/file/4114-general-election-1967-vol-i-ii/",
+    "pdf_page": 66
+  },
+  "d7365c7939cfc38b09eb9581:144": {
+    "state": "Jammu And Kashmir",
+    "name": "ANANTNAG",
+    "official_pc_code": 3,
+    "winner": "M.S. QURESHI",
+    "party": "INC",
+    "source_file": "d7365c7939cfc38b09eb9581-9743.pdf",
+    "source_sha256": "f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946",
+    "source_url": "https://old.eci.gov.in/files/file/4114-general-election-1967-vol-i-ii/",
+    "pdf_page": 68
+  },
+  "d7365c7939cfc38b09eb9581:145": {
+    "state": "Jammu And Kashmir",
+    "name": "LADAKH",
+    "official_pc_code": 4,
+    "winner": "K. BAKULA",
+    "party": "INC",
+    "source_file": "d7365c7939cfc38b09eb9581-9743.pdf",
+    "source_sha256": "f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946",
+    "source_url": "https://old.eci.gov.in/files/file/4114-general-election-1967-vol-i-ii/",
+    "pdf_page": 68
+  },
+  "d7365c7939cfc38b09eb9581:296": {
+    "state": "Nagaland",
+    "name": "NAGALAND",
+    "official_pc_code": 1,
+    "winner": "CHUBATOSHI",
+    "party": "NNO",
+    "source_file": "d7365c7939cfc38b09eb9581-9743.pdf",
+    "source_sha256": "f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946",
+    "source_url": "https://old.eci.gov.in/files/file/4114-general-election-1967-vol-i-ii/",
+    "pdf_page": 72
+  },
+  "a62b405d308af2536df91caa:513": {
+    "state": "L M And A Islands",
+    "name": "L M AND A ISLANDS",
+    "official_pc_code": 1,
+    "winner": "SADANATHA MOHAMMED SAYEED",
+    "party": "INC",
+    "source_file": "a62b405d308af2536df91caa-9746.pdf",
+    "source_sha256": "158fe67f9bd6b2f27d88db6b36adb03ca341fa863101edd6c6083eec8dda0d18",
+    "source_url": "https://old.eci.gov.in/files/file/4115-general-election-1971-vol-i-ii/",
+    "pdf_page": 78
   }
 }
