@@ -48,6 +48,10 @@ class ConstituencyArchiveHistory
      * Bishenpur directly links to Bishnupur in the same official 2017 election:
      * https://ceomanipur.nic.in/Affidavits/AssemblyElection/2017/ACList.html
      * https://ceomanipur.nic.in/Affidavits/AssemblyElection/2017/SE/26/AC26.htm
+     * Khangabok in the CEO 2022 directory links directly to a Khangabo Form 20:
+     * https://ceomanipur.nic.in/ResultSheets/StateLegislativeAssembly/2022/results
+     * https://ceomanipur.nic.in/ResultSheets/StateLegislativeAssembly/2022/35.pdf
+     * Khangabox is printed in the 1972 report above; candidate continuity links 1974.
      * Historical identity inference is not a delimitation crosswalk.
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
@@ -63,6 +67,16 @@ class ConstituencyArchiveHistory
         }
 
         return match (self::generalCategoryNames($name)[0]) {
+            'khangabok' => [
+                ['names' => self::generalCategoryNames('khangabo'), 'code' => 35],
+                ['names' => self::generalCategoryNames('khangabox'), 'code' => 35, 'edition' => '496d7edbfe44e6b6cf4b312b'],
+            ],
+            'khangabo', 'khangabox' => [
+                ['names' => self::generalCategoryNames('khangabok'), 'code' => 35],
+                ['names' => self::generalCategoryNames('khangabok'), 'code' => 18, 'edition' => 'c2f796a4415124c983df09b7'],
+                ['names' => self::generalCategoryNames('khangabo'), 'code' => 35],
+                ['names' => self::generalCategoryNames('khangabox'), 'code' => 35, 'edition' => '496d7edbfe44e6b6cf4b312b'],
+            ],
             'bishenpur' => [['names' => self::generalCategoryNames('bishnupur'), 'code' => 26]],
             'bishnupur' => [['names' => self::generalCategoryNames('bishenpur'), 'code' => 26]],
             'nambol' => [['names' => self::generalCategoryNames('nanbol'), 'code' => 24, 'edition' => '48bac24675875f468956cf9e']],
@@ -109,7 +123,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v7:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v8:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
