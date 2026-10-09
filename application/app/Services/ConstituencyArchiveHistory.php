@@ -38,6 +38,44 @@ class ConstituencyArchiveHistory
         return $alias === null ? [] : self::generalCategoryNames($alias);
     }
 
+    /**
+     * Explicit historical spelling links; raw labels and year-specific boundaries remain unchanged.
+     * Naoriya is corroborated by official summaries (PDF p31) and candidate continuity:
+     * https://old.eci.gov.in/files/file/3704-manipur-1974/
+     * https://old.eci.gov.in/files/file/3705-manipur-1980/
+     * Nambol/Nanbol is corroborated by candidate continuity in those reports and:
+     * https://old.eci.gov.in/files/file/3703-manipur-1972/
+     * Bishenpur directly links to Bishnupur in the same official 2017 election:
+     * https://ceomanipur.nic.in/Affidavits/AssemblyElection/2017/ACList.html
+     * https://ceomanipur.nic.in/Affidavits/AssemblyElection/2017/SE/26/AC26.htm
+     * Historical identity inference is not a delimitation crosswalk.
+     *
+     * @return list<array{names: array, code: int, edition?: string, after?: int}>
+     */
+    public static function historyAliasRules(string $kind, ?string $state, string $name): array
+    {
+        $names = self::manipurAssemblyAliasNames($kind, $state, $name);
+        if ($names !== []) {
+            return [['names' => $names, 'code' => 4]];
+        }
+        if ($kind !== 'ac' || mb_strtolower(trim($state ?? '')) !== 'manipur') {
+            return [];
+        }
+
+        return match (self::generalCategoryNames($name)[0]) {
+            'bishenpur' => [['names' => self::generalCategoryNames('bishnupur'), 'code' => 26]],
+            'bishnupur' => [['names' => self::generalCategoryNames('bishenpur'), 'code' => 26]],
+            'nambol' => [['names' => self::generalCategoryNames('nanbol'), 'code' => 24, 'edition' => '48bac24675875f468956cf9e']],
+            'nanbol' => [
+                ['names' => self::generalCategoryNames('nambol'), 'code' => 24, 'after' => 1974],
+                ['names' => self::generalCategoryNames('nambol'), 'code' => 25, 'edition' => '496d7edbfe44e6b6cf4b312b'],
+            ],
+            'naoriya pakhanglakpa' => [['names' => self::generalCategoryNames('naoriya pakanglakpa'), 'code' => 21, 'edition' => '48bac24675875f468956cf9e']],
+            'naoriya pakanglakpa' => [['names' => self::generalCategoryNames('naoriya pakhanglakpa'), 'code' => 21, 'after' => 1974]],
+            default => [],
+        };
+    }
+
     /** Read preserved imported editions omitted from the search index; never write or extract data. */
     public function missingEntries(string $kind, ?string $state, ?string $name, Collection $indexed, ?string $editionOnly = null): Collection
     {
@@ -71,7 +109,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v5:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v7:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
@@ -87,7 +125,7 @@ class ConstituencyArchiveHistory
                 $matches = [];
                 $wantedState = $state !== null ? $this->stateName($state) : null;
                 $wantedSeat = $name !== null ? $this->seatName($name) : null;
-                $aliases = $name !== null ? self::manipurAssemblyAliasNames($kind, $state, $name) : [];
+                $aliases = $name !== null ? self::historyAliasRules($kind, $state, $name) : [];
                 $stateNames = [];
                 $stateCodes = [];
                 foreach ($data['records'] ?? [] as $record) {
@@ -95,7 +133,10 @@ class ConstituencyArchiveHistory
                     $code = $record['state_code'] ?? '';
                     $recordState = $record['state_name'] ?? ($edition['state'] ?? ($kind === 'ac' ? 'Uttar Pradesh' : ($edition['year'] >= 1977 ? ($stateCodes[$code] ??= ElectionPlaceIdentity::state($code)) : '')));
                     // Old state codes have different meanings. Use original state names, never today's code list.
-                    $aliasMatches = (int) ($record['code'] ?? 0) === 4 && in_array(mb_strtolower(trim($recordName)), $aliases, true);
+                    $aliasMatches = collect($aliases)->contains(fn (array $rule): bool => (int) ($record['code'] ?? 0) === $rule['code']
+                        && (! isset($rule['edition']) || $id === $rule['edition'])
+                        && (! isset($rule['after']) || $edition['year'] > $rule['after'])
+                        && in_array(mb_strtolower(trim($recordName)), $rule['names'], true));
                     if (($wantedState !== null && ($stateNames[$recordState] ??= $this->stateName($recordState)) !== $wantedState) || ($wantedSeat !== null && $this->seatName($recordName) !== $wantedSeat && ! $aliasMatches)) {
                         continue;
                     }
