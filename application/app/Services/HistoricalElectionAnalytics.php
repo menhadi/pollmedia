@@ -545,6 +545,8 @@ class HistoricalElectionAnalytics
      * Bagma detail p78 matches all three candidates and summary p42.
      * Bamutia detail p73 matches all five candidates and summary p15.
      * Banamalipur detail p74 matches six candidates and summary p21, including CPI.
+     * Barjala detail p73 matches six candidates and summary p16.
+     * Belonia detail p80 matches six candidates and summary p48.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -623,6 +625,32 @@ class HistoricalElectionAnalytics
                     ['3 NISHITH DAS', 'IND', 205, 1, 206],
                     ['6 RAKHAL RAJ DATTA', 'AMB', 88, 0, 88],
                     ['5 BASANTI SINHA', 'AITC', 35, 1, 36],
+                ],
+            ],
+            4 => [
+                'name' => 'Barjala', 'detail' => 73, 'summary' => 16,
+                'electors' => 54467, 'polled' => 50912, 'valid' => 50789,
+                'result' => ['winner' => 'SANKAR PRASAD DATTA', 'winner_party' => 'CPM', 'winner_votes' => 24853, 'runner' => 'DIPAK KUMAR ROY', 'runner_party' => 'INC', 'runner_votes' => 24255, 'margin' => 598],
+                'candidates' => [
+                    ['SANKAR PRASAD DATTA', 'CPM', 24550, 303, 24853],
+                    ['3 DIPAK KUMAR ROY', 'INC', 24003, 252, 24255],
+                    ['1 PULAK KUMAR DEBNATH', 'BJP', 687, 10, 697],
+                    ['2 PRADIP CHAKRABORTY', 'AITC', 370, 1, 371],
+                    ['6 SANJIB DEY', 'NCP', 352, 4, 356],
+                    ['4 JAYANTA KUMAR DATTA', 'AIFB', 254, 3, 257],
+                ],
+            ],
+            36 => [
+                'name' => 'Belonia', 'detail' => 80, 'summary' => 48,
+                'electors' => 33282, 'polled' => 31701, 'valid' => 31645,
+                'result' => ['winner' => 'BASU DEV MAJUMDER', 'winner_party' => 'CPM', 'winner_votes' => 15971, 'runner' => 'AMAL MALLIK', 'runner_party' => 'INC', 'runner_votes' => 14652, 'margin' => 1319],
+                'candidates' => [
+                    ['BASU DEV MAJUMDER', 'CPM', 15627, 344, 15971],
+                    ['2 AMAL MALLIK', 'INC', 14338, 314, 14652],
+                    ['1 BABUL CHANDRA PAL', 'CPI(ML)(L)', 331, 2, 333],
+                    ['5 SUDEB SEN CHOUDHURY', 'AITC', 293, 1, 294],
+                    ['4 KESHAB CHANDRA SARKAR', 'BJP', 288, 5, 293],
+                    ['3 RATAN ROY', 'AMB', 100, 2, 102],
                 ],
             ],
             default => null,
