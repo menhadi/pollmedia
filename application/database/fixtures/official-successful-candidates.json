@@ -1,0 +1,46 @@
+{
+  "02f72a2ef53a457f8e97e539:224": {
+    "state": "Madras",
+    "name": "TIRUCHENDUR",
+    "official_pc_code": 40,
+    "winner": "T. T. KRISHNAMACHARI",
+    "party": "INC",
+    "source_file": "02f72a2ef53a457f8e97e539-9740.pdf",
+    "source_sha256": "b5d39c92b655594bc4d7817b61c3a1cd31de41e6acd454d43d39acc371b977e1",
+    "source_url": "https://old.eci.gov.in/files/file/4113-general-election-1962-vol-i-ii/",
+    "pdf_page": 68
+  },
+  "02f72a2ef53a457f8e97e539:307": {
+    "state": "Orrisa",
+    "name": "ANGUL",
+    "official_pc_code": 12,
+    "winner": "HAREKRUSHNA MAHTAB",
+    "party": "INC",
+    "source_file": "02f72a2ef53a457f8e97e539-9740.pdf",
+    "source_sha256": "b5d39c92b655594bc4d7817b61c3a1cd31de41e6acd454d43d39acc371b977e1",
+    "source_url": "https://old.eci.gov.in/files/file/4113-general-election-1962-vol-i-ii/",
+    "pdf_page": 70
+  },
+  "02f72a2ef53a457f8e97e539:360": {
+    "state": "Uttar Pradesh",
+    "name": "TEHRI GARHAWAL",
+    "official_pc_code": 1,
+    "winner": "MANABENDRA SHAH",
+    "party": "INC",
+    "source_file": "02f72a2ef53a457f8e97e539-9740.pdf",
+    "source_sha256": "b5d39c92b655594bc4d7817b61c3a1cd31de41e6acd454d43d39acc371b977e1",
+    "source_url": "https://old.eci.gov.in/files/file/4113-general-election-1962-vol-i-ii/",
+    "pdf_page": 71
+  },
+  "f536c924d1bedb6f02754d1d:43": {
+    "state": "ARUNACHAL PRADESH",
+    "name": "ARUNACHAL WEST",
+    "official_pc_code": 1,
+    "winner": "RINCHIN KHANDU KHIMRE",
+    "party": "INC",
+    "source_file": "f536c924d1bedb6f02754d1d-9749.pdf",
+    "source_sha256": "32ea1bcc14d115ecdf173213d5f9da89ec819ea00ec4b6a8bec13b8d8a32007a",
+    "source_url": "https://old.eci.gov.in/files/file/4116-general-election-1977-vol-i-ii/",
+    "pdf_page": 76
+  }
+}

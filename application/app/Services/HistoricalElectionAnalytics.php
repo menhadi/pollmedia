@@ -236,6 +236,11 @@ class HistoricalElectionAnalytics
             return $this->uncontestedResult($record, $edition);
         }
 
+        $listedWinner = $this->officialSuccessfulCandidate($record, $edition);
+        if ($listedWinner !== null) {
+            return $listedWinner;
+        }
+
         $uncontested = $this->uncontestedResult($record, $edition);
         if ($uncontested !== null) {
             return $uncontested;
@@ -390,6 +395,31 @@ class HistoricalElectionAnalytics
         }
 
         return ['name' => $name, 'party' => trim($people[0]['party_at_election'] ?? '') ?: null];
+    }
+
+    private function officialSuccessfulCandidate(array $record, ?string $edition): ?array
+    {
+        if (($record['source_warning_code'] ?? null) !== 'official_successful_candidate_only' || $edition === null) {
+            return null;
+        }
+        static $evidence = null;
+        $evidence ??= json_decode(file_get_contents(database_path('fixtures/official-successful-candidates.json')), true, 512, JSON_THROW_ON_ERROR);
+        $source = $evidence[$edition.':'.($record['code'] ?? '')] ?? null;
+        $candidate = $record['candidates'][0] ?? [];
+        if ($source === null || ($record['official_successful_candidate'] ?? null) !== $source
+            || ($record['state_name'] ?? null) !== $source['state']
+            || ($record['constituency_name'] ?? null) !== $source['name']
+            || ($record['official_pc_code'] ?? null) !== $source['official_pc_code']
+            || count($record['candidates'] ?? []) !== 1
+            || ($candidate['candidate_name'] ?? null) !== $source['winner']
+            || ($candidate['party_at_election'] ?? null) !== $source['party']
+            || ($candidate['votes'] ?? null) !== 0
+            || ($record['votes_polled'] ?? null) !== 0
+            || ($record['valid_candidate_votes'] ?? null) !== 0) {
+            return null;
+        }
+
+        return ['winner' => $source['winner'], 'party' => $source['party'], 'margin' => null, 'derived' => false, 'winner_only' => true];
     }
 
     private function uncontestedResult(array $record, ?string $edition): ?array
