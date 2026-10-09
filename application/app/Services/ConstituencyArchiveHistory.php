@@ -59,6 +59,8 @@ class ConstituencyArchiveHistory
      * candidate Hmangkhum Joute corroborates Tipaimukh (ST) in 1980 (PDF p81).
      * Its public directory route and 2022 report omit ST; only this explicit seat
      * bridge accepts those labels, retaining all raw reservation annotations.
+     * Hanglep (ST), 1974 PDF p79, is corroborated by winner Holkhomang in
+     * Henglep (ST), 1972 PDF p80 and 1980 PDF p81 (official reports above).
      * Historical identity inference is not a delimitation crosswalk.
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
@@ -74,6 +76,11 @@ class ConstituencyArchiveHistory
         }
 
         return match (self::generalCategoryNames($name)[0]) {
+            'henglep', 'henglep (st)', 'henglep  (st)', 'hanglep', 'hanglep (st)' => [
+                ['names' => ['hanglep (st)', 'hanglep'], 'code' => 57, 'edition' => '48bac24675875f468956cf9e'],
+                ['names' => ['henglep', 'henglep (st)', 'henglep  (st)'], 'code' => 57, 'after' => 1974],
+                ['names' => ['henglep', 'henglep (st)'], 'code' => 58, 'edition' => '496d7edbfe44e6b6cf4b312b'],
+            ],
             'tipaimukh', 'tipaimukh (st)', 'tipaimukh  (st)', 'tipalmukh', 'tipalmukh (st)' => [
                 ['names' => ['tipalmukh (st)', 'tipalmukh'], 'code' => 55, 'edition' => '48bac24675875f468956cf9e'],
                 ['names' => ['tipaimukh', 'tipaimukh (st)', 'tipaimukh  (st)'], 'code' => 55, 'after' => 1974],
@@ -140,7 +147,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v10:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v11:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
