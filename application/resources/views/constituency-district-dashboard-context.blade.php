@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Rampur'=>'136','Pilibhit'=>'151'];
+$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seat && $districtNames->contains(fn(string $district):bool=>isset($codes[$district])))

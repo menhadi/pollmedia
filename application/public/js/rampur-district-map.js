@@ -39,4 +39,4 @@ async function start() {
     let zoom=1;const setZoom=value=>{zoom=Math.max(1,Math.min(8,value));group.setAttribute('transform',`translate(380 270) scale(${zoom}) translate(-380 -270)`);};document.getElementById('zoom-in').addEventListener('click',()=>setZoom(zoom*1.5));document.getElementById('zoom-out').addEventListener('click',()=>setZoom(zoom/1.5));document.getElementById('fit-map').addEventListener('click',()=>setZoom(1));
     render();if(location.hash.startsWith('#shape-'))select(location.hash.slice(7));
 }
-if(typeof document!=='undefined'&&document.getElementById('village-map'))start().catch(()=>{document.getElementById('map-message').textContent='Map unavailable. Imported Census charts and the searchable village directory remain available.';});
+if(typeof document!=='undefined'&&document.body.dataset.map&&document.getElementById('village-map'))start().catch(()=>{document.getElementById('map-message').textContent='Map unavailable. Imported Census charts and the searchable village directory remain available.';});
