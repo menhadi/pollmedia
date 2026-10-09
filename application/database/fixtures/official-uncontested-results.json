@@ -2722,5 +2722,14 @@
     "source_file": "92de082304013ee1f62be87a-9762.pdf",
     "source_sha256": "801ffa9db8ebe320968b17cc8195c83c94eefec94bc8368382392083ce5e15e3",
     "pdf_page": 148
+  },
+  "9a57af51e71e6ff194d3f409:178": {
+    "name": "RAYAGADA PHULBANI (ST)",
+    "candidate": "T. SANGANA",
+    "party": "INC",
+    "source_url": "https://old.eci.gov.in/files/file/4111-general-election-1951-vol-i-ii/",
+    "source_file": "9a57af51e71e6ff194d3f409-9735.pdf",
+    "source_sha256": "5edb3b4145da98e57b4032430cf0fa846a882d22278a41fa491b9a5d14c93718",
+    "pdf_page": 182
   }
 }
