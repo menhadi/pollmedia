@@ -228,7 +228,7 @@ class HistoricalElectionAnalytics
                 if ($hasWarning) {
                     $marginReviewCount++;
                 }
-                $name = $this->hasVerifiedAgartala2008CandidateVotes($record) ? $record['summary_result']['winner'] : trim($ranked[0]['candidate_name'] ?? '');
+                $name = $this->hasVerifiedTripura2008CandidateVotes($record) ? $record['summary_result']['winner'] : trim($ranked[0]['candidate_name'] ?? '');
                 $place = trim($record['constituency_name'] ?? $record['name'] ?? '');
                 if ($name !== '' && $place !== '') {
                     $winners[] = ['constituency' => $place, 'candidate' => $name, 'party' => $ranked[0]['party_at_election'], 'margin' => $margin];
@@ -539,36 +539,71 @@ class HistoricalElectionAnalytics
 
     /**
      * Tripura 2008 Agartala: five rows on PDF p74 reconcile with summary p18.
-     * The p73 heading continues onto p74; serial/header text polluted names only.
+     * Agartala p73 heading continues onto p74; Asharambari p77 continues onto p78
+     * and reconciles with summary p37. Badharghat detail p75 matches summary p26;
+     * the two Subrata Chakraborty rows have different parties and remain separate.
+     * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
      */
-    private function hasVerifiedAgartala2008CandidateVotes(array $record): bool
+    private function hasVerifiedTripura2008CandidateVotes(array $record): bool
     {
-        if (($record['code'] ?? null) !== 6 || ($record['name'] ?? null) !== 'Agartala'
+        $source = match ($record['code'] ?? null) {
+            6 => [
+                'name' => 'Agartala', 'detail' => 73, 'summary' => 18,
+                'electors' => 47407, 'polled' => 41788, 'valid' => 41361,
+                'result' => ['winner' => 'SUDIP ROY BARMAN', 'winner_party' => 'INC', 'winner_votes' => 21019, 'runner' => 'BIKASH ROY', 'runner_party' => 'CPM', 'runner_votes' => 19194, 'margin' => 1825],
+                'candidates' => [
+                    ['CAND SL. as per form 7 SUDIP ROY BARMAN', 'INC', 20758, 261, 21019],
+                    ['3 BIKASH ROY', 'CPM', 18858, 336, 19194],
+                    ['1 MILAN CHAKRABORTY', 'BJP', 523, 5, 528],
+                    ['2 SHIBANI BHOWMIK', 'IND', 387, 2, 389],
+                    ['5 LALIT MOHAN GOSWAMI', 'AITC', 230, 1, 231],
+                ],
+            ],
+            25 => [
+                'name' => 'Asharambari  (ST)', 'detail' => 77, 'summary' => 37,
+                'electors' => 26225, 'polled' => 24258, 'valid' => 24242,
+                'result' => ['winner' => 'SACHINDRA DEBBARMA', 'winner_party' => 'CPM', 'winner_votes' => 13765, 'runner' => 'AMIYA KUMAR DEBBARMA', 'runner_party' => 'INPT', 'runner_votes' => 9234, 'margin' => 4531],
+                'candidates' => [
+                    ['SACHINDRA DEBBARMA', 'CPM', 13598, 167, 13765],
+                    ['3 AMIYA KUMAR DEBBARMA', 'INPT', 9159, 75, 9234],
+                    ['1 PRAFULLA DEBBARMA', 'IND', 439, 2, 441],
+                    ['5 DHANBHAKTI JAMATIA', 'BJP', 417, 2, 419],
+                    ['2 CAND SL. as per form 7 ASHIT DEBBARMA', 'IND', 381, 2, 383],
+                ],
+            ],
+            14 => [
+                'name' => 'Badharghat', 'detail' => 75, 'summary' => 26,
+                'electors' => 66149, 'polled' => 61494, 'valid' => 61371,
+                'result' => ['winner' => 'DILIP SARKAR', 'winner_party' => 'INC', 'winner_votes' => 29724, 'runner' => 'SUBRATA CHAKRABORTY', 'runner_party' => 'CPM', 'runner_votes' => 29349, 'margin' => 375],
+                'candidates' => [
+                    ['DILIP SARKAR', 'INC', 29365, 359, 29724],
+                    ['3 SUBRATA CHAKRABORTY', 'CPM', 28877, 472, 29349],
+                    ['2 RAMA PRASAD PAUL', 'BJP', 726, 5, 731],
+                    ['1 SUBRATA CHAKRABORTY', 'IND', 673, 16, 689],
+                    ['7 DILIP DUTTA', 'AIFB', 379, 1, 380],
+                    ['5 DWIJENDRA SAHAJI', 'NCP', 307, 3, 310],
+                    ['4 DEBASISH DATTA', 'AITC', 188, 0, 188],
+                ],
+            ],
+            default => null,
+        };
+        if ($source === null || ($record['name'] ?? null) !== $source['name']
             || ($record['state_name'] ?? null) !== 'Tripura'
             || ($record['status'] ?? null) !== 'needs_review'
             || ($record['source_warning_code'] ?? null) !== 'summary_turnout_with_detail_warnings'
             || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING.'; Some candidate text could not be parsed; see the original PDF.; Detailed totals are missing or use an unsupported layout.'
-            || ($record['detail_page'] ?? null) !== 73 || ($record['summary_page'] ?? null) !== 18
+            || ($record['detail_page'] ?? null) !== $source['detail'] || ($record['summary_page'] ?? null) !== $source['summary']
             || ($record['summary_source_file'] ?? null) !== 'c2b9ef2bc73bbcc70a271a58-7626.pdf'
             || ($record['summary_source_sha256'] ?? null) !== '0a3374adf6618574adb8268d9282c13dd30fa388b537696e94642b5447d9ca43'
-            || ($record['electors'] ?? null) !== 47407 || ($record['votes_polled'] ?? null) !== 41788
-            || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== 41361
-            || $this->officialPdfSummaryResult($record) !== ['winner' => 'SUDIP ROY BARMAN', 'party' => 'INC', 'margin' => 1825]
-            || ($record['summary_result']['winner_votes'] ?? null) !== 21019
-            || ($record['summary_result']['runner'] ?? null) !== 'BIKASH ROY'
-            || ($record['summary_result']['runner_party'] ?? null) !== 'CPM'
-            || ($record['summary_result']['runner_votes'] ?? null) !== 19194) {
+            || ($record['electors'] ?? null) !== $source['electors'] || ($record['votes_polled'] ?? null) !== $source['polled']
+            || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== $source['valid']
+            || $this->officialPdfSummaryResult($record) === null
+            || ($record['summary_result'] ?? null) !== $source['result']) {
             return false;
         }
-        $expected = [
-            ['CAND SL. as per form 7 SUDIP ROY BARMAN', 'INC', 20758, 261, 21019],
-            ['3 BIKASH ROY', 'CPM', 18858, 336, 19194],
-            ['1 MILAN CHAKRABORTY', 'BJP', 523, 5, 528],
-            ['2 SHIBANI BHOWMIK', 'IND', 387, 2, 389],
-            ['5 LALIT MOHAN GOSWAMI', 'AITC', 230, 1, 231],
-        ];
+        $expected = $source['candidates'];
         $candidates = $record['candidates'] ?? [];
         if (count($candidates) !== count($expected)) {
             return false;
@@ -619,7 +654,7 @@ class HistoricalElectionAnalytics
             return false;
         }
 
-        if ($this->hasReconciledDeclaredCandidateVotes($record) || $this->hasVerifiedAgartala2008CandidateVotes($record)) {
+        if ($this->hasReconciledDeclaredCandidateVotes($record) || $this->hasVerifiedTripura2008CandidateVotes($record)) {
             return true;
         }
 
