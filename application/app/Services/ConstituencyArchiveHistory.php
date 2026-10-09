@@ -52,6 +52,9 @@ class ConstituencyArchiveHistory
      * https://ceomanipur.nic.in/ResultSheets/StateLegislativeAssembly/2022/results
      * https://ceomanipur.nic.in/ResultSheets/StateLegislativeAssembly/2022/35.pdf
      * Khangabox is printed in the 1972 report above; candidate continuity links 1974.
+     * Sugnoo has the same two candidates/parties as ECI 2017 Sugnu:
+     * https://ceomanipur.nic.in/Affidavits/AssemblyElection/2017/SE/39/AC39.htm
+     * The distinct 1967 Hiyanglam Sugnoo compound seat is not an alias.
      * Historical identity inference is not a delimitation crosswalk.
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
@@ -67,6 +70,11 @@ class ConstituencyArchiveHistory
         }
 
         return match (self::generalCategoryNames($name)[0]) {
+            'sugnoo' => [['names' => self::generalCategoryNames('sugnu'), 'code' => 39]],
+            'sugnu' => [
+                ['names' => self::generalCategoryNames('sugnoo'), 'code' => 39],
+                ['names' => self::generalCategoryNames('sugnoo'), 'code' => 40, 'edition' => '496d7edbfe44e6b6cf4b312b'],
+            ],
             'khangabok' => [
                 ['names' => self::generalCategoryNames('khangabo'), 'code' => 35],
                 ['names' => self::generalCategoryNames('khangabox'), 'code' => 35, 'edition' => '496d7edbfe44e6b6cf4b312b'],
@@ -123,7 +131,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v8:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v9:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
