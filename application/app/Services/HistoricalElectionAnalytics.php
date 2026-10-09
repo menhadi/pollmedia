@@ -22,7 +22,7 @@ class HistoricalElectionAnalytics
             }
 
             $record = $row['record'];
-            unset($record['detail_page']);
+            unset($record['detail_page'], $record['review_fingerprint']);
             $record['candidates'] = collect($record['candidates'])->map(function (array $candidate): array {
                 unset($candidate['source_row']);
                 ksort($candidate);
