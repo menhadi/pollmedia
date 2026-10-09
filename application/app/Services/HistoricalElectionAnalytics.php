@@ -543,6 +543,8 @@ class HistoricalElectionAnalytics
      * and reconciles with summary p37. Badharghat detail p75 matches summary p26;
      * the two Subrata Chakraborty rows have different parties and remain separate.
      * Bagma detail p78 matches all three candidates and summary p42.
+     * Bamutia detail p73 matches all five candidates and summary p15.
+     * Banamalipur detail p74 matches six candidates and summary p21, including CPI.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -596,6 +598,31 @@ class HistoricalElectionAnalytics
                     ['NARESH CHANDRA JAMATIA', 'CPM', 14809, 170, 14979],
                     ['1 RATI MOHAN JAMATIA', 'INC', 12962, 102, 13064],
                     ['3 RAJ KUMAR JAMATIA', 'BJP', 733, 3, 736],
+                ],
+            ],
+            3 => [
+                'name' => 'Bamutia  (SC)', 'detail' => 73, 'summary' => 15,
+                'electors' => 35499, 'polled' => 33338, 'valid' => 33272,
+                'result' => ['winner' => 'HARICHARAN SARKAR', 'winner_party' => 'CPM', 'winner_votes' => 17324, 'runner' => 'PRAKASH CHANDRA DAS', 'runner_party' => 'INC', 'runner_votes' => 14944, 'margin' => 2380],
+                'candidates' => [
+                    ['HARICHARAN SARKAR', 'CPM', 17171, 153, 17324],
+                    ['3 PRAKASH CHANDRA DAS', 'INC', 14816, 128, 14944],
+                    ['1 SAMIR BISWAS', 'BJP', 362, 5, 367],
+                    ['2 BRAJENDRA DAS', 'AMB', 366, 0, 366],
+                    ['5 PAPRI PODDER(BISWAS)', 'AITC', 270, 1, 271],
+                ],
+            ],
+            9 => [
+                'name' => 'Banamalipur', 'detail' => 74, 'summary' => 21,
+                'electors' => 25956, 'polled' => 22696, 'valid' => 22595,
+                'result' => ['winner' => 'GOPAL CHANDRA ROY', 'winner_party' => 'INC', 'winner_votes' => 12354, 'runner' => 'PRASANTA KAPALI', 'runner_party' => 'CPI', 'runner_votes' => 9546, 'margin' => 2808],
+                'candidates' => [
+                    ['GOPAL CHANDRA ROY', 'INC', 12158, 196, 12354],
+                    ['1 PRASANTA KAPALI', 'CPI', 9248, 298, 9546],
+                    ['2 SUDHINDRA CHANDRA DASGUPTA', 'BJP', 358, 7, 365],
+                    ['3 NISHITH DAS', 'IND', 205, 1, 206],
+                    ['6 RAKHAL RAJ DATTA', 'AMB', 88, 0, 88],
+                    ['5 BASANTI SINHA', 'AITC', 35, 1, 36],
                 ],
             ],
             default => null,
