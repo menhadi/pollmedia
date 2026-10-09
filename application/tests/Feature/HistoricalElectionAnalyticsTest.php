@@ -626,6 +626,50 @@ class HistoricalElectionAnalyticsTest extends TestCase
         $this->assertNull(app(HistoricalElectionAnalytics::class)->summarize([$record])['turnout']);
     }
 
+    public function test_declared_result_review_keeps_reconciled_party_votes_without_accepting_incomplete_rows(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        foreach (['official_summary_turnout_only', 'summary_turnout_with_detail_warnings'] as $warning) {
+            $record = $this->record(1, 100, 82, 50, 30);
+            $record += ['detail_page' => 9, 'summary_page' => 4, 'valid_candidate_votes' => 80,
+                'summary_source_file' => 'official.pdf', 'summary_source_sha256' => str_repeat('a', 64),
+                'summary_totals' => ['electors' => 100, 'votes_polled' => 82, 'valid_candidate_votes' => 80],
+                'summary_result' => ['winner' => 'A', 'winner_party' => 'AAA', 'winner_votes' => 50,
+                    'runner' => 'B', 'runner_party' => 'BBB', 'runner_votes' => 30, 'margin' => 20],
+                'original_extraction_warning' => 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.'];
+            $record['status'] = 'needs_review';
+            $record['source_warning_code'] = $warning;
+            $record['error'] = 'Official summary declares the winner and margin.';
+            $original = $record;
+            $summary = $analytics->summarize([$record]);
+            $this->assertSame(1, $summary['party_count']);
+            $this->assertSame(1, $summary['party_review_count']);
+            $this->assertSame(1, $summary['turnout_count']);
+            $this->assertSame(1, $summary['margin_count']);
+            $this->assertSame(50, $summary['parties'][0]['votes']);
+            $this->assertSame($original, $record);
+
+            foreach (['missing_vote', 'duplicate', 'missing_row', 'conflicting_result', 'missing_provenance', 'unparsed_warning'] as $failure) {
+                $bad = $record;
+                switch ($failure) {
+                    case 'missing_vote': $bad['candidates'][1]['votes'] = null;
+                        break;
+                    case 'duplicate': $bad['candidates'][] = $bad['candidates'][0];
+                        break;
+                    case 'missing_row': array_pop($bad['candidates']);
+                        break;
+                    case 'conflicting_result': $bad['summary_result']['runner_party'] = 'OTHER';
+                        break;
+                    case 'missing_provenance': unset($bad['summary_source_sha256']);
+                        break;
+                    case 'unparsed_warning': $bad['original_extraction_warning'] .= ' Some candidate text could not be parsed.';
+                        break;
+                }
+                $this->assertSame(0, $analytics->summarize([$bad])['party_count'], $failure);
+            }
+        }
+    }
+
     public function test_verified_summary_turnout_survives_detailed_candidate_text_warning(): void
     {
         $record = $this->record(1, 100, 82, 50, 30);
@@ -894,7 +938,7 @@ class HistoricalElectionAnalyticsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn([$summary]);
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn([]);
         });
-        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('Lok Sabha voting history')->assertDontSee('Assembly voting history')->assertSee('Mean winning margin')->assertSee('Registered electors and votes polled')->assertSee('2022 Lok Sabha results')->assertSee('80.00%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('data-history-chart')->assertSee('pc-results')->assertSee('ac-results')->assertSee('Uttar Pradesh PC constituency map')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
+        $this->get('/india/state/uttar-pradesh')->assertOk()->assertSee('Lok Sabha voting history')->assertDontSee('Assembly voting history')->assertSee('Mean winning margin')->assertSee('Registered electors, votes polled and turnout')->assertSee('2022 Lok Sabha results')->assertSee('80.00%')->assertSee('Party vote shares')->assertDontSee('Go deeper into')->assertSee('2022 report')->assertSee('data-sortable', false)->assertSee('data-history-chart')->assertSee('pc-results')->assertSee('ac-results')->assertSee('Uttar Pradesh PC constituency map')->assertSeeInOrder(['>Lok Sabha</a>', '>State Assembly</a>'], false);
         $this->get('/india/state/uttar-pradesh?edition='.str_repeat('b', 24))->assertNotFound();
     }
 
