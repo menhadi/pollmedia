@@ -39,6 +39,11 @@ $plots=[
 @foreach($plots as $plot)
 @php($plot['autoScale']=true)
 <section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
+@if($loop->index===0)
+<p class="small">These three party labels are selected by total recorded votes across all available years and stay fixed when you change the year range. Independents and NOTA are excluded from selection.</p>
+@elseif($loop->index===1)
+<p class="small">The two leading parties are ranked separately each year. Independents and NOTA are included in Others, so an independent winner appears there. These lines rank parties, not candidates.</p>
+@endif
 @if($reportMode)
 @include('history-static-plot')
 @else
