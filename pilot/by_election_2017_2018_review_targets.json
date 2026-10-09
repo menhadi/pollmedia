@@ -1,0 +1,1747 @@
+[
+  {
+    "id": "ca4a04f0baacacd9d5ecc1e4",
+    "prior_sha256": "f06f15b651af9327be3693efc1e9c4b7d12e2287f93627a4b8d1fe651bd4c32a",
+    "source_sha256": "e3909784f40ce045f475dc199528632d8b2178b8a20505413c908f153eef77f0",
+    "sheet": "285-Palus Kadegaon MH AC",
+    "source_review_rows": {
+      "1": [
+        "Election Commission of India",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "2": [
+        "Bye Election,2018",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "4": [
+        "Assembly Constituency Maharashtra , District Sangli",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "5": [
+        "No. and Name of Assembly Constituancy 285-Palus Kadegaon",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "6": [
+        " ",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "7": [
+        null,
+        null,
+        "MALE",
+        "FEMALE",
+        "Third Gender",
+        "TOTAL"
+      ],
+      "8": [
+        "I. CANDIDATE",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "9": [
+        1,
+        "NOMINATED",
+        12,
+        0,
+        0,
+        "=SUM(C9:E9)"
+      ],
+      "10": [
+        2,
+        "REJECTED",
+        3,
+        0,
+        0,
+        "=SUM(C10:E10)"
+      ],
+      "11": [
+        3,
+        "WITHDRAWN",
+        8,
+        0,
+        0,
+        "=SUM(C11:E11)"
+      ],
+      "12": [
+        4,
+        "CONTESTED",
+        1,
+        0,
+        0,
+        "=SUM(C12:E12)"
+      ],
+      "13": [
+        5,
+        "FORFEITED",
+        0,
+        0,
+        0,
+        "=SUM(C13:E13)"
+      ],
+      "14": [
+        "II. ELECTORS",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "15": [
+        1,
+        "GENERAL (Other than NRIs)",
+        133489,
+        127947,
+        3,
+        "=SUM(C15:E15)"
+      ],
+      "16": [
+        2,
+        "NRI",
+        null,
+        null,
+        null,
+        "=SUM(C16:E16)"
+      ],
+      "17": [
+        3,
+        "SERVICE",
+        584,
+        3,
+        0,
+        "=SUM(C17:E17)"
+      ],
+      "18": [
+        4,
+        "TOTAL",
+        "=SUM(C15:C17)",
+        "=SUM(D15:D17)",
+        "=SUM(E15:E17)",
+        "=SUM(F15:F17)"
+      ],
+      "19": [
+        "III. POLLING STATIONS",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "20": [
+        "NUMBERS",
+        "Nil",
+        "AVERAGE ELECTORS  PER POLLING STATION",
+        null,
+        "Nil",
+        null
+      ],
+      "21": [
+        "IV. DATES",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "22": [
+        "POLLING",
+        "COUNTING",
+        "DECLARATION OF RESULT",
+        null,
+        null,
+        null
+      ],
+      "23": [
+        "Nil",
+        "Nil",
+        "Nil",
+        null,
+        null,
+        null
+      ],
+      "24": [
+        "V.ELECTORS WHO VOTED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "25": [
+        1,
+        "GENERAL (Other than NRIs )",
+        "Nil",
+        "Nil",
+        0,
+        "Nil"
+      ],
+      "26": [
+        2,
+        "NRI",
+        null,
+        null,
+        null,
+        null
+      ],
+      "27": [
+        3,
+        "POSTAL",
+        null,
+        null,
+        null,
+        null
+      ],
+      "28": [
+        4,
+        "TOTAL",
+        "=SUM(C25:C27)",
+        "=SUM(D25:D27)",
+        "=SUM(E25:E27)",
+        "Nil"
+      ],
+      "29": [
+        "VI. VOTES POLLED",
+        null,
+        null,
+        null,
+        null,
+        " "
+      ],
+      "30": [
+        1,
+        "TOTAL POLLED",
+        null,
+        null,
+        null,
+        "Nil"
+      ],
+      "31": [
+        2,
+        "VALID",
+        null,
+        null,
+        null,
+        "Nil"
+      ],
+      "32": [
+        3,
+        "REJECTED",
+        null,
+        null,
+        null,
+        "Nil"
+      ],
+      "33": [
+        4,
+        "TOTAL VOTES POLLED FOR 'NOTA'",
+        null,
+        null,
+        null,
+        "Nil"
+      ],
+      "34": [
+        5,
+        "VOTES NOT RETRIEVED",
+        null,
+        null,
+        null,
+        "Nil"
+      ],
+      "35": [
+        6,
+        "TENDERED ",
+        null,
+        null,
+        null,
+        null
+      ],
+      "36": [
+        "VII. CAUSE OF VACANCY",
+        "Nil",
+        null,
+        null,
+        null,
+        null
+      ],
+      "38": [
+        "VIII.  DETAILED RESULT",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "40": [
+        "S.No.",
+        "Candidate",
+        "Party",
+        "Votes",
+        null,
+        "% of votes"
+      ]
+    },
+    "note": "The workbook prints Nil for the candidate vote cell, polled votes, valid votes and NOTA. One candidate is listed, but this worksheet does not explicitly declare an uncontested result. Nil remains nonnumeric; no zero votes, winner or ordinary turnout is inferred."
+  },
+  {
+    "id": "b96730c5c8dd39d7bcb46263",
+    "prior_sha256": "0ae1b70dfcb1dd7ee7e8dafab55b020c29aaee2501ea14a69d91a79042cbffd3",
+    "source_sha256": "e3909784f40ce045f475dc199528632d8b2178b8a20505413c908f153eef77f0",
+    "sheet": "20-Mandya, KR,PC",
+    "source_review_rows": {
+      "1": [
+        "Election Commission of India",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "2": [
+        "Bye Election,2018",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "4": [
+        "Parliamentary Constituency Karnataka , District Mandya&Mysore",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "5": [
+        "No. and Name of Parliamentary Constituancy 20-Mandya",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "7": [
+        null,
+        null,
+        "MALE",
+        "FEMALE",
+        "Third Gender",
+        "TOTAL",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "8": [
+        "I. CANDIDATE",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "9": [
+        1,
+        "NOMINATED",
+        9,
+        0,
+        0,
+        "=SUM(C9:E9)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "10": [
+        2,
+        "REJECTED",
+        0,
+        0,
+        0,
+        "=SUM(C10:E10)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "11": [
+        3,
+        "WITHDRAWN",
+        0,
+        0,
+        0,
+        "=SUM(C11:E11)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "12": [
+        4,
+        "CONTESTED",
+        9,
+        0,
+        0,
+        "=SUM(C12:E12)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "13": [
+        5,
+        "FORFEITED",
+        7,
+        0,
+        0,
+        "=SUM(C13:E13)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "14": [
+        "II. ELECTORS",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "15": [
+        1,
+        "GENERAL (Other than NRIs)",
+        843335,
+        840971,
+        140,
+        "=SUM(C15:E15)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "16": [
+        2,
+        "NRI",
+        0,
+        0,
+        0,
+        "=SUM(C16:E16)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "17": [
+        3,
+        "SERVICE",
+        660,
+        16,
+        0,
+        "=SUM(C17:E17)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "18": [
+        4,
+        "TOTAL",
+        "=SUM(C15:C17)",
+        "=SUM(D15:D17)",
+        "=SUM(E15:E17)",
+        "=SUM(F15:F17)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "19": [
+        "III. POLLING STATIONS",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "20": [
+        "NUMBERS",
+        2047,
+        "AVERAGE ELECTORS  PER POLLING STATION",
+        null,
+        823,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "21": [
+        "IV. DATES",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "22": [
+        "POLLING",
+        "COUNTING",
+        "DECLARATION OF RESULT",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "23": [
+        "2018-03-11 00:00:00",
+        "2018-06-11 00:00:00",
+        "2018-06-11 00:00:00",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "24": [
+        "V.ELECTORS WHO VOTED",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "25": [
+        1,
+        "GENERAL (Other than NRIs )",
+        451271,
+        441174,
+        7,
+        "=SUM(C25:E25)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "26": [
+        2,
+        "NRI",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "27": [
+        3,
+        "POSTAL",
+        null,
+        null,
+        null,
+        108,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "28": [
+        4,
+        "TOTAL",
+        "=SUM(C25:C27)",
+        "=SUM(D25:D27)",
+        "=SUM(E25:E27)",
+        "=SUM(F25:F27)",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "29": [
+        "VI. VOTES POLLED",
+        null,
+        null,
+        null,
+        null,
+        " ",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "30": [
+        1,
+        "TOTAL POLLED",
+        null,
+        null,
+        null,
+        892560,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "31": [
+        2,
+        "VALID",
+        null,
+        null,
+        null,
+        877048,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "32": [
+        3,
+        "REJECTED",
+        null,
+        null,
+        null,
+        32,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "33": [
+        4,
+        "TOTAL VOTES POLLED FOR 'NOTA'",
+        null,
+        null,
+        null,
+        15480,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "34": [
+        5,
+        "VOTES NOT RETRIEVED",
+        null,
+        null,
+        null,
+        0,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "35": [
+        6,
+        "TENDERED ",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "36": [
+        "VII. CAUSE OF VACANCY",
+        "Resignation",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "38": [
+        "VIII.  DETAILED RESULT",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "40": [
+        "S.No.",
+        "Candidate",
+        "Janta Dal (Secular)",
+        "Votes",
+        null,
+        "% of votes",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "note": "Nine candidate vote cells sum to 877,048, matching printed valid votes; adding 15,480 NOTA and 32 rejected votes matches 892,560 polled. The party heading contains Janta Dal (Secular), while subsequent party cells appear shifted. Party values remain exactly as printed; no realignment or winner-party attribution is inferred."
+  },
+  {
+    "id": "171f4a1be2c7d0eade7d2954",
+    "prior_sha256": "863f1d5c3df5e0e9613a48beac6486d1f0b088dddfb5ea23042e5b06b8a336c1",
+    "source_sha256": "71ca0ec9bc18c73f420800649703eff4f5d7c10563da49d9f72e95a53aeb8e3e",
+    "sheet": "27-Kolaras(AC)-MP",
+    "source_review_rows": {
+      "1": [
+        "Election Commission of India",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "2": [
+        "Bye Election,2018",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "4": [
+        "Assembly Constituency of Madhya Pradesh, District Shivpuri",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "5": [
+        "No. and Name of Assembly Constituancy 27-Kolaras",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "7": [
+        null,
+        null,
+        "MALE",
+        "FEMALE",
+        "Third Gender",
+        "TOTAL"
+      ],
+      "8": [
+        "I. CANDIDATE",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "9": [
+        1,
+        "NOMINATED",
+        28,
+        null,
+        null,
+        28
+      ],
+      "10": [
+        2,
+        "REJECTED",
+        1,
+        null,
+        null,
+        1
+      ],
+      "11": [
+        3,
+        "WITHDRAWN",
+        5,
+        null,
+        null,
+        5
+      ],
+      "12": [
+        4,
+        "CONTESTED",
+        22,
+        null,
+        null,
+        22
+      ],
+      "13": [
+        5,
+        "FORFEITED",
+        20,
+        null,
+        null,
+        20
+      ],
+      "14": [
+        "II. ELECTORS",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "15": [
+        1,
+        "GENERAL (Other than NRIs)",
+        130697,
+        113753,
+        7,
+        "=SUM(C15:E15)"
+      ],
+      "16": [
+        2,
+        "NRI",
+        null,
+        null,
+        null,
+        0
+      ],
+      "17": [
+        3,
+        "SERVICE",
+        55,
+        0,
+        0,
+        55
+      ],
+      "18": [
+        4,
+        "TOTAL",
+        "=SUM(C15:C17)",
+        "=SUM(D15:D17)",
+        "=SUM(E15:E17)",
+        "=SUM(F15:F17)"
+      ],
+      "19": [
+        "III. POLLING STATIONS",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "20": [
+        "NUMBERS",
+        311,
+        "AVERAGE ELECTORS  PER POLLING STATION",
+        null,
+        786,
+        null
+      ],
+      "21": [
+        "IV. DATES",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "22": [
+        "POLLING",
+        "COUNTING",
+        "DECLARATION OF RESULT",
+        null,
+        null,
+        null
+      ],
+      "23": [
+        "24-2-2018",
+        "28-2-2018",
+        "28-2-2018",
+        null,
+        null,
+        null
+      ],
+      "24": [
+        "V.ELECTORS WHO VOTED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "25": [
+        1,
+        "GENERAL (Other than NRIs )",
+        95812,
+        76272,
+        3,
+        "=SUM(C25:E25)"
+      ],
+      "26": [
+        2,
+        "NRI",
+        null,
+        null,
+        null,
+        null
+      ],
+      "27": [
+        3,
+        "POSTAL",
+        null,
+        null,
+        null,
+        14
+      ],
+      "28": [
+        4,
+        "TOTAL",
+        "=SUM(C25:C27)",
+        "=SUM(D25:D27)",
+        "=SUM(E25:E27)",
+        172101
+      ],
+      "29": [
+        "VI. VOTES POLLED",
+        null,
+        null,
+        null,
+        null,
+        " "
+      ],
+      "30": [
+        1,
+        "TOTAL POLLED",
+        null,
+        null,
+        null,
+        172101
+      ],
+      "31": [
+        2,
+        "VALID",
+        null,
+        null,
+        null,
+        171344
+      ],
+      "32": [
+        3,
+        "REJECTED",
+        null,
+        null,
+        null,
+        1
+      ],
+      "33": [
+        4,
+        "TOTAL VOTES POLLED FOR 'NOTA'",
+        null,
+        null,
+        null,
+        756
+      ],
+      "34": [
+        5,
+        "VOTES NOT RETRIEVED",
+        null,
+        null,
+        null,
+        0
+      ],
+      "35": [
+        6,
+        "TENDERED ",
+        null,
+        null,
+        null,
+        0
+      ],
+      "36": [
+        "VII. CAUSE OF VACANCY",
+        "Due to Death of MLA",
+        null,
+        null,
+        null,
+        null
+      ],
+      "38": [
+        "VIII.  DETAILED RESULT",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "40": [
+        null,
+        "S.No.",
+        "Party",
+        "Votes",
+        null,
+        "% of votes"
+      ]
+    },
+    "note": "The Candidate heading is misplaced: row 40 has S.No. above the names column. All 22 named candidate rows are verified against the workbook. Their sum 171,344 matches printed valid votes; 756 NOTA and 1 rejected vote reconcile to 172,101 polled. Original names, parties and header warning are preserved."
+  },
+  {
+    "id": "c9993f62dfdb1625bc4d7a62",
+    "prior_sha256": "54daa4a6aed0706628aef55301cb3c0fa0e71ecf2699ac6147d84b803aa7431b",
+    "source_sha256": "ca92f05a4db855c26f29d4dd9c3115a7c03fd0bdd923990affdeb97a3df48856",
+    "sheet": "89-Bandhavgarh(ST)MP",
+    "source_review_rows": {
+      "1": [
+        "Election Commission of India",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "2": [
+        "BYE- ELECTION- 2017",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "4": [
+        "Assembly Consituancy of Madhya Pradesh",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "5": [
+        "No. and Name of Assembly Consituancy 89-Bandhavgarh(ST) , District, Bandhavgarh",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "7": [
+        null,
+        null,
+        "MALE",
+        "FEMALE",
+        "Third Gender",
+        "TOTAL",
+        null
+      ],
+      "8": [
+        "I. CANDIDATE",
+        null,
+        9,
+        3,
+        0,
+        12,
+        null
+      ],
+      "9": [
+        1,
+        "NOMINATED",
+        1,
+        1,
+        0,
+        2,
+        null
+      ],
+      "10": [
+        2,
+        "REJECTED",
+        5,
+        0,
+        0,
+        5,
+        null
+      ],
+      "11": [
+        3,
+        "WITHDRAWN",
+        3,
+        2,
+        0,
+        5,
+        null
+      ],
+      "12": [
+        4,
+        "CONTESTED",
+        2,
+        1,
+        0,
+        3,
+        null
+      ],
+      "13": [
+        5,
+        "FORFEITED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "14": [
+        "II. ELECTORS",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "15": [
+        1,
+        "GENERAL (Other than NRIs)",
+        104231,
+        96955,
+        7,
+        201193,
+        null
+      ],
+      "16": [
+        2,
+        "NRI",
+        0,
+        0,
+        0,
+        0,
+        null
+      ],
+      "17": [
+        3,
+        "SERVICE",
+        8,
+        1,
+        0,
+        9,
+        null
+      ],
+      "18": [
+        4,
+        "TOTAL",
+        104239,
+        69956,
+        7,
+        201202,
+        null
+      ],
+      "19": [
+        "III. POLLING STATIONS",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "20": [
+        "NUMBERS",
+        264,
+        "AVERAGE ELECTORS  PER POLLING STATION",
+        null,
+        null,
+        762,
+        null
+      ],
+      "21": [
+        "IV. DATES",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "22": [
+        "POLLING",
+        "COUNTING",
+        "DECLARATION OF RESULT",
+        null,
+        null,
+        null,
+        null
+      ],
+      "23": [
+        "2017-09-04 00:00:00",
+        "13/4/2017",
+        "13/4/2017",
+        null,
+        null,
+        null,
+        null
+      ],
+      "24": [
+        "V.ELECTORS WHO VOTED",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "25": [
+        1,
+        "GENERAL (Other than NRIs )",
+        73306,
+        61995,
+        3,
+        135304,
+        null
+      ],
+      "26": [
+        2,
+        "NRI",
+        0,
+        null,
+        null,
+        null,
+        null
+      ],
+      "27": [
+        3,
+        "POSTAL",
+        null,
+        null,
+        null,
+        0,
+        null
+      ],
+      "28": [
+        4,
+        "TOTAL",
+        73306,
+        61995,
+        3,
+        135304,
+        null
+      ],
+      "29": [
+        "VI. VOTES POLLED",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "30": [
+        1,
+        "TOTAL POLLED",
+        null,
+        null,
+        null,
+        135304,
+        null
+      ],
+      "31": [
+        2,
+        "VALID",
+        null,
+        null,
+        null,
+        132110,
+        null
+      ],
+      "32": [
+        3,
+        "REJECTED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "33": [
+        4,
+        "TOTAL VOTES POLLED FOR 'NOTA'",
+        null,
+        null,
+        null,
+        3194,
+        null
+      ],
+      "34": [
+        5,
+        "VOTES NOT RETRIEVED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "35": [
+        6,
+        "TENDERED ",
+        null,
+        null,
+        null,
+        0,
+        null
+      ],
+      "36": [
+        "VII. CAUSE OF VACANCY",
+        "Due to Resignation of Shri Gyan Singh MLA",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "38": [
+        "VIII.  DETAILED RESULT",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "40": [
+        "S.No.",
+        "Candidate",
+        "Party",
+        "Votes",
+        null,
+        "% of votes",
+        null
+      ]
+    },
+    "note": "Five named candidates sum to 132,110, matching valid votes; 3,194 NOTA reconciles to 135,304 polled. The source prints contested counts male 2, female 1, total 3 despite five named rows. Elector total 201,202 conflicts with total-row components 104,239 male + 69,956 female + 7 third gender = 174,202; the general female elector cell is 96,955. No digit correction or derived turnout is supplied."
+  },
+  {
+    "id": "facc732a4b6ce8ef7aa0b85d",
+    "prior_sha256": "6da540138a29e8ac14934dccfa939637551b674dcc235565c64db79ff13d2aa4",
+    "source_sha256": "ca92f05a4db855c26f29d4dd9c3115a7c03fd0bdd923990affdeb97a3df48856",
+    "sheet": "4- Littipara(ST),AC JR",
+    "source_review_rows": {
+      "1": [
+        "Election Commission of India",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "2": [
+        "BYE- ELECTION- 2017",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "4": [
+        "Assembly Consituancy of Jharkhand",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "5": [
+        "No. and Name of Assembly Consituancy 4-Littipara , District, Littipara",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "7": [
+        null,
+        null,
+        "MALE",
+        "FEMALE",
+        "Third Gender",
+        "TOTAL"
+      ],
+      "8": [
+        "I. CANDIDATE",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "9": [
+        1,
+        "NOMINATED",
+        10,
+        2,
+        0,
+        12
+      ],
+      "10": [
+        2,
+        "REJECTED",
+        0,
+        2,
+        0,
+        2
+      ],
+      "11": [
+        3,
+        "WITHDRAWN",
+        0,
+        0,
+        0,
+        0
+      ],
+      "12": [
+        4,
+        "CONTESTED",
+        10,
+        0,
+        0,
+        10
+      ],
+      "13": [
+        5,
+        "FORFEITED",
+        8,
+        0,
+        0,
+        8
+      ],
+      "14": [
+        "II. ELECTORS",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "15": [
+        1,
+        "GENERAL (Other than NRIs)",
+        93915,
+        96241,
+        0,
+        190156
+      ],
+      "16": [
+        2,
+        "NRI",
+        0,
+        0,
+        0,
+        0
+      ],
+      "17": [
+        3,
+        "SERVICE",
+        21,
+        11,
+        0,
+        32
+      ],
+      "18": [
+        4,
+        "TOTAL",
+        93936,
+        96252,
+        0,
+        190188
+      ],
+      "19": [
+        "III. POLLING STATIONS",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "20": [
+        "NUMBERS",
+        272,
+        "AVERAGE ELECTORS  PER POLLING STATION",
+        null,
+        null,
+        699
+      ],
+      "21": [
+        "IV. DATES",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "22": [
+        "POLLING",
+        "COUNTING",
+        "DECLARATION OF RESULT",
+        null,
+        null,
+        null
+      ],
+      "23": [
+        "2017-09-04 00:00:00",
+        "13/4/2017",
+        "13/4/2017",
+        null,
+        null,
+        null
+      ],
+      "24": [
+        "V.ELECTORS WHO VOTED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "25": [
+        1,
+        "GENERAL (Other than NRIs )",
+        70854,
+        70435,
+        0,
+        141289
+      ],
+      "26": [
+        2,
+        "NRI",
+        0,
+        null,
+        null,
+        0
+      ],
+      "27": [
+        3,
+        "POSTAL",
+        null,
+        null,
+        null,
+        0
+      ],
+      "28": [
+        4,
+        "TOTAL",
+        70854,
+        70435,
+        0,
+        "=SUM(F25:F27)"
+      ],
+      "29": [
+        "VI. VOTES POLLED",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "30": [
+        1,
+        "TOTAL POLLED",
+        null,
+        null,
+        null,
+        141289
+      ],
+      "31": [
+        2,
+        "VALID",
+        null,
+        null,
+        null,
+        138643
+      ],
+      "32": [
+        3,
+        "REJECTED",
+        null,
+        null,
+        null,
+        0
+      ],
+      "33": [
+        4,
+        "TOTAL VOTES POLLED FOR 'NOTA'",
+        null,
+        null,
+        null,
+        2646
+      ],
+      "34": [
+        5,
+        "VOTES NOT RETRIEVED",
+        null,
+        null,
+        null,
+        0
+      ],
+      "35": [
+        6,
+        "TENDERED ",
+        null,
+        null,
+        null,
+        0
+      ],
+      "36": [
+        "VII. CAUSE OF VACANCY",
+        "Due to death of Dr. Anil Murmu",
+        null,
+        null,
+        null,
+        null
+      ],
+      "38": [
+        "VIII.  DETAILED RESULT",
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "40": [
+        "S.No.",
+        "Candidate",
+        "Party",
+        "Votes",
+        null,
+        "% of votes"
+      ]
+    },
+    "note": "Ten candidate vote cells sum to 138,643, matching valid votes; 2,646 NOTA reconciles to 141,289 polled. Printed electors total 190,188. Gayalal Dehri has 848 votes and a blank party cell; preserve the blank without inferring a party."
+  }
+]
