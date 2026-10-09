@@ -6,6 +6,7 @@ use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
 use App\Services\ElectionArchive;
 use App\Services\ElectionGeographySummary;
+use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,37 @@ use Tests\TestCase;
 class ConstituencyOverviewTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_only_identical_results_in_the_known_2019_revision_pair_are_displayed_once(): void
+    {
+        $record = ['code' => 255, 'state_name' => 'Manipur', 'constituency_name' => 'Inner Manipur',
+            'detail_page' => 311, 'votes_polled' => 100, 'candidates' => [
+                ['candidate_name' => 'Winner', 'party_at_election' => 'A', 'votes' => 60, 'source_row' => 1],
+                ['candidate_name' => 'Runner', 'party_at_election' => 'B', 'votes' => 40, 'source_row' => 2],
+            ]];
+        $first = ['entry' => (object) ['year' => 2019, 'record_code' => 255, 'edition_id' => '2e749f2174f08a9ea1fc803d'],
+            'record' => $record, 'result' => ['winner' => 'Winner', 'margin' => 20]];
+        $second = $first;
+        $second['entry'] = (object) ['year' => 2019, 'record_code' => 255, 'edition_id' => '70e603b1037bf7ca8e1350b0'];
+        $second['record']['detail_page'] = 310;
+        $second['record']['candidates'] = array_reverse($record['candidates']);
+        $second['record']['candidates'][0]['source_row'] = 9;
+        $rows = collect([$first, $second]);
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $this->assertCount(1, $analytics->distinctConstituencyHistoryRows($rows));
+        $this->assertCount(2, $rows);
+        foreach (['votes', 'round', 'warning', 'unknown_edition'] as $difference) {
+            $different = $second;
+            if ($difference === 'unknown_edition') {
+                $different['entry'] = (object) ['year' => 2019, 'record_code' => 255, 'edition_id' => str_repeat('a', 24)];
+            } elseif ($difference === 'votes') {
+                $different['record']['candidates'][0]['votes']++;
+            } else {
+                $different['record'][$difference] = 'Different source information';
+            }
+            $this->assertCount(2, $analytics->distinctConstituencyHistoryRows(collect([$first, $different])), $difference);
+        }
+    }
 
     public function test_delhi_source_history_does_not_repeat_geography_queries_for_each_record(): void
     {

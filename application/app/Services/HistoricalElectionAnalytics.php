@@ -2,11 +2,44 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class HistoricalElectionAnalytics
 {
+    /** Keep both source editions, but display an identical result from the known 2019 report revision once. */
+    public function distinctConstituencyHistoryRows(Collection $rows): Collection
+    {
+        $revisionPair = ['2e749f2174f08a9ea1fc803d', '70e603b1037bf7ca8e1350b0'];
+        $seen = [];
+
+        return $rows->filter(function (array $row) use ($revisionPair, &$seen): bool {
+            $entry = $row['entry'];
+            if ((int) $entry->year !== 2019 || ! in_array($entry->edition_id, $revisionPair, true)
+                || empty($row['record']['candidates'])) {
+                return true;
+            }
+
+            $record = $row['record'];
+            unset($record['detail_page']);
+            $record['candidates'] = collect($record['candidates'])->map(function (array $candidate): array {
+                unset($candidate['source_row']);
+                ksort($candidate);
+
+                return $candidate;
+            })->sortBy(fn (array $candidate): string => json_encode($candidate, JSON_THROW_ON_ERROR))->values()->all();
+            ksort($record);
+            $key = hash('sha256', json_encode([$entry->record_code, $record, $row['result']], JSON_THROW_ON_ERROR));
+            if (isset($seen[$key]) && $seen[$key] !== $entry->edition_id) {
+                return false;
+            }
+            $seen[$key] = $entry->edition_id;
+
+            return true;
+        })->values();
+    }
+
     private const LEGACY_DETAIL_PENDING = 'Candidate rows transcribed from the detailed PDF; independent summary reconciliation is pending.';
 
     private const LEGACY_DETAIL_RECONCILED = 'Candidate rows transcribed from the detailed PDF; summary totals reconcile; publication review pending.';

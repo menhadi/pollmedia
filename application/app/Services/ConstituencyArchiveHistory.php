@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Schema;
 
 class ConstituencyArchiveHistory
 {
+    /** General-category annotations are metadata; preserve the original source labels in results. */
+    public static function generalCategoryNames(string $name): array
+    {
+        $base = preg_replace('/\s*\(gen\)$/i', '', mb_strtolower(trim($name)));
+
+        return [$base, $base.' (gen)', $base.'(gen)'];
+    }
+
     /** Read preserved imported editions omitted from the search index; never write or extract data. */
     public function missingEntries(string $kind, ?string $state, ?string $name, Collection $indexed, ?string $editionOnly = null): Collection
     {
@@ -42,7 +50,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v3:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v4:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
@@ -90,6 +98,7 @@ class ConstituencyArchiveHistory
 
     private function seatName(string $value): string
     {
+        $value = self::generalCategoryNames($value)[0];
         $value = preg_replace('/\((?:sc|st)\)/i', '', mb_strtolower(trim($value)));
         $parts = explode('/', $value);
 

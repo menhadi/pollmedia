@@ -22,7 +22,8 @@ class ConstituencyOverviewController extends Controller
         $kind = $input['kind'];
         $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
-        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($name)])->orderByDesc('year')->orderBy('edition_id')->get();
+        $names = ConstituencyArchiveHistory::generalCategoryNames($name);
+        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereIn(DB::raw('LOWER(TRIM(constituency_name))'), $names)->orderByDesc('year')->orderBy('edition_id')->get();
         $entries = $entries->concat(app(ConstituencyArchiveHistory::class)->missingEntries($kind, $state, $name, $entries))->sortBy([['year', 'desc'], ['edition_id', 'asc']])->values();
         abort_if($entries->isEmpty(), 404);
         $ambiguousName = $entries->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1);
@@ -105,6 +106,8 @@ class ConstituencyOverviewController extends Controller
             }
         }
 
-        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
+        $historyRows = $analytics->distinctConstituencyHistoryRows($rows);
+
+        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
     }
 }

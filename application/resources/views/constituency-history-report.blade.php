@@ -7,11 +7,12 @@
 @include('place-history-charts',['reportMode'=>true])
 @php $hasSourceReportedPolled=false; @endphp
 <section id="history"><h2>Election history and official references</h2><table><thead><tr><th>Year</th><th>Winner / party</th><th>Votes polled</th><th>Turnout</th><th>Margin (votes)</th></tr></thead><tbody>
-@foreach($rows as $row)
+@foreach(($historyRows??$rows) as $row)
 @php $summary=$row['record']?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$row['record']]):[]; $sourceReportedPolled=($summary['polled']??null)===null && is_int($row['record']['votes_polled']??null) && $row['record']['votes_polled']>0 ? $row['record']['votes_polled'] : null; $hasSourceReportedPolled=$hasSourceReportedPolled || $sourceReportedPolled!==null; @endphp
 <tr><th>{{ $row['entry']->year }}</th><td>{{ $row['result']['winner']??'Not established' }}<br>{{ $row['result']['party']??'—' }}@if($row['record']['has_warning']??false) †@endif</td><td>{{ isset($summary['polled'])?number_format($summary['polled']):($sourceReportedPolled===null?'—':number_format($sourceReportedPolled).' ‡') }}</td><td>{{ isset($summary['turnout'])?number_format($summary['turnout'],2).'%':'—' }}</td><td>{{ isset($summary['margin'])?number_format($summary['margin']):'—' }}</td></tr>
 @endforeach
-</tbody></table>@if($hasSourceReportedPolled)<p>‡ Vote count from the linked source record; it is not used for a comparable turnout percentage. See the source and data note below.</p>@endif<h2>Sources and data notes</h2>
+</tbody></table>@if(isset($historyRows) && $historyRows->count()<$rows->count())<p class="small">Identical 2019 results in the reports including and excluding Vellore are shown once. Both original report editions remain linked below.</p>@endif
+@if($hasSourceReportedPolled)<p>‡ Vote count from the linked source record; it is not used for a comparable turnout percentage. See the source and data note below.</p>@endif<h2>Sources and data notes</h2>
 @foreach($rows as $row)<article class="source-note"><h3>{{ $row['entry']->edition_label }} · record {{ $row['entry']->record_code }}</h3>@if($row['source'])<a href="{{ $row['source'] }}">{{ $row['source'] }}</a>@else<p>Original report is currently unavailable here.</p>@endif
 @if($row['record']['has_warning']??false)<p>† {{ $row['record']['error']??'This source record requires review.' }}</p>@endif
 @foreach(['detail_page'=>'Detailed results PDF page','summary_page'=>'Summary PDF page','source_locator'=>'Source location','summary_locator'=>'Summary location'] as $key=>$label)@if(isset($row['record'][$key]))<p>{{ $label }}: {{ $row['record'][$key] }}</p>@endif @endforeach
