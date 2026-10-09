@@ -151,6 +151,48 @@ class ArchiveFiles
             return false;
         }
 
+        if (! Storage::disk('local')->exists($path) && preg_match('/^[a-f0-9]{64}$/', $sha256)) {
+            $record = $this->record($path) ?: $this->originalRecord($path);
+            if ($record?->profile_id && hash_equals($record->sha256, $sha256)) {
+                $directory = storage_path('app/verified-originals');
+                if (! is_dir($directory) && ! mkdir($directory, 0700, true) && ! is_dir($directory)) {
+                    throw new RuntimeException('Could not prepare verified source storage.');
+                }
+                $cached = $directory.'/'.$sha256;
+                if (is_file($cached) && filesize($cached) === (int) $record->bytes && hash_equals($sha256, hash_file('sha256', $cached))) {
+                    return true;
+                }
+                $temporary = tempnam($directory, 'source-');
+                $input = null;
+                $output = null;
+                try {
+                    $input = $this->readStream($path);
+                    $output = fopen($temporary, 'wb');
+                    stream_copy_to_stream($input, $output);
+                    fclose($output);
+                    $output = null;
+                    if (filesize($temporary) !== (int) $record->bytes || ! hash_equals($sha256, hash_file('sha256', $temporary))) {
+                        return false;
+                    }
+                    if (! rename($temporary, $cached)) {
+                        throw new RuntimeException('Could not preserve verified source bytes.');
+                    }
+
+                    return true;
+                } finally {
+                    if (is_resource($input)) {
+                        fclose($input);
+                    }
+                    if (is_resource($output)) {
+                        fclose($output);
+                    }
+                    if (is_file($temporary)) {
+                        unlink($temporary);
+                    }
+                }
+            }
+        }
+
         return hash_equals($sha256, $this->pdfs->hashStream($this->readStream($path)));
     }
 
