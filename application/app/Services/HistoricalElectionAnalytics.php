@@ -555,6 +555,7 @@ class HistoricalElectionAnalytics
      * Dharmanagar detail p84 matches seven candidates and summary p68.
      * Fatikroy detail p83 matches eight candidates and summary p63.
      * Golaghati detail p76 matches five candidates and summary p29.
+     * Hrishyamukh detail p80 matches four candidates and summary p50.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -758,6 +759,17 @@ class HistoricalElectionAnalytics
                     ['1 SANTI KUMAR DEBBARMA', 'IND', 356, 0, 356],
                     ['5 SUCHITRA DEBBARMA', 'AITC', 313, 2, 315],
                     ['3 KARTIK KANYA DEBBARMA', 'IND', 222, 0, 222],
+                ],
+            ],
+            38 => [
+                'name' => 'Hrishyamukh', 'detail' => 80, 'summary' => 50,
+                'electors' => 34231, 'polled' => 32602, 'valid' => 32594,
+                'result' => ['winner' => 'BADAL CHOUDHURY', 'winner_party' => 'CPM', 'winner_votes' => 19610, 'runner' => 'DILIP CHOUDHURY', 'runner_party' => 'INC', 'runner_votes' => 11849, 'margin' => 7761],
+                'candidates' => [
+                    ['BADAL CHOUDHURY', 'CPM', 19362, 248, 19610],
+                    ['1 DILIP CHOUDHURY', 'INC', 11736, 113, 11849],
+                    ['2 SUDHARSHAN MAJUMDER', 'BJP', 629, 1, 630],
+                    ['3 RAJENDRA MAHAJAN', 'AITC', 504, 1, 505],
                 ],
             ],
             default => null,
