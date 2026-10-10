@@ -562,6 +562,7 @@ class HistoricalElectionAnalytics
      * Kamalpur detail pp81-82 matches six candidates and summary p57.
      * Kanchanpur detail p85 matches five candidates and summary p72.
      * Khayerpur detail p73 matches four candidates and summary p17.
+     * Khowai detail p77 matches six candidates and summary p36.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -848,6 +849,19 @@ class HistoricalElectionAnalytics
                     ['2 RATAN CHAKRABORTI', 'INC', 17688, 144, 17832],
                     ['3 PRANJIT BANIK', 'BJP', 635, 4, 639],
                     ['1 PUTUL GHOSH', 'AITC', 613, 2, 615],
+                ],
+            ],
+            24 => [
+                'name' => 'Khowai', 'detail' => 77, 'summary' => 36,
+                'electors' => 29560, 'polled' => 28337, 'valid' => 28320,
+                'result' => ['winner' => 'SAMIR DEB SARKAR', 'winner_party' => 'CPM', 'winner_votes' => 15385, 'runner' => 'ARUN KUMAR KAR', 'runner_party' => 'INC', 'runner_votes' => 12062, 'margin' => 3323],
+                'candidates' => [
+                    ['SAMIR DEB SARKAR', 'CPM', 15058, 327, 15385],
+                    ['3 ARUN KUMAR KAR', 'INC', 11912, 150, 12062],
+                    ['1 SAILEN ROY', 'AMB', 310, 0, 310],
+                    ['4 DHANANJOY DEBNATH', 'BJP', 240, 1, 241],
+                    ['2 GAYATRI DEBNATH', 'IND', 167, 0, 167],
+                    ['6 ADHIR SARKAR', 'IND', 155, 0, 155],
                 ],
             ],
             default => null,
