@@ -564,6 +564,7 @@ class HistoricalElectionAnalytics
      * Khayerpur detail p73 matches four candidates and summary p17.
      * Khowai detail p77 matches six candidates and summary p36.
      * Krishnapur detail p78 matches three candidates and summary p40.
+     * Majlishpur detail p74 matches three candidates and summary p22.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -873,6 +874,16 @@ class HistoricalElectionAnalytics
                     ['KHAGENDRA JAMATIA', 'CPM', 13207, 118, 13325],
                     ['1 SABDA KUMAR JAMATIA', 'INC', 11448, 60, 11508],
                     ['3 MANIA DEBBARMA', 'BJP', 1005, 1, 1006],
+                ],
+            ],
+            10 => [
+                'name' => 'Majlishpur', 'detail' => 74, 'summary' => 22,
+                'electors' => 37220, 'polled' => 35009, 'valid' => 34874,
+                'result' => ['winner' => 'MANIK DEY', 'winner_party' => 'CPM', 'winner_votes' => 17745, 'runner' => 'DIPAK NAG', 'runner_party' => 'INC', 'runner_votes' => 16497, 'margin' => 1248],
+                'candidates' => [
+                    ['MANIK DEY', 'CPM', 17537, 208, 17745],
+                    ['3 DIPAK NAG', 'INC', 16321, 176, 16497],
+                    ['1 PARESH CHANDRA SAHA', 'BJP', 628, 4, 632],
                 ],
             ],
             default => null,
