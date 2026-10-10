@@ -554,6 +554,7 @@ class HistoricalElectionAnalytics
      * Dhanpur detail p77 matches four candidates and summary p34.
      * Dharmanagar detail p84 matches seven candidates and summary p68.
      * Fatikroy detail p83 matches eight candidates and summary p63.
+     * Golaghati detail p76 matches five candidates and summary p29.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -745,6 +746,18 @@ class HistoricalElectionAnalytics
                     ['5 JYOTIRMOY DEB', 'AITC', 144, 0, 144],
                     ['6 PRANAY BHUSAN BASAK', 'AMB', 106, 1, 107],
                     ['7 PRATIK SEN', 'AIFB', 94, 0, 94],
+                ],
+            ],
+            17 => [
+                'name' => 'Golaghati  (ST)', 'detail' => 76, 'summary' => 29,
+                'electors' => 27815, 'polled' => 25948, 'valid' => 25886,
+                'result' => ['winner' => 'KESAB DEBBARMA', 'winner_party' => 'CPM', 'winner_votes' => 13990, 'runner' => 'ASHOK DEBBARMA', 'runner_party' => 'INC', 'runner_votes' => 11003, 'margin' => 2987],
+                'candidates' => [
+                    ['KESAB DEBBARMA', 'CPM', 13833, 157, 13990],
+                    ['2 ASHOK DEBBARMA', 'INC', 10885, 118, 11003],
+                    ['1 SANTI KUMAR DEBBARMA', 'IND', 356, 0, 356],
+                    ['5 SUCHITRA DEBBARMA', 'AITC', 313, 2, 315],
+                    ['3 KARTIK KANYA DEBBARMA', 'IND', 222, 0, 222],
                 ],
             ],
             default => null,
