@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143','Prayagraj'=>'175','Ambedkar Nagar'=>'178','Auraiya'=>'162','Azamgarh'=>'191','Baghpat'=>'139','Bahraich'=>'180','Ballia'=>'193','Balrampur'=>'182','Banda'=>'170','Barabanki'=>'176','Bareilly'=>'150'];
+$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143','Prayagraj'=>'175','Ambedkar Nagar'=>'178','Auraiya'=>'162','Azamgarh'=>'191','Baghpat'=>'139','Bahraich'=>'180','Ballia'=>'193','Balrampur'=>'182','Banda'=>'170','Barabanki'=>'176','Bareilly'=>'150','Basti'=>'185'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
