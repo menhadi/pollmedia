@@ -121,7 +121,40 @@ class ConstituencyOverviewController extends Controller
         }
 
         $historyRows = $analytics->distinctConstituencyHistoryRows($rows);
+        $reportAlternatives = collect();
+        $chartReport = null;
+        $chartSourceRows = $rows;
+        if ($kind === 'pc' && $state === 'Tripura') {
+            $pair = $rows->filter(fn (array $row): bool => (int) $row['entry']->year === 2019
+                && in_array($row['entry']->edition_id, ['2e749f2174f08a9ea1fc803d', '70e603b1037bf7ca8e1350b0'], true)
+                && ($row['record']['state_code'] ?? null) === 'S23'
+                && in_array($row['record']['official_pc_code'] ?? null, [1, 2], true));
+            if ($pair->count() === 2 && $pair->pluck('entry.edition_id')->unique()->count() === 2
+                && $pair->pluck('record.official_pc_code')->unique()->count() === 1
+                && $pair->pluck('record.constituency_name')->unique()->count() === 1
+                && $pair->map(function (array $row): string {
+                    $comparison = $row['record'];
+                    unset($comparison['code'], $comparison['detail_page'], $comparison['summary_page'], $comparison['review_fingerprint']);
+                    $comparison['candidates'] = collect($comparison['candidates'] ?? [])->map(function (array $candidate): array {
+                        unset($candidate['source_row']);
+                        if (in_array($candidate['party_at_election'] ?? null, ['CPIM', 'CPM'], true)) {
+                            $candidate['party_at_election'] = 'CPIM/CPM source-label comparison';
+                        }
+                        ksort($candidate);
 
-        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
+                        return $candidate;
+                    })->sortBy(fn (array $candidate): string => json_encode($candidate, JSON_THROW_ON_ERROR))->values()->all();
+                    ksort($comparison);
+
+                    return json_encode([$comparison, $row['result']], JSON_THROW_ON_ERROR);
+                })->unique()->count() === 1) {
+                $reportAlternatives = $pair;
+                $chartReport = $pair->first(fn (array $row): bool => $row['entry']->edition_id === $chosen['entry']->edition_id) ?? $pair->first();
+                $chartSourceRows = $rows->reject(fn (array $row): bool => $pair->contains(fn (array $alternative): bool => $alternative['entry']->edition_id === $row['entry']->edition_id)
+                    && $row['entry']->edition_id !== $chartReport['entry']->edition_id)->values();
+            }
+        }
+
+        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly', 'reportAlternatives', 'chartSourceRows', 'chartReport'));
     }
 }

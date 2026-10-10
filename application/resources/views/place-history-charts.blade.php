@@ -2,8 +2,8 @@
 $reportMode=$reportMode??false;
 $colors=['var(--palette-315d91)','var(--site-accent)','var(--site-primary)'];
 $isStateHistory=isset($stateHistory);
-$historyRows=$isStateHistory?collect($stateHistory)->map(fn($summary)=>['entry'=>(object)['year'=>$summary['year']],'summary'=>$summary]):$rows;
-$chartRows=$historyRows->sortBy('entry.year')->values()->map(function($row){
+$chartInputRows=$isStateHistory?collect($stateHistory)->map(fn($summary)=>['entry'=>(object)['year'=>$summary['year']],'summary'=>$summary]):($chartSourceRows??$rows);
+$chartRows=$chartInputRows->sortBy('entry.year')->values()->map(function($row){
  $summary=$row['summary']??($row['record']?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$row['record']]):[]);
  return ['year'=>$row['entry']->year,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'parties'=>$summary['parties']??[],'review'=>max($summary['turnout_review_count']??0,$summary['margin_review_count']??0,$summary['party_review_count']??0)];
 })->groupBy('year')->map(function($group){
@@ -35,6 +35,12 @@ $plots=[
 ];
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div></div>
+@if(isset($reportAlternatives) && $reportAlternatives->isNotEmpty())
+<div class="notice"><p><strong>2019 report comparison:</strong> Charts show {{ $chartReport['entry']->edition_label }}. The two official reports use CPIM and CPM for the same candidate; original party labels are retained. This is a display selection, not a decision that one report is more authoritative. History rows below are report alternatives for the same election year.</p>
+@foreach($reportAlternatives as $alternative)
+<p><a href="{{ route('constituency.overview',['kind'=>$kind,'state'=>$state,'name'=>$name,'edition'=>$alternative['entry']->edition_id,'code'=>$alternative['entry']->record_code,'format'=>$reportMode?'report':null]) }}">Use {{ $alternative['entry']->edition_label }} for 2019 charts and details</a> · <a href="{{ $alternative['source'] }}">Official source: {{ $alternative['entry']->edition_label }}</a></p>
+@endforeach</div>
+@endif
 
 @foreach($plots as $plot)
 @php($plot['autoScale']=true)

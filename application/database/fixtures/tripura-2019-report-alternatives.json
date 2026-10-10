@@ -1,0 +1,560 @@
+{
+  "2e749f2174f08a9ea1fc803d": {
+    "source_url": "https://old.eci.gov.in/files/category/1551-general-election-2019-including-vellore-pc/",
+    "source_sha256": "8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7",
+    "records": [
+      {
+        "code": 360,
+        "state_name": "Tripura",
+        "official_pc_code": 1,
+        "constituency_name": "Tripura West",
+        "name": "Tripura / Tripura West",
+        "detail_page": 432,
+        "electors": 1352857,
+        "number_of_seats": 1,
+        "candidates": [
+          {
+            "source_row": 1,
+            "candidate_name": "Pratima Bhoumik",
+            "party_at_election": "BJP",
+            "is_nota": false,
+            "general_votes": 570021,
+            "postal_votes": 3511,
+            "votes": 573532
+          },
+          {
+            "source_row": 2,
+            "candidate_name": "Brishaketu Debbarma",
+            "party_at_election": "IPFT",
+            "is_nota": false,
+            "general_votes": 43764,
+            "postal_votes": 461,
+            "votes": 44225
+          },
+          {
+            "source_row": 3,
+            "candidate_name": "Maman Khan",
+            "party_at_election": "AITC",
+            "is_nota": false,
+            "general_votes": 8552,
+            "postal_votes": 61,
+            "votes": 8613
+          },
+          {
+            "source_row": 4,
+            "candidate_name": "Sankar Prasad Datta",
+            "party_at_election": "CPIM",
+            "is_nota": false,
+            "general_votes": 171175,
+            "postal_votes": 651,
+            "votes": 171826
+          },
+          {
+            "source_row": 5,
+            "candidate_name": "Subal Bhowmik",
+            "party_at_election": "INC",
+            "is_nota": false,
+            "general_votes": 266275,
+            "postal_votes": 1568,
+            "votes": 267843
+          },
+          {
+            "source_row": 6,
+            "candidate_name": "Arun Kumar Bhaumik",
+            "party_at_election": "SUCI(C)",
+            "is_nota": false,
+            "general_votes": 4517,
+            "postal_votes": 8,
+            "votes": 4525
+          },
+          {
+            "source_row": 7,
+            "candidate_name": "Kabrabam Dhirendra Singha",
+            "party_at_election": "TRIPP",
+            "is_nota": false,
+            "general_votes": 2060,
+            "postal_votes": 16,
+            "votes": 2076
+          },
+          {
+            "source_row": 8,
+            "candidate_name": "Jayki Murasing",
+            "party_at_election": "APoI",
+            "is_nota": false,
+            "general_votes": 7121,
+            "postal_votes": 12,
+            "votes": 7133
+          },
+          {
+            "source_row": 9,
+            "candidate_name": "Prabir Debnath",
+            "party_at_election": "AMB",
+            "is_nota": false,
+            "general_votes": 2749,
+            "postal_votes": 15,
+            "votes": 2764
+          },
+          {
+            "source_row": 10,
+            "candidate_name": "Narayan Chandra Dey",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 2019,
+            "postal_votes": 10,
+            "votes": 2029
+          },
+          {
+            "source_row": 11,
+            "candidate_name": "Pradip Chakraborty",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3526,
+            "postal_votes": 10,
+            "votes": 3536
+          },
+          {
+            "source_row": 12,
+            "candidate_name": "Brajalal Debnath",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3315,
+            "postal_votes": 7,
+            "votes": 3322
+          },
+          {
+            "source_row": 13,
+            "candidate_name": "Subal Sarkar",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 4363,
+            "postal_votes": 8,
+            "votes": 4371
+          },
+          {
+            "source_row": 14,
+            "candidate_name": "Nota",
+            "party_at_election": "NOTA",
+            "is_nota": true,
+            "general_votes": 11905,
+            "postal_votes": 55,
+            "votes": 11960
+          }
+        ],
+        "status": "validated",
+        "state_code": "S23",
+        "summary_page": 719,
+        "summary_totals": {
+          "electors": 1352857,
+          "votes_polled": 1108427,
+          "valid_candidate_votes": 1095795
+        },
+        "votes_polled": 1108427,
+        "valid_candidate_votes": 1095795,
+        "winner": "Pratima Bhoumik",
+        "margin": 305689
+      },
+      {
+        "code": 361,
+        "state_name": "Tripura",
+        "official_pc_code": 2,
+        "constituency_name": "Tripura East",
+        "name": "Tripura / Tripura East",
+        "detail_page": 433,
+        "electors": 1261861,
+        "number_of_seats": 1,
+        "candidates": [
+          {
+            "source_row": 1,
+            "candidate_name": "Jitendra Chaudhury",
+            "party_at_election": "CPIM",
+            "is_nota": false,
+            "general_votes": 200497,
+            "postal_votes": 466,
+            "votes": 200963
+          },
+          {
+            "source_row": 2,
+            "candidate_name": "Narendra Chandra Debbarma",
+            "party_at_election": "IPFT",
+            "is_nota": false,
+            "general_votes": 45153,
+            "postal_votes": 151,
+            "votes": 45304
+          },
+          {
+            "source_row": 3,
+            "candidate_name": "Maharaj Kumari Pragya Debburman",
+            "party_at_election": "INC",
+            "is_nota": false,
+            "general_votes": 276517,
+            "postal_votes": 1319,
+            "votes": 277836
+          },
+          {
+            "source_row": 4,
+            "candidate_name": "Rebati Tripura",
+            "party_at_election": "BJP",
+            "is_nota": false,
+            "general_votes": 479634,
+            "postal_votes": 2492,
+            "votes": 482126
+          },
+          {
+            "source_row": 5,
+            "candidate_name": "Karnadhan Chakma",
+            "party_at_election": "AMB",
+            "is_nota": false,
+            "general_votes": 6920,
+            "postal_votes": 24,
+            "votes": 6944
+          },
+          {
+            "source_row": 6,
+            "candidate_name": "Amar Debbarma",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3698,
+            "postal_votes": 8,
+            "votes": 3706
+          },
+          {
+            "source_row": 7,
+            "candidate_name": "Chitta Ranjan Debbarma",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3620,
+            "postal_votes": 8,
+            "votes": 3628
+          },
+          {
+            "source_row": 8,
+            "candidate_name": "Dipti Halam",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3833,
+            "postal_votes": 6,
+            "votes": 3839
+          },
+          {
+            "source_row": 9,
+            "candidate_name": "Bijoy Debbarma",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 5273,
+            "postal_votes": 3,
+            "votes": 5276
+          },
+          {
+            "source_row": 10,
+            "candidate_name": "Subir Kumar Jamatia",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 4571,
+            "postal_votes": 10,
+            "votes": 4581
+          },
+          {
+            "source_row": 11,
+            "candidate_name": "Nota",
+            "party_at_election": "NOTA",
+            "is_nota": true,
+            "general_votes": 11197,
+            "postal_votes": 17,
+            "votes": 11214
+          }
+        ],
+        "status": "validated",
+        "state_code": "S23",
+        "summary_page": 721,
+        "summary_totals": {
+          "electors": 1261861,
+          "votes_polled": 1046123,
+          "valid_candidate_votes": 1034203
+        },
+        "votes_polled": 1046123,
+        "valid_candidate_votes": 1034203,
+        "winner": "Rebati Tripura",
+        "margin": 204290
+      }
+    ]
+  },
+  "70e603b1037bf7ca8e1350b0": {
+    "source_url": "https://old.eci.gov.in/files/category/1359-general-election-2019-excluding-vellore-pc/",
+    "source_sha256": "1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124",
+    "records": [
+      {
+        "code": 359,
+        "state_name": "Tripura",
+        "official_pc_code": 1,
+        "constituency_name": "Tripura West",
+        "name": "Tripura / Tripura West",
+        "detail_page": 429,
+        "electors": 1352857,
+        "number_of_seats": 1,
+        "candidates": [
+          {
+            "source_row": 1,
+            "candidate_name": "Sankar Prasad Datta",
+            "party_at_election": "CPM",
+            "is_nota": false,
+            "general_votes": 171175,
+            "postal_votes": 651,
+            "votes": 171826
+          },
+          {
+            "source_row": 2,
+            "candidate_name": "Prabir Debnath",
+            "party_at_election": "AMB",
+            "is_nota": false,
+            "general_votes": 2749,
+            "postal_votes": 15,
+            "votes": 2764
+          },
+          {
+            "source_row": 3,
+            "candidate_name": "Pradip Chakraborty",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3526,
+            "postal_votes": 10,
+            "votes": 3536
+          },
+          {
+            "source_row": 4,
+            "candidate_name": "Pratima Bhoumik",
+            "party_at_election": "BJP",
+            "is_nota": false,
+            "general_votes": 570021,
+            "postal_votes": 3511,
+            "votes": 573532
+          },
+          {
+            "source_row": 5,
+            "candidate_name": "Kabrabam Dhirendra Singha",
+            "party_at_election": "TRIPP",
+            "is_nota": false,
+            "general_votes": 2060,
+            "postal_votes": 16,
+            "votes": 2076
+          },
+          {
+            "source_row": 6,
+            "candidate_name": "Arun Kumar Bhaumik",
+            "party_at_election": "SUCI(C)",
+            "is_nota": false,
+            "general_votes": 4517,
+            "postal_votes": 8,
+            "votes": 4525
+          },
+          {
+            "source_row": 7,
+            "candidate_name": "Narayan Chandra Dey",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 2019,
+            "postal_votes": 10,
+            "votes": 2029
+          },
+          {
+            "source_row": 8,
+            "candidate_name": "Brajalal Debnath",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3315,
+            "postal_votes": 7,
+            "votes": 3322
+          },
+          {
+            "source_row": 9,
+            "candidate_name": "Subal Sarkar",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 4363,
+            "postal_votes": 8,
+            "votes": 4371
+          },
+          {
+            "source_row": 10,
+            "candidate_name": "Maman Khan",
+            "party_at_election": "AITC",
+            "is_nota": false,
+            "general_votes": 8552,
+            "postal_votes": 61,
+            "votes": 8613
+          },
+          {
+            "source_row": 11,
+            "candidate_name": "Brishaketu Debbarma",
+            "party_at_election": "IPFT",
+            "is_nota": false,
+            "general_votes": 43764,
+            "postal_votes": 461,
+            "votes": 44225
+          },
+          {
+            "source_row": 12,
+            "candidate_name": "Subal Bhowmik",
+            "party_at_election": "INC",
+            "is_nota": false,
+            "general_votes": 266275,
+            "postal_votes": 1568,
+            "votes": 267843
+          },
+          {
+            "source_row": 13,
+            "candidate_name": "Jayki Murasing",
+            "party_at_election": "APoI",
+            "is_nota": false,
+            "general_votes": 7121,
+            "postal_votes": 12,
+            "votes": 7133
+          },
+          {
+            "source_row": 14,
+            "candidate_name": "Nota",
+            "party_at_election": "NOTA",
+            "is_nota": true,
+            "general_votes": 11905,
+            "postal_votes": 55,
+            "votes": 11960
+          }
+        ],
+        "status": "validated",
+        "state_code": "S23",
+        "summary_page": 717,
+        "summary_totals": {
+          "electors": 1352857,
+          "votes_polled": 1108427,
+          "valid_candidate_votes": 1095795
+        },
+        "votes_polled": 1108427,
+        "valid_candidate_votes": 1095795,
+        "winner": "Pratima Bhoumik",
+        "margin": 305689
+      },
+      {
+        "code": 360,
+        "state_name": "Tripura",
+        "official_pc_code": 2,
+        "constituency_name": "Tripura East",
+        "name": "Tripura / Tripura East",
+        "detail_page": 430,
+        "electors": 1261861,
+        "number_of_seats": 1,
+        "candidates": [
+          {
+            "source_row": 1,
+            "candidate_name": "Subir Kumar Jamatia",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 4571,
+            "postal_votes": 10,
+            "votes": 4581
+          },
+          {
+            "source_row": 2,
+            "candidate_name": "Jitendra Chaudhury",
+            "party_at_election": "CPM",
+            "is_nota": false,
+            "general_votes": 200497,
+            "postal_votes": 466,
+            "votes": 200963
+          },
+          {
+            "source_row": 3,
+            "candidate_name": "Karnadhan Chakma",
+            "party_at_election": "AMB",
+            "is_nota": false,
+            "general_votes": 6920,
+            "postal_votes": 24,
+            "votes": 6944
+          },
+          {
+            "source_row": 4,
+            "candidate_name": "Narendra Chandra Debbarma",
+            "party_at_election": "IPFT",
+            "is_nota": false,
+            "general_votes": 45153,
+            "postal_votes": 151,
+            "votes": 45304
+          },
+          {
+            "source_row": 5,
+            "candidate_name": "Rebati Tripura",
+            "party_at_election": "BJP",
+            "is_nota": false,
+            "general_votes": 479634,
+            "postal_votes": 2492,
+            "votes": 482126
+          },
+          {
+            "source_row": 6,
+            "candidate_name": "Dipti Halam",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3833,
+            "postal_votes": 6,
+            "votes": 3839
+          },
+          {
+            "source_row": 7,
+            "candidate_name": "Bijoy Debbarma",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 5273,
+            "postal_votes": 3,
+            "votes": 5276
+          },
+          {
+            "source_row": 8,
+            "candidate_name": "Chitta Ranjan Debbarma",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3620,
+            "postal_votes": 8,
+            "votes": 3628
+          },
+          {
+            "source_row": 9,
+            "candidate_name": "Amar Debbarma",
+            "party_at_election": "IND",
+            "is_nota": false,
+            "general_votes": 3698,
+            "postal_votes": 8,
+            "votes": 3706
+          },
+          {
+            "source_row": 10,
+            "candidate_name": "Maharaj Kumari Pragya Debburman",
+            "party_at_election": "INC",
+            "is_nota": false,
+            "general_votes": 276517,
+            "postal_votes": 1319,
+            "votes": 277836
+          },
+          {
+            "source_row": 11,
+            "candidate_name": "Nota",
+            "party_at_election": "NOTA",
+            "is_nota": true,
+            "general_votes": 11197,
+            "postal_votes": 17,
+            "votes": 11214
+          }
+        ],
+        "status": "validated",
+        "state_code": "S23",
+        "summary_page": 719,
+        "summary_totals": {
+          "electors": 1261861,
+          "votes_polled": 1046123,
+          "valid_candidate_votes": 1034203
+        },
+        "votes_polled": 1046123,
+        "valid_candidate_votes": 1034203,
+        "winner": "Rebati Tripura",
+        "margin": 204290
+      }
+    ]
+  }
+}
