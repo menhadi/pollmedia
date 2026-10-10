@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143','Prayagraj'=>'175','Ambedkar Nagar'=>'178','Auraiya'=>'162','Azamgarh'=>'191','Baghpat'=>'139','Bahraich'=>'180','Ballia'=>'193','Balrampur'=>'182','Banda'=>'170'];
+$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143','Prayagraj'=>'175','Ambedkar Nagar'=>'178','Auraiya'=>'162','Azamgarh'=>'191','Baghpat'=>'139','Bahraich'=>'180','Ballia'=>'193','Balrampur'=>'182','Banda'=>'170','Barabanki'=>'176'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -17,6 +17,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
 @if($districtNames->contains('Prayagraj'))<p class="notice">Census 2011 records use Allahabad. The electoral fixture uses Prayagraj, following the 18 October 2018 district renaming. This dated name correspondence does not establish matching boundary editions. <a href="https://prayagrajdivision.nic.in/about-department/introduction/">Official rename source</a>.</p>@endif
+@if($districtNames->contains('Barabanki'))<p class="notice">Census 2011 and SOI source records use Bara Banki; the dated election fixture uses Barabanki. This name correspondence does not verify matching boundary editions. <a href="https://censusindia.gov.in/nada/index.php/catalog/6367">Census district 09/176</a> � <a href="https://barabanki.nic.in/about-district/geography/">Official district geography</a>.</p>@endif
 <div class="source-grid">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
