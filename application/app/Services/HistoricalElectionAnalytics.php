@@ -565,6 +565,7 @@ class HistoricalElectionAnalytics
      * Khowai detail p77 matches six candidates and summary p36.
      * Krishnapur detail p78 matches three candidates and summary p40.
      * Majlishpur detail p74 matches three candidates and summary p22.
+     * Mandaibazar detail pp74-75 matches five candidates and summary p23.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -884,6 +885,18 @@ class HistoricalElectionAnalytics
                     ['MANIK DEY', 'CPM', 17537, 208, 17745],
                     ['3 DIPAK NAG', 'INC', 16321, 176, 16497],
                     ['1 PARESH CHANDRA SAHA', 'BJP', 628, 4, 632],
+                ],
+            ],
+            11 => [
+                'name' => 'Mandaibazar  (ST)', 'detail' => 74, 'summary' => 23,
+                'electors' => 37050, 'polled' => 33593, 'valid' => 33586,
+                'result' => ['winner' => 'MONORANJAN DEBBARMA', 'winner_party' => 'CPM', 'winner_votes' => 16605, 'runner' => 'JAGADISH DEBBARMA', 'runner_party' => 'INPT', 'runner_votes' => 15638, 'margin' => 967],
+                'candidates' => [
+                    ['MONORANJAN DEBBARMA', 'CPM', 16463, 142, 16605],
+                    ['1 CAND SL. as per form 7 JAGADISH DEBBARMA', 'INPT', 15454, 184, 15638],
+                    ['2 BUDHU KUMAR DEBBARMA', 'IND', 647, 3, 650],
+                    ['5 NARENDRA DEBBARMA', 'LJP', 389, 3, 392],
+                    ['4 SATISH DEBBARMA', 'AITC', 294, 7, 301],
                 ],
             ],
             default => null,
