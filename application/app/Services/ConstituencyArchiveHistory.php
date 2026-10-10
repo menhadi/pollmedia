@@ -70,11 +70,22 @@ class ConstituencyArchiveHistory
      * The 2018 Chawamanu workbook omits ST, corroborated by the same edition's
      * constituency summary PDF (49, Chawamanu ST) and candidate continuity in 2013.
      * https://old.eci.gov.in/files/file/3472-tripura-general-legislative-election-2018/
+     * The same 2023 official map labels 53 Kailasahar; the 2023 ECI workbook
+     * labels 53 Kailashahar. The link preserves all historical source spellings:
+     * https://old.eci.gov.in/files/file/14875-tripura-general-legislative-election-2023/
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(self::generalCategoryNames($name)[0], ['kailashahar', 'kailasahar'], true)) {
+            return [
+                ['names' => array_merge(self::generalCategoryNames('kailasahar'), self::generalCategoryNames('kailashahar')), 'code' => 53, 'after' => 1972],
+                ['names' => self::generalCategoryNames('kailashahar'), 'code' => 26, 'edition' => '9cedf416aa4afcee8948ef91'],
+                ['names' => self::generalCategoryNames('kailashahar'), 'code' => 52, 'edition' => 'a09382fa323d9af5f7af7d59'],
+            ];
+        }
         if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
             && in_array(mb_strtolower(trim($name)), ['chawmanu (st)', 'chhawmanu (st)', 'chhawmanu  (st)', 'chawamanu (st)', 'chawamanu  (st)', 'chawamanu'], true)) {
             return [
@@ -169,7 +180,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v13:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v14:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
