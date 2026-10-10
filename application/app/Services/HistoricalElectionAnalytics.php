@@ -559,6 +559,7 @@ class HistoricalElectionAnalytics
      * Jolaibari detail p80 matches five candidates and summary p51.
      * Jubarajnagar detail p84 matches four candidates and summary p69.
      * Kamalasagar detail pp75-76 matches six candidates and summary p27.
+     * Kamalpur detail pp81-82 matches six candidates and summary p57.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -809,6 +810,19 @@ class HistoricalElectionAnalytics
                     ['1 BABUL SARKAR', 'IND', 323, 1, 324],
                     ['6 CHITTA RANJAN DAS', 'AITC', 261, 1, 262],
                     ['4 CAND SL. as per form 7 SUBAL SARKAR', 'AMB', 208, 0, 208],
+                ],
+            ],
+            45 => [
+                'name' => 'Kamalpur', 'detail' => 81, 'summary' => 57,
+                'electors' => 26416, 'polled' => 24617, 'valid' => 24561,
+                'result' => ['winner' => 'SRI MANOJ KANTI DEB', 'winner_party' => 'INC', 'winner_votes' => 11839, 'runner' => 'SMT BIJOY LAKSHMI SINGHA', 'runner_party' => 'CPM', 'runner_votes' => 11704, 'margin' => 135],
+                'candidates' => [
+                    ['SRI MANOJ KANTI DEB', 'INC', 11626, 213, 11839],
+                    ['3 SMT BIJOY LAKSHMI SINGHA', 'CPM', 11507, 197, 11704],
+                    ['2 SRI UMA KANTA DEBNATH', 'BJP', 346, 4, 350],
+                    ['1 SRI BIR KUMAR SINHA', 'AIFB', 224, 1, 225],
+                    ['4 CAND SL. as per form 7 SRI SUSHIL MALAKAR', 'IND', 222, 0, 222],
+                    ['6 MD. GUNU MIA', 'IND', 220, 1, 221],
                 ],
             ],
             default => null,
