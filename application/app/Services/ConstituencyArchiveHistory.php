@@ -106,6 +106,9 @@ class ConstituencyArchiveHistory
             }
             $id = $match[1];
             $edition = $editions[$id] ?? null;
+            if ($edition && $state !== null && isset($edition['state']) && $this->stateName($edition['state']) !== $this->stateName($state)) {
+                continue;
+            }
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
