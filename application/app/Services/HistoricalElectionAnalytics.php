@@ -558,6 +558,7 @@ class HistoricalElectionAnalytics
      * Hrishyamukh detail p80 matches four candidates and summary p50.
      * Jolaibari detail p80 matches five candidates and summary p51.
      * Jubarajnagar detail p84 matches four candidates and summary p69.
+     * Kamalasagar detail pp75-76 matches six candidates and summary p27.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -795,6 +796,19 @@ class HistoricalElectionAnalytics
                     ['1 BIVA RANI NATH', 'INC', 12983, 111, 13094],
                     ['2 PIJUSH NATH', 'BJP', 497, 3, 500],
                     ['3 RAMESH CHANDRA DEBNATH', 'AMB', 414, 1, 415],
+                ],
+            ],
+            15 => [
+                'name' => 'Kamalasagar', 'detail' => 75, 'summary' => 27,
+                'electors' => 34596, 'polled' => 32566, 'valid' => 32450,
+                'result' => ['winner' => 'NARAYAN CHANDRA CHOUDHURI', 'winner_party' => 'CPM', 'winner_votes' => 17042, 'runner' => 'MATILAL SAHA', 'runner_party' => 'INC', 'runner_votes' => 14209, 'margin' => 2833],
+                'candidates' => [
+                    ['NARAYAN CHANDRA CHOUDHURI', 'CPM', 16942, 100, 17042],
+                    ['2 MATILAL SAHA', 'INC', 14129, 80, 14209],
+                    ['3 TULSI BANIK', 'BJP', 405, 0, 405],
+                    ['1 BABUL SARKAR', 'IND', 323, 1, 324],
+                    ['6 CHITTA RANJAN DAS', 'AITC', 261, 1, 262],
+                    ['4 CAND SL. as per form 7 SUBAL SARKAR', 'AMB', 208, 0, 208],
                 ],
             ],
             default => null,
