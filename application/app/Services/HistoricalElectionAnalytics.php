@@ -549,6 +549,7 @@ class HistoricalElectionAnalytics
      * Belonia detail p80 matches six candidates and summary p48.
      * Bishalgarh detail p76 matches four candidates and summary p28.
      * Boxanagar detail p76 matches five candidates and summary p31.
+     * Chandipur detail p83 matches six candidates and summary p64.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -676,6 +677,19 @@ class HistoricalElectionAnalytics
                     ['2 GOPAL CHANDRA DAS', 'BJP', 328, 2, 330],
                     ['1 CHALE AHAMMED', 'CPI(ML)(L)', 309, 0, 309],
                     ['4 BAHAR MIA KHANDAKAR', 'IND', 303, 0, 303],
+                ],
+            ],
+            52 => [
+                'name' => 'Chandipur', 'detail' => 83, 'summary' => 64,
+                'electors' => 33736, 'polled' => 31167, 'valid' => 31121,
+                'result' => ['winner' => 'TAPAN CHAKRABORTY', 'winner_party' => 'CPM', 'winner_votes' => 17565, 'runner' => 'RUDRENDU BHATTACHARJEE', 'runner_party' => 'INC', 'runner_votes' => 11531, 'margin' => 6034],
+                'candidates' => [
+                    ['TAPAN CHAKRABORTY', 'CPM', 17378, 187, 17565],
+                    ['2 RUDRENDU BHATTACHARJEE', 'INC', 11446, 85, 11531],
+                    ['3 KABERI SINHA', 'BJP', 828, 6, 834],
+                    ['1 RUDRA KANTA SINHA', 'IND', 514, 0, 514],
+                    ['6 CHIRANJIB BHATTACHARJEE', 'CPI(ML)(L)', 451, 0, 451],
+                    ['5 SUBHENDU DAS', 'AITC', 225, 1, 226],
                 ],
             ],
             default => null,
