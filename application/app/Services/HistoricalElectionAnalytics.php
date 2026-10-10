@@ -567,6 +567,7 @@ class HistoricalElectionAnalytics
      * Majlishpur detail p74 matches three candidates and summary p22.
      * Mandaibazar detail pp74-75 matches five candidates and summary p23.
      * Manu detail p80 matches four candidates and summary p52.
+     * Matarbari detail p79 matches four candidates and summary p45.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -909,6 +910,17 @@ class HistoricalElectionAnalytics
                     ['1 THAIKHAI MOG', 'INC', 14799, 141, 14940],
                     ['3 KIRAT BAHAN TRIPURA', 'IND', 798, 2, 800],
                     ['4 MRATHAIONG MOG', 'BJP', 785, 4, 789],
+                ],
+            ],
+            33 => [
+                'name' => 'Matarbari', 'detail' => 79, 'summary' => 45,
+                'electors' => 32626, 'polled' => 31095, 'valid' => 31088,
+                'result' => ['winner' => 'MADHAB CHANDRA SAHA', 'winner_party' => 'CPM', 'winner_votes' => 15601, 'runner' => 'BIBHU KUMARI DEVI', 'runner_party' => 'INC', 'runner_votes' => 14381, 'margin' => 1220],
+                'candidates' => [
+                    ['MADHAB CHANDRA SAHA', 'CPM', 15379, 222, 15601],
+                    ['2 BIBHU KUMARI DEVI', 'INC', 14221, 160, 14381],
+                    ['1 GOPAL ROY', 'CPI(ML)(L)', 599, 2, 601],
+                    ['4 MADHU SUDHAN BHATTACHARJEE', 'BJP', 500, 5, 505],
                 ],
             ],
             default => null,
