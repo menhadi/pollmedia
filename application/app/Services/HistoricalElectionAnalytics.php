@@ -557,6 +557,7 @@ class HistoricalElectionAnalytics
      * Golaghati detail p76 matches five candidates and summary p29.
      * Hrishyamukh detail p80 matches four candidates and summary p50.
      * Jolaibari detail p80 matches five candidates and summary p51.
+     * Jubarajnagar detail p84 matches four candidates and summary p69.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -783,6 +784,17 @@ class HistoricalElectionAnalytics
                     ['1 PURNA CHANDRA TRIPURA', 'IND', 473, 0, 473],
                     ['5 MADHU SUDAN TRIPURA', 'AITC', 392, 4, 396],
                     ['3 KEJARI MOG CHOWDHURY', 'IND', 237, 0, 237],
+                ],
+            ],
+            57 => [
+                'name' => 'Jubarajnagar', 'detail' => 84, 'summary' => 69,
+                'electors' => 30898, 'polled' => 28721, 'valid' => 28719,
+                'result' => ['winner' => 'RAMENDRA CHANDRA DEBNATH', 'winner_party' => 'CPM', 'winner_votes' => 14710, 'runner' => 'BIVA RANI NATH', 'runner_party' => 'INC', 'runner_votes' => 13094, 'margin' => 1616],
+                'candidates' => [
+                    ['RAMENDRA CHANDRA DEBNATH', 'CPM', 14559, 151, 14710],
+                    ['1 BIVA RANI NATH', 'INC', 12983, 111, 13094],
+                    ['2 PIJUSH NATH', 'BJP', 497, 3, 500],
+                    ['3 RAMESH CHANDRA DEBNATH', 'AMB', 414, 1, 415],
                 ],
             ],
             default => null,
