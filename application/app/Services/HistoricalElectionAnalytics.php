@@ -553,6 +553,7 @@ class HistoricalElectionAnalytics
      * Charilam detail p76 matches four candidates and summary p30.
      * Dhanpur detail p77 matches four candidates and summary p34.
      * Dharmanagar detail p84 matches seven candidates and summary p68.
+     * Fatikroy detail p83 matches eight candidates and summary p63.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -729,6 +730,21 @@ class HistoricalElectionAnalytics
                     ['7 ANAMIKA ROY(SAHA)', 'AIFB', 143, 0, 143],
                     ['4 ANJAN SUKLA BAIDYA', 'IND', 117, 0, 117],
                     ['6 GOPAL KRISHNA DEB', 'AMB', 110, 0, 110],
+                ],
+            ],
+            51 => [
+                'name' => 'Fatikroy', 'detail' => 83, 'summary' => 63,
+                'electors' => 30661, 'polled' => 28363, 'valid' => 28323,
+                'result' => ['winner' => 'BIJOY ROY', 'winner_party' => 'CPM', 'winner_votes' => 14457, 'runner' => 'SUNIL CHANDRA DAS', 'runner_party' => 'INC', 'runner_votes' => 12144, 'margin' => 2313],
+                'candidates' => [
+                    ['BIJOY ROY', 'CPM', 14289, 168, 14457],
+                    ['1 SUNIL CHANDRA DAS', 'INC', 12045, 99, 12144],
+                    ['3 BIRESWAR SINGHA', 'BJP', 612, 5, 617],
+                    ['2 RATHINDRA DEBNATH', 'IND', 571, 1, 572],
+                    ['8 BASUDEB GHOSH', 'CPI(ML)(L)', 188, 0, 188],
+                    ['5 JYOTIRMOY DEB', 'AITC', 144, 0, 144],
+                    ['6 PRANAY BHUSAN BASAK', 'AMB', 106, 1, 107],
+                    ['7 PRATIK SEN', 'AIFB', 94, 0, 94],
                 ],
             ],
             default => null,
