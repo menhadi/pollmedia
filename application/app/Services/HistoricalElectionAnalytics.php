@@ -568,6 +568,7 @@ class HistoricalElectionAnalytics
      * Mandaibazar detail pp74-75 matches five candidates and summary p23.
      * Manu detail p80 matches four candidates and summary p52.
      * Matarbari detail p79 matches four candidates and summary p45.
+     * Mohanpur detail p73 matches four candidates and summary p14.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -921,6 +922,17 @@ class HistoricalElectionAnalytics
                     ['2 BIBHU KUMARI DEVI', 'INC', 14221, 160, 14381],
                     ['1 GOPAL ROY', 'CPI(ML)(L)', 599, 2, 601],
                     ['4 MADHU SUDHAN BHATTACHARJEE', 'BJP', 500, 5, 505],
+                ],
+            ],
+            2 => [
+                'name' => 'Mohanpur', 'detail' => 73, 'summary' => 14,
+                'electors' => 30496, 'polled' => 28315, 'valid' => 28278,
+                'result' => ['winner' => 'RATAN LAL NATH', 'winner_party' => 'INC', 'winner_votes' => 14349, 'runner' => 'SUBHAS CHANDRA DEBNATH', 'runner_party' => 'CPM', 'runner_votes' => 12993, 'margin' => 1356],
+                'candidates' => [
+                    ['RATAN LAL NATH', 'INC', 14219, 130, 14349],
+                    ['2 SUBHAS CHANDRA DEBNATH', 'CPM', 12859, 134, 12993],
+                    ['3 DHIRENDRA DEBNATH', 'BJP', 475, 3, 478],
+                    ['1 JOY KUMAR DEB', 'AMB', 458, 0, 458],
                 ],
             ],
             default => null,
