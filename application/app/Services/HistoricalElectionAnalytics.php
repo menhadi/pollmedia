@@ -569,6 +569,7 @@ class HistoricalElectionAnalytics
      * Manu detail p80 matches four candidates and summary p52.
      * Matarbari detail p79 matches four candidates and summary p45.
      * Mohanpur detail p73 matches four candidates and summary p14.
+     * Nalchar detail pp76-77 matches five candidates and summary p32.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -933,6 +934,18 @@ class HistoricalElectionAnalytics
                     ['2 SUBHAS CHANDRA DEBNATH', 'CPM', 12859, 134, 12993],
                     ['3 DHIRENDRA DEBNATH', 'BJP', 475, 3, 478],
                     ['1 JOY KUMAR DEB', 'AMB', 458, 0, 458],
+                ],
+            ],
+            20 => [
+                'name' => 'Nalchar  (SC)', 'detail' => 76, 'summary' => 32,
+                'electors' => 29797, 'polled' => 28334, 'valid' => 28147,
+                'result' => ['winner' => 'SUKUMAR BARMAN', 'winner_party' => 'CPM', 'winner_votes' => 14748, 'runner' => 'SUKLA DAS', 'runner_party' => 'INC', 'runner_votes' => 12216, 'margin' => 2532],
+                'candidates' => [
+                    ['SUKUMAR BARMAN', 'CPM', 14674, 74, 14748],
+                    ['2 SUKLA DAS', 'INC', 12144, 72, 12216],
+                    ['1 SUJIT DAS', 'BJP', 510, 1, 511],
+                    ['3 PURABI BARMAN', 'IND', 464, 1, 465],
+                    ['5 ASHUTOSH DAS', 'AMB', 207, 0, 207],
                 ],
             ],
             default => null,
