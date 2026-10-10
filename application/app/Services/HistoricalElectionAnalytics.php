@@ -552,6 +552,7 @@ class HistoricalElectionAnalytics
      * Chandipur detail p83 matches six candidates and summary p64.
      * Charilam detail p76 matches four candidates and summary p30.
      * Dhanpur detail p77 matches four candidates and summary p34.
+     * Dharmanagar detail p84 matches seven candidates and summary p68.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -714,6 +715,20 @@ class HistoricalElectionAnalytics
                     ['1 SHAH ALAM', 'INC', 14983, 91, 15074],
                     ['2 NAIDAR BASI TRIPURA', 'IND', 522, 3, 525],
                     ['4 ASHISH CHAKRABORTY', 'AITC', 417, 0, 417],
+                ],
+            ],
+            56 => [
+                'name' => 'Dharmanagar', 'detail' => 84, 'summary' => 68,
+                'electors' => 34419, 'polled' => 30993, 'valid' => 30952,
+                'result' => ['winner' => 'BISWA BANDHU SEN', 'winner_party' => 'INC', 'winner_votes' => 15987, 'runner' => 'AMITABHA DATTA', 'runner_party' => 'CPM', 'runner_votes' => 13577, 'margin' => 2410],
+                'candidates' => [
+                    ['BISWA BANDHU SEN', 'INC', 15694, 293, 15987],
+                    ['2 AMITABHA DATTA', 'CPM', 13149, 428, 13577],
+                    ['1 TAMAL KANTI DEB', 'BJP', 797, 8, 805],
+                    ['3 SANJAY CHAUDHURY', 'IND', 212, 1, 213],
+                    ['7 ANAMIKA ROY(SAHA)', 'AIFB', 143, 0, 143],
+                    ['4 ANJAN SUKLA BAIDYA', 'IND', 117, 0, 117],
+                    ['6 GOPAL KRISHNA DEB', 'AMB', 110, 0, 110],
                 ],
             ],
             default => null,
