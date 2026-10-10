@@ -570,6 +570,7 @@ class HistoricalElectionAnalytics
      * Matarbari detail p79 matches four candidates and summary p45.
      * Mohanpur detail p73 matches four candidates and summary p14.
      * Nalchar detail pp76-77 matches five candidates and summary p32.
+     * Panisagar detail p85 matches six candidates and summary p71.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -946,6 +947,19 @@ class HistoricalElectionAnalytics
                     ['1 SUJIT DAS', 'BJP', 510, 1, 511],
                     ['3 PURABI BARMAN', 'IND', 464, 1, 465],
                     ['5 ASHUTOSH DAS', 'AMB', 207, 0, 207],
+                ],
+            ],
+            59 => [
+                'name' => 'Panisagar', 'detail' => 85, 'summary' => 71,
+                'electors' => 31406, 'polled' => 28032, 'valid' => 27995,
+                'result' => ['winner' => 'SUBODH DAS', 'winner_party' => 'CPM', 'winner_votes' => 13942, 'runner' => 'RADHIKA RANJAN DAS', 'runner_party' => 'INC', 'runner_votes' => 12234, 'margin' => 1708],
+                'candidates' => [
+                    ['SUBODH DAS', 'CPM', 13788, 154, 13942],
+                    ['1 RADHIKA RANJAN DAS', 'INC', 12155, 79, 12234],
+                    ['2 DHANANJAY DEBNATH', 'BJP', 824, 0, 824],
+                    ['3 PIJUSH KANTI DEBNATH', 'IND', 532, 0, 532],
+                    ['6 NARAYAN MALAKAR', 'AMB', 291, 1, 292],
+                    ['5 NOOR ISLAM', 'AIFB', 171, 0, 171],
                 ],
             ],
             default => null,
