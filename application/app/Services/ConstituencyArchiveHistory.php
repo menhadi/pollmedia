@@ -64,11 +64,25 @@ class ConstituencyArchiveHistory
      * Keishamthong in the CEO 2022 directory links directly to Keisamthong:
      * https://ceomanipur.nic.in/ResultSheets/StateLegislativeAssembly/2022/12.pdf
      * Historical identity inference is not a delimitation crosswalk.
+     * Tripura's 2023 official map says Chhawmanu (ST), while CEO observer lists say Chawmanu:
+     * https://ceotripura.nic.in/sites/default/files/2024-02/Press20for20Election20Meghalaya20Nagaland20Tripura.pdf
+     * https://ceotripura.nic.in/sites/default/files/2023-10/TR.GEN_.OBS%2520-21.01.2023%2013.pdf
+     * The 2018 Chawamanu workbook omits ST, corroborated by the same edition's
+     * constituency summary PDF (49, Chawamanu ST) and candidate continuity in 2013.
+     * https://old.eci.gov.in/files/file/3472-tripura-general-legislative-election-2018/
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(mb_strtolower(trim($name)), ['chawmanu (st)', 'chhawmanu (st)', 'chhawmanu  (st)', 'chawamanu (st)', 'chawamanu  (st)', 'chawamanu'], true)) {
+            return [
+                ['names' => ['chawmanu (st)', 'chhawmanu (st)', 'chhawmanu  (st)', 'chawamanu (st)', 'chawamanu  (st)'], 'code' => 49, 'after' => 1972],
+                ['names' => ['chhawmanu (st)'], 'code' => 48, 'edition' => 'a09382fa323d9af5f7af7d59'],
+                ['names' => ['chawamanu'], 'code' => 49, 'edition' => 'd070812d58833a38f814391b'],
+            ];
+        }
         $names = self::manipurAssemblyAliasNames($kind, $state, $name);
         if ($names !== []) {
             return [['names' => $names, 'code' => 4]];
@@ -155,7 +169,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v12:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v13:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
