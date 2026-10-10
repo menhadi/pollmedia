@@ -560,6 +560,7 @@ class HistoricalElectionAnalytics
      * Jubarajnagar detail p84 matches four candidates and summary p69.
      * Kamalasagar detail pp75-76 matches six candidates and summary p27.
      * Kamalpur detail pp81-82 matches six candidates and summary p57.
+     * Kanchanpur detail p85 matches five candidates and summary p72.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -823,6 +824,18 @@ class HistoricalElectionAnalytics
                     ['1 SRI BIR KUMAR SINHA', 'AIFB', 224, 1, 225],
                     ['4 CAND SL. as per form 7 SRI SUSHIL MALAKAR', 'IND', 222, 0, 222],
                     ['6 MD. GUNU MIA', 'IND', 220, 1, 221],
+                ],
+            ],
+            60 => [
+                'name' => 'Kanchanpur  (ST)', 'detail' => 85, 'summary' => 72,
+                'electors' => 32807, 'polled' => 29056, 'valid' => 29030,
+                'result' => ['winner' => 'RAJENDRA REANG', 'winner_party' => 'CPM', 'winner_votes' => 13952, 'runner' => 'SANJIT KUMAR REANG', 'runner_party' => 'INC', 'runner_votes' => 13449, 'margin' => 503],
+                'candidates' => [
+                    ['RAJENDRA REANG', 'CPM', 13795, 157, 13952],
+                    ['1 SANJIT KUMAR REANG', 'INC', 13318, 131, 13449],
+                    ['2 BINOY REANG', 'IND', 688, 1, 689],
+                    ['5 UPENDRA REANG', 'BJP', 539, 4, 543],
+                    ['3 KARNADHAN CHAKMA', 'AMB', 394, 3, 397],
                 ],
             ],
             default => null,
