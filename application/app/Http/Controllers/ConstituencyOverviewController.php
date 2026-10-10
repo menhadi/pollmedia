@@ -40,6 +40,14 @@ class ConstituencyOverviewController extends Controller
         })->orderByDesc('year')->orderBy('edition_id')->get();
         $entries = $entries->concat(app(ConstituencyArchiveHistory::class)->missingEntries($kind, $state, $name, $entries))->sortBy([['year', 'desc'], ['edition_id', 'asc']])->values();
         abort_if($entries->isEmpty(), 404);
+        $modernSeatScope = false;
+        if ($kind === 'ac' && $state === 'Uttar Pradesh' && mb_strtolower(trim($name)) === 'ram nagar' && ! isset($input['code'])) {
+            $modern = $entries->filter(fn ($entry): bool => $entry->year >= 2012 && $entry->record_code === 267);
+            if ($modern->isNotEmpty() && ! $modern->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1)) {
+                $entries = $modern->values();
+                $modernSeatScope = true;
+            }
+        }
         $ambiguousName = $entries->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1);
         $exactSeatOnly = false;
         if ($ambiguousName) {
@@ -120,8 +128,10 @@ class ConstituencyOverviewController extends Controller
             }
         }
 
+
         $historyRows = $analytics->distinctConstituencyHistoryRows($rows);
 
-        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly'));
+        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly', 'modernSeatScope'));
+
     }
 }
