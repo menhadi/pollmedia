@@ -561,6 +561,7 @@ class HistoricalElectionAnalytics
      * Kamalasagar detail pp75-76 matches six candidates and summary p27.
      * Kamalpur detail pp81-82 matches six candidates and summary p57.
      * Kanchanpur detail p85 matches five candidates and summary p72.
+     * Khayerpur detail p73 matches four candidates and summary p17.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -836,6 +837,17 @@ class HistoricalElectionAnalytics
                     ['2 BINOY REANG', 'IND', 688, 1, 689],
                     ['5 UPENDRA REANG', 'BJP', 539, 4, 543],
                     ['3 KARNADHAN CHAKMA', 'AMB', 394, 3, 397],
+                ],
+            ],
+            5 => [
+                'name' => 'Khayerpur', 'detail' => 73, 'summary' => 17,
+                'electors' => 41072, 'polled' => 37928, 'valid' => 37919,
+                'result' => ['winner' => 'PABITRA KAR', 'winner_party' => 'CPM', 'winner_votes' => 18833, 'runner' => 'RATAN CHAKRABORTI', 'runner_party' => 'INC', 'runner_votes' => 17832, 'margin' => 1001],
+                'candidates' => [
+                    ['PABITRA KAR', 'CPM', 18710, 123, 18833],
+                    ['2 RATAN CHAKRABORTI', 'INC', 17688, 144, 17832],
+                    ['3 PRANJIT BANIK', 'BJP', 635, 4, 639],
+                    ['1 PUTUL GHOSH', 'AITC', 613, 2, 615],
                 ],
             ],
             default => null,
