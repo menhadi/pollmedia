@@ -563,6 +563,7 @@ class HistoricalElectionAnalytics
      * Kanchanpur detail p85 matches five candidates and summary p72.
      * Khayerpur detail p73 matches four candidates and summary p17.
      * Khowai detail p77 matches six candidates and summary p36.
+     * Krishnapur detail p78 matches three candidates and summary p40.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -862,6 +863,16 @@ class HistoricalElectionAnalytics
                     ['4 DHANANJOY DEBNATH', 'BJP', 240, 1, 241],
                     ['2 GAYATRI DEBNATH', 'IND', 167, 0, 167],
                     ['6 ADHIR SARKAR', 'IND', 155, 0, 155],
+                ],
+            ],
+            28 => [
+                'name' => 'Krishnapur  (ST)', 'detail' => 78, 'summary' => 40,
+                'electors' => 28631, 'polled' => 25870, 'valid' => 25839,
+                'result' => ['winner' => 'KHAGENDRA JAMATIA', 'winner_party' => 'CPM', 'winner_votes' => 13325, 'runner' => 'SABDA KUMAR JAMATIA', 'runner_party' => 'INC', 'runner_votes' => 11508, 'margin' => 1817],
+                'candidates' => [
+                    ['KHAGENDRA JAMATIA', 'CPM', 13207, 118, 13325],
+                    ['1 SABDA KUMAR JAMATIA', 'INC', 11448, 60, 11508],
+                    ['3 MANIA DEBBARMA', 'BJP', 1005, 1, 1006],
                 ],
             ],
             default => null,
