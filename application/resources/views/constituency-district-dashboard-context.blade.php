@@ -17,7 +17,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
 @if($districtNames->contains('Prayagraj'))<p class="notice">Census 2011 records use Allahabad. The electoral fixture uses Prayagraj, following the 18 October 2018 district renaming. This dated name correspondence does not establish matching boundary editions. <a href="https://prayagrajdivision.nic.in/about-department/introduction/">Official rename source</a>.</p>@endif
-@if($districtNames->contains('Barabanki'))<p class="notice">Census 2011 and SOI source records use Bara Banki; the dated election fixture uses Barabanki. This name correspondence does not verify matching boundary editions. <a href="https://censusindia.gov.in/nada/index.php/catalog/6367">Census district 09/176</a> · <a href="https://barabanki.nic.in/about-district/geography/">Official district geography</a>.</p>@endif
+@if($districtNames->contains('Barabanki'))<p class="notice">Census 2011 and SOI source records use Bara Banki; the dated election fixture uses Barabanki. This name correspondence does not verify matching boundary editions. <a href="https://censusindia.gov.in/nada/index.php/catalog/6367">Census district 09/176</a> | <a href="https://barabanki.nic.in/about-district/geography/">Official district geography</a>.</p>@endif
 <div class="source-grid">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
