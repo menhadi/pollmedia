@@ -566,6 +566,7 @@ class HistoricalElectionAnalytics
      * Krishnapur detail p78 matches three candidates and summary p40.
      * Majlishpur detail p74 matches three candidates and summary p22.
      * Mandaibazar detail pp74-75 matches five candidates and summary p23.
+     * Manu detail p80 matches four candidates and summary p52.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -897,6 +898,17 @@ class HistoricalElectionAnalytics
                     ['2 BUDHU KUMAR DEBBARMA', 'IND', 647, 3, 650],
                     ['5 NARENDRA DEBBARMA', 'LJP', 389, 3, 392],
                     ['4 SATISH DEBBARMA', 'AITC', 294, 7, 301],
+                ],
+            ],
+            40 => [
+                'name' => 'Manu  (ST)', 'detail' => 80, 'summary' => 52,
+                'electors' => 39999, 'polled' => 37781, 'valid' => 37629,
+                'result' => ['winner' => 'JITENDRA CHOUDHURY', 'winner_party' => 'CPM', 'winner_votes' => 21100, 'runner' => 'THAIKHAI MOG', 'runner_party' => 'INC', 'runner_votes' => 14940, 'margin' => 6160],
+                'candidates' => [
+                    ['JITENDRA CHOUDHURY', 'CPM', 20851, 249, 21100],
+                    ['1 THAIKHAI MOG', 'INC', 14799, 141, 14940],
+                    ['3 KIRAT BAHAN TRIPURA', 'IND', 798, 2, 800],
+                    ['4 MRATHAIONG MOG', 'BJP', 785, 4, 789],
                 ],
             ],
             default => null,
