@@ -550,6 +550,7 @@ class HistoricalElectionAnalytics
      * Bishalgarh detail p76 matches four candidates and summary p28.
      * Boxanagar detail p76 matches five candidates and summary p31.
      * Chandipur detail p83 matches six candidates and summary p64.
+     * Charilam detail p76 matches four candidates and summary p30.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -690,6 +691,17 @@ class HistoricalElectionAnalytics
                     ['1 RUDRA KANTA SINHA', 'IND', 514, 0, 514],
                     ['6 CHIRANJIB BHATTACHARJEE', 'CPI(ML)(L)', 451, 0, 451],
                     ['5 SUBHENDU DAS', 'AITC', 225, 1, 226],
+                ],
+            ],
+            18 => [
+                'name' => 'Charilam  (ST)', 'detail' => 76, 'summary' => 30,
+                'electors' => 31259, 'polled' => 28847, 'valid' => 28754,
+                'result' => ['winner' => 'NARAYAN RUPINI', 'winner_party' => 'CPM', 'winner_votes' => 14216, 'runner' => 'NARENDRA CHANDRA DEBBARMA', 'runner_party' => 'INPT', 'runner_votes' => 13729, 'margin' => 487],
+                'candidates' => [
+                    ['NARAYAN RUPINI', 'CPM', 14098, 118, 14216],
+                    ['2 NARENDRA CHANDRA DEBBARMA', 'INPT', 13601, 128, 13729],
+                    ['1 HARENDRA DEBBARMA', 'IND', 463, 3, 466],
+                    ['4 BIDHYASAGAR DEBBARMA', 'IND', 340, 3, 343],
                 ],
             ],
             default => null,
