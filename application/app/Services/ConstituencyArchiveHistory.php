@@ -73,11 +73,23 @@ class ConstituencyArchiveHistory
      * The same 2023 official map labels 53 Kailasahar; the 2023 ECI workbook
      * labels 53 Kailashahar. The link preserves all historical source spellings:
      * https://old.eci.gov.in/files/file/14875-tripura-general-legislative-election-2023/
+     * That map also labels 33 Kakraban-Salgarah (SC), while the 2023 workbook
+     * uses Kakraban-Shalgara (SC). The 2018 summary PDF p33 corroborates SC
+     * omitted from its workbook; 2013 uses Kakraban-Salgarh (SC).
+     * Only these combined-seat editions are linked, never earlier Kakraban/Salgarh seats.
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(mb_strtolower(trim($name)), ['kakraban-shalgara (sc)', 'kakraban-salgarh (sc)', 'kakraban-salgarh  (sc)', 'kakraban-salgarah (sc)', 'kakraban-salgarah'], true)) {
+            return [
+                ['names' => ['kakraban-shalgara (sc)'], 'code' => 33, 'edition' => 'd74eaa9eba74f0984b16c588'],
+                ['names' => ['kakraban-salgarh (sc)', 'kakraban-salgarh  (sc)'], 'code' => 33, 'edition' => 'ae51f7f9665bc5aca6facf61'],
+                ['names' => ['kakraban-salgarah'], 'code' => 33, 'edition' => 'd070812d58833a38f814391b'],
+            ];
+        }
         if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
             && in_array(self::generalCategoryNames($name)[0], ['kailashahar', 'kailasahar'], true)) {
             return [
@@ -180,7 +192,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v14:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v15:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
