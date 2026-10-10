@@ -556,6 +556,7 @@ class HistoricalElectionAnalytics
      * Fatikroy detail p83 matches eight candidates and summary p63.
      * Golaghati detail p76 matches five candidates and summary p29.
      * Hrishyamukh detail p80 matches four candidates and summary p50.
+     * Jolaibari detail p80 matches five candidates and summary p51.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -770,6 +771,18 @@ class HistoricalElectionAnalytics
                     ['1 DILIP CHOUDHURY', 'INC', 11736, 113, 11849],
                     ['2 SUDHARSHAN MAJUMDER', 'BJP', 629, 1, 630],
                     ['3 RAJENDRA MAHAJAN', 'AITC', 504, 1, 505],
+                ],
+            ],
+            39 => [
+                'name' => 'Jolaibari  (ST)', 'detail' => 80, 'summary' => 51,
+                'electors' => 25111, 'polled' => 23476, 'valid' => 23326,
+                'result' => ['winner' => 'JASHABIR TRIPURA', 'winner_party' => 'CPM', 'winner_votes' => 13864, 'runner' => 'BRAJENDRA MOG CHAUDHURI', 'runner_party' => 'INC', 'runner_votes' => 8356, 'margin' => 5508],
+                'candidates' => [
+                    ['JASHABIR TRIPURA', 'CPM', 13786, 78, 13864],
+                    ['2 BRAJENDRA MOG CHAUDHURI', 'INC', 8327, 29, 8356],
+                    ['1 PURNA CHANDRA TRIPURA', 'IND', 473, 0, 473],
+                    ['5 MADHU SUDAN TRIPURA', 'AITC', 392, 4, 396],
+                    ['3 KEJARI MOG CHOWDHURY', 'IND', 237, 0, 237],
                 ],
             ],
             default => null,
