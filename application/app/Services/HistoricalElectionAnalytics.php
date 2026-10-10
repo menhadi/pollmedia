@@ -551,6 +551,7 @@ class HistoricalElectionAnalytics
      * Boxanagar detail p76 matches five candidates and summary p31.
      * Chandipur detail p83 matches six candidates and summary p64.
      * Charilam detail p76 matches four candidates and summary p30.
+     * Dhanpur detail p77 matches four candidates and summary p34.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -702,6 +703,17 @@ class HistoricalElectionAnalytics
                     ['2 NARENDRA CHANDRA DEBBARMA', 'INPT', 13601, 128, 13729],
                     ['1 HARENDRA DEBBARMA', 'IND', 463, 3, 466],
                     ['4 BIDHYASAGAR DEBBARMA', 'IND', 340, 3, 343],
+                ],
+            ],
+            22 => [
+                'name' => 'Dhanpur', 'detail' => 77, 'summary' => 34,
+                'electors' => 35933, 'polled' => 34077, 'valid' => 34008,
+                'result' => ['winner' => 'MANIK SARKAR', 'winner_party' => 'CPM', 'winner_votes' => 17992, 'runner' => 'SHAH ALAM', 'runner_party' => 'INC', 'runner_votes' => 15074, 'margin' => 2918],
+                'candidates' => [
+                    ['MANIK SARKAR', 'CPM', 17776, 216, 17992],
+                    ['1 SHAH ALAM', 'INC', 14983, 91, 15074],
+                    ['2 NAIDAR BASI TRIPURA', 'IND', 522, 3, 525],
+                    ['4 ASHISH CHAKRABORTY', 'AITC', 417, 0, 417],
                 ],
             ],
             default => null,
