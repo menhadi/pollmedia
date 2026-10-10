@@ -89,6 +89,16 @@ class ConstituencyArchiveHistory
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        // The 2023 official map calls AC 50 Pabiachhara (SC), while its workbook
+        // calls it Pabiachara (SC). The 2018 summary PDF p50 retains SC omitted
+        // by that workbook. Do not join the 1972 Pabiachherra (ST) record.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(mb_strtolower(trim($name)), ['pabiachara (sc)', 'pabiachhara (sc)', 'pabiachhara  (sc)', 'pabiachhara'], true)) {
+            return [
+                ['names' => ['pabiachara (sc)', 'pabiachhara (sc)', 'pabiachhara  (sc)'], 'code' => 50, 'after' => 1972],
+                ['names' => ['pabiachhara'], 'code' => 50, 'edition' => 'd070812d58833a38f814391b'],
+            ];
+        }
         if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
             && in_array(mb_strtolower(trim($name)), ['karamchara (st)', 'karmachhara (st)', 'karmachhara  (st)', 'karmachara', 'karamchhara (st)'], true)) {
             return [
@@ -215,7 +225,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v17:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v18:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
