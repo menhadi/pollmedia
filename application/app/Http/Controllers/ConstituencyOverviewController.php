@@ -41,8 +41,9 @@ class ConstituencyOverviewController extends Controller
         $entries = $entries->concat(app(ConstituencyArchiveHistory::class)->missingEntries($kind, $state, $name, $entries))->sortBy([['year', 'desc'], ['edition_id', 'asc']])->values();
         abort_if($entries->isEmpty(), 404);
         $modernSeatScope = false;
-        if ($kind === 'ac' && $state === 'Uttar Pradesh' && mb_strtolower(trim($name)) === 'ram nagar' && ! isset($input['code'])) {
-            $modern = $entries->filter(fn ($entry): bool => $entry->year >= 2012 && $entry->record_code === 267);
+        $modernCode = ['ram nagar' => 267, 'nawabganj' => 121][mb_strtolower(trim($name))] ?? null;
+        if ($kind === 'ac' && $state === 'Uttar Pradesh' && $modernCode !== null && ! isset($input['code'])) {
+            $modern = $entries->filter(fn ($entry): bool => $entry->year >= 2012 && $entry->record_code === $modernCode);
             if ($modern->isNotEmpty() && ! $modern->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1)) {
                 $entries = $modern->values();
                 $modernSeatScope = true;
