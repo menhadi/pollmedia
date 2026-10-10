@@ -80,11 +80,23 @@ class ConstituencyArchiveHistory
      * The 2023 map likewise uses Kalyanpur-Pramodenagar, while its workbook
      * uses Kalyanpur-Pramodnagar. Only 2013/2018/2023 combined-seat records
      * are linked; earlier Kalyanpur and Pramodenagar remain separate.
+     * Karamchara (2023 workbook) is Karamchhara (ST) on that election's map;
+     * 2013 Karmachhara and 2018 Karmachara are corroborated by Diba Chandra
+     * Hrangkhawl's candidate continuity. The 2018 summary PDF p48 retains ST.
+     * Only those three editions are linked; earlier Kulai (ST) is not an alias.
      *
      * @return list<array{names: array, code: int, edition?: string, after?: int}>
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(mb_strtolower(trim($name)), ['karamchara (st)', 'karmachhara (st)', 'karmachhara  (st)', 'karmachara', 'karamchhara (st)'], true)) {
+            return [
+                ['names' => ['karamchara (st)'], 'code' => 48, 'edition' => 'd74eaa9eba74f0984b16c588'],
+                ['names' => ['karmachhara (st)', 'karmachhara  (st)'], 'code' => 48, 'edition' => 'ae51f7f9665bc5aca6facf61'],
+                ['names' => ['karmachara'], 'code' => 48, 'edition' => 'd070812d58833a38f814391b'],
+            ];
+        }
         if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
             && in_array(self::generalCategoryNames($name)[0], ['kalyanpur-pramodnagar', 'kalyanpur-pramodenagar'], true)) {
             return [
@@ -203,7 +215,7 @@ class ConstituencyArchiveHistory
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v16:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v17:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);
