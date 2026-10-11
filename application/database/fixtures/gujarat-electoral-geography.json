@@ -163,6 +163,48 @@
       "page": 121
     },
     {
+      "code": 27,
+      "name": "Himatnagar",
+      "district": "Sabarkantha",
+      "page": 121
+    },
+    {
+      "code": 28,
+      "name": "Idar (SC)",
+      "district": "Sabarkantha",
+      "page": 121
+    },
+    {
+      "code": 29,
+      "name": "Khedbrahma (ST)",
+      "district": "Sabarkantha",
+      "page": 121
+    },
+    {
+      "code": 30,
+      "name": "Bhiloda (ST)",
+      "district": "Sabarkantha",
+      "page": 121
+    },
+    {
+      "code": 31,
+      "name": "Modasa",
+      "district": "Sabarkantha",
+      "page": 122
+    },
+    {
+      "code": 32,
+      "name": "Bayad",
+      "district": "Sabarkantha",
+      "page": 122
+    },
+    {
+      "code": 33,
+      "name": "Prantij",
+      "district": "Sabarkantha",
+      "page": 122
+    },
+    {
       "code": 37,
       "name": "Mansa",
       "district": "Gandhinagar",
@@ -229,6 +271,20 @@
         25,
         26,
         37
+      ],
+      "page": 147
+    },
+    {
+      "code": 5,
+      "name": "Sabarkantha",
+      "ac_codes": [
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
       ],
       "page": 147
     }
