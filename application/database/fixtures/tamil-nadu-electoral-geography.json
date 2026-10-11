@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial Tamil Nadu extraction through Viluppuram, retaining complete associated PC segments; other districts pending",
+  "scope": "Partial Tamil Nadu extraction through Salem with complete associated PC segments; other districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -312,6 +312,36 @@
       "page": null
     },
     {
+      "code": 57,
+      "name": "Palacodu",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 58,
+      "name": "Pennagaram",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 59,
+      "name": "Dharmapuri",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 60,
+      "name": "Pappireddippatti",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 61,
+      "name": "Harur (SC)",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
       "code": 62,
       "name": "Chengam (SC)",
       "district": "Tiruvannamalai",
@@ -442,6 +472,84 @@
       "name": "Yercaud (ST)",
       "district": "Salem",
       "page": null
+    },
+    {
+      "code": 84,
+      "name": "Omalur",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 85,
+      "name": "Mettur",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 86,
+      "name": "Edappadi",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 87,
+      "name": "Sankari",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 88,
+      "name": "Salem (West)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 89,
+      "name": "Salem (North)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 90,
+      "name": "Salem (South)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 91,
+      "name": "Veerapandi",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 92,
+      "name": "Rasipuram (SC)",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 93,
+      "name": "Senthamangalam (ST)",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 94,
+      "name": "Namakkal",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 95,
+      "name": "Paramathi-Velur",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 96,
+      "name": "Tiruchengodu",
+      "district": "Namakkal",
+      "page": null
     }
   ],
   "pcs": [
@@ -550,6 +658,19 @@
       "page": 447
     },
     {
+      "code": 10,
+      "name": "Dharmapuri",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        85
+      ],
+      "page": 447
+    },
+    {
       "code": 11,
       "name": "Tiruvannamalai",
       "ac_codes": [
@@ -600,6 +721,32 @@
         83
       ],
       "page": 447
+    },
+    {
+      "code": 15,
+      "name": "Salem",
+      "ac_codes": [
+        84,
+        86,
+        88,
+        89,
+        90,
+        91
+      ],
+      "page": 448
+    },
+    {
+      "code": 16,
+      "name": "Namakkal",
+      "ac_codes": [
+        87,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "page": 448
     }
   ],
   "flags": [
