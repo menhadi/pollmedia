@@ -3637,7 +3637,13 @@
           "bytes": 69346,
           "scope": "Response only; not full data verification"
         },
-        "backup": "Local chain bundle verified; GitHub backup branch verified at 9cb50ed9ba021e82cb454488c8e735f3016ce417; no backups deleted"
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 9cb50ed9ba021e82cb454488c8e735f3016ce417; no backups deleted",
+        "public_pages": {
+          "count": 9,
+          "result": "All HTTP200; district, PCs12/13 and AC70-75 contain history and scope; constituency Census context present; PC13 retains Yavatmal Wani AC76 and Arni AC80 with separate-populations warning",
+          "scope": "Bounded response/content checks only; not full data verification",
+          "server_evidence_prefix": "/home/pollmedia/tmp/maharashtra-chandrapur-check-"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -6953,9 +6959,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:23:03.384830+00:00",
+    "checked_at": "2026-10-11T17:26:59.907071+00:00",
     "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
-    "action": "Chandrapur deployed under both locks; district HTTP200; local and GitHub backups verified",
-    "next_action": "Check Chandrapur district/two PCs/six ACs and rendered map; original-source and mobile audits pending; then Yavatmal full scope"
+    "action": "Chandrapur nine public pages passed bounded response/content checks; PC13 shared Yavatmal segments retained",
+    "next_action": "Render Chandrapur district and PC13; original-source/mobile/data audits pending; prepare Yavatmal full source scope"
   }
 }
