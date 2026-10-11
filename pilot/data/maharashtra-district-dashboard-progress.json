@@ -1074,12 +1074,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_pc5_source_discrepancy_pending",
+      "workflow_status": "source_map_and_pc5_corroboration_prepared_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/500/dashboard",
       "flags": [
         "1431 unlinked source shapes and5 ambiguous-code shapes; no population allocation",
         "SOI BULDHANA and Census Buldana spelling preserved",
-        "PC5 source code discrepancy requires evidence-backed resolution; no dashboard deployment yet"
+        "ECI2008 literal5.Mehkar versus AC25 preserved; separate official CEO list corroborates25; integration/tests/deployment pending"
       ],
       "validation": {
         "public": "Pending",
@@ -1128,7 +1128,23 @@
           "pdf_page": 277,
           "literal_source": "5. Mehkar (SC)",
           "assembly_entry": "25 – Mehkar (SC), printed page254/PDF255",
-          "status": "Unresolved; do not silently replace5 with25 or assign Sakri AC5 to Buldhana"
+          "status": "Name/code association corroborated by separate official CEO list; preserve literal2008 discrepancy and cite both sources when integrating"
+        },
+        "pc5_corrobation": {
+          "source_url": "https://ceoelection.maharashtra.gov.in/Downloads/PDF/PCs.pdf",
+          "sha256": "ce584af93d9b86fcbc7330cdf3ff60b06a924dfecc0799d10785b25a50c98210",
+          "pdf_page": 1,
+          "visually_inspected": true,
+          "source_date": "Not printed; retrieved 2026-10-11",
+          "ac_codes": [
+            22,
+            23,
+            24,
+            25,
+            26,
+            27
+          ],
+          "scope": "CEO Maharashtra district-wise PC list explicitly identifies25-Mehkar(SC) inPC5. This corroborates the name/code association; it does not establish historical geometry equivalence."
         }
       }
     },
