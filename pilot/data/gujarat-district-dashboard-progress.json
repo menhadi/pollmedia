@@ -3805,8 +3805,9 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:08:32.356197+00:00",
-    "action": "Isolated live baseline and published source inventory recorded",
-    "next_action": "Wait for Maharashtra scope to be handled; no Gujarat rollout edits yet"
-  }
+    "checked_at": "2026-10-11T20:35:14.238689+00:00",
+    "action": "Maharashtra35 integrations deployed; Gujarat now next; no Gujarat live edits yet",
+    "next_action": "Inspect live HEAD; acquire official Gujarat SOI archive and audit dated ECI district/PC membership; begin rollout"
+  },
+  "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
