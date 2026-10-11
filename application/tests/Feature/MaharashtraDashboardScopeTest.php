@@ -317,4 +317,16 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([46], array_column($other['parliamentary'], 'code'));
         $this->assertSame([265, 266, 267], array_column($other['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_kolhapur_sangli_retains_shared_hatkanangle_pc(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Kolhapur', 'Maharashtra');
+        $this->assertSame(range(271, 280), array_column($links['assembly'], 'code'));
+        $this->assertSame([47, 48], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([283, 284], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $other = app(DistrictConstituencyLinks::class)->forDistrict('Sangli', 'Maharashtra');
+        $this->assertSame(range(281, 288), array_column($other['assembly'], 'code'));
+        $this->assertSame([44, 48], array_column($other['parliamentary'], 'code'));
+        $this->assertSame([277, 278, 279, 280], array_column($other['parliamentary'][1]['outside_district'], 'code'));
+    }
 }

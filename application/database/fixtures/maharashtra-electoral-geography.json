@@ -1625,6 +1625,114 @@
       "name": "Sawantwadi",
       "district": "Sindhudurg",
       "page": 275
+    },
+    {
+      "code": 271,
+      "name": "Chandgad",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 272,
+      "name": "Radhanagari",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 273,
+      "name": "Kagal",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 274,
+      "name": "Kolhapur South",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 275,
+      "name": "Karvir",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 276,
+      "name": "Kolhapur North",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 277,
+      "name": "Shahuwadi",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 278,
+      "name": "Hatkanangle (SC)",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 279,
+      "name": "Ichalkaranji",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 280,
+      "name": "Shirol",
+      "district": "Kolhapur",
+      "page": 275
+    },
+    {
+      "code": 281,
+      "name": "Miraj (SC)",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 282,
+      "name": "Sangli",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 283,
+      "name": "Islampur",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 284,
+      "name": "Shirala",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 285,
+      "name": "Palus-Kadegaon",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 286,
+      "name": "Khanapur",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 287,
+      "name": "Tasgaon-Kavathe Mahankal",
+      "district": "Sangli",
+      "page": 276
+    },
+    {
+      "code": 288,
+      "name": "Jat",
+      "district": "Sangli",
+      "page": 276
     }
   ],
   "pcs": [
@@ -2215,7 +2323,46 @@
         270
       ],
       "page": 279
+    },
+    {
+      "code": 44,
+      "name": "Sangli",
+      "ac_codes": [
+        281,
+        282,
+        285,
+        286,
+        287,
+        288
+      ],
+      "page": 279
+    },
+    {
+      "code": 47,
+      "name": "Kolhapur",
+      "ac_codes": [
+        271,
+        272,
+        273,
+        274,
+        275,
+        276
+      ],
+      "page": 280
+    },
+    {
+      "code": 48,
+      "name": "Hatkanangle",
+      "ac_codes": [
+        277,
+        278,
+        279,
+        280,
+        283,
+        284
+      ],
+      "page": 280
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278. Thane dated AC128-151/PC22-25 complete; later SOI Thane517 excludes Palghar601, without reconstructing Census2011 geography. Mumbai Suburban AC152-177 and Mumbai City AC178-187 complete; PC30 cross-district membership retained. Each SOI urban district has only one unlinked source record, no ward/AC geometry. Raigad AC188-194 complete; shared PC32 retains Ratnagiri263/264 and PC33 Pune204-206; Pune/Ratnagiri partial. Pune AC195-215 complete; PCs33-36 retain shared Raigad membership. Ahmednagar AC216-227/PC37-38 complete; Census Ahmadnagar and SOI source labels retained without inferred edition equivalence. Beed AC228-233/PC39 complete; Census Bid retained without inferred boundary edition equivalence. Latur AC234-239 complete; PC41 retains Nanded Loha88, PC40 retains Osmanabad240-243 and Solapur246. Solapur fixture scope partial. Solapur AC244-254 complete; PC40 retains Latur/Osmanabad and PC43 Satara255/258; Satara fixture scope partial. Satara AC255-262/PC43 and45 complete; Madha retains Solapur244/245/253/254. Ratnagiri AC263-267 and Sindhudurg268-270 complete; shared PC32/46 retained."
+  "coverage_note": "Complete dated ECI2008 Maharashtra AC1-288 and PC1-48 district membership from visually audited source pages254-280. Shared PCs retain all cross-district segments. This does not certify current boundaries or map/Census correspondence. PC5 literal Mehkar code discrepancy is retained and separately corroborated; no population is allocated to constituency shapes. Thane source map excludes later Palghar; Mumbai maps have one source record each."
 }
