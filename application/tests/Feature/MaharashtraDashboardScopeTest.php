@@ -297,4 +297,12 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([239, 240, 241, 242, 243], array_column($links['parliamentary'][0]['outside_district'], 'code'));
         $this->assertSame([255, 258], array_column($links['parliamentary'][2]['outside_district'], 'code'));
     }
+
+    public function test_satara_retains_solapur_segments_in_shared_madha_pc(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Satara', 'Maharashtra');
+        $this->assertSame(range(255, 262), array_column($links['assembly'], 'code'));
+        $this->assertSame([43, 45], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([244, 245, 253, 254], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+    }
 }
