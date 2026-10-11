@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Twenty-four PCs recorded; remaining Bihar membership pending",
+  "coverage": "Twenty-six PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1025,6 +1025,90 @@
       "district": "Madhubani",
       "source_page_label": "3 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 88,
+      "name": "Gaighat",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 89,
+      "name": "Aurai",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 90,
+      "name": "Minapur",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 91,
+      "name": "Bochaha (SC)",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 92,
+      "name": "Sakra (SC)",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 93,
+      "name": "Kurhani",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 94,
+      "name": "Muzaffarpur",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 95,
+      "name": "Kanti",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 96,
+      "name": "Baruraj",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 97,
+      "name": "Paroo",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 98,
+      "name": "Sahebganj",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 125,
+      "name": "Vaishali",
+      "district": "Vaishali",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1472,6 +1556,43 @@
       ],
       "cross_district_scope": [
         "Madhubani"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 15,
+      "name": "Muzaffarpur",
+      "ac_codes": [
+        88,
+        89,
+        91,
+        92,
+        93,
+        94
+      ],
+      "cross_district_scope": [
+        "Muzaffarpur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 16,
+      "name": "Vaishali",
+      "ac_codes": [
+        90,
+        95,
+        96,
+        97,
+        98,
+        125
+      ],
+      "cross_district_scope": [
+        "Muzaffarpur",
+        "Vaishali"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
