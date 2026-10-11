@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Fourteen PCs recorded; remaining Bihar membership pending",
+  "coverage": "Fifteen PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -605,6 +605,48 @@
       "district": "Gopalganj",
       "source_page_label": "8 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 164,
+      "name": "Tarapur",
+      "district": "Munger",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 169,
+      "name": "Sheikhpura",
+      "district": "Sheikhpura",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 240,
+      "name": "Sikandra (SC)",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 241,
+      "name": "Jamui",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 242,
+      "name": "Jhajha",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 243,
+      "name": "Chakai",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -861,6 +903,26 @@
       ],
       "cross_district_scope": [
         "Gopalganj"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 40,
+      "name": "Jamui (SC)",
+      "ac_codes": [
+        164,
+        169,
+        240,
+        241,
+        242,
+        243
+      ],
+      "cross_district_scope": [
+        "Munger",
+        "Sheikhpura",
+        "Jamui"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
