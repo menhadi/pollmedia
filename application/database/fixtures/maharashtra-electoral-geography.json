@@ -257,6 +257,78 @@
       "name": "Pusad",
       "district": "Yavatmal",
       "page": 260
+    },
+    {
+      "code": 36,
+      "name": "Dhamangaon Railway",
+      "district": "Amravati",
+      "page": 256
+    },
+    {
+      "code": 37,
+      "name": "Badnera",
+      "district": "Amravati",
+      "page": 256
+    },
+    {
+      "code": 38,
+      "name": "Amravati",
+      "district": "Amravati",
+      "page": 256
+    },
+    {
+      "code": 39,
+      "name": "Teosa",
+      "district": "Amravati",
+      "page": 257
+    },
+    {
+      "code": 40,
+      "name": "Daryapur (SC)",
+      "district": "Amravati",
+      "page": 257
+    },
+    {
+      "code": 41,
+      "name": "Melghat (ST)",
+      "district": "Amravati",
+      "page": 257
+    },
+    {
+      "code": 42,
+      "name": "Achalpur",
+      "district": "Amravati",
+      "page": 257
+    },
+    {
+      "code": 43,
+      "name": "Morshi",
+      "district": "Amravati",
+      "page": 257
+    },
+    {
+      "code": 44,
+      "name": "Arvi",
+      "district": "Wardha",
+      "page": 257
+    },
+    {
+      "code": 45,
+      "name": "Deoli",
+      "district": "Wardha",
+      "page": 257
+    },
+    {
+      "code": 46,
+      "name": "Hinganghat",
+      "district": "Wardha",
+      "page": 257
+    },
+    {
+      "code": 47,
+      "name": "Wardha",
+      "district": "Wardha",
+      "page": 257
     }
   ],
   "pcs": [
@@ -353,7 +425,33 @@
         81
       ],
       "page": 277
+    },
+    {
+      "code": 7,
+      "name": "Amravati (SC)",
+      "ac_codes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "page": 277
+    },
+    {
+      "code": 8,
+      "name": "Wardha",
+      "ac_codes": [
+        36,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola,Washim district scopes;Nashik/Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
+  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola,Washim,Amravati district scopes;Nashik,Yavatmal,Wardha partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
 }
