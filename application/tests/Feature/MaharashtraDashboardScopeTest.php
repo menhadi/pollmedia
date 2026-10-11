@@ -21,6 +21,15 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertStringContainsString('ceoelection.maharashtra.gov.in', $pc['corroborating_url']);
     }
 
+    public function test_akola_pc_retains_washim_risod_segment(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Akola', 'Maharashtra');
+        $this->assertSame(range(28, 32), array_column($links['assembly'], 'code'));
+        $this->assertSame([6], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([33], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame('Washim', $links['parliamentary'][0]['outside_district'][0]['district']);
+    }
+
     public function test_dhule_retains_both_shared_pcs_and_nashik_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Dhule', 'Maharashtra');
