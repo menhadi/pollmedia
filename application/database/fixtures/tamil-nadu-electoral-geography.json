@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Thiruvallur and complete associated PC segments only; other districts pending extraction",
+  "scope": "Thiruvallur and Chennai, complete associated PC segments; other districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -90,8 +90,20 @@
       "page": 375
     },
     {
+      "code": 14,
+      "name": "Villivakkam",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
       "code": 15,
       "name": "Thiru-Vi-Ka-Nagar (SC)",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 16,
+      "name": "Egmore (SC)",
       "district": "Chennai",
       "page": 375
     },
@@ -100,6 +112,66 @@
       "name": "Royapuram",
       "district": "Chennai",
       "page": 375
+    },
+    {
+      "code": 18,
+      "name": "Harbour",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 19,
+      "name": "Chepauk-Thiruvallikeni",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 20,
+      "name": "Thousand Lights",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 21,
+      "name": "Anna Nagar",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 22,
+      "name": "Virugampakkam",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 23,
+      "name": "Saidapet",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 24,
+      "name": "Thiyagarayanagar",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 25,
+      "name": "Mylapore",
+      "district": "Chennai",
+      "page": 376
+    },
+    {
+      "code": 26,
+      "name": "Velachery",
+      "district": "Chennai",
+      "page": 376
+    },
+    {
+      "code": 27,
+      "name": "Shozhinganallur",
+      "district": "Kancheepuram",
+      "page": 376
     },
     {
       "code": 28,
@@ -184,6 +256,32 @@
       "page": 447
     },
     {
+      "code": 3,
+      "name": "Chennai South",
+      "ac_codes": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "page": 447
+    },
+    {
+      "code": 4,
+      "name": "Chennai Central",
+      "ac_codes": [
+        14,
+        16,
+        18,
+        19,
+        20,
+        21
+      ],
+      "page": 447
+    },
+    {
       "code": 5,
       "name": "Sriperumbudur",
       "ac_codes": [
@@ -215,6 +313,7 @@
     "Table A Thiruvallur versus Table B Tiruvallur spelling retained",
     "Territorial divisions dated 2004-02-15; municipal wards Census 2001",
     "SOI boundary edition and accepted Census/LGD joins remain unverified",
-    "Partial state extraction; do not interpret omitted seats as absent"
+    "Partial state extraction; do not interpret omitted seats as absent",
+    "Table A Virugampakkam/Shozhinganallur versus Table B Virugambakkam/Sholinganallur; runtime alias audit pending"
   ]
 }
