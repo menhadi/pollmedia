@@ -4626,17 +4626,28 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/490/dashboard",
       "flags": [
-        "374 unlinked and30 ambiguous shapes; no rejections; no population assigned",
-        "PC25 retains Surat163-165/168; PC26 Dangs173/Valsad178-182; prepared not deployed",
+        "374 unlinked and30 ambiguous shapes; no rejected shapes; no population assigned",
+        "PC25 retains Surat163-165/168; PC26 Dangs173/Valsad178-182; no district populations combined",
         "Boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "Published totals and shared outside membership match HTML; detailed audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 1329672,
+          "households": 295131,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; independent source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 56,
+          "assertions": 227,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHub6fd3558395b0f775516adfeb4e2772c8f7b79005 verified; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
@@ -4675,6 +4686,11 @@
           25,
           26
         ]
+      },
+      "deployment": {
+        "live_commit": "6fd3558395b0f775516adfeb4e2772c8f7b79005",
+        "rollback_commit": "98bd2038990e4f0f5a526bc6abf7032d8cf21f41",
+        "locks": "Both flock -n held across fresh HEAD narrow Gujarat patch/map commit cache clearing"
       }
     },
     {
@@ -5150,10 +5166,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T22:49:22.669867+00:00",
-    "live_commit": "b9715c7eac1737c63fc01c93aea5f14d176dddff",
-    "action": "Navsari source map and shared PC25/26 dated membership prepared; deployment pending",
-    "next_action": "Integrate Navsari490 controller/context/switcher; test deploy verify public totals and backups; then Valsad491"
+    "checked_at": "2026-10-11T22:55:02.786052+00:00",
+    "live_commit": "6fd3558395b0f775516adfeb4e2772c8f7b79005",
+    "action": "Navsari deployed; public published totals/shared membership checked;56 tests passed; backups verified",
+    "next_action": "Continue Valsad491; AC178-182/shared PC26 already audited; then Surat492 and Tapi493"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }

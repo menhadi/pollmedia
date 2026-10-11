@@ -513,4 +513,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([26], array_column($links['parliamentary'], 'code'));
         $this->assertSame([177, 178, 179, 180, 181, 182], array_column($links['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_navsari_keeps_surat_dangs_and_valsad_pc_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Navsari', 'Gujarat');
+        $this->assertSame(range(174, 177), array_column($links['assembly'], 'code'));
+        $this->assertSame([25, 26], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([163, 164, 165, 168], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([173, 178, 179, 180, 181, 182], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+    }
 }
