@@ -4377,7 +4377,13 @@
           "bytes": 60537,
           "scope": "Response only; not full data verification"
         },
-        "backup": "Local live bundle verified; GitHub backup branch verified at 31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab; no backups deleted"
+        "backup": "Local live bundle verified; GitHub backup branch verified at 31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab; no backups deleted",
+        "public_pages": {
+          "count": 5,
+          "result": "All HTTP200; district, PC15 and AC92-94 contain history/scope; constituency Census context present; PC15 Nanded/Yavatmal/Umarkhed segments and separate-populations warning present",
+          "scope": "Bounded response/content checks only; not full data verification",
+          "server_evidence_prefix": "/home/pollmedia/tmp/maharashtra-hingoli-check-"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -7226,9 +7232,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:33:05.424040+00:00",
+    "checked_at": "2026-10-11T18:36:52.191803+00:00",
     "live_commit": "31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab",
-    "action": "Hingoli deployed under both locks; district HTTP200; local and GitHub backups verified",
-    "next_action": "Check Hingoli district, PC15 and three ACs; rendered/source/mobile audits pending; then Parbhani full scope"
+    "action": "Hingoli five public pages passed bounded response/content checks; PC15 shared district context retained",
+    "next_action": "Render Hingoli map/PC15 and reconcile original sources; mobile/earlier audits pending; prepare Parbhani full scope"
   }
 }
