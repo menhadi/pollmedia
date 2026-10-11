@@ -440,7 +440,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "integration_tested_deployment_pending",
+      "workflow_status": "deployed_public_checked_rendered_and_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/498/dashboard",
       "flags": [
         "706 unlinked and5 ambiguous source shapes",
@@ -450,15 +450,100 @@
         "Membership, tests, deployment and public/rendered verification pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": [
+          {
+            "url": "https://pollmedia.org/india/districts/27/498/dashboard",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": false
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Dhule",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true,
+              "nashik": true,
+              "shared_segments": true,
+              "not_combined": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Nandurbar",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Sakri",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Dhule+Rural",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Dhule+City",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Sindkheda",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Shirpur",
+            "status": 200,
+            "checks": {
+              "population": true,
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          }
+        ],
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "canonical_data": "Independent current value/source and historical/election audits pending; public value strings only checked",
         "dedicated_tests": {
           "tests": 3,
           "assertions": 17,
           "result": "Passed",
           "scope": "Shared PCs and Census context reload behavior"
-        }
+        },
+        "backup": "Local live bundle verified and GitHub live-backup branch updated; no bundles deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -499,7 +584,9 @@
         ],
         "shared_pc1": "Already deployed; includes NandurbarAC1-4",
         "shared_pc2": "DhuleAC6/7/8 and NashikAC114/115/116; Nashik full district scope not yet audited"
-      }
+      },
+      "deployed_commit": "3c126b438181e7be8ce12665dab7589d757b328f",
+      "rollback_commit": "39bdbb7e99fad79e54034e2d81b01636cc96ea93"
     },
     {
       "district_code": "499",
@@ -5326,9 +5413,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:41:36.751289+00:00",
-    "live_commit": "0e621a7",
-    "action": "Dhule integration prepared; ECI2008 Nashik segments visually audited;3tests17assertions passed; no live changes",
-    "next_action": "Prepare fresh narrow live patch for Dhule498, fixture/context/switcher and map; deploy under both locks with rollback and backups, then public/rendered and canonical-value checks"
+    "checked_at": "2026-10-11T13:47:27.739366+00:00",
+    "live_commit": "3c126b438181e7be8ce12665dab7589d757b328f",
+    "action": "Dhule deployed under both locks preserving Siddharthnagar; district,2PCs and5ACs HTTP200; shared PC2 Nashik membership visible; backup verified",
+    "next_action": "Render Dhule district,AC5 and shared PC2; compare canonical district values; retain other AC/mobile/source audits pending, then prepare Jalgaon499"
   }
 }
