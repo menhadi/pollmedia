@@ -493,6 +493,42 @@
       "page": 260
     },
     {
+      "code": 82,
+      "name": "Umarkhed (SC)",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 83,
+      "name": "Kinwat",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 84,
+      "name": "Hadgaon",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 92,
+      "name": "Basmath",
+      "district": "Hingoli",
+      "page": 260
+    },
+    {
+      "code": 93,
+      "name": "Kalamnuri",
+      "district": "Hingoli",
+      "page": 260
+    },
+    {
+      "code": 94,
+      "name": "Hingoli",
+      "district": "Hingoli",
+      "page": 261
+    },
+    {
       "code": 114,
       "name": "Malegaon Central",
       "district": "Nashik",
@@ -696,7 +732,20 @@
         80
       ],
       "page": 277
+    },
+    {
+      "code": 15,
+      "name": "Hingoli",
+      "ac_codes": [
+        82,
+        83,
+        84,
+        92,
+        93,
+        94
+      ],
+      "page": 278
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending."
 }

@@ -3860,7 +3860,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_membership_integration_pending",
+      "workflow_status": "source_map_membership_audited_dashboard_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/510/dashboard",
       "flags": [
         "SOI YAVATMAL label retained; boundary edition unverified",
@@ -3889,7 +3889,68 @@
         "rejected": [],
         "note": "SOI YAVATMAL label retained; Census name Yavatmal; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "c8dae2d228c0d2fb281f2ee1b37f8fc39b20c4e7a74aca126f8d1b94b5e977cd"
+      "map_sha256": "c8dae2d228c0d2fb281f2ee1b37f8fc39b20c4e7a74aca126f8d1b94b5e977cd",
+      "membership_evidence": {
+        "pdf_pages": [
+          259,
+          260,
+          261,
+          277,
+          278
+        ],
+        "visually_inspected_pdf_pages": [
+          259,
+          260,
+          261,
+          277,
+          278
+        ],
+        "ac_codes": [
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82
+        ],
+        "pcs": [
+          {
+            "code": 13,
+            "ac_codes": [
+              70,
+              71,
+              72,
+              75,
+              76,
+              80
+            ]
+          },
+          {
+            "code": 14,
+            "ac_codes": [
+              34,
+              35,
+              77,
+              78,
+              79,
+              81
+            ]
+          },
+          {
+            "code": 15,
+            "ac_codes": [
+              82,
+              83,
+              84,
+              92,
+              93,
+              94
+            ]
+          }
+        ],
+        "scope": "Dated 2008 order; PC15 spans Yavatmal, Nanded and Hingoli; current crosswalk unverified"
+      }
     },
     {
       "district_code": "511",
@@ -6976,9 +7037,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:31:50.324265+00:00",
+    "checked_at": "2026-10-11T17:36:50.206838+00:00",
     "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
-    "action": "Prepared Yavatmal source map locally: 2145 valid shapes, 4 ambiguous codes, no rejected shapes",
-    "next_action": "Audit AC82 parliamentary membership and outside district segments; integrate Yavatmal full AC76-82 and deduplicated shared PCs; test and deploy under both locks; preserve pending prior audits"
+    "action": "Visually audited ECI pages278/261; completed Yavatmal AC76-82 and shared PC15 membership with Nanded/Hingoli segments",
+    "next_action": "Integrate Yavatmal district, PC13/14/15 switcher/context with Nanded/Hingoli Census codes; add meaningful shared-scope tests; deploy under both locks"
   }
 }
