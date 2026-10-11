@@ -627,6 +627,54 @@
       "name": "Honnali",
       "district": "Davanagere",
       "page": 192
+    },
+    {
+      "code": 111,
+      "name": "Shimoga Rural (SC)",
+      "district": "Shimoga",
+      "page": 192
+    },
+    {
+      "code": 112,
+      "name": "Bhadravati",
+      "district": "Shimoga",
+      "page": 192
+    },
+    {
+      "code": 113,
+      "name": "Shimoga",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 114,
+      "name": "Tirthahalli",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 115,
+      "name": "Shikaripura",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 116,
+      "name": "Sorab",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 117,
+      "name": "Sagar",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 118,
+      "name": "Byndoor",
+      "district": "Udupi",
+      "page": 193
     }
   ],
   "pcs": [
@@ -824,6 +872,21 @@
         110
       ],
       "page": 208
+    },
+    {
+      "code": 14,
+      "name": "Shimoga",
+      "ac_codes": [
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118
+      ],
+      "page": 208
     }
   ],
   "flags": [
@@ -832,7 +895,8 @@
     "2008 membership does not certify SOI boundary edition",
     "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending",
     "Raichur PC Table A Gulbarga district references are dated 2008; correspondence to later Yadgir district requires official evidence",
-    "Dharwad Table A Hubli-Dharwad spellings retained; runtime aliases require review"
+    "Dharwad Table A Hubli-Dharwad spellings retained; runtime aliases require review",
+    "Shimoga Table A Shikaripura versus Table B Shikaripur spelling retained; runtime alias audit pending"
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
