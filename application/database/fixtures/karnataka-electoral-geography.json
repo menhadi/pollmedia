@@ -435,6 +435,54 @@
       "name": "Ranibennur",
       "district": "Haveri",
       "page": 189
+    },
+    {
+      "code": 69,
+      "name": "Navalgund",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 70,
+      "name": "Kundgol",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 71,
+      "name": "Dharwad",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 72,
+      "name": "Hubli-Dharwad-East (SC)",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 73,
+      "name": "Hubli-Dharwad-Central",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 74,
+      "name": "Hubli-Dharwad-West",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 75,
+      "name": "Kalghatgi",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 83,
+      "name": "Shiggaon",
+      "district": "Haveri",
+      "page": 188
     }
   ],
   "pcs": [
@@ -572,6 +620,21 @@
         87
       ],
       "page": 207
+    },
+    {
+      "code": 11,
+      "name": "Dharwad",
+      "ac_codes": [
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        83
+      ],
+      "page": 207
     }
   ],
   "flags": [
@@ -579,7 +642,8 @@
     "Table A Kagwad/Hukkeri/Athani vs Table B Kagawad/Hukeri/Athni spelling variants retained; runtime alias audit pending",
     "2008 membership does not certify SOI boundary edition",
     "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending",
-    "Raichur PC Table A Gulbarga district references are dated 2008; correspondence to later Yadgir district requires official evidence"
+    "Raichur PC Table A Gulbarga district references are dated 2008; correspondence to later Yadgir district requires official evidence",
+    "Dharwad Table A Hubli-Dharwad spellings retained; runtime aliases require review"
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
