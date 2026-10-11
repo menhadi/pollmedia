@@ -2,11 +2,11 @@
 @php
 $fixture=json_decode(file_get_contents(database_path('fixtures/bihar-electoral-geography.json')),true,512,JSON_THROW_ON_ERROR);
 $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$value)));
-$seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
+$seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>collect(array_merge([$seat['name']],$seat['aliases']??[]))->contains(fn(string $alias):bool=>$normalize($alias)===$normalize($name)));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207','Muzaffarpur'=>'216','Nalanda'=>'229','Pashchim Champaran'=>'203'];
+$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207','Muzaffarpur'=>'216','Nalanda'=>'229','Pashchim Champaran'=>'203','Nawada'=>'237'];
 @endphp
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>
