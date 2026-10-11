@@ -67,6 +67,16 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([], $links['parliamentary'][1]['outside_district']);
     }
 
+    public function test_gondiya_keeps_two_shared_pcs_and_all_outside_segments(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Gondiya', 'Maharashtra');
+        $this->assertSame([63, 64, 65, 66], array_column($links['assembly'], 'code'));
+        $this->assertSame([11, 12], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([60, 61, 62], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([67, 68, 69, 73, 74], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $this->assertSame(['Gadchiroli', 'Chandrapur'], array_values(array_unique(array_column($links['parliamentary'][1]['outside_district'], 'district'))));
+    }
+
     public function test_bhandara_pc_retains_gondiya_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Bhandara', 'Maharashtra');

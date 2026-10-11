@@ -3179,19 +3179,26 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_membership_integration_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/507/dashboard",
       "flags": [
         "SOI literal label GONDIA retained; boundary edition unverified",
         "942 unlinked and 16 ambiguous source shapes; no population assigned",
-        "AC66 and shared PC12 membership integration pending; PC11 already records AC63-65",
+        "Local AC63-66 and shared PC11/PC12 integration tested; live deployment pending",
         "Original-source, rendered and actual-data audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited",
-        "source_map": "Archive hash verified; 958 valid EPSG:4326 shapes; no rejected shapes; no accepted Census/LGD joins"
+        "source_map": "Archive hash verified; 958 valid EPSG:4326 shapes; no rejected shapes; no accepted Census/LGD joins",
+        "dedicated_tests": {
+          "tests": 12,
+          "assertions": 57,
+          "result": "Passed",
+          "scope": "Shared PC11/12 outside district segments retained"
+        },
+        "formatting": "Pint passed"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -3208,7 +3215,50 @@
         "rejected": [],
         "note": "SOI GONDIA label retained; Census name Gondiya; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "8bcc5e17cae317d0bb7910872205e9ea409703012d8bb1162300968501063640"
+      "map_sha256": "8bcc5e17cae317d0bb7910872205e9ea409703012d8bb1162300968501063640",
+      "membership_evidence": {
+        "pdf_pages": [
+          258,
+          259,
+          277
+        ],
+        "visually_inspected_pdf_pages": [
+          258,
+          259,
+          277
+        ],
+        "ac_codes": [
+          63,
+          64,
+          65,
+          66
+        ],
+        "pcs": [
+          {
+            "code": 11,
+            "ac_codes": [
+              60,
+              61,
+              62,
+              63,
+              64,
+              65
+            ]
+          },
+          {
+            "code": 12,
+            "ac_codes": [
+              66,
+              67,
+              68,
+              69,
+              73,
+              74
+            ]
+          }
+        ],
+        "scope": "Dated 2008 order; current crosswalk remains unverified"
+      }
     },
     {
       "district_code": "508",
@@ -6730,9 +6780,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T16:32:20.581584+00:00",
+    "checked_at": "2026-10-11T16:37:54.240113+00:00",
     "live_commit": "195393a16b34482fb8f2523f9a106dee596207a0",
-    "action": "Prepared Gondiya source map locally; 958 valid shapes with 16 ambiguous codes; no live mutation",
-    "next_action": "Integrate Gondiya AC63-66, deduplicated PC11 and shared PC12 using visually audited ECI source; test and deploy under both locks; preserve outstanding audits"
+    "action": "Gondiya dashboard and dated shared constituency integration prepared locally; 12 tests and 57 assertions passed",
+    "next_action": "Refresh live four deployment files; generate narrow patch; deploy Gondiya under both locks with rollback and backup; verify public/rendered/data scope"
   }
 }
