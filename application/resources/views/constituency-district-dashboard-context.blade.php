@@ -12,6 +12,12 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
 @if($seat)
+@php($mapSourceNames=[58=>'Dholana',109=>'Kishani (SC)',154=>'Sawaijpur',247=>'Bishwavnathganj',306=>'Domariyaganj',319=>'Paniyra'])
+@foreach($segments as $segment)
+@if(isset($mapSourceNames[$segment['code']]))
+<p class="notice" data-boundary-name-difference="{{ $segment['code'] }}">Map source name difference: AC {{ $segment['code'] }} is named {{ $mapSourceNames[$segment['code']] }} in the preserved electoral boundary layer and {{ $segment['name'] }} in the dated district fixture. Both source spellings are retained. A shared code alone does not establish boundary edition or map-to-election equivalence; name-based result matching remains unresolved. Original coordinates are unchanged. See the dated source links below.</p>
+@endif
+@endforeach
 @if(($kind==='ac' && $seat['code']===24) || ($kind==='pc' && in_array($seat['code'],[5,6],true)))
 <p class="notice" data-boundary-source-conflict="noorpur">Boundary source conflict: Noorpur (AC 24) is assigned to Moradabad (PC 6) in the preserved electoral map attributes. The dated parliamentary delimitation fixture lists AC 24 under Nagina (PC 5), PDF page 42. The dashboard links follow that dated fixture; original map coordinates and source attributes remain unchanged. Map boundary edition and correspondence require review. <a href="{{ $fixture['pc_url'] }}">Official parliamentary delimitation source</a>.</p>
 @endif
