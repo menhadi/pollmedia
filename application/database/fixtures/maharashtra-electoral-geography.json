@@ -571,6 +571,42 @@
       "page": 261
     },
     {
+      "code": 95,
+      "name": "Jintur",
+      "district": "Parbhani",
+      "page": 261
+    },
+    {
+      "code": 96,
+      "name": "Parbhani",
+      "district": "Parbhani",
+      "page": 261
+    },
+    {
+      "code": 97,
+      "name": "Gangakhed",
+      "district": "Parbhani",
+      "page": 261
+    },
+    {
+      "code": 98,
+      "name": "Pathri",
+      "district": "Parbhani",
+      "page": 261
+    },
+    {
+      "code": 99,
+      "name": "Partur",
+      "district": "Jalna",
+      "page": 261
+    },
+    {
+      "code": 100,
+      "name": "Ghansawangi",
+      "district": "Jalna",
+      "page": 261
+    },
+    {
       "code": 114,
       "name": "Malegaon Central",
       "district": "Nashik",
@@ -843,7 +879,20 @@
         88
       ],
       "page": 279
+    },
+    {
+      "code": 17,
+      "name": "Parbhani",
+      "ac_codes": [
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ],
+      "page": 278
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial."
 }
