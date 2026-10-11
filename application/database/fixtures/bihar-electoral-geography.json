@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Twenty-one PCs recorded; remaining Bihar membership pending",
+  "coverage": "Twenty-three PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -899,6 +899,90 @@
       "district": "Khagaria",
       "source_page_label": "3 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 70,
+      "name": "Alamnagar",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 71,
+      "name": "Bihariganj",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 72,
+      "name": "Singheshwar (SC)",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 73,
+      "name": "Madhepura",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 74,
+      "name": "Sonbarsha (SC)",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 75,
+      "name": "Saharsa",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 77,
+      "name": "Mahishi",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 41,
+      "name": "Nirmali",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 42,
+      "name": "Pipra",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 43,
+      "name": "Supaul",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 44,
+      "name": "Triveniganj (SC)",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 45,
+      "name": "Chhatapur",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1290,6 +1374,44 @@
         "Saharsa",
         "Samastipur",
         "Khagaria"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 13,
+      "name": "Madhepura",
+      "ac_codes": [
+        70,
+        71,
+        73,
+        74,
+        75,
+        77
+      ],
+      "cross_district_scope": [
+        "Madhepura",
+        "Saharsa"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 8,
+      "name": "Supaul",
+      "ac_codes": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        72
+      ],
+      "cross_district_scope": [
+        "Supaul",
+        "Madhepura"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
