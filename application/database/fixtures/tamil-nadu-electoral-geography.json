@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial Tamil Nadu extraction through Salem with complete associated PC segments; other districts pending",
+  "scope": "Partial extraction through Namakkal with dated complete associated PC segments; current district crosswalks pending",
   "district_rows": [
     {
       "code": 1,
@@ -550,6 +550,42 @@
       "name": "Tiruchengodu",
       "district": "Namakkal",
       "page": null
+    },
+    {
+      "code": 97,
+      "name": "Kumarapalayam",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 98,
+      "name": "Erode (East)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 99,
+      "name": "Erode (West)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 100,
+      "name": "Modakkurichi",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 101,
+      "name": "Dharapuram (SC)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 102,
+      "name": "Kangayam",
+      "district": "Erode",
+      "page": null
     }
   ],
   "pcs": [
@@ -747,6 +783,19 @@
         96
       ],
       "page": 448
+    },
+    {
+      "code": 17,
+      "name": "Erode",
+      "ac_codes": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "page": 448
     }
   ],
   "flags": [
@@ -755,6 +804,7 @@
     "Territorial divisions dated 2004-02-15; municipal wards Census 2001",
     "SOI boundary edition and accepted Census/LGD joins remain unverified",
     "Partial state extraction; do not interpret omitted seats as absent",
-    "Table A Virugampakkam/Shozhinganallur versus Table B Virugambakkam/Sholinganallur; runtime alias audit pending"
+    "Table A Virugampakkam/Shozhinganallur versus Table B Virugambakkam/Sholinganallur; runtime alias audit pending",
+    "ECI2008 Erode references for Dharapuram/Kangayam retained; later Tiruppur district correspondence not inferred"
   ]
 }
