@@ -279,4 +279,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([240, 241, 242, 243, 246], array_column($links['parliamentary'][0]['outside_district'], 'code'));
         $this->assertSame([88], array_column($links['parliamentary'][1]['outside_district'], 'code'));
     }
+
+    public function test_osmanabad_retains_latur_and_solapur_pc40_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Osmanabad', 'Maharashtra');
+        $this->assertSame(range(240, 243), array_column($links['assembly'], 'code'));
+        $this->assertSame([40], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([239, 246], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame(['Latur', 'Solapur'], array_column($links['parliamentary'][0]['outside_district'], 'district'));
+    }
 }
