@@ -1074,18 +1074,62 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_pc5_source_discrepancy_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/500/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "1431 unlinked source shapes and5 ambiguous-code shapes; no population allocation",
+        "SOI BULDHANA and Census Buldana spelling preserved",
+        "PC5 source code discrepancy requires evidence-backed resolution; no dashboard deployment yet"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1431,
+          "ambiguous": 5
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI label BULDHANA and Census 2011 name Buldana retained; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "b036e19e8cdf5cc8d9e9b25a10338f88c894489bd629ca5f9942e64401d86c4c",
+      "membership_evidence": {
+        "pdf_pages": [
+          255,
+          256,
+          277
+        ],
+        "visually_inspected_pdf_pages": [
+          255,
+          256,
+          277
+        ],
+        "ac_codes": [
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "scope": "Dated ECI2008 Assembly district membership; PC5 not added pending explicit handling of source discrepancy",
+        "pc5_discrepancy": {
+          "printed_page": 276,
+          "pdf_page": 277,
+          "literal_source": "5. Mehkar (SC)",
+          "assembly_entry": "25 – Mehkar (SC), printed page254/PDF255",
+          "status": "Unresolved; do not silently replace5 with25 or assign Sakri AC5 to Buldhana"
+        }
       }
     },
     {
