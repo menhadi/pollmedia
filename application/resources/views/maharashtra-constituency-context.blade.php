@@ -8,10 +8,10 @@ $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code'
 $codes=['Nandurbar'=>'497','Dhule'=>'498','Nashik'=>'516','Jalgaon'=>'499','Buldhana'=>'500'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
-@if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
+@if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
 @if($seat && $districtNames->contains(fn(string $district):bool=>isset($codes[$district])))
-<section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard Â· Census context</p><h2>District demographics & geographic scope</h2>
-<p>{{ strtoupper($kind) }} {{ $seat['code'] }} Â· {{ $seat['name'] }}. Links use the dated districtâ€“Assembly gazette and parliamentary delimitation fixture.</p>
+<section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District demographics & geographic scope</h2>
+<p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Links use the dated district–Assembly gazette and parliamentary delimitation fixture.</p>
 <p class="notice">Constituency Census population is not established by this district link. District figures below are contextual, not AC/PC totals. Population is never divided by polygon area. Electoral maps, Census geography and historical constituencies may describe different years.</p>
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
@@ -28,7 +28,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @else
 <p>Published district Census records are unavailable here. No population is inferred.</p>
 @endif
-<a href="{{ route('district-dashboard',['state'=>'27','district'=>$codes[$district]]) }}">District map, Census history & graphs â†’</a>
+<a href="{{ route('district-dashboard',['state'=>'27','district'=>$codes[$district]]) }}">District map, Census history & graphs →</a>
 @else
 <p>District code crosswalk is not established in this panel. See the dated geographic source.</p>
 @endif
@@ -38,6 +38,6 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($kind==='pc')
 <p>Assembly segments: {{ $segments->map(fn(array $row):string=>$row['name'].' (AC '.$row['code'].')')->implode(', ') }}.</p>
 @endif
-<details><summary>Scope flags & sources</summary>@if(($kind ?? null) === 'pc' && ($seat['code'] ?? null) === 5)<p>ECI 2008 prints “5. Mehkar (SC)” in PC 5; its Assembly section lists AC 25. The separate <a href="https://ceoelection.maharashtra.gov.in/Downloads/PDF/PCs.pdf">official Maharashtra CEO PC list</a> corroborates AC 25. The original discrepancy is retained; this does not establish unchanged historical boundaries.</p>@endif<p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">Districtâ€“Assembly source â†—</a> Â· <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source â†—</a></details></section>
+<details><summary>Scope flags & sources</summary>@if(($kind ?? null) === 'pc' && ($seat['code'] ?? null) === 5)<p>ECI 2008 prints “5. Mehkar (SC)” in PC 5; its Assembly section lists AC 25. The separate <a href="https://ceoelection.maharashtra.gov.in/Downloads/PDF/PCs.pdf">official Maharashtra CEO PC list</a> corroborates AC 25. The original discrepancy is retained; this does not establish unchanged historical boundaries.</p>@endif<p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">District–Assembly source ↗</a> · <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source ↗</a></details></section>
 @endif
 @endif
