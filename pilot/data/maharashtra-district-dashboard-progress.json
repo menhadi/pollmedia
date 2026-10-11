@@ -4781,12 +4781,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/514/dashboard",
       "flags": [
         "SOI JALNA label retained; boundary edition unverified",
         "976 valid unlinked source shapes; no ambiguous or rejected shapes",
-        "AC99-103 and shared PC17/18 context tested locally; deployment pending",
+        "AC99-103 and shared PC17/18 context deployed; current crosswalk remains unverified",
         "No population assigned; original-source/rendered/mobile audits deferred and flagged"
       ],
       "validation": {
@@ -4799,7 +4799,13 @@
           "assertions": 91,
           "result": "Passed"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 62295,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 80e362ab4f47141277e77623ee0541d1afc26947; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -4859,6 +4865,11 @@
           }
         ],
         "scope": "Dated 2008 order; current crosswalk unverified"
+      },
+      "deployment": {
+        "live_commit": "80e362ab4f47141277e77623ee0541d1afc26947",
+        "rollback_commit": "70b0a6bb173c89b6de279444c59e0aa87490e018",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and cache clearing"
       }
     },
     {
@@ -7366,10 +7377,10 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T19:06:56.021448+00:00",
-    "live_commit": "abe5d3c1b7a26355f30cf3559cd605edaeaff473",
-    "action": "Jalna district/shared PC17/18 context integrated locally; 19 tests and 91 assertions passed",
-    "next_action": "Refresh live files; narrow Jalna deployment under both locks with rollback/cache/backups; essential checks then continue Aurangabad; minor audits flagged"
+    "checked_at": "2026-10-11T19:12:38.539615+00:00",
+    "live_commit": "80e362ab4f47141277e77623ee0541d1afc26947",
+    "action": "Jalna deployed under both locks preserving concurrent changes; district HTTP200; local/GitHub backups verified",
+    "next_action": "Continue Aurangabad source/full membership rollout; Jalna PC/AC public checks and rendered/source/mobile audits remain flagged pending"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
