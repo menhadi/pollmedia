@@ -221,6 +221,42 @@
       "name": "Risod",
       "district": "Washim",
       "page": 256
+    },
+    {
+      "code": 34,
+      "name": "Washim (SC)",
+      "district": "Washim",
+      "page": 256
+    },
+    {
+      "code": 35,
+      "name": "Karanja",
+      "district": "Washim",
+      "page": 256
+    },
+    {
+      "code": 77,
+      "name": "Ralegaon (ST)",
+      "district": "Yavatmal",
+      "page": 259
+    },
+    {
+      "code": 78,
+      "name": "Yavatmal",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 79,
+      "name": "Digras",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 81,
+      "name": "Pusad",
+      "district": "Yavatmal",
+      "page": 260
     }
   ],
   "pcs": [
@@ -304,7 +340,20 @@
         33
       ],
       "page": 277
+    },
+    {
+      "code": 14,
+      "name": "Yavatmal-Washim",
+      "ac_codes": [
+        34,
+        35,
+        77,
+        78,
+        79,
+        81
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola district scopes; Nashik and Washim partial. PC5 Mehkar code25 corroborated separately;2008 literal5 retained."
+  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola,Washim district scopes;Nashik/Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
 }
