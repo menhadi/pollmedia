@@ -397,6 +397,90 @@
       "page": 125
     },
     {
+      "code": 66,
+      "name": "Tankara",
+      "district": "Rajkot",
+      "page": 125
+    },
+    {
+      "code": 67,
+      "name": "Wankaner",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 68,
+      "name": "Rajkot East",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 69,
+      "name": "Rajkot West",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 70,
+      "name": "Rajkot South",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 71,
+      "name": "Rajkot Rural (SC)",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 72,
+      "name": "Jasdan",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 73,
+      "name": "Gondal",
+      "district": "Rajkot",
+      "page": 126
+    },
+    {
+      "code": 74,
+      "name": "Jetpur",
+      "district": "Rajkot",
+      "page": 127
+    },
+    {
+      "code": 75,
+      "name": "Dhoraji",
+      "district": "Rajkot",
+      "page": 127
+    },
+    {
+      "code": 83,
+      "name": "Porbandar",
+      "district": "Porbandar",
+      "page": 128
+    },
+    {
+      "code": 84,
+      "name": "Kutiyana",
+      "district": "Porbandar",
+      "page": 128
+    },
+    {
+      "code": 85,
+      "name": "Manavadar",
+      "district": "Junagadh",
+      "page": 129
+    },
+    {
+      "code": 88,
+      "name": "Keshod",
+      "district": "Junagadh",
+      "page": 129
+    },
+    {
       "code": 115,
       "name": "Matar",
       "district": "Kheda",
@@ -551,6 +635,34 @@
         62,
         63,
         64
+      ],
+      "page": 147
+    },
+    {
+      "code": 10,
+      "name": "Rajkot",
+      "ac_codes": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72
+      ],
+      "page": 147
+    },
+    {
+      "code": 11,
+      "name": "Porbandar",
+      "ac_codes": [
+        73,
+        74,
+        75,
+        83,
+        84,
+        85,
+        88
       ],
       "page": 147
     },
