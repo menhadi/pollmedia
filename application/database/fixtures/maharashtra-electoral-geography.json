@@ -631,14 +631,50 @@
       "page": 261
     },
     {
+      "code": 105,
+      "name": "Kannad",
+      "district": "Aurangabad",
+      "page": 261
+    },
+    {
       "code": 106,
       "name": "Phulambri",
       "district": "Aurangabad",
       "page": 261
     },
     {
+      "code": 107,
+      "name": "Aurangabad Central",
+      "district": "Aurangabad",
+      "page": 262
+    },
+    {
+      "code": 108,
+      "name": "Aurangabad West (SC)",
+      "district": "Aurangabad",
+      "page": 262
+    },
+    {
+      "code": 109,
+      "name": "Aurangabad East",
+      "district": "Aurangabad",
+      "page": 262
+    },
+    {
       "code": 110,
       "name": "Paithan",
+      "district": "Aurangabad",
+      "page": 262
+    },
+    {
+      "code": 111,
+      "name": "Gangapur",
+      "district": "Aurangabad",
+      "page": 262
+    },
+    {
+      "code": 112,
+      "name": "Vaijapur",
       "district": "Aurangabad",
       "page": 262
     },
@@ -941,7 +977,20 @@
         110
       ],
       "page": 278
+    },
+    {
+      "code": 19,
+      "name": "Aurangabad",
+      "ac_codes": [
+        105,
+        107,
+        108,
+        109,
+        111,
+        112
+      ],
+      "page": 278
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence."
 }
