@@ -3611,19 +3611,54 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_membership_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/509/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "SOI CHANDRAPUR label retained; boundary edition unverified",
+        "1780 unlinked and 53 ambiguous source shapes; four invalid source shapes excluded without repair",
+        "Invalid source codes: blank twice, 540491, 541391",
+        "AC70-75 and PC13 integration pending; shared PC12 already includes AC73-74",
+        "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
-      }
+        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "source_map": "Archive hash verified; 1833 valid EPSG:4326 shapes; four invalid shapes excluded; no accepted Census/LGD joins"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1780,
+          "ambiguous": 53
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "",
+            "reason": "Invalid source shape"
+          },
+          {
+            "code": "",
+            "reason": "Invalid source shape"
+          },
+          {
+            "code": "540491",
+            "reason": "Invalid source shape"
+          },
+          {
+            "code": "541391",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI CHANDRAPUR label retained; Census name Chandrapur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "17c86c370df430339ae78acab85f4116d67748d5f89d956be20ea398952ddcbf"
     },
     {
       "district_code": "510",
@@ -6855,9 +6890,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:07:07.699132+00:00",
-    "live_commit": "f5db2e537d7bef5564991ca68db53186193140cf",
-    "action": "Gadchiroli five public pages checked; desktop map and displayed district figures observed",
-    "next_action": "Prepare Chandrapur source map and full AC70-75/PC13 scope; preserve pending original-source/mobile/PC-AC rendered audits across prior districts"
+    "checked_at": "2026-10-11T17:11:56.013082+00:00",
+    "live_commit": "d2c5f102ad0754b9672ea78900c16d3aa4d0b03a",
+    "action": "Prepared Chandrapur source map locally; 1833 valid shapes, 53 ambiguous codes, four invalid source shapes excluded without repair",
+    "next_action": "Audit complete Chandrapur PC13 cross-district membership; integrate AC70-75 plus outside PC13 segments; test and deploy under both locks; preserve outstanding audits"
   }
 }
