@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Thiruvallur,Chennai,Kancheepuram,Vellore,Tiruvannamalai and complete associated PC segments; other districts pending",
+  "scope": "Partial Tamil Nadu extraction through Viluppuram, retaining complete associated PC segments; other districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -370,6 +370,78 @@
       "name": "Mailam",
       "district": "Viluppuram",
       "page": null
+    },
+    {
+      "code": 72,
+      "name": "Tindivanam (SC)",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 73,
+      "name": "Vanur (SC)",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 74,
+      "name": "Viluppuram",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 75,
+      "name": "Vikravandi",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 76,
+      "name": "Tirukkoyilur",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 77,
+      "name": "Ulundurpettai",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 78,
+      "name": "Rishivandiyam",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 79,
+      "name": "Sankarapuram",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 80,
+      "name": "Kallakurichi (SC)",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 81,
+      "name": "Gangavalli (SC)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 82,
+      "name": "Attur (SC)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 83,
+      "name": "Yercaud (ST)",
+      "district": "Salem",
+      "page": null
     }
   ],
   "pcs": [
@@ -500,6 +572,32 @@
         69,
         70,
         71
+      ],
+      "page": 447
+    },
+    {
+      "code": 13,
+      "name": "Viluppuram (SC)",
+      "ac_codes": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77
+      ],
+      "page": 447
+    },
+    {
+      "code": 14,
+      "name": "Kallakurichi",
+      "ac_codes": [
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
       ],
       "page": 447
     }
