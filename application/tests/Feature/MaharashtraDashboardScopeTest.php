@@ -354,4 +354,12 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([3], array_column($links['parliamentary'], 'code'));
         $this->assertSame([11, 15, 20], array_column($links['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_mahesana_keeps_mansa_and_shared_patan_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Mahesana', 'Gujarat');
+        $this->assertSame(range(20, 26), array_column($links['assembly'], 'code'));
+        $this->assertSame([3, 4], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([37], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+    }
 }
