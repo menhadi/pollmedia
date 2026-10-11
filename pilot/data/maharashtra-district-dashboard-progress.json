@@ -1700,7 +1700,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_district_response_checked_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/502/dashboard",
       "flags": [
         "781 unlinked source shapes;boundary edition and Census/LGD joins unverified",
@@ -1714,7 +1714,20 @@
           "scope": "Washim AC33-35 and sharedPC6/PC14 outside segments;previous Maharashtra regressions"
         },
         "formatting": "Pint passed",
-        "remaining": "Locked deployment;public/rendered,mobile and canonical/source/election audits pending"
+        "remaining": "PC/AC public and rendered checks,mobile,canonical display and independent source/election audits pending",
+        "backup": "Local bundle verified;live commit pushed to GitHub codex/maharashtra-gujarat-live-backup",
+        "public_district": {
+          "http": 200,
+          "checks": {
+            "washim-villages.geojson": true,
+            "Risod": true,
+            "Karanja": true,
+            "Yavatmal": true,
+            "Ralegaon": true,
+            "data-history-chart": true
+          },
+          "scope": "Bounded response only;full rendered/data verification pending"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -1776,7 +1789,9 @@
           }
         ],
         "scope": "Dated2008 membership;current administrative and Census geometry correspondence unverified"
-      }
+      },
+      "deployed_commit": "527734b3357d5a0daac5b19c0eb04320f90bdbf3",
+      "rollback_commit": "a81780ece9bac4e92ddc93e8f82bf9aa93ca3c34"
     },
     {
       "district_code": "503",
