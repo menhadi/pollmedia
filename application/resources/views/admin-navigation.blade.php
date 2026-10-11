@@ -10,7 +10,7 @@ $groups = [
     ['Sources & imports','SI',[['Data imports','imports.index'],['Census archives','census.archive'],['Census publication','census-catalogue.review'],['Election archives','election-imports.index'],['Election batches','election-batches.index'],['Manual data corrections','site.editor'],['PDF storage','pdf-storage.index']]],
     ['Review & community','RV',[['Constituency map checks','elections.maps.review'],['Data and website reports','feedback.queue'],['Citizen issues','issues.queue'],['Representatives & authorities','authorities.index'],['Report drafts','reports.archive']]],
     ['Website & SEO','SE',[['Page SEO','seo.index'],['Static pages','static-pages.index'],['Hindi translations','translations.index']]],
-    ['Settings & operations','ST',[['Appearance, APIs & monitoring','site.manage'],['AI providers','ai.settings']]],
+    ['Settings & operations','ST',[['Maintenance mode','maintenance.index'],['Appearance, APIs & monitoring','site.manage'],['AI providers','ai.settings']]],
 ];
 @endphp
 @foreach($groups as [$group,$symbol,$items])
