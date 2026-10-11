@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Thiruvallur,Chennai,Kancheepuram,Vellore and complete associated PC segments; other districts pending",
+  "scope": "Thiruvallur,Chennai,Kancheepuram,Vellore,Tiruvannamalai and complete associated PC segments; other districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -334,6 +334,42 @@
       "name": "Kalasapakkam",
       "district": "Tiruvannamalai",
       "page": null
+    },
+    {
+      "code": 66,
+      "name": "Polur",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 67,
+      "name": "Arani",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 68,
+      "name": "Cheyyar",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 69,
+      "name": "Vandavasi (SC)",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 70,
+      "name": "Gingee",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 71,
+      "name": "Mailam",
+      "district": "Viluppuram",
+      "page": null
     }
   ],
   "pcs": [
@@ -451,6 +487,19 @@
         63,
         64,
         65
+      ],
+      "page": 447
+    },
+    {
+      "code": 12,
+      "name": "Arani",
+      "ac_codes": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
       ],
       "page": 447
     }
