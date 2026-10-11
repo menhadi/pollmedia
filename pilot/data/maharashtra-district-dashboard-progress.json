@@ -440,7 +440,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_checked_rendered_and_data_audits_pending",
+      "workflow_status": "public_and_representative_desktop_checked_remaining_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/498/dashboard",
       "flags": [
         "706 unlinked and5 ambiguous source shapes",
@@ -535,7 +535,12 @@
             }
           }
         ],
-        "rendered": "Pending",
+        "rendered": {
+          "district": "711 source shapes and compact colour map visually inspected",
+          "pc2": "48 map paths/8historySVGs; separate Dhule/Nashik populations and six segments",
+          "ac5": "302 map paths/8historySVGs; selector PC2 to AC5 works",
+          "remaining": "Other ACs,mobile,independent Census-original/historical/election source audits pending"
+        },
         "canonical_data": "Independent current value/source and historical/election audits pending; public value strings only checked",
         "dedicated_tests": {
           "tests": 3,
@@ -543,7 +548,13 @@
           "result": "Passed",
           "scope": "Shared PCs and Census context reload behavior"
         },
-        "backup": "Local live bundle verified and GitHub live-backup branch updated; no bundles deleted"
+        "backup": "Local live bundle verified and GitHub live-backup branch updated; no bundles deleted",
+        "canonical_display_audit": {
+          "population": 2050862,
+          "households": 408874,
+          "literacy_age7plus": 72.8,
+          "scope": "Displayed district values reconciled with canonical live service; not independent original-workbook verification"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -719,18 +730,33 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_membership_audit_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/499/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "Source boundary edition unverified",
+        "Accepted Census/LGD joins pending",
+        "Dated district/PC/AC membership and cross-district segments require audit",
+        "Integration,tests,deployment/public/rendered verification pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1542,
+          "ambiguous": 8
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI and Census 2011 use Jalgaon; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       }
     },
     {
@@ -5413,9 +5439,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:47:27.739366+00:00",
-    "live_commit": "3c126b438181e7be8ce12665dab7589d757b328f",
-    "action": "Dhule deployed under both locks preserving Siddharthnagar; district,2PCs and5ACs HTTP200; shared PC2 Nashik membership visible; backup verified",
-    "next_action": "Render Dhule district,AC5 and shared PC2; compare canonical district values; retain other AC/mobile/source audits pending, then prepare Jalgaon499"
+    "checked_at": "2026-10-11T13:51:49.187831+00:00",
+    "live_commit": "3a86873 Deploy Karnataka Udupi dashboards with source coverage notice",
+    "action": "Dhule district/PC2/AC5 desktop rendering and displayed canonical values checked; Jalgaon source map prepared; no live mutation",
+    "next_action": "Audit JalgaonAC10-20/PC3/PC4 including BuldhanaAC21 from preserved ECI order, integrate/test/deploy under both locks; keep outstanding Dhule audits flagged"
   }
 }
