@@ -1727,7 +1727,67 @@
             "data-history-chart": true
           },
           "scope": "Bounded response only;full rendered/data verification pending"
-        }
+        },
+        "public": [
+          {
+            "url": "https://pollmedia.org/india/districts/27/502/dashboard",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": false
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Akola",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Yavatmal-Washim",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true,
+              "yavatmal": true,
+              "shared_segment": true,
+              "not_combined": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Risod",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Washim",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Karanja",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          }
+        ],
+        "public_scope": "All6 pages HTTP200;bounded history/scope/context checks only. Full rendered/data verification pending."
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -1924,7 +1984,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_label_identified_map_build_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/503/dashboard",
       "flags": [
         "SOI boundary edition unverified",
@@ -1936,6 +1996,12 @@
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      },
+      "source_label_evidence": {
+        "Dist_LGD": "503",
+        "literal_district_label": "AMARĀWATI",
+        "source_record_count": 1999,
+        "scope": "Literal SOI label preserved;initial AMRAVATI label selection produced no shapes,not deployed"
       }
     },
     {
