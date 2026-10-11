@@ -2956,7 +2956,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/506/dashboard",
       "flags": [
         "892 unlinked and33 ambiguous source shapes;one invalid blank-code shape excluded without repair",
@@ -2970,7 +2970,12 @@
           "scope": "Bhandara sharedPC11 keepsGondiya AC63-65;Maharashtra regressions"
         },
         "formatting": "Pint passed",
-        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending"
+        "remaining": "PC/AC public/rendered,mobile and canonical/original-source/election audits pending",
+        "public_district": {
+          "http": 200,
+          "bytes": 63488,
+          "scope": "Curl response only;not full rendered/data verification"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -3024,7 +3029,9 @@
           }
         ],
         "scope": "DatedECI2008;no geometry equivalence claim"
-      }
+      },
+      "deployed_commit": "195393a16b34482fb8f2523f9a106dee596207a0",
+      "rollback_commit": "7aebc4ebcf3004c2abb2a960cbf365760932287e"
     },
     {
       "district_code": "507",
