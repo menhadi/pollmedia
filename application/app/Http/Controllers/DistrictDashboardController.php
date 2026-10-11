@@ -64,7 +64,7 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/vellore-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Vellore', 'Tamil Nadu');
         }
-        if ($state === '24' && in_array($district, ['468', '469', '470', '471', '472', '473', '474', '475', '476', '477', '478', '479', '480', '481', '482', '483', '484', '485'], true)) {
+        if ($state === '24' && in_array($district, ['468', '469', '470', '471', '472', '473', '474', '475', '476', '477', '478', '479', '480', '481', '482', '483', '484', '485', '486'], true)) {
             $gujaratDistrict = match ($district) {
                 '468' => 'Kachchh',
                 '469' => 'Banaskantha',
@@ -84,6 +84,7 @@ class DistrictDashboardController extends Controller
                 '483' => 'Kheda',
                 '484' => 'Panchmahals',
                 '485' => 'Dahod',
+                '486' => 'Vadodara',
                 '472' => 'Sabarkantha',
                 '473' => 'Gandhinagar',
                 '474' => 'Ahmedabad',
@@ -98,12 +99,10 @@ class DistrictDashboardController extends Controller
                 '483' => 'Kheda',
                 '484' => 'Panchmahals',
                 '485' => 'Dahod',
+                '486' => 'Vadodara',
             };
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($gujaratDistrict, 'Gujarat');
             $mapFile = 'maps/'.strtolower($gujaratDistrict).'-villages.geojson';
-        }
-        if ($state === '33' && $district === '610') {
-            $mapFile = 'maps/erode-villages.geojson';
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 

@@ -811,6 +811,18 @@
       "page": 139
     },
     {
+      "code": 135,
+      "name": "Savli",
+      "district": "Vadodara",
+      "page": 139
+    },
+    {
+      "code": 136,
+      "name": "Vaghodia",
+      "district": "Vadodara",
+      "page": 139
+    },
+    {
       "code": 137,
       "name": "Chhota Udaipur (ST)",
       "district": "Vadodara",
@@ -835,8 +847,44 @@
       "page": 140
     },
     {
+      "code": 141,
+      "name": "Vadodara City (SC)",
+      "district": "Vadodara",
+      "page": 140
+    },
+    {
+      "code": 142,
+      "name": "Sayajigunj",
+      "district": "Vadodara",
+      "page": 140
+    },
+    {
+      "code": 143,
+      "name": "Akota",
+      "district": "Vadodara",
+      "page": 140
+    },
+    {
+      "code": 144,
+      "name": "Raopura",
+      "district": "Vadodara",
+      "page": 141
+    },
+    {
+      "code": 145,
+      "name": "Manjalpur",
+      "district": "Vadodara",
+      "page": 141
+    },
+    {
       "code": 146,
       "name": "Padra",
+      "district": "Vadodara",
+      "page": 141
+    },
+    {
+      "code": 147,
+      "name": "Karjan",
       "district": "Vadodara",
       "page": 141
     },
@@ -845,6 +893,42 @@
       "name": "Nandod (ST)",
       "district": "Narmada",
       "page": 141
+    },
+    {
+      "code": 149,
+      "name": "Dediapada (ST)",
+      "district": "Narmada",
+      "page": 141
+    },
+    {
+      "code": 150,
+      "name": "Jambusar",
+      "district": "Bharuch",
+      "page": 141
+    },
+    {
+      "code": 151,
+      "name": "Vagra",
+      "district": "Bharuch",
+      "page": 141
+    },
+    {
+      "code": 152,
+      "name": "Jhagadia (ST)",
+      "district": "Bharuch",
+      "page": 141
+    },
+    {
+      "code": 153,
+      "name": "Bharuch",
+      "district": "Bharuch",
+      "page": 142
+    },
+    {
+      "code": 154,
+      "name": "Ankleshwar",
+      "district": "Bharuch",
+      "page": 142
     }
   ],
   "pcs": [
@@ -1115,6 +1199,20 @@
       "page": 148
     },
     {
+      "code": 20,
+      "name": "Vadodara",
+      "ac_codes": [
+        135,
+        136,
+        141,
+        142,
+        143,
+        144,
+        145
+      ],
+      "page": 148
+    },
+    {
       "code": 21,
       "name": "Chhota Udaipur (ST)",
       "ac_codes": [
@@ -1125,6 +1223,20 @@
         140,
         146,
         148
+      ],
+      "page": 148
+    },
+    {
+      "code": 22,
+      "name": "Bharuch",
+      "ac_codes": [
+        147,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154
       ],
       "page": 148
     }
