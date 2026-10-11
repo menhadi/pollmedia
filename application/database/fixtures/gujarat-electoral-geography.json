@@ -649,6 +649,48 @@
       "page": 133
     },
     {
+      "code": 108,
+      "name": "Khambhat",
+      "district": "Anand",
+      "page": 133
+    },
+    {
+      "code": 109,
+      "name": "Borsad",
+      "district": "Anand",
+      "page": 133
+    },
+    {
+      "code": 110,
+      "name": "Anklav",
+      "district": "Anand",
+      "page": 133
+    },
+    {
+      "code": 111,
+      "name": "Umreth",
+      "district": "Anand",
+      "page": 134
+    },
+    {
+      "code": 112,
+      "name": "Anand",
+      "district": "Anand",
+      "page": 134
+    },
+    {
+      "code": 113,
+      "name": "Petlad",
+      "district": "Anand",
+      "page": 134
+    },
+    {
+      "code": 114,
+      "name": "Sojitra",
+      "district": "Anand",
+      "page": 134
+    },
+    {
       "code": 115,
       "name": "Matar",
       "district": "Kheda",
@@ -887,6 +929,20 @@
         105,
         106,
         107
+      ],
+      "page": 148
+    },
+    {
+      "code": 16,
+      "name": "Anand",
+      "ac_codes": [
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114
       ],
       "page": 148
     },
