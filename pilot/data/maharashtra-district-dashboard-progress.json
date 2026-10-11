@@ -2592,7 +2592,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/505/dashboard",
       "flags": [
         "1911 unlinked and47 ambiguous source-code shapes;no population allocation",
@@ -2606,7 +2606,13 @@
           "scope": "Nagpur AC48-59 andPC9/10 complete membership;Maharashtra regressions"
         },
         "formatting": "Pint passed",
-        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending"
+        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending",
+        "backup": "Backup chain from verified Wardha commit verified locally;live backup ref fetched",
+        "public_district": {
+          "http": 200,
+          "bytes": 74313,
+          "scope": "Curl response only;full rendered/data verification pending"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -2677,7 +2683,9 @@
         "literal_source_notes": [
           "NagpurWest extent prints ward999;retained in original source,no ward geometry inferred"
         ]
-      }
+      },
+      "deployed_commit": "fc054cd83de6bfab8ba5b04a86ac2e2e20dec487",
+      "rollback_commit": "9f64952c0ce209f209ad213e1df6d78d4260eecf"
     },
     {
       "district_code": "506",
