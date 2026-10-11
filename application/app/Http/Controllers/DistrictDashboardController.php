@@ -53,6 +53,10 @@ class DistrictDashboardController extends Controller
         if ($state === '33' && $district === '605') {
             $mapFile = 'maps/vellore-villages.geojson';
         }
+        if ($state === '24' && $district === '468') {
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kachchh', 'Gujarat');
+            $mapFile = 'maps/kachchh-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
