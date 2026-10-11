@@ -1074,12 +1074,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_district_response_checked_rendered_and_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/500/dashboard",
       "flags": [
         "1431 unlinked source shapes and5 ambiguous-code shapes; no population allocation",
         "SOI BULDHANA and Census Buldana spelling preserved",
-        "ECI2008 literal5.Mehkar versus AC25 retained in visible note; separate official CEO list corroborates25. Local integration tested; live deployment and public/data/rendered verification pending."
+        "ECI2008 literal5.Mehkar versus AC25 retained in visible PC5 note; separate official CEO list corroborates25. Deployed; rendered and full data verification pending."
       ],
       "validation": {
         "public": "Pending",
@@ -1097,6 +1097,20 @@
           "expected": "3f0d7eeb50c519bb3f831fd5148615a7758c7a6f",
           "observed": "d54418ab0c881ba14679e5c2c905123a7c3601ee",
           "next": "Refresh live files and narrow patch; retain both locks"
+        },
+        "backup": "Local bundle verified; live commit pushed to GitHub codex/maharashtra-gujarat-live-backup",
+        "public_district": {
+          "http": "200 via curl --fail",
+          "html_checks": {
+            "buldhana-villages.geojson": true,
+            "2,586,258": true,
+            "561,504": true,
+            "83.40": true,
+            "Malkapur": true,
+            "Mehkar": true,
+            "Raver": true
+          },
+          "scope": "Bounded public HTML response only; rendered,all PC/AC responses,canonical original-source and election audits pending"
         }
       },
       "map_metadata": {
@@ -1159,7 +1173,9 @@
           ],
           "scope": "CEO Maharashtra district-wise PC list explicitly identifies25-Mehkar(SC) inPC5. This corroborates the name/code association; it does not establish historical geometry equivalence."
         }
-      }
+      },
+      "deployed_commit": "0264e55eb133e1e12378b6fd98979933fbcb1dea",
+      "rollback_commit": "728f5512fb1b9a759f606862fcfcf7248c8fa4a0"
     },
     {
       "district_code": "501",
