@@ -2592,7 +2592,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_full_membership_audit_pending",
+      "workflow_status": "source_map_and_membership_prepared_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/505/dashboard",
       "flags": [
         "1911 unlinked and47 ambiguous source-code shapes;no population allocation",
@@ -2618,7 +2618,61 @@
         "rejected": [],
         "note": "SOI NAGPUR label retained; Census name Nagpur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "9045a95e5f37bc5ff18ec9eba324eb79b615d84a5d03e78113a5c9474c5565e1"
+      "map_sha256": "9045a95e5f37bc5ff18ec9eba324eb79b615d84a5d03e78113a5c9474c5565e1",
+      "membership_evidence": {
+        "pdf_pages": [
+          257,
+          258,
+          277
+        ],
+        "visually_inspected_pdf_pages": [
+          257,
+          258,
+          277
+        ],
+        "ac_codes": [
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59
+        ],
+        "pcs": [
+          {
+            "code": 9,
+            "ac_codes": [
+              48,
+              49,
+              50,
+              51,
+              58,
+              59
+            ]
+          },
+          {
+            "code": 10,
+            "ac_codes": [
+              52,
+              53,
+              54,
+              55,
+              56,
+              57
+            ]
+          }
+        ],
+        "scope": "Dated ECI2008 membership;no current/Census geometry equivalence claim",
+        "literal_source_notes": [
+          "NagpurWest extent prints ward999;retained in original source,no ward geometry inferred"
+        ]
+      }
     },
     {
       "district_code": "506",
