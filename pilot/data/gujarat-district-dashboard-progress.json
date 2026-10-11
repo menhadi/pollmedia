@@ -4233,19 +4233,34 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_dashboard_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/488/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "660 unlinked and51 ambiguous shapes; no rejected shapes; no population assigned",
+        "Dashboard integration/deployment/public checks pending",
+        "Boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
-      }
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+        "sha256": "96d352052ff6bf03f7b7426c1faa3c8943c5bec2386addce66b5df02276b5994",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 660,
+          "ambiguous": 51
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI BHARUCH label retained; Census name Bharuch; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "f8ae3472ea94f841cf24e1cd0882457460837759372d4627f4f1b74f7199e97f"
     },
     {
       "district_code": "489",
@@ -5010,10 +5025,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T22:25:04.609040+00:00",
-    "live_commit": "02bb82d03b49be79f103d30886766e85cfc6bd3f",
-    "action": "Narmada deployed; public published totals/shared membership checked;53 tests passed; backups verified",
-    "next_action": "Continue Bharuch488; AC150-154/shared PC22 already audited; then The Dangs489"
+    "checked_at": "2026-10-11T22:29:02.740603+00:00",
+    "live_commit": "94e170f8c77601f5da307e567ff69b686a8dfea0",
+    "action": "Bharuch source map prepared:711 valid shapes; deployment pending",
+    "next_action": "Integrate Bharuch488 controller/switcher; AC150-154/shared PC22 already audited; test deploy under both locks and verify totals/backups"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
