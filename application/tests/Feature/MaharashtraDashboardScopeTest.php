@@ -270,4 +270,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([39], array_column($links['parliamentary'], 'code'));
         $this->assertSame([], $links['parliamentary'][0]['outside_district']);
     }
+
+    public function test_latur_keeps_shared_pc40_and_nanded_loha(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Latur', 'Maharashtra');
+        $this->assertSame(range(234, 239), array_column($links['assembly'], 'code'));
+        $this->assertSame([40, 41], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([240, 241, 242, 243, 246], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([88], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+    }
 }
