@@ -863,25 +863,37 @@
       "code": 182,
       "name": "Magadi",
       "district": "Bangalore Rural",
-      "page": 201
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 183,
       "name": "Ramanagaram",
       "district": "Bangalore Rural",
-      "page": 201
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 184,
       "name": "Kanakapura",
       "district": "Bangalore Rural",
-      "page": 201
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 185,
       "name": "Channapatna",
       "district": "Bangalore Rural",
-      "page": 201
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 150,
@@ -1064,25 +1076,37 @@
       "code": 178,
       "name": "Hosakote",
       "district": "Bangalore Rural",
-      "page": 200
+      "page": 200,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 179,
       "name": "Devanahalli (SC)",
       "district": "Bangalore Rural",
-      "page": 200
+      "page": 200,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 180,
       "name": "Doddaballapur",
       "district": "Bangalore Rural",
-      "page": 200
+      "page": 200,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 181,
       "name": "Nelamangala (SC)",
       "district": "Bangalore Rural",
-      "page": 201
+      "page": 201,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 186,
