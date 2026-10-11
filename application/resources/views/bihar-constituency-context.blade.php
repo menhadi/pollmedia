@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213'];
+$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207'];
 @endphp
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>

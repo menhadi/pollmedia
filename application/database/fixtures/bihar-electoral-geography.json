@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Twenty-three PCs recorded; remaining Bihar membership pending",
+  "coverage": "Twenty-four PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -983,6 +983,48 @@
       "district": "Supaul",
       "source_page_label": "3 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 33,
+      "name": "Khajauli",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 34,
+      "name": "Babubarhi",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 37,
+      "name": "Rajnagar (SC)",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 38,
+      "name": "Jhanjharpur",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 39,
+      "name": "Phulparas",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 40,
+      "name": "Laukaha",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1412,6 +1454,24 @@
       "cross_district_scope": [
         "Supaul",
         "Madhepura"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 7,
+      "name": "Jhanjharpur",
+      "ac_codes": [
+        33,
+        34,
+        37,
+        38,
+        39,
+        40
+      ],
+      "cross_district_scope": [
+        "Madhubani"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
