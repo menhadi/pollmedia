@@ -565,6 +565,48 @@
       "page": 130
     },
     {
+      "code": 94,
+      "name": "Dhari",
+      "district": "Amreli",
+      "page": 130
+    },
+    {
+      "code": 95,
+      "name": "Amreli",
+      "district": "Amreli",
+      "page": 131
+    },
+    {
+      "code": 96,
+      "name": "Lathi",
+      "district": "Amreli",
+      "page": 131
+    },
+    {
+      "code": 97,
+      "name": "Savarkundla",
+      "district": "Amreli",
+      "page": 131
+    },
+    {
+      "code": 98,
+      "name": "Rajula",
+      "district": "Amreli",
+      "page": 131
+    },
+    {
+      "code": 99,
+      "name": "Mahuva",
+      "district": "Bhavnagar",
+      "page": 131
+    },
+    {
+      "code": 101,
+      "name": "Gariadhar",
+      "district": "Bhavnagar",
+      "page": 132
+    },
+    {
       "code": 115,
       "name": "Matar",
       "district": "Kheda",
@@ -775,6 +817,20 @@
         91,
         92,
         93
+      ],
+      "page": 147
+    },
+    {
+      "code": 14,
+      "name": "Amreli",
+      "ac_codes": [
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        101
       ],
       "page": 147
     },
