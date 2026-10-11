@@ -185,6 +185,42 @@
       "name": "Jalgaon (Jamod)",
       "district": "Buldhana",
       "page": 256
+    },
+    {
+      "code": 28,
+      "name": "Akot",
+      "district": "Akola",
+      "page": 256
+    },
+    {
+      "code": 29,
+      "name": "Balapur",
+      "district": "Akola",
+      "page": 256
+    },
+    {
+      "code": 30,
+      "name": "Akola West",
+      "district": "Akola",
+      "page": 256
+    },
+    {
+      "code": 31,
+      "name": "Akola East",
+      "district": "Akola",
+      "page": 256
+    },
+    {
+      "code": 32,
+      "name": "Murtizapur (SC)",
+      "district": "Akola",
+      "page": 256
+    },
+    {
+      "code": 33,
+      "name": "Risod",
+      "district": "Washim",
+      "page": 256
     }
   ],
   "pcs": [
@@ -255,7 +291,20 @@
       "source_code_note": "ECI2008 prints5.Mehkar(SC); Assembly entry25 and separate CEO Maharashtra PC list corroborate25. Literal discrepancy retained.",
       "corroborating_url": "https://ceoelection.maharashtra.gov.in/Downloads/PDF/PCs.pdf",
       "corroborating_sha256": "ce584af93d9b86fcbc7330cdf3ff60b06a924dfecc0799d10785b25a50c98210"
+    },
+    {
+      "code": 6,
+      "name": "Akola",
+      "ac_codes": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana district scopes; Nashik partial. PC5 Mehkar code25 corroborated separately;2008 literal5 retained in source note."
+  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola district scopes; Nashik and Washim partial. PC5 Mehkar code25 corroborated separately;2008 literal5 retained."
 }
