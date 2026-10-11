@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirty PCs recorded; remaining Bihar membership pending",
+  "coverage": "Thirty-two PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1318,6 +1318,90 @@
       ],
       "alias_source_url": "https://nawada.nic.in/public-representatives/",
       "alias_note": "District page corroborates identical AC code; CEO spelling preserved"
+    },
+    {
+      "code": 180,
+      "name": "Bakhtiarpur",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 181,
+      "name": "Digha",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 182,
+      "name": "Bankipur",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 183,
+      "name": "Kumhrar",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 184,
+      "name": "Patna Sahib",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 185,
+      "name": "Fatuha",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 186,
+      "name": "Danapur",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 187,
+      "name": "Maner",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 188,
+      "name": "Phulwari (SC)",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 189,
+      "name": "Masaurhi (SC)",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 190,
+      "name": "Paliganj",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 191,
+      "name": "Bikram",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1877,6 +1961,42 @@
       "cross_district_scope": [
         "Sheikhpura",
         "Nawada"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 30,
+      "name": "Patna Sahib",
+      "ac_codes": [
+        180,
+        181,
+        182,
+        183,
+        184,
+        185
+      ],
+      "cross_district_scope": [
+        "Patna"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 31,
+      "name": "Pataliputra",
+      "ac_codes": [
+        186,
+        187,
+        188,
+        189,
+        190,
+        191
+      ],
+      "cross_district_scope": [
+        "Patna"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
