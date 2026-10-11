@@ -601,10 +601,52 @@
       "page": 131
     },
     {
+      "code": 100,
+      "name": "Talaja",
+      "district": "Bhavnagar",
+      "page": 131
+    },
+    {
       "code": 101,
       "name": "Gariadhar",
       "district": "Bhavnagar",
       "page": 132
+    },
+    {
+      "code": 102,
+      "name": "Palitana",
+      "district": "Bhavnagar",
+      "page": 132
+    },
+    {
+      "code": 103,
+      "name": "Bhavnagar Rural",
+      "district": "Bhavnagar",
+      "page": 132
+    },
+    {
+      "code": 104,
+      "name": "Bhavnagar East",
+      "district": "Bhavnagar",
+      "page": 133
+    },
+    {
+      "code": 105,
+      "name": "Bhavnagar West",
+      "district": "Bhavnagar",
+      "page": 133
+    },
+    {
+      "code": 106,
+      "name": "Gadhada (SC)",
+      "district": "Bhavnagar",
+      "page": 133
+    },
+    {
+      "code": 107,
+      "name": "Botad",
+      "district": "Bhavnagar",
+      "page": 133
     },
     {
       "code": 115,
@@ -833,6 +875,20 @@
         101
       ],
       "page": 147
+    },
+    {
+      "code": 15,
+      "name": "Bhavnagar",
+      "ac_codes": [
+        100,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107
+      ],
+      "page": 148
     },
     {
       "code": 17,
