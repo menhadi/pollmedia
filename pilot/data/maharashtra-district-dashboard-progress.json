@@ -3885,7 +3885,13 @@
           "bytes": 68783,
           "scope": "Response only; not full data verification"
         },
-        "backup": "Local live bundle verified; GitHub backup branch verified at 9f4c33bc457bfb959fb289d35a4c022fef8f5bb8; no backups deleted"
+        "backup": "Local live bundle verified; GitHub backup branch verified at 9f4c33bc457bfb959fb289d35a4c022fef8f5bb8; no backups deleted",
+        "public_pages": {
+          "count": 11,
+          "result": "All HTTP200; district, PCs13/14/15 and AC76-82 contain history/scope; constituency Census context present; PC15 Nanded/Hingoli segments and separate-populations warning present",
+          "scope": "Bounded response/content checks only; not full data verification",
+          "server_evidence_prefix": "/home/pollmedia/tmp/maharashtra-yavatmal-check-"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -7055,9 +7061,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:48:10.853854+00:00",
+    "checked_at": "2026-10-11T17:52:15.732190+00:00",
     "live_commit": "9f4c33bc457bfb959fb289d35a4c022fef8f5bb8",
-    "action": "Yavatmal deployed under both locks; district HTTP200; local and GitHub backups verified",
-    "next_action": "Check Yavatmal district, three PCs and seven ACs; rendered/source/mobile audits pending; then Nanded full scope"
+    "action": "Yavatmal eleven public pages passed bounded response/content checks; shared PC15 Nanded/Hingoli context retained",
+    "next_action": "Render Yavatmal district/PC15 and reconcile original sources; mobile and earlier district audits pending; prepare Nanded full scope"
   }
 }
