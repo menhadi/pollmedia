@@ -37,12 +37,6 @@
       "page": 254
     },
     {
-      "code": 9,
-      "name": "Shirpur (ST)",
-      "district": "Dhule",
-      "page": 254
-    },
-    {
       "code": 6,
       "name": "Dhule Rural",
       "district": "Dhule",
@@ -61,22 +55,10 @@
       "page": 254
     },
     {
-      "code": 114,
-      "name": "Malegaon Central",
-      "district": "Nashik",
-      "page": 262
-    },
-    {
-      "code": 115,
-      "name": "Malegaon Outer",
-      "district": "Nashik",
-      "page": 262
-    },
-    {
-      "code": 116,
-      "name": "Baglan (ST)",
-      "district": "Nashik",
-      "page": 262
+      "code": 9,
+      "name": "Shirpur (ST)",
+      "district": "Dhule",
+      "page": 254
     },
     {
       "code": 10,
@@ -233,30 +215,6 @@
       "name": "Karanja",
       "district": "Washim",
       "page": 256
-    },
-    {
-      "code": 77,
-      "name": "Ralegaon (ST)",
-      "district": "Yavatmal",
-      "page": 259
-    },
-    {
-      "code": 78,
-      "name": "Yavatmal",
-      "district": "Yavatmal",
-      "page": 260
-    },
-    {
-      "code": 79,
-      "name": "Digras",
-      "district": "Yavatmal",
-      "page": 260
-    },
-    {
-      "code": 81,
-      "name": "Pusad",
-      "district": "Yavatmal",
-      "page": 260
     },
     {
       "code": 36,
@@ -437,6 +395,84 @@
       "name": "Gondiya",
       "district": "Gondiya",
       "page": 259
+    },
+    {
+      "code": 66,
+      "name": "Amgaon (ST)",
+      "district": "Gondiya",
+      "page": 259
+    },
+    {
+      "code": 67,
+      "name": "Armori (ST)",
+      "district": "Gadchiroli",
+      "page": 259
+    },
+    {
+      "code": 68,
+      "name": "Gadchiroli (ST)",
+      "district": "Gadchiroli",
+      "page": 259
+    },
+    {
+      "code": 69,
+      "name": "Aheri (ST)",
+      "district": "Gadchiroli",
+      "page": 259
+    },
+    {
+      "code": 73,
+      "name": "Brahmapuri",
+      "district": "Chandrapur",
+      "page": 259
+    },
+    {
+      "code": 74,
+      "name": "Chimur",
+      "district": "Chandrapur",
+      "page": 259
+    },
+    {
+      "code": 77,
+      "name": "Ralegaon (ST)",
+      "district": "Yavatmal",
+      "page": 259
+    },
+    {
+      "code": 78,
+      "name": "Yavatmal",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 79,
+      "name": "Digras",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 81,
+      "name": "Pusad",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 114,
+      "name": "Malegaon Central",
+      "district": "Nashik",
+      "page": 262
+    },
+    {
+      "code": 115,
+      "name": "Malegaon Outer",
+      "district": "Nashik",
+      "page": 262
+    },
+    {
+      "code": 116,
+      "name": "Baglan (ST)",
+      "district": "Nashik",
+      "page": 262
     }
   ],
   "pcs": [
@@ -598,7 +634,20 @@
         65
       ],
       "page": 277
+    },
+    {
+      "code": 12,
+      "name": "Gadchiroli-Chimur (ST)",
+      "ac_codes": [
+        66,
+        67,
+        68,
+        69,
+        73,
+        74
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola,Washim,Amravati,Wardha,Nagpur district scopes;Nashik/Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara and Gondiya scopes; Nashik, Yavatmal and Chandrapur partial. Gadchiroli membership recorded for shared PC12; dashboard integration pending. PC5 literal Mehkar code discrepancy retained and corroborated separately."
 }
