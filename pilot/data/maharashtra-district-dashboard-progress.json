@@ -147,7 +147,13 @@
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "existing_feature_tests": {
+          "tests": 4,
+          "assertions": 53,
+          "result": "Passed",
+          "scope": "DistrictReportTest and CensusProfileSummaryTest; dedicated Nandurbar shared-PC and reload verification remains pending"
+        }
       },
       "membership_evidence": {
         "electoral_source": {
@@ -5198,7 +5204,7 @@
   "last_run": {
     "checked_at": "2026-10-11T13:22:37.000783+00:00",
     "live_commit": "40e0978",
-    "action": "Prepared Nandurbar controller, dated fixture, selector and district context preserving shared PC1 Dhule membership; PHP syntax/Pint passed; feature tests pending",
+    "action": "Prepared and committed Nandurbar integration; Pint, PHP syntax and4 existing feature tests/53 assertions passed; no deployment",
     "next_action": "Finish bounded feature checks and dedicated Nandurbar shared-PC/reload validation, then create fresh live narrow patch and deploy under both locks; public/rendered checks and backups pending"
   }
 }
