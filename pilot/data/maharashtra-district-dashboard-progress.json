@@ -3860,19 +3860,36 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_membership_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/510/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "SOI YAVATMAL label retained; boundary edition unverified",
+        "2141 unlinked and 4 ambiguous source shapes; no rejected shapes",
+        "AC76-82 complete district integration pending; PC13/14 partial district links already recorded; additional PC scope must be audited",
+        "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
-      }
+        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "source_map": "Archive hash verified; 2145 valid EPSG:4326 shapes; no accepted Census/LGD joins"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 2141,
+          "ambiguous": 4
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI YAVATMAL label retained; Census name Yavatmal; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "c8dae2d228c0d2fb281f2ee1b37f8fc39b20c4e7a74aca126f8d1b94b5e977cd"
     },
     {
       "district_code": "511",
@@ -6959,9 +6976,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:26:59.907071+00:00",
+    "checked_at": "2026-10-11T17:31:50.324265+00:00",
     "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
-    "action": "Chandrapur nine public pages passed bounded response/content checks; PC13 shared Yavatmal segments retained",
-    "next_action": "Render Chandrapur district and PC13; original-source/mobile/data audits pending; prepare Yavatmal full source scope"
+    "action": "Prepared Yavatmal source map locally: 2145 valid shapes, 4 ambiguous codes, no rejected shapes",
+    "next_action": "Audit AC82 parliamentary membership and outside district segments; integrate Yavatmal full AC76-82 and deduplicated shared PCs; test and deploy under both locks; preserve pending prior audits"
   }
 }
