@@ -216,4 +216,12 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([6, 7, 8], array_column($links['parliamentary'][0]['outside_district'], 'code'));
         $this->assertSame(['Dhule', 'Dhule', 'Dhule'], array_column($links['parliamentary'][0]['outside_district'], 'district'));
     }
+
+    public function test_thane_retains_pre_split_electoral_scope(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Thane', 'Maharashtra');
+        $this->assertSame(range(128, 151), array_column($links['assembly'], 'code'));
+        $this->assertSame([22, 23, 24, 25], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([], $links['parliamentary'][0]['outside_district']);
+    }
 }

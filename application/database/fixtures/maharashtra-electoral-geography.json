@@ -769,6 +769,150 @@
       "page": 263
     },
     {
+      "code": 128,
+      "name": "Dahanu (ST)",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 129,
+      "name": "Vikramgad (ST)",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 130,
+      "name": "Palghar (ST)",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 131,
+      "name": "Boisar (ST)",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 132,
+      "name": "Nalasopara",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 133,
+      "name": "Vasai",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 134,
+      "name": "Bhiwandi Rural (ST)",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 135,
+      "name": "Shahapur (ST)",
+      "district": "Thane",
+      "page": 263
+    },
+    {
+      "code": 136,
+      "name": "Bhiwandi West",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 137,
+      "name": "Bhiwandi East",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 138,
+      "name": "Kalyan West",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 139,
+      "name": "Murbad",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 140,
+      "name": "Ambernath (SC)",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 141,
+      "name": "Ulhasnagar",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 142,
+      "name": "Kalyan East",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 143,
+      "name": "Dombivali",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 144,
+      "name": "Kalyan Rural",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 145,
+      "name": "Mira Bhayandar",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 146,
+      "name": "Ovala-Majiwada",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 147,
+      "name": "Kopri-Pachpakhadi",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 148,
+      "name": "Thane",
+      "district": "Thane",
+      "page": 264
+    },
+    {
+      "code": 149,
+      "name": "Mumbra-Kalwa",
+      "district": "Thane",
+      "page": 265
+    },
+    {
+      "code": 150,
+      "name": "Airoli",
+      "district": "Thane",
+      "page": 265
+    },
+    {
+      "code": 151,
+      "name": "Belapur",
+      "district": "Thane",
+      "page": 265
+    },
+    {
       "code": 234,
       "name": "Latur Rural",
       "district": "Latur",
@@ -1088,7 +1232,59 @@
         127
       ],
       "page": 278
+    },
+    {
+      "code": 22,
+      "name": "Palghar (ST)",
+      "ac_codes": [
+        128,
+        129,
+        130,
+        131,
+        132,
+        133
+      ],
+      "page": 278
+    },
+    {
+      "code": 23,
+      "name": "Bhiwandi",
+      "ac_codes": [
+        134,
+        135,
+        136,
+        137,
+        138,
+        139
+      ],
+      "page": 278
+    },
+    {
+      "code": 24,
+      "name": "Kalyan",
+      "ac_codes": [
+        140,
+        141,
+        142,
+        143,
+        144,
+        149
+      ],
+      "page": 278
+    },
+    {
+      "code": 25,
+      "name": "Thane",
+      "ac_codes": [
+        145,
+        146,
+        147,
+        148,
+        150,
+        151
+      ],
+      "page": 278
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278. Thane dated AC128-151/PC22-25 complete; later SOI Thane517 excludes Palghar601, without reconstructing Census2011 geography."
 }
