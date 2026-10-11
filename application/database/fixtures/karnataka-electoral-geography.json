@@ -1059,6 +1059,54 @@
       "name": "Nelamangala (SC)",
       "district": "Bangalore Rural",
       "page": 201
+    },
+    {
+      "code": 186,
+      "name": "Malavalli (SC)",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 187,
+      "name": "Maddur",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 188,
+      "name": "Melukote",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 189,
+      "name": "Mandya",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 190,
+      "name": "Srirangapatna",
+      "district": "Mandya",
+      "page": 202
+    },
+    {
+      "code": 191,
+      "name": "Nagamangala",
+      "district": "Mandya",
+      "page": 202
+    },
+    {
+      "code": 192,
+      "name": "Krishnarajpet",
+      "district": "Mandya",
+      "page": 202
+    },
+    {
+      "code": 211,
+      "name": "Krishnarajanagara",
+      "district": "Mysore",
+      "page": 204
     }
   ],
   "pcs": [
@@ -1391,6 +1439,21 @@
         181
       ],
       "page": 209
+    },
+    {
+      "code": 20,
+      "name": "Mandya",
+      "ac_codes": [
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        211
+      ],
+      "page": 208
     }
   ],
   "flags": [
