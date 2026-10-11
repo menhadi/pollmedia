@@ -1984,7 +1984,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_shared_pc_membership_prepared_integration_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/503/dashboard",
       "flags": [
         "Literal SOI AMARĀWATI retained;1986 unlinked and12 ambiguous shapes",
@@ -1992,9 +1992,14 @@
         "SharedPC8 includesWardha AC44-47;integration/tests/deployment and audits pending"
       ],
       "validation": {
-        "public": "Pending",
-        "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "dedicated_tests": {
+          "tests": 8,
+          "assertions": 40,
+          "result": "Passed",
+          "scope": "Amravati AC36-43,PC7/8 and outsideWardha AC44-47;previous Maharashtra regressions"
+        },
+        "formatting": "Pint passed",
+        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending"
       },
       "source_label_evidence": {
         "Dist_LGD": "503",
