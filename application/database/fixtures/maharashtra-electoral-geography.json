@@ -401,6 +401,42 @@
       "name": "Ramtek",
       "district": "Nagpur",
       "page": 258
+    },
+    {
+      "code": 60,
+      "name": "Tumsar",
+      "district": "Bhandara",
+      "page": 258
+    },
+    {
+      "code": 61,
+      "name": "Bhandara (SC)",
+      "district": "Bhandara",
+      "page": 258
+    },
+    {
+      "code": 62,
+      "name": "Sakoli",
+      "district": "Bhandara",
+      "page": 258
+    },
+    {
+      "code": 63,
+      "name": "Arjuni Morgaon (SC)",
+      "district": "Gondiya",
+      "page": 258
+    },
+    {
+      "code": 64,
+      "name": "Tirora",
+      "district": "Gondiya",
+      "page": 259
+    },
+    {
+      "code": 65,
+      "name": "Gondiya",
+      "district": "Gondiya",
+      "page": 259
     }
   ],
   "pcs": [
@@ -547,6 +583,19 @@
         55,
         56,
         57
+      ],
+      "page": 277
+    },
+    {
+      "code": 11,
+      "name": "Bhandara-Gondiya",
+      "ac_codes": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65
       ],
       "page": 277
     }
