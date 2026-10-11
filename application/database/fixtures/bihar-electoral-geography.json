@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka, Begusarai and Arrah PCs only; other Bihar seats pending",
+  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka, Begusarai, Arrah and Bhagalpur PCs only; other Bihar seats pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -311,6 +311,48 @@
       "district": "Bhojpur",
       "source_page_label": "9 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 152,
+      "name": "Bihpur",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 153,
+      "name": "Gopalpur",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 154,
+      "name": "Pirpainti (SC)",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 155,
+      "name": "Kahalgaon",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 156,
+      "name": "Bhagalpur",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 158,
+      "name": "Nathnagar",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -437,6 +479,24 @@
       ],
       "cross_district_scope": [
         "Bhojpur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 26,
+      "name": "Bhagalpur",
+      "ac_codes": [
+        152,
+        153,
+        154,
+        155,
+        156,
+        158
+      ],
+      "cross_district_scope": [
+        "Bhagalpur"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
