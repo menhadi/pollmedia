@@ -730,7 +730,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "integration_tested_deployment_pending",
+      "workflow_status": "deployed_bounded_public_checks_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/499/dashboard",
       "flags": [
         "Source boundary edition unverified",
@@ -739,14 +739,145 @@
         "Integration,tests,deployment/public/rendered verification pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": [
+          {
+            "url": "https://pollmedia.org/india/districts/27/499/dashboard",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": false
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Jalgaon",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Raver",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true,
+              "buldhana": true,
+              "shared_segment": true,
+              "not_combined": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Chopda",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Raver",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Bhusawal",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Jalgaon+City",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Jalgaon+Rural",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Amalner",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Erandol",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Chalisgaon",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Pachora",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Jamner",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Muktainagar",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          }
+        ],
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "canonical_data": "Independent current/source and historical/election audits pending; public markers do not establish full verification",
         "dedicated_tests": {
           "tests": 4,
           "assertions": 21,
           "result": "Passed"
-        }
+        },
+        "backup": "Local live bundle verified; GitHub live backup branch updated; no bundles deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -792,7 +923,9 @@
           4
         ],
         "shared_pc4": "Raver AC10/11/12/19/20 plus MalkapurAC21,Buldhana district; Buldhana full scope remains partial"
-      }
+      },
+      "deployed_commit": "aeebbac7bb2439f766903fe22eadfc5eacb8d6d6",
+      "rollback_commit": "ec193ff877a36aec88925e3b29883b8dd7619964"
     },
     {
       "district_code": "500",
@@ -5474,9 +5607,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:56:38.213798+00:00",
-    "live_commit": "ec193ff",
-    "action": "Jalgaon membership audited and integration prepared with shared Raver BuldhanaAC21;4tests21assertions passed; no live changes",
-    "next_action": "Deploy fresh narrow Jalgaon499 patch under both shared locks, preserving live HEAD/concurrent updates; backup and public/rendered/canonical-value checks remain pending"
+    "checked_at": "2026-10-11T14:02:52.381673+00:00",
+    "live_commit": "aeebbac7bb2439f766903fe22eadfc5eacb8d6d6",
+    "action": "Jalgaon deployed under both locks preserving Sitapur; bounded district/2PC/11AC checks saved; local live bundle verified and GitHub backup updated",
+    "next_action": "Inspect Jalgaon district,AC10 and shared RaverPC4 rendering; reconcile displayed canonical figures, preserve any failed checks; then prepare Buldana500 with source spelling/PC5 printed code conflict review"
   }
 }
