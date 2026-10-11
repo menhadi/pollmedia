@@ -349,18 +349,81 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/469/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "1209 unlinked and50 ambiguous shapes; no rejected shapes; no population assigned",
+        "Banas Kantha/Banaskantha source names retained; boundary edition/later splits unverified",
+        "VavAC7 source includes Kesargadh Patan village; district heading does not prove exclusive geography",
+        "Shared PC3 retains Patan16-19/Mahesana20; detailed rendered/source/election/mobile audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "District HTTP200 and shared outside membership present; detailed PC/AC/rendered/mobile/election audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 3120506,
+          "households": 560411,
+          "public_match": true,
+          "scope": "Receipt-joined fresh service totals match public HTML; source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 35,
+          "assertions": 156,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHub4ed94f32dcb2aca2b65e5f11c88f4c1428ed1f48 verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+        "sha256": "96d352052ff6bf03f7b7426c1faa3c8943c5bec2386addce66b5df02276b5994",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1209,
+          "ambiguous": 50
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI BANASKANTHA label retained; Census name Banas Kantha; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "b2c88d89fb7a627390b42f0d354a4390a816a51e0ffeebbad4e9865c93306d14",
+      "membership_evidence": {
+        "pdf_pages": [
+          117,
+          118,
+          119,
+          120,
+          147
+        ],
+        "visually_inspected_pdf_pages": [
+          117,
+          118,
+          119,
+          120,
+          147
+        ],
+        "ac_codes": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "pcs": [
+          2,
+          3
+        ]
+      },
+      "deployment": {
+        "live_commit": "4ed94f32dcb2aca2b65e5f11c88f4c1428ed1f48",
+        "rollback_commit": "2cfe02b3d7f095126251722dccffb23a7db70d26",
+        "locks": "Both flock -n held across fresh HEAD narrow Gujarat patch/map commit cache clearing"
       }
     },
     {
@@ -3881,10 +3944,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T20:49:06.881967+00:00",
-    "live_commit": "6b059acd7639771fd4120aa25ee7eff53b6264dd",
-    "action": "Kachchh deployed under both locks; published district totals match public page; PC1/Abdasa context received; backups verified",
-    "next_action": "Continue Banas Kantha/Banaskantha AC7-15 and PCs2/3; preserve partial Patan/Mahesana scopes and later splits; minor audits flagged"
+    "checked_at": "2026-10-11T20:54:45.077438+00:00",
+    "live_commit": "4ed94f32dcb2aca2b65e5f11c88f4c1428ed1f48",
+    "action": "Banaskantha deployed; published totals and outside membership match public page;35 tests passed; backups verified",
+    "next_action": "Continue Patan district map/dashboard; AC16-19/PC3 already audited; Mahesana20 partial and later splits flagged"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
