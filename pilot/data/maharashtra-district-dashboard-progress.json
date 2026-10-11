@@ -3198,7 +3198,12 @@
           "result": "Passed",
           "scope": "Shared PC11/12 outside district segments retained"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "deployment_preflight": {
+          "result": "Aborted before mutation",
+          "live_commit": "d47bf80d496aee44b4e19adf8a1f8a110a53d49f",
+          "reason": "Concurrent controller changes caused patch check failure; both locks acquired, no patch/import/commit applied"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -6780,9 +6785,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T16:37:54.240113+00:00",
-    "live_commit": "195393a16b34482fb8f2523f9a106dee596207a0",
-    "action": "Gondiya dashboard and dated shared constituency integration prepared locally; 12 tests and 57 assertions passed",
-    "next_action": "Refresh live four deployment files; generate narrow patch; deploy Gondiya under both locks with rollback and backup; verify public/rendered/data scope"
+    "checked_at": "2026-10-11T16:43:29.431447+00:00",
+    "live_commit": "d47bf80d496aee44b4e19adf8a1f8a110a53d49f",
+    "action": "Gondiya deployment aborted safely before mutation when narrow controller patch no longer applied after concurrent deployment",
+    "next_action": "Redownload current live controller and own fixture/views; rebuild narrow Maharashtra-only patch and retry fresh HEAD under both locks; public/rendered/data verification follows"
   }
 }
