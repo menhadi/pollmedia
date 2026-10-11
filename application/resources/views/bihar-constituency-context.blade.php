@@ -6,14 +6,14 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207','Muzaffarpur'=>'216','Nalanda'=>'229'];
+$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207','Muzaffarpur'=>'216','Nalanda'=>'229','Pashchim Champaran'=>'203'];
 @endphp
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>
 <p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Membership follows preserved official CEO sources.</p>
 <p class="notice">District figures are context, never constituency population. Boundary edition and Census/LGD correspondence remain unverified. The Bihar membership fixture remains partial; recorded PC segment lists are preserved. Population is never allocated by polygon area.</p>
 <p class="notice">District references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
-<ul>@foreach($segments as $segment)<li>AC {{ $segment['code'] }} · {{ $segment['name'] }} · {{ $segment['district'] }}</li>@endforeach</ul>
+<ul>@foreach($segments as $segment)<li>AC {{ $segment['code'] }} · {{ $segment['name'] }} · {{ $segment['district'] }}@if(isset($segment['source_district_name'])) (CEO source: {{ $segment['source_district_name'] }}; boundary correspondence unverified)@endif</li>@endforeach</ul>
 @foreach($districtNames as $district)
 @if(isset($codes[$district]))
 @php($context=app(\App\Services\DistrictDashboardData::class)->published($codes[$district],'10'))

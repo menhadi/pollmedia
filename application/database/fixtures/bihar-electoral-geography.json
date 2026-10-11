@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Twenty-seven PCs recorded; remaining Bihar membership pending",
+  "coverage": "Twenty-nine PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1158,6 +1158,114 @@
       "district": "Nalanda",
       "source_page_label": "9 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 1,
+      "name": "Valmiki Nagar",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 2,
+      "name": "Ramnagar (SC)",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 3,
+      "name": "Narkatiaganj",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 4,
+      "name": "Bagaha",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 5,
+      "name": "Lauriya",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 6,
+      "name": "Nautan",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 7,
+      "name": "Chanpatia",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 8,
+      "name": "Bettiah",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 9,
+      "name": "Sikta",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 10,
+      "name": "Raxaul",
+      "district": "Purba Champaran",
+      "source_district_name": "Purvi Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 11,
+      "name": "Sugauli",
+      "district": "Purba Champaran",
+      "source_district_name": "Purvi Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 12,
+      "name": "Narkatia",
+      "district": "Purba Champaran",
+      "source_district_name": "Purvi Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
     }
   ],
   "pcs": [
@@ -1661,6 +1769,43 @@
       ],
       "cross_district_scope": [
         "Nalanda"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 1,
+      "name": "Valmiki Nagar",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        9
+      ],
+      "cross_district_scope": [
+        "Pashchim Champaran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 2,
+      "name": "Paschim Champaran",
+      "ac_codes": [
+        6,
+        7,
+        8,
+        10,
+        11,
+        12
+      ],
+      "cross_district_scope": [
+        "Pashchim Champaran",
+        "Purba Champaran"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
