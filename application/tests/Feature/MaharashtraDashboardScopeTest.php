@@ -462,4 +462,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([57, 58], array_column($links['parliamentary'][0]['outside_district'], 'code'));
         $this->assertSame([122, 124, 125, 126, 127], array_column($links['parliamentary'][1]['outside_district'], 'code'));
     }
+
+    public function test_panchmahals_retains_three_shared_pc_scopes(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Panchmahals', 'Gujarat');
+        $this->assertSame(range(122, 128), array_column($links['assembly'], 'code'));
+        $this->assertSame([18, 19, 21], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([129, 130, 131, 132, 133, 134], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $this->assertSame([137, 138, 139, 140, 146, 148], array_column($links['parliamentary'][2]['outside_district'], 'code'));
+    }
 }
