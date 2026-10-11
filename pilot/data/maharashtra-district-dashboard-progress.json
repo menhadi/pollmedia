@@ -4107,12 +4107,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/511/dashboard",
       "flags": [
         "SOI literal label N>NDED retained; boundary edition unverified",
         "1685 valid unlinked source shapes; no ambiguous or rejected shapes",
-        "AC83-91 and shared PC15/16/41 context tested locally; deployment pending",
+        "AC83-91 and shared PC15/16/41 context deployed; current crosswalk remains unverified",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
@@ -4126,7 +4126,13 @@
           "result": "Passed",
           "scope": "Nanded PCs15/16/41 retain Yavatmal, Hingoli and Latur segments; PC16 has no outside district segments"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 68677,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 53cdd9be5fe83f44363e45c6f6a58a5bb001e51c; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -4203,6 +4209,11 @@
           }
         ],
         "scope": "Dated 2008 order; Loha AC88 is part of shared Latur PC41; current crosswalk unverified"
+      },
+      "deployment": {
+        "live_commit": "53cdd9be5fe83f44363e45c6f6a58a5bb001e51c",
+        "rollback_commit": "ad19953bf6ebc706dbb17c3fa0880bbfb2e4742e",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and cache clearing"
       }
     },
     {
@@ -7145,9 +7156,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:07:00.211751+00:00",
-    "live_commit": "9f4c33bc457bfb959fb289d35a4c022fef8f5bb8",
-    "action": "Nanded district and PCs15/16/41 integrated locally; 16 tests and 78 assertions passed; literal source label and partial Latur scope preserved",
-    "next_action": "Refresh live deployment files; narrow Nanded patch under both locks; rollback, cache clearing, backups and public/rendered/data checks; preserve earlier pending audits"
+    "checked_at": "2026-10-11T18:13:08.086294+00:00",
+    "live_commit": "53cdd9be5fe83f44363e45c6f6a58a5bb001e51c",
+    "action": "Nanded deployed under both locks preserving concurrent changes; district HTTP200; local and GitHub backups verified",
+    "next_action": "Check Nanded district, three PCs and nine ACs; rendered/source/mobile audits pending; then Hingoli full scope"
   }
 }
