@@ -6108,18 +6108,82 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/520/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "Census Raigarh/electoral Raigad name retained; boundary equivalence unverified",
+        "2061 unlinked and 20 ambiguous shapes; no invalid shapes; no population assigned",
+        "Shared PC32 Ratnagiri263/264 and PC33 Pune204-206 retained; partial outside district fixture scopes",
+        "Rendered/source/election/mobile/current-crosswalk audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 2634200,
+          "households": 611790,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; original workbook/all detailed audits pending"
+        },
+        "dedicated_tests": {
+          "tests": 24,
+          "assertions": 112,
+          "result": "Passed"
+        },
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 74474
+        },
+        "backup": "Local chain verified; GitHuba0758f40c12c3afb072558f353a1009f175ae4d4 verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 2061,
+          "ambiguous": 20
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI RAIGAD label retained; Census name Raigarh; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "5d231cbce52e3461afa1b9dd29a9c53b6466c8fdfb9b930f66aea819ed87c11c",
+      "membership_evidence": {
+        "pdf_pages": [
+          268,
+          269,
+          274,
+          279
+        ],
+        "visually_inspected_pdf_pages": [
+          268,
+          269,
+          274,
+          279
+        ],
+        "ac_codes": [
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194
+        ],
+        "pcs": [
+          32,
+          33
+        ]
+      },
+      "deployment": {
+        "live_commit": "a0758f40c12c3afb072558f353a1009f175ae4d4",
+        "rollback_commit": "470fbc557560a8d2a6c2e44888bfff6133cc3de9",
+        "locks": "Both flock -n held across fresh HEAD preflight narrow patch/map commit cache clearing"
       }
     },
     {
@@ -7757,10 +7821,10 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T19:46:20.046403+00:00",
-    "live_commit": "cb2f8c6c933edb31741a9381651dcfa28d70e344",
-    "action": "Mumbai Suburban and Mumbai deployed; PC30 shared membership and urban geometry gaps visible; canonical totals match public pages; chain backups verified",
-    "next_action": "Continue Raigarh/Raigad source and shared PC rollout; detailed audits flagged for later"
+    "checked_at": "2026-10-11T19:49:49.210759+00:00",
+    "live_commit": "a0758f40c12c3afb072558f353a1009f175ae4d4",
+    "action": "Raigad deployed with shared Pune/Ratnagiri membership; canonical totals match public page; backups verified",
+    "next_action": "Continue full Pune AC195-215 and associated PCs; minor audits remain flagged"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }

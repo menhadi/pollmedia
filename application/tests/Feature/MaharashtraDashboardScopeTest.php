@@ -236,4 +236,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([30, 31], array_column($city['parliamentary'], 'code'));
         $this->assertSame([172, 173], array_column($city['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_raigad_keeps_shared_pune_and_ratnagiri_segments(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Raigad', 'Maharashtra');
+        $this->assertSame(range(188, 194), array_column($links['assembly'], 'code'));
+        $this->assertSame([32, 33], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([263, 264], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([204, 205, 206], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+    }
 }
