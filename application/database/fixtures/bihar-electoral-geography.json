@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Twenty-six PCs recorded; remaining Bihar membership pending",
+  "coverage": "Twenty-seven PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1109,6 +1109,55 @@
       "district": "Vaishali",
       "source_page_label": "8 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 171,
+      "name": "Asthawan",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 172,
+      "name": "Biharsharif",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 173,
+      "name": "Rajgir (SC)",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 174,
+      "name": "Islampur",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 175,
+      "name": "Hilsa",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 176,
+      "name": "Nalanda",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 177,
+      "name": "Harnaut",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1593,6 +1642,25 @@
       "cross_district_scope": [
         "Muzaffarpur",
         "Vaishali"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 29,
+      "name": "Nalanda",
+      "ac_codes": [
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177
+      ],
+      "cross_district_scope": [
+        "Nalanda"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
