@@ -135,13 +135,14 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "dated_membership_audited_soi_acquisition_pending",
+      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/497/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "968 unlinked and 20 ambiguous source shapes",
+        "Invalid source shape525823 excluded without repair",
+        "Literal SOI district label NANDURB>R retained; boundary edition unverified",
+        "Shared PC1 includes Dhule AC5/AC9; district populations must not be combined as PC totals",
+        "Dashboard integration, tests, public/rendered data verification pending"
       ],
       "validation": {
         "public": "Pending",
@@ -195,8 +196,36 @@
             ]
           }
         ],
-        "scope": "Dated ECI2008 membership; current administrative equivalence pending"
-      }
+        "scope": "Dated ECI2008 membership; current administrative equivalence pending",
+        "visually_inspected_pdf_pages": [
+          254,
+          277
+        ]
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 968,
+          "ambiguous": 20
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "525823",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI source label is NANDURB>R (Dist_LGD 497), retained verbatim. Nandurbar electoral membership is dated ECI2008; matching Census2011 boundary edition and accepted Census/LGD links remain unverified. No population assigned to shapes. Invalid source525823 excluded without repair.",
+        "source_district_label": "NANDURB>R",
+        "source_district_code": "497",
+        "source_record_count": 989
+      },
+      "map_sha256": "52c6b7eec85ec66af9afa7ae9ea7d89abfb1c90ca364af0fc6609c785c0aa4f3"
     },
     {
       "district_code": "498",
@@ -5140,7 +5169,15 @@
     },
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
     "soi_download_url": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
-    "soi_status": "Download incomplete; not accepted"
+    "soi_status": "Full archive acquired and ZIP integrity passed",
+    "soi_acquisition": {
+      "url": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+      "size": 118469859,
+      "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+      "zip_integrity": "passed",
+      "acquisition": "Validated ranged recovery",
+      "retrieved_at": "2026-10-11T13:09:35Z"
+    }
   },
   "deployment_coordination": {
     "locks": [
@@ -5159,8 +5196,9 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:08:32.356197+00:00",
-    "action": "Isolated live baseline and published source inventory recorded",
-    "next_action": "Validate Maharashtra SOI acquisition; prepare Nandurbar497 and shared PC1 with Dhule segments"
+    "checked_at": "2026-10-11T13:11:54.649550+00:00",
+    "live_baseline": "8eae7d4",
+    "action": "Prepared Nandurbar988 valid map shapes, audited dated AC1-4/PC1 including Dhule segments; no live deployment",
+    "next_action": "Integrate Nandurbar497 in district/AC/PC dashboards using narrow fresh-live patches under both deployment locks; test canonical reload behavior and actual source values, deploy then public/rendered checks; Gujarat waits"
   }
 }
