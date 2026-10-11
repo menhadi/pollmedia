@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->preventRequestsDuringMaintenance(except: ['admin', 'admin/*']);
         $middleware->web(append: [PublicLocale::class, ManagedApi::class, PageMetadata::class, GoogleAnalytics::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

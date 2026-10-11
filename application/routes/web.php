@@ -27,6 +27,7 @@ use App\Http\Controllers\HistoricalExtractionController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\IndicatorController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\OfficialHostController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\PdfStorageController;
@@ -219,6 +220,8 @@ Route::get('/india/constituency', [ConstituencyOverviewController::class, 'index
 Route::get('/report-problem', [DataFeedbackController::class, 'create'])->name('feedback.create');
 Route::post('/report-problem', [DataFeedbackController::class, 'store'])->middleware('throttle:3,10')->name('feedback.store');
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix('admin')->group(function () {
+    Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::post('/maintenance', [MaintenanceController::class, 'update'])->middleware('throttle:10,1')->name('maintenance.update');
     Route::get('/site', [SiteManagementController::class, 'index'])->name('site.manage');
     Route::post('/site/analytics', [SiteManagementController::class, 'analytics'])->middleware('throttle:10,1')->name('site.analytics');
     Route::post('/site/connectors/{id}', [SiteManagementController::class, 'connector'])->whereNumber('id')->name('site.connector');
