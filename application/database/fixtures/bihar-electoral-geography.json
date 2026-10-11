@@ -1,0 +1,65 @@
+{
+  "state": "Bihar",
+  "coverage": "Araria district only; other Bihar seats not yet imported",
+  "district_url": "https://ceoelection.bihar.gov.in/PDF/District%20Map/ARARIA.pdf",
+  "district_source_date": "Edition date unverified; retrieved 2026-10-12",
+  "district_sha256": "e485458432b4ee43f0e6c57ca13658aa216715bcdfe02d111a3ff6de9708b852",
+  "pc_url": "https://araria.nic.in/about-district/",
+  "pc_source_date": "Retrieved 2026-10-12; publication date unverified",
+  "pc_sha256": "1ca4d67e68d929746c42553eeffe7d229b5a574bcb86b22fd7b38dd7c33df594",
+  "district_source_label": "Official CEO district constituency map",
+  "pc_source_label": "Official district constituency membership",
+  "district_rows": [
+    {
+      "code": 46,
+      "name": "Narpatganj",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 47,
+      "name": "Raniganj (SC)",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 48,
+      "name": "Forbesganj",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 49,
+      "name": "Araria",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 50,
+      "name": "Jokihat",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 51,
+      "name": "Sikti",
+      "district": "Araria",
+      "page": 1
+    }
+  ],
+  "pcs": [
+    {
+      "code": 9,
+      "name": "Araria",
+      "ac_codes": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "code_source": "https://ceoelection.bihar.gov.in/Form20/Loksabha_include/AC046.pdf"
+    }
+  ]
+}

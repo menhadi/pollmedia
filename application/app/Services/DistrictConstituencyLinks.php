@@ -8,10 +8,11 @@ class DistrictConstituencyLinks
     public function forDistrict(string $district, string $state = 'Uttar Pradesh'): array
     {
         $empty = ['available' => false, 'assembly' => [], 'parliamentary' => [], 'sources' => []];
-        if (! in_array($state, ['Uttar Pradesh', 'Karnataka', 'Maharashtra'], true)) {
+        if (! in_array($state, ['Uttar Pradesh', 'Karnataka', 'Maharashtra', 'Bihar'], true)) {
             return $empty;
         }
         $path = database_path(match ($state) {
+            'Bihar' => 'fixtures/bihar-electoral-geography.json',
             'Maharashtra' => 'fixtures/maharashtra-electoral-geography.json',
             'Karnataka' => 'fixtures/karnataka-electoral-geography.json',
             default => 'fixtures/up-electoral-geography.json',
@@ -38,8 +39,8 @@ class DistrictConstituencyLinks
             'assembly' => $assembly->map(fn (array $row): array => $row + ['url' => $this->historyUrl('ac', $row['name'], $state)])->all(),
             'parliamentary' => $parliamentary->all(),
             'sources' => [
-                ['label' => 'District–Assembly gazette', 'url' => $fixture['district_url'], 'date' => $fixture['district_source_date'], 'sha256' => $fixture['district_sha256']],
-                ['label' => 'Parliamentary delimitation order', 'url' => $fixture['pc_url'], 'date' => $fixture['pc_source_date'], 'sha256' => $fixture['pc_sha256']],
+                ['label' => $fixture['district_source_label'] ?? 'District–Assembly gazette', 'url' => $fixture['district_url'], 'date' => $fixture['district_source_date'], 'sha256' => $fixture['district_sha256']],
+                ['label' => $fixture['pc_source_label'] ?? 'Parliamentary delimitation order', 'url' => $fixture['pc_url'], 'date' => $fixture['pc_source_date'], 'sha256' => $fixture['pc_sha256']],
             ],
         ];
     }
