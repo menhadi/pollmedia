@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Sixteen PCs recorded; remaining Bihar membership pending",
+  "coverage": "Eighteen PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -689,6 +689,90 @@
       "district": "Rohtas",
       "source_page_label": "10 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 63,
+      "name": "Katihar",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 64,
+      "name": "Kadwa",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 65,
+      "name": "Balrampur",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 66,
+      "name": "Pranpur",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 67,
+      "name": "Manihari (ST)",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 68,
+      "name": "Barari",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 69,
+      "name": "Korha (SC)",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 58,
+      "name": "Kasba",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 59,
+      "name": "Banmankhi (SC)",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 60,
+      "name": "Rupauli",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 61,
+      "name": "Dhamdaha",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 62,
+      "name": "Purnia",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -984,6 +1068,43 @@
       "cross_district_scope": [
         "Kaimur (Bhabua)",
         "Rohtas"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 11,
+      "name": "Katihar",
+      "ac_codes": [
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ],
+      "cross_district_scope": [
+        "Katihar"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 12,
+      "name": "Purnia",
+      "ac_codes": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        69
+      ],
+      "cross_district_scope": [
+        "Purnia",
+        "Katihar"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
