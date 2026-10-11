@@ -929,6 +929,48 @@
       "name": "Ankleshwar",
       "district": "Bharuch",
       "page": 142
+    },
+    {
+      "code": 173,
+      "name": "Dangs (ST)",
+      "district": "The Dangs",
+      "page": 144
+    },
+    {
+      "code": 177,
+      "name": "Bansda (ST)",
+      "district": "Navsari",
+      "page": 145
+    },
+    {
+      "code": 178,
+      "name": "Dharampur (ST)",
+      "district": "Valsad",
+      "page": 146
+    },
+    {
+      "code": 179,
+      "name": "Valsad",
+      "district": "Valsad",
+      "page": 146
+    },
+    {
+      "code": 180,
+      "name": "Pardi",
+      "district": "Valsad",
+      "page": 146
+    },
+    {
+      "code": 181,
+      "name": "Kaprada (ST)",
+      "district": "Valsad",
+      "page": 146
+    },
+    {
+      "code": 182,
+      "name": "Umbergaon (ST)",
+      "district": "Valsad",
+      "page": 146
     }
   ],
   "pcs": [
@@ -1237,6 +1279,20 @@
         152,
         153,
         154
+      ],
+      "page": 148
+    },
+    {
+      "code": 26,
+      "name": "Valsad (ST)",
+      "ac_codes": [
+        173,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182
       ],
       "page": 148
     }
