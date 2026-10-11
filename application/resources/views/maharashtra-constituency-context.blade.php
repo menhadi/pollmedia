@@ -16,7 +16,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
-<p class="notice">Partial audited ECI 2008 scope. SOI source label NANDURB&gt;R is retained; boundary edition and Census/LGD joins remain unverified. Nandurbar has twenty ambiguous source-code shapes and one invalid shape excluded without repair. Dhule has five ambiguous source-code shapes. Jalgaon has eight ambiguous source-code shapes. Nashik and Buldhana district scopes are partial in this fixture.</p>
+<p class="notice">Partial audited ECI 2008 scope. SOI source label NANDURB&gt;R is retained; boundary edition and Census/LGD joins remain unverified. Nandurbar has twenty ambiguous source-code shapes and one invalid shape excluded without repair. Dhule has five ambiguous source-code shapes. Jalgaon has eight ambiguous source-code shapes. Buldhana has five ambiguous source-code shapes. Nashik district scope is partial in this fixture.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
@@ -38,6 +38,6 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($kind==='pc')
 <p>Assembly segments: {{ $segments->map(fn(array $row):string=>$row['name'].' (AC '.$row['code'].')')->implode(', ') }}.</p>
 @endif
-<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">District–Assembly source ↗</a> · <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source ↗</a></details></section>
+<details><summary>Scope flags & sources</summary>@if(($kind ?? null) === 'pc' && ($seat['code'] ?? null) === 5)<p>ECI 2008 prints �5. Mehkar (SC)� in PC 5; its Assembly section lists AC 25. The separate <a href="https://ceoelection.maharashtra.gov.in/Downloads/PDF/PCs.pdf">official Maharashtra CEO PC list</a> corroborates AC 25. The original discrepancy is retained; this does not establish unchanged historical boundaries.</p>@endif<p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">District–Assembly source ↗</a> · <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source ↗</a></details></section>
 @endif
 @endif

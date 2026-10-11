@@ -8,6 +8,19 @@ use Tests\TestCase;
 
 class MaharashtraDashboardScopeTest extends TestCase
 {
+    public function test_buldhana_retains_shared_raver_and_corroborated_mehkar_segment(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Buldhana', 'Maharashtra');
+        $this->assertSame(range(21, 27), array_column($links['assembly'], 'code'));
+        $this->assertSame([4, 5], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([10, 11, 12, 19, 20], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $fixture = json_decode(file_get_contents(database_path('fixtures/maharashtra-electoral-geography.json')), true);
+        $pc = $fixture['pcs'][4];
+        $this->assertSame(range(22, 27), $pc['ac_codes']);
+        $this->assertStringContainsString('prints5.Mehkar', $pc['source_code_note']);
+        $this->assertStringContainsString('ceoelection.maharashtra.gov.in', $pc['corroborating_url']);
+    }
+
     public function test_dhule_retains_both_shared_pcs_and_nashik_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Dhule', 'Maharashtra');
