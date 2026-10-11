@@ -4824,17 +4824,28 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/491/dashboard",
       "flags": [
-        "Accepted Census/LGD shape links pending; no population assigned",
-        "PC26 retains Dangs173/Navsari177; prepared not deployed",
+        "456 unlinked and45 ambiguous shapes; no rejected shapes; no population assigned",
+        "PC26 retains Dangs173/Navsari177; no district populations combined",
         "Boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "Published totals and shared outside membership match HTML; detailed audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 1705678,
+          "households": 364403,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; independent source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 57,
+          "assertions": 230,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHub7654dad937b5feb676db12a308700deb2c780a2d verified; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
@@ -4871,6 +4882,11 @@
         "pcs": [
           26
         ]
+      },
+      "deployment": {
+        "live_commit": "7654dad937b5feb676db12a308700deb2c780a2d",
+        "rollback_commit": "adf182868966033ccbe4c2e54891d07695a8147c",
+        "locks": "Both flock -n held across fresh HEAD narrow Gujarat patch/map commit cache clearing"
       }
     },
     {
@@ -5201,10 +5217,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T22:58:53.588755+00:00",
-    "live_commit": "64a0a3b991c369bae37fbdc900ee52ef1938939b",
-    "action": "Valsad source map prepared; deployment pending",
-    "next_action": "Integrate Valsad491 controller/context/switcher; AC178-182/shared PC26 already audited; test deploy verify public totals and backups; then Surat492 and Tapi493"
+    "checked_at": "2026-10-11T23:05:10.279452+00:00",
+    "live_commit": "7654dad937b5feb676db12a308700deb2c780a2d",
+    "action": "Valsad deployed; public published totals/shared membership checked;57 tests passed; backups verified",
+    "next_action": "Continue Surat492 then Tapi493; audit remaining AC155-172 and PCs23/24; dated source includes later Tapi split; retain current Census2011 district distinctions"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
