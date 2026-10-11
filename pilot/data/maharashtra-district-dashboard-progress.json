@@ -135,7 +135,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "dashboard_integration_prepared_validation_pending",
+      "workflow_status": "tested_deployment_lock_permission_failed",
       "dashboard_url": "https://pollmedia.org/india/districts/27/497/dashboard",
       "flags": [
         "968 unlinked and 20 ambiguous source shapes",
@@ -153,6 +153,12 @@
           "assertions": 53,
           "result": "Passed",
           "scope": "DistrictReportTest and CensusProfileSummaryTest; dedicated Nandurbar shared-PC and reload verification remains pending"
+        },
+        "dedicated_tests": {
+          "tests": 2,
+          "assertions": 13,
+          "result": "Passed",
+          "scope": "Dated shared PC membership; context reload sees newly available Census data and preserves missing Dhule values"
         }
       },
       "membership_evidence": {
@@ -5202,9 +5208,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:22:37.000783+00:00",
-    "live_commit": "40e0978",
-    "action": "Prepared and committed Nandurbar integration; Pint, PHP syntax and4 existing feature tests/53 assertions passed; no deployment",
-    "next_action": "Finish bounded feature checks and dedicated Nandurbar shared-PC/reload validation, then create fresh live narrow patch and deploy under both locks; public/rendered checks and backups pending"
+    "checked_at": "2026-10-11T13:27:19.765814+00:00",
+    "live_commit": "649f39d",
+    "action": "Narrow deployment attempted under shared locks; stopped before any live code mutation because election release lock open returned Permission denied",
+    "failure": "/home/pollmedia/tmp/.pollmedia-election-release.lock cannot be opened for writing by pollmedia; never bypassed",
+    "next_action": "Inspect established lock ownership/protocol and obtain permitted shared lock acquisition; preserve existing lock and do not delete/replace it. Then fresh live preflight, deploy and public/rendered checks."
   }
 }
