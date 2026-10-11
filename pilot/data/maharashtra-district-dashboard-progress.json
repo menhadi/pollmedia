@@ -1091,7 +1091,13 @@
           "result": "Passed",
           "scope": "Maharashtra scope regressions; Buldhana AC21-27,shared Raver outside segments,PC5 corroboration receipt"
         },
-        "formatting": "Pint dirty passed"
+        "formatting": "Pint dirty passed",
+        "deployment_preflight": {
+          "result": "Stopped before patch application because live HEAD advanced",
+          "expected": "3f0d7eeb50c519bb3f831fd5148615a7758c7a6f",
+          "observed": "d54418ab0c881ba14679e5c2c905123a7c3601ee",
+          "next": "Refresh live files and narrow patch; retain both locks"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
