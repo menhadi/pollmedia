@@ -2956,16 +2956,21 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_full_shared_pc_membership_audit_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/506/dashboard",
       "flags": [
         "892 unlinked and33 ambiguous source shapes;one invalid blank-code shape excluded without repair",
         "SharedPC11 includesGondiya segments;full membership/integration/tests/deployment pending"
       ],
       "validation": {
-        "public": "Pending",
-        "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "dedicated_tests": {
+          "tests": 11,
+          "assertions": 52,
+          "result": "Passed",
+          "scope": "Bhandara sharedPC11 keepsGondiya AC63-65;Maharashtra regressions"
+        },
+        "formatting": "Pint passed",
+        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -2987,7 +2992,39 @@
         ],
         "note": "SOI BHANDARA label retained; Census name Bhandara; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "5f0fd7d2b86461894f19f1102d739c6e1f28ecdfe77f56f18dcf86f51bef8466"
+      "map_sha256": "5f0fd7d2b86461894f19f1102d739c6e1f28ecdfe77f56f18dcf86f51bef8466",
+      "membership_evidence": {
+        "pdf_pages": [
+          258,
+          259,
+          277
+        ],
+        "visually_inspected_pdf_pages": [
+          258,
+          259,
+          277
+        ],
+        "ac_codes": [
+          60,
+          61,
+          62
+        ],
+        "pcs": [
+          {
+            "code": 11,
+            "ac_codes": [
+              60,
+              61,
+              62,
+              63,
+              64,
+              65
+            ],
+            "outside_district": "Gondiya AC63-65"
+          }
+        ],
+        "scope": "DatedECI2008;no geometry equivalence claim"
+      }
     },
     {
       "district_code": "507",
