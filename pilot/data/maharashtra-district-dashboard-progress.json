@@ -5003,13 +5003,13 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/515/dashboard",
       "flags": [
         "SOI CHHATRAPATI SAMBHAJINAGAR label retained; Census2011 Aurangabad edition equivalence unverified",
         "1358 unlinked and 7 ambiguous shapes; no invalid shapes; selected by source district code515",
         "One additional same-label row with different district code excluded; no inferred reassignment",
-        "AC104-112 and shared PC18/19 context tested locally; deployment pending; no population assigned; later audits flagged"
+        "AC104-112/shared PC18/19 deployed; no population assigned; current crosswalk and later audits flagged"
       ],
       "validation": {
         "public": "Pending",
@@ -5020,7 +5020,13 @@
           "assertions": 95,
           "result": "Passed"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 66274,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 53c629e627559a7936ec79ce2e1c702b37fe31e6; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -5086,6 +5092,11 @@
           }
         ],
         "scope": "Dated 2008 order; current crosswalk unverified"
+      },
+      "deployment": {
+        "live_commit": "53c629e627559a7936ec79ce2e1c702b37fe31e6",
+        "rollback_commit": "a1080fa7d7ca188043c2f692626f9126e215ff78",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and cache clearing"
       }
     },
     {
@@ -7448,10 +7459,10 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T19:21:58.420495+00:00",
-    "live_commit": "a1080fa7d7ca188043c2f692626f9126e215ff78",
-    "action": "Aurangabad full district/PC18/19 integration tested locally; 20 tests and 95 assertions passed; later SOI source label warning retained",
-    "next_action": "Refresh live files; narrow Aurangabad deployment under both locks with rollback/cache/backups; then Nashik rollout; minor audits remain flagged"
+    "checked_at": "2026-10-11T19:27:58.112415+00:00",
+    "live_commit": "53c629e627559a7936ec79ce2e1c702b37fe31e6",
+    "action": "Aurangabad deployed under both locks preserving concurrent changes; district HTTP200; local/GitHub backups verified",
+    "next_action": "Continue Nashik source/full membership rollout; Aurangabad PC/AC public/rendered/source/mobile checks remain flagged pending"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
