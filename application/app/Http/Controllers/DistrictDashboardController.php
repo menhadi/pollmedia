@@ -36,7 +36,7 @@ class DistrictDashboardController extends Controller
                 '497' => 'maps/nandurbar-villages.geojson', '498' => 'maps/dhule-villages.geojson', '499' => 'maps/jalgaon-villages.geojson', '500' => 'maps/buldhana-villages.geojson', '501' => 'maps/akola-villages.geojson', '502' => 'maps/washim-villages.geojson', '503' => 'maps/amravati-villages.geojson', '504' => 'maps/wardha-villages.geojson', '505' => 'maps/nagpur-villages.geojson', '506' => 'maps/bhandara-villages.geojson', '507' => 'maps/gondiya-villages.geojson', '508' => 'maps/gadchiroli-villages.geojson', '509' => 'maps/chandrapur-villages.geojson', '510' => 'maps/yavatmal-villages.geojson', '511' => 'maps/nanded-villages.geojson', '512' => 'maps/hingoli-villages.geojson', '513' => 'maps/parbhani-villages.geojson', '514' => 'maps/jalna-villages.geojson', '515' => 'maps/aurangabad-villages.geojson', '516' => 'maps/nashik-villages.geojson', '517' => 'maps/thane-villages.geojson', '518' => 'maps/mumbai-suburban-villages.geojson', '519' => 'maps/mumbai-villages.geojson', '520' => 'maps/raigad-villages.geojson', '521' => 'maps/pune-villages.geojson', '522' => 'maps/ahmednagar-villages.geojson', '523' => 'maps/beed-villages.geojson', '524' => 'maps/latur-villages.geojson', '525' => 'maps/osmanabad-villages.geojson', '526' => 'maps/solapur-villages.geojson', '527' => 'maps/satara-villages.geojson', '528' => 'maps/ratnagiri-villages.geojson', '529' => 'maps/sindhudurg-villages.geojson', '530' => 'maps/kolhapur-villages.geojson', '531' => 'maps/sangli-villages.geojson'
             };
         }
-        if ($state === '10' && in_array($district, ['209', '240', '235', '225', '222', '231', '224', '232', '236', '215', '217', '239', '238'], true)) {
+        if ($state === '10' && in_array($district, ['209', '240', '235', '225', '222', '231', '224', '232', '236', '215', '217', '239', '238', '233'], true)) {
             $mapFile = match ($district) {
                 '209' => 'maps/araria-villages.geojson',
                 '240' => 'maps/arwal-villages.geojson',
@@ -51,6 +51,7 @@ class DistrictDashboardController extends Controller
                 '217' => 'maps/bihar-gopalganj-villages.geojson',
                 '239' => 'maps/bihar-jehanabad-villages.geojson',
                 '238' => 'maps/bihar-jamui-villages.geojson',
+                '233' => 'maps/bihar-kaimur-bhabua-villages.geojson',
             };
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'Bihar');
         }
