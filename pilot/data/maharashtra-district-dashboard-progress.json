@@ -3209,7 +3209,13 @@
           "bytes": 63934,
           "scope": "Response only; not full data verification"
         },
-        "backup": "Local chain bundle verified and GitHub backup branch verified at 798f0dfb53948d12256ca6dbfb4431ccb549423a; no bundles deleted"
+        "backup": "Local chain bundle verified and GitHub backup branch verified at 798f0dfb53948d12256ca6dbfb4431ccb549423a; no bundles deleted",
+        "public_pages": {
+          "count": 7,
+          "result": "All HTTP 200; district, PCs11/12 and ACs63-66 contain history and district scope; constituency Census context present; PC12 includes Gadchiroli/Chandrapur and Chimur AC74 with separate-populations warning",
+          "scope": "Bounded HTTP/content checks only; rendered, original-source and actual-data audits remain pending",
+          "server_evidence_prefix": "/home/pollmedia/tmp/maharashtra-gondiya-check-"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -6796,9 +6802,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T16:48:03.361304+00:00",
-    "live_commit": "798f0dfb53948d12256ca6dbfb4431ccb549423a",
-    "action": "Gondiya deployed under both locks after refreshing concurrent controller changes; district HTTP 200; local and GitHub backups verified",
-    "next_action": "Check Gondiya district, two PCs and four ACs; rendered map/mobile and original-source/data audits; then Gadchiroli source map"
+    "checked_at": "2026-10-11T16:52:34.401208+00:00",
+    "live_commit": "abe8a9f6324e4e2b50b9b315dc3276eeddb15f28",
+    "action": "Gondiya district, two PCs and four ACs passed bounded public response checks; shared PC12 membership context retained",
+    "next_action": "Render Gondiya map and shared PC12; original Census source reconciliation and mobile checks remain pending; prepare Gadchiroli source map"
   }
 }
