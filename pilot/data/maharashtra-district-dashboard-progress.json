@@ -3611,13 +3611,13 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/509/dashboard",
       "flags": [
         "SOI CHANDRAPUR label retained; boundary edition unverified",
         "1780 unlinked and 53 ambiguous source shapes; four invalid source shapes excluded without repair",
         "Invalid source codes: blank twice, 540491, 541391",
-        "AC70-75 and shared PC12/13 integrated locally and tested; live deployment pending",
+        "AC70-75 and shared PC12/13 deployed; current crosswalk remains unverified",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
@@ -3631,7 +3631,13 @@
           "result": "Passed",
           "scope": "Chandrapur both shared PCs with Yavatmal Wani/Arni segments retained"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 69346,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 9cb50ed9ba021e82cb454488c8e735f3016ce417; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -3710,6 +3716,11 @@
           }
         ],
         "scope": "Dated 2008 order; current crosswalk remains unverified"
+      },
+      "deployment": {
+        "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
+        "rollback_commit": "e35ab161182e5acef6c2a95f0c7686d4751ae919",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and view cache clearing"
       }
     },
     {
@@ -6942,9 +6953,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:16:58.985257+00:00",
-    "live_commit": "de056e0d0ab845bbd7ff081629eed4d84311b152",
-    "action": "Prepared Chandrapur dashboard and full dated PC12/13 context; 14 tests and 66 assertions passed",
-    "next_action": "Refresh live deployment files; narrow Maharashtra patch with fresh HEAD under both locks; deploy Chandrapur with rollback and backup; then public/rendered/data verification"
+    "checked_at": "2026-10-11T17:23:03.384830+00:00",
+    "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
+    "action": "Chandrapur deployed under both locks; district HTTP200; local and GitHub backups verified",
+    "next_action": "Check Chandrapur district/two PCs/six ACs and rendered map; original-source and mobile audits pending; then Yavatmal full scope"
   }
 }
