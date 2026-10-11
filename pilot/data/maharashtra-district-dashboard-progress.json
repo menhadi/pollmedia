@@ -1082,7 +1082,101 @@
         "ECI2008 literal5.Mehkar versus AC25 retained in visible PC5 note; separate official CEO list corroborates25. Deployed; rendered and full data verification pending."
       ],
       "validation": {
-        "public": "Pending",
+        "public": [
+          {
+            "url": "https://pollmedia.org/india/districts/27/500/dashboard",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": false
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Buldhana",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Raver",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true,
+              "buldhana": true,
+              "shared_segment": true,
+              "not_combined": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Malkapur",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Buldhana",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Chikhli",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Sindkhed+Raja",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Mehkar",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Khamgaon",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Jalgaon+%28Jamod%29",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          }
+        ],
         "rendered": {
           "district": "1436 coloured source shapes desktop visually inspected;13 subdistricts12 towns;canonical figures match prior live service audit",
           "pc5": "74 total SVG paths;corrected punctuation verified on reload;expanded literal discrepancy note and AC22-27 visible",
@@ -1116,7 +1210,8 @@
           },
           "scope": "Bounded public HTML response only; rendered,all PC/AC responses,canonical original-source and election audits pending"
         },
-        "encoding_fix_commit": "d043766d454b57e6170b2e00043660197a5a01fe"
+        "encoding_fix_commit": "d043766d454b57e6170b2e00043660197a5a01fe",
+        "public_scope": "All10 pages HTTP200 and bounded history/scope/context checks; district context marker is intentionally absent. Not full rendered/data verification."
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -1313,19 +1408,37 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_full_membership_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/501/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "Boundary edition and Census/LGD joins unverified; no population assigned to shapes",
+        "AC28-32 source page256 visually inspected;PC6 also includes Washim AC33;full scope integration/tests/deployment pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
-      }
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 978
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "530458",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI and Census 2011 Akola labels retained; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "cb65c8f6290d6b375aa06834ab393c45a314de19b1c298d70691504bc9d8f4f9"
     },
     {
       "district_code": "502",
