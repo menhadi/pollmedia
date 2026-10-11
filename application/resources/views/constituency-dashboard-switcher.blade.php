@@ -1,3 +1,4 @@
+@if($state==='Karnataka') @include('karnataka-constituency-switcher') @endif
 @if($state==='Uttar Pradesh' && !$exactSeatOnly)
 @php
 $switchFixture=json_decode(file_get_contents(database_path('fixtures/up-electoral-geography.json')),true,512,JSON_THROW_ON_ERROR);
