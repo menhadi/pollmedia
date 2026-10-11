@@ -6,7 +6,7 @@ $switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district
 $switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
 $switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
 $switchSeen=[];
-$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Nandurbar','Dhule','Jalgaon','Buldhana','Akola','Washim','Amravati','Wardha','Nagpur','Bhandara','Gondiya','Gadchiroli','Chandrapur','Yavatmal','Nanded','Hingoli','Parbhani','Jalna','Aurangabad','Nashik','Thane','Mumbai Suburban','Mumbai City','Raigad','Pune','Ahmednagar','Beed','Latur','Osmanabad','Solapur','Satara','Ratnagiri','Sindhudurg'],true));
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Nandurbar','Dhule','Jalgaon','Buldhana','Akola','Washim','Amravati','Wardha','Nagpur','Bhandara','Gondiya','Gadchiroli','Chandrapur','Yavatmal','Nanded','Hingoli','Parbhani','Jalna','Aurangabad','Nashik','Thane','Mumbai Suburban','Mumbai City','Raigad','Pune','Ahmednagar','Beed','Latur','Osmanabad','Solapur','Satara','Ratnagiri','Sindhudurg','Kolhapur','Sangli'],true));
 @endphp
 @if($switchDistricts->isNotEmpty())
 <link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">
