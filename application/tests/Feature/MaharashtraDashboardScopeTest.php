@@ -67,6 +67,16 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([], $links['parliamentary'][1]['outside_district']);
     }
 
+    public function test_jalna_keeps_parbhani_and_aurangabad_shared_segments(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Jalna', 'Maharashtra');
+        $this->assertSame([99, 100, 101, 102, 103], array_column($links['assembly'], 'code'));
+        $this->assertSame([17, 18], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([95, 96, 97, 98], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([104, 106, 110], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $this->assertSame(['Aurangabad'], array_values(array_unique(array_column($links['parliamentary'][1]['outside_district'], 'district'))));
+    }
+
     public function test_parbhani_shared_pc_retains_jalna_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Parbhani', 'Maharashtra');
