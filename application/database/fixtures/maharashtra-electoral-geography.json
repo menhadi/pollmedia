@@ -1,0 +1,62 @@
+{
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_source_date": "2008-12-17",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Akkalkuwa (ST)",
+      "district": "Nandurbar",
+      "page": 254
+    },
+    {
+      "code": 2,
+      "name": "Shahada (ST)",
+      "district": "Nandurbar",
+      "page": 254
+    },
+    {
+      "code": 3,
+      "name": "Nandurbar (ST)",
+      "district": "Nandurbar",
+      "page": 254
+    },
+    {
+      "code": 4,
+      "name": "Nawapur (ST)",
+      "district": "Nandurbar",
+      "page": 254
+    },
+    {
+      "code": 5,
+      "name": "Sakri (ST)",
+      "district": "Dhule",
+      "page": 254
+    },
+    {
+      "code": 9,
+      "name": "Shirpur (ST)",
+      "district": "Dhule",
+      "page": 254
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Nandurbar (ST)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        9
+      ],
+      "page": 277
+    }
+  ],
+  "coverage_note": "Partial audited ECI2008 fixture; only Nandurbar and its complete shared PC1 scope. Other Dhule seats not yet audited."
+}

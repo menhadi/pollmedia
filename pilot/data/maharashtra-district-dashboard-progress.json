@@ -135,7 +135,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
+      "workflow_status": "dashboard_integration_prepared_validation_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/497/dashboard",
       "flags": [
         "968 unlinked and 20 ambiguous source shapes",
@@ -5196,9 +5196,9 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:11:54.649550+00:00",
-    "live_baseline": "8eae7d4",
-    "action": "Prepared Nandurbar988 valid map shapes, audited dated AC1-4/PC1 including Dhule segments; no live deployment",
-    "next_action": "Integrate Nandurbar497 in district/AC/PC dashboards using narrow fresh-live patches under both deployment locks; test canonical reload behavior and actual source values, deploy then public/rendered checks; Gujarat waits"
+    "checked_at": "2026-10-11T13:22:37.000783+00:00",
+    "live_commit": "40e0978",
+    "action": "Prepared Nandurbar controller, dated fixture, selector and district context preserving shared PC1 Dhule membership; PHP syntax/Pint passed; feature tests pending",
+    "next_action": "Finish bounded feature checks and dedicated Nandurbar shared-PC/reload validation, then create fresh live narrow patch and deploy under both locks; public/rendered checks and backups pending"
   }
 }
