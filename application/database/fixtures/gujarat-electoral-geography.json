@@ -457,6 +457,48 @@
       "page": 127
     },
     {
+      "code": 76,
+      "name": "Kalavad (SC)",
+      "district": "Jamnagar",
+      "page": 127
+    },
+    {
+      "code": 77,
+      "name": "Jamnagar Rural",
+      "district": "Jamnagar",
+      "page": 127
+    },
+    {
+      "code": 78,
+      "name": "Jamnagar North",
+      "district": "Jamnagar",
+      "page": 128
+    },
+    {
+      "code": 79,
+      "name": "Jamnagar South",
+      "district": "Jamnagar",
+      "page": 128
+    },
+    {
+      "code": 80,
+      "name": "Jamjodhpur",
+      "district": "Jamnagar",
+      "page": 128
+    },
+    {
+      "code": 81,
+      "name": "Khambhalia",
+      "district": "Jamnagar",
+      "page": 128
+    },
+    {
+      "code": 82,
+      "name": "Dwarka",
+      "district": "Jamnagar",
+      "page": 128
+    },
+    {
       "code": 83,
       "name": "Porbandar",
       "district": "Porbandar",
@@ -663,6 +705,20 @@
         84,
         85,
         88
+      ],
+      "page": 147
+    },
+    {
+      "code": 12,
+      "name": "Jamnagar",
+      "ac_codes": [
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
       ],
       "page": 147
     },
