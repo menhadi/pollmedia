@@ -305,4 +305,16 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([43, 45], array_column($links['parliamentary'], 'code'));
         $this->assertSame([244, 245, 253, 254], array_column($links['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_ratnagiri_sindhudurg_preserves_shared_pc_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Ratnagiri', 'Maharashtra');
+        $this->assertSame(range(263, 267), array_column($links['assembly'], 'code'));
+        $this->assertSame([32, 46], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([268, 269, 270], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $other = app(DistrictConstituencyLinks::class)->forDistrict('Sindhudurg', 'Maharashtra');
+        $this->assertSame([268, 269, 270], array_column($other['assembly'], 'code'));
+        $this->assertSame([46], array_column($other['parliamentary'], 'code'));
+        $this->assertSame([265, 266, 267], array_column($other['parliamentary'][0]['outside_district'], 'code'));
+    }
 }

@@ -7778,18 +7778,80 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/528/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "1547 unlinked source shapes; no ambiguous or invalid shapes; no population assigned",
+        "Shared PC46 Ratnagiri/Sindhudurg retained; Ratnagiri PC32 Raigad membership retained",
+        "Rendered/source/election/mobile/current-crosswalk audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 1615069,
+          "households": 397115,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; original workbook/all detailed audits pending"
+        },
+        "dedicated_tests": {
+          "tests": 32,
+          "assertions": 143,
+          "result": "Passed"
+        },
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 65821
+        },
+        "backup": "Local chain verified; GitHubb8960e00a21c3a8638defee21e112379dd4009fc verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1547
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI RATNAGIRI label retained; Census name Ratnagiri; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "5c9dd9c1b70df02c225dbeb4dfcfbfdc4d979c85ff1668b967506f4c56ccbd17",
+      "membership_evidence": {
+        "pdf_pages": [
+          268,
+          269,
+          274,
+          275,
+          279
+        ],
+        "visually_inspected_pdf_pages": [
+          268,
+          269,
+          274,
+          275,
+          279
+        ],
+        "ac_codes": [
+          263,
+          264,
+          265,
+          266,
+          267
+        ],
+        "pcs": [
+          32,
+          46
+        ]
+      },
+      "deployment": {
+        "live_commit": "b8960e00a21c3a8638defee21e112379dd4009fc",
+        "rollback_commit": "d04cd9f17c86370b5b6f0df053df46a510849132",
+        "locks": "Both flock -n held across fresh HEAD preflight narrow patch/maps commit cache clearing"
       }
     },
     {
@@ -7923,18 +7985,73 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/529/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "754 unlinked source shapes; no ambiguous or invalid shapes; no population assigned",
+        "Shared PC46 Ratnagiri/Sindhudurg retained; Ratnagiri PC32 Raigad membership retained",
+        "Rendered/source/election/mobile/current-crosswalk audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 849651,
+          "households": 209839,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; original workbook/all detailed audits pending"
+        },
+        "dedicated_tests": {
+          "tests": 32,
+          "assertions": 143,
+          "result": "Passed"
+        },
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 62684
+        },
+        "backup": "Local chain verified; GitHubb8960e00a21c3a8638defee21e112379dd4009fc verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 754
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI SINDHUDURG label retained; Census name Sindhudurg; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "4a10af01496592bac7bcab80f194fc3cbea5ecdc3867a0de51d8356793883b86",
+      "membership_evidence": {
+        "pdf_pages": [
+          274,
+          275,
+          279
+        ],
+        "visually_inspected_pdf_pages": [
+          274,
+          275,
+          279
+        ],
+        "ac_codes": [
+          268,
+          269,
+          270
+        ],
+        "pcs": [
+          46
+        ]
+      },
+      "deployment": {
+        "live_commit": "b8960e00a21c3a8638defee21e112379dd4009fc",
+        "rollback_commit": "d04cd9f17c86370b5b6f0df053df46a510849132",
+        "locks": "Both flock -n held across fresh HEAD preflight narrow patch/maps commit cache clearing"
       }
     },
     {
@@ -8267,10 +8384,10 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T20:24:17.401524+00:00",
-    "live_commit": "3a4ce07527f2559ab61dfb82d2521fcc14239cde",
-    "action": "Satara deployed; canonical totals/shared Solapur membership match public page; backups verified",
-    "next_action": "Continue Ratnagiri AC263-267 and shared PC32/46 with Sindhudurg segments; minor audits flagged"
+    "checked_at": "2026-10-11T20:29:31.737259+00:00",
+    "live_commit": "b8960e00a21c3a8638defee21e112379dd4009fc",
+    "action": "Ratnagiri and Sindhudurg deployed; canonical totals match public pages; backups verified",
+    "next_action": "Continue Kolhapur and Sangli final MH district scopes; then Gujarat rollout; minor audits flagged"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
