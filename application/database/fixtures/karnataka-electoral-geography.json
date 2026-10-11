@@ -1155,6 +1155,54 @@
       "name": "Sullia (SC)",
       "district": "Dakshina Kannada",
       "page": 204
+    },
+    {
+      "code": 208,
+      "name": "Madikeri",
+      "district": "Kodagu",
+      "page": 204
+    },
+    {
+      "code": 209,
+      "name": "Virajpet",
+      "district": "Kodagu",
+      "page": 204
+    },
+    {
+      "code": 210,
+      "name": "Piriyapatna",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 212,
+      "name": "Hunsur",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 215,
+      "name": "Chamundeshwari",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 216,
+      "name": "Krishnaraja",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 217,
+      "name": "Chamaraja",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 218,
+      "name": "Narasimharaja",
+      "district": "Mysore",
+      "page": 205
     }
   ],
   "pcs": [
@@ -1515,6 +1563,21 @@
         205,
         206,
         207
+      ],
+      "page": 208
+    },
+    {
+      "code": 21,
+      "name": "Mysore",
+      "ac_codes": [
+        208,
+        209,
+        210,
+        212,
+        215,
+        216,
+        217,
+        218
       ],
       "page": 208
     }
