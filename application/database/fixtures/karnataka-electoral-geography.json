@@ -243,6 +243,54 @@
       "name": "Sindgi",
       "district": "Bijapur",
       "page": 182
+    },
+    {
+      "code": 47,
+      "name": "Basavakalyan",
+      "district": "Bidar",
+      "page": 183
+    },
+    {
+      "code": 48,
+      "name": "Homnabad",
+      "district": "Bidar",
+      "page": 183
+    },
+    {
+      "code": 49,
+      "name": "Bidar South",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 50,
+      "name": "Bidar",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 51,
+      "name": "Bhalki",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 52,
+      "name": "Aurad (SC)",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 42,
+      "name": "Chincholi (SC)",
+      "district": "Gulbarga",
+      "page": 182
+    },
+    {
+      "code": 46,
+      "name": "Aland",
+      "district": "Gulbarga",
+      "page": 183
     }
   ],
   "pcs": [
@@ -320,12 +368,28 @@
         33
       ],
       "page": 207
+    },
+    {
+      "code": 7,
+      "name": "Bidar",
+      "ac_codes": [
+        42,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "page": 207
     }
   ],
   "flags": [
-    "Partial audited fixture: Belgaum, Bagalkot, Bijapur and associated PC segments only",
+    "Partial audited fixture: Belgaum, Bagalkot, Bijapur, Bidar and associated PC segments only",
     "Table A Kagwad/Hukkeri/Athani vs Table B Kagawad/Hukeri/Athni spelling variants retained; runtime alias audit pending",
-    "2008 membership does not certify SOI boundary edition"
+    "2008 membership does not certify SOI boundary edition",
+    "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending"
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
