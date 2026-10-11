@@ -3860,19 +3860,26 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_membership_audited_dashboard_integration_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/510/dashboard",
       "flags": [
         "SOI YAVATMAL label retained; boundary edition unverified",
         "2141 unlinked and 4 ambiguous source shapes; no rejected shapes",
-        "AC76-82 complete district integration pending; PC13/14 partial district links already recorded; additional PC scope must be audited",
+        "AC76-82 and shared PC13/14/15 dashboard integration tested locally; live deployment pending",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited",
-        "source_map": "Archive hash verified; 2145 valid EPSG:4326 shapes; no accepted Census/LGD joins"
+        "source_map": "Archive hash verified; 2145 valid EPSG:4326 shapes; no accepted Census/LGD joins",
+        "dedicated_tests": {
+          "tests": 15,
+          "assertions": 72,
+          "result": "Passed",
+          "scope": "Yavatmal three shared PCs retain Chandrapur, Washim, Nanded and Hingoli segments"
+        },
+        "formatting": "Pint passed"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -7037,9 +7044,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:36:50.206838+00:00",
+    "checked_at": "2026-10-11T17:42:02.353349+00:00",
     "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
-    "action": "Visually audited ECI pages278/261; completed Yavatmal AC76-82 and shared PC15 membership with Nanded/Hingoli segments",
-    "next_action": "Integrate Yavatmal district, PC13/14/15 switcher/context with Nanded/Hingoli Census codes; add meaningful shared-scope tests; deploy under both locks"
+    "action": "Yavatmal district and shared PC13/14/15 context integrated locally; 15 tests and 72 assertions passed",
+    "next_action": "Refresh live files; deploy narrow Yavatmal patch under both locks with rollback and backup; verify public/rendered/data scope; preserve earlier pending audits"
   }
 }

@@ -67,6 +67,17 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([], $links['parliamentary'][1]['outside_district']);
     }
 
+    public function test_yavatmal_keeps_three_shared_pcs_and_hingoli_nanded_segments(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Yavatmal', 'Maharashtra');
+        $this->assertSame([76, 77, 78, 79, 80, 81, 82], array_column($links['assembly'], 'code'));
+        $this->assertSame([13, 14, 15], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([70, 71, 72, 75], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([34, 35], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $this->assertSame([83, 84, 92, 93, 94], array_column($links['parliamentary'][2]['outside_district'], 'code'));
+        $this->assertSame(['Nanded', 'Hingoli'], array_values(array_unique(array_column($links['parliamentary'][2]['outside_district'], 'district'))));
+    }
+
     public function test_chandrapur_keeps_both_shared_pcs_and_yavatmal_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Chandrapur', 'Maharashtra');
