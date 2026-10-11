@@ -483,6 +483,54 @@
       "name": "Shiggaon",
       "district": "Haveri",
       "page": 188
+    },
+    {
+      "code": 88,
+      "name": "Hadagalli (SC)",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 89,
+      "name": "Hagaribommanahalli (SC)",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 90,
+      "name": "Vijayanagara",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 91,
+      "name": "Kampli (ST)",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 93,
+      "name": "Bellary (ST)",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 94,
+      "name": "Bellary City",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 95,
+      "name": "Sandur (ST)",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 96,
+      "name": "Kudligi (ST)",
+      "district": "Bellary",
+      "page": 190
     }
   ],
   "pcs": [
@@ -633,6 +681,21 @@
         74,
         75,
         83
+      ],
+      "page": 207
+    },
+    {
+      "code": 9,
+      "name": "Bellary (ST)",
+      "ac_codes": [
+        88,
+        89,
+        90,
+        91,
+        93,
+        94,
+        95,
+        96
       ],
       "page": 207
     }
