@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Araria, Jahanabad, Karakat, Aurangabad and Banka PCs only; other Bihar seats pending",
+  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka and Begusarai PCs only; other Bihar seats pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -213,6 +213,55 @@
       "district": "Banka",
       "source_page_label": "2 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 141,
+      "name": "Cheria Bariarpur",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 142,
+      "name": "Bachhwara",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 143,
+      "name": "Teghra",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 144,
+      "name": "Matihani",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 145,
+      "name": "Sahebpur Kamal",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 146,
+      "name": "Begusarai",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 147,
+      "name": "Bakhri (SC)",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -301,6 +350,25 @@
       "cross_district_scope": [
         "Bhagalpur",
         "Banka"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 24,
+      "name": "Begusarai",
+      "ac_codes": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147
+      ],
+      "cross_district_scope": [
+        "Begusarai"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
