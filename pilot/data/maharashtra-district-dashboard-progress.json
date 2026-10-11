@@ -2956,11 +2956,11 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
+      "workflow_status": "deployed_bounded_public_desktop_map_verified_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/506/dashboard",
       "flags": [
         "892 unlinked and33 ambiguous source shapes;one invalid blank-code shape excluded without repair",
-        "SharedPC11 includesGondiya segments;full membership/integration/tests/deployment pending"
+        "Shared PC11 includes Gondiya AC63-65; deployed membership context and tests passed; full current membership and data audits pending"
       ],
       "validation": {
         "dedicated_tests": {
@@ -2970,12 +2970,27 @@
           "scope": "Bhandara sharedPC11 keepsGondiya AC63-65;Maharashtra regressions"
         },
         "formatting": "Pint passed",
-        "remaining": "PC/AC public/rendered,mobile and canonical/original-source/election audits pending",
+        "remaining": "PC/AC rendered, mobile, original Census-source reconciliation and election audits pending",
         "public_district": {
           "http": 200,
           "bytes": 63488,
           "scope": "Curl response only;not full rendered/data verification"
-        }
+        },
+        "public_pages": {
+          "result": "All five HTTP 200; district, PC11, AC60-62 history/scope present; constituency Census context present; PC11 Gondiya segments and no-combined-population warning present",
+          "scope": "Bounded response checks only; not full data verification"
+        },
+        "rendered": {
+          "result": "Desktop district screenshot inspected; 925 map paths rendered, seven source subdistricts, 1 rejected and 33 duplicate-code shapes visible",
+          "displayed_census_2011": {
+            "population": 1200334,
+            "households": 278076,
+            "literacy_age_7_percent": 83.76,
+            "sex_ratio": 982
+          },
+          "scope": "Displayed figures observed; independent original-source reconciliation pending"
+        },
+        "backup": "Local chain bundle verified; GitHub codex/maharashtra-gujarat-live-backup points to 195393a16b34482fb8f2523f9a106dee596207a0; no bundles deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -6698,9 +6713,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T14:02:52.381673+00:00",
-    "live_commit": "aeebbac7bb2439f766903fe22eadfc5eacb8d6d6",
-    "action": "Jalgaon deployed under both locks preserving Sitapur; bounded district/2PC/11AC checks saved; local live bundle verified and GitHub backup updated",
-    "next_action": "Inspect Jalgaon district,AC10 and shared RaverPC4 rendering; reconcile displayed canonical figures, preserve any failed checks; then prepare Buldana500 with source spelling/PC5 printed code conflict review"
+    "checked_at": "2026-10-11T16:29:56.501600+00:00",
+    "live_commit": "195393a16b34482fb8f2523f9a106dee596207a0",
+    "action": "Bhandara five public pages checked; desktop district map and displayed figures observed; local and GitHub backups verified",
+    "next_action": "Continue Gondiya source map and AC66/PC12 membership integration; preserve pending rendered/mobile/original-source/election audits"
   }
 }
