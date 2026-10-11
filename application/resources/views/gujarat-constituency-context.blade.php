@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Kachchh'=>'468','Rajkot'=>'476','Banaskantha'=>'469','Patan'=>'470','Mahesana'=>'471','Gandhinagar'=>'473','Sabarkantha'=>'472','Ahmedabad'=>'474','Surendranagar'=>'475','Kheda'=>'483','Porbandar'=>'478','Junagadh'=>'479','Jamnagar'=>'477','Amreli'=>'480','Bhavnagar'=>'481'];
+$codes=['Kachchh'=>'468','Rajkot'=>'476','Banaskantha'=>'469','Patan'=>'470','Mahesana'=>'471','Gandhinagar'=>'473','Sabarkantha'=>'472','Ahmedabad'=>'474','Surendranagar'=>'475','Kheda'=>'483','Porbandar'=>'478','Junagadh'=>'479','Jamnagar'=>'477','Amreli'=>'480','Bhavnagar'=>'481','Anand'=>'482'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Ã‚Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Ã‚Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
