@@ -421,6 +421,24 @@
       "page": 259
     },
     {
+      "code": 70,
+      "name": "Rajura",
+      "district": "Chandrapur",
+      "page": 259
+    },
+    {
+      "code": 71,
+      "name": "Chandrapur (SC)",
+      "district": "Chandrapur",
+      "page": 259
+    },
+    {
+      "code": 72,
+      "name": "Ballarpur",
+      "district": "Chandrapur",
+      "page": 259
+    },
+    {
       "code": 73,
       "name": "Brahmapuri",
       "district": "Chandrapur",
@@ -430,6 +448,18 @@
       "code": 74,
       "name": "Chimur",
       "district": "Chandrapur",
+      "page": 259
+    },
+    {
+      "code": 75,
+      "name": "Warora",
+      "district": "Chandrapur",
+      "page": 259
+    },
+    {
+      "code": 76,
+      "name": "Wani",
+      "district": "Yavatmal",
       "page": 259
     },
     {
@@ -447,6 +477,12 @@
     {
       "code": 79,
       "name": "Digras",
+      "district": "Yavatmal",
+      "page": 260
+    },
+    {
+      "code": 80,
+      "name": "Arni (ST)",
       "district": "Yavatmal",
       "page": 260
     },
@@ -647,7 +683,20 @@
         74
       ],
       "page": 277
+    },
+    {
+      "code": 13,
+      "name": "Chandrapur",
+      "ac_codes": [
+        70,
+        71,
+        72,
+        75,
+        76,
+        80
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara and Gondiya scopes; Nashik, Yavatmal and Chandrapur partial. Gadchiroli membership recorded for shared PC12; dashboard integration pending. PC5 literal Mehkar code discrepancy retained and corroborated separately."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
 }
