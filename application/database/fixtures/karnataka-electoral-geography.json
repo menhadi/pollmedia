@@ -579,6 +579,54 @@
       "name": "Pavagada (SC)",
       "district": "Tumkur",
       "page": 195
+    },
+    {
+      "code": 103,
+      "name": "Jagalur (ST)",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 104,
+      "name": "Harapanahalli",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 105,
+      "name": "Harihar",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 106,
+      "name": "Davanagere North",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 107,
+      "name": "Davanagere South",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 108,
+      "name": "Mayakonda (SC)",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 109,
+      "name": "Channagiri",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 110,
+      "name": "Honnali",
+      "district": "Davanagere",
+      "page": 192
     }
   ],
   "pcs": [
@@ -759,6 +807,21 @@
         102,
         136,
         137
+      ],
+      "page": 208
+    },
+    {
+      "code": 13,
+      "name": "Davanagere",
+      "ac_codes": [
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
       ],
       "page": 208
     }

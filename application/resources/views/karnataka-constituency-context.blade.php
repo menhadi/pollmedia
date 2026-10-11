@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Belgaum'=>'555','Bagalkot'=>'556','Bijapur'=>'557','Bidar'=>'558','Raichur'=>'559','Koppal'=>'560','Gadag'=>'561','Dharwad'=>'562','Uttara Kannada'=>'563','Haveri'=>'564','Bellary'=>'565','Chitradurga'=>'566'];
+$codes=['Belgaum'=>'555','Bagalkot'=>'556','Bijapur'=>'557','Bidar'=>'558','Raichur'=>'559','Koppal'=>'560','Gadag'=>'561','Dharwad'=>'562','Uttara Kannada'=>'563','Haveri'=>'564','Bellary'=>'565','Chitradurga'=>'566','Davanagere'=>'567'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -13,6 +13,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District demographics & geographic scope</h2>
 <p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Links use the dated district–Assembly gazette and parliamentary delimitation fixture.</p>
 @if($districtNames->contains('Bellary'))<p class="notice">Partial source map: SOI Ballari coverage does not represent the complete Census 2011 Bellary district. Vijayanagara was later carved out of Bellary. Its source shapes are not merged or backcast; matching boundary editions and Census/LGD links remain unverified. <a href="https://vijayanagara.nic.in/en/history/">Official district history</a>.</p>@endif
+@if($districtNames->contains('Davanagere'))<p class="notice">Source coverage mismatch: SOI Davanagere subdistrict labels omit Harapanahalli, which appears in the dated district–Assembly scope. This map is not established as the complete Census 2011 district outline. Later shapes are not merged or backcast; matching boundary editions and Census/LGD links remain unverified.</p>@endif
 <p class="notice">Constituency Census population is not established by this district link. District figures below are contextual, not AC/PC totals. Population is never divided by polygon area. Electoral maps, Census geography and historical constituencies may describe different years.</p>
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
