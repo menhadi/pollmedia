@@ -288,4 +288,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([239, 246], array_column($links['parliamentary'][0]['outside_district'], 'code'));
         $this->assertSame(['Latur', 'Solapur'], array_column($links['parliamentary'][0]['outside_district'], 'district'));
     }
+
+    public function test_solapur_preserves_two_cross_district_pcs(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Solapur', 'Maharashtra');
+        $this->assertSame(range(244, 254), array_column($links['assembly'], 'code'));
+        $this->assertSame([40, 42, 43], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([239, 240, 241, 242, 243], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame([255, 258], array_column($links['parliamentary'][2]['outside_district'], 'code'));
+    }
 }
