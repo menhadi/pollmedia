@@ -4,19 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class DataFeedbackController extends Controller
 {
-    public function create(Request $request): View
+    public function create(Request $request): Response
     {
         $path = $request->string('path')->toString();
         $path = str_starts_with($path, '/') && ! str_starts_with($path, '//') && strlen($path) <= 2000 ? $path : '/';
         $category = $request->string('category')->toString();
 
-        return view('data-feedback', ['path' => $path, 'category' => in_array($category, ['data', 'source', 'navigation', 'accessibility', 'other'], true) ? $category : 'data', 'email' => $request->user()?->email]);
+        return response()->view('data-feedback', ['path' => $path, 'category' => in_array($category, ['data', 'source', 'navigation', 'accessibility', 'other'], true) ? $category : 'data', 'email' => $request->user()?->email])->header('X-Robots-Tag', 'noindex, nofollow');
     }
 
     public function store(Request $request): RedirectResponse

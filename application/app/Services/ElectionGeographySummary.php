@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -65,7 +66,7 @@ class ElectionGeographySummary
                 'kind' => in_array($slug, ['andaman-and-nicobar-islands', 'chandigarh', 'dadra-and-nagar-haveli-and-daman-and-diu', 'delhi', 'jammu-and-kashmir', 'ladakh', 'lakshadweep', 'puducherry'], true) ? 'Union Territory' : 'State',
                 'archive_editions' => $entries->count(),
                 'archive_years' => $entries->pluck('year')->unique()->sortDesc()->values(),
-                'places' => $slug === 'uttar-pradesh' ? DB::table('places')->whereIn('type', ['district', 'pc', 'ac'])->count() : 0,
+                'places' => $slug === 'uttar-pradesh' ? Cache::remember('elections.navigation.place-count.v1', 300, fn (): int => DB::table('places')->whereIn('type', ['district', 'pc', 'ac'])->count()) : 0,
             ];
         })->values();
     }
