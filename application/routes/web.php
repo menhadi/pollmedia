@@ -212,6 +212,7 @@ Route::get('/report-problem', [DataFeedbackController::class, 'create'])->name('
 Route::post('/report-problem', [DataFeedbackController::class, 'store'])->middleware('throttle:3,10')->name('feedback.store');
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->prefix('admin')->group(function () {
     Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::post('/maintenance/preview', [MaintenanceController::class, 'preview'])->middleware('throttle:10,1')->name('maintenance.preview');
     Route::post('/maintenance', [MaintenanceController::class, 'update'])->middleware('throttle:10,1')->name('maintenance.update');
     Route::get('/site', [SiteManagementController::class, 'index'])->name('site.manage');
     Route::post('/site/analytics', [SiteManagementController::class, 'analytics'])->middleware('throttle:10,1')->name('site.analytics');
