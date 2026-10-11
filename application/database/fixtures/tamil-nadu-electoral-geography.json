@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial state extraction through Karur with complete associated PC segments; other districts pending",
+  "scope": "Partial extraction through Tiruchirappalli and complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -732,6 +732,30 @@
       "page": null
     },
     {
+      "code": 139,
+      "name": "Srirangam",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 140,
+      "name": "Tiruchirappalli (West)",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 141,
+      "name": "Tiruchirappalli (East)",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 142,
+      "name": "Thiruverumbur",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
       "code": 143,
       "name": "Lalgudi",
       "district": "Tiruchirappalli",
@@ -762,8 +786,20 @@
       "page": null
     },
     {
+      "code": 178,
+      "name": "Gandarvakottai (SC)",
+      "district": "Pudukkottai",
+      "page": null
+    },
+    {
       "code": 179,
       "name": "Viralimalai",
+      "district": "Pudukkottai",
+      "page": null
+    },
+    {
+      "code": 180,
+      "name": "Pudukkottai",
       "district": "Pudukkottai",
       "page": null
     }
@@ -1026,6 +1062,19 @@
         136,
         138,
         179
+      ],
+      "page": 449
+    },
+    {
+      "code": 24,
+      "name": "Tiruchirappalli",
+      "ac_codes": [
+        139,
+        140,
+        141,
+        142,
+        178,
+        180
       ],
       "page": 449
     },
