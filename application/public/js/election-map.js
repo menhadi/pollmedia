@@ -35,6 +35,8 @@
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
         const focusMode = root.dataset.mode === 'focus';
+        const karnatakaLocator = focusMode && stateKey(root.dataset.state) === 'karnataka';
+        const locatorPalette = ['#c5dfeb','#d5dfb7','#efd0b5','#d8cbed','#b8ded6','#eddcb0','#e9c7d6'];
         const seatText = (feature, record) => focusMode ? `${record?.name || feature.properties.name} · ${(root.dataset.kind === 'pc' ? 'Lok Sabha' : 'AC')}` : (record ? recordText(record) : feature.properties.name);
         const seatUrl = record => {
             const safe = record && safeUrl(record.url);
@@ -44,6 +46,7 @@
         };
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
         const matches = new Map(), paths = new Map();
+        const locatorColors = new Map([...features].sort((a,b) => String(a.id).localeCompare(String(b.id), undefined, {numeric:true})).map((feature,index) => [feature.id,locatorPalette[index % locatorPalette.length]]));
         // A boundary code is not an extraction row number. Name/state matches are approximate;
         // multiple source shapes with the same name never establish a unique geographic join.
         const names = new Map(), codes = new Map();
@@ -86,7 +89,7 @@
         const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
-            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?'#ead59e':partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
+            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?(karnatakaLocator?locatorColors.get(f.id):'#ead59e'):partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
             if (!focusMode) { const title=svgElement('title');title.textContent=seatText(f,record);path.append(title); }
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
@@ -146,7 +149,10 @@
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&safeUrl(r.url);if(url)location.assign(url);});
-        if(focusMode){
+        if(karnatakaLocator){
+            legend.hidden=false;
+            const note=document.createElement('span');note.textContent='Colours distinguish source shapes; they do not indicate results or Census values. The selected constituency has an outline.';legend.append(note);
+        }else if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
         }else{
             const parties=[...new Set(records.map(r=>r.party).filter(Boolean))].sort();
