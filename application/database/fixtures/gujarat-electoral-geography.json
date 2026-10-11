@@ -715,10 +715,52 @@
       "page": 135
     },
     {
+      "code": 119,
+      "name": "Thasra",
+      "district": "Kheda",
+      "page": 135
+    },
+    {
       "code": 120,
       "name": "Kapadvanj",
       "district": "Kheda",
       "page": 135
+    },
+    {
+      "code": 121,
+      "name": "Balasinor",
+      "district": "Kheda",
+      "page": 135
+    },
+    {
+      "code": 122,
+      "name": "Lunawada",
+      "district": "Panchmahals",
+      "page": 135
+    },
+    {
+      "code": 124,
+      "name": "Shehra",
+      "district": "Panchmahals",
+      "page": 136
+    },
+    {
+      "code": 125,
+      "name": "Morva Hadaf (ST)",
+      "district": "Panchmahals",
+      "page": 136
+    },
+    {
+      "code": 126,
+      "name": "Godhra",
+      "district": "Panchmahals",
+      "page": 137
+    },
+    {
+      "code": 127,
+      "name": "Kalol",
+      "district": "Panchmahals",
+      "page": 137
     }
   ],
   "pcs": [
@@ -957,6 +999,20 @@
         117,
         118,
         120
+      ],
+      "page": 148
+    },
+    {
+      "code": 18,
+      "name": "Panchmahal",
+      "ac_codes": [
+        119,
+        121,
+        122,
+        124,
+        125,
+        126,
+        127
       ],
       "page": 148
     }
