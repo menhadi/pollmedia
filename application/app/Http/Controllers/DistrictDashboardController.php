@@ -44,6 +44,9 @@ class DistrictDashboardController extends Controller
             };
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'Bihar');
         }
+        if ($state === '33' && $district === '602') {
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Thiruvallur', 'Tamil Nadu');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
