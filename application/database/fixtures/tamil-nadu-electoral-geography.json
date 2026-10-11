@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction through Namakkal with dated complete associated PC segments; current district crosswalks pending",
+  "scope": "Partial state extraction through dated Erode AC98-107, retaining complete associated PC segments; current district crosswalks pending",
   "district_rows": [
     {
       "code": 1,
@@ -586,6 +586,78 @@
       "name": "Kangayam",
       "district": "Erode",
       "page": null
+    },
+    {
+      "code": 103,
+      "name": "Perundurai",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 104,
+      "name": "Bhavani",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 105,
+      "name": "Anthiyur",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 106,
+      "name": "Gobichettipalayam",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 107,
+      "name": "Bhavanisagar (SC)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 108,
+      "name": "Udhagamandalam",
+      "district": "The Nilgiris",
+      "page": null
+    },
+    {
+      "code": 109,
+      "name": "Gudalur (SC)",
+      "district": "The Nilgiris",
+      "page": null
+    },
+    {
+      "code": 110,
+      "name": "Coonoor",
+      "district": "The Nilgiris",
+      "page": null
+    },
+    {
+      "code": 111,
+      "name": "Mettuppalayam",
+      "district": "Coimbatore",
+      "page": null
+    },
+    {
+      "code": 112,
+      "name": "Avanashi (SC)",
+      "district": "Coimbatore",
+      "page": null
+    },
+    {
+      "code": 113,
+      "name": "Tiruppur (North)",
+      "district": "Coimbatore",
+      "page": null
+    },
+    {
+      "code": 114,
+      "name": "Tiruppur (South)",
+      "district": "Coimbatore",
+      "page": null
     }
   ],
   "pcs": [
@@ -794,6 +866,32 @@
         100,
         101,
         102
+      ],
+      "page": 448
+    },
+    {
+      "code": 18,
+      "name": "Tiruppur",
+      "ac_codes": [
+        103,
+        104,
+        105,
+        106,
+        113,
+        114
+      ],
+      "page": 448
+    },
+    {
+      "code": 19,
+      "name": "Nilgiris (SC)",
+      "ac_codes": [
+        107,
+        108,
+        109,
+        110,
+        111,
+        112
       ],
       "page": 448
     }
