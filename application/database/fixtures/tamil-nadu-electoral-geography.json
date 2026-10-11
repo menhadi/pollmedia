@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial state extraction through Dindigul with complete associated PC segments; current crosswalks pending",
+  "scope": "Partial state extraction through Karur with complete associated PC segments; other districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -720,9 +720,45 @@
       "page": null
     },
     {
+      "code": 137,
+      "name": "Kulithalai",
+      "district": "Karur",
+      "page": null
+    },
+    {
       "code": 138,
       "name": "Manapparai",
       "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 143,
+      "name": "Lalgudi",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 144,
+      "name": "Manachanallur",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 145,
+      "name": "Musiri",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 146,
+      "name": "Thuraiyur (SC)",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 147,
+      "name": "Perambalur (SC)",
+      "district": "Perambalur",
       "page": null
     },
     {
@@ -990,6 +1026,19 @@
         136,
         138,
         179
+      ],
+      "page": 449
+    },
+    {
+      "code": 25,
+      "name": "Perambalur",
+      "ac_codes": [
+        137,
+        143,
+        144,
+        145,
+        146,
+        147
       ],
       "page": 449
     }
