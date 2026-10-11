@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Kachchh'=>'468','Rajkot'=>'476','Banaskantha'=>'469','Patan'=>'470','Mahesana'=>'471','Gandhinagar'=>'473','Sabarkantha'=>'472'];
+$codes=['Kachchh'=>'468','Rajkot'=>'476','Banaskantha'=>'469','Patan'=>'470','Mahesana'=>'471','Gandhinagar'=>'473','Sabarkantha'=>'472','Ahmedabad'=>'474'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Ã‚Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Ã‚Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -16,7 +16,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
-<p class="notice">Partial dated ECI2008 Gujarat scope. Sabarkantha uses dated district membership; later Aravalli district geometry is not backcast into Census2011. Patan has 43 ambiguous source-code shapes. Banaskantha has fifty ambiguous source-code shapes. Its AC7 Vav source includes Kesargadh village of Patan; the dated district heading does not establish exclusive district geography. Shared PC3 includes Patan and Mahesana; PC4 also retains Mansa AC37 in dated Gandhinagar district; Gandhinagar integration remains pending. Kachchh has 98 ambiguous source-code shapes; all accepted Census/LGD map links remain pending. PC1 includes Morbi AC65 in dated Rajkot district; later Morbi district geometry is not backcast into Census2011. Rajkot fixture scope is partial and its district dashboard integration remains pending.</p>
+<p class="notice">Partial dated ECI2008 Gujarat scope. Sabarkantha uses dated district membership; later Aravalli district geometry is not backcast into Census2011. Patan has 43 ambiguous source-code shapes. Banaskantha has fifty ambiguous source-code shapes. Its AC7 Vav source includes Kesargadh village of Patan; the dated district heading does not establish exclusive district geography. Shared PC3 includes Patan and Mahesana; PC4 also retains Mansa AC37 in dated Gandhinagar district; Shared PCs6/7 retain dated Ahmedabad segments; Ahmedabad integration remains pending. Kachchh has 98 ambiguous source-code shapes; all accepted Census/LGD map links remain pending. PC1 includes Morbi AC65 in dated Rajkot district; later Morbi district geometry is not backcast into Census2011. Rajkot fixture scope is partial and its district dashboard integration remains pending.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
