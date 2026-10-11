@@ -3860,12 +3860,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/510/dashboard",
       "flags": [
         "SOI YAVATMAL label retained; boundary edition unverified",
         "2141 unlinked and 4 ambiguous source shapes; no rejected shapes",
-        "AC76-82 and shared PC13/14/15 dashboard integration tested locally; live deployment pending",
+        "AC76-82 and shared PC13/14/15 dashboard context deployed; current crosswalk remains unverified",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
@@ -3879,7 +3879,13 @@
           "result": "Passed",
           "scope": "Yavatmal three shared PCs retain Chandrapur, Washim, Nanded and Hingoli segments"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 68783,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local live bundle verified; GitHub backup branch verified at 9f4c33bc457bfb959fb289d35a4c022fef8f5bb8; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -3957,6 +3963,11 @@
           }
         ],
         "scope": "Dated 2008 order; PC15 spans Yavatmal, Nanded and Hingoli; current crosswalk unverified"
+      },
+      "deployment": {
+        "live_commit": "9f4c33bc457bfb959fb289d35a4c022fef8f5bb8",
+        "rollback_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and cache clearing"
       }
     },
     {
@@ -7044,9 +7055,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:42:02.353349+00:00",
-    "live_commit": "9cb50ed9ba021e82cb454488c8e735f3016ce417",
-    "action": "Yavatmal district and shared PC13/14/15 context integrated locally; 15 tests and 72 assertions passed",
-    "next_action": "Refresh live files; deploy narrow Yavatmal patch under both locks with rollback and backup; verify public/rendered/data scope; preserve earlier pending audits"
+    "checked_at": "2026-10-11T17:48:10.853854+00:00",
+    "live_commit": "9f4c33bc457bfb959fb289d35a4c022fef8f5bb8",
+    "action": "Yavatmal deployed under both locks; district HTTP200; local and GitHub backups verified",
+    "next_action": "Check Yavatmal district, three PCs and seven ACs; rendered/source/mobile audits pending; then Nanded full scope"
   }
 }
