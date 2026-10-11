@@ -36,7 +36,7 @@ class DistrictDashboardController extends Controller
                 '497' => 'maps/nandurbar-villages.geojson', '498' => 'maps/dhule-villages.geojson', '499' => 'maps/jalgaon-villages.geojson', '500' => 'maps/buldhana-villages.geojson', '501' => 'maps/akola-villages.geojson', '502' => 'maps/washim-villages.geojson', '503' => 'maps/amravati-villages.geojson', '504' => 'maps/wardha-villages.geojson', '505' => 'maps/nagpur-villages.geojson', '506' => 'maps/bhandara-villages.geojson', '507' => 'maps/gondiya-villages.geojson', '508' => 'maps/gadchiroli-villages.geojson', '509' => 'maps/chandrapur-villages.geojson', '510' => 'maps/yavatmal-villages.geojson', '511' => 'maps/nanded-villages.geojson', '512' => 'maps/hingoli-villages.geojson', '513' => 'maps/parbhani-villages.geojson', '514' => 'maps/jalna-villages.geojson', '515' => 'maps/aurangabad-villages.geojson', '516' => 'maps/nashik-villages.geojson', '517' => 'maps/thane-villages.geojson', '518' => 'maps/mumbai-suburban-villages.geojson', '519' => 'maps/mumbai-villages.geojson', '520' => 'maps/raigad-villages.geojson', '521' => 'maps/pune-villages.geojson', '522' => 'maps/ahmednagar-villages.geojson', '523' => 'maps/beed-villages.geojson', '524' => 'maps/latur-villages.geojson', '525' => 'maps/osmanabad-villages.geojson', '526' => 'maps/solapur-villages.geojson', '527' => 'maps/satara-villages.geojson', '528' => 'maps/ratnagiri-villages.geojson', '529' => 'maps/sindhudurg-villages.geojson', '530' => 'maps/kolhapur-villages.geojson', '531' => 'maps/sangli-villages.geojson'
             };
         }
-        if ($state === '24' && in_array($district, ['468', '469', '470', '471', '472', '473', '474', '475', '476', '477', '478', '479', '480', '481', '482', '483', '484'], true)) {
+        if ($state === '24' && in_array($district, ['468', '469', '470', '471', '472', '473', '474', '475', '476', '477', '478', '479', '480', '481', '482', '483', '484', '485'], true)) {
             $gujaratDistrict = match ($district) {
                 '468' => 'Kachchh',
                 '469' => 'Banaskantha',
@@ -55,6 +55,7 @@ class DistrictDashboardController extends Controller
                 '482' => 'Anand',
                 '483' => 'Kheda',
                 '484' => 'Panchmahals',
+                '485' => 'Dahod',
                 '472' => 'Sabarkantha',
                 '473' => 'Gandhinagar',
                 '474' => 'Ahmedabad',
@@ -68,6 +69,7 @@ class DistrictDashboardController extends Controller
                 '482' => 'Anand',
                 '483' => 'Kheda',
                 '484' => 'Panchmahals',
+                '485' => 'Dahod',
             };
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($gujaratDistrict, 'Gujarat');
             $mapFile = 'maps/'.strtolower($gujaratDistrict).'-villages.geojson';

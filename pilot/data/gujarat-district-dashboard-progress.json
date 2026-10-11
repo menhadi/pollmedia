@@ -3623,18 +3623,75 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/485/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "692 unlinked and25 ambiguous shapes; no rejected shapes; no population assigned",
+        "PC19 retains PanchmahalsAC123 Santrampur; no district populations combined",
+        "Morva Hadaf125 includes Dahod Gamdi; headings not exclusive geography",
+        "Boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "Published totals and shared outside membership match HTML; detailed audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 2127086,
+          "households": 334272,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; independent source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 51,
+          "assertions": 209,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHuba580fb398458dbd361eb97ec7f2493fb74f77267 verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+        "sha256": "96d352052ff6bf03f7b7426c1faa3c8943c5bec2386addce66b5df02276b5994",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 692,
+          "ambiguous": 25
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI DOHAD label retained; Census name Dohad; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "24fd62a7c00a9fff032b9326b116149a031f5773c28bb66921d11d3165f65661",
+      "membership_evidence": {
+        "pdf_pages": [
+          137,
+          138,
+          139,
+          148
+        ],
+        "visually_inspected_pdf_pages": [
+          137,
+          138,
+          139,
+          148
+        ],
+        "ac_codes": [
+          129,
+          130,
+          131,
+          132,
+          133,
+          134
+        ],
+        "pcs": [
+          19
+        ]
+      },
+      "deployment": {
+        "live_commit": "a580fb398458dbd361eb97ec7f2493fb74f77267",
+        "rollback_commit": "b63f3055e7158c985bf28d65b6e9f47d1631f85a",
+        "locks": "Both flock -n held across fresh HEAD narrow Gujarat patch/map commit cache clearing"
       }
     },
     {
@@ -4835,10 +4892,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T22:10:40.378757+00:00",
-    "live_commit": "bb10fc9b8be963bdaeffd80f7e1636888f123616",
-    "action": "Panchmahals deployed; public published totals/shared membership checked;50 tests passed; backups verified",
-    "next_action": "Continue Dahod485; AC129-134/shared PC19 already audited; then Vadodara486"
+    "checked_at": "2026-10-11T22:15:09.536189+00:00",
+    "live_commit": "a580fb398458dbd361eb97ec7f2493fb74f77267",
+    "action": "Dahod deployed; public published totals/shared membership checked;51 tests passed; backups verified",
+    "next_action": "Continue Vadodara486; AC135-147 pages139-141 visually audited; PC20/21/22 require remaining Bharuch/Narmada outside segments before integration"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }

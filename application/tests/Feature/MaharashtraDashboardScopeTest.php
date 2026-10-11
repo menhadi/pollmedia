@@ -471,4 +471,12 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([129, 130, 131, 132, 133, 134], array_column($links['parliamentary'][1]['outside_district'], 'code'));
         $this->assertSame([137, 138, 139, 140, 146, 148], array_column($links['parliamentary'][2]['outside_district'], 'code'));
     }
+
+    public function test_dahod_keeps_panchmahals_santrampur_in_pc19(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Dahod', 'Gujarat');
+        $this->assertSame(range(129, 134), array_column($links['assembly'], 'code'));
+        $this->assertSame([19], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([123], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+    }
 }
