@@ -1203,6 +1203,54 @@
       "name": "Narasimharaja",
       "district": "Mysore",
       "page": 205
+    },
+    {
+      "code": 213,
+      "name": "Heggadadevankote (ST)",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 214,
+      "name": "Nanjangud (SC)",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 219,
+      "name": "Varuna",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 220,
+      "name": "T.Narasipur (SC)",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 221,
+      "name": "Hanur",
+      "district": "Chamarajanagar",
+      "page": 205
+    },
+    {
+      "code": 222,
+      "name": "Kollegal (SC)",
+      "district": "Chamarajanagar",
+      "page": 205
+    },
+    {
+      "code": 223,
+      "name": "Chamarajanagar",
+      "district": "Chamarajanagar",
+      "page": 205
+    },
+    {
+      "code": 224,
+      "name": "Gundlupet",
+      "district": "Chamarajanagar",
+      "page": 206
     }
   ],
   "pcs": [
@@ -1578,6 +1626,21 @@
         216,
         217,
         218
+      ],
+      "page": 208
+    },
+    {
+      "code": 22,
+      "name": "Chamarajanagar (SC)",
+      "ac_codes": [
+        213,
+        214,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224
       ],
       "page": 208
     }
