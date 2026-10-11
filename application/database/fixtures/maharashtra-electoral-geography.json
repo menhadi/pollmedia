@@ -1465,10 +1465,82 @@
       "page": 272
     },
     {
+      "code": 244,
+      "name": "Karmala",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 245,
+      "name": "Madha",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
       "code": 246,
       "name": "Barshi",
       "district": "Solapur",
       "page": 273
+    },
+    {
+      "code": 247,
+      "name": "Mohol (SC)",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 248,
+      "name": "Solapur City North",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 249,
+      "name": "Solapur City Central",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 250,
+      "name": "Akkalkot",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 251,
+      "name": "Solapur South",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 252,
+      "name": "Pandharpur",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 253,
+      "name": "Sangole",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 254,
+      "name": "Malshiras (SC)",
+      "district": "Solapur",
+      "page": 273
+    },
+    {
+      "code": 255,
+      "name": "Phaltan (SC)",
+      "district": "Satara",
+      "page": 273
+    },
+    {
+      "code": 258,
+      "name": "Man",
+      "district": "Satara",
+      "page": 274
     },
     {
       "code": 263,
@@ -2019,7 +2091,33 @@
         246
       ],
       "page": 279
+    },
+    {
+      "code": 42,
+      "name": "Solapur (SC)",
+      "ac_codes": [
+        247,
+        248,
+        249,
+        250,
+        251,
+        252
+      ],
+      "page": 279
+    },
+    {
+      "code": 43,
+      "name": "Madha",
+      "ac_codes": [
+        244,
+        245,
+        253,
+        254,
+        255,
+        258
+      ],
+      "page": 279
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278. Thane dated AC128-151/PC22-25 complete; later SOI Thane517 excludes Palghar601, without reconstructing Census2011 geography. Mumbai Suburban AC152-177 and Mumbai City AC178-187 complete; PC30 cross-district membership retained. Each SOI urban district has only one unlinked source record, no ward/AC geometry. Raigad AC188-194 complete; shared PC32 retains Ratnagiri263/264 and PC33 Pune204-206; Pune/Ratnagiri partial. Pune AC195-215 complete; PCs33-36 retain shared Raigad membership. Ahmednagar AC216-227/PC37-38 complete; Census Ahmadnagar and SOI source labels retained without inferred edition equivalence. Beed AC228-233/PC39 complete; Census Bid retained without inferred boundary edition equivalence. Latur AC234-239 complete; PC41 retains Nanded Loha88, PC40 retains Osmanabad240-243 and Solapur246. Solapur fixture scope partial."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278. Thane dated AC128-151/PC22-25 complete; later SOI Thane517 excludes Palghar601, without reconstructing Census2011 geography. Mumbai Suburban AC152-177 and Mumbai City AC178-187 complete; PC30 cross-district membership retained. Each SOI urban district has only one unlinked source record, no ward/AC geometry. Raigad AC188-194 complete; shared PC32 retains Ratnagiri263/264 and PC33 Pune204-206; Pune/Ratnagiri partial. Pune AC195-215 complete; PCs33-36 retain shared Raigad membership. Ahmednagar AC216-227/PC37-38 complete; Census Ahmadnagar and SOI source labels retained without inferred edition equivalence. Beed AC228-233/PC39 complete; Census Bid retained without inferred boundary edition equivalence. Latur AC234-239 complete; PC41 retains Nanded Loha88, PC40 retains Osmanabad240-243 and Solapur246. Solapur fixture scope partial. Solapur AC244-254 complete; PC40 retains Latur/Osmanabad and PC43 Satara255/258; Satara fixture scope partial."
 }
