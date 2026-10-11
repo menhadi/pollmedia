@@ -6,12 +6,12 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235'];
+$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225'];
 @endphp
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>
 <p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Membership follows preserved official CEO sources.</p>
-<p class="notice">District figures are context, never constituency population. Boundary edition and Census/LGD correspondence remain unverified. The Bihar membership fixture currently covers Araria, Jahanabad, Karakat and Aurangabad PCs only. Population is never allocated by polygon area.</p>
+<p class="notice">District figures are context, never constituency population. Boundary edition and Census/LGD correspondence remain unverified. The Bihar membership fixture currently covers Araria, Jahanabad, Karakat, Aurangabad and Banka PCs only. Population is never allocated by polygon area.</p>
 <p class="notice">District references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 <ul>@foreach($segments as $segment)<li>AC {{ $segment['code'] }} · {{ $segment['name'] }} · {{ $segment['district'] }}</li>@endforeach</ul>
 @foreach($districtNames as $district)
