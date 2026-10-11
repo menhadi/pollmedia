@@ -4107,19 +4107,26 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_membership_audited_dashboard_integration_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/511/dashboard",
       "flags": [
         "SOI literal label N>NDED retained; boundary edition unverified",
         "1685 valid unlinked source shapes; no ambiguous or rejected shapes",
-        "AC83-91 full scope and associated parliamentary integration pending; PC15 already records AC83/84",
+        "AC83-91 and shared PC15/16/41 context tested locally; deployment pending",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited",
-        "source_map": "Archive hash verified; 1685 valid EPSG:4326 shapes; no accepted Census/LGD joins"
+        "source_map": "Archive hash verified; 1685 valid EPSG:4326 shapes; no accepted Census/LGD joins",
+        "dedicated_tests": {
+          "tests": 16,
+          "assertions": 78,
+          "result": "Passed",
+          "scope": "Nanded PCs15/16/41 retain Yavatmal, Hingoli and Latur segments; PC16 has no outside district segments"
+        },
+        "formatting": "Pint passed"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -7138,9 +7145,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:02:44.364642+00:00",
+    "checked_at": "2026-10-11T18:07:00.211751+00:00",
     "live_commit": "9f4c33bc457bfb959fb289d35a4c022fef8f5bb8",
-    "action": "Audited Nanded full AC83-91 and PCs15/16/41; visually inspected Latur shared scope on PDF272/279",
-    "next_action": "Integrate Nanded district and shared PCs; include Latur Census code524 with partial scope warning; test then locked deployment; preserve outstanding audits"
+    "action": "Nanded district and PCs15/16/41 integrated locally; 16 tests and 78 assertions passed; literal source label and partial Latur scope preserved",
+    "next_action": "Refresh live deployment files; narrow Nanded patch under both locks; rollback, cache clearing, backups and public/rendered/data checks; preserve earlier pending audits"
   }
 }
