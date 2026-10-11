@@ -135,7 +135,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_membership_integration_pending",
+      "workflow_status": "dashboard_integration_prepared_tests_passed_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/468/dashboard",
       "flags": [
         "SOI boundary edition unverified",
@@ -148,7 +148,12 @@
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "dedicated_tests": {
+          "tests": 34,
+          "assertions": 153,
+          "result": "Passed"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
@@ -165,7 +170,42 @@
         "rejected": [],
         "note": "SOI KACHCHH label retained; Census name Kachchh; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "e9bffb61f3dc8b848d7e59abfe54f3c5410f3577a05511b8a755af5cc51dfc19"
+      "map_sha256": "e9bffb61f3dc8b848d7e59abfe54f3c5410f3577a05511b8a755af5cc51dfc19",
+      "membership_evidence": {
+        "pdf_pages": [
+          116,
+          117,
+          125,
+          147
+        ],
+        "visually_inspected_pdf_pages": [
+          116,
+          117,
+          125,
+          147
+        ],
+        "ac_codes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "pc": {
+          "code": 1,
+          "ac_codes": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            65
+          ],
+          "outside_district": "Rajkot"
+        }
+      }
     },
     {
       "district_code": "469",
@@ -3830,10 +3870,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T20:38:58.284049+00:00",
-    "live_commit": "4205f53e7a3dafb7e970e07608b784762f359b0c",
-    "action": "Official Gujarat archive acquired and ZIP integrity/hash verified; Kachchh939 source map prepared locally; ECI116/117/147 visually audited",
-    "next_action": "Audit Rajkot Morbi AC65 page125; integrate Gujarat fixture/service/context and Kachchh district/PC/AC dashboards; test and deploy under both locks"
+    "checked_at": "2026-10-11T20:43:26.701885+00:00",
+    "live_commit": "48f69bb51d7cd25b386739d05fbecbf9d2ab358b",
+    "action": "Kachchh district/controller, Gujarat membership fixture/service and PC/AC context/switcher prepared locally;34 tests passed; Morbi source page125 visually audited",
+    "next_action": "Fresh live HEAD and file preflight; narrow Gujarat-only controller/service/shared-view insertions preserving concurrent changes; deploy Kachchh under both locks; verify actual totals/public/rendered and backups"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }

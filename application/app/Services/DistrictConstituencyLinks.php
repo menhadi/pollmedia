@@ -8,11 +8,12 @@ class DistrictConstituencyLinks
     public function forDistrict(string $district, string $state = 'Uttar Pradesh'): array
     {
         $empty = ['available' => false, 'assembly' => [], 'parliamentary' => [], 'sources' => []];
-        if (! in_array($state, ['Uttar Pradesh', 'Karnataka', 'Maharashtra'], true)) {
+        if (! in_array($state, ['Uttar Pradesh', 'Karnataka', 'Maharashtra', 'Gujarat'], true)) {
             return $empty;
         }
         $path = database_path(match ($state) {
             'Maharashtra' => 'fixtures/maharashtra-electoral-geography.json',
+            'Gujarat' => 'fixtures/gujarat-electoral-geography.json',
             'Karnataka' => 'fixtures/karnataka-electoral-geography.json',
             default => 'fixtures/up-electoral-geography.json',
         });

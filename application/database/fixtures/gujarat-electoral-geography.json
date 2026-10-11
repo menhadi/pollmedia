@@ -1,0 +1,69 @@
+{
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_source_date": "2008-12-17",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Abdasa",
+      "district": "Kachchh",
+      "page": 116
+    },
+    {
+      "code": 2,
+      "name": "Mandvi",
+      "district": "Kachchh",
+      "page": 116
+    },
+    {
+      "code": 3,
+      "name": "Bhuj",
+      "district": "Kachchh",
+      "page": 116
+    },
+    {
+      "code": 4,
+      "name": "Anjar",
+      "district": "Kachchh",
+      "page": 116
+    },
+    {
+      "code": 5,
+      "name": "Gandhidham (SC)",
+      "district": "Kachchh",
+      "page": 117
+    },
+    {
+      "code": 6,
+      "name": "Rapar",
+      "district": "Kachchh",
+      "page": 117
+    },
+    {
+      "code": 65,
+      "name": "Morbi",
+      "district": "Rajkot",
+      "page": 125
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Kachchh (SC)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        65
+      ],
+      "page": 147
+    }
+  ],
+  "coverage_note": "Partial dated ECI2008 Gujarat scope: complete Kachchh AC1-6; shared PC1 includes Morbi AC65 in dated Rajkot district. Rajkot partial; later Morbi district split is not backcast into Census2011. Map/Census correspondence unverified."
+}
