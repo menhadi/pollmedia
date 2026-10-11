@@ -723,6 +723,54 @@
       "name": "Tarikere",
       "district": "Chikmagalur",
       "page": 194
+    },
+    {
+      "code": 127,
+      "name": "Kadur",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 193,
+      "name": "Shravanabelagola",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 194,
+      "name": "Arsikere",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 195,
+      "name": "Belur",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 196,
+      "name": "Hassan",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 197,
+      "name": "Holenarasipur",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 198,
+      "name": "Arkalgud",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 199,
+      "name": "Sakleshpur (SC)",
+      "district": "Hassan",
+      "page": 202
     }
   ],
   "pcs": [
@@ -948,6 +996,21 @@
         124,
         125,
         126
+      ],
+      "page": 208
+    },
+    {
+      "code": 16,
+      "name": "Hassan",
+      "ac_codes": [
+        127,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199
       ],
       "page": 208
     }
