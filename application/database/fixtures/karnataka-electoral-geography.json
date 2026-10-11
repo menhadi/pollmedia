@@ -1037,19 +1037,28 @@
       "code": 139,
       "name": "Gauribidanur",
       "district": "Kolar",
-      "page": 196
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 140,
       "name": "Bagepalli",
       "district": "Kolar",
-      "page": 196
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 141,
       "name": "Chikkaballapur",
       "district": "Kolar",
-      "page": 196
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 178,
@@ -1337,6 +1346,78 @@
       "page": 183,
       "context_district": "Gulbarga",
       "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 142,
+      "name": "Sidlaghatta",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 143,
+      "name": "Chintamani",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 144,
+      "name": "Srinivaspur",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 145,
+      "name": "Mulbagal (SC)",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 146,
+      "name": "Kolar Gold Field (SC)",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 147,
+      "name": "Bangarapet (SC)",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 148,
+      "name": "Kolar",
+      "district": "Kolar",
+      "page": 197,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 149,
+      "name": "Malur",
+      "district": "Kolar",
+      "page": 197,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
       "context_observed_date": "2026-10-11"
     }
   ],
@@ -1745,6 +1826,21 @@
         45
       ],
       "page": 207
+    },
+    {
+      "code": 28,
+      "name": "Kolar (SC)",
+      "ac_codes": [
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149
+      ],
+      "page": 209
     }
   ],
   "flags": [
