@@ -7,10 +7,26 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class MaintenanceController extends Controller
 {
+    public function preview(MaintenanceMode $maintenance): RedirectResponse
+    {
+        if (! $maintenance->active()) {
+            return redirect('/');
+        }
+
+        $data = $maintenance->data();
+        if (empty($data['secret'])) {
+            $data['secret'] = Str::random(64);
+            $maintenance->activate($data);
+        }
+
+        return redirect('/'.$data['secret'])->header('Cache-Control', 'no-store, private');
+    }
+
     public function index(MaintenanceMode $maintenance): View
     {
         return view('maintenance', ['enabled' => $maintenance->active()]);
@@ -34,7 +50,7 @@ class MaintenanceController extends Controller
         }
 
         if ($enabled) {
-            $maintenance->activate(['status' => 503, 'retry' => 300]);
+            $maintenance->activate(['status' => 503, 'retry' => 300, 'secret' => Str::random(64)]);
         } else {
             $maintenance->deactivate();
         }

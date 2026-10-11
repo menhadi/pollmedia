@@ -76,4 +76,23 @@ class MaintenanceModeTest extends TestCase
         $this->post('/admin/maintenance', ['enabled' => 'invalid'])->assertSessionHasErrors('enabled');
         $this->assertFalse($maintenance->active());
     }
+
+    public function test_admin_preview_bypasses_maintenance_only_with_a_valid_cookie(): void
+    {
+        $maintenance = $this->maintenance();
+        $maintenance->activate(['status' => 503, 'retry' => 300]);
+        $this->post('/admin/maintenance/preview')->assertRedirect(route('admin.login'));
+        $this->actingAs(User::factory()->create())->post('/admin/maintenance/preview')->assertForbidden();
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $this->post('/admin/maintenance/preview')->assertRedirect('/'.$maintenance->data()['secret']);
+        $this->assertTrue($maintenance->active());
+        $this->assertSame(300, $maintenance->data()['retry']);
+        $this->get('/report-problem')->assertStatus(503);
+        $response = $this->get('/'.$maintenance->data()['secret'])->assertRedirect('/');
+        $cookie = $response->getCookie('laravel_maintenance', false);
+        $this->assertNotNull($cookie);
+        $this->withUnencryptedCookie('laravel_maintenance', $cookie->getValue())->get('/report-problem')->assertOk();
+        $maintenance->activate(['status' => 503, 'retry' => 300, 'secret' => 'new-secret']);
+        $this->get('/report-problem')->assertStatus(503);
+    }
 }
