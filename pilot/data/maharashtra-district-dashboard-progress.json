@@ -3413,7 +3413,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
+      "workflow_status": "deployed_bounded_public_desktop_map_verified_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/508/dashboard",
       "flags": [
         "SOI literal label GADCHIROLI retained; boundary edition unverified",
@@ -3423,7 +3423,16 @@
       ],
       "validation": {
         "public": "Pending",
-        "rendered": "Pending",
+        "rendered": {
+          "result": "Desktop district screenshot inspected; 1720 map paths rendered; 12 source subdistricts; 64 duplicate-code shapes and one rejection visible",
+          "displayed_census_2011": {
+            "population": 1072942,
+            "households": 250435,
+            "literacy_age_7_percent": 74.36,
+            "sex_ratio": 982
+          },
+          "scope": "Displayed values observed; original-source reconciliation, mobile and PC/AC rendering pending"
+        },
         "canonical_data": "Publication receipt join inventoried; values not yet audited",
         "source_map": "Archive hash verified; 1720 valid EPSG:4326 shapes; one invalid source shape excluded without repair; no accepted Census/LGD joins",
         "dedicated_tests": {
@@ -3437,7 +3446,12 @@
           "bytes": 63210,
           "scope": "Response only; not rendered or full data verification"
         },
-        "backup": "Local chain bundle verified; GitHub backup branch verified at 6d63bb2ea398791746b77850c84e1d101feb4cbf; no backups deleted"
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 6d63bb2ea398791746b77850c84e1d101feb4cbf; no backups deleted",
+        "public_pages": {
+          "count": 5,
+          "result": "District, PC12 and AC67-69 HTTP 200; history/scope and constituency context present; shared Chandrapur segments and separate-population warning present",
+          "scope": "Bounded response/content checks only"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -6841,9 +6855,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T17:03:14.260983+00:00",
-    "live_commit": "6d63bb2ea398791746b77850c84e1d101feb4cbf",
-    "action": "Gadchiroli integration tested and deployed under both locks; district HTTP 200; local and GitHub backups verified",
-    "next_action": "Public/rendered checks for Gadchiroli district, PC12 and AC67-69; original-source and mobile audits still pending; then Chandrapur preparation"
+    "checked_at": "2026-10-11T17:07:07.699132+00:00",
+    "live_commit": "f5db2e537d7bef5564991ca68db53186193140cf",
+    "action": "Gadchiroli five public pages checked; desktop map and displayed district figures observed",
+    "next_action": "Prepare Chandrapur source map and full AC70-75/PC13 scope; preserve pending original-source/mobile/PC-AC rendered audits across prior districts"
   }
 }
