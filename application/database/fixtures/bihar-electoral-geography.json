@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirty-two PCs recorded; remaining Bihar membership pending",
+  "coverage": "Thirty-four PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1402,6 +1402,108 @@
       "district": "Patna",
       "source_page_label": "9 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 13,
+      "name": "Harsidhi (SC)",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 14,
+      "name": "Govindganj",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 15,
+      "name": "Kesaria",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 16,
+      "name": "Kalyanpur",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 17,
+      "name": "Pipra",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 18,
+      "name": "Madhuban",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 19,
+      "name": "Motihari",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 20,
+      "name": "Chiraia",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 21,
+      "name": "Dhaka",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 22,
+      "name": "Sheohar",
+      "district": "Sheohar",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 23,
+      "name": "Riga",
+      "district": "Sitamarhi",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 30,
+      "name": "Belsand",
+      "district": "Sitamarhi",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1997,6 +2099,44 @@
       ],
       "cross_district_scope": [
         "Patna"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 3,
+      "name": "Purvi Champaran",
+      "ac_codes": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        19
+      ],
+      "cross_district_scope": [
+        "Purba Champaran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 4,
+      "name": "Sheohar",
+      "ac_codes": [
+        18,
+        20,
+        21,
+        22,
+        23,
+        30
+      ],
+      "cross_district_scope": [
+        "Purba Champaran",
+        "Sheohar",
+        "Sitamarhi"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
