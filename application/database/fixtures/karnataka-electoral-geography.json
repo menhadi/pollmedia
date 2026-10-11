@@ -675,6 +675,54 @@
       "name": "Byndoor",
       "district": "Udupi",
       "page": 193
+    },
+    {
+      "code": 119,
+      "name": "Kundapura",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 120,
+      "name": "Udupi",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 121,
+      "name": "Kapu",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 122,
+      "name": "Karkal",
+      "district": "Udupi",
+      "page": 194
+    },
+    {
+      "code": 123,
+      "name": "Sringeri",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 124,
+      "name": "Mudigere (SC)",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 125,
+      "name": "Chikmagalur",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 126,
+      "name": "Tarikere",
+      "district": "Chikmagalur",
+      "page": 194
     }
   ],
   "pcs": [
@@ -887,6 +935,21 @@
         118
       ],
       "page": 208
+    },
+    {
+      "code": 15,
+      "name": "Udupi Chikmagalur",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "page": 208
     }
   ],
   "flags": [
@@ -896,7 +959,8 @@
     "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending",
     "Raichur PC Table A Gulbarga district references are dated 2008; correspondence to later Yadgir district requires official evidence",
     "Dharwad Table A Hubli-Dharwad spellings retained; runtime aliases require review",
-    "Shimoga Table A Shikaripura versus Table B Shikaripur spelling retained; runtime alias audit pending"
+    "Shimoga Table A Shikaripura versus Table B Shikaripur spelling retained; runtime alias audit pending",
+    "ECI Karkal and Chikmagalur spellings retained; runtime aliases require source review"
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
