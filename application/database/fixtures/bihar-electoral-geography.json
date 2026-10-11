@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirteen PCs recorded; remaining Bihar membership pending",
+  "coverage": "Fourteen PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -563,6 +563,48 @@
       "district": "Samastipur",
       "source_page_label": "4 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 99,
+      "name": "Baikunthpur",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 100,
+      "name": "Barauli",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 101,
+      "name": "Gopalganj",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 102,
+      "name": "Kuchaikote",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 103,
+      "name": "Bhorey (SC)",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 104,
+      "name": "Hathua",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -801,6 +843,24 @@
       "cross_district_scope": [
         "Darbhanga",
         "Samastipur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 17,
+      "name": "Gopalganj (SC)",
+      "ac_codes": [
+        99,
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "cross_district_scope": [
+        "Gopalganj"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
