@@ -1,7 +1,7 @@
 @if($state==='Tamil Nadu' && !$exactSeatOnly)
 @php
 $switchFixture=json_decode(file_get_contents(database_path('fixtures/tamil-nadu-electoral-geography.json')),true,512,JSON_THROW_ON_ERROR);
-$switchNormalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$value)));
+$switchNormalize=fn(string $value):string=>str_replace('thiruvottiyur','tiruvottiyur',mb_strtolower(trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$value))));
 $switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district_rows'])->filter(fn(array $seat):bool=>$switchNormalize($seat['name'])===$switchNormalize($name));
 $switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
 $switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
@@ -20,7 +20,7 @@ $switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string 
 @php($switchIdentity=$switchKey.':'.$switchOption['code'])
 @continue(isset($switchSeen[$switchIdentity]))
 @php($switchSeen[$switchIdentity]=true)
-<option value="{{ route('constituency.overview',['kind'=>$switchKey==='assembly'?'ac':'pc','state'=>$state,'name'=>trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$switchOption['name']))],false) }}">{{ $switchLabel }} {{ $switchOption['code'] }} Â· {{ $switchOption['name'] }}</option>
+<option value="{{ route('constituency.overview',['kind'=>$switchKey==='assembly'?'ac':'pc','state'=>$state,'name'=>$switchOption['name']==='Tiruvottiyur'?'Thiruvottiyur':trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$switchOption['name']))],false) }}">{{ $switchLabel }} {{ $switchOption['code'] }} Â· {{ $switchOption['name'] }}</option>
 @endforeach
 </optgroup>
 @endforeach

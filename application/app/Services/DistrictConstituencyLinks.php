@@ -50,6 +50,10 @@ class DistrictConstituencyLinks
     {
         $name = trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i', '', $name));
 
+        if ($state === 'Tamil Nadu' && $kind === 'ac' && $name === 'Tiruvottiyur') {
+            $name = 'Thiruvottiyur';
+        }
+
         return 'https://pollmedia.org'.route('constituency.overview', ['kind' => $kind, 'state' => $state, 'name' => $name], false);
     }
 }
