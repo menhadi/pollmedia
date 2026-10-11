@@ -517,10 +517,52 @@
       "page": 129
     },
     {
+      "code": 86,
+      "name": "Junagadh",
+      "district": "Junagadh",
+      "page": 129
+    },
+    {
+      "code": 87,
+      "name": "Visavadar",
+      "district": "Junagadh",
+      "page": 129
+    },
+    {
       "code": 88,
       "name": "Keshod",
       "district": "Junagadh",
       "page": 129
+    },
+    {
+      "code": 89,
+      "name": "Mangrol",
+      "district": "Junagadh",
+      "page": 129
+    },
+    {
+      "code": 90,
+      "name": "Somnath",
+      "district": "Junagadh",
+      "page": 130
+    },
+    {
+      "code": 91,
+      "name": "Talala",
+      "district": "Junagadh",
+      "page": 130
+    },
+    {
+      "code": 92,
+      "name": "Kodinar (SC)",
+      "district": "Junagadh",
+      "page": 130
+    },
+    {
+      "code": 93,
+      "name": "Una",
+      "district": "Junagadh",
+      "page": 130
     },
     {
       "code": 115,
@@ -719,6 +761,20 @@
         80,
         81,
         82
+      ],
+      "page": 147
+    },
+    {
+      "code": 13,
+      "name": "Junagadh",
+      "ac_codes": [
+        86,
+        87,
+        89,
+        90,
+        91,
+        92,
+        93
       ],
       "page": 147
     },

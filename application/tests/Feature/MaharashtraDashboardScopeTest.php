@@ -420,4 +420,12 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([11], array_column($links['parliamentary'], 'code'));
         $this->assertSame([73, 74, 75, 85, 88], array_column($links['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_junagadh_retains_dated_gir_somnath_and_shared_porbandar(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Junagadh', 'Gujarat');
+        $this->assertSame(range(85, 93), array_column($links['assembly'], 'code'));
+        $this->assertSame([11, 13], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([73, 74, 75, 83, 84], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+    }
 }
