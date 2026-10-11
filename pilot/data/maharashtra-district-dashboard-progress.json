@@ -3179,12 +3179,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/507/dashboard",
       "flags": [
         "SOI literal label GONDIA retained; boundary edition unverified",
         "942 unlinked and 16 ambiguous source shapes; no population assigned",
-        "Local AC63-66 and shared PC11/PC12 integration tested; live deployment pending",
+        "AC63-66 and shared PC11/PC12 context deployed; full current membership crosswalk remains unverified",
         "Original-source, rendered and actual-data audits pending"
       ],
       "validation": {
@@ -3203,7 +3203,13 @@
           "result": "Aborted before mutation",
           "live_commit": "d47bf80d496aee44b4e19adf8a1f8a110a53d49f",
           "reason": "Concurrent controller changes caused patch check failure; both locks acquired, no patch/import/commit applied"
-        }
+        },
+        "public_district": {
+          "http": 200,
+          "bytes": 63934,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified and GitHub backup branch verified at 798f0dfb53948d12256ca6dbfb4431ccb549423a; no bundles deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -3263,6 +3269,11 @@
           }
         ],
         "scope": "Dated 2008 order; current crosswalk remains unverified"
+      },
+      "deployment": {
+        "live_commit": "798f0dfb53948d12256ca6dbfb4431ccb549423a",
+        "rollback_commit": "d47bf80d496aee44b4e19adf8a1f8a110a53d49f",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch, map copy, commit and view cache clearing"
       }
     },
     {
@@ -6785,9 +6796,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T16:43:29.431447+00:00",
-    "live_commit": "d47bf80d496aee44b4e19adf8a1f8a110a53d49f",
-    "action": "Gondiya deployment aborted safely before mutation when narrow controller patch no longer applied after concurrent deployment",
-    "next_action": "Redownload current live controller and own fixture/views; rebuild narrow Maharashtra-only patch and retry fresh HEAD under both locks; public/rendered/data verification follows"
+    "checked_at": "2026-10-11T16:48:03.361304+00:00",
+    "live_commit": "798f0dfb53948d12256ca6dbfb4431ccb549423a",
+    "action": "Gondiya deployed under both locks after refreshing concurrent controller changes; district HTTP 200; local and GitHub backups verified",
+    "next_action": "Check Gondiya district, two PCs and four ACs; rendered map/mobile and original-source/data audits; then Gadchiroli source map"
   }
 }
