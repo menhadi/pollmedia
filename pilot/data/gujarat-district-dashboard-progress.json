@@ -1786,18 +1786,86 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/476/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "591 unlinked and77 ambiguous shapes; no rejected shapes; no population assigned",
+        "PC1 retains Kachchh; PC11 retains Porbandar/Junagadh; no district populations combined",
+        "AC66 has Jamnagar Challa/Golita; AC72 Surendranagar Ori; AC74 Amreli Devalki; district headings not exclusive geography",
+        "Later Morbi splits, municipal wards, boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "Published totals and shared outside membership match HTML; detailed audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 3804558,
+          "households": 786586,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; independent source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 42,
+          "assertions": 179,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHub76a1413b260035ef30ca8a3f07e5842ce1500fbd verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+        "sha256": "96d352052ff6bf03f7b7426c1faa3c8943c5bec2386addce66b5df02276b5994",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 591,
+          "ambiguous": 77
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI RAJKOT label retained; Census name Rajkot; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "5cb8a960b1b3250e87b7f68a7cfa1d8c927468063b67edc65c726a93350c124d",
+      "membership_evidence": {
+        "pdf_pages": [
+          125,
+          126,
+          127,
+          128,
+          129,
+          147
+        ],
+        "visually_inspected_pdf_pages": [
+          125,
+          126,
+          127,
+          128,
+          129,
+          147
+        ],
+        "ac_codes": [
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75
+        ],
+        "pcs": [
+          1,
+          10,
+          11
+        ]
+      },
+      "deployment": {
+        "live_commit": "76a1413b260035ef30ca8a3f07e5842ce1500fbd",
+        "rollback_commit": "42c06b6ce19b6cabe24c964ef0c3a3a31f93928c",
+        "locks": "Both flock -n held across fresh HEAD narrow Gujarat patch/map commit cache clearing"
       }
     },
     {
@@ -4303,10 +4371,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T21:25:05.723386+00:00",
-    "live_commit": "0fd20d43de81813825e0ab7d9c90c28b3d291bf6",
-    "action": "Surendranagar deployed; public published totals/shared membership checked;41 tests passed; backups verified",
-    "next_action": "Continue Rajkot476; audit remaining AC66-75 and PC10/11 outside district membership before integration"
+    "checked_at": "2026-10-11T21:30:32.279768+00:00",
+    "live_commit": "76a1413b260035ef30ca8a3f07e5842ce1500fbd",
+    "action": "Rajkot deployed; public published totals/shared membership checked;42 tests passed; backups verified",
+    "next_action": "Continue Jamnagar477; AC76-82 pages127-128 and PC12 page147 visually audited; cross-district villages/later Devbhumi Dwarka split flag"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }

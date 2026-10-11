@@ -396,4 +396,12 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([9], array_column($links['parliamentary'], 'code'));
         $this->assertSame([39, 59], array_column($links['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_rajkot_keeps_kachchh_and_porbandar_shared_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Rajkot', 'Gujarat');
+        $this->assertSame(range(65, 75), array_column($links['assembly'], 'code'));
+        $this->assertSame([1, 10, 11], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([83, 84, 85, 88], array_column($links['parliamentary'][2]['outside_district'], 'code'));
+    }
 }
