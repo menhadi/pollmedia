@@ -4626,18 +4626,55 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/490/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "374 unlinked and30 ambiguous shapes; no rejections; no population assigned",
+        "PC25 retains Surat163-165/168; PC26 Dangs173/Valsad178-182; prepared not deployed",
+        "Boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+        "sha256": "96d352052ff6bf03f7b7426c1faa3c8943c5bec2386addce66b5df02276b5994",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 374,
+          "ambiguous": 30
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI NAVSARI label retained; Census name Navsari; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "6a0f8bfab3fcefb21e0c769ac17f1c6d33562d66426ea487754f8ad32bfe0208",
+      "membership_evidence": {
+        "pdf_pages": [
+          143,
+          145,
+          148
+        ],
+        "visually_inspected_pdf_pages": [
+          143,
+          145,
+          148
+        ],
+        "ac_codes": [
+          174,
+          175,
+          176,
+          177
+        ],
+        "pcs": [
+          25,
+          26
+        ]
       }
     },
     {
@@ -5113,10 +5150,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T22:44:59.486100+00:00",
-    "live_commit": "0d823389db66213d64efab965acd3ab61d67314c",
-    "action": "The Dangs deployed; public published totals/shared membership checked;55 tests passed; backups verified",
-    "next_action": "Continue Navsari490; AC174-177 audited page145; PC25 needs Surat163-165/168 outside segments; PC26 already complete"
+    "checked_at": "2026-10-11T22:49:22.669867+00:00",
+    "live_commit": "b9715c7eac1737c63fc01c93aea5f14d176dddff",
+    "action": "Navsari source map and shared PC25/26 dated membership prepared; deployment pending",
+    "next_action": "Integrate Navsari490 controller/context/switcher; test deploy verify public totals and backups; then Valsad491"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
