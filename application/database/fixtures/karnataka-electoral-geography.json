@@ -291,6 +291,102 @@
       "name": "Aland",
       "district": "Gulbarga",
       "page": 183
+    },
+    {
+      "code": 53,
+      "name": "Raichur Rural (ST)",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 54,
+      "name": "Raichur",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 55,
+      "name": "Manvi (ST)",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 56,
+      "name": "Devadurga (ST)",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 57,
+      "name": "Lingsugur (SC)",
+      "district": "Raichur",
+      "page": 185
+    },
+    {
+      "code": 58,
+      "name": "Sindhanur",
+      "district": "Raichur",
+      "page": 185
+    },
+    {
+      "code": 59,
+      "name": "Maski (ST)",
+      "district": "Raichur",
+      "page": 185
+    },
+    {
+      "code": 36,
+      "name": "Shorapur (ST)",
+      "district": "Gulbarga",
+      "page": 182
+    },
+    {
+      "code": 37,
+      "name": "Shahapur",
+      "district": "Gulbarga",
+      "page": 182
+    },
+    {
+      "code": 38,
+      "name": "Yadgir",
+      "district": "Gulbarga",
+      "page": 182
+    },
+    {
+      "code": 60,
+      "name": "Kushtagi",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 61,
+      "name": "Kanakagiri (SC)",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 62,
+      "name": "Gangawati",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 63,
+      "name": "Yelburga",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 64,
+      "name": "Koppal",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 92,
+      "name": "Siruguppa (ST)",
+      "district": "Bellary",
+      "page": 190
     }
   ],
   "pcs": [
@@ -383,13 +479,44 @@
         52
       ],
       "page": 207
+    },
+    {
+      "code": 6,
+      "name": "Raichur (ST)",
+      "ac_codes": [
+        36,
+        37,
+        38,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "page": 207
+    },
+    {
+      "code": 8,
+      "name": "Koppal",
+      "ac_codes": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        92
+      ],
+      "page": 207
     }
   ],
   "flags": [
     "Partial audited fixture: Belgaum, Bagalkot, Bijapur, Bidar and associated PC segments only",
     "Table A Kagwad/Hukkeri/Athani vs Table B Kagawad/Hukeri/Athni spelling variants retained; runtime alias audit pending",
     "2008 membership does not certify SOI boundary edition",
-    "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending"
+    "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending",
+    "Raichur PC Table A Gulbarga district references are dated 2008; correspondence to later Yadgir district requires official evidence"
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
