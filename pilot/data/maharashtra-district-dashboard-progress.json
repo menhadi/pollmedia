@@ -4353,19 +4353,35 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_dashboard_integration_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/512/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "SOI HINGOLI label retained; boundary edition unverified",
+        "711 valid unlinked source shapes; no ambiguous or rejected shapes",
+        "Dated AC92-94 and shared PC15 already audited; district dashboard integration pending",
+        "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
-      }
+        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "source_map": "Archive hash verified; 711 valid EPSG:4326 shapes; no accepted Census/LGD joins"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 711
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI HINGOLI label retained; Census name Hingoli; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "c8e0e603f6d016bdc9dd54bb4258812df04510e54c53829e39fc34fc17c9f336"
     },
     {
       "district_code": "513",
@@ -7162,9 +7178,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:17:26.777607+00:00",
+    "checked_at": "2026-10-11T18:21:49.614796+00:00",
     "live_commit": "53cdd9be5fe83f44363e45c6f6a58a5bb001e51c",
-    "action": "Nanded thirteen public pages passed bounded response/content checks; shared Latur PC41 scope retained",
-    "next_action": "Render Nanded district/PC41 and reconcile original sources; mobile/earlier audits pending; prepare Hingoli full scope"
+    "action": "Prepared Hingoli source map locally: 711 valid unlinked shapes, no rejected shapes",
+    "next_action": "Integrate Hingoli district AC92-94/shared PC15 dashboard and switcher; test; deploy under both locks; preserve pending earlier audits"
   }
 }
