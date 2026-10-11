@@ -5230,18 +5230,85 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/516/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "1939 unlinked and 4 ambiguous source-code shapes; no invalid shapes; selected by SOI Dist_LGD516",
+        "AC113-127 and PCs2/20/21 deployed; Dhule shared membership retained",
+        "Boundary edition/current crosswalk/Census-LGD joins and detailed rendered/source/election/mobile audits remain pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "dedicated_tests": {
+          "tests": 21,
+          "assertions": 99,
+          "result": "Passed"
+        },
+        "formatting": "Pint passed",
+        "public_district": {
+          "http": 200,
+          "bytes": 71240,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified; GitHub backup branch verified at9def48c724d440192a2f000231f7c8b9a245d1ea; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1939,
+          "ambiguous": 4
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI NASHIK label retained; Census name Nashik; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "de5e49aed6829227b9e2141e0a807d5afda248166a3996af37cd09c32d70d76c",
+      "membership_evidence": {
+        "pdf_pages": [
+          262,
+          263,
+          278
+        ],
+        "visually_inspected_pdf_pages": [
+          262,
+          263,
+          278
+        ],
+        "ac_codes": [
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127
+        ],
+        "pcs": [
+          2,
+          20,
+          21
+        ],
+        "scope": "Dated 2008 order; current crosswalk unverified"
+      },
+      "deployment": {
+        "live_commit": "9def48c724d440192a2f000231f7c8b9a245d1ea",
+        "rollback_commit": "65e5cef4d23d03f1dd42f9f5f435b304dca08730",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and cache clearing"
       }
     },
     {
@@ -7459,10 +7526,10 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T19:27:58.112415+00:00",
-    "live_commit": "53c629e627559a7936ec79ce2e1c702b37fe31e6",
-    "action": "Aurangabad deployed under both locks preserving concurrent changes; district HTTP200; local/GitHub backups verified",
-    "next_action": "Continue Nashik source/full membership rollout; Aurangabad PC/AC public/rendered/source/mobile checks remain flagged pending"
+    "checked_at": "2026-10-11T19:36:27.689969+00:00",
+    "live_commit": "9def48c724d440192a2f000231f7c8b9a245d1ea",
+    "action": "Nashik deployed under both locks; district response received; local/GitHub backups verified; detailed audits explicitly pending",
+    "next_action": "Continue Thane source/membership rollout; preserve later Palghar split and pending audit flags"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }

@@ -207,4 +207,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertStringContainsString('Shirpur (ST) (AC 9)', $second);
         $this->assertStringContainsString('NANDURB&gt;R', $second);
     }
+
+    public function test_nashik_keeps_dhule_shared_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Nashik', 'Maharashtra');
+        $this->assertSame(range(113, 127), array_column($links['assembly'], 'code'));
+        $this->assertSame([2, 20, 21], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([6, 7, 8], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame(['Dhule', 'Dhule', 'Dhule'], array_column($links['parliamentary'][0]['outside_district'], 'district'));
+    }
 }
