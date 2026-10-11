@@ -4132,7 +4132,13 @@
           "bytes": 68677,
           "scope": "Response only; not full data verification"
         },
-        "backup": "Local chain bundle verified; GitHub backup branch verified at 53cdd9be5fe83f44363e45c6f6a58a5bb001e51c; no backups deleted"
+        "backup": "Local chain bundle verified; GitHub backup branch verified at 53cdd9be5fe83f44363e45c6f6a58a5bb001e51c; no backups deleted",
+        "public_pages": {
+          "count": 13,
+          "result": "All HTTP200; district, PCs15/16/41 and AC83-91 contain history/scope; constituency Census context present; PC41 retains Loha AC88 and Latur AC234-238 with separate-populations warning",
+          "scope": "Bounded response/content checks only; not full data verification",
+          "server_evidence_prefix": "/home/pollmedia/tmp/maharashtra-nanded-check-"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -7156,9 +7162,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:13:08.086294+00:00",
+    "checked_at": "2026-10-11T18:17:26.777607+00:00",
     "live_commit": "53cdd9be5fe83f44363e45c6f6a58a5bb001e51c",
-    "action": "Nanded deployed under both locks preserving concurrent changes; district HTTP200; local and GitHub backups verified",
-    "next_action": "Check Nanded district, three PCs and nine ACs; rendered/source/mobile audits pending; then Hingoli full scope"
+    "action": "Nanded thirteen public pages passed bounded response/content checks; shared Latur PC41 scope retained",
+    "next_action": "Render Nanded district/PC41 and reconcile original sources; mobile/earlier audits pending; prepare Hingoli full scope"
   }
 }
