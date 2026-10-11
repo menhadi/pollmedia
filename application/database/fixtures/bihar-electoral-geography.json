@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka and Begusarai PCs only; other Bihar seats pending",
+  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka, Begusarai and Arrah PCs only; other Bihar seats pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -262,6 +262,55 @@
       "district": "Begusarai",
       "source_page_label": "4 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 192,
+      "name": "Sandesh",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 193,
+      "name": "Barhara",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 194,
+      "name": "Arrah",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 195,
+      "name": "Agiaon (SC)",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 196,
+      "name": "Tarari",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 197,
+      "name": "Jagdishpur",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 198,
+      "name": "Shahpur",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -369,6 +418,25 @@
       ],
       "cross_district_scope": [
         "Begusarai"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 32,
+      "name": "Arrah",
+      "ac_codes": [
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198
+      ],
+      "cross_district_scope": [
+        "Bhojpur"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
