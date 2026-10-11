@@ -195,6 +195,54 @@
       "name": "Nargund",
       "district": "Gadag",
       "page": 187
+    },
+    {
+      "code": 26,
+      "name": "Muddebihal",
+      "district": "Bijapur",
+      "page": 180
+    },
+    {
+      "code": 27,
+      "name": "Devar Hippargi",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 28,
+      "name": "Basavana Bagevadi",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 29,
+      "name": "Babaleshwar",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 30,
+      "name": "Bijapur City",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 31,
+      "name": "Nagthan (SC)",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 32,
+      "name": "Indi",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 33,
+      "name": "Sindgi",
+      "district": "Bijapur",
+      "page": 182
     }
   ],
   "pcs": [
@@ -257,10 +305,25 @@
         68
       ],
       "page": 207
+    },
+    {
+      "code": 4,
+      "name": "Bijapur (SC)",
+      "ac_codes": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "page": 207
     }
   ],
   "flags": [
-    "Partial audited fixture: Belgaum, Bagalkot and associated PC segments only",
+    "Partial audited fixture: Belgaum, Bagalkot, Bijapur and associated PC segments only",
     "Table A Kagwad/Hukkeri/Athani vs Table B Kagawad/Hukeri/Athni spelling variants retained; runtime alias audit pending",
     "2008 membership does not certify SOI boundary edition"
   ],

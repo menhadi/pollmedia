@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Belgaum'=>'555','Bagalkot'=>'556'];
+$codes=['Belgaum'=>'555','Bagalkot'=>'556','Bijapur'=>'557'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -16,7 +16,8 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
-<p class="notice">Census 2011 uses Belgaum and Bagalkot; the SOI map uses Belagavi and Bagalkote. Accepted village links and matching boundary editions remain unverified. The audited electoral fixture is partial; constituency name aliases require source review. No district totals are assigned to constituencies.</p>
+<p class="notice">Census 2011 uses Belgaum, Bagalkot and Bijapur; the SOI map uses Belagavi, Bagalkote and Vijayapura. Accepted village links and matching boundary editions remain unverified. The audited electoral fixture is partial; constituency name aliases require source review. No district totals are assigned to constituencies.</p>
+@if($districtNames->contains('Bijapur'))<p class="notice">The official district website uses Vijayapura and identifies Bijapur as its former name. This naming evidence does not certify matching boundary editions. <a href="https://vijayapura.nic.in/en/about-district/">Official naming context</a></p>@endif
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
