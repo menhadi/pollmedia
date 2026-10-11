@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka, Begusarai, Arrah and Bhagalpur PCs only; other Bihar seats pending",
+  "coverage": "Araria, Jahanabad, Karakat, Aurangabad, Banka, Begusarai, Arrah, Bhagalpur and Buxar PCs only; other Bihar seats pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -353,6 +353,48 @@
       "district": "Bhagalpur",
       "source_page_label": "2 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 199,
+      "name": "Brahampur",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 200,
+      "name": "Buxar",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 201,
+      "name": "Dumraon",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 202,
+      "name": "Rajpur (SC)",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 203,
+      "name": "Ramgarh",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 210,
+      "name": "Dinara",
+      "district": "Rohtas",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -497,6 +539,26 @@
       ],
       "cross_district_scope": [
         "Bhagalpur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 33,
+      "name": "Buxar",
+      "ac_codes": [
+        199,
+        200,
+        201,
+        202,
+        203,
+        210
+      ],
+      "cross_district_scope": [
+        "Buxar",
+        "Kaimur (Bhabua)",
+        "Rohtas"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
