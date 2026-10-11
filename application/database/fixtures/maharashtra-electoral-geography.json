@@ -607,6 +607,42 @@
       "page": 261
     },
     {
+      "code": 101,
+      "name": "Jalna",
+      "district": "Jalna",
+      "page": 261
+    },
+    {
+      "code": 102,
+      "name": "Badnapur (SC)",
+      "district": "Jalna",
+      "page": 261
+    },
+    {
+      "code": 103,
+      "name": "Bhokardan",
+      "district": "Jalna",
+      "page": 261
+    },
+    {
+      "code": 104,
+      "name": "Sillod",
+      "district": "Aurangabad",
+      "page": 261
+    },
+    {
+      "code": 106,
+      "name": "Phulambri",
+      "district": "Aurangabad",
+      "page": 261
+    },
+    {
+      "code": 110,
+      "name": "Paithan",
+      "district": "Aurangabad",
+      "page": 262
+    },
+    {
       "code": 114,
       "name": "Malegaon Central",
       "district": "Nashik",
@@ -892,7 +928,20 @@
         100
       ],
       "page": 278
+    },
+    {
+      "code": 18,
+      "name": "Jalna",
+      "ac_codes": [
+        101,
+        102,
+        103,
+        104,
+        106,
+        110
+      ],
+      "page": 278
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial."
 }
