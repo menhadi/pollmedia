@@ -730,7 +730,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_bounded_public_checks_rendered_data_audits_pending",
+      "workflow_status": "district_and_raver_pc_desktop_checked_remaining_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/499/dashboard",
       "flags": [
         "Source boundary edition unverified",
@@ -870,14 +870,30 @@
             }
           }
         ],
-        "rendered": "Pending",
+        "rendered": {
+          "district": "Desktop compact coloured map visually inspected;1550 source shapes;15 subdistricts and20 towns visible",
+          "pc4": "Desktop map and charts visually inspected;74 total SVG paths and12 SVGs;separate Jalgaon/Buldhana context and six dated segments visible",
+          "remaining": "Other PC/AC rendered checks, mobile and independent original-source/election audits pending"
+        },
         "canonical_data": "Independent current/source and historical/election audits pending; public markers do not establish full verification",
         "dedicated_tests": {
           "tests": 4,
           "assertions": 21,
           "result": "Passed"
         },
-        "backup": "Local live bundle verified; GitHub live backup branch updated; no bundles deleted"
+        "backup": "Local live bundle verified; GitHub live backup branch updated; no bundles deleted",
+        "canonical_display_audit": {
+          "population": 4229917,
+          "households": 903643,
+          "literacy_age7plus": 78.2,
+          "subdistricts": 15,
+          "towns": 20,
+          "village_rows": 0,
+          "Buldhana_population_context": 2586258,
+          "Buldhana_literacy_context": 83.4,
+          "scope": "Compared rendered values to fresh canonical live service output; independent workbook audit pending",
+          "live_head_at_check": "d87da933dc5a5fbb4a8ffcdb26b1ee9937d4496f"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
