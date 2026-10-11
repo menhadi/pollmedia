@@ -2321,16 +2321,21 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_shared_pc_membership_prepared_integration_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/504/dashboard",
       "flags": [
         "1393 unlinked and28 ambiguous source-code shapes",
         "SharedPC8 retainsAmravati AC36/43;integration/tests/deployment and data audits pending"
       ],
       "validation": {
-        "public": "Pending",
-        "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "dedicated_tests": {
+          "tests": 9,
+          "assertions": 44,
+          "result": "Passed",
+          "scope": "Wardha AC44-47,sharedPC8 outsideAmravati AC36/43 and Maharashtra regressions"
+        },
+        "formatting": "Pint passed",
+        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",

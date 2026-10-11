@@ -49,6 +49,15 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame(['Wardha'], array_values(array_unique(array_column($links['parliamentary'][1]['outside_district'], 'district'))));
     }
 
+    public function test_wardha_pc_retains_amravati_segments(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Wardha', 'Maharashtra');
+        $this->assertSame(range(44, 47), array_column($links['assembly'], 'code'));
+        $this->assertSame([8], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([36, 43], array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame(['Amravati'], array_values(array_unique(array_column($links['parliamentary'][0]['outside_district'], 'district'))));
+    }
+
     public function test_dhule_retains_both_shared_pcs_and_nashik_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Dhule', 'Maharashtra');
