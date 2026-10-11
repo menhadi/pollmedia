@@ -41,6 +41,42 @@
       "name": "Shirpur (ST)",
       "district": "Dhule",
       "page": 254
+    },
+    {
+      "code": 6,
+      "name": "Dhule Rural",
+      "district": "Dhule",
+      "page": 254
+    },
+    {
+      "code": 7,
+      "name": "Dhule City",
+      "district": "Dhule",
+      "page": 254
+    },
+    {
+      "code": 8,
+      "name": "Sindkheda",
+      "district": "Dhule",
+      "page": 254
+    },
+    {
+      "code": 114,
+      "name": "Malegaon Central",
+      "district": "Nashik",
+      "page": 262
+    },
+    {
+      "code": 115,
+      "name": "Malegaon Outer",
+      "district": "Nashik",
+      "page": 262
+    },
+    {
+      "code": 116,
+      "name": "Baglan (ST)",
+      "district": "Nashik",
+      "page": 262
     }
   ],
   "pcs": [
@@ -56,7 +92,20 @@
         9
       ],
       "page": 277
+    },
+    {
+      "code": 2,
+      "name": "Dhule",
+      "ac_codes": [
+        6,
+        7,
+        8,
+        114,
+        115,
+        116
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial audited ECI2008 fixture; only Nandurbar and its complete shared PC1 scope. Other Dhule seats not yet audited."
+  "coverage_note": "Partial audited ECI2008 fixture: complete Nandurbar/Dhule district scope and shared PC1/PC2 segments; Nashik district scope remains partial."
 }

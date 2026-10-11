@@ -8,6 +8,15 @@ use Tests\TestCase;
 
 class MaharashtraDashboardScopeTest extends TestCase
 {
+    public function test_dhule_retains_both_shared_pcs_and_nashik_segments(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Dhule', 'Maharashtra');
+        $this->assertSame([5, 6, 7, 8, 9], array_column($links['assembly'], 'code'));
+        $this->assertSame([1, 2], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([114, 115, 116], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $this->assertSame(['Nashik', 'Nashik', 'Nashik'], array_column($links['parliamentary'][1]['outside_district'], 'district'));
+    }
+
     public function test_dated_shared_pc_keeps_dhule_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Nandurbar', 'Maharashtra');
