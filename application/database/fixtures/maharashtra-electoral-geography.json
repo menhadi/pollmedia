@@ -77,6 +77,78 @@
       "name": "Baglan (ST)",
       "district": "Nashik",
       "page": 262
+    },
+    {
+      "code": 10,
+      "name": "Chopda (ST)",
+      "district": "Jalgaon",
+      "page": 254
+    },
+    {
+      "code": 11,
+      "name": "Raver",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 12,
+      "name": "Bhusawal (SC)",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 13,
+      "name": "Jalgaon City",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 14,
+      "name": "Jalgaon Rural",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 15,
+      "name": "Amalner",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 16,
+      "name": "Erandol",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 17,
+      "name": "Chalisgaon",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 18,
+      "name": "Pachora",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 19,
+      "name": "Jamner",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 20,
+      "name": "Muktainagar",
+      "district": "Jalgaon",
+      "page": 255
+    },
+    {
+      "code": 21,
+      "name": "Malkapur",
+      "district": "Buldhana",
+      "page": 255
     }
   ],
   "pcs": [
@@ -105,7 +177,33 @@
         116
       ],
       "page": 277
+    },
+    {
+      "code": 3,
+      "name": "Jalgaon",
+      "ac_codes": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "page": 277
+    },
+    {
+      "code": 4,
+      "name": "Raver",
+      "ac_codes": [
+        10,
+        11,
+        12,
+        19,
+        20,
+        21
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial audited ECI2008 fixture: complete Nandurbar/Dhule district scope and shared PC1/PC2 segments; Nashik district scope remains partial."
+  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon scope and their shared PC segments; Nashik and Buldhana full district scope pending."
 }
