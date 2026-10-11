@@ -867,6 +867,198 @@
       "name": "Channapatna",
       "district": "Bangalore Rural",
       "page": 201
+    },
+    {
+      "code": 150,
+      "name": "Yelahanka",
+      "district": "Bangalore",
+      "page": 197
+    },
+    {
+      "code": 151,
+      "name": "K.R.Pura",
+      "district": "Bangalore",
+      "page": 197
+    },
+    {
+      "code": 152,
+      "name": "Byatarayanapura",
+      "district": "Bangalore",
+      "page": 197
+    },
+    {
+      "code": 153,
+      "name": "Yeshvanthapura",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 155,
+      "name": "Dasarahalli",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 156,
+      "name": "Mahalakshmi Layout",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 157,
+      "name": "Malleshwaram",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 158,
+      "name": "Hebbal",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 159,
+      "name": "Pulakeshinagar (SC)",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 160,
+      "name": "Sarvagnanagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 161,
+      "name": "C.V. Raman Nagar (SC)",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 162,
+      "name": "Shivajinagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 163,
+      "name": "Shanti Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 164,
+      "name": "Gandhi Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 165,
+      "name": "Rajaji Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 166,
+      "name": "Govindraj Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 167,
+      "name": "Vijay Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 168,
+      "name": "Chamrajpet",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 169,
+      "name": "Chickpet",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 170,
+      "name": "Basavanagudi",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 171,
+      "name": "Padmanaba Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 172,
+      "name": "B.T.M Layout",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 173,
+      "name": "Jayanagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 174,
+      "name": "Mahadevapura (SC)",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 175,
+      "name": "Bommanahalli",
+      "district": "Bangalore",
+      "page": 200
+    },
+    {
+      "code": 139,
+      "name": "Gauribidanur",
+      "district": "Kolar",
+      "page": 196
+    },
+    {
+      "code": 140,
+      "name": "Bagepalli",
+      "district": "Kolar",
+      "page": 196
+    },
+    {
+      "code": 141,
+      "name": "Chikkaballapur",
+      "district": "Kolar",
+      "page": 196
+    },
+    {
+      "code": 178,
+      "name": "Hosakote",
+      "district": "Bangalore Rural",
+      "page": 200
+    },
+    {
+      "code": 179,
+      "name": "Devanahalli (SC)",
+      "district": "Bangalore Rural",
+      "page": 200
+    },
+    {
+      "code": 180,
+      "name": "Doddaballapur",
+      "district": "Bangalore Rural",
+      "page": 200
+    },
+    {
+      "code": 181,
+      "name": "Nelamangala (SC)",
+      "district": "Bangalore Rural",
+      "page": 201
     }
   ],
   "pcs": [
@@ -1139,6 +1331,66 @@
         185
       ],
       "page": 208
+    },
+    {
+      "code": 24,
+      "name": "Bangalore North",
+      "ac_codes": [
+        151,
+        152,
+        153,
+        155,
+        156,
+        157,
+        158,
+        159
+      ],
+      "page": 208
+    },
+    {
+      "code": 25,
+      "name": "Bangalore Central",
+      "ac_codes": [
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        168,
+        174
+      ],
+      "page": 209
+    },
+    {
+      "code": 26,
+      "name": "Bangalore South",
+      "ac_codes": [
+        166,
+        167,
+        169,
+        170,
+        171,
+        172,
+        173,
+        175
+      ],
+      "page": 209
+    },
+    {
+      "code": 27,
+      "name": "Chikkballapur",
+      "ac_codes": [
+        139,
+        140,
+        141,
+        150,
+        178,
+        179,
+        180,
+        181
+      ],
+      "page": 209
     }
   ],
   "flags": [
@@ -1150,7 +1402,10 @@
     "Dharwad Table A Hubli-Dharwad spellings retained; runtime aliases require review",
     "Shimoga Table A Shikaripura versus Table B Shikaripur spelling retained; runtime alias audit pending",
     "ECI Karkal and Chikmagalur spellings retained; runtime aliases require source review",
-    "PC23 Bangalore/Bangalore Rural district scope retained from2008 order; later Ramanagaram/Census2011 correspondence requires evidence"
+    "PC23 Bangalore/Bangalore Rural district scope retained from2008 order; later Ramanagaram/Census2011 correspondence requires evidence",
+    "PC27 Chikkballapur versus AC Chikkaballapur and later Census district spelling/date correspondence unverified",
+    "ECI territorial divisions dated2004-02-15 and municipal wards Census2001; no SOI boundary equivalence",
+    "Bangalore Assembly spelling variants retained; runtime alias audit pending"
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
