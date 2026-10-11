@@ -530,4 +530,18 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([26], array_column($links['parliamentary'], 'code'));
         $this->assertSame([173, 177], array_column($links['parliamentary'][0]['outside_district'], 'code'));
     }
+
+    public function test_gujarat_dated_fixture_is_complete_without_inventing_tapi_membership(): void
+    {
+        $fixture = json_decode(file_get_contents(database_path('fixtures/gujarat-electoral-geography.json')), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(range(1, 182), array_column($fixture['district_rows'], 'code'));
+        $this->assertSame(range(1, 26), array_column($fixture['pcs'], 'code'));
+        $codes = array_merge(...array_column($fixture['pcs'], 'ac_codes'));
+        sort($codes);
+        $this->assertSame(range(1, 182), $codes);
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Surat', 'Gujarat');
+        $this->assertSame(range(155, 172), array_column($links['assembly'], 'code'));
+        $this->assertSame([23, 24, 25], array_column($links['parliamentary'], 'code'));
+        $this->assertFalse(app(DistrictConstituencyLinks::class)->forDistrict('Tapi', 'Gujarat')['available']);
+    }
 }
