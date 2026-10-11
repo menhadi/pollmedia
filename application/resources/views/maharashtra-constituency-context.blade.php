@@ -16,7 +16,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
-<p class="notice">Partial audited ECI 2008 scope. SOI source label NANDURB&gt;R is retained; boundary edition and Census/LGD joins remain unverified. Nandurbar has twenty ambiguous source-code shapes and one invalid shape excluded without repair. Dhule has five ambiguous source-code shapes. Jalgaon has eight ambiguous source-code shapes. Buldhana has five ambiguous source-code shapes. Akola source shape 530458 is invalid and excluded without repair. Amravati SOI label AMARĀWATI is retained; twelve ambiguous shapes and one invalid blank-code shape remain documented. Nashik, Yavatmal and Wardha district scopes are partial in this fixture.</p>
+<p class="notice">Partial audited ECI 2008 scope. SOI source label NANDURB&gt;R is retained; boundary edition and Census/LGD joins remain unverified. Nandurbar has twenty ambiguous source-code shapes and one invalid shape excluded without repair. Dhule has five ambiguous source-code shapes. Jalgaon has eight ambiguous source-code shapes. Buldhana has five ambiguous source-code shapes. Akola source shape 530458 is invalid and excluded without repair. Amravati SOI label AMARĀWATI is retained; twelve ambiguous shapes and one invalid blank-code shape remain documented. Wardha has twenty-eight ambiguous source-code shapes. Nashik and Yavatmal district scopes are partial in this fixture.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
