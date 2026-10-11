@@ -38,7 +38,7 @@
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
         const focusMode = root.dataset.mode === 'focus';
-        const karnatakaLocator = focusMode && stateKey(root.dataset.state) === 'karnataka';
+        const karnatakaLocator = focusMode && ['karnataka','tamilnadu'].includes(stateKey(root.dataset.state));
         const locatorPalette = ['#c5dfeb','#d5dfb7','#efd0b5','#d8cbed','#b8ded6','#eddcb0','#e9c7d6'];
         const seatText = (feature, record) => focusMode ? `${record?.name || feature.properties.name} · ${(root.dataset.kind === 'pc' ? 'Lok Sabha' : 'AC')}` : (record ? recordText(record) : feature.properties.name);
         const seatUrl = record => {
