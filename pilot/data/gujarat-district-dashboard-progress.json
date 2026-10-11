@@ -135,25 +135,31 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "dashboard_integration_prepared_tests_passed_deployment_pending",
+      "workflow_status": "deployed_canonical_public_totals_and_representative_context_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/468/dashboard",
       "flags": [
         "SOI boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted map-to-Census/LGD links pending",
         "Historical rows retain their source geography; no modern boundary equivalence inferred",
-        "Prepared map is local only; no Gujarat deployment yet",
-        "PC1 Kachchh includes Morbi AC65 from Rajkot dated district; source page125 audit and cross-district membership integration next"
+        "841 unlinked and98 ambiguous shapes; no rejected shapes; no population assigned",
+        "PC1 retains MorbiAC65 in dated Rajkot; later Morbi split unverified; current crosswalk and original-workbook/rendered/mobile/election audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "District/PC1/AbdasaAC1 HTTP success; representative context HTML checked; remainingAC/rendered/mobile/election audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited",
+        "canonical_data": {
+          "population": 2092371,
+          "households": 445672,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; source audit pending"
+        },
         "dedicated_tests": {
           "tests": 34,
           "assertions": 153,
           "result": "Passed"
-        }
+        },
+        "backup": "Local chain bundle and GitHub6b059acd7639771fd4120aa25ee7eff53b6264dd verified; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
@@ -205,6 +211,11 @@
           ],
           "outside_district": "Rajkot"
         }
+      },
+      "deployment": {
+        "live_commit": "6b059acd7639771fd4120aa25ee7eff53b6264dd",
+        "rollback_commit": "234887f3044e56658b6afdad8ca89e7ae449f735",
+        "locks": "Both flock -n held across fresh HEAD preflight narrow Gujarat insertions files/maps commit and cache clearing"
       }
     },
     {
@@ -3870,10 +3881,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T20:43:26.701885+00:00",
-    "live_commit": "48f69bb51d7cd25b386739d05fbecbf9d2ab358b",
-    "action": "Kachchh district/controller, Gujarat membership fixture/service and PC/AC context/switcher prepared locally;34 tests passed; Morbi source page125 visually audited",
-    "next_action": "Fresh live HEAD and file preflight; narrow Gujarat-only controller/service/shared-view insertions preserving concurrent changes; deploy Kachchh under both locks; verify actual totals/public/rendered and backups"
+    "checked_at": "2026-10-11T20:49:06.881967+00:00",
+    "live_commit": "6b059acd7639771fd4120aa25ee7eff53b6264dd",
+    "action": "Kachchh deployed under both locks; published district totals match public page; PC1/Abdasa context received; backups verified",
+    "next_action": "Continue Banas Kantha/Banaskantha AC7-15 and PCs2/3; preserve partial Patan/Mahesana scopes and later splits; minor audits flagged"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
