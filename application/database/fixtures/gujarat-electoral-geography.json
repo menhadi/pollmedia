@@ -43,6 +43,90 @@
       "page": 117
     },
     {
+      "code": 7,
+      "name": "Vav",
+      "district": "Banaskantha",
+      "page": 117
+    },
+    {
+      "code": 8,
+      "name": "Tharad",
+      "district": "Banaskantha",
+      "page": 117
+    },
+    {
+      "code": 9,
+      "name": "Dhanera",
+      "district": "Banaskantha",
+      "page": 117
+    },
+    {
+      "code": 10,
+      "name": "Danta (ST)",
+      "district": "Banaskantha",
+      "page": 117
+    },
+    {
+      "code": 11,
+      "name": "Vadgam (SC)",
+      "district": "Banaskantha",
+      "page": 117
+    },
+    {
+      "code": 12,
+      "name": "Palanpur",
+      "district": "Banaskantha",
+      "page": 117
+    },
+    {
+      "code": 13,
+      "name": "Deesa",
+      "district": "Banaskantha",
+      "page": 118
+    },
+    {
+      "code": 14,
+      "name": "Deodar",
+      "district": "Banaskantha",
+      "page": 118
+    },
+    {
+      "code": 15,
+      "name": "Kankrej",
+      "district": "Banaskantha",
+      "page": 118
+    },
+    {
+      "code": 16,
+      "name": "Radhanpur",
+      "district": "Patan",
+      "page": 119
+    },
+    {
+      "code": 17,
+      "name": "Chanasma",
+      "district": "Patan",
+      "page": 119
+    },
+    {
+      "code": 18,
+      "name": "Patan",
+      "district": "Patan",
+      "page": 119
+    },
+    {
+      "code": 19,
+      "name": "Sidhpur",
+      "district": "Patan",
+      "page": 120
+    },
+    {
+      "code": 20,
+      "name": "Kheralu",
+      "district": "Mahesana",
+      "page": 120
+    },
+    {
       "code": 65,
       "name": "Morbi",
       "district": "Rajkot",
@@ -63,7 +147,35 @@
         65
       ],
       "page": 147
+    },
+    {
+      "code": 2,
+      "name": "Banaskantha",
+      "ac_codes": [
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14
+      ],
+      "page": 147
+    },
+    {
+      "code": 3,
+      "name": "Patan",
+      "ac_codes": [
+        11,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "page": 147
     }
   ],
-  "coverage_note": "Partial dated ECI2008 Gujarat scope: complete Kachchh AC1-6; shared PC1 includes Morbi AC65 in dated Rajkot district. Rajkot partial; later Morbi district split is not backcast into Census2011. Map/Census correspondence unverified."
+  "coverage_note": "Partial dated ECI2008 Gujarat scope: complete Kachchh AC1-6; shared PC1 includes Morbi AC65 in dated Rajkot district. Rajkot partial; later Morbi district split is not backcast into Census2011. Map/Census correspondence unverified. Banaskantha AC7-15 complete; PC3 retains Patan16-19 and Mahesana20. Vav AC7 source includes Kesargadh village of Patan; district heading is not proof of exclusive district membership. No population allocation."
 }

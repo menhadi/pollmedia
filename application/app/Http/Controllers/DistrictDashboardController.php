@@ -55,9 +55,9 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/vellore-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Vellore', 'Tamil Nadu');
         }
-        if ($state === '24' && $district === '468') {
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kachchh', 'Gujarat');
-            $mapFile = 'maps/kachchh-villages.geojson';
+        if ($state === '24' && in_array($district, ['468', '469'], true)) {
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($district === '468' ? 'Kachchh' : 'Banaskantha', 'Gujarat');
+            $mapFile = $district === '468' ? 'maps/kachchh-villages.geojson' : 'maps/banaskantha-villages.geojson';
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
