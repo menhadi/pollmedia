@@ -4586,7 +4586,12 @@
           "assertions": 86,
           "result": "Passed"
         },
-        "formatting": "Pint passed"
+        "formatting": "Pint passed",
+        "deployment_preflight": {
+          "result": "Deferred before mutation",
+          "reason": "Live index contains concurrent staged DistrictDashboardController.php change and untracked Araria map; preserve other rollout work",
+          "live_commit": "31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -7284,9 +7289,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:46:59.570388+00:00",
+    "checked_at": "2026-10-11T18:51:46.265653+00:00",
     "live_commit": "31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab",
-    "action": "Parbhani dashboard and shared PC17 context integrated locally; 18 tests and 86 assertions passed",
-    "next_action": "Refresh live files; narrow Parbhani deployment under both locks with rollback/cache/backups; public/rendered/source/mobile audits follow"
+    "action": "Read checkpoints and live state; deferred Parbhani deployment because concurrent controller change is staged; no live mutation",
+    "next_action": "Wait for clean live index, redownload current controller/own files and refresh HEAD; narrow patch under both locks; preserve concurrent Araria work"
   }
 }
