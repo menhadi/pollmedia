@@ -135,7 +135,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "tested_deployment_lock_permission_failed",
+      "workflow_status": "deployed_public_access_failed_validation_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/497/dashboard",
       "flags": [
         "968 unlinked and 20 ambiguous source shapes",
@@ -145,7 +145,32 @@
         "Dashboard integration, tests, public/rendered data verification pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": [
+          {
+            "url": "https://pollmedia.org/india/districts/27/497/dashboard",
+            "error": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Nandurbar",
+            "error": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Akkalkuwa",
+            "error": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Shahada",
+            "error": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Nandurbar",
+            "error": "HTTP Error 403: Forbidden"
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Nawapur",
+            "error": "HTTP Error 403: Forbidden"
+          }
+        ],
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited",
         "existing_feature_tests": {
@@ -159,7 +184,8 @@
           "assertions": 13,
           "result": "Passed",
           "scope": "Dated shared PC membership; context reload sees newly available Census data and preserves missing Dhule values"
-        }
+        },
+        "backup": "Local bundle verified; live commit pushed to GitHub codex/maharashtra-gujarat-live-backup"
       },
       "membership_evidence": {
         "electoral_source": {
@@ -237,7 +263,9 @@
         "source_district_code": "497",
         "source_record_count": 989
       },
-      "map_sha256": "52c6b7eec85ec66af9afa7ae9ea7d89abfb1c90ca364af0fc6609c785c0aa4f3"
+      "map_sha256": "52c6b7eec85ec66af9afa7ae9ea7d89abfb1c90ca364af0fc6609c785c0aa4f3",
+      "deployed_commit": "35bbd82beb439d117ed406051401148a35018b83",
+      "rollback_commit": "649f39d54df8a333019537e03ac8e603fb7b3076"
     },
     {
       "district_code": "498",
@@ -5205,13 +5233,14 @@
     "server_settings_preserve": [
       "application/public/.htaccess",
       "application/public/.user.ini"
-    ]
+    ],
+    "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T13:27:19.765814+00:00",
-    "live_commit": "649f39d",
-    "action": "Narrow deployment attempted under shared locks; stopped before any live code mutation because election release lock open returned Permission denied",
-    "failure": "/home/pollmedia/tmp/.pollmedia-election-release.lock cannot be opened for writing by pollmedia; never bypassed",
-    "next_action": "Inspect established lock ownership/protocol and obtain permitted shared lock acquisition; preserve existing lock and do not delete/replace it. Then fresh live preflight, deploy and public/rendered checks."
+    "checked_at": "2026-10-11T13:28:32.780721+00:00",
+    "live_commit": "35bbd82beb439d117ed406051401148a35018b83",
+    "action": "Nandurbar district/AC/PC scope deployed under both locks; preserved concurrent Shahjahanpur update; local/GitHub live backups verified",
+    "next_action": "Verify public district/PC1/AC1-4 from bounded server checks and browser; local urllib received403 on all six URLs, so no public or rendered verification claimed. Audit actual published values before moving to Dhule.",
+    "resolved_failure": "Root-owned election lock safely acquired through read-only descriptor; lock unchanged"
   }
 }
