@@ -235,6 +235,12 @@
       "page": 122
     },
     {
+      "code": 39,
+      "name": "Viramgam",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
       "code": 40,
       "name": "Sanand",
       "district": "Ahmedabad",
@@ -255,6 +261,12 @@
     {
       "code": 43,
       "name": "Vatva",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 44,
+      "name": "Ellisbridge",
       "district": "Ahmedabad",
       "page": 123
     },
@@ -289,16 +301,130 @@
       "page": 123
     },
     {
+      "code": 50,
+      "name": "Amraiwadi",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 51,
+      "name": "Dariapur",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 52,
+      "name": "Jamalpur-Khadia",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 53,
+      "name": "Maninagar",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 54,
+      "name": "Danilimda (SC)",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
       "code": 55,
       "name": "Sabarmati",
       "district": "Ahmedabad",
       "page": 124
     },
     {
+      "code": 56,
+      "name": "Asarwa (SC)",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 57,
+      "name": "Daskroi",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 58,
+      "name": "Dholka",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 59,
+      "name": "Dhandhuka",
+      "district": "Ahmedabad",
+      "page": 124
+    },
+    {
+      "code": 60,
+      "name": "Dasada (SC)",
+      "district": "Surendranagar",
+      "page": 125
+    },
+    {
+      "code": 61,
+      "name": "Limbdi",
+      "district": "Surendranagar",
+      "page": 125
+    },
+    {
+      "code": 62,
+      "name": "Wadhwan",
+      "district": "Surendranagar",
+      "page": 125
+    },
+    {
+      "code": 63,
+      "name": "Chotila",
+      "district": "Surendranagar",
+      "page": 125
+    },
+    {
+      "code": 64,
+      "name": "Dhrangadhra",
+      "district": "Surendranagar",
+      "page": 125
+    },
+    {
       "code": 65,
       "name": "Morbi",
       "district": "Rajkot",
       "page": 125
+    },
+    {
+      "code": 115,
+      "name": "Matar",
+      "district": "Kheda",
+      "page": 134
+    },
+    {
+      "code": 116,
+      "name": "Nadiad",
+      "district": "Kheda",
+      "page": 134
+    },
+    {
+      "code": 117,
+      "name": "Mehmedabad",
+      "district": "Kheda",
+      "page": 134
+    },
+    {
+      "code": 118,
+      "name": "Mahudha",
+      "district": "Kheda",
+      "page": 135
+    },
+    {
+      "code": 120,
+      "name": "Kapadvanj",
+      "district": "Kheda",
+      "page": 135
     }
   ],
   "pcs": [
@@ -399,6 +525,48 @@
         49
       ],
       "page": 147
+    },
+    {
+      "code": 8,
+      "name": "Ahmedabad West (SC)",
+      "ac_codes": [
+        44,
+        50,
+        51,
+        52,
+        53,
+        54,
+        56
+      ],
+      "page": 147
+    },
+    {
+      "code": 9,
+      "name": "Surendranagar",
+      "ac_codes": [
+        39,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64
+      ],
+      "page": 147
+    },
+    {
+      "code": 17,
+      "name": "Kheda",
+      "ac_codes": [
+        57,
+        58,
+        115,
+        116,
+        117,
+        118,
+        120
+      ],
+      "page": 148
     }
   ],
   "coverage_note": "Partial dated ECI2008 Gujarat scope: complete Kachchh AC1-6; shared PC1 includes Morbi AC65 in dated Rajkot district. Rajkot partial; later Morbi district split is not backcast into Census2011. Map/Census correspondence unverified. Banaskantha AC7-15 complete; PC3 retains Patan16-19 and Mahesana20. Vav AC7 source includes Kesargadh village of Patan; district heading is not proof of exclusive district membership. No population allocation."

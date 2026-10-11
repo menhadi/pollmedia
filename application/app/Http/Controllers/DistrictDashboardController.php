@@ -58,7 +58,7 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/vellore-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Vellore', 'Tamil Nadu');
         }
-        if ($state === '24' && in_array($district, ['468', '469', '470', '471', '472', '473'], true)) {
+        if ($state === '24' && in_array($district, ['468', '469', '470', '471', '472', '473', '474'], true)) {
             $gujaratDistrict = match ($district) {
                 '468' => 'Kachchh',
                 '469' => 'Banaskantha',
@@ -66,14 +66,13 @@ class DistrictDashboardController extends Controller
                 '471' => 'Mahesana',
                 '472' => 'Sabarkantha',
                 '473' => 'Gandhinagar',
+                '474' => 'Ahmedabad',
                 '472' => 'Sabarkantha',
                 '473' => 'Gandhinagar',
+                '474' => 'Ahmedabad',
             };
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($gujaratDistrict, 'Gujarat');
             $mapFile = 'maps/'.strtolower($gujaratDistrict).'-villages.geojson';
-        }
-        if ($state === '33' && $district === '607') {
-            $mapFile = 'maps/viluppuram-villages.geojson';
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
