@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Fifteen PCs recorded; remaining Bihar membership pending",
+  "coverage": "Sixteen PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -647,6 +647,48 @@
       "district": "Jamui",
       "source_page_label": "1 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 204,
+      "name": "Mohania (SC)",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 205,
+      "name": "Bhabua",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 206,
+      "name": "Chainpur",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 207,
+      "name": "Chenari (SC)",
+      "district": "Rohtas",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 208,
+      "name": "Sasaram",
+      "district": "Rohtas",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 209,
+      "name": "Kargahar",
+      "district": "Rohtas",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -923,6 +965,25 @@
         "Munger",
         "Sheikhpura",
         "Jamui"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 34,
+      "name": "Sasaram (SC)",
+      "ac_codes": [
+        204,
+        205,
+        206,
+        207,
+        208,
+        209
+      ],
+      "cross_district_scope": [
+        "Kaimur (Bhabua)",
+        "Rohtas"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
