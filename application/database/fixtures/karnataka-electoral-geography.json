@@ -531,6 +531,54 @@
       "name": "Kudligi (ST)",
       "district": "Bellary",
       "page": 190
+    },
+    {
+      "code": 97,
+      "name": "Molakalmuru (ST)",
+      "district": "Chitradurga",
+      "page": 190
+    },
+    {
+      "code": 98,
+      "name": "Challakere (ST)",
+      "district": "Chitradurga",
+      "page": 190
+    },
+    {
+      "code": 99,
+      "name": "Chitradurga",
+      "district": "Chitradurga",
+      "page": 190
+    },
+    {
+      "code": 100,
+      "name": "Hiriyur",
+      "district": "Chitradurga",
+      "page": 191
+    },
+    {
+      "code": 101,
+      "name": "Hosadurga",
+      "district": "Chitradurga",
+      "page": 191
+    },
+    {
+      "code": 102,
+      "name": "Holalkere (SC)",
+      "district": "Chitradurga",
+      "page": 191
+    },
+    {
+      "code": 136,
+      "name": "Sira",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 137,
+      "name": "Pavagada (SC)",
+      "district": "Tumkur",
+      "page": 195
     }
   ],
   "pcs": [
@@ -698,6 +746,21 @@
         96
       ],
       "page": 207
+    },
+    {
+      "code": 18,
+      "name": "Chitradurga (SC)",
+      "ac_codes": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        136,
+        137
+      ],
+      "page": 208
     }
   ],
   "flags": [
