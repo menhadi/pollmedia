@@ -205,10 +205,94 @@
       "page": 122
     },
     {
+      "code": 34,
+      "name": "Dahegam",
+      "district": "Gandhinagar",
+      "page": 122
+    },
+    {
+      "code": 35,
+      "name": "Gandhinagar South",
+      "district": "Gandhinagar",
+      "page": 122
+    },
+    {
+      "code": 36,
+      "name": "Gandhinagar North",
+      "district": "Gandhinagar",
+      "page": 122
+    },
+    {
       "code": 37,
       "name": "Mansa",
       "district": "Gandhinagar",
       "page": 122
+    },
+    {
+      "code": 38,
+      "name": "Kalol",
+      "district": "Gandhinagar",
+      "page": 122
+    },
+    {
+      "code": 40,
+      "name": "Sanand",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 41,
+      "name": "Ghatlodia",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 42,
+      "name": "Vejalpur",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 43,
+      "name": "Vatva",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 45,
+      "name": "Naranpura",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 46,
+      "name": "Nikol",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 47,
+      "name": "Naroda",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 48,
+      "name": "Thakkarbapa Nagar",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 49,
+      "name": "Bapunagar",
+      "district": "Ahmedabad",
+      "page": 123
+    },
+    {
+      "code": 55,
+      "name": "Sabarmati",
+      "district": "Ahmedabad",
+      "page": 124
     },
     {
       "code": 65,
@@ -285,6 +369,34 @@
         31,
         32,
         33
+      ],
+      "page": 147
+    },
+    {
+      "code": 6,
+      "name": "Gandhinagar",
+      "ac_codes": [
+        36,
+        38,
+        40,
+        41,
+        42,
+        45,
+        55
+      ],
+      "page": 147
+    },
+    {
+      "code": 7,
+      "name": "Ahmedabad East",
+      "ac_codes": [
+        34,
+        35,
+        43,
+        46,
+        47,
+        48,
+        49
       ],
       "page": 147
     }

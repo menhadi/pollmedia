@@ -1157,18 +1157,75 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/24/473/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "260 unlinked and35 ambiguous shapes; no rejected shapes; no population assigned",
+        "Shared PC4 retains Mahesana21-26; PCs6/7 retain dated Ahmedabad segments; no district populations combined",
+        "Boundary editions and detailed source/rendered/election/mobile audits pending"
       ],
       "validation": {
-        "public": "Pending",
+        "public": "Published totals and shared outside membership match HTML; detailed audits pending",
         "rendered": "Pending",
-        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+        "canonical_data": {
+          "population": 1391753,
+          "households": 289990,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; independent source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 39,
+          "assertions": 169,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHubb536e070d1dbf07572f51aa4855584c60cb607d5 verified; no backups deleted"
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+        "sha256": "96d352052ff6bf03f7b7426c1faa3c8943c5bec2386addce66b5df02276b5994",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 260,
+          "ambiguous": 35
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI GANDHINAGAR label retained; Census name Gandhinagar; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "4f4bf1810ed70223c9e12653dbf8d0b5e1fa80f02084b5d41d287fc6a97701bb",
+      "membership_evidence": {
+        "pdf_pages": [
+          122,
+          123,
+          124,
+          147
+        ],
+        "visually_inspected_pdf_pages": [
+          122,
+          123,
+          124,
+          147
+        ],
+        "ac_codes": [
+          34,
+          35,
+          36,
+          37,
+          38
+        ],
+        "pcs": [
+          4,
+          6,
+          7
+        ]
+      },
+      "deployment": {
+        "live_commit": "b536e070d1dbf07572f51aa4855584c60cb607d5",
+        "rollback_commit": "d82fb621bad4f590bdebed263846f807aa84afe4",
+        "locks": "Both flock -n held across fresh HEAD narrow Gujarat patch/map commit cache clearing"
       }
     },
     {
@@ -4109,10 +4166,10 @@
     ]
   },
   "last_run": {
-    "checked_at": "2026-10-11T21:10:32.707986+00:00",
-    "live_commit": "681ce9a16203f4bde6244fff88eacca0ca1bd263",
-    "action": "Sabarkantha deployed; public published totals/dated membership checked;38 tests passed; backups verified",
-    "next_action": "Continue Gandhinagar473; AC34-38 audited page122; shared PC6/7 require complete outside district fixture first"
+    "checked_at": "2026-10-11T21:15:09.676957+00:00",
+    "live_commit": "b536e070d1dbf07572f51aa4855584c60cb607d5",
+    "action": "Gandhinagar deployed; public published totals/shared membership checked;39 tests passed; backups verified",
+    "next_action": "Continue Ahmedabad474; complete AC39/44/50-54/56-59 and shared PC8/9/10 membership before integration"
   },
   "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
