@@ -224,4 +224,16 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([22, 23, 24, 25], array_column($links['parliamentary'], 'code'));
         $this->assertSame([], $links['parliamentary'][0]['outside_district']);
     }
+
+    public function test_mumbai_shared_pc_retains_both_districts(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Mumbai Suburban', 'Maharashtra');
+        $this->assertSame(range(152, 177), array_column($links['assembly'], 'code'));
+        $this->assertSame([26, 27, 28, 29, 30], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([178, 179, 180, 181], array_column($links['parliamentary'][4]['outside_district'], 'code'));
+        $city = app(DistrictConstituencyLinks::class)->forDistrict('Mumbai City', 'Maharashtra');
+        $this->assertSame(range(178, 187), array_column($city['assembly'], 'code'));
+        $this->assertSame([30, 31], array_column($city['parliamentary'], 'code'));
+        $this->assertSame([172, 173], array_column($city['parliamentary'][0]['outside_district'], 'code'));
+    }
 }

@@ -913,6 +913,222 @@
       "page": 265
     },
     {
+      "code": 152,
+      "name": "Borivali",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 153,
+      "name": "Dahisar",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 154,
+      "name": "Magathane",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 155,
+      "name": "Mulund",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 156,
+      "name": "Vikhroli",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 157,
+      "name": "Bhandup West",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 158,
+      "name": "Jogeshwari East",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 159,
+      "name": "Dindoshi",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 160,
+      "name": "Kandivali East",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 161,
+      "name": "Charkop",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 162,
+      "name": "Malad West",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 163,
+      "name": "Goregaon",
+      "district": "Mumbai Suburban",
+      "page": 265
+    },
+    {
+      "code": 164,
+      "name": "Versova",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 165,
+      "name": "Andheri West",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 166,
+      "name": "Andheri East",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 167,
+      "name": "Vile Parle",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 168,
+      "name": "Chandivali",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 169,
+      "name": "Ghatkopar West",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 170,
+      "name": "Ghatkopar East",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 171,
+      "name": "Mankhurd Shivaji Nagar",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 172,
+      "name": "Anushakti Nagar",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 173,
+      "name": "Chembur",
+      "district": "Mumbai Suburban",
+      "page": 266
+    },
+    {
+      "code": 174,
+      "name": "Kurla (SC)",
+      "district": "Mumbai Suburban",
+      "page": 267
+    },
+    {
+      "code": 175,
+      "name": "Kalina",
+      "district": "Mumbai Suburban",
+      "page": 267
+    },
+    {
+      "code": 176,
+      "name": "Vandre East",
+      "district": "Mumbai Suburban",
+      "page": 267
+    },
+    {
+      "code": 177,
+      "name": "Vandre West",
+      "district": "Mumbai Suburban",
+      "page": 267
+    },
+    {
+      "code": 178,
+      "name": "Dharavi (SC)",
+      "district": "Mumbai City",
+      "page": 267
+    },
+    {
+      "code": 179,
+      "name": "Sion Koliwada",
+      "district": "Mumbai City",
+      "page": 267
+    },
+    {
+      "code": 180,
+      "name": "Wadala",
+      "district": "Mumbai City",
+      "page": 267
+    },
+    {
+      "code": 181,
+      "name": "Mahim",
+      "district": "Mumbai City",
+      "page": 267
+    },
+    {
+      "code": 182,
+      "name": "Worli",
+      "district": "Mumbai City",
+      "page": 267
+    },
+    {
+      "code": 183,
+      "name": "Shivadi",
+      "district": "Mumbai City",
+      "page": 268
+    },
+    {
+      "code": 184,
+      "name": "Byculla",
+      "district": "Mumbai City",
+      "page": 268
+    },
+    {
+      "code": 185,
+      "name": "Malabar Hill",
+      "district": "Mumbai City",
+      "page": 268
+    },
+    {
+      "code": 186,
+      "name": "Mumbadevi",
+      "district": "Mumbai City",
+      "page": 268
+    },
+    {
+      "code": 187,
+      "name": "Colaba",
+      "district": "Mumbai City",
+      "page": 268
+    },
+    {
       "code": 234,
       "name": "Latur Rural",
       "district": "Latur",
@@ -1284,7 +1500,85 @@
         151
       ],
       "page": 278
+    },
+    {
+      "code": 26,
+      "name": "Mumbai North",
+      "ac_codes": [
+        152,
+        153,
+        154,
+        160,
+        161,
+        162
+      ],
+      "page": 278
+    },
+    {
+      "code": 27,
+      "name": "Mumbai North-West",
+      "ac_codes": [
+        158,
+        159,
+        163,
+        164,
+        165,
+        166
+      ],
+      "page": 278
+    },
+    {
+      "code": 28,
+      "name": "Mumbai North-East",
+      "ac_codes": [
+        155,
+        156,
+        157,
+        169,
+        170,
+        171
+      ],
+      "page": 278
+    },
+    {
+      "code": 29,
+      "name": "Mumbai North-Central",
+      "ac_codes": [
+        167,
+        168,
+        174,
+        176,
+        177,
+        175
+      ],
+      "page": 278
+    },
+    {
+      "code": 30,
+      "name": "Mumbai South-Central",
+      "ac_codes": [
+        172,
+        173,
+        178,
+        179,
+        180,
+        181
+      ],
+      "page": 278
+    },
+    {
+      "code": 31,
+      "name": "Mumbai South",
+      "ac_codes": [
+        182,
+        183,
+        184,
+        185,
+        186,
+        187
+      ],
+      "page": 279
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278. Thane dated AC128-151/PC22-25 complete; later SOI Thane517 excludes Palghar601, without reconstructing Census2011 geography."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial. Parbhani AC95-98 complete; shared PC17 retains Jalna AC99/100; Jalna partial. Jalna AC99-103 complete; PC18 includes Aurangabad AC104/106/110; Aurangabad partial. Aurangabad AC104-112 complete; PCs18/19 retained; later SOI Chhatrapati Sambhajinagar name does not establish Census boundary equivalence. Nashik AC113-127 complete from pages262/263; PC20/21 and shared Dhule PC2 preserved from page278. Thane dated AC128-151/PC22-25 complete; later SOI Thane517 excludes Palghar601, without reconstructing Census2011 geography. Mumbai Suburban AC152-177 and Mumbai City AC178-187 complete; PC30 cross-district membership retained. Each SOI urban district has only one unlinked source record, no ward/AC geometry."
 }
