@@ -5,7 +5,8 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Belgaum'=>'555','Bagalkot'=>'556','Bijapur'=>'557','Bidar'=>'558','Raichur'=>'559','Koppal'=>'560','Gadag'=>'561','Dharwad'=>'562','Uttara Kannada'=>'563','Haveri'=>'564','Bellary'=>'565','Chitradurga'=>'566','Davanagere'=>'567','Shimoga'=>'568','Udupi'=>'569','Chikmagalur'=>'570','Tumkur'=>'571','Bangalore'=>'572','Mandya'=>'573','Hassan'=>'574','Dakshina Kannada'=>'575','Kodagu'=>'576','Mysore'=>'577','Chamarajanagar'=>'578'];
+$segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
+$codes=['Belgaum'=>'555','Bagalkot'=>'556','Bijapur'=>'557','Bidar'=>'558','Raichur'=>'559','Koppal'=>'560','Gadag'=>'561','Dharwad'=>'562','Uttara Kannada'=>'563','Haveri'=>'564','Bellary'=>'565','Chitradurga'=>'566','Davanagere'=>'567','Shimoga'=>'568','Udupi'=>'569','Chikmagalur'=>'570','Tumkur'=>'571','Bangalore'=>'572','Mandya'=>'573','Hassan'=>'574','Dakshina Kannada'=>'575','Kodagu'=>'576','Mysore'=>'577','Chamarajanagar'=>'578','Gulbarga'=>'579'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -20,6 +21,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @endif
 <p class="notice">Census 2011 uses Belgaum, Bagalkot and Bijapur; the SOI map uses Belagavi, Bagalkote and Vijayapura. Accepted village links and matching boundary editions remain unverified. The audited electoral fixture is partial; constituency name aliases require source review. No district totals are assigned to constituencies.</p>
 @if($districtNames->contains('Bijapur'))<p class="notice">The official district website uses Vijayapura and identifies Bijapur as its former name. This naming evidence does not certify matching boundary editions. <a href="https://vijayapura.nic.in/en/about-district/">Official naming context</a></p>@endif
+@if($districtNames->contains('Gulbarga') || $districtNames->contains('Yadgir'))<p class="notice">ECI 2008 uses historical Gulbarga including later Yadgir seats. Context follows official district seat lists observed 11 October 2026; Census boundary equivalence remains unverified. <a href="https://kalaburagi.nic.in/en/political-scenario/">Kalaburagi source</a> · <a href="https://yadgir.nic.in/en/general-assembly-election-2023/">Yadgir 2023 source</a>.</p>@endif
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>

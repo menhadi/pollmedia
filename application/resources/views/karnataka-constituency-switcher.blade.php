@@ -5,8 +5,9 @@ $switchNormalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*
 $switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district_rows'])->filter(fn(array $seat):bool=>$switchNormalize($seat['name'])===$switchNormalize($name));
 $switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
 $switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
+$switchSegments=$switchSegments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
 $switchSeen=[];
-$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Belgaum','Bagalkot','Bijapur','Bidar','Raichur','Koppal','Gadag','Dharwad','Uttara Kannada','Haveri','Bellary','Chitradurga','Davanagere','Shimoga','Udupi','Chikmagalur','Tumkur','Bangalore','Mandya','Hassan','Dakshina Kannada','Kodagu','Mysore','Chamarajanagar'],true));
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Belgaum','Bagalkot','Bijapur','Bidar','Raichur','Koppal','Gadag','Dharwad','Uttara Kannada','Haveri','Bellary','Chitradurga','Davanagere','Shimoga','Udupi','Chikmagalur','Tumkur','Bangalore','Mandya','Hassan','Dakshina Kannada','Kodagu','Mysore','Chamarajanagar','Gulbarga'],true));
 @endphp
 @if($switchDistricts->isNotEmpty())
 <link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">

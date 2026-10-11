@@ -284,13 +284,19 @@
       "code": 42,
       "name": "Chincholi (SC)",
       "district": "Gulbarga",
-      "page": 182
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 46,
       "name": "Aland",
       "district": "Gulbarga",
-      "page": 183
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 53,
@@ -338,19 +344,28 @@
       "code": 36,
       "name": "Shorapur (ST)",
       "district": "Gulbarga",
-      "page": 182
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 37,
       "name": "Shahapur",
       "district": "Gulbarga",
-      "page": 182
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 38,
       "name": "Yadgir",
       "district": "Gulbarga",
-      "page": 182
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
     },
     {
       "code": 60,
@@ -1251,6 +1266,78 @@
       "name": "Gundlupet",
       "district": "Chamarajanagar",
       "page": 206
+    },
+    {
+      "code": 34,
+      "name": "Afzalpur",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 35,
+      "name": "Jewargi",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 39,
+      "name": "Gurmitkal",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 40,
+      "name": "Chittapur (SC)",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 41,
+      "name": "Sedam",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 43,
+      "name": "Gulbarga Rural (SC)",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 44,
+      "name": "Gulbarga Dakshin",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 45,
+      "name": "Gulbarga Uttar",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
     }
   ],
   "pcs": [
@@ -1643,6 +1730,21 @@
         224
       ],
       "page": 208
+    },
+    {
+      "code": 5,
+      "name": "Gulbarga (SC)",
+      "ac_codes": [
+        34,
+        35,
+        39,
+        40,
+        41,
+        43,
+        44,
+        45
+      ],
+      "page": 207
     }
   ],
   "flags": [

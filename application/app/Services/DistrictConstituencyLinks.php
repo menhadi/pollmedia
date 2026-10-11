@@ -20,14 +20,14 @@ class DistrictConstituencyLinks
             return $empty;
         }
         $fixture = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
-        $assembly = collect($fixture['district_rows'])->filter(fn (array $row): bool => strcasecmp($row['district'], $district) === 0)->sortBy('code')->values();
+        $assembly = collect($fixture['district_rows'])->filter(fn (array $row): bool => strcasecmp($row['context_district'] ?? $row['district'], $district) === 0)->sortBy('code')->values();
         if ($assembly->isEmpty()) {
             return $empty;
         }
         $codes = $assembly->pluck('code')->all();
         $parliamentary = collect($fixture['pcs'])->filter(fn (array $row): bool => count(array_intersect($row['ac_codes'], $codes)) > 0)->sortBy('code')->values()->map(function (array $row) use ($codes, $fixture, $state): array {
             $outside = array_values(array_diff($row['ac_codes'], $codes));
-            $row['outside_district'] = collect($fixture['district_rows'])->whereIn('code', $outside)->map(fn (array $seat): array => ['code' => $seat['code'], 'name' => $seat['name'], 'district' => $seat['district']])->values()->all();
+            $row['outside_district'] = collect($fixture['district_rows'])->whereIn('code', $outside)->map(fn (array $seat): array => ['code' => $seat['code'], 'name' => $seat['name'], 'district' => $seat['context_district'] ?? $seat['district']])->values()->all();
             $row['url'] = $this->historyUrl('pc', $row['name'], $state);
 
             return $row;
