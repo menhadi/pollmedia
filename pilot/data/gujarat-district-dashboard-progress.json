@@ -1,0 +1,3812 @@
+{
+  "state": "Gujarat",
+  "state_code": "24",
+  "owner_thread": "01a12b0e-9322-7513-8425-d31ffb7a45fb",
+  "worktree": "C:\\Users\\menha\\.codex\\worktrees\\maharashtra-gujarat-rollout\\pollmedia",
+  "districts": [
+    {
+      "district_code": "468",
+      "census_2011_name": "Kachchh",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "468",
+          "name": "Kachchh",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/468/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "469",
+      "census_2011_name": "Banas Kantha",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "469",
+          "name": "Banas Kantha",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/469/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "470",
+      "census_2011_name": "Patan",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "470",
+          "name": "Patan",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/470/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "471",
+      "census_2011_name": "Mahesana",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "471",
+          "name": "Mahesana",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/471/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "472",
+      "census_2011_name": "Sabar Kantha",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "472",
+          "name": "Sabar Kantha",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/472/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "473",
+      "census_2011_name": "Gandhinagar",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "473",
+          "name": "Gandhinagar",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/473/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "474",
+      "census_2011_name": "Ahmadabad",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "474",
+          "name": "Ahmadabad",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/474/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "475",
+      "census_2011_name": "Surendranagar",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "475",
+          "name": "Surendranagar",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/475/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "476",
+      "census_2011_name": "Rajkot",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "476",
+          "name": "Rajkot",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/476/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "477",
+      "census_2011_name": "Jamnagar",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "477",
+          "name": "Jamnagar",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/477/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "478",
+      "census_2011_name": "Porbandar",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "478",
+          "name": "Porbandar",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/478/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "479",
+      "census_2011_name": "Junagadh",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "479",
+          "name": "Junagadh",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/479/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "480",
+      "census_2011_name": "Amreli",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "480",
+          "name": "Amreli",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/480/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "481",
+      "census_2011_name": "Bhavnagar",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "481",
+          "name": "Bhavnagar",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/481/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "482",
+      "census_2011_name": "Anand",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "482",
+          "name": "Anand",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/482/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "483",
+      "census_2011_name": "Kheda",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "483",
+          "name": "Kheda",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/483/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "484",
+      "census_2011_name": "Panch Mahals",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch  Mahals",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch Mahals",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "484",
+          "name": "Panch Mahals",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/484/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "485",
+      "census_2011_name": "Dohad",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "485",
+          "name": "Dohad",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/485/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "486",
+      "census_2011_name": "Vadodara",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "486",
+          "name": "Vadodara",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/486/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "487",
+      "census_2011_name": "Narmada",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "487",
+          "name": "Narmada",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/487/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "488",
+      "census_2011_name": "Bharuch",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "488",
+          "name": "Bharuch",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/488/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "489",
+      "census_2011_name": "The Dangs",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "489",
+          "name": "The Dangs",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/489/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "490",
+      "census_2011_name": "Navsari",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "490",
+          "name": "Navsari",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/490/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "491",
+      "census_2011_name": "Valsad",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "491",
+          "name": "Valsad",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/491/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "492",
+      "census_2011_name": "Surat",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "492",
+          "name": "Surat",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/492/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    },
+    {
+      "district_code": "493",
+      "census_2011_name": "Tapi",
+      "sources": [
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1901,
+          "source_key": "census-a02-43357-1901",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1911,
+          "source_key": "census-a02-43357-1911",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1921,
+          "source_key": "census-a02-43357-1921",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1931,
+          "source_key": "census-a02-43357-1931",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1941,
+          "source_key": "census-a02-43357-1941",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1951,
+          "source_key": "census-a02-43357-1951",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1961,
+          "source_key": "census-a02-43357-1961",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1971,
+          "source_key": "census-a02-43357-1971",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1981,
+          "source_key": "census-a02-43357-1981",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 1991,
+          "source_key": "census-a02-43357-1991",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 2001,
+          "source_key": "census-a02-43357-2001",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 2011,
+          "source_key": "census-a02-43357-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43357/download/47049/24%20A-2%20Gujrat.xlsx",
+          "sha256": "1056bc973ba3140c86ded72182372206a59714815e90fde75627a04646b7d916"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 2011,
+          "source_key": "india-basic-2011-total",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380"
+        },
+        {
+          "state_code": "24",
+          "district_code": "493",
+          "name": "Tapi",
+          "year": 2011,
+          "source_key": "india-pca-2011",
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx",
+          "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
+        }
+      ],
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "dashboard_url": "https://pollmedia.org/india/districts/24/493/dashboard",
+      "flags": [
+        "SOI boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted map-to-Census/LGD links pending",
+        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+      ],
+      "validation": {
+        "public": "Pending",
+        "rendered": "Pending",
+        "canonical_data": "Publication receipt join inventoried; values not yet audited"
+      }
+    }
+  ],
+  "constituencies": [],
+  "source_inventory": {
+    "census_checked_at": "2026-10-11T13:08:32.356197+00:00",
+    "query": "Published Census editions joined to census_publications on edition_id and source_key; DISTRICT Total rows",
+    "electoral_source": {
+      "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+      "source_date": "2008-12-17",
+      "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69"
+    },
+    "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
+    "soi_download_url": "https://surveyofindia.gov.in/documents/GUJARAT.zip",
+    "soi_status": "Discovery only; Maharashtra first"
+  },
+  "deployment_coordination": {
+    "locks": [
+      "/home/pollmedia/.pollmedia-live-deployment.lock",
+      "/home/pollmedia/tmp/.pollmedia-election-release.lock"
+    ],
+    "method": "flock -n held across live HEAD preflight, mutation/import, commit and cache clearing; never bypass a held lock",
+    "participant_checkpoints_confirmed": [
+      "Uttar Pradesh",
+      "Karnataka"
+    ],
+    "live_baseline": "8eae7d4",
+    "server_settings_preserve": [
+      "application/public/.htaccess",
+      "application/public/.user.ini"
+    ]
+  },
+  "last_run": {
+    "checked_at": "2026-10-11T13:08:32.356197+00:00",
+    "action": "Isolated live baseline and published source inventory recorded",
+    "next_action": "Wait for Maharashtra scope to be handled; no Gujarat rollout edits yet"
+  }
+}
