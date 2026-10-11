@@ -931,6 +931,54 @@
       "page": 142
     },
     {
+      "code": 155,
+      "name": "Olpad",
+      "district": "Surat",
+      "page": 142
+    },
+    {
+      "code": 156,
+      "name": "Mangrol (ST)",
+      "district": "Surat",
+      "page": 142
+    },
+    {
+      "code": 157,
+      "name": "Mandvi (ST)",
+      "district": "Surat",
+      "page": 142
+    },
+    {
+      "code": 158,
+      "name": "Kamrej",
+      "district": "Surat",
+      "page": 142
+    },
+    {
+      "code": 159,
+      "name": "Surat East",
+      "district": "Surat",
+      "page": 143
+    },
+    {
+      "code": 160,
+      "name": "Surat North",
+      "district": "Surat",
+      "page": 143
+    },
+    {
+      "code": 161,
+      "name": "Varachha Road",
+      "district": "Surat",
+      "page": 143
+    },
+    {
+      "code": 162,
+      "name": "Karanj",
+      "district": "Surat",
+      "page": 143
+    },
+    {
       "code": 163,
       "name": "Limbayat",
       "district": "Surat",
@@ -949,10 +997,46 @@
       "page": 143
     },
     {
+      "code": 166,
+      "name": "Katargam",
+      "district": "Surat",
+      "page": 143
+    },
+    {
+      "code": 167,
+      "name": "Surat West",
+      "district": "Surat",
+      "page": 143
+    },
+    {
       "code": 168,
       "name": "Choryasi",
       "district": "Surat",
       "page": 143
+    },
+    {
+      "code": 169,
+      "name": "Bardoli (SC)",
+      "district": "Surat",
+      "page": 143
+    },
+    {
+      "code": 170,
+      "name": "Mahuva (ST)",
+      "district": "Surat",
+      "page": 144
+    },
+    {
+      "code": 171,
+      "name": "Vyara (ST)",
+      "district": "Surat",
+      "page": 144
+    },
+    {
+      "code": 172,
+      "name": "Nizar (ST)",
+      "district": "Surat",
+      "page": 144
     },
     {
       "code": 173,
@@ -1325,6 +1409,34 @@
       "page": 148
     },
     {
+      "code": 23,
+      "name": "Bardoli (ST)",
+      "ac_codes": [
+        156,
+        157,
+        158,
+        169,
+        170,
+        171,
+        172
+      ],
+      "page": 148
+    },
+    {
+      "code": 24,
+      "name": "Surat",
+      "ac_codes": [
+        155,
+        159,
+        160,
+        161,
+        162,
+        166,
+        167
+      ],
+      "page": 148
+    },
+    {
       "code": 25,
       "name": "Navsari",
       "ac_codes": [
@@ -1353,5 +1465,5 @@
       "page": 148
     }
   ],
-  "coverage_note": "Partial dated ECI2008 Gujarat scope: complete Kachchh AC1-6; shared PC1 includes Morbi AC65 in dated Rajkot district. Rajkot partial; later Morbi district split is not backcast into Census2011. Map/Census correspondence unverified. Banaskantha AC7-15 complete; PC3 retains Patan16-19 and Mahesana20. Vav AC7 source includes Kesargadh village of Patan; district heading is not proof of exclusive district membership. No population allocation."
+  "coverage_note": "District headings use ECI order territory as at15 February2004. Surat includes later Tapi territory; no Census2011 Surat/Tapi membership equivalence inferred. Accepted contemporary crosswalk pending."
 }
