@@ -2349,7 +2349,67 @@
             "data-history-chart": true
           },
           "scope": "Bounded HTML only;full data verification pending"
-        }
+        },
+        "public": [
+          {
+            "url": "https://pollmedia.org/india/districts/27/504/dashboard",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": false
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=pc&state=Maharashtra&name=Wardha",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true,
+              "amravati": true,
+              "shared_segment": true,
+              "not_combined": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Arvi",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Deoli",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Hinganghat",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          },
+          {
+            "url": "https://pollmedia.org/india/constituency?kind=ac&state=Maharashtra&name=Wardha",
+            "status": 200,
+            "checks": {
+              "history": true,
+              "scope": true,
+              "context": true
+            }
+          }
+        ],
+        "public_scope": "All6 pagesHTTP200;bounded history/scope/context checks only;district context marker intentionally absent. Full rendered/data verification pending."
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -2532,19 +2592,33 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_full_membership_audit_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/505/dashboard",
       "flags": [
-        "SOI boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map-to-Census/LGD links pending",
-        "Historical rows retain their source geography; no modern boundary equivalence inferred"
+        "1911 unlinked and47 ambiguous source-code shapes;no population allocation",
+        "Full Nagpur district/PC membership audit,integration/tests/deployment pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited"
-      }
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
+        "sha256": "74a72e9b162a2cba77ac28407db85a473a8f92927e1b7c781ff90e8b1e41f4fb",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1911,
+          "ambiguous": 47
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI NAGPUR label retained; Census name Nagpur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "9045a95e5f37bc5ff18ec9eba324eb79b615d84a5d03e78113a5c9474c5565e1"
     },
     {
       "district_code": "506",
