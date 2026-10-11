@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Thiruvallur, Chennai and Kancheepuram with complete associated PC segments; other districts pending",
+  "scope": "Thiruvallur,Chennai,Kancheepuram,Vellore and complete associated PC segments; other districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -262,6 +262,78 @@
       "name": "Arcot",
       "district": "Vellore",
       "page": null
+    },
+    {
+      "code": 43,
+      "name": "Vellore",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 44,
+      "name": "Anaikattu",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 45,
+      "name": "Kilvaithinankuppam (SC)",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 46,
+      "name": "Gudiyattam (SC)",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 47,
+      "name": "Vaniyambadi",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 48,
+      "name": "Ambur",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 49,
+      "name": "Jolarpet",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 50,
+      "name": "Tiruppattur",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 62,
+      "name": "Chengam (SC)",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 63,
+      "name": "Tiruvannamalai",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 64,
+      "name": "Kilpennathur",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 65,
+      "name": "Kalasapakkam",
+      "district": "Tiruvannamalai",
+      "page": null
     }
   ],
   "pcs": [
@@ -353,6 +425,32 @@
         40,
         41,
         42
+      ],
+      "page": 447
+    },
+    {
+      "code": 8,
+      "name": "Vellore",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "page": 447
+    },
+    {
+      "code": 11,
+      "name": "Tiruvannamalai",
+      "ac_codes": [
+        49,
+        50,
+        62,
+        63,
+        64,
+        65
       ],
       "page": 447
     }

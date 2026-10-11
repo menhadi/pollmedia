@@ -53,6 +53,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '33' && $district === '605') {
             $mapFile = 'maps/vellore-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Vellore', 'Tamil Nadu');
         }
         if ($state === '24' && $district === '468') {
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kachchh', 'Gujarat');
