@@ -132,6 +132,9 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/tiruchirappalli-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Tiruchirappalli', 'Tamil Nadu');
         }
+        if ($state === '33' && $district === '615') {
+            $mapFile = 'maps/perambalur-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
