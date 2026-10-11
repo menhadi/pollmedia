@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='214' && $sourceMap==='maps/bihar-saharsa-villages.geojson')<p class="notice">Saharsa source coverage: 458 valid shapes; fourteen shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='230' && $sourceMap==='maps/bihar-patna-villages.geojson')<p class="notice">Patna source coverage: 1,378 shapes; invalid source geometry 30926 is retained without repair, and three shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='216' && $sourceMap==='maps/bihar-muzaffarpur-villages.geojson')<p class="notice">Muzaffarpur source coverage: 1,737 shapes; three invalid source geometries (24917, 24976, 25903) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
