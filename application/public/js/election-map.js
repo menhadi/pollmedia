@@ -90,6 +90,7 @@
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
             const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?(karnatakaLocator?locatorColors.get(f.id):'#ead59e'):partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
+            if(karnatakaLocator) path.style.setProperty('--locator-fill',locatorColors.get(f.id));
             if (!focusMode) { const title=svgElement('title');title.textContent=seatText(f,record);path.append(title); }
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
