@@ -2,10 +2,13 @@
     const requests = new Map(), ns = 'http://www.w3.org/2000/svg';
     const normalize = value => String(value || '').normalize('NFKD').toLowerCase().replace(/\((sc|st)\)|\b(sc|st)\b/g, '').replace(/[^a-z0-9\u0900-\u097f]/g, '');
     const stateKey = value => ({orissa:'odisha',orrisa:'odisha',madras:'tamilnadu',mysore:'karnataka',kerla:'kerala',gujrat:'gujarat',uttaranchal:'uttarakhand',nctofdelhi:'delhi',nationalcapitalterritoryofdelhi:'delhi',pondicherry:'puducherry'}[normalize(value)] || normalize(value));
+    // ECI Delimitation2008 Table B, p208: Karnataka PC27 Chikkballapur.
+    // Preserved locator source spells PC27 Chikballapur; this is a display alias, not a boundary join.
+    const locatorName = (value, state, kind) => stateKey(state)==='karnataka' && kind==='pc' && normalize(value)==='chikballapur' ? 'chikkballapur' : normalize(value);
     function match(feature, records, context) {
-        const p = feature.properties, state = stateKey(context || p.state), name = normalize(p.name);
+        const p = feature.properties, state = stateKey(context || p.state), name = locatorName(p.name,state,p.kind);
         if (!name) return [];
-        return records.filter(r => normalize(r.name) === name && (stateKey(r.state) === state ||
+        return records.filter(r => locatorName(r.name,r.state,p.kind) === name && (stateKey(r.state) === state ||
             (!context && ['andhrapradesh','telangana'].includes(state) && ['andhrapradesh','telangana'].includes(stateKey(r.state))) ||
             (state === 'ladakh' && stateKey(r.state) === 'jammuandkashmir')));
     }
@@ -96,7 +99,7 @@
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
             const open=()=>{describe(f,record);const url=seatUrl(record);if(url) location.assign(url);else {const finder=new URL(root.dataset.finder,location.href);finder.searchParams.set('kind',root.dataset.kind);finder.searchParams.set('state',root.dataset.state || f.properties.state);finder.searchParams.set('q',f.properties.name || '');location.assign(finder.href);}};
             path.addEventListener('click',open);path.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
-            if((record&&selected(record)) || (!record&&root.dataset.selected&&normalize(f.properties.name)===normalize(root.dataset.selected)&&names.get(stateKey(f.properties.state)+':'+normalize(f.properties.name))===1)){path.classList.add('is-selected');path.setAttribute('aria-current','true');describe(f,record);}
+            if((record&&selected(record)) || (!record&&root.dataset.selected&&locatorName(f.properties.name,root.dataset.state,root.dataset.kind)===locatorName(root.dataset.selected,root.dataset.state,root.dataset.kind)&&names.get(stateKey(f.properties.state)+':'+normalize(f.properties.name))===1)){path.classList.add('is-selected');path.setAttribute('aria-current','true');describe(f,record);}
             svg.append(path);paths.set(f.id,path);
         });
         // Raise the selected outline above adjacent shapes without changing source geometry.
@@ -153,6 +156,7 @@
         if(karnatakaLocator){
             legend.hidden=false;
             const note=document.createElement('span');note.textContent='Colours distinguish source shapes; they do not indicate results or Census values. The selected constituency has an outline.';legend.append(note);
+            if(root.dataset.kind==='pc' && normalize(root.dataset.selected)==='chikkballapur'){const aliasNote=document.createElement('span');aliasNote.textContent='PC27: the locator source says Chikballapur; ECI Delimitation2008 (Table B, p208) says Chikkballapur. Spelling correspondence only; boundary equivalence remains unverified.';legend.append(aliasNote);}
         }else if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
         }else{
