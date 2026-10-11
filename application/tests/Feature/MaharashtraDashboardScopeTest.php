@@ -17,6 +17,15 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame(['Nashik', 'Nashik', 'Nashik'], array_column($links['parliamentary'][1]['outside_district'], 'district'));
     }
 
+    public function test_jalgaon_shared_raver_retains_buldhana_segment(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Jalgaon', 'Maharashtra');
+        $this->assertSame(range(10, 20), array_column($links['assembly'], 'code'));
+        $this->assertSame([3, 4], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([21], array_column($links['parliamentary'][1]['outside_district'], 'code'));
+        $this->assertSame('Buldhana', $links['parliamentary'][1]['outside_district'][0]['district']);
+    }
+
     public function test_dated_shared_pc_keeps_dhule_segments(): void
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Nandurbar', 'Maharashtra');
