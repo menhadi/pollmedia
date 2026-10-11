@@ -511,6 +511,48 @@
       "page": 260
     },
     {
+      "code": 85,
+      "name": "Bhokar",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 86,
+      "name": "Nanded North",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 87,
+      "name": "Nanded South",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 88,
+      "name": "Loha",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 89,
+      "name": "Naigaon",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 90,
+      "name": "Deglur (SC)",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
+      "code": 91,
+      "name": "Mukhed",
+      "district": "Nanded",
+      "page": 260
+    },
+    {
       "code": 92,
       "name": "Basmath",
       "district": "Hingoli",
@@ -545,6 +587,36 @@
       "name": "Baglan (ST)",
       "district": "Nashik",
       "page": 262
+    },
+    {
+      "code": 234,
+      "name": "Latur Rural",
+      "district": "Latur",
+      "page": 272
+    },
+    {
+      "code": 235,
+      "name": "Latur City",
+      "district": "Latur",
+      "page": 272
+    },
+    {
+      "code": 236,
+      "name": "Ahmadpur",
+      "district": "Latur",
+      "page": 272
+    },
+    {
+      "code": 237,
+      "name": "Udgir (SC)",
+      "district": "Latur",
+      "page": 272
+    },
+    {
+      "code": 238,
+      "name": "Nilanga",
+      "district": "Latur",
+      "page": 272
     }
   ],
   "pcs": [
@@ -745,7 +817,33 @@
         94
       ],
       "page": 278
+    },
+    {
+      "code": 16,
+      "name": "Nanded",
+      "ac_codes": [
+        85,
+        86,
+        87,
+        89,
+        90,
+        91
+      ],
+      "page": 278
+    },
+    {
+      "code": 41,
+      "name": "Latur (SC)",
+      "ac_codes": [
+        234,
+        235,
+        236,
+        237,
+        238,
+        88
+      ],
+      "page": 279
     }
   ],
-  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending."
+  "coverage_note": "Partial ECI 2008 audit: complete Nandurbar, Dhule, Jalgaon, Buldhana, Akola, Washim, Amravati, Wardha, Nagpur, Bhandara Gondiya, Gadchiroli and Chandrapur scopes; Nashik and Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately. Yavatmal AC76-82 complete; shared Hingoli PC15 records Nanded and Hingoli segments from pages260/261/278; dashboard integration pending. Nanded AC83-91 complete; PC41 Latur includes Loha AC88 and five Latur segments; Latur district remains partial."
 }
