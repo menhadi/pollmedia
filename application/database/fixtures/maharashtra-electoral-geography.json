@@ -149,6 +149,42 @@
       "name": "Malkapur",
       "district": "Buldhana",
       "page": 255
+    },
+    {
+      "code": 22,
+      "name": "Buldhana",
+      "district": "Buldhana",
+      "page": 255
+    },
+    {
+      "code": 23,
+      "name": "Chikhli",
+      "district": "Buldhana",
+      "page": 255
+    },
+    {
+      "code": 24,
+      "name": "Sindkhed Raja",
+      "district": "Buldhana",
+      "page": 255
+    },
+    {
+      "code": 25,
+      "name": "Mehkar (SC)",
+      "district": "Buldhana",
+      "page": 255
+    },
+    {
+      "code": 26,
+      "name": "Khamgaon",
+      "district": "Buldhana",
+      "page": 256
+    },
+    {
+      "code": 27,
+      "name": "Jalgaon (Jamod)",
+      "district": "Buldhana",
+      "page": 256
     }
   ],
   "pcs": [
@@ -203,7 +239,23 @@
         21
       ],
       "page": 277
+    },
+    {
+      "code": 5,
+      "name": "Buldhana",
+      "ac_codes": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "page": 277,
+      "source_code_note": "ECI2008 prints5.Mehkar(SC); Assembly entry25 and separate CEO Maharashtra PC list corroborate25. Literal discrepancy retained.",
+      "corroborating_url": "https://ceoelection.maharashtra.gov.in/Downloads/PDF/PCs.pdf",
+      "corroborating_sha256": "ce584af93d9b86fcbc7330cdf3ff60b06a924dfecc0799d10785b25a50c98210"
     }
   ],
-  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon scope and their shared PC segments; Nashik and Buldhana full district scope pending."
+  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana district scopes; Nashik partial. PC5 Mehkar code25 corroborated separately;2008 literal5 retained in source note."
 }

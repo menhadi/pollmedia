@@ -28,12 +28,12 @@ class DistrictDashboardController extends Controller
         $mapFile = $state === '29' && in_array($district, ['555', '556', '557', '558', '559', '560', '561', '562', '563', '564', '565', '566', '567', '568', '569', '570', '571'], true) ? match ($district) {
             '555' => 'maps/belagavi-villages.geojson', '556' => 'maps/bagalkot-villages.geojson', '557' => 'maps/bijapur-villages.geojson', '558' => 'maps/bidar-villages.geojson', '559' => 'maps/raichur-villages.geojson', '560' => 'maps/koppal-villages.geojson', '561' => 'maps/gadag-villages.geojson', '562' => 'maps/dharwad-villages.geojson', '563' => 'maps/uttara-kannada-villages.geojson', '564' => 'maps/haveri-villages.geojson', '565' => 'maps/bellary-villages.geojson', '566' => 'maps/chitradurga-villages.geojson', '567' => 'maps/davanagere-villages.geojson', '568' => 'maps/shimoga-villages.geojson', '569' => 'maps/udupi-villages.geojson', '570' => 'maps/chikmagalur-villages.geojson', '571' => 'maps/tumkur-villages.geojson'
         } : ($state === '09' ? ($mapFiles[$district] ?? null) : null);
-        if ($state === '27' && in_array($district, ['497', '498', '499'], true)) {
+        if ($state === '27' && in_array($district, ['497', '498', '499', '500'], true)) {
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(match ($district) {
-                '497' => 'Nandurbar', '498' => 'Dhule', '499' => 'Jalgaon'
+                '497' => 'Nandurbar', '498' => 'Dhule', '499' => 'Jalgaon', '500' => 'Buldhana'
             }, 'Maharashtra');
             $mapFile = match ($district) {
-                '497' => 'maps/nandurbar-villages.geojson', '498' => 'maps/dhule-villages.geojson', '499' => 'maps/jalgaon-villages.geojson'
+                '497' => 'maps/nandurbar-villages.geojson', '498' => 'maps/dhule-villages.geojson', '499' => 'maps/jalgaon-villages.geojson', '500' => 'maps/buldhana-villages.geojson'
             };
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
