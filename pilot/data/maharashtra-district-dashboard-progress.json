@@ -2321,7 +2321,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_district_response_checked_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/504/dashboard",
       "flags": [
         "1393 unlinked and28 ambiguous source-code shapes",
@@ -2335,7 +2335,21 @@
           "scope": "Wardha AC44-47,sharedPC8 outsideAmravati AC36/43 and Maharashtra regressions"
         },
         "formatting": "Pint passed",
-        "remaining": "Locked deployment,public/rendered,mobile and canonical/source/election audits pending"
+        "remaining": "PC/AC public/rendered,mobile and canonical/original-source/election audits pending",
+        "backup": "Local bundle verified;live commit pushed to GitHub codex/maharashtra-gujarat-live-backup",
+        "public_district": {
+          "http": 200,
+          "checks": {
+            "wardha-villages.geojson": true,
+            "Arvi": true,
+            "Deoli": true,
+            "Hinganghat": true,
+            "Amravati": true,
+            "Morshi": true,
+            "data-history-chart": true
+          },
+          "scope": "Bounded HTML only;full data verification pending"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -2383,7 +2397,9 @@
           }
         ],
         "scope": "Dated ECI2008;geometry equivalence unverified"
-      }
+      },
+      "deployed_commit": "bd959461a8c8de1cdcc7268b6d81bb68f0112d3d",
+      "rollback_commit": "42fb6d7f1553473f6237f2779925e12e66da9285"
     },
     {
       "district_code": "505",
