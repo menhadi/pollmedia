@@ -1,14 +1,14 @@
 {
   "state": "Bihar",
-  "coverage": "Araria district only; other Bihar seats not yet imported",
-  "district_url": "https://ceoelection.bihar.gov.in/PDF/District%20Map/ARARIA.pdf",
-  "district_source_date": "Edition date unverified; retrieved 2026-10-12",
-  "district_sha256": "e485458432b4ee43f0e6c57ca13658aa216715bcdfe02d111a3ff6de9708b852",
-  "pc_url": "https://araria.nic.in/about-district/",
-  "pc_source_date": "Retrieved 2026-10-12; publication date unverified",
-  "pc_sha256": "1ca4d67e68d929746c42553eeffe7d229b5a574bcb86b22fd7b38dd7c33df594",
-  "district_source_label": "Official CEO district constituency map",
-  "pc_source_label": "Official district constituency membership",
+  "coverage": "Araria and Jahanabad PCs only; other Bihar seats pending",
+  "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+  "district_source_date": "2019 election list; boundary effective date unverified",
+  "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+  "pc_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+  "pc_source_date": "2019 election list; boundary effective date unverified",
+  "pc_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+  "district_source_label": "Official CEO 2019 constituency and district list",
+  "pc_source_label": "Official CEO 2019 constituency and district list",
   "district_rows": [
     {
       "code": 46,
@@ -45,6 +45,48 @@
       "name": "Sikti",
       "district": "Araria",
       "page": 1
+    },
+    {
+      "code": 214,
+      "name": "Arwal",
+      "district": "Arwal",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 215,
+      "name": "Kurtha",
+      "district": "Arwal",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 216,
+      "name": "Jahanabad",
+      "district": "Jehanabad",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 217,
+      "name": "Ghosi",
+      "district": "Jehanabad",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 218,
+      "name": "Makhdumapur (SC)",
+      "district": "Jehanabad",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 233,
+      "name": "Atri",
+      "district": "Gaya",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -60,6 +102,26 @@
         51
       ],
       "code_source": "https://ceoelection.bihar.gov.in/Form20/Loksabha_include/AC046.pdf"
+    },
+    {
+      "code": 36,
+      "name": "Jahanabad",
+      "ac_codes": [
+        214,
+        215,
+        216,
+        217,
+        218,
+        233
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list",
+      "cross_district_scope": [
+        "Arwal",
+        "Jehanabad",
+        "Gaya"
+      ]
     }
   ]
 }
