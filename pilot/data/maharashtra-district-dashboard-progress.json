@@ -4568,19 +4568,25 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_membership_integration_pending",
+      "workflow_status": "local_integration_tested_locked_deployment_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/513/dashboard",
       "flags": [
         "SOI PARBHANI label retained; boundary edition unverified",
         "854 valid unlinked source shapes; no ambiguous or rejected shapes",
-        "AC95-98 and shared PC17 membership integration pending; outside Jalna segments must remain visible",
+        "AC95-98 and shared PC17 with Jalna AC99/100 context tested locally; deployment pending",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
         "public": "Pending",
         "rendered": "Pending",
         "canonical_data": "Publication receipt join inventoried; values not yet audited",
-        "source_map": "Archive hash verified; 854 valid EPSG:4326 shapes; no accepted Census/LGD joins"
+        "source_map": "Archive hash verified; 854 valid EPSG:4326 shapes; no accepted Census/LGD joins",
+        "dedicated_tests": {
+          "tests": 18,
+          "assertions": 86,
+          "result": "Passed"
+        },
+        "formatting": "Pint passed"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -4596,7 +4602,37 @@
         "rejected": [],
         "note": "SOI PARBHANI label retained; Census name Parbhani; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "d45194a61bb6aa14900b527a2091ab17414471a0198ea8cc7aa0505ca43235f7"
+      "map_sha256": "d45194a61bb6aa14900b527a2091ab17414471a0198ea8cc7aa0505ca43235f7",
+      "membership_evidence": {
+        "pdf_pages": [
+          261,
+          278
+        ],
+        "visually_inspected_pdf_pages": [
+          261,
+          278
+        ],
+        "ac_codes": [
+          95,
+          96,
+          97,
+          98
+        ],
+        "pcs": [
+          {
+            "code": 17,
+            "ac_codes": [
+              95,
+              96,
+              97,
+              98,
+              99,
+              100
+            ]
+          }
+        ],
+        "scope": "Dated 2008 order; shared PC17 retains Jalna segments; current crosswalk unverified"
+      }
     },
     {
       "district_code": "514",
@@ -7248,9 +7284,9 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:41:54.323722+00:00",
+    "checked_at": "2026-10-11T18:46:59.570388+00:00",
     "live_commit": "31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab",
-    "action": "Prepared Parbhani source map locally: 854 valid unlinked shapes, none rejected",
-    "next_action": "Integrate audited ECI261/278 Parbhani AC95-98 and PC17 including Jalna AC99/100; test then locked deployment; preserve earlier audits"
+    "action": "Parbhani dashboard and shared PC17 context integrated locally; 18 tests and 86 assertions passed",
+    "next_action": "Refresh live files; narrow Parbhani deployment under both locks with rollback/cache/backups; public/rendered/source/mobile audits follow"
   }
 }
