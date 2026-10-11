@@ -329,6 +329,78 @@
       "name": "Wardha",
       "district": "Wardha",
       "page": 257
+    },
+    {
+      "code": 48,
+      "name": "Katol",
+      "district": "Nagpur",
+      "page": 257
+    },
+    {
+      "code": 49,
+      "name": "Savner",
+      "district": "Nagpur",
+      "page": 257
+    },
+    {
+      "code": 50,
+      "name": "Hingna",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 51,
+      "name": "Umred (SC)",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 52,
+      "name": "Nagpur South West",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 53,
+      "name": "Nagpur South",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 54,
+      "name": "Nagpur East",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 55,
+      "name": "Nagpur Central",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 56,
+      "name": "Nagpur West",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 57,
+      "name": "Nagpur North (SC)",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 58,
+      "name": "Kamthi",
+      "district": "Nagpur",
+      "page": 258
+    },
+    {
+      "code": 59,
+      "name": "Ramtek",
+      "district": "Nagpur",
+      "page": 258
     }
   ],
   "pcs": [
@@ -451,7 +523,33 @@
         47
       ],
       "page": 277
+    },
+    {
+      "code": 9,
+      "name": "Ramtek (SC)",
+      "ac_codes": [
+        48,
+        49,
+        50,
+        51,
+        58,
+        59
+      ],
+      "page": 277
+    },
+    {
+      "code": 10,
+      "name": "Nagpur",
+      "ac_codes": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "page": 277
     }
   ],
-  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola,Washim,Amravati,Wardha district scopes;Nashik/Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
+  "coverage_note": "Partial ECI2008 audit: complete Nandurbar,Dhule,Jalgaon,Buldhana,Akola,Washim,Amravati,Wardha,Nagpur district scopes;Nashik/Yavatmal partial. PC5 literal Mehkar code discrepancy retained and corroborated separately."
 }
