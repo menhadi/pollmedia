@@ -1408,7 +1408,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_district_response_checked_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/501/dashboard",
       "flags": [
         "Boundary edition and Census/LGD joins unverified; no population assigned to shapes",
@@ -1422,7 +1422,21 @@
           "scope": "Akola shared PC6 keeps Washim AC33; existing Maharashtra membership/reload regressions"
         },
         "formatting": "Pint passed",
-        "remaining": "Locked live deployment,public/rendered and actual-data checks pending"
+        "remaining": "PC/AC public and rendered checks,mobile,canonical display and independent original-source/election audits pending",
+        "backup": "Local bundle verified;live commit pushed to GitHub codex/maharashtra-gujarat-live-backup",
+        "public_district": {
+          "http": 200,
+          "checks": {
+            "akola-villages.geojson": true,
+            "Risod": true,
+            "Washim": true,
+            "Akot": true,
+            "Balapur": true,
+            "Murtizapur": true,
+            "data-history-chart": true
+          },
+          "scope": "Bounded response checks;not full data verification"
+        }
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -1482,7 +1496,9 @@
           }
         ],
         "scope": "Dated ECI2008 membership; current geometry equivalence unverified"
-      }
+      },
+      "deployed_commit": "188e5549ffb1a2c9e0a392b0caa3ef92efe34d6d",
+      "rollback_commit": "4220f8e1d101f63409a9dd00af50c6b150bd6309"
     },
     {
       "district_code": "502",
