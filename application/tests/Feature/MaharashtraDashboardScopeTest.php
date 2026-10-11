@@ -379,4 +379,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([40, 41, 42, 45, 55], array_column($links['parliamentary'][1]['outside_district'], 'code'));
         $this->assertSame([43, 46, 47, 48, 49], array_column($links['parliamentary'][2]['outside_district'], 'code'));
     }
+
+    public function test_ahmedabad_keeps_all_five_parliamentary_seats(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Ahmedabad', 'Gujarat');
+        $this->assertSame(range(39, 59), array_column($links['assembly'], 'code'));
+        $this->assertSame([6, 7, 8, 9, 17], array_column($links['parliamentary'], 'code'));
+        $this->assertSame([60, 61, 62, 63, 64], array_column($links['parliamentary'][3]['outside_district'], 'code'));
+        $this->assertSame([115, 116, 117, 118, 120], array_column($links['parliamentary'][4]['outside_district'], 'code'));
+    }
 }
