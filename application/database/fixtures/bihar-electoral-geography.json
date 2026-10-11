@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Nineteen PCs recorded; remaining Bihar membership pending",
+  "coverage": "Twenty PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -815,6 +815,48 @@
       "district": "Purnia",
       "source_page_label": "2 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 165,
+      "name": "Munger",
+      "district": "Munger",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 166,
+      "name": "Jamalpur",
+      "district": "Munger",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 167,
+      "name": "Suryagarha",
+      "district": "Lakhisarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 168,
+      "name": "Lakhisarai",
+      "district": "Lakhisarai",
+      "source_page_label": "5 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 178,
+      "name": "Mokama",
+      "district": "Patna",
+      "source_page_label": "5 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 179,
+      "name": "Barh",
+      "district": "Patna",
+      "source_page_label": "5 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -1166,6 +1208,26 @@
       "cross_district_scope": [
         "Kishanganj",
         "Purnia"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 28,
+      "name": "Munger",
+      "ac_codes": [
+        165,
+        166,
+        167,
+        168,
+        178,
+        179
+      ],
+      "cross_district_scope": [
+        "Munger",
+        "Lakhisarai",
+        "Patna"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
