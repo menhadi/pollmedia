@@ -4568,12 +4568,12 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "local_integration_tested_locked_deployment_pending",
+      "workflow_status": "deployed_public_response_received_rendered_data_audits_pending",
       "dashboard_url": "https://pollmedia.org/india/districts/27/513/dashboard",
       "flags": [
         "SOI PARBHANI label retained; boundary edition unverified",
         "854 valid unlinked source shapes; no ambiguous or rejected shapes",
-        "AC95-98 and shared PC17 with Jalna AC99/100 context tested locally; deployment pending",
+        "AC95-98 and shared PC17/Jalna segments deployed; current crosswalk remains unverified",
         "No population assigned; original-source/rendered/mobile audits pending"
       ],
       "validation": {
@@ -4591,7 +4591,13 @@
           "result": "Deferred before mutation",
           "reason": "Live index contains concurrent staged DistrictDashboardController.php change and untracked Araria map; preserve other rollout work",
           "live_commit": "31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab"
-        }
+        },
+        "public_district": {
+          "http": 200,
+          "bytes": 63027,
+          "scope": "Response only; not full data verification"
+        },
+        "backup": "Local chain bundle verified; GitHub backup branch verified at abe5d3c1b7a26355f30cf3559cd605edaeaff473; no backups deleted"
       },
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/MAHARASHTRA.zip",
@@ -4637,6 +4643,11 @@
           }
         ],
         "scope": "Dated 2008 order; shared PC17 retains Jalna segments; current crosswalk unverified"
+      },
+      "deployment": {
+        "live_commit": "abe5d3c1b7a26355f30cf3559cd605edaeaff473",
+        "rollback_commit": "dbf04a859d6b5f584794f32a8baa77b99fba1dd9",
+        "locks": "Both flock -n locks held across fresh HEAD preflight, narrow patch/map, commit and cache clearing"
       }
     },
     {
@@ -7289,9 +7300,10 @@
     "election_lock_descriptor": "Read-only FD8 with exclusive flock -n on same root-owned lock file; no replacement or bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-11T18:51:46.265653+00:00",
-    "live_commit": "31231aad76f71fb73a0cdd3a0be1f5ad65f5fbab",
-    "action": "Read checkpoints and live state; deferred Parbhani deployment because concurrent controller change is staged; no live mutation",
-    "next_action": "Wait for clean live index, redownload current controller/own files and refresh HEAD; narrow patch under both locks; preserve concurrent Araria work"
-  }
+    "checked_at": "2026-10-11T18:57:56.631461+00:00",
+    "live_commit": "abe5d3c1b7a26355f30cf3559cd605edaeaff473",
+    "action": "Parbhani deployed under both locks after concurrent rollout finished; district HTTP200; local/GitHub backups verified",
+    "next_action": "Bounded Parbhani PC/AC checks then Jalna rollout; flag minor issues for later per user preference; preserve essential checks and pending data audits"
+  },
+  "rollout_priority": "User requested breadth-first Maharashtra completion then Gujarat; flag minor fixes for later while retaining essential deployment and data-integrity checks. Pending audits remain explicit, never counted as completed."
 }
