@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-lakhimpur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Lakhimpur Census 2011 — rural village PCA',
+        'sheet' => 'EB-1808',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6498/download/9575/DDW_PCA1808_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6498',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-baksa-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Baksa Census 2011 — rural village PCA',
