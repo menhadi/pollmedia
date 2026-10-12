@@ -438,6 +438,54 @@
       "name": "Sapotra (ST)",
       "district": "Karauli",
       "page": 357
+    },
+    {
+      "code": 90,
+      "name": "Gangapur",
+      "district": "Sawai Madhopur",
+      "page": 358
+    },
+    {
+      "code": 91,
+      "name": "Bamanwas (ST)",
+      "district": "Sawai Madhopur",
+      "page": 358
+    },
+    {
+      "code": 92,
+      "name": "Sawai Madhopur",
+      "district": "Sawai Madhopur",
+      "page": 358
+    },
+    {
+      "code": 93,
+      "name": "Khandar (SC)",
+      "district": "Sawai Madhopur",
+      "page": 358
+    },
+    {
+      "code": 94,
+      "name": "Malpura",
+      "district": "Tonk",
+      "page": 358
+    },
+    {
+      "code": 95,
+      "name": "Niwai (SC)",
+      "district": "Tonk",
+      "page": 358
+    },
+    {
+      "code": 96,
+      "name": "Tonk",
+      "district": "Tonk",
+      "page": 358
+    },
+    {
+      "code": 97,
+      "name": "Deoli-Uniara",
+      "district": "Tonk",
+      "page": 358
     }
   ],
   "pcs": [
@@ -573,6 +621,21 @@
         82,
         83,
         84
+      ],
+      "page": 366
+    },
+    {
+      "code": 12,
+      "name": "Tonk-Sawai Madhopur",
+      "ac_codes": [
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97
       ],
       "page": 366
     }
