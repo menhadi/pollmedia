@@ -1,0 +1,274 @@
+{
+  "districts": [
+    {
+      "source_name": "Kandhamal",
+      "slug": "kandhamal",
+      "file": "maps/odisha-source-villages/kandhamal.geojson",
+      "features": 2737,
+      "invalid_retained": 6,
+      "sha256": "a521309febd237c1718f6e921e8a5f0e0e957b72d88ee117987a8cf596ce9a08",
+      "bytes": 8387618
+    },
+    {
+      "source_name": "Kalahandi",
+      "slug": "kalahandi",
+      "file": "maps/odisha-source-villages/kalahandi.geojson",
+      "features": 2360,
+      "invalid_retained": 4,
+      "sha256": "2c4cfb67357c71dde8a183b90ef7664edbaf578f9a2d2051bba22609f722882b",
+      "bytes": 9207328
+    },
+    {
+      "source_name": "Rayagada",
+      "slug": "rayagada",
+      "file": "maps/odisha-source-villages/rayagada.geojson",
+      "features": 2825,
+      "invalid_retained": 3,
+      "sha256": "a1cae4cd58a6aa3c7204bba079088e95a458ca1fbbbe4517bf185f678602a8da",
+      "bytes": 6802435
+    },
+    {
+      "source_name": "Gajapati",
+      "slug": "gajapati",
+      "file": "maps/odisha-source-villages/gajapati.geojson",
+      "features": 1647,
+      "invalid_retained": 2,
+      "sha256": "58229aa273a3d332962a15d83354efad55dfe38334fe74b1e67b4460592c990d",
+      "bytes": 4646589
+    },
+    {
+      "source_name": "Ganjam",
+      "slug": "ganjam",
+      "file": "maps/odisha-source-villages/ganjam.geojson",
+      "features": 3328,
+      "invalid_retained": 2,
+      "sha256": "546af2cb9eb5ce5c0dc913ad5675097bc7a759d381462ead57b7a785ebb4289c",
+      "bytes": 12544400
+    },
+    {
+      "source_name": "Khordha",
+      "slug": "khordha",
+      "file": "maps/odisha-source-villages/khordha.geojson",
+      "features": 1562,
+      "invalid_retained": 0,
+      "sha256": "e7169f1546af07e48d9dedbb30881265326fa97b10f0ce4db66d656c2e00272b",
+      "bytes": 2537151
+    },
+    {
+      "source_name": "Nayagarh",
+      "slug": "nayagarh",
+      "file": "maps/odisha-source-villages/nayagarh.geojson",
+      "features": 1755,
+      "invalid_retained": 1,
+      "sha256": "8070458cb9d12e44f6865b9316372fda67efb15d58352a7dd532384cd8c0df37",
+      "bytes": 3151698
+    },
+    {
+      "source_name": "Puri",
+      "slug": "puri",
+      "file": "maps/odisha-source-villages/puri.geojson",
+      "features": 1716,
+      "invalid_retained": 0,
+      "sha256": "f3b39fb877e7f473fa3f202e12bb50eaa8819a5b11da253e6eecbe0599637ff2",
+      "bytes": 3427026
+    },
+    {
+      "source_name": "Balangir",
+      "slug": "balangir",
+      "file": "maps/odisha-source-villages/balangir.geojson",
+      "features": 1875,
+      "invalid_retained": 0,
+      "sha256": "8d65af3bf7e5d42e524aa8d1a08760c4a13994b655f28ec391b72b140c2e845d",
+      "bytes": 6955675
+    },
+    {
+      "source_name": "Nuapada",
+      "slug": "nuapada",
+      "file": "maps/odisha-source-villages/nuapada.geojson",
+      "features": 719,
+      "invalid_retained": 0,
+      "sha256": "6778e72b98946265a2a2cb7f73b92a4e252eaab5886f2f801b6b8ba026321c18",
+      "bytes": 1463565
+    },
+    {
+      "source_name": "Cuttack",
+      "slug": "cuttack",
+      "file": "maps/odisha-source-villages/cuttack.geojson",
+      "features": 1992,
+      "invalid_retained": 0,
+      "sha256": "79c231853692278107456fca6f3cb56dd16c54a48e5c854b6513625e9ea1e599",
+      "bytes": 4860793
+    },
+    {
+      "source_name": "Jagatsinghapur",
+      "slug": "jagatsinghapur",
+      "file": "maps/odisha-source-villages/jagatsinghapur.geojson",
+      "features": 1300,
+      "invalid_retained": 0,
+      "sha256": "3ca97d7edf67305ff7d0826251f064622bacdff1624ac786e21384ffa03f0073",
+      "bytes": 3745737
+    },
+    {
+      "source_name": "Bargarh",
+      "slug": "bargarh",
+      "file": "maps/odisha-source-villages/bargarh.geojson",
+      "features": 1280,
+      "invalid_retained": 0,
+      "sha256": "0463b904db4b3c4a332d30571ca3ee51050592e2e95190bab0a84c53ebe3f5fa",
+      "bytes": 3273379
+    },
+    {
+      "source_name": "Boudh",
+      "slug": "boudh",
+      "file": "maps/odisha-source-villages/boudh.geojson",
+      "features": 1233,
+      "invalid_retained": 1,
+      "sha256": "d820b77c8c0a7df17c70eab84a2cdc499c88195a52366afcb23a3d1028417638",
+      "bytes": 2692705
+    },
+    {
+      "source_name": "Sonepur",
+      "slug": "sonepur",
+      "file": "maps/odisha-source-villages/sonepur.geojson",
+      "features": 1001,
+      "invalid_retained": 0,
+      "sha256": "0c0b87a489cb64a3f76d64d0fd9b68147d903fc010d11d6291c02b9e7f144b79",
+      "bytes": 2161371
+    },
+    {
+      "source_name": "Sambalpur",
+      "slug": "sambalpur",
+      "file": "maps/odisha-source-villages/sambalpur.geojson",
+      "features": 1415,
+      "invalid_retained": 2,
+      "sha256": "cc6916713abe2c239811316971dd041fdd7a91f52b6a71a92b946364259c061d",
+      "bytes": 2620491
+    },
+    {
+      "source_name": "Kendujhar",
+      "slug": "kendujhar",
+      "file": "maps/odisha-source-villages/kendujhar.geojson",
+      "features": 2183,
+      "invalid_retained": 1,
+      "sha256": "7ff3804c63d2f9e9099ab86814415037b2a385d577e619ee70edfea226712747",
+      "bytes": 5297742
+    },
+    {
+      "source_name": "Dhenkanal",
+      "slug": "dhenkanal",
+      "file": "maps/odisha-source-villages/dhenkanal.geojson",
+      "features": 1248,
+      "invalid_retained": 0,
+      "sha256": "c91b1c4240d56c8761ce22d130e812602ef981d91ca756552470164bf88806b7",
+      "bytes": 2148341
+    },
+    {
+      "source_name": "Sundargarh",
+      "slug": "sundargarh",
+      "file": "maps/odisha-source-villages/sundargarh.geojson",
+      "features": 1933,
+      "invalid_retained": 2,
+      "sha256": "013243d21b8b222419cc04d8882ddad9b05fd05627628715dcd11ea69ef5e490",
+      "bytes": 4770981
+    },
+    {
+      "source_name": "Jajapur",
+      "slug": "jajapur",
+      "file": "maps/odisha-source-villages/jajapur.geojson",
+      "features": 1799,
+      "invalid_retained": 2,
+      "sha256": "7854ac0589c243be03d8a305ad9fbcc829c6cba9aca02c5fdcdec5e3ead4de79",
+      "bytes": 4971064
+    },
+    {
+      "source_name": "Anugul",
+      "slug": "anugul",
+      "file": "maps/odisha-source-villages/anugul.geojson",
+      "features": 1993,
+      "invalid_retained": 0,
+      "sha256": "640cab7ddeb276d523915d3b01deb05122ae5b8375e83a240656b17dd6638a41",
+      "bytes": 7182892
+    },
+    {
+      "source_name": "Mayurbhanj",
+      "slug": "mayurbhanj",
+      "file": "maps/odisha-source-villages/mayurbhanj.geojson",
+      "features": 3991,
+      "invalid_retained": 0,
+      "sha256": "b4bc1778e8d2a23278ccc8de64ef276f637814ae5598f97733f11e3468fb3e4a",
+      "bytes": 5443255
+    },
+    {
+      "source_name": "Deogarh",
+      "slug": "deogarh",
+      "file": "maps/odisha-source-villages/deogarh.geojson",
+      "features": 906,
+      "invalid_retained": 2,
+      "sha256": "66f62d46c17f02c06fece58e80e402d4f92fd7eedc2c02b4109b97449690f908",
+      "bytes": 1266012
+    },
+    {
+      "source_name": "Jharsuguda",
+      "slug": "jharsuguda",
+      "file": "maps/odisha-source-villages/jharsuguda.geojson",
+      "features": 382,
+      "invalid_retained": 0,
+      "sha256": "700e6c2cd51bc932a2204264ec217d02f42e6a68584985ba37cc502303f29b3e",
+      "bytes": 1178154
+    },
+    {
+      "source_name": "Bhadrak",
+      "slug": "bhadrak",
+      "file": "maps/odisha-source-villages/bhadrak.geojson",
+      "features": 1326,
+      "invalid_retained": 0,
+      "sha256": "cdb3f93335116568418d1164f866b93af130eb5e1f5eaed3a8c9ca8bd777c9d8",
+      "bytes": 2356786
+    },
+    {
+      "source_name": "Kendrapara",
+      "slug": "kendrapara",
+      "file": "maps/odisha-source-villages/kendrapara.geojson",
+      "features": 1555,
+      "invalid_retained": 0,
+      "sha256": "61ff5df0be1833f22a41ebf3d31375480303c7343b0cc10eb48ad1c67311d8ea",
+      "bytes": 4041396
+    },
+    {
+      "source_name": "Baleshwar",
+      "slug": "baleshwar",
+      "file": "maps/odisha-source-villages/baleshwar.geojson",
+      "features": 2946,
+      "invalid_retained": 3,
+      "sha256": "4396b0f3c3b6e119d53c86237a94b38e774b38c479816c03820eb43a1534a76b",
+      "bytes": 8598573
+    },
+    {
+      "source_name": "Koraput",
+      "slug": "koraput",
+      "file": "maps/odisha-source-villages/koraput.geojson",
+      "features": 2227,
+      "invalid_retained": 2,
+      "sha256": "d8800d12edec357996a9ca3a2d5574a8c4de80a2e43ee7e2caf10ed041bc7002",
+      "bytes": 8262665
+    },
+    {
+      "source_name": "Malkangiri",
+      "slug": "malkangiri",
+      "file": "maps/odisha-source-villages/malkangiri.geojson",
+      "features": 1143,
+      "invalid_retained": 0,
+      "sha256": "f490c1b3b21b843fc923b9f8fe090a6244c498a919118605f2fab20d793cc42f",
+      "bytes": 4611991
+    },
+    {
+      "source_name": "Nabarangpur",
+      "slug": "nabarangpur",
+      "file": "maps/odisha-source-villages/nabarangpur.geojson",
+      "features": 943,
+      "invalid_retained": 1,
+      "sha256": "cc8a9d38e56c09ead5b0b8368cc9a4d89e36e2c190f27a709e6cc9214d604671",
+      "bytes": 3710984
+    }
+  ]
+}

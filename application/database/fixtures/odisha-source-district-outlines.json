@@ -1,0 +1,260 @@
+{
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "geometry_scope": "district outline",
+    "simplification_metres": 0,
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "census_lgd_join": "unverified",
+    "electoral_edition_join": "unverified;dated electoral source required",
+    "note": "Exact source record reprojected;source spelling retained;no population allocated."
+  },
+  "districts": [
+    {
+      "source_name": "KENDRAPARA",
+      "slug": "kendrapara",
+      "file": "maps/odisha-source-districts/kendrapara.geojson",
+      "source_geometry_valid": true,
+      "bytes": 158363,
+      "sha256": "f3d0e78d1ca72afa6a0ca9357907652804097da612435c88daf806189d98d13f"
+    },
+    {
+      "source_name": "BHADRAK",
+      "slug": "bhadrak",
+      "file": "maps/odisha-source-districts/bhadrak.geojson",
+      "source_geometry_valid": true,
+      "bytes": 152498,
+      "sha256": "0c19b5c3b5513acd30feb9d7b26b339fce6a5f362d85b4f4e569cac78af3522f"
+    },
+    {
+      "source_name": "BARGARH",
+      "slug": "bargarh",
+      "file": "maps/odisha-source-districts/bargarh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 323301,
+      "sha256": "7a059246c5b58c3e710b0fecf4a782ccdee93ebb307febfe450b4a8d245c922d"
+    },
+    {
+      "source_name": "KEONJHAR (KENDUJHAR)",
+      "slug": "keonjhar-kendujhar",
+      "file": "maps/odisha-source-districts/keonjhar-kendujhar.geojson",
+      "source_geometry_valid": true,
+      "bytes": 370342,
+      "sha256": "0a80b76d734d5a4f52e6b88038c66f9b8f8cb38f1fc4abd960967d60c84e61b9"
+    },
+    {
+      "source_name": "ANUGUL",
+      "slug": "anugul",
+      "file": "maps/odisha-source-districts/anugul.geojson",
+      "source_geometry_valid": true,
+      "bytes": 303101,
+      "sha256": "6ecb16ae81093575e0b1257082b3c3b7be3e667c2995148e6599ba0ee5b71038"
+    },
+    {
+      "source_name": "BALANGIR",
+      "slug": "balangir",
+      "file": "maps/odisha-source-districts/balangir.geojson",
+      "source_geometry_valid": true,
+      "bytes": 221473,
+      "sha256": "e85b6f92fe3d1946918de91aa076d77b602135830e618e47346f1a5e063c9b88"
+    },
+    {
+      "source_name": "BALASORE",
+      "slug": "balasore",
+      "file": "maps/odisha-source-districts/balasore.geojson",
+      "source_geometry_valid": true,
+      "bytes": 312858,
+      "sha256": "32915773f812820080df33236ce16310bc3bb82c75531ba86ce57aa75abd4743"
+    },
+    {
+      "source_name": "DHENKANAL",
+      "slug": "dhenkanal",
+      "file": "maps/odisha-source-districts/dhenkanal.geojson",
+      "source_geometry_valid": true,
+      "bytes": 173995,
+      "sha256": "7521f0393a2eb81f0c39bd47eb214e1613dc93ac521fcc660543771653da6be9"
+    },
+    {
+      "source_name": "JHARSUGUDA",
+      "slug": "jharsuguda",
+      "file": "maps/odisha-source-districts/jharsuguda.geojson",
+      "source_geometry_valid": true,
+      "bytes": 164871,
+      "sha256": "0a8bfdc834e11d0dd4fd94ba1940e854207d6f5c33dbc8e0d0e91e366f9d139f"
+    },
+    {
+      "source_name": "MAYURBHANJ",
+      "slug": "mayurbhanj",
+      "file": "maps/odisha-source-districts/mayurbhanj.geojson",
+      "source_geometry_valid": true,
+      "bytes": 437500,
+      "sha256": "1e5a579005ef475ae5c21542bd88c5397b8966f7d09fedd09f1d060163254390"
+    },
+    {
+      "source_name": "JAGATSINGHPUR",
+      "slug": "jagatsinghpur",
+      "file": "maps/odisha-source-districts/jagatsinghpur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 91869,
+      "sha256": "3dab1b00bedbbf414604ecfecc51af995481ecfdd7230b9aeeb6f569a45d607f"
+    },
+    {
+      "source_name": "KANDHAMAL",
+      "slug": "kandhamal",
+      "file": "maps/odisha-source-districts/kandhamal.geojson",
+      "source_geometry_valid": true,
+      "bytes": 258528,
+      "sha256": "0f93551d142c905d7353bb76af6ddd224e0b1b13ff62af5aae679be08d86528f"
+    },
+    {
+      "source_name": "CUTTACK",
+      "slug": "cuttack",
+      "file": "maps/odisha-source-districts/cuttack.geojson",
+      "source_geometry_valid": true,
+      "bytes": 249269,
+      "sha256": "02e5e480f7d64e44b0e664afec91e6f8bab1c58551f5093567199b27e1726a91"
+    },
+    {
+      "source_name": "KORAPUT",
+      "slug": "koraput",
+      "file": "maps/odisha-source-districts/koraput.geojson",
+      "source_geometry_valid": true,
+      "bytes": 423217,
+      "sha256": "88268b8842df4bd229f097d1f3734b7b9a3ec3a2b327ff1a005cdad1d8451692"
+    },
+    {
+      "source_name": "NABARANGAPUR",
+      "slug": "nabarangapur",
+      "file": "maps/odisha-source-districts/nabarangapur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 262054,
+      "sha256": "91d2ec8741b8fb67f8b75e9c2dcf8797b609b61bdd51161d89f67056ebf5bb88"
+    },
+    {
+      "source_name": "PURI",
+      "slug": "puri",
+      "file": "maps/odisha-source-districts/puri.geojson",
+      "source_geometry_valid": true,
+      "bytes": 241503,
+      "sha256": "6175f7ced7904660ab4d0d860fb3bbb1c1825f2063e0ce540317ab356e2b3471"
+    },
+    {
+      "source_name": "SAMBALPUR",
+      "slug": "sambalpur",
+      "file": "maps/odisha-source-districts/sambalpur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 318372,
+      "sha256": "507b7b1e707c5a1928a0eb5dc999df1c307ff09272a3bf80800f5d7387989b68"
+    },
+    {
+      "source_name": "GAJAPATI",
+      "slug": "gajapati",
+      "file": "maps/odisha-source-districts/gajapati.geojson",
+      "source_geometry_valid": true,
+      "bytes": 239703,
+      "sha256": "68754ab8051358f89b79c8a75fb3e0cb64c36d0ef2e7f9631758d1b8200218ff"
+    },
+    {
+      "source_name": "GANJAM",
+      "slug": "ganjam",
+      "file": "maps/odisha-source-districts/ganjam.geojson",
+      "source_geometry_valid": true,
+      "bytes": 261555,
+      "sha256": "c9479b5e5b6a13e6828bfdb676baf23030fe6f0b08b4f169e97da1caa64dc4f7"
+    },
+    {
+      "source_name": "MALKANGIRI",
+      "slug": "malkangiri",
+      "file": "maps/odisha-source-districts/malkangiri.geojson",
+      "source_geometry_valid": true,
+      "bytes": 207340,
+      "sha256": "d1b5573e0852f45e01c681049dcb50a901a98c940533cdc557d9efa6bd31d07f"
+    },
+    {
+      "source_name": "KHORDHA",
+      "slug": "khordha",
+      "file": "maps/odisha-source-districts/khordha.geojson",
+      "source_geometry_valid": true,
+      "bytes": 328441,
+      "sha256": "a88a9eaa65b9e8f8199ab207770f95ff4883b08075987b87cc9b240da7140134"
+    },
+    {
+      "source_name": "BOUDH",
+      "slug": "boudh",
+      "file": "maps/odisha-source-districts/boudh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 130487,
+      "sha256": "2d5ab6fc7a6a7472bbd8966ef6f880b9dcb7f32bda7fbeca6975ca76545561a8"
+    },
+    {
+      "source_name": "DEOGARH",
+      "slug": "deogarh",
+      "file": "maps/odisha-source-districts/deogarh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 203839,
+      "sha256": "feaf12a6f92a1cb65ea5107954ca215b682bb2624f685c5b926c7387142bbe1e"
+    },
+    {
+      "source_name": "NUAPARHA",
+      "slug": "nuaparha",
+      "file": "maps/odisha-source-districts/nuaparha.geojson",
+      "source_geometry_valid": true,
+      "bytes": 209895,
+      "sha256": "9da413efab02e717b5b2e9e558797a3ae6f00eea071f10f9f24db92aa24d666e"
+    },
+    {
+      "source_name": "JAJAPUR",
+      "slug": "jajapur",
+      "file": "maps/odisha-source-districts/jajapur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 214937,
+      "sha256": "832d9e0fed3bfe7a2a3297b4c6279a124da13ba242be0434f87ad4ab4ac92701"
+    },
+    {
+      "source_name": "SUNDARGARH",
+      "slug": "sundargarh",
+      "file": "maps/odisha-source-districts/sundargarh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 442297,
+      "sha256": "d43ba3efae181a038315c97293cf8795125472946e8071bf480db7c6594d78b9"
+    },
+    {
+      "source_name": "KALAHANDI",
+      "slug": "kalahandi",
+      "file": "maps/odisha-source-districts/kalahandi.geojson",
+      "source_geometry_valid": true,
+      "bytes": 286015,
+      "sha256": "4fdbd73723e1b0c39201a6318ae40e7362944b0d68650b5e4008a0ae06a38ad4"
+    },
+    {
+      "source_name": "SUBARNAPUR",
+      "slug": "subarnapur",
+      "file": "maps/odisha-source-districts/subarnapur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 171496,
+      "sha256": "cbddf224f17060707481693a7b237ceb3550dec657a3ccd9d16bc9131a5a8bef"
+    },
+    {
+      "source_name": "RAYAGARHA",
+      "slug": "rayagarha",
+      "file": "maps/odisha-source-districts/rayagarha.geojson",
+      "source_geometry_valid": true,
+      "bytes": 438707,
+      "sha256": "a37c4156b8b5a8ecee55ad00cf4e1cfdd6276cc80b90b1825e338b755f229ea1"
+    },
+    {
+      "source_name": "NAYAGARH",
+      "slug": "nayagarh",
+      "file": "maps/odisha-source-districts/nayagarh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 174862,
+      "sha256": "708ed9f4a632b058600ef16446d5c425a150eb7633e7ad2c278feb82be29f118"
+    }
+  ]
+}
