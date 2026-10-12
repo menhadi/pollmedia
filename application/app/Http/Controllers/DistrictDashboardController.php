@@ -201,17 +201,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/west-bengal-murshidabad-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Murshidabad', 'West Bengal');
         }
-        if ($state === '23' && in_array($district, ['418', '419', '420'], true)) {
-            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind'][$district];
+        if ($state === '23' && in_array($district, ['418', '419', '420', '421'], true)) {
+            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior'][$district];
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($mpDistrict, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
-        }
-        if ($state === '19' && in_array($district, ['333', '336'], true)) {
-            $mapFile = $district === '333' ? 'maps/west-bengal-murshidabad-villages.geojson' : 'maps/west-bengal-nadia-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'West Bengal');
-        }
-        if ($state === '19' && $district === '337') {
-            $mapFile = 'maps/west-bengal-north-twenty-four-parganas-villages.geojson';
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 

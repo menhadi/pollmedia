@@ -5,7 +5,7 @@ $normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:S
 $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
-$codes=['Sheopur'=>'418','Morena'=>'419','Bhind'=>'420','Datia'=>'422'];
+$codes=['Sheopur'=>'418','Morena'=>'419','Bhind'=>'420','Datia'=>'422','Gwalior'=>'421','Shivpuri'=>'423'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Ã‚Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Ã‚Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -16,7 +16,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
-<p class="notice">Partial dated ECI2008 Madhya Pradesh scope. Sheopur has596 unlinked and25 ambiguous source shapes. PC1 Morena retains SheopurAC1-2 and MorenaAC3-8. Morena has 846 unlinked and 33 ambiguous source shapes. Bhind has 943 unlinked and 72 ambiguous shapes; shared PC2 includes Datia AC20-22, whose map integration remains pending. Accepted Census/LGD map links, matching source editions and historical crosswalks remain unverified; no population is assigned to shapes.</p>
+<p class="notice">Partial dated ECI2008 Madhya Pradesh scope. Sheopur has596 unlinked and25 ambiguous source shapes. PC1 Morena retains SheopurAC1-2 and MorenaAC3-8. Morena has 846 unlinked and 33 ambiguous source shapes. Bhind has 943 unlinked and 72 ambiguous shapes; shared PC2 includes Datia AC20-22, whose map integration remains pending. PC3 Gwalior also retains Shivpuri AC23-24; Shivpuri map integration is pending. Accepted Census/LGD map links, matching source editions and historical crosswalks remain unverified; no population is assigned to shapes.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>

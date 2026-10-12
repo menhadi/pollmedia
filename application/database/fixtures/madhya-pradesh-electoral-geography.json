@@ -101,6 +101,54 @@
       "name": "Datia",
       "district": "Datia",
       "page": 229
+    },
+    {
+      "code": 14,
+      "name": "Gwalior Rural",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 15,
+      "name": "Gwalior",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 16,
+      "name": "Gwalior East",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 17,
+      "name": "Gwalior South",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 18,
+      "name": "Bhitarwar",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 19,
+      "name": "Dabra (SC)",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 23,
+      "name": "Karera (SC)",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 24,
+      "name": "Pohari",
+      "district": "Shivpuri",
+      "page": 229
     }
   ],
   "pcs": [
@@ -131,6 +179,21 @@
         20,
         21,
         22
+      ],
+      "page": 251
+    },
+    {
+      "code": 3,
+      "name": "Gwalior",
+      "ac_codes": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        23,
+        24
       ],
       "page": 251
     }
