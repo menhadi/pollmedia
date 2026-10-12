@@ -1,0 +1,76 @@
+{
+  "state": "Jharkhand",
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008; exact notification date pending",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "scope": "Partial fixture: Garhwa AC80/81 and complete Palamu PC13 cross-district scope. Other seats pending.",
+  "flags": [
+    "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
+    "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment"
+  ],
+  "district_rows": [
+    {
+      "code": 76,
+      "name": "Daltonganj",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 77,
+      "name": "Bishrampur",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 78,
+      "name": "Chhatarpur (SC)",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 79,
+      "name": "Hussainabad",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 80,
+      "name": "Garhwa",
+      "district": "Garhwa",
+      "context_district": "Garhwa",
+      "page": 174
+    },
+    {
+      "code": 81,
+      "name": "Bhawanathpur",
+      "district": "Garhwa",
+      "context_district": "Garhwa",
+      "page": 174
+    }
+  ],
+  "pcs": [
+    {
+      "code": 13,
+      "name": "Palamu (SC)",
+      "ac_codes": [
+        76,
+        80,
+        81,
+        77,
+        78,
+        79
+      ],
+      "page": 175
+    }
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_source_date": "2008; exact notification date pending",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_source_date": "2008; exact notification date pending"
+}
