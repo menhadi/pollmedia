@@ -549,6 +549,22 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Sirsa', 'Haryana');
             $mapFile = 'maps/sirsa-villages.geojson';
         }
+        if ($state === '11' && $district === '241') {
+            $mapFile = 'maps/sikkim-north-villages.geojson';
+            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('North');
+        }
+        if ($state === '11' && $district === '242') {
+            $mapFile = 'maps/sikkim-west-villages.geojson';
+            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('West');
+        }
+        if ($state === '11' && $district === '243') {
+            $mapFile = 'maps/sikkim-south-villages.geojson';
+            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('South');
+        }
+        if ($state === '11' && $district === '244') {
+            $mapFile = 'maps/sikkim-east-villages.geojson';
+            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('East');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
