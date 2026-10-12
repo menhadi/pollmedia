@@ -6,5 +6,6 @@
 @if($district['slug'] === 'sribhumi')
 <section class="panel"><h2>Dated district identity</h2><p>Karimganj district was renamed Sribhumi with immediate effect on 21 November 2024 by notification eCF No.580777/14. The 2023 electoral order retains the district label KARIMGANJ.</p><p>The order lists AC123 Karimganj North, AC124 Karimganj South, AC125 Patharkandi and AC126 Ram Krishana Nagar (SC) under KARIMGANJ. All four belong to PC7 Karimganj; PC7 also contains AC121 Hailakandi and AC122 Algapur-Katlicherra under HAILAKANDI. These are dated administrative references, not a certification that the SOI outline and electoral extents coincide.</p><a href="https://gad.assam.gov.in/sites/default/files/public_utility/ilovepdf_merged_2.pdf">Official rename notification, 21 November 2024</a> · <a href="https://www.eci.gov.in/Documents/Delimitation/DELIMITATIONASSAM_UPDATED.pdf">ECI 2023 order</a></section>
 @endif
+@include('assam-census-context-links')
 @include('assam-2023-electoral-context')
 </main><script type="module" src="{{ asset('js/assam-district-outline.js') }}"></script></body></html>
