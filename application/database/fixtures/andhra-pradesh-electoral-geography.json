@@ -1,0 +1,191 @@
+{
+  "state": "Andhra Pradesh",
+  "source_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "source_date": "2014-03-01",
+  "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "territorial_reference_date": "2004-02-15",
+  "scope": "Partial dated 2014 schedule: Srikakulam and all segments of associated PCs1-3; omitted seats pending, not absent",
+  "flags": [
+    "Historical district references retained; current/Census/SOI boundary correspondence unverified",
+    "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
+    "Partial extraction; runtime integration and public/rendered checks pending"
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Ichchapuram",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 2,
+      "name": "Palasa",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 3,
+      "name": "Tekkali",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 4,
+      "name": "Pathapatnam",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 5,
+      "name": "Srikakulam",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 6,
+      "name": "Amadalavalasa",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 7,
+      "name": "Etcherla",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 8,
+      "name": "Narasannapeta",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 9,
+      "name": "Rajam (SC)",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 10,
+      "name": "Palakonda (ST)",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 11,
+      "name": "Kurupam (ST)",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 12,
+      "name": "Parvathipuram (SC)",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 13,
+      "name": "Salur (ST)",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 14,
+      "name": "Bobbili",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 15,
+      "name": "Cheepurupalli",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 16,
+      "name": "Gajapathinagaram",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 17,
+      "name": "Nellimarla",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 18,
+      "name": "Vizianagaram",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 28,
+      "name": "Araku Valley (ST)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 29,
+      "name": "Paderu (ST)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 53,
+      "name": "Rampachodavaram (ST)",
+      "district": "East Godavari",
+      "page": 32
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Araku (ST)",
+      "ac_codes": [
+        10,
+        11,
+        12,
+        13,
+        28,
+        29,
+        53
+      ],
+      "page": 39
+    },
+    {
+      "code": 2,
+      "name": "Srikakulam",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "page": 39
+    },
+    {
+      "code": 3,
+      "name": "Vizianagaram",
+      "ac_codes": [
+        7,
+        9,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "page": 39
+    }
+  ],
+  "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "pc_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "district_source_date": "2014-03-01",
+  "pc_source_date": "2014-03-01",
+  "district_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "pc_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa"
+}

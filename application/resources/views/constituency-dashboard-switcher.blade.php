@@ -1,3 +1,4 @@
+@if($state==='Andhra Pradesh') @include('andhra-pradesh-constituency-switcher') @endif
 @if($state==='Kerala') @include('kerala-constituency-switcher') @endif
 @if($state==='Madhya Pradesh') @include('madhya-pradesh-constituency-switcher') @endif
 @if($state==='Gujarat') @include('gujarat-constituency-switcher') @endif
