@@ -3951,15 +3951,16 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "512 unlinked shapes; no population allocated",
+        "Dated PCs16/17 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/117/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3994,6 +3995,40 @@
           17
         ],
         "note": "Complete PCs16/17 retain Jodhpur and Barmer outside members; current crosswalk unverified."
+      },
+      "deployment": {
+        "live_commit": "76b28eb3dfc856432b21c33b8e91927ee70047d2",
+        "rollback_base": "5e2236a6be9487ca97e4cf0ac802f203135f4bcb",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7381,
+          "name": "Sirohi",
+          "code": "117",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1036346,
+          "households": 201785,
+          "literates": 476806,
+          "children": 173364,
+          "male": 534231,
+          "female": 502115,
+          "workers": 419829,
+          "literacy": 55.25,
+          "male_literacy": 69.98,
+          "female_literacy": 39.73,
+          "source_row": 717,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;512 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 76b28eb3dfc856432b21c33b8e91927ee70047d2",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5965,10 +6000,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:54:59.786188+00:00",
-    "live_commit": "d274216cc5551ca370a119eccbff342013011f4e",
-    "action": "Jaisalmer full map JSON/hash and complete audited shared PCs16/17 prepared; not deployed",
-    "next_action": "Enable Jaisalmer117 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link."
+    "checked_at": "2026-10-12T10:01:54.883929+00:00",
+    "live_commit": "76b28eb3dfc856432b21c33b8e91927ee70047d2",
+    "action": "Jaisalmer deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Barmer118 using audited AC134-140 and complete shared PC17; extract district source map, test, deploy and verify"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
