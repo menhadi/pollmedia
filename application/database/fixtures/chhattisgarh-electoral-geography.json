@@ -4,7 +4,7 @@
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial2008 Koria,Surguja,Jashpur historical districts and full associated PC1,2,4 segments; other seats pending",
+  "scope": "Partial2008 historical district coverage through Janjgir-Champa and complete associated PC1-4 segments; omitted seats pending",
   "flags": [
     "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
     "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending"
@@ -161,6 +161,54 @@
       "district": "Bilaspur",
       "context_district": "Bilaspur",
       "page": 101
+    },
+    {
+      "code": 33,
+      "name": "Akaltara",
+      "district": "Janjgir-Champa",
+      "page": 101
+    },
+    {
+      "code": 34,
+      "name": "Janjgir-Champa",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 35,
+      "name": "Sakti",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 36,
+      "name": "Chandrapur",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 37,
+      "name": "Jaijaipur",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 38,
+      "name": "Pamgarh (SC)",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 43,
+      "name": "Bilaigarh (SC)",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 44,
+      "name": "Kasdol",
+      "district": "Raipur",
+      "page": 103
     }
   ],
   "pcs": [
@@ -191,6 +239,21 @@
         17,
         18,
         19
+      ],
+      "page": 109
+    },
+    {
+      "code": 3,
+      "name": "Janjgir-Champa (SC)",
+      "ac_codes": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        43,
+        44
       ],
       "page": 109
     },
