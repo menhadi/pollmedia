@@ -1076,7 +1076,61 @@
         "Accepted map Census/LGD links pending",
         "Historical rows retain source geography; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/104/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/104/dashboard",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1121,
+          "ambiguous": 11
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "073226",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI ALWAR label retained; Census name Alwar; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "f6f41733fc78e4b3bac741735738a7502a5e311c1748326b3ca7a938526288f6",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "visually_audited": true,
+        "pdf_pages": [
+          354,
+          355,
+          356,
+          357,
+          358,
+          366
+        ],
+        "district_ac_codes": [
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69
+        ],
+        "shared_pc_codes": [
+          6,
+          8,
+          9,
+          11
+        ],
+        "note": "AC70 belongs to Bharatpur; all outside-district shared PC members retained."
+      }
     },
     {
       "district_code": "105",
@@ -4867,10 +4921,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T07:34:33.755926+00:00",
-    "live_commit": "702079440c44ebcf4b56c771a73b41fc7050f484",
-    "action": "Access restored; Jhunjhunun deployed; interrupted map rebuilt; public totals/map/membership/tests/backups verified",
-    "next_action": "Continue Alwar104; audit dated AC59-70 and shared PC8/9/11 membership before fixture use"
+    "checked_at": "2026-10-12T07:42:19.572976+00:00",
+    "live_commit": "7eb2343872f17283c5b196141cb0976f8b0562bc",
+    "action": "Alwar full source map JSON validated and dated shared-PC fixture prepared; not deployed",
+    "next_action": "Enable Alwar104 district/context/switcher, run required checks, deploy under both locks and verify canonical totals plus full public map JSON/hash before advancing."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
