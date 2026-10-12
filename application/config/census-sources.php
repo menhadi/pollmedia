@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-goalpara-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Goalpara Census 2011 — rural village PCA',
+        'sheet' => 'EB-1803',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6493/download/9570/DDW_PCA1803_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6493',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-golaghat-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Golaghat Census 2011 — rural village PCA',
