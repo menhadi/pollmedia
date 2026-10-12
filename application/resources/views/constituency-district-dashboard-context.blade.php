@@ -1,3 +1,4 @@
+@if($state==='Manipur') @include('manipur-constituency-context') @endif
 @if($state==='Arunachal Pradesh') @include('arunachal-pradesh-constituency-context') @endif
 @if($state==='Sikkim') @include('sikkim-constituency-context') @endif
 @if($state==='Jharkhand') @include('jharkhand-constituency-context') @endif

@@ -665,6 +665,42 @@ class DistrictDashboardController extends Controller
         if ($state === '06' && $district === '089') {
             $mapFile = 'maps/palwal-villages.geojson';
         }
+        if ($state === '14' && $district === '272') {
+            $mapFile = 'maps/manipur-senapati-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Senapati', 'Manipur');
+        }
+        if ($state === '14' && $district === '273') {
+            $mapFile = 'maps/manipur-tamenglong-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Tamenglong', 'Manipur');
+        }
+        if ($state === '14' && $district === '274') {
+            $mapFile = 'maps/manipur-churachandpur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Churachandpur', 'Manipur');
+        }
+        if ($state === '14' && $district === '275') {
+            $mapFile = 'maps/manipur-bishnupur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Bishnupur', 'Manipur');
+        }
+        if ($state === '14' && $district === '276') {
+            $mapFile = 'maps/manipur-thoubal-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Thoubal', 'Manipur');
+        }
+        if ($state === '14' && $district === '277') {
+            $mapFile = 'maps/manipur-imphal-west-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Imphal West', 'Manipur');
+        }
+        if ($state === '14' && $district === '278') {
+            $mapFile = 'maps/manipur-imphal-east-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Imphal East', 'Manipur');
+        }
+        if ($state === '14' && $district === '279') {
+            $mapFile = 'maps/manipur-ukhrul-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Ukhrul', 'Manipur');
+        }
+        if ($state === '14' && $district === '280') {
+            $mapFile = 'maps/manipur-chandel-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Chandel', 'Manipur');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
