@@ -197,6 +197,54 @@
       "name": "Mungaoli",
       "district": "Ashok Nagar",
       "page": 230
+    },
+    {
+      "code": 43,
+      "name": "Tikamgarh",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 44,
+      "name": "Jatara (SC)",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 45,
+      "name": "Prithvipur",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 46,
+      "name": "Niwari",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 47,
+      "name": "Khargapur",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 48,
+      "name": "Maharajpur",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 51,
+      "name": "Chhatarpur",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 52,
+      "name": "Bijawar",
+      "district": "Chhatarpur",
+      "page": 232
     }
   ],
   "pcs": [
@@ -257,6 +305,21 @@
         32,
         33,
         34
+      ],
+      "page": 251
+    },
+    {
+      "code": 6,
+      "name": "Tikamgarh (SC)",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        51,
+        52
       ],
       "page": 251
     }
