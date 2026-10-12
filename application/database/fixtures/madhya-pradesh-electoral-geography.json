@@ -245,6 +245,102 @@
       "name": "Bijawar",
       "district": "Chhatarpur",
       "page": 232
+    },
+    {
+      "code": 49,
+      "name": "Chandla (SC)",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 50,
+      "name": "Rajnagar",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 53,
+      "name": "Malhara",
+      "district": "Chhatarpur",
+      "page": 232
+    },
+    {
+      "code": 38,
+      "name": "Deori",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 39,
+      "name": "Rehli",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 42,
+      "name": "Banda",
+      "district": "Sagar",
+      "page": 231
+    },
+    {
+      "code": 54,
+      "name": "Pathariya",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 55,
+      "name": "Damoh",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 56,
+      "name": "Jabera",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 57,
+      "name": "Hatta (SC)",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 58,
+      "name": "Pawai",
+      "district": "Panna",
+      "page": 232
+    },
+    {
+      "code": 59,
+      "name": "Gunnaor (SC)",
+      "district": "Panna",
+      "page": 232
+    },
+    {
+      "code": 60,
+      "name": "Panna",
+      "district": "Panna",
+      "page": 232
+    },
+    {
+      "code": 92,
+      "name": "Vijayraghavgarh",
+      "district": "Katni",
+      "page": 235
+    },
+    {
+      "code": 93,
+      "name": "Murwara",
+      "district": "Katni",
+      "page": 235
+    },
+    {
+      "code": 94,
+      "name": "Bahoriband",
+      "district": "Katni",
+      "page": 236
     }
   ],
   "pcs": [
@@ -320,6 +416,36 @@
         48,
         51,
         52
+      ],
+      "page": 251
+    },
+    {
+      "code": 7,
+      "name": "Damoh",
+      "ac_codes": [
+        38,
+        39,
+        42,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "page": 251
+    },
+    {
+      "code": 8,
+      "name": "Khajuraho",
+      "ac_codes": [
+        49,
+        50,
+        58,
+        59,
+        60,
+        92,
+        93,
+        94
       ],
       "page": 251
     }
