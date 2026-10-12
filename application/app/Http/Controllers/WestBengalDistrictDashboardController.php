@@ -10,6 +10,7 @@ class WestBengalDistrictDashboardController extends Controller
         $data=app(DistrictDashboardData::class)->published($district,'19');
         abort_unless($data,404);
         $maps=[
+            '342' => 'maps/west-bengal-kolkata-villages.geojson',
             '341' => 'maps/west-bengal-howrah-villages.geojson',
             '333' => 'maps/west-bengal-murshidabad-villages.geojson',
             '336' => 'maps/west-bengal-nadia-villages.geojson',
