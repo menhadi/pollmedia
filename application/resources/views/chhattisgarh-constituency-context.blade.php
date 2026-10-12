@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Koriya'=>'400','Surguja'=>'401','Jashpur'=>'402','Raigarh'=>'403','Korba'=>'404','Janjgir-Champa'=>'405','Raipur'=>'410','Mahasamund'=>'411','Bilaspur'=>'406','Kabeerdham'=>'407','Rajnandgaon'=>'408','Durg'=>'409','Dhamtari'=>'412','Uttar Bastar Kanker'=>'413','Bastar'=>'414'];
+$codes=['Koriya'=>'400','Surguja'=>'401','Jashpur'=>'402','Raigarh'=>'403','Korba'=>'404','Janjgir-Champa'=>'405','Raipur'=>'410','Mahasamund'=>'411','Bilaspur'=>'406','Kabeerdham'=>'407','Rajnandgaon'=>'408','Durg'=>'409','Dhamtari'=>'412','Uttar Bastar Kanker'=>'413','Bastar'=>'414','Dakshin Bastar (Dantewada)'=>'416'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -18,7 +18,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
 <p class="notice">2008 Chhattisgarh electoral district references are retained. Current district correspondence, SOI boundary edition and accepted Census/LGD village links remain unverified. No district totals are assigned to constituencies.</p>
-<p class="notice">Census context uses published state22 historical district records. The2008 gazette,2011 Census and33 SOI source labels describe differing geography. Partial electoral fixture; omitted seats remain pending. No boundary correspondence is inferred.</p>
+<p class="notice">Census context uses published state22 historical district records. The2008 gazette,2011 Census and33 SOI source labels describe differing geography. All90 dated2008 AC identities and11 PC scopes are included. Gazette16 district references differ from Census18 districts; later Narayanpur/Bijapur correspondence remains pending. No boundary correspondence is inferred.</p>
 @if(isset($seat['source_code_note']))<p class="notice">{{ $seat['source_code_note'] }} Original source codes: {{ implode(', ', $seat['raw_ac_codes']) }}. Formal source review remains pending.</p><p><a href="{{ $fixture['supplementary_pc_source']['url'] }}">Official CEO PC list (publication date unverified)</a></p>@endif
 <div class="metrics">
 @foreach($districtNames as $district)

@@ -4,11 +4,12 @@
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial2008 historical district coverage through Raipur with full associated PC1-9 and11 scopes; omitted seats pending",
+  "scope": "All90 dated2008 Table A AC identities and11 PC scopes;16 historical gazette district references retained separately from18 Census and33 SOI districts; later district correspondence pending",
   "flags": [
     "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
     "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending",
-    "Gazette Kabirdham and Census/SOI Kabeerdham spelling alias does not certify boundary correspondence"
+    "Gazette Kabirdham and Census/SOI Kabeerdham spelling alias does not certify boundary correspondence",
+    "2008 AC84 Narayanpur remains Bastar source district; AC89 Bijapur remains Dakshin Bastar source district. Later Census districts require independent official dated correspondence; no silent reassignment."
   ],
   "district_rows": [
     {
@@ -523,6 +524,54 @@
       "district": "Bastar",
       "context_district": "Bastar",
       "page": 107
+    },
+    {
+      "code": 83,
+      "name": "Kondagaon (ST)",
+      "district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 84,
+      "name": "Narayanpur (ST)",
+      "district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 85,
+      "name": "Bastar (ST)",
+      "district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 86,
+      "name": "Jagdalpur",
+      "district": "Bastar",
+      "page": 108
+    },
+    {
+      "code": 87,
+      "name": "Chitrakot (ST)",
+      "district": "Bastar",
+      "page": 108
+    },
+    {
+      "code": 88,
+      "name": "Dantewada (ST)",
+      "district": "Dakshin Bastar (Dantewada)",
+      "page": 108
+    },
+    {
+      "code": 89,
+      "name": "Bijapur (ST)",
+      "district": "Dakshin Bastar (Dantewada)",
+      "page": 108
+    },
+    {
+      "code": 90,
+      "name": "Konta (ST)",
+      "district": "Dakshin Bastar (Dantewada)",
+      "page": 108
     }
   ],
   "pcs": [
@@ -660,6 +709,21 @@
         55,
         57,
         58
+      ],
+      "page": 109
+    },
+    {
+      "code": 10,
+      "name": "Bastar (ST)",
+      "ac_codes": [
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90
       ],
       "page": 109
     },
