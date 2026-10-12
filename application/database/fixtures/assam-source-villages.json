@@ -33,8 +33,8 @@
       "file": "maps/assam-source-villages/majuli.geojson",
       "features": 249,
       "invalid_retained": 1,
-      "sha256": "0696865e9d8950ff73eb715b0686e37785d361b7e66a927fe98ca7d8e0dc205c",
-      "bytes": 224953
+      "sha256": "c9ef0590f054ecfbf81c44cefd2248d320e6db2ea230a60db1f225d3400611be",
+      "bytes": 224954
     },
     {
       "source_name": "Baksa",
@@ -141,8 +141,8 @@
       "file": "maps/assam-source-villages/dhubri.geojson",
       "features": 786,
       "invalid_retained": 0,
-      "sha256": "1fdbc347996661c7731bc4e88e043439528ef1120ef36cfc307e7bc3207925ec",
-      "bytes": 931036
+      "sha256": "f7825120649c6565becbf0dbdf5d71a7f528e62b232c56568493bdbaf4dd675a",
+      "bytes": 931037
     },
     {
       "source_name": "Udalguri",
@@ -150,8 +150,8 @@
       "file": "maps/assam-source-villages/udalguri.geojson",
       "features": 804,
       "invalid_retained": 0,
-      "sha256": "98fb9416e2714dbff04db85cc5862d3c54c998b27b2c5eba7aa964ca5673478c",
-      "bytes": 696535
+      "sha256": "715d2f2103c517c02a025269489faf79acebb08c31dfa9a6d236558d75b884c8",
+      "bytes": 696536
     },
     {
       "source_name": "Karbi Anglong",
@@ -204,8 +204,8 @@
       "file": "maps/assam-source-villages/west-karbi-anglong.geojson",
       "features": 569,
       "invalid_retained": 0,
-      "sha256": "d9d34ec9790bdac72eef08a872176769bb3ccc5497c1ee5a4215aa2992179e95",
-      "bytes": 1022608
+      "sha256": "ddbd9770891d74d9e50ffcdb841c7a361bc4f2ee03a418a89e260b4356c721b7",
+      "bytes": 1022609
     },
     {
       "source_name": "Kamrup Metro",
@@ -258,8 +258,8 @@
       "file": "maps/assam-source-villages/jorhat.geojson",
       "features": 625,
       "invalid_retained": 0,
-      "sha256": "80af94221d573b566919f060bb9df74af8d51d7f3dcd7e4fba294ed12bd9f54f",
-      "bytes": 909971
+      "sha256": "934cf4a111059c61423c3bb1c4a283893b2704c3a2dfccd9659e8688f8e14106",
+      "bytes": 909972
     },
     {
       "source_name": "Lakhimpur",
@@ -285,8 +285,8 @@
       "file": "maps/assam-source-villages/bongaigaon.geojson",
       "features": 569,
       "invalid_retained": 0,
-      "sha256": "99f8e6d681eed09d624766f6cf9b32d20cdd8c39f84ef8fc269f171550a5e231",
-      "bytes": 598508
+      "sha256": "628c1d1c3de5bce2c3ce707727304b339797baabb6f957c89fc78b9e396561fa",
+      "bytes": 598509
     },
     {
       "source_name": "Charaideo",
