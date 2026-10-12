@@ -389,6 +389,48 @@
       "name": "Shamshabad",
       "district": "Vidisha",
       "page": 241
+    },
+    {
+      "code": 61,
+      "name": "Chitrakoot",
+      "district": "Satna",
+      "page": 232
+    },
+    {
+      "code": 62,
+      "name": "Raigaon (SC)",
+      "district": "Satna",
+      "page": 232
+    },
+    {
+      "code": 63,
+      "name": "Satna",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 64,
+      "name": "Nagod",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 65,
+      "name": "Maihar",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 66,
+      "name": "Amarpatan",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 67,
+      "name": "Rampur-Baghelan",
+      "district": "Satna",
+      "page": 233
     }
   ],
   "pcs": [
@@ -509,6 +551,20 @@
         146,
         147,
         148
+      ],
+      "page": 251
+    },
+    {
+      "code": 9,
+      "name": "Satna",
+      "ac_codes": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
       ],
       "page": 251
     }
