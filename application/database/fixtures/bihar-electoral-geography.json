@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirty-nine PCs recorded; remaining Bihar membership pending",
+  "coverage": "All forty Bihar PCs and243 AC membership codes recorded from preserved CEO2019 administrative list;boundary edition and code-to-dashboard mapping exceptions remain flagged",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1714,6 +1714,48 @@
       "district": "Siwan",
       "source_page_label": "8 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 123,
+      "name": "Hajipur",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 124,
+      "name": "Lalganj",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 126,
+      "name": "Mahua",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 127,
+      "name": "Raja Pakar (SC)",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 128,
+      "name": "Raghopur",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 129,
+      "name": "Mahnar",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -2439,6 +2481,24 @@
       ],
       "cross_district_scope": [
         "Siwan"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 21,
+      "name": "Hajipur (SC)",
+      "ac_codes": [
+        123,
+        124,
+        126,
+        127,
+        128,
+        129
+      ],
+      "cross_district_scope": [
+        "Vaishali"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
