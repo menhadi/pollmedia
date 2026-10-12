@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'uttarakhand-almora-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Almora Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-0509',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6255/download/9332/DDW_PCA0509_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6255',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-hisar-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Hisar Census 2011 — district, town, village and ward PCA',
