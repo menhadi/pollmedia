@@ -325,6 +325,66 @@
       "page": 171
     },
     {
+      "code": 50,
+      "name": "Ichagarh",
+      "district": "(West) Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 57,
+      "name": "Kharsawan (ST)",
+      "district": "(West) Singhbhum",
+      "page": 172
+    },
+    {
+      "code": 58,
+      "name": "Tamar (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 59,
+      "name": "Torpa (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 60,
+      "name": "Khunti (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 61,
+      "name": "Silli",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 62,
+      "name": "Khijri (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 63,
+      "name": "Ranchi",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 64,
+      "name": "Hatia",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 65,
+      "name": "Kanke (SC)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
       "code": 66,
       "name": "Mandar (ST)",
       "district": "Ranchi",
@@ -345,6 +405,18 @@
     {
       "code": 69,
       "name": "Bishunpur (ST)",
+      "district": "Gumla",
+      "page": 173
+    },
+    {
+      "code": 70,
+      "name": "Simdega (ST)",
+      "district": "Gumla",
+      "page": 173
+    },
+    {
+      "code": 71,
+      "name": "Kolebira (ST)",
       "district": "Gumla",
       "page": 173
     },
@@ -420,15 +492,41 @@
   ],
   "pcs": [
     {
-      "code": 13,
-      "name": "Palamu (SC)",
+      "code": 1,
+      "name": "Rajmahal (ST)",
       "ac_codes": [
-        76,
-        80,
-        81,
-        77,
-        78,
-        79
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "page": 175
+    },
+    {
+      "code": 2,
+      "name": "Dumka (ST)",
+      "ac_codes": [
+        7,
+        8,
+        9,
+        14,
+        10,
+        11
+      ],
+      "page": 175
+    },
+    {
+      "code": 3,
+      "name": "Godda",
+      "ac_codes": [
+        13,
+        15,
+        12,
+        16,
+        17,
+        18
       ],
       "page": 175
     },
@@ -471,45 +569,6 @@
       "page": 175
     },
     {
-      "code": 2,
-      "name": "Dumka (ST)",
-      "ac_codes": [
-        7,
-        8,
-        9,
-        14,
-        10,
-        11
-      ],
-      "page": 175
-    },
-    {
-      "code": 3,
-      "name": "Godda",
-      "ac_codes": [
-        13,
-        15,
-        12,
-        16,
-        17,
-        18
-      ],
-      "page": 175
-    },
-    {
-      "code": 1,
-      "name": "Rajmahal (ST)",
-      "ac_codes": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "page": 175
-    },
-    {
       "code": 7,
       "name": "Dhanbad",
       "ac_codes": [
@@ -523,14 +582,15 @@
       "page": 175
     },
     {
-      "code": 12,
-      "name": "Lohardaga (ST)",
+      "code": 8,
+      "name": "Ranchi",
       "ac_codes": [
-        66,
-        67,
-        68,
-        69,
-        72
+        50,
+        61,
+        62,
+        63,
+        64,
+        65
       ],
       "page": 175
     },
@@ -555,6 +615,44 @@
       ],
       "page": 175,
       "source_code_note": "The2008 PC9 table prints41 Bahragora, while PartA uses44 Baharagora and41 Jharia. Runtime identity44 follows PartA and the official district2019 election list; raw printed41 is retained. Formal source discrepancy review pending."
+    },
+    {
+      "code": 11,
+      "name": "Khunti (ST)",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        71,
+        70
+      ],
+      "page": 175
+    },
+    {
+      "code": 12,
+      "name": "Lohardaga (ST)",
+      "ac_codes": [
+        66,
+        67,
+        68,
+        69,
+        72
+      ],
+      "page": 175
+    },
+    {
+      "code": 13,
+      "name": "Palamu (SC)",
+      "ac_codes": [
+        76,
+        80,
+        81,
+        77,
+        78,
+        79
+      ],
+      "page": 175
     },
     {
       "code": 14,
@@ -592,5 +690,11 @@
     "sha256": "8831c0abc9c82e78f781cd57daf6cfab48a6554da26676c2365fce0fbd37afd9",
     "publication_date": "2019-12-04",
     "preserved_path": "pilot/raw/jharkhand-soi/ramgarh-pib-2019.html"
+  },
+  "jamtara_2019_source": {
+    "url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1595842&lang=2&reg=48",
+    "sha256": "2c034372faaf0e61951c93ebba265ded48ae5101d014b3c0f3542b3cfa671219",
+    "publication_date": "2019-12-11",
+    "preserved_path": "pilot/raw/jharkhand-soi/jamtara-pib-2019.html"
   }
 }

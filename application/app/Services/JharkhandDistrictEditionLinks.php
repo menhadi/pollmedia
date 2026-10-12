@@ -19,6 +19,21 @@ class JharkhandDistrictEditionLinks
         return $links;
     }
 
+    public function jamtara(): array
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Dumka', 'Jharkhand');
+        $links['assembly'] = array_values(array_filter($links['assembly'], fn (array $seat): bool => in_array($seat['code'], [8, 9], true)));
+        $links['parliamentary'] = array_values(array_filter($links['parliamentary'], fn (array $seat): bool => $seat['code'] === 2));
+        $fixture = json_decode(file_get_contents(database_path('fixtures/jharkhand-electoral-geography.json')), true, 512, JSON_THROW_ON_ERROR);
+        foreach ($links['parliamentary'] as &$pc) {
+            $pc['outside_district'] = collect($fixture['district_rows'])->whereIn('code', array_diff($pc['ac_codes'], [8, 9]))->map(fn (array $seat): array => ['code' => $seat['code'], 'name' => $seat['name'], 'district' => $seat['context_district'] ?? $seat['district']])->values()->all();
+        }
+        unset($pc);
+        $links['sources'][] = ['label' => 'Jamtara electoral context: ECI fact sheet published by PIB on 11 December 2019 lists AC8 and AC9; original 2008 Dumka headings retained; Census boundary correspondence pending', 'url' => $fixture['jamtara_2019_source']['url'], 'date' => '2019-12-11', 'sha256' => $fixture['jamtara_2019_source']['sha256']];
+
+        return $links;
+    }
+
     public function latehar(): array
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Palamu', 'Jharkhand');
