@@ -334,7 +334,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "map_and_dashboard_integration_prepared_deployment_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "846 unlinked and 33 ambiguous source codes; no population allocated",
         "Boundary edition and accepted Census/LGD links unverified",
@@ -356,7 +356,19 @@
         "rejected": [],
         "note": "SOI MORENA label retained; Census name Morena; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "f3279bd7c7ca7578f78d89ddfdedf1f6bce2c482f6a44ccfc24c1fb586ebe1fb"
+      "map_sha256": "f3279bd7c7ca7578f78d89ddfdedf1f6bce2c482f6a44ccfc24c1fb586ebe1fb",
+      "deployment": {
+        "live_commit": "acb114a97e97f794db3e865ae99f63332ea9f714",
+        "rollback_base": "ccf7ffd4f89c8062d031e0f5a2fe35aa8de8c1d4",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_population_households_literates_children_match_canonical": true,
+        "assembly_names_and_map_url": true,
+        "tests": "59 tests240 assertions",
+        "detailed_rendered_source_election_audits": "Deferred",
+        "local_bundle_and_github_backup": "Verified acb114a97e97f794db3e865ae99f63332ea9f714"
+      }
     },
     {
       "district_code": "420",
@@ -7087,10 +7099,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T02:06:51.193480+00:00",
-    "live_commit": "3f0c1529e5ff99c8ed982fabde077bd26567b097",
-    "action": "Morena879 valid shapes and dashboard integration prepared;59 tests240 assertions passed",
-    "next_action": "Deploy Morena under both locks; verify canonical/public data and own backups before marking deployed"
+    "checked_at": "2026-10-12T02:09:53.593179+00:00",
+    "live_commit": "acb114a97e97f794db3e865ae99f63332ea9f714",
+    "action": "Morena deployed; canonical public totals and membership verified; backups verified",
+    "next_action": "Continue Bhind420; visually audit AC9-13 district membership then map/integrate"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
