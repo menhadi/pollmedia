@@ -1,7 +1,7 @@
 {
   "state": "Rajasthan",
   "state_code": "08",
-  "checked_at": "2026-10-12T01:43:44.345241+00:00",
+  "checked_at": "2026-10-12T07:13:44.345241+05:30",
   "priority": "Madhya Pradesh first then Rajasthan; breadth-first; flag minor fixes/detailed audits for later; essential integrity and deployment checks required",
   "districts": [
     {
@@ -4804,7 +4804,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending_timeouts",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "895 unlinked shapes; no population allocated",
@@ -4813,7 +4813,7 @@
         "Historical source geography retained; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/121/dashboard",
-      "status": "deployed_public_verification_pending_timeouts",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -4882,7 +4882,7 @@
           "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
           "flags": []
         },
-        "public_verification": "Dynamic district dashboard still times out with zero bytes; totals and PC/AC context not verified. Static full map request succeeds.",
+        "public_verification": "Passed actual canonical population, households, literates and children; complete shared PC23/24 AC names; public PC Kota and AC Bundi canonical district context. Detailed rendered audit deferred.",
         "local_bundle": "Verified 6e7326f66c873af143a03a6a3474837eebda3f95",
         "github_backup": "Verified 6e7326f66c873af143a03a6a3474837eebda3f95 via prior successful push and exact ls-remote",
         "public_map_full_json_sha256": "Passed;895 features; exact public/local bytes"
@@ -6334,9 +6334,9 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:18:19.078002+00:00",
-    "live_commit": "ed7fff65c41c5abe966303192009b5f4a4807a58",
-    "action": "Bundi full public map now verified; dynamic dashboard timeout remains;22 districts fully verified",
+    "checked_at": "2026-10-12T12:43:25.2662992+00:00",
+    "live_commit": "147ad6bd8107c69d39ec634588c9575dea320259",
+    "action": "Bundi public verification recovered and actual data checks passed; Rajasthan23 of33 handled with deferred flags",
     "next_action": "Recheck Bundi dynamic canonical/public totals and PC-AC context; static map verified alone does not complete district. No further deployment until complete."
   },
   "source_inventory": {
@@ -6352,7 +6352,7 @@
       "size": 91661022,
       "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
       "zip_integrity": "Passed all entries",
-      "retrieved_at": "2026-10-12T06:36:02.031442+00:00"
+      "retrieved_at": "2026-10-12T12:06:02.031442+05:30"
     }
   },
   "notification_preference": "Include direct district dashboard link with each completed deployment notification"
