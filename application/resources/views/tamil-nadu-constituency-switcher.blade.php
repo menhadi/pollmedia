@@ -7,7 +7,7 @@ $switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
 $switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
 $switchSegments=$switchSegments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
 $switchSeen=[];
-$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Thiruvallur','Chennai','Kancheepuram','Vellore','Tiruvannamalai','Viluppuram','Salem','Namakkal','Erode','The Nilgiris','Dindigul','Karur','Tiruchirappalli','Perambalur','Ariyalur','Cuddalore','Nagapattinam','Thiruvarur','Thanjavur','Pudukkottai','Sivaganga','Madurai'],true));
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Thiruvallur','Chennai','Kancheepuram','Vellore','Tiruvannamalai','Viluppuram','Salem','Namakkal','Erode','The Nilgiris','Dindigul','Karur','Tiruchirappalli','Perambalur','Ariyalur','Cuddalore','Nagapattinam','Thiruvarur','Thanjavur','Pudukkottai','Sivaganga','Madurai','Theni'],true));
 @endphp
 @if($switchDistricts->isNotEmpty())
 <link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">
