@@ -586,5 +586,11 @@
     "url": "https://latehar.nic.in/lok-sabha-election-2019/",
     "reference_year": 2019,
     "publication_date": "unverified"
+  },
+  "ramgarh_2019_source": {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1594813&lang=2&reg=3",
+    "sha256": "8831c0abc9c82e78f781cd57daf6cfab48a6554da26676c2365fce0fbd37afd9",
+    "publication_date": "2019-12-04",
+    "preserved_path": "pilot/raw/jharkhand-soi/ramgarh-pib-2019.html"
   }
 }
