@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-darrang-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Darrang Census 2011 — rural village PCA',
+        'sheet' => 'EB-1826',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6516/download/9593/DDW_PCA1826_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6516',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-goalpara-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Goalpara Census 2011 — rural village PCA',
