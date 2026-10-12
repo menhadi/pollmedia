@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-karbi-anglong-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Karbi Anglong Census 2011 — rural village PCA',
+        'sheet' => 'EB-1815',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6505/download/9582/DDW_PCA1815_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6505',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-sonitpur-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Sonitpur Census 2011 — rural village PCA',
