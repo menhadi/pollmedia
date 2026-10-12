@@ -489,6 +489,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/jharkhand-ramgarh-villages.geojson';
             $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->ramgarh();
         }
+        if ($state === '20' && $district === '362') {
+            $mapFile = 'maps/jharkhand-dumka-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Dumka', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
