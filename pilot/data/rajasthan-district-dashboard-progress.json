@@ -4884,7 +4884,7 @@
         },
         "public_verification": "Incomplete: district page repeated zero-byte timeouts; other public requests timed out. No data verification claimed.",
         "local_bundle": "Verified 6e7326f66c873af143a03a6a3474837eebda3f95",
-        "github_backup": "Push in progress; confirm next run"
+        "github_backup": "Verified 6e7326f66c873af143a03a6a3474837eebda3f95 via prior successful push and exact ls-remote"
       }
     },
     {
@@ -6296,10 +6296,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:45:57.493789+00:00",
-    "live_commit": "6e7326f66c873af143a03a6a3474837eebda3f95",
-    "action": "Bundi deployed under both locks; public checks timed out and remain incomplete; do not advance",
-    "next_action": "Recheck public availability and actual Bundi totals/full map/PC-AC context; confirm GitHub backup. Keep rollout at22 verified until checks pass."
+    "checked_at": "2026-10-12T10:48:06.165336+00:00",
+    "live_commit": "d827963c8cd0e36ab4fab5f2f084351d4d30756d",
+    "action": "Bundi public recheck still times out with zero bytes; no further deployment; backups confirmed;22 verified districts unchanged",
+    "next_action": "Recheck Bundi actual public totals/full map/PC-AC context when available; do not count timeout as verification or advance district deployment."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
