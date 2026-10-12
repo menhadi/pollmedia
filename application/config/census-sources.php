@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-khordha-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Khordha Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2117',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6577/download/9654/DDW_PCA2117_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6577',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-puri-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Puri Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2118',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6578/download/9655/DDW_PCA2118_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6578',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-cuttack-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Cuttack Census 2011 — rural village PCA',
