@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'haryana-panchkula-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Panchkula Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6260/download/9337/DDW_PCA0601_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6260',
+        'format' => 'xlsx', 'sheet' => 'EB-0601',
+    ],
+
     'odisha-rayagada-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Rayagada Census 2011 â€” rural village PCA',
