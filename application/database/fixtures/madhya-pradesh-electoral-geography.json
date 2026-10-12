@@ -1199,6 +1199,54 @@
       "name": "Sihora (ST)",
       "district": "Jabalpur",
       "page": 236
+    },
+    {
+      "code": 103,
+      "name": "Shahpura (ST)",
+      "district": "Dindori",
+      "page": 236
+    },
+    {
+      "code": 104,
+      "name": "Dindori (ST)",
+      "district": "Dindori",
+      "page": 236
+    },
+    {
+      "code": 105,
+      "name": "Bichhiya (ST)",
+      "district": "Mandla",
+      "page": 236
+    },
+    {
+      "code": 106,
+      "name": "Niwas (ST)",
+      "district": "Mandla",
+      "page": 237
+    },
+    {
+      "code": 107,
+      "name": "Mandla (ST)",
+      "district": "Mandla",
+      "page": 237
+    },
+    {
+      "code": 116,
+      "name": "Keolari",
+      "district": "Seoni",
+      "page": 238
+    },
+    {
+      "code": 117,
+      "name": "Lakhnadon (ST)",
+      "district": "Seoni",
+      "page": 238
+    },
+    {
+      "code": 118,
+      "name": "Gotegaon (SC)",
+      "district": "Narsinghpur",
+      "page": 238
     }
   ],
   "pcs": [
@@ -1573,6 +1621,21 @@
         100,
         101,
         102
+      ],
+      "page": 252
+    },
+    {
+      "code": 14,
+      "name": "Mandla (ST)",
+      "ac_codes": [
+        103,
+        104,
+        105,
+        106,
+        107,
+        116,
+        117,
+        118
       ],
       "page": 252
     }
