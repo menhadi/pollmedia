@@ -1337,6 +1337,54 @@
       "name": "Seoni",
       "district": "Seoni",
       "page": 238
+    },
+    {
+      "code": 76,
+      "name": "Churhat",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 77,
+      "name": "Sidhi",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 78,
+      "name": "Sihawal",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 79,
+      "name": "Chitrangi (ST)",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 80,
+      "name": "Singrauli",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 81,
+      "name": "Devsar (SC)",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 82,
+      "name": "Dhauhani (ST)",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 83,
+      "name": "Beohari (ST)",
+      "district": "Shahdol",
+      "page": 234
     }
   ],
   "pcs": [
@@ -1757,6 +1805,21 @@
         115
       ],
       "page": 252
+    },
+    {
+      "code": 11,
+      "name": "Sidhi",
+      "ac_codes": [
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "page": 251
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
