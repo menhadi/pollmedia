@@ -6242,7 +6242,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6250,7 +6250,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/128/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6286,6 +6286,13 @@
           365,
           367
         ]
+      },
+      "deployment_commit": "8b36be84253068a36d443dff759445b67e214804",
+      "validation": {
+        "regression_tests": "59 tests240 assertions passed",
+        "public_verification": "Receipts acquired; actual-data checks pending",
+        "github_backup": "Verified exact ls-remote8b36be84253068a36d443dff759445b67e214804",
+        "local_bundle": "Verified8b36be84253068a36d443dff759445b67e214804"
       }
     },
     {
@@ -6719,8 +6726,8 @@
   "last_run": {
     "checked_at": "2026-10-12T19:36:35.6303911+05:30",
     "live_commit": "f5446d2646619d6f612c865612580e9ec5b4c8a8",
-    "action": "Chittaurgarh verified; Rajasthan29 of33 handled with deferred flags",
-    "next_action": "Kota1225 source shapes prepared; finish regression50554 then locked narrow deployment"
+    "action": "Kota deployed under both locks with verified backups",
+    "next_action": "Verify Kota actual totals/full map1225 features and complete PC24 membership, PC Kota and AC Pipalda district context"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
