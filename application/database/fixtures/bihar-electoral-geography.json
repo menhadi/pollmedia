@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirty-seven PCs recorded; remaining Bihar membership pending",
+  "coverage": "Thirty-eight PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1630,6 +1630,48 @@
       "district": "Saran",
       "source_page_label": "6 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 24,
+      "name": "Bathnaha (SC)",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 25,
+      "name": "Parihar",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 26,
+      "name": "Sursand",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 27,
+      "name": "Bajpatti",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 28,
+      "name": "Sitamarhi",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 29,
+      "name": "Runnisaidpur",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -2319,6 +2361,24 @@
       ],
       "cross_district_scope": [
         "Saran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 5,
+      "name": "Sitamarhi",
+      "ac_codes": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "cross_district_scope": [
+        "Sitamarhi"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
