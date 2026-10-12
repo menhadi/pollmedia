@@ -431,6 +431,54 @@
       "name": "Rampur-Baghelan",
       "district": "Satna",
       "page": 233
+    },
+    {
+      "code": 68,
+      "name": "Sirmour",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 69,
+      "name": "Semariya",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 70,
+      "name": "Teonthar",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 71,
+      "name": "Mauganj",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 72,
+      "name": "Deotalab",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 73,
+      "name": "Mangawan (SC)",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 74,
+      "name": "Rewa",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 75,
+      "name": "Gurh",
+      "district": "Rewa",
+      "page": 234
     }
   ],
   "pcs": [
@@ -565,6 +613,21 @@
         65,
         66,
         67
+      ],
+      "page": 251
+    },
+    {
+      "code": 10,
+      "name": "Rewa",
+      "ac_codes": [
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75
       ],
       "page": 251
     }
