@@ -1,4 +1,4 @@
-@if(($data['census_district_code'] ?? '') === '069' && $data['name'] === 'Panchkula')
+@if(in_array([($data['census_district_code'] ?? ''), $data['name']], [['069', 'Panchkula'], ['070', 'Ambala']], true))
 @php
     $haryanaVillageCandidates = array_map(fn (array $row): array => [
         'code' => $row['code'],
