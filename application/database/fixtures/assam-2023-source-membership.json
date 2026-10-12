@@ -1,0 +1,958 @@
+{
+  "source_url": "https://www.eci.gov.in/Documents/Delimitation/DELIMITATIONASSAM_UPDATED.pdf",
+  "source_sha256": "bd2a6faade27b02a615830330e02093dd602bde9aaeaa59e2e097ea8f12f126b",
+  "notification": "O.N.33(E),Order No.2",
+  "notification_date": "2023-08-11",
+  "source_printed_pages": [
+    257,
+    258
+  ],
+  "geography_reference_date": "2023-01-01",
+  "geography_exception": "Guwahati Municipal Corporation wards use2001 Census extent",
+  "status": "Final Order Table-A district headings and Table-B membership extracted;no SOI identity equivalence assumed;corrigenda/effective order pending",
+  "pcs": [
+    {
+      "code": 1,
+      "source_name": "Kokrajhar (ST)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        19,
+        20,
+        41,
+        42
+      ],
+      "source_districts": [
+        "KOKRAJHAR",
+        "CHIRANG",
+        "BAKSA"
+      ]
+    },
+    {
+      "code": 2,
+      "source_name": "Dhubri",
+      "ac_codes": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17,
+        22,
+        23
+      ],
+      "source_districts": [
+        "DHUBRI",
+        "SOUTH SALMARA",
+        "GOALPARA",
+        "BONGAIGAON",
+        "BARPETA"
+      ]
+    },
+    {
+      "code": 3,
+      "source_name": "Barpeta",
+      "ac_codes": [
+        16,
+        18,
+        21,
+        24,
+        25,
+        26,
+        30,
+        38,
+        39,
+        40
+      ],
+      "source_districts": [
+        "BONGAIGAON",
+        "BARPETA",
+        "KAMRUP",
+        "NALBARI"
+      ]
+    },
+    {
+      "code": 4,
+      "source_name": "Darrang-Udalguri",
+      "ac_codes": [
+        43,
+        44,
+        31,
+        32,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "source_districts": [
+        "BAKSA",
+        "KAMRUP",
+        "UDALGURI",
+        "DARRANG"
+      ]
+    },
+    {
+      "code": 5,
+      "source_name": "Guwahati",
+      "ac_codes": [
+        13,
+        15,
+        27,
+        28,
+        29,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "source_districts": [
+        "GOALPARA",
+        "KAMRUP",
+        "KAMRUP (METROPOLITIAN)"
+      ]
+    },
+    {
+      "code": 6,
+      "source_name": "Diphu (ST)",
+      "ac_codes": [
+        108,
+        109,
+        110,
+        111,
+        112,
+        113
+      ],
+      "source_districts": [
+        "KARBI ANGLONG",
+        "WEST KARBI ANGLONG",
+        "DIMA HASAO"
+      ]
+    },
+    {
+      "code": 7,
+      "source_name": "Karimganj",
+      "ac_codes": [
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "source_districts": [
+        "HAILAKANDI",
+        "KARIMGANJ"
+      ]
+    },
+    {
+      "code": 8,
+      "source_name": "Silchar (SC)",
+      "ac_codes": [
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120
+      ],
+      "source_districts": [
+        "CACHAR"
+      ]
+    },
+    {
+      "code": 9,
+      "source_name": "Nagaon",
+      "ac_codes": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        58,
+        60,
+        61
+      ],
+      "source_districts": [
+        "MORIGAON",
+        "NAGAON"
+      ]
+    },
+    {
+      "code": 10,
+      "source_name": "Kaziranga",
+      "ac_codes": [
+        57,
+        59,
+        62,
+        63,
+        64,
+        103,
+        104,
+        105,
+        106,
+        107
+      ],
+      "source_districts": [
+        "NAGAON",
+        "GOLAGHAT"
+      ]
+    },
+    {
+      "code": 11,
+      "source_name": "Sonitpur",
+      "ac_codes": [
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73
+      ],
+      "source_districts": [
+        "SONITPUR",
+        "LAKHIMPUR"
+      ]
+    },
+    {
+      "code": 12,
+      "source_name": "Lakhimpur",
+      "ac_codes": [
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
+      ],
+      "source_districts": [
+        "LAKHIMPUR",
+        "DHEMAJI",
+        "TINSUKIA"
+      ]
+    },
+    {
+      "code": 13,
+      "source_name": "Dibrugarh",
+      "ac_codes": [
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92
+      ],
+      "source_districts": [
+        "TINSUKIA",
+        "DIBRUGARH"
+      ]
+    },
+    {
+      "code": 14,
+      "source_name": "Jorhat",
+      "ac_codes": [
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "source_districts": [
+        "CHARAIDEO",
+        "SIBSAGAR",
+        "MAJULI",
+        "JORHAT"
+      ]
+    }
+  ],
+  "acs": [
+    {
+      "code": 1,
+      "source_name": "Gossaigaon",
+      "source_district": "KOKRAJHAR"
+    },
+    {
+      "code": 2,
+      "source_name": "Dotma (ST)",
+      "source_district": "KOKRAJHAR"
+    },
+    {
+      "code": 3,
+      "source_name": "Kokrajhar (ST)",
+      "source_district": "KOKRAJHAR"
+    },
+    {
+      "code": 4,
+      "source_name": "Baokhungri",
+      "source_district": "KOKRAJHAR"
+    },
+    {
+      "code": 5,
+      "source_name": "Parbatjhora",
+      "source_district": "KOKRAJHAR"
+    },
+    {
+      "code": 6,
+      "source_name": "Golakganj",
+      "source_district": "DHUBRI"
+    },
+    {
+      "code": 7,
+      "source_name": "Gauripur",
+      "source_district": "DHUBRI"
+    },
+    {
+      "code": 8,
+      "source_name": "Dhubri",
+      "source_district": "DHUBRI"
+    },
+    {
+      "code": 9,
+      "source_name": "Birsing Jarua",
+      "source_district": "DHUBRI"
+    },
+    {
+      "code": 10,
+      "source_name": "Bilasipara",
+      "source_district": "DHUBRI"
+    },
+    {
+      "code": 11,
+      "source_name": "Mankachar",
+      "source_district": "SOUTH SALMARA"
+    },
+    {
+      "code": 12,
+      "source_name": "Jaleshwar",
+      "source_district": "GOALPARA"
+    },
+    {
+      "code": 13,
+      "source_name": "Goalpara West (ST)",
+      "source_district": "GOALPARA"
+    },
+    {
+      "code": 14,
+      "source_name": "Goalpara East",
+      "source_district": "GOALPARA"
+    },
+    {
+      "code": 15,
+      "source_name": "Dudhnai (ST)",
+      "source_district": "GOALPARA"
+    },
+    {
+      "code": 16,
+      "source_name": "Abhayapuri",
+      "source_district": "BONGAIGAON"
+    },
+    {
+      "code": 17,
+      "source_name": "Srijangram",
+      "source_district": "BONGAIGAON"
+    },
+    {
+      "code": 18,
+      "source_name": "Bongaigaon",
+      "source_district": "BONGAIGAON"
+    },
+    {
+      "code": 19,
+      "source_name": "Sidli Chirang (ST)",
+      "source_district": "CHIRANG"
+    },
+    {
+      "code": 20,
+      "source_name": "Bijni",
+      "source_district": "CHIRANG"
+    },
+    {
+      "code": 21,
+      "source_name": "Bhowanipur-",
+      "source_district": "BARPETA"
+    },
+    {
+      "code": 22,
+      "source_name": "Mandia",
+      "source_district": "BARPETA"
+    },
+    {
+      "code": 23,
+      "source_name": "Chenga",
+      "source_district": "BARPETA"
+    },
+    {
+      "code": 24,
+      "source_name": "Barpeta (SC)",
+      "source_district": "BARPETA"
+    },
+    {
+      "code": 25,
+      "source_name": "Pakabetbari",
+      "source_district": "BARPETA"
+    },
+    {
+      "code": 26,
+      "source_name": "Bajali",
+      "source_district": "BARPETA"
+    },
+    {
+      "code": 27,
+      "source_name": "Chamaria",
+      "source_district": "KAMRUP"
+    },
+    {
+      "code": 28,
+      "source_name": "Boko-Chaygaon (ST)",
+      "source_district": "KAMRUP"
+    },
+    {
+      "code": 29,
+      "source_name": "Palasbari",
+      "source_district": "KAMRUP"
+    },
+    {
+      "code": 30,
+      "source_name": "Hajo-Sualkuchi (SC)",
+      "source_district": "KAMRUP"
+    },
+    {
+      "code": 31,
+      "source_name": "Rangia",
+      "source_district": "KAMRUP"
+    },
+    {
+      "code": 32,
+      "source_name": "Kamalpur",
+      "source_district": "KAMRUP"
+    },
+    {
+      "code": 33,
+      "source_name": "Dispur",
+      "source_district": "KAMRUP (METROPOLITIAN)"
+    },
+    {
+      "code": 34,
+      "source_name": "Dimoria (SC)",
+      "source_district": "KAMRUP (METROPOLITIAN)"
+    },
+    {
+      "code": 35,
+      "source_name": "New Guwahati",
+      "source_district": "KAMRUP (METROPOLITIAN)"
+    },
+    {
+      "code": 36,
+      "source_name": "Guwahati Central",
+      "source_district": "KAMRUP (METROPOLITIAN)"
+    },
+    {
+      "code": 37,
+      "source_name": "Jalukbari",
+      "source_district": "KAMRUP (METROPOLITIAN)"
+    },
+    {
+      "code": 38,
+      "source_name": "Barkhetri",
+      "source_district": "NALBARI"
+    },
+    {
+      "code": 39,
+      "source_name": "Nalbari",
+      "source_district": "NALBARI"
+    },
+    {
+      "code": 40,
+      "source_name": "Tihu",
+      "source_district": "NALBARI"
+    },
+    {
+      "code": 41,
+      "source_name": "Manas",
+      "source_district": "BAKSA"
+    },
+    {
+      "code": 42,
+      "source_name": "Baksa (ST)",
+      "source_district": "BAKSA"
+    },
+    {
+      "code": 43,
+      "source_name": "Tamulpur (ST)",
+      "source_district": "BAKSA"
+    },
+    {
+      "code": 44,
+      "source_name": "Goreswar",
+      "source_district": "BAKSA"
+    },
+    {
+      "code": 45,
+      "source_name": "Bhergaon",
+      "source_district": "UDALGURI"
+    },
+    {
+      "code": 46,
+      "source_name": "Udalguri (ST)",
+      "source_district": "UDALGURI"
+    },
+    {
+      "code": 47,
+      "source_name": "Mazbat",
+      "source_district": "UDALGURI"
+    },
+    {
+      "code": 48,
+      "source_name": "Tangla",
+      "source_district": "UDALGURI"
+    },
+    {
+      "code": 49,
+      "source_name": "Sipajhar",
+      "source_district": "DARRANG"
+    },
+    {
+      "code": 50,
+      "source_name": "Mangaldai",
+      "source_district": "DARRANG"
+    },
+    {
+      "code": 51,
+      "source_name": "Dalgaon",
+      "source_district": "DARRANG"
+    },
+    {
+      "code": 52,
+      "source_name": "Jagiroad (SC)",
+      "source_district": "MORIGAON"
+    },
+    {
+      "code": 53,
+      "source_name": "Laharighat",
+      "source_district": "MORIGAON"
+    },
+    {
+      "code": 54,
+      "source_name": "Morigaon",
+      "source_district": "MORIGAON"
+    },
+    {
+      "code": 55,
+      "source_name": "Dhing",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 56,
+      "source_name": "Rupahihat",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 57,
+      "source_name": "Kaliabor",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 58,
+      "source_name": "Samaguri",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 59,
+      "source_name": "Barhampur",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 60,
+      "source_name": "Nagaon-Batadraba",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 61,
+      "source_name": "Raha (SC)",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 62,
+      "source_name": "Binnakandi",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 63,
+      "source_name": "Hojai",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 64,
+      "source_name": "Lumding",
+      "source_district": "NAGAON"
+    },
+    {
+      "code": 65,
+      "source_name": "Dhekiajuli",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 66,
+      "source_name": "Barchalla",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 67,
+      "source_name": "Tezpur",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 68,
+      "source_name": "Rangapara",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 69,
+      "source_name": "Naduar",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 70,
+      "source_name": "Biswanath",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 71,
+      "source_name": "Behali (SC)",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 72,
+      "source_name": "Gohpur",
+      "source_district": "SONITPUR"
+    },
+    {
+      "code": 73,
+      "source_name": "Bihpuria",
+      "source_district": "LAKHIMPUR"
+    },
+    {
+      "code": 74,
+      "source_name": "Rongonadi",
+      "source_district": "LAKHIMPUR"
+    },
+    {
+      "code": 75,
+      "source_name": "Nowboicha (SC)",
+      "source_district": "LAKHIMPUR"
+    },
+    {
+      "code": 76,
+      "source_name": "Lakhimpur",
+      "source_district": "LAKHIMPUR"
+    },
+    {
+      "code": 77,
+      "source_name": "Dhakuakhana (ST)",
+      "source_district": "LAKHIMPUR"
+    },
+    {
+      "code": 78,
+      "source_name": "Dhemaji (ST)",
+      "source_district": "DHEMAJI"
+    },
+    {
+      "code": 79,
+      "source_name": "Sissibargaon",
+      "source_district": "DHEMAJI"
+    },
+    {
+      "code": 80,
+      "source_name": "Jonai (ST)",
+      "source_district": "DHEMAJI"
+    },
+    {
+      "code": 81,
+      "source_name": "Sadiya",
+      "source_district": "TINSUKIA"
+    },
+    {
+      "code": 82,
+      "source_name": "Doomdooma",
+      "source_district": "TINSUKIA"
+    },
+    {
+      "code": 83,
+      "source_name": "Margherita",
+      "source_district": "TINSUKIA"
+    },
+    {
+      "code": 84,
+      "source_name": "Digboi",
+      "source_district": "TINSUKIA"
+    },
+    {
+      "code": 85,
+      "source_name": "Makum",
+      "source_district": "TINSUKIA"
+    },
+    {
+      "code": 86,
+      "source_name": "Tinsukia",
+      "source_district": "TINSUKIA"
+    },
+    {
+      "code": 87,
+      "source_name": "Chabua-Lahowal",
+      "source_district": "DIBRUGARH"
+    },
+    {
+      "code": 88,
+      "source_name": "Dibrugrah",
+      "source_district": "DIBRUGARH"
+    },
+    {
+      "code": 89,
+      "source_name": "Khowang",
+      "source_district": "DIBRUGARH"
+    },
+    {
+      "code": 90,
+      "source_name": "Duliajan",
+      "source_district": "DIBRUGARH"
+    },
+    {
+      "code": 91,
+      "source_name": "Tingkhong",
+      "source_district": "DIBRUGARH"
+    },
+    {
+      "code": 92,
+      "source_name": "Naharkatia",
+      "source_district": "DIBRUGARH"
+    },
+    {
+      "code": 93,
+      "source_name": "Sonari",
+      "source_district": "CHARAIDEO"
+    },
+    {
+      "code": 94,
+      "source_name": "Mahmora",
+      "source_district": "CHARAIDEO"
+    },
+    {
+      "code": 95,
+      "source_name": "Demow",
+      "source_district": "SIBSAGAR"
+    },
+    {
+      "code": 96,
+      "source_name": "Sibsagar",
+      "source_district": "SIBSAGAR"
+    },
+    {
+      "code": 97,
+      "source_name": "Nazira",
+      "source_district": "SIBSAGAR"
+    },
+    {
+      "code": 98,
+      "source_name": "Majuli (ST)",
+      "source_district": "MAJULI"
+    },
+    {
+      "code": 99,
+      "source_name": "Teok",
+      "source_district": "JORHAT"
+    },
+    {
+      "code": 100,
+      "source_name": "Jorhat",
+      "source_district": "JORHAT"
+    },
+    {
+      "code": 101,
+      "source_name": "Mariani",
+      "source_district": "JORHAT"
+    },
+    {
+      "code": 102,
+      "source_name": "Titabor",
+      "source_district": "JORHAT"
+    },
+    {
+      "code": 103,
+      "source_name": "Golaghat",
+      "source_district": "GOLAGHAT"
+    },
+    {
+      "code": 104,
+      "source_name": "Dergaon",
+      "source_district": "GOLAGHAT"
+    },
+    {
+      "code": 105,
+      "source_name": "Bokakhat",
+      "source_district": "GOLAGHAT"
+    },
+    {
+      "code": 106,
+      "source_name": "Khumtai",
+      "source_district": "GOLAGHAT"
+    },
+    {
+      "code": 107,
+      "source_name": "Sarupathar",
+      "source_district": "GOLAGHAT"
+    },
+    {
+      "code": 108,
+      "source_name": "Bokajan (ST)",
+      "source_district": "KARBI ANGLONG"
+    },
+    {
+      "code": 109,
+      "source_name": "Howarghat (ST)",
+      "source_district": "KARBI ANGLONG"
+    },
+    {
+      "code": 110,
+      "source_name": "Diphu (ST)",
+      "source_district": "KARBI ANGLONG"
+    },
+    {
+      "code": 111,
+      "source_name": "Rongkhang (ST)",
+      "source_district": "WEST KARBI ANGLONG"
+    },
+    {
+      "code": 112,
+      "source_name": "Amri (ST)",
+      "source_district": "WEST KARBI ANGLONG"
+    },
+    {
+      "code": 113,
+      "source_name": "Haflong (ST)",
+      "source_district": "DIMA HASAO"
+    },
+    {
+      "code": 114,
+      "source_name": "Lakhipur",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 115,
+      "source_name": "Udharbond",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 116,
+      "source_name": "Katigorah",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 117,
+      "source_name": "Barkhola",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 118,
+      "source_name": "Silchar",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 119,
+      "source_name": "Sonai",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 120,
+      "source_name": "Dholai (SC)",
+      "source_district": "CACHAR"
+    },
+    {
+      "code": 121,
+      "source_name": "Hailakandi",
+      "source_district": "HAILAKANDI"
+    },
+    {
+      "code": 122,
+      "source_name": "Algapur-Katlicherra",
+      "source_district": "HAILAKANDI"
+    },
+    {
+      "code": 123,
+      "source_name": "Karimganj North",
+      "source_district": "KARIMGANJ"
+    },
+    {
+      "code": 124,
+      "source_name": "Karimganj South",
+      "source_district": "KARIMGANJ"
+    },
+    {
+      "code": 125,
+      "source_name": "Patharkandi",
+      "source_district": "KARIMGANJ"
+    },
+    {
+      "code": 126,
+      "source_name": "Ram Krishana",
+      "source_district": "KARIMGANJ"
+    }
+  ],
+  "district_headings": [
+    "KOKRAJHAR",
+    "DHUBRI",
+    "SOUTH SALMARA",
+    "GOALPARA",
+    "BONGAIGAON",
+    "CHIRANG",
+    "BARPETA",
+    "KAMRUP",
+    "KAMRUP (METROPOLITIAN)",
+    "NALBARI",
+    "BAKSA",
+    "UDALGURI",
+    "DARRANG",
+    "MORIGAON",
+    "NAGAON",
+    "SONITPUR",
+    "LAKHIMPUR",
+    "DHEMAJI",
+    "TINSUKIA",
+    "DIBRUGARH",
+    "CHARAIDEO",
+    "SIBSAGAR",
+    "MAJULI",
+    "JORHAT",
+    "GOLAGHAT",
+    "KARBI ANGLONG",
+    "WEST KARBI ANGLONG",
+    "DIMA HASAO",
+    "CACHAR",
+    "HAILAKANDI",
+    "KARIMGANJ"
+  ]
+}

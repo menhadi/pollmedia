@@ -1,10 +1,13 @@
 const selector = document.getElementById('assam-electoral-district');
 if (selector) selector.addEventListener('change', () => {
     let pcs = 0, acs = 0;
+    const summary = document.querySelector('[data-district-electoral-summary]');
+    if (summary) summary.hidden = summary.dataset.districtElectoralSummary !== selector.value;
     for (const pc of document.querySelectorAll('[data-assam-pc]')) {
         const segments = [...pc.querySelectorAll('[data-electoral-district]')];
         const matches = segments.filter(ac => selector.value === 'all' || ac.dataset.electoralDistrict === selector.value);
         pc.hidden = matches.length === 0;
+        pc.open = matches.length > 0 && selector.value !== 'all';
         if (matches.length) { pcs++; acs += matches.length; }
         for (const ac of segments) ac.style.fontWeight = selector.value !== 'all' && ac.dataset.electoralDistrict === selector.value ? '700' : '400';
     }
