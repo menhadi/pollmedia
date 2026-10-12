@@ -3262,15 +3262,16 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "841 unlinked shapes;14 ambiguous codes; no population allocated",
-        "Dated shared electoral membership prepared; not deployed",
-        "Historical source geography retained; later splits not backcast"
+        "Dated PCs14/22 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/114/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3315,6 +3316,40 @@
           22
         ],
         "note": "Complete shared PC22 retains Ajmer, Pali and Rajsamand members; current crosswalk and matching geometry edition unverified."
+      },
+      "deployment": {
+        "live_commit": "f66858106d492690a733198def69cb14213032de",
+        "rollback_base": "49f5da826c48340de28aba6a77c3c169eff35e4f",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7360,
+          "name": "Jaisalmer",
+          "code": "114",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 669919,
+          "households": 117171,
+          "literates": 308653,
+          "children": 130463,
+          "male": 361708,
+          "female": 308211,
+          "workers": 288903,
+          "literacy": 57.22,
+          "male_literacy": 72.04,
+          "female_literacy": 39.71,
+          "source_row": 696,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;855 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified f66858106d492690a733198def69cb14213032de",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5706,10 +5741,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:20:29.465207+00:00",
-    "live_commit": "49f5da826c48340de28aba6a77c3c169eff35e4f",
-    "action": "Nagaur full source map JSON/hash and complete audited AC106-115/PC14/22 fixture prepared; not deployed",
-    "next_action": "Enable Nagaur114 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link on completion."
+    "checked_at": "2026-10-12T09:27:51.079530+00:00",
+    "live_commit": "f66858106d492690a733198def69cb14213032de",
+    "action": "Nagaur deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Pali115; audit missing district AC117-121 and full associated PCs15/22 outside members before fixture use; extract district map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
