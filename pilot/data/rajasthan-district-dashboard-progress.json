@@ -5409,7 +5409,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5417,7 +5417,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/124/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -5453,7 +5453,8 @@
         ],
         "note": "Dated complete PC19/20 memberships retain outside-district Udaipur and Banswara ACs;2004 territorial reference and current crosswalk unverified",
         "visually_audited": true
-      }
+      },
+      "deployment_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3"
     },
     {
       "district_code": "125",
@@ -6446,8 +6447,8 @@
   "last_run": {
     "checked_at": "2026-10-12T18:43:41.3049006+05:30",
     "live_commit": "3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
-    "action": "Rajsamand verified; Rajasthan25 of33 handled with explicit deferred flags",
-    "next_action": "Enable Dungarpur locally, test, then deploy narrow patch under both locks and verify actual public data/backups"
+    "action": "Dungarpur deployed under both locks; actual canonical/public verification pending",
+    "next_action": "Verify Dungarpur totals, full public map and complete shared PC19/20 membership and PC/AC context; record backup verification"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
