@@ -150,6 +150,54 @@
       "name": "Sujangarh (SC)",
       "district": "Churu",
       "page": 352
+    },
+    {
+      "code": 25,
+      "name": "Pilani (SC)",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 26,
+      "name": "Surajgarh",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 27,
+      "name": "Jhunjhunu",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 28,
+      "name": "Mandawa",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 29,
+      "name": "Nawalgarh",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 30,
+      "name": "Udaipurwati",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 31,
+      "name": "Khetri",
+      "district": "Jhunjhunu",
+      "page": 353
+    },
+    {
+      "code": 32,
+      "name": "Fatehpur",
+      "district": "Sikar",
+      "page": 353
     }
   ],
   "pcs": [
@@ -195,6 +243,21 @@
         22,
         23,
         24
+      ],
+      "page": 366
+    },
+    {
+      "code": 4,
+      "name": "Jhunjhunu",
+      "ac_codes": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
       ],
       "page": 366
     }
