@@ -3,7 +3,7 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial dated fixture: Garhwa, historical Palamau and Chatra district coverage plus Kodarma AC19; complete shared PC4,5,13 scopes. Other seats pending.",
+  "scope": "Partial dated fixture: Garhwa, historical Palamau, Chatra, Kodarma and Giridih district coverage; complete shared PC4,5,6,13 scopes. Other seats pending.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
     "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
@@ -61,6 +61,42 @@
       "name": "Gandey",
       "district": "Giridih",
       "page": 169
+    },
+    {
+      "code": 32,
+      "name": "Giridih",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 33,
+      "name": "Dumri",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 34,
+      "name": "Gomia",
+      "district": "Bokaro",
+      "page": 169
+    },
+    {
+      "code": 35,
+      "name": "Bermo",
+      "district": "Bokaro",
+      "page": 170
+    },
+    {
+      "code": 42,
+      "name": "Tundi",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 43,
+      "name": "Baghmara",
+      "district": "Dhanbad",
+      "page": 170
     },
     {
       "code": 73,
@@ -162,6 +198,19 @@
         29,
         30,
         31
+      ],
+      "page": 175
+    },
+    {
+      "code": 6,
+      "name": "Giridih",
+      "ac_codes": [
+        32,
+        33,
+        34,
+        35,
+        42,
+        43
       ],
       "page": 175
     }
