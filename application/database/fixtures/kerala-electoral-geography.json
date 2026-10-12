@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Malappuram with complete associated PC4/6/7 segments; other districts pending",
+  "scope": "Partial extraction through Palakkad with complete associated PC7/8/9 segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent"
@@ -308,6 +308,90 @@
       "name": "Thrithala",
       "district": "Palakkad",
       "page": 213
+    },
+    {
+      "code": 50,
+      "name": "Pattambi",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 51,
+      "name": "Shornur",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 52,
+      "name": "Ottappalam",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 53,
+      "name": "Kongad (SC)",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 54,
+      "name": "Mannarkkad",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 55,
+      "name": "Malampuzha",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 56,
+      "name": "Palakkad",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 57,
+      "name": "Tarur (SC)",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 58,
+      "name": "Chittur",
+      "district": "Palakkad",
+      "page": 214
+    },
+    {
+      "code": 59,
+      "name": "Nemmara",
+      "district": "Palakkad",
+      "page": 214
+    },
+    {
+      "code": 60,
+      "name": "Alathur",
+      "district": "Palakkad",
+      "page": 214
+    },
+    {
+      "code": 61,
+      "name": "Chelakkara (SC)",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 62,
+      "name": "Kunnamkulam",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 65,
+      "name": "Wadakkanchery",
+      "district": "Thrissur",
+      "page": 214
     }
   ],
   "pcs": [
@@ -406,6 +490,34 @@
         47,
         48,
         49
+      ],
+      "page": 223
+    },
+    {
+      "code": 8,
+      "name": "Palakkad",
+      "ac_codes": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 223
+    },
+    {
+      "code": 9,
+      "name": "Alathur (SC)",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        65
       ],
       "page": 223
     }
