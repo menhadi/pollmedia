@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-jind-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Jind Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6268/download/9345/DDW_PCA0609_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6268',
+        'format' => 'xlsx', 'sheet' => 'EB-0609',
+    ],
     'haryana-sonipat-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Sonipat Census 2011 — district, town, village and ward PCA',
