@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='332' && $sourceMap==='maps/west-bengal-maldah-villages.geojson')<p class="notice">Maldah source coverage: 1,803 shapes. Boundary edition and Census/LGD correspondence remain unverified; coverage is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='331' && $sourceMap==='maps/west-bengal-dakshin-dinajpur-villages.geojson')<p class="notice">Dakshin Dinajpur source coverage: 1,620 shapes. Boundary edition and Census/LGD links remain unverified; this is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='330' && $sourceMap==='maps/west-bengal-uttar-dinajpur-villages.geojson')<p class="notice">Uttar Dinajpur source coverage: 1,499 shapes. Boundary edition and Census/LGD correspondence remain unverified. This coverage is not a certified perimeter; source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
