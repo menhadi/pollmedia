@@ -348,8 +348,8 @@ class DistrictDashboardController extends Controller
             }, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
         }
-        if ($state === '08' && in_array($district, ['099', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109'], true)) {
-            $rjDistrict = ['099' => 'Ganganagar', '100' => 'Hanumangarh', '101' => 'Bikaner', '102' => 'Churu', '103' => 'Jhunjhunun', '104' => 'Alwar', '105' => 'Bharatpur', '106' => 'Dhaulpur', '107' => 'Karauli', '108' => 'Sawai Madhopur', '109' => 'Dausa'][$district];
+        if ($state === '08' && in_array($district, ['099', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '110'], true)) {
+            $rjDistrict = ['099' => 'Ganganagar', '100' => 'Hanumangarh', '101' => 'Bikaner', '102' => 'Churu', '103' => 'Jhunjhunun', '104' => 'Alwar', '105' => 'Bharatpur', '106' => 'Dhaulpur', '107' => 'Karauli', '108' => 'Sawai Madhopur', '109' => 'Dausa', '110' => 'Jaipur'][$district];
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(['Jhunjhunun' => 'Jhunjhunu', 'Dhaulpur' => 'Dholpur'][$rjDistrict] ?? $rjDistrict, 'Rajasthan');
             $mapFile = 'maps/'.str_replace(' ', '-', strtolower($rjDistrict)).'-villages.geojson';
         }
