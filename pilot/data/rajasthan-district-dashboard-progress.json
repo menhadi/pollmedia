@@ -3700,7 +3700,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "implementation_tested_deployment_deferred_held_lock",
       "flags": [
         "Boundary edition unverified",
         "835 unlinked shapes; no population allocated",
@@ -3709,7 +3709,7 @@
         "Historical source geography retained; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/116/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "implementation_tested_deployment_deferred_held_lock",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3757,6 +3757,32 @@
           16
         ],
         "note": "Complete shared PCs retain Pali members and Jaisalmer AC133 Pokaran; current crosswalk remains unverified."
+      },
+      "predeployment_validation": {
+        "regression_tests": "59 tests /240 assertions passed",
+        "formatter": "Passed",
+        "canonical_published_totals": {
+          "id": 7373,
+          "name": "Jalor",
+          "code": "116",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1828730,
+          "households": 326134,
+          "literates": 829582,
+          "children": 316455,
+          "male": 936634,
+          "female": 892096,
+          "workers": 896644,
+          "literacy": 54.86,
+          "male_literacy": 70.67,
+          "female_literacy": 38.47,
+          "source_row": 709,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "deployment_attempt": "Exit75; deployment lock held; no live mutation performed"
       }
     },
     {
@@ -5868,10 +5894,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:40:52.516475+00:00",
+    "checked_at": "2026-10-12T09:46:00.593187+00:00",
     "live_commit": "e387ce8eee4c16f6a7744b1848b9cbcaf46753f4",
-    "action": "Jodhpur full source map JSON/hash and complete audited district/shared PC15/16 fixture prepared; not deployed",
-    "next_action": "Enable Jodhpur116 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link."
+    "action": "Jodhpur implementation/tests ready; serialized deployment deferred on held lock; no bypass and no live changes",
+    "next_action": "Retry Jodhpur116 with fresh live HEAD/scoped patch under both locks when available; verify actual public totals/full map/PC-AC context/backups before marking complete."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
