@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction including Krishnagiri and previously deployed districts; Coimbatore/Tiruppur associated segments remain pending",
+  "scope": "All dated Tamil Nadu district/AC and PC rows extracted; current district crosswalk including Tiruppur remains unverified",
   "district_rows": [
     {
       "code": 1,
@@ -694,6 +694,78 @@
       "name": "Tiruppur (South)",
       "district": "Coimbatore",
       "page": null
+    },
+    {
+      "code": 115,
+      "name": "Palladam",
+      "district": "Coimbatore",
+      "page": 411
+    },
+    {
+      "code": 116,
+      "name": "Sulur",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 117,
+      "name": "Kavundampalayam",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 118,
+      "name": "Coimbatore (North)",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 119,
+      "name": "Thondamuthur",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 120,
+      "name": "Coimbatore (South)",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 121,
+      "name": "Singanallur",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 122,
+      "name": "Kinathukadavu",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 123,
+      "name": "Pollachi",
+      "district": "Coimbatore",
+      "page": 413
+    },
+    {
+      "code": 124,
+      "name": "Valparai (SC)",
+      "district": "Coimbatore",
+      "page": 413
+    },
+    {
+      "code": 125,
+      "name": "Udumalaipettai",
+      "district": "Coimbatore",
+      "page": 413
+    },
+    {
+      "code": 126,
+      "name": "Madathukulam",
+      "district": "Coimbatore",
+      "page": 414
     },
     {
       "code": 127,
@@ -1605,6 +1677,32 @@
         110,
         111,
         112
+      ],
+      "page": 448
+    },
+    {
+      "code": 20,
+      "name": "Coimbatore",
+      "ac_codes": [
+        115,
+        116,
+        117,
+        118,
+        120,
+        121
+      ],
+      "page": 448
+    },
+    {
+      "code": 21,
+      "name": "Pollachi",
+      "ac_codes": [
+        119,
+        122,
+        123,
+        124,
+        125,
+        126
       ],
       "page": 448
     },
