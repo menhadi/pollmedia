@@ -1069,15 +1069,17 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1121 unlinked shapes; 11 ambiguous codes; no population allocated",
+        "Invalid source shape073226 excluded without repair",
+        "Dated PC6/8/9/11 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/104/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -1130,6 +1132,40 @@
           11
         ],
         "note": "AC70 belongs to Bharatpur; all outside-district shared PC members retained."
+      },
+      "deployment": {
+        "live_commit": "17711b6dfb1ef744e3157fa506a5c61f28ca01c1",
+        "rollback_base": "7eb2343872f17283c5b196141cb0976f8b0562bc",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7269,
+          "name": "Alwar",
+          "code": "104",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 3674179,
+          "households": 639720,
+          "literates": 2182476,
+          "children": 587959,
+          "male": 1939026,
+          "female": 1735153,
+          "workers": 1708542,
+          "literacy": 70.72,
+          "male_literacy": 83.75,
+          "female_literacy": 56.25,
+          "source_row": 605,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed; 1132 features",
+        "pc_published_district_context": "Passed",
+        "regression_tests": "59 tests / 240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 17711b6dfb1ef744e3157fa506a5c61f28ca01c1",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -4921,10 +4957,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T07:42:19.572976+00:00",
-    "live_commit": "7eb2343872f17283c5b196141cb0976f8b0562bc",
-    "action": "Alwar full source map JSON validated and dated shared-PC fixture prepared; not deployed",
-    "next_action": "Enable Alwar104 district/context/switcher, run required checks, deploy under both locks and verify canonical totals plus full public map JSON/hash before advancing."
+    "checked_at": "2026-10-12T07:47:33.530446+00:00",
+    "live_commit": "17711b6dfb1ef744e3157fa506a5c61f28ca01c1",
+    "action": "Alwar deployed under both locks; canonical totals/full public map/membership/regression tests/backups verified",
+    "next_action": "Continue Bharatpur105; visually audited AC70-76 available; audit complete associated shared PCs before fixture use"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
