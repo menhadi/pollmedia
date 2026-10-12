@@ -5409,7 +5409,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5417,7 +5417,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/124/dashboard",
-      "status": "deployed_public_verification_pending",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -5454,7 +5454,35 @@
         "note": "Dated complete PC19/20 memberships retain outside-district Udaipur and Banswara ACs;2004 territorial reference and current crosswalk unverified",
         "visually_audited": true
       },
-      "deployment_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3"
+      "deployment_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3",
+      "validation": {
+        "github_backup": "Verified exact ls-remote07f8b6654f1cdd85e6d9e037816a901265d4a0c3",
+        "public_verification": "Passed actual canonical population, households, literates, children; complete shared PC19/20 AC names; PC Banswara and AC Dungarpur district context. Detailed rendered/source audits deferred",
+        "canonical_totals": {
+          "id": 7442,
+          "name": "Dungarpur",
+          "code": "124",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1388552,
+          "households": 282029,
+          "literates": 681591,
+          "children": 242239,
+          "male": 696532,
+          "female": 692020,
+          "workers": 641515,
+          "literacy": 59.46,
+          "male_literacy": 72.88,
+          "female_literacy": 46.16,
+          "source_row": 778,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "regression_tests": "59 tests /240 assertions passed",
+        "public_map_full_json_sha256": "Passed exact bytes and1056 features",
+        "local_bundle": "Verified isolated own chain bundle07f8b6654f1cdd85e6d9e037816a901265d4a0c3"
+      }
     },
     {
       "district_code": "125",
@@ -6445,10 +6473,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T18:43:41.3049006+05:30",
-    "live_commit": "3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
-    "action": "Dungarpur deployed under both locks; actual canonical/public verification pending",
-    "next_action": "Verify Dungarpur totals, full public map and complete shared PC19/20 membership and PC/AC context; record backup verification"
+    "checked_at": "2026-10-12T13:27:15.4206923+00:00",
+    "live_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3",
+    "action": "Dungarpur verified; Rajasthan26 of33 handled with explicit deferred flags",
+    "next_action": "Prepare Banswara125 source map and already visually audited dated membership, then test and locked deploy"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
