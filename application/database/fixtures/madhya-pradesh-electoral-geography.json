@@ -671,6 +671,102 @@
       "name": "Badnagar",
       "district": "Ujjain",
       "page": 248
+    },
+    {
+      "code": 165,
+      "name": "Susner",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 166,
+      "name": "Agar (SC)",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 167,
+      "name": "Shajapur",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 168,
+      "name": "Shujalpur",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 169,
+      "name": "Kalapipal",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 170,
+      "name": "Sonkatch (SC)",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 171,
+      "name": "Dewas",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 172,
+      "name": "Hatpipliya",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 157,
+      "name": "Ashta (SC)",
+      "district": "Sehore",
+      "page": 242
+    },
+    {
+      "code": 30,
+      "name": "Chachoura",
+      "district": "Guna",
+      "page": 230
+    },
+    {
+      "code": 31,
+      "name": "Raghogarh",
+      "district": "Guna",
+      "page": 230
+    },
+    {
+      "code": 160,
+      "name": "Narsinghgarh",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 161,
+      "name": "Biaora",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 162,
+      "name": "Rajgarh",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 163,
+      "name": "Khilchipur",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 164,
+      "name": "Sarangpur (SC)",
+      "district": "Rajgarh",
+      "page": 242
     }
   ],
   "pcs": [
@@ -882,6 +978,36 @@
         221
       ],
       "page": 253
+    },
+    {
+      "code": 20,
+      "name": "Rajgarh",
+      "ac_codes": [
+        30,
+        31,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165
+      ],
+      "page": 252
+    },
+    {
+      "code": 21,
+      "name": "Dewas (SC)",
+      "ac_codes": [
+        157,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172
+      ],
+      "page": 252
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
