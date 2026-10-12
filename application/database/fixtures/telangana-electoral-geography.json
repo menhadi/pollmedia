@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 historical district coverage through Nalgonda; complete associated PC1-14 segments; omitted seats pending",
+  "scope": "Partial dated2014 historical district coverage through Warangal; complete associated PC1-16 segments; omitted Khammam seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
@@ -14,7 +14,8 @@
     "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending",
     "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending",
     "PC11 printed36-42 source codes preserved alongside named identity reconciliation; undated CEO list and formal source review pending",
-    "PC13 original printed43-49 retained alongside named identity reconciliation; undated CEO list and formal source review pending"
+    "PC13 original printed43-49 retained alongside named identity reconciliation; undated CEO list and formal source review pending",
+    "PC15 printed50-56 retained alongside named identity reconciliation; Waradhanapet Table A/Wardhannapet Table B spelling conflict retained for review"
   ],
   "district_rows": [
     {
@@ -618,6 +619,90 @@
       "name": "Jangaon",
       "district": "Warangal",
       "page": 45
+    },
+    {
+      "code": 99,
+      "name": "Ghanpur (Station) (SC)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 100,
+      "name": "Palakurthi",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 101,
+      "name": "Dornakal (ST)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 102,
+      "name": "Mahabubabad (ST)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 103,
+      "name": "Narsampet",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 104,
+      "name": "Parkal",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 105,
+      "name": "Warangal West",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 106,
+      "name": "Warangal East",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 107,
+      "name": "Waradhanapet (SC)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 108,
+      "name": "Bhupalpalle",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 109,
+      "name": "Mulug (ST)",
+      "district": "Warangal",
+      "page": 46
+    },
+    {
+      "code": 110,
+      "name": "Pinapaka (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 111,
+      "name": "Yellandu (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 119,
+      "name": "Bhadrachalam (ST)",
+      "district": "Khammam",
+      "page": 46
     }
   ],
   "pcs": [
@@ -884,6 +969,44 @@
         96,
         97,
         98
+      ],
+      "page": 47
+    },
+    {
+      "code": 15,
+      "name": "Warangal (SC)",
+      "ac_codes": [
+        99,
+        100,
+        104,
+        105,
+        106,
+        107,
+        108
+      ],
+      "raw_ac_codes": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed50-56 conflicts with Table A identities. Named Table A segments and official CEO list support99,100,104,105,106,107,108. Original codes retained; formal review pending."
+    },
+    {
+      "code": 16,
+      "name": "Mahabubabad (ST)",
+      "ac_codes": [
+        101,
+        102,
+        103,
+        109,
+        110,
+        111,
+        119
       ],
       "page": 47
     }
