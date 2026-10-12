@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Alappuzha with complete associated PC15/16 segments; other districts pending",
+  "scope": "Partial extraction through Kollam with complete associated PC15/16/18 segments; Thiruvananthapuram pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent",
@@ -713,6 +713,12 @@
       "page": 220
     },
     {
+      "code": 117,
+      "name": "Chavara",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
       "code": 118,
       "name": "Kunnathur (SC)",
       "district": "Kollam",
@@ -727,6 +733,42 @@
     {
       "code": 120,
       "name": "Pathanapuram",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 121,
+      "name": "Punalur",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 122,
+      "name": "Chadayamangalam",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 123,
+      "name": "Kundara",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 124,
+      "name": "Kollam",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 125,
+      "name": "Eravipuram",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 126,
+      "name": "Chathannoor",
       "district": "Kollam",
       "page": 220
     }
@@ -967,6 +1009,20 @@
         113,
         114,
         115
+      ],
+      "page": 224
+    },
+    {
+      "code": 18,
+      "name": "Kollam",
+      "ac_codes": [
+        117,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
       ],
       "page": 224
     }
