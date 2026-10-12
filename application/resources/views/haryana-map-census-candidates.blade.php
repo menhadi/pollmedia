@@ -1,4 +1,4 @@
-@if(in_array([($data['census_district_code'] ?? ''), $data['name']], [['069', 'Panchkula'], ['070', 'Ambala'], ['071', 'Yamunanagar'], ['072', 'Kurukshetra'], ['073', 'Kaithal'], ['074', 'Karnal'], ['075', 'Panipat'], ['076', 'Sonipat'], ['077', 'Jind'], ['078', 'Fatehabad'], ['079', 'Sirsa']], true))
+@if(in_array([($data['census_district_code'] ?? ''), $data['name']], [['069', 'Panchkula'], ['070', 'Ambala'], ['071', 'Yamunanagar'], ['072', 'Kurukshetra'], ['073', 'Kaithal'], ['074', 'Karnal'], ['075', 'Panipat'], ['076', 'Sonipat'], ['077', 'Jind'], ['078', 'Fatehabad'], ['079', 'Sirsa'], ['080', 'Hisar']], true))
 @php
     $haryanaVillageCandidates = array_map(fn (array $row): array => [
         'code' => $row['code'],
