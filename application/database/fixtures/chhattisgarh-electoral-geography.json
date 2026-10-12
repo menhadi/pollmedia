@@ -4,7 +4,7 @@
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial2008 Koria historical district and full associated Korba PC4 segments; other seats pending",
+  "scope": "Partial2008 Koria and Surguja historical districts with full associated PC1/4 segments; omitted seats pending",
   "flags": [
     "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
     "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending"
@@ -30,6 +30,54 @@
       "district": "Koria",
       "context_district": "Koriya",
       "page": 98
+    },
+    {
+      "code": 4,
+      "name": "Premnagar",
+      "district": "Surguja",
+      "page": 98
+    },
+    {
+      "code": 5,
+      "name": "Bhatgaon",
+      "district": "Surguja",
+      "page": 98
+    },
+    {
+      "code": 6,
+      "name": "Pratappur (ST)",
+      "district": "Surguja",
+      "page": 98
+    },
+    {
+      "code": 7,
+      "name": "Ramanujganj (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 8,
+      "name": "Samri (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 9,
+      "name": "Lundra (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 10,
+      "name": "Ambikapur",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 11,
+      "name": "Sitapur (ST)",
+      "district": "Surguja",
+      "page": 99
     },
     {
       "code": 20,
@@ -68,6 +116,21 @@
     }
   ],
   "pcs": [
+    {
+      "code": 1,
+      "name": "Surguja (ST)",
+      "ac_codes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "page": 109
+    },
     {
       "code": 4,
       "name": "Korba",
