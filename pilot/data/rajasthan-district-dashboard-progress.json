@@ -5019,7 +5019,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_waiting_bundi_verification_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5027,7 +5027,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/122/dashboard",
-      "status": "source_map_prepared_waiting_bundi_verification_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -5063,7 +5063,8 @@
           23
         ],
         "note": "Complete shared PC23 retains Bundi AC184 Hindoli; current crosswalk unverified."
-      }
+      },
+      "deployment_commit": "2866883bb34f873e49c67e050009a778adf0e8bf"
     },
     {
       "district_code": "123",
@@ -6334,10 +6335,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T12:43:25.2662992+00:00",
+    "checked_at": "2026-10-12T18:13:25.2662992+05:30",
     "live_commit": "147ad6bd8107c69d39ec634588c9575dea320259",
-    "action": "Bundi public verification recovered and actual data checks passed; Rajasthan23 of33 handled with deferred flags",
-    "next_action": "Recheck Bundi dynamic canonical/public totals and PC-AC context; static map verified alone does not complete district. No further deployment until complete."
+    "action": "Bhilwara deployed under both locks; complete canonical and public verification pending",
+    "next_action": "Verify Bhilwara fresh canonical totals, full public map and shared PC23/AC context, then continue Rajsamand"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
