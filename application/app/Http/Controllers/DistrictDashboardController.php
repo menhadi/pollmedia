@@ -448,42 +448,10 @@ class DistrictDashboardController extends Controller
             }, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
         }
-        if ($state === '08' && in_array($district, ['099', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115', '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128'], true)) {
-            $rjDistrict = ['099' => 'Ganganagar', '100' => 'Hanumangarh', '101' => 'Bikaner', '102' => 'Churu', '103' => 'Jhunjhunun', '104' => 'Alwar', '105' => 'Bharatpur', '106' => 'Dhaulpur', '107' => 'Karauli', '108' => 'Sawai Madhopur', '109' => 'Dausa', '110' => 'Jaipur', '111' => 'Sikar', '112' => 'Tonk', '113' => 'Ajmer', '114' => 'Nagaur', '115' => 'Pali', '116' => 'Jodhpur', '117' => 'Jaisalmer', '118' => 'Barmer', '119' => 'Jalor', '120' => 'Sirohi', '121' => 'Bundi', '122' => 'Bhilwara', '123' => 'Rajsamand', '124' => 'Dungarpur', '125' => 'Banswara', '126' => 'Udaipur', '127' => 'Chittaurgarh', '128' => 'Kota'][$district];
+        if ($state === '08' && in_array($district, ['099', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115', '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128', '129'], true)) {
+            $rjDistrict = ['099' => 'Ganganagar', '100' => 'Hanumangarh', '101' => 'Bikaner', '102' => 'Churu', '103' => 'Jhunjhunun', '104' => 'Alwar', '105' => 'Bharatpur', '106' => 'Dhaulpur', '107' => 'Karauli', '108' => 'Sawai Madhopur', '109' => 'Dausa', '110' => 'Jaipur', '111' => 'Sikar', '112' => 'Tonk', '113' => 'Ajmer', '114' => 'Nagaur', '115' => 'Pali', '116' => 'Jodhpur', '117' => 'Jaisalmer', '118' => 'Barmer', '119' => 'Jalor', '120' => 'Sirohi', '121' => 'Bundi', '122' => 'Bhilwara', '123' => 'Rajsamand', '124' => 'Dungarpur', '125' => 'Banswara', '126' => 'Udaipur', '127' => 'Chittaurgarh', '128' => 'Kota', '129' => 'Baran'][$district];
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(['Jhunjhunun' => 'Jhunjhunu', 'Dhaulpur' => 'Dholpur', 'Jalor' => 'Jalore', 'Chittaurgarh' => 'Chittorgarh'][$rjDistrict] ?? $rjDistrict, 'Rajasthan');
             $mapFile = 'maps/'.str_replace(' ', '-', strtolower($rjDistrict)).'-villages.geojson';
-        }
-        if ($state === '20' && $district === '346') {
-            $mapFile = 'maps/jharkhand-garhwa-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Garhwa', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '358') {
-            $mapFile = 'maps/jharkhand-palamu-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Palamu', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '347') {
-            $mapFile = 'maps/jharkhand-chatra-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Chatra', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '348') {
-            $mapFile = 'maps/jharkhand-kodarma-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kodarma', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '349') {
-            $mapFile = 'maps/jharkhand-giridih-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Giridih', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '350') {
-            $mapFile = 'maps/jharkhand-deoghar-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Deoghar', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '351') {
-            $mapFile = 'maps/jharkhand-godda-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Godda', 'Jharkhand');
-        }
-        if ($state === '20' && $district === '352') {
-            $mapFile = 'maps/jharkhand-sahibganj-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Sahibganj', 'Jharkhand');
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
