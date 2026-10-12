@@ -118,7 +118,10 @@
         "server_php_syntax": "Passed",
         "server_uploaded_map_json": "Parsed243 features before mutation",
         "public_checks": "District/PC/AC requests timed out; not verified and not counted complete",
-        "backup_local_bundle": "Verified chain from7bd7c2ff to cf5cda1c"
+        "backup_local_bundle": "Verified chain from7bd7c2ff to cf5cda1c",
+        "public_map_full_json_sha256": "Passed;243 features identical to local",
+        "backup_local_bundle_and_github": "Verified cf5cda1cb87844d30e54e65119003c10b4894ebf",
+        "public_dynamic_checks": "District requests timeout from both client and server; homepage also timed out; static map HTTP200. Not verified, not complete."
       }
     },
     {
@@ -1431,10 +1434,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:08:57.523297+00:00",
-    "live_commit": "cf5cda1cb87844d30e54e65119003c10b4894ebf",
-    "action": "Panchkula/Haryana foundation deployed under both locks; public requests timed out; do not count rollout complete",
-    "next_action": "First retry bounded public district/map/PC/AC actual-data checks; confirm own GitHub backup cf5cda1c; investigate persistent timeouts read-only and use serialized fix/rollback if needed; only advance after essential verification."
+    "checked_at": "2026-10-12T11:11:55.786744+00:00",
+    "live_commit": "39f0c5c722ed08fd62c14bea6c370c3405095846",
+    "action": "Full public map JSON/hash verified; dynamic district and homepage requests time out from server as well; no live mutation; essential dashboard checks pending",
+    "next_action": "Retry bounded public actual district/PC/AC checks once dynamic site responds; do not mark complete or advance until verified. Preserve other tasks and deployment locks."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
