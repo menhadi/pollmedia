@@ -5819,7 +5819,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5827,7 +5827,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/126/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -5868,6 +5868,35 @@
         ],
         "source_date": "2008-12-17",
         "note": "Dated PC19/21 retain outside-district Dungarpur and Chittorgarh ACs;2004 territorial reference/current crosswalk unverified"
+      },
+      "deployment_commit": "a4031b046b49325747dd77c8fd776c6a9f6df9b0",
+      "validation": {
+        "regression_tests": "59 tests240 assertions passed",
+        "github_backup": "Exact ls-remote a4031b046b49325747dd77c8fd776c6a9f6df9b0 verified",
+        "local_bundle": "Verified a4031b046b49325747dd77c8fd776c6a9f6df9b0",
+        "public_verification": "Actual canonical four totals, complete PC19/21 AC names, PC Udaipur and AC Udaipur context passed; detailed rendered audit deferred",
+        "canonical_totals": {
+          "id": 7453,
+          "name": "Chittaurgarh",
+          "code": "126",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1544338,
+          "households": 329119,
+          "literates": 821825,
+          "children": 212507,
+          "male": 783171,
+          "female": 761167,
+          "workers": 802755,
+          "literacy": 61.71,
+          "male_literacy": 76.61,
+          "female_literacy": 46.53,
+          "source_row": 789,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_map_full_json_sha256": "Exact bytes and1783 features passed"
       }
     },
     {
@@ -6579,10 +6608,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T19:11:31.4709669+05:30",
-    "live_commit": "9f102aaace19059556cfa9ae05a4bc2d6e6d298d",
-    "action": "Banswara verified; Rajasthan27 of33 handled with explicit deferred flags",
-    "next_action": "Udaipur1783 source shapes and complete shared PCs prepared;59 tests240 assertions passed; narrow locked deployment next"
+    "checked_at": "2026-10-12T13:52:51.9941181+00:00",
+    "live_commit": "a4031b046b49325747dd77c8fd776c6a9f6df9b0",
+    "action": "Udaipur verified; Rajasthan28 of33 handled with deferred flags",
+    "next_action": "Prepare Chittaurgarh127 with dated ECI Chittorgarh alias and later Pratapgarh split flagged"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
