@@ -50,7 +50,7 @@
 <p class="notice">No exact 2023 district heading is matched to this map’s source name. Choose the dated heading below; no constituency membership has been inferred for this map.</p>
 @endif
 <p>Territorial references are dated 1 January 2023; Guwahati Municipal Corporation ward extents use Census 2001. Effective-date and subsequent corrigendum checks remain pending. Older election figures and maps are not assigned to these 2023 constituencies.</p>
-<p>Individual result links below use exact names or documented reservation-label references to the indexed 2024 parliamentary and 2026 assembly reports. Report codes are kept separately from the 2023 order numbers. Three assembly names with spelling differences remain unresolved; these links do not certify matching boundary editions.</p>
+<p>Individual result links below use exact names or documented reservation-label and spelling references to the indexed 2024 parliamentary and 2026 assembly reports. Report codes are kept separately from the 2023 order numbers. All 14 PC and 126 AC report references are available; these links do not certify matching boundary editions.</p>
 <p>PC reservation labels are verified against the <a href="https://ceochhattisgarh.nic.in/assets/pdf%20files/Press%20Note%20of%20ECI2024.pdf" target="_blank" rel="noopener">official 2024 election schedule</a> (PDF page 71): Kokrajhar (ST), Diphu (ST), Silchar (SC).</p>
 <label>District heading in the 2023 order<select id="assam-electoral-district"><option value="all" @selected($initialHeading === 'all')>All 2023 district headings</option>
 @foreach($electoralHeadings as $heading)<option value="{{ $heading }}" @selected($initialHeading === $heading)>{{ $heading }}</option>@endforeach
@@ -71,6 +71,9 @@
 @php($acResult = $datedElectionLinks['ac'][$ac['code']] ?? null)
 @if($acResult)
  · <a data-assam-result="ac-{{ $ac['code'] }}" href="{{ route('elections.assembly', ['edition' => $acResult['edition'], 'state' => 'Assam', 'code' => $acResult['record_code']]) }}">{{ $acResult['record_name'] }} · {{ $acResult['year'] }} assembly results</a>
+@if(isset($acResult['identity_evidence']))
+<p>Spelling reference: <a href="{{ $acResult['identity_evidence']['url'] }}" target="_blank" rel="noopener">ECI 2026 result page for AC {{ $ac['code'] }}</a> (updated 5 May 2026). The original 2023 label above is retained; this dated report reference does not establish equal boundary extents.</p>
+@endif
 @else
  · Result identity unresolved; use the dated archive above.
 @endif

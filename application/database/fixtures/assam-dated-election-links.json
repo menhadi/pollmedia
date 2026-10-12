@@ -1,5 +1,5 @@
 {
-  "scope": "Exact name references and three documented PC reservation-label references to indexed Assam PC2024 and AC2026 reports. No boundary continuity asserted.",
+  "scope": "Exact name references, three documented PC reservation-label references and three explicit AC spelling references to indexed Assam PC2024 and AC2026 reports. Original source labels retained; no boundary continuity asserted.",
   "pc": {
     "2": {
       "source_name": "Dhubri",
@@ -972,6 +972,45 @@
       "year": 2026,
       "edition": "023d25078cffaec1db910705",
       "record_code": 21
+    },
+    "88": {
+      "source_name": "Dibrugrah",
+      "record_name": "DIBRUGARH",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 88,
+      "identity_evidence": {
+        "url": "https://results.eci.gov.in/ResultAcGenMay2026/ConstituencywiseS0388.htm",
+        "source_updated": "2026-05-05",
+        "reference_heading": "Assembly Constituency 88 - DIBRUGARH (Assam)",
+        "note": "Explicit dated name-and-number reference; the original 2023 spelling Dibrugrah remains unchanged. Does not certify boundary continuity."
+      }
+    },
+    "109": {
+      "source_name": "Howarghat (ST)",
+      "record_name": "HOWRAGHAT (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 109,
+      "identity_evidence": {
+        "url": "https://results.eci.gov.in/ResultAcGenMay2026/ConstituencywiseS03109.htm",
+        "source_updated": "2026-05-05",
+        "reference_heading": "Assembly Constituency 109 - HOWRAGHAT (Assam)",
+        "note": "Explicit dated name-and-number reference; ST retained from the original order and indexed report, not inferred from the result-page heading. Original 2023 spelling Howarghat remains unchanged; no boundary continuity asserted."
+      }
+    },
+    "117": {
+      "source_name": "Barkhola",
+      "record_name": "BORKHOLA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 117,
+      "identity_evidence": {
+        "url": "https://results.eci.gov.in/ResultAcGenMay2026/ConstituencywiseS03117.htm",
+        "source_updated": "2026-05-05",
+        "reference_heading": "Assembly Constituency 117 - BORKHOLA (Assam)",
+        "note": "Explicit dated name-and-number reference; the original 2023 spelling Barkhola remains unchanged. Does not certify boundary continuity."
+      }
     },
     "126": {
       "source_name": "Ram Krishna Nagar (SC)",
