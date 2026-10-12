@@ -167,6 +167,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '32' && $district === '588') {
             $mapFile = 'maps/kasaragod-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kasaragod', 'Kerala');
         }
         if ($state === '33' && $district === '633') {
             $mapFile = 'maps/tiruppur-villages.geojson';
