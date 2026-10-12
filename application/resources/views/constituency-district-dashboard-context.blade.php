@@ -1,3 +1,4 @@
+@if($state==='Haryana') @include('haryana-constituency-context') @endif
 @if($state==='Rajasthan') @include('rajasthan-constituency-context') @endif
 @if($state==='Madhya Pradesh') @include('madhya-pradesh-constituency-context') @endif
 @if($state==='Gujarat') @include('gujarat-constituency-context') @endif

@@ -61,7 +61,7 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/069/dashboard",
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "dashboard_foundation_implemented_required_tests_and_deployment_pending",
       "flags": [
         "Boundary edition unverified",
         "Source district code69 and Census069 are distinct identifiers; no accepted village join",
@@ -1413,9 +1413,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:51:08.663694+00:00",
-    "action": "Panchkula dated AC1/2 and full shared Ambala PC1 visually audited; own fixture prepared; no deployment",
-    "next_action": "Implement Haryana service support and own constituency context/switcher with canonical data reload; enable Panchkula069; test and deploy narrow patches under both locks, verify actual public data/map and backups."
+    "checked_at": "2026-10-12T10:56:43.291080+00:00",
+    "live_commit": "e635282a684a9c3818f9dfe623929d0ee6c9400a",
+    "action": "Own Haryana service/controller/context/switcher integration implemented and PHP syntax/formatter passed; no live deployment",
+    "next_action": "Run required regression tests using own bootstrap; prepare fresh narrow live patch preserving concurrent service/controller/shared includes; deploy under both locks with rollback, verify actual public canonical totals/full map/PC-AC context and own backups before notifying link."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
