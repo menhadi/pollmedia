@@ -774,6 +774,54 @@
       "name": "Bilara (SC)",
       "district": "Jodhpur",
       "page": 360
+    },
+    {
+      "code": 122,
+      "name": "Phalodi",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 123,
+      "name": "Lohawat",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 124,
+      "name": "Shergarh",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 127,
+      "name": "Sardarpura",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 128,
+      "name": "Jodhpur",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 129,
+      "name": "Soorsagar",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 130,
+      "name": "Luni",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 133,
+      "name": "Pokaran",
+      "district": "Jaisalmer",
+      "page": 361
     }
   ],
   "pcs": [
@@ -1016,6 +1064,21 @@
         131
       ],
       "page": 366
+    },
+    {
+      "code": 16,
+      "name": "Jodhpur",
+      "ac_codes": [
+        122,
+        123,
+        124,
+        127,
+        128,
+        129,
+        130,
+        133
+      ],
+      "page": 367
     }
   ],
   "source_name_variants": {

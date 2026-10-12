@@ -3700,14 +3700,64 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "835 unlinked shapes; no population allocated",
+        "Invalid source shape089635 excluded without repair",
+        "Dated shared electoral membership prepared; not deployed",
+        "Historical source geography retained; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/116/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/116/dashboard",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 835
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "089635",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI JODHPUR label retained; Census name Jodhpur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "d3cd0cf1411bfdd38658b6bd2fcc8f647fffe05a74e84ee74c3aa3db1efb5853",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "territorial_reference_date": "2004-02-15",
+        "visually_audited": true,
+        "pdf_pages": [
+          360,
+          361,
+          366,
+          367
+        ],
+        "district_ac_codes": [
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131
+        ],
+        "shared_pc_codes": [
+          15,
+          16
+        ],
+        "note": "Complete shared PCs retain Pali members and Jaisalmer AC133 Pokaran; current crosswalk remains unverified."
+      }
     },
     {
       "district_code": "117",
@@ -5818,11 +5868,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:37:38.592940+00:00",
-    "live_commit": "aacfd9a899e55729b4c2c0da7d095c7524403626",
-    "backup_commit": "96fb92447f8584c5d7707338dbc7fae4aadd9c1b",
-    "action": "Pali deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
-    "next_action": "Continue Jodhpur116; audit missing AC122-124/127-130 and outside Pokaran133 for full associated PCs15/16 before fixture use; extract district map"
+    "checked_at": "2026-10-12T09:40:52.516475+00:00",
+    "live_commit": "e387ce8eee4c16f6a7744b1848b9cbcaf46753f4",
+    "action": "Jodhpur full source map JSON/hash and complete audited district/shared PC15/16 fixture prepared; not deployed",
+    "next_action": "Enable Jodhpur116 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
