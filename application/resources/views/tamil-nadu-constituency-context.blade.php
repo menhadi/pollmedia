@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Thiruvallur'=>'602','Chennai'=>'603','Kancheepuram'=>'604','Vellore'=>'605','Tiruvannamalai'=>'606','Viluppuram'=>'607','Salem'=>'608','Namakkal'=>'609','Erode'=>'610','The Nilgiris'=>'611','Dindigul'=>'612','Karur'=>'613','Tiruchirappalli'=>'614'];
+$codes=['Thiruvallur'=>'602','Chennai'=>'603','Kancheepuram'=>'604','Vellore'=>'605','Tiruvannamalai'=>'606','Viluppuram'=>'607','Salem'=>'608','Namakkal'=>'609','Erode'=>'610','The Nilgiris'=>'611','Dindigul'=>'612','Karur'=>'613','Tiruchirappalli'=>'614','Perambalur'=>'615'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -22,6 +22,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->contains('Vellore'))<p class="notice">Partial source coverage: SOI Vellore is not established as the full Census 2011 Vellore outline. Later Ranipet and Tirupathur shapes are not merged or backcast; boundary editions and Census/LGD joins remain unverified.</p>@endif
 @if($districtNames->contains('Viluppuram'))<p class="notice">Partial source coverage: SOI Viluppuram is not established as the complete Census 2011 outline. Later Kallakkurichi shapes are not merged or backcast; matching editions and accepted Census/LGD links remain unverified.</p>@endif
 @if($districtNames->contains('Erode'))<p class="notice">District links retain ECI 2008 Erode references, including Dharapuram and Kangayam. Later Tiruppur district correspondence and equivalence to Census 2011 Erode boundaries remain unverified. District figures are context only; no constituency totals are inferred.</p>@endif
+@if($districtNames->contains('Perambalur'))<p class="notice">ECI 2008 Perambalur references include Ariyalur and Jayankondam AC149/150. Correspondence to later Ariyalur district and Census 2011 district boundaries remains unverified. Dated membership is retained; district totals are context only.</p>@endif
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>

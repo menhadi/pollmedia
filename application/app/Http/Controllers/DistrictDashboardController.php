@@ -135,6 +135,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '33' && $district === '615') {
             $mapFile = 'maps/perambalur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Perambalur', 'Tamil Nadu');
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 

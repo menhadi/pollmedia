@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction through Tiruchirappalli and complete associated PC segments; remaining districts pending",
+  "scope": "Partial extraction through dated Perambalur with complete shared PC segments; current split correspondence pending",
   "district_rows": [
     {
       "code": 1,
@@ -786,6 +786,42 @@
       "page": null
     },
     {
+      "code": 148,
+      "name": "Kunnam",
+      "district": "Perambalur",
+      "page": 419
+    },
+    {
+      "code": 149,
+      "name": "Ariyalur",
+      "district": "Perambalur",
+      "page": 420
+    },
+    {
+      "code": 150,
+      "name": "Jayankondam",
+      "district": "Perambalur",
+      "page": 420
+    },
+    {
+      "code": 157,
+      "name": "Bhuvanagiri",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 158,
+      "name": "Chidambaram",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 159,
+      "name": "Kattumannarkoil (SC)",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
       "code": 178,
       "name": "Gandarvakottai (SC)",
       "district": "Pudukkottai",
@@ -1090,6 +1126,19 @@
         147
       ],
       "page": 449
+    },
+    {
+      "code": 27,
+      "name": "Chidambaram (SC)",
+      "ac_codes": [
+        148,
+        149,
+        150,
+        157,
+        158,
+        159
+      ],
+      "page": 448
     }
   ],
   "flags": [
@@ -1100,6 +1149,7 @@
     "Partial state extraction; do not interpret omitted seats as absent",
     "Table A Virugampakkam/Shozhinganallur versus Table B Virugambakkam/Sholinganallur; runtime alias audit pending",
     "ECI2008 Erode references for Dharapuram/Kangayam retained; later Tiruppur district correspondence not inferred",
-    "Dindigul AC129 Table A Athoor versus Table B Attur spelling retained; runtime mapping audit pending"
+    "Dindigul AC129 Table A Athoor versus Table B Attur spelling retained; runtime mapping audit pending",
+    "ECI2008 Perambalur includes AC149 Ariyalur and150 Jayankondam; later Ariyalur/Census2011 crosswalk unverified. Dated district references retained, not certified current membership."
   ]
 }
