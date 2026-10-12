@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-nagaon-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Nagaon Census 2011 — rural village PCA',
+        'sheet' => 'EB-1806',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6496/download/9573/DDW_PCA1806_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6496',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-sivasagar-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Sivasagar Census 2011 — rural village PCA',
