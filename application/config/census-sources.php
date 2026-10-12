@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-palwal-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Palwal Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6280/download/9357/DDW_PCA0621_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6280',
+        'format' => 'xlsx', 'sheet' => 'EB-0621',
+    ],
     'haryana-faridabad-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Faridabad Census 2011 — district, town, village and ward PCA',
