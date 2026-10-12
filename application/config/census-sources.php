@@ -1,6 +1,46 @@
 <?php
 
 return [
+    'jammu-kashmir-kathua-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kathua Census 2011 — rural village PCA',
+        'sheet' => 'EB-0107',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6198/download/9275/DDW_PCA0107_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6198',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'jammu-kashmir-baramula-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Baramula Census 2011 — rural village PCA',
+        'sheet' => 'EB-0108',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6199/download/9276/DDW_PCA0108_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6199',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'jammu-kashmir-bandipore-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Bandipore Census 2011 — rural village PCA',
+        'sheet' => 'EB-0109',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6200/download/9277/DDW_PCA0109_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6200',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'jammu-kashmir-srinagar-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Srinagar Census 2011 — rural village PCA',
+        'sheet' => 'EB-0110',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6201/download/9278/DDW_PCA0110_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6201',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-rewari-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Rewari Census 2011 — district, town, village and ward PCA',
