@@ -826,6 +826,22 @@ class DistrictDashboardController extends Controller
         if ($state === '03' && $district === '041') {
             $mapFile = 'maps/ludhiana-villages.geojson';
         }
+        if ($state === '16' && $district === '289') {
+            $mapFile = 'maps/tripura-west-tripura-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('West Tripura', 'Tripura');
+        }
+        if ($state === '16' && $district === '290') {
+            $mapFile = 'maps/tripura-south-tripura-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('South Tripura', 'Tripura');
+        }
+        if ($state === '16' && $district === '291') {
+            $mapFile = 'maps/tripura-dhalai-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Dhalai', 'Tripura');
+        }
+        if ($state === '16' && $district === '292') {
+            $mapFile = 'maps/tripura-north-tripura-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('North Tripura', 'Tripura');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));

@@ -1,0 +1,394 @@
+{
+  "state": "Tripura",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Simna (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 2,
+      "name": "Mohanpur",
+      "district": "West Tripura"
+    },
+    {
+      "code": 3,
+      "name": "Bamutia (SC)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 4,
+      "name": "Barjala (SC)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 5,
+      "name": "Khayerpur",
+      "district": "West Tripura"
+    },
+    {
+      "code": 6,
+      "name": "Agartala",
+      "district": "West Tripura"
+    },
+    {
+      "code": 7,
+      "name": "Ramnagar",
+      "district": "West Tripura"
+    },
+    {
+      "code": 8,
+      "name": "Town Bordowali",
+      "district": "West Tripura"
+    },
+    {
+      "code": 9,
+      "name": "Banamalipur",
+      "district": "West Tripura"
+    },
+    {
+      "code": 10,
+      "name": "Majlishpur",
+      "district": "West Tripura"
+    },
+    {
+      "code": 11,
+      "name": "Mandaibazar (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 12,
+      "name": "Takarjala (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 13,
+      "name": "Pratapgarh (SC)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 14,
+      "name": "Badharghat (SC)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 15,
+      "name": "Kamalasagar",
+      "district": "West Tripura"
+    },
+    {
+      "code": 16,
+      "name": "Bishalgarh",
+      "district": "West Tripura"
+    },
+    {
+      "code": 17,
+      "name": "Golaghati (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 18,
+      "name": "Suryamaninagar",
+      "district": "West Tripura"
+    },
+    {
+      "code": 19,
+      "name": "Charilam (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 20,
+      "name": "Boxanagar",
+      "district": "West Tripura"
+    },
+    {
+      "code": 21,
+      "name": "Nalchar (SC)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 22,
+      "name": "Sonamura",
+      "district": "West Tripura"
+    },
+    {
+      "code": 23,
+      "name": "Dhanpur",
+      "district": "West Tripura"
+    },
+    {
+      "code": 24,
+      "name": "Ramchandraghat (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 25,
+      "name": "Khowai",
+      "district": "West Tripura"
+    },
+    {
+      "code": 26,
+      "name": "Asharambari (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 27,
+      "name": "Kalyanpur-Pramodenagar",
+      "district": "West Tripura"
+    },
+    {
+      "code": 28,
+      "name": "Teliamura",
+      "district": "West Tripura"
+    },
+    {
+      "code": 29,
+      "name": "Krishnapur (ST)",
+      "district": "West Tripura"
+    },
+    {
+      "code": 30,
+      "name": "Bagma (ST)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 31,
+      "name": "Radhakishorepur",
+      "district": "South Tripura"
+    },
+    {
+      "code": 32,
+      "name": "Matarbari",
+      "district": "South Tripura"
+    },
+    {
+      "code": 33,
+      "name": "Kakraban-Salgarh (SC)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 34,
+      "name": "Rajnagar (SC)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 35,
+      "name": "Belonia",
+      "district": "South Tripura"
+    },
+    {
+      "code": 36,
+      "name": "Santirbazar (ST)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 37,
+      "name": "Hrishyamukh",
+      "district": "South Tripura"
+    },
+    {
+      "code": 38,
+      "name": "Jolaibari (ST)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 39,
+      "name": "Manu (ST)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 40,
+      "name": "Sabroom",
+      "district": "South Tripura"
+    },
+    {
+      "code": 41,
+      "name": "Ampinagar (ST)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 42,
+      "name": "Amarpur",
+      "district": "South Tripura"
+    },
+    {
+      "code": 43,
+      "name": "Karbook (ST)",
+      "district": "South Tripura"
+    },
+    {
+      "code": 44,
+      "name": "Raima Valley (ST)",
+      "district": "Dhalai"
+    },
+    {
+      "code": 45,
+      "name": "Kamalpur",
+      "district": "Dhalai"
+    },
+    {
+      "code": 46,
+      "name": "Surma (SC)",
+      "district": "Dhalai"
+    },
+    {
+      "code": 47,
+      "name": "Ambassa (ST)",
+      "district": "Dhalai"
+    },
+    {
+      "code": 48,
+      "name": "Karamchhara (ST)",
+      "district": "Dhalai"
+    },
+    {
+      "code": 49,
+      "name": "Chhawmanu (ST)",
+      "district": "Dhalai"
+    },
+    {
+      "code": 50,
+      "name": "Pabiachhara (SC)",
+      "district": "North Tripura"
+    },
+    {
+      "code": 51,
+      "name": "Fatikroy (SC)",
+      "district": "North Tripura"
+    },
+    {
+      "code": 52,
+      "name": "Chandipur",
+      "district": "North Tripura"
+    },
+    {
+      "code": 53,
+      "name": "Kailasahar",
+      "district": "North Tripura"
+    },
+    {
+      "code": 54,
+      "name": "Kadamtala-Kurti",
+      "district": "North Tripura"
+    },
+    {
+      "code": 55,
+      "name": "Bagbassa",
+      "district": "North Tripura"
+    },
+    {
+      "code": 56,
+      "name": "Dharmanagar",
+      "district": "North Tripura"
+    },
+    {
+      "code": 57,
+      "name": "Jubarajnagar",
+      "district": "North Tripura"
+    },
+    {
+      "code": 58,
+      "name": "Panisagar",
+      "district": "North Tripura"
+    },
+    {
+      "code": 59,
+      "name": "Pencharthal (ST)",
+      "district": "North Tripura"
+    },
+    {
+      "code": 60,
+      "name": "Kanchanpur (ST)",
+      "district": "North Tripura"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Tripura West",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36
+      ],
+      "page": 458
+    },
+    {
+      "code": 2,
+      "name": "Tripura East (ST)",
+      "ac_codes": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "page": 458
+    }
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008 Schedule XXVII; territorial reference 2005-05-03",
+  "pc_source_date": "2008 Schedule XXVII Table B; PDF458",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "flags": [
+    "Historical four-district electoral headings retained; eight modern geometry labels remain separate, with visible successor coverage gaps",
+    "Table A Kakraban-Salgarah versus Table B Kakraban-Salgarh; spelling review pending",
+    "Table B omits ST suffix for Santirbazar while Table A includes it; reservation review pending",
+    "Source spelling variants including Pencharthal/Penchathal retained for review",
+    "Census2011 correspondence, Census joins, map rendering and demographic accuracy remain pending"
+  ]
+}

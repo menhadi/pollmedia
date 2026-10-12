@@ -1,3 +1,4 @@
+@if($state==='Tripura') @include('tripura-constituency-switcher') @endif
 @if($state==='Nagaland') @include('nagaland-constituency-switcher') @endif
 @if($state==='Mizoram') @include('mizoram-constituency-switcher') @endif
 @if($state==='Meghalaya') @include('meghalaya-constituency-switcher') @endif
