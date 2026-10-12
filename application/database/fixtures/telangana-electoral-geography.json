@@ -1,0 +1,135 @@
+{
+  "state": "Telangana",
+  "source_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "source_date": "2014-03-01",
+  "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "territorial_reference_date": "2004-02-15",
+  "scope": "Partial official2014 Telangana schedule: historical Adilabad AC1-10 and complete associated PC1/2 segments; omitted seats pending",
+  "flags": [
+    "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
+    "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
+    "Other2014 PC source code conflicts pending extraction; no silent recoding"
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Sirpur",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 2,
+      "name": "Chennur (SC)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 3,
+      "name": "Bellampalli (SC)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 4,
+      "name": "Mancherial",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 5,
+      "name": "Asifabad (ST)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 6,
+      "name": "Khanapur (ST)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 7,
+      "name": "Adilabad",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 8,
+      "name": "Boath (ST)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 9,
+      "name": "Nirmal",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 10,
+      "name": "Mudhole",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 22,
+      "name": "Dharmapuri (SC)",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 23,
+      "name": "Ramagundam",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 24,
+      "name": "Manthani",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 25,
+      "name": "Peddapalle",
+      "district": "Karimnagar",
+      "page": 41
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Adilabad (ST)",
+      "ac_codes": [
+        1,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "page": 46
+    },
+    {
+      "code": 2,
+      "name": "Peddapalle (SC)",
+      "ac_codes": [
+        2,
+        3,
+        4,
+        22,
+        23,
+        24,
+        25
+      ],
+      "page": 46
+    }
+  ],
+  "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "district_source_date": "2014-03-01",
+  "district_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "pc_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "pc_source_date": "2014-03-01",
+  "pc_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa"
+}
