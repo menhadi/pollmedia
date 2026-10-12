@@ -49,9 +49,20 @@
 @else
 <p class="notice">No exact 2023 district heading is matched to this map’s source name. Choose the dated heading below; no constituency membership has been inferred for this map.</p>
 @endif
-<p>Territorial references are dated 1 January 2023; Guwahati Municipal Corporation ward extents use Census 2001. The orders took effect on 16 August 2023 under <a href="https://egazette.gov.in/WriteReadData/2023/248113.pdf" target="_blank" rel="noopener">Presidential notification S.O.3661(E), 16 August 2023 (PDF page 3)</a>. Subsequent corrigendum checks remain pending. Older election figures and maps are not assigned to these 2023 constituencies.</p>
+<p>Territorial references are dated 1 January 2023; Guwahati Municipal Corporation ward extents use Census 2001. The orders took effect on 16 August 2023 under <a href="https://egazette.gov.in/WriteReadData/2023/248113.pdf" target="_blank" rel="noopener">Presidential notification S.O.3661(E), 16 August 2023 (PDF page 3)</a>. The verified 1 November 2023 corrigendum is summarized below; review of any later amendments remains open. Older election figures and maps are not assigned to these 2023 constituencies.</p>
 <p>Individual result links below use exact names or documented reservation-label and spelling references to the indexed 2024 parliamentary and 2026 assembly reports. Report codes are kept separately from the 2023 order numbers. All 14 PC and 126 AC report references are available; these links do not certify matching boundary editions.</p>
 <p>PC reservation labels are verified against the <a href="https://ceochhattisgarh.nic.in/assets/pdf%20files/Press%20Note%20of%20ECI2024.pdf" target="_blank" rel="noopener">official 2024 election schedule</a> (PDF page 71): Kokrajhar (ST), Diphu (ST), Silchar (SC).</p>
+<details data-assam-corrigendum="2023-11-01"><summary>Official corrections · 1 November 2023</summary>
+<p><a href="https://www.eci.gov.in/eci-backend/public/all_files/delimitation/Corrigendum.pdf" target="_blank" rel="noopener">ECI O.N.63(E), PDF pages 2–3</a> corrects or clarifies six entries in the August order. The original labels are retained in the source list below, with these corrections recorded separately.</p>
+<ul>
+<li>AC 104 Dergaon: the extent entry Government NC is corrected to Gual Gaon.</li>
+<li>AC 109: the corrected name is Howraghat (ST), replacing Howarghat (ST) in Table A and PC 6 Diphu’s membership in Table B.</li>
+<li>AC 3 Kokrajhar: Salakati’s extent label changes from TC to CT.</li>
+<li>AC 88: the corrected name is Dibrugarh, replacing Dibrugrah in Table A and PC 13 Dibrugarh’s membership in Table B.</li>
+<li>AC 91 Tingkhong: Moran Town’s extent label changes from TC to CT.</li>
+<li>AC 113 Haflong: the extent explicitly includes Haflong, Maibang, Mahur, Umrangso, Langting, Harangajao and Diyungbra town committees alongside the five development blocks.</li>
+</ul>
+<p>These are textual corrections to the electoral source. They have not been used to repair shapes, allocate population or infer village-map membership.</p></details>
 <label>District heading in the 2023 order<select id="assam-electoral-district"><option value="all" @selected($initialHeading === 'all')>All 2023 district headings</option>
 @foreach($electoralHeadings as $heading)<option value="{{ $heading }}" @selected($initialHeading === $heading)>{{ $heading }}</option>@endforeach
 </select></label>
