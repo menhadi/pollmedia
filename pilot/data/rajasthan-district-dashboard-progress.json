@@ -6030,14 +6030,57 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "Historical rows retain source geography; later splits not backcast",
+        "SOI source shape101706 rejected as invalid; no silent repair",
+        "Dated Chittorgarh territorial reference includes later Pratapgarh district areas; current crosswalk unavailable"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/127/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/127/dashboard",
+      "status": "source_map_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 880
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "101706",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "Census name Chittaurgarh retained; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "0080052c0632b86b2714021c37c804effa1a52f4cccde22f4af88680c3c45905",
+      "electoral_evidence": {
+        "note": "Census Chittaurgarh/ECI Chittorgarh alias retained; dated2004 territorial definition includes Pratapgarh AC172, not a current district crosswalk; later splits not backcast",
+        "district_ac_codes": [
+          167,
+          168,
+          169,
+          170,
+          171,
+          172
+        ],
+        "pdf_pages": [
+          363,
+          367
+        ],
+        "visually_audited": true,
+        "source_date": "2008-12-17",
+        "shared_pc_codes": [
+          21
+        ]
+      }
     },
     {
       "district_code": "128",
@@ -6608,10 +6651,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T13:52:51.9941181+00:00",
+    "checked_at": "2026-10-12T19:22:51.9941181+05:30",
     "live_commit": "a4031b046b49325747dd77c8fd776c6a9f6df9b0",
     "action": "Udaipur verified; Rajasthan28 of33 handled with deferred flags",
-    "next_action": "Prepare Chittaurgarh127 with dated ECI Chittorgarh alias and later Pratapgarh split flagged"
+    "next_action": "Finish Chittaurgarh regression session93460, then locked narrow deploy and public/backups verification"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
