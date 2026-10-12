@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Murshidabad'=>'333'];
+$codes=['Murshidabad'=>'333','Nadia'=>'336'];
 @endphp
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>

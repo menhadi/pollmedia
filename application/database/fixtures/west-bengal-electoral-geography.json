@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Four complete PCs recorded; remaining state membership pending",
+  "coverage": "Seven complete PCs recorded; remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -205,6 +205,153 @@
       "district": "Nadia",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_source_url": null
+    },
+    {
+      "code": 78,
+      "name": "Tehatta",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 79,
+      "name": "Palashipara",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 80,
+      "name": "Kaliganj",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 81,
+      "name": "Nakashipara",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 82,
+      "name": "Chapra",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 83,
+      "name": "Krishnanagar Uttar",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 84,
+      "name": "Nabadwip",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 85,
+      "name": "Krishnanagar Dakshin",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 86,
+      "name": "Santipur",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 87,
+      "name": "Ranaghat Uttar Paschim",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 88,
+      "name": "Krishnaganj",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 89,
+      "name": "Ranaghat Uttar Purba",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 90,
+      "name": "Ranaghat Dakshin",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 91,
+      "name": "Chakdaha",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 92,
+      "name": "Kalyani",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 93,
+      "name": "Haringhata",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 94,
+      "name": "Bagda",
+      "district": "North Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 95,
+      "name": "Bangaon Uttar",
+      "district": "North Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 96,
+      "name": "Bangaon Dakshin",
+      "district": "North Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 97,
+      "name": "Gaighata",
+      "district": "North Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
+    },
+    {
+      "code": 98,
+      "name": "Swarupnagar",
+      "district": "North Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Reservation suffix not given in this administrative table;not inferred"
     }
   ],
   "pcs": [
@@ -267,6 +414,54 @@
         75,
         76,
         77
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 12,
+      "name": "Krishnanagar",
+      "ac_codes": [
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        85
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 13,
+      "name": "Ranaghat (SC)",
+      "ac_codes": [
+        84,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 14,
+      "name": "Bangaon (SC)",
+      "ac_codes": [
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
