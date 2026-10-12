@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207','Muzaffarpur'=>'216','Nalanda'=>'229','Pashchim Champaran'=>'203','Nawada'=>'237','Patna'=>'230','Purba Champaran'=>'204','Rohtas'=>'234','Saharsa'=>'214','Samastipur'=>'221','Saran'=>'219','Sheikhpura'=>'228','Sheohar'=>'205','Sitamarhi'=>'206','Siwan'=>'218'];
+$codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begusarai'=>'222','Bhojpur'=>'231','Bhagalpur'=>'224','Buxar'=>'232','Gaya'=>'236','Darbhanga'=>'215','Gopalganj'=>'217','Jehanabad'=>'239','Jamui'=>'238','Kaimur (Bhabua)'=>'233','Katihar'=>'212','Kishanganj'=>'210','Munger'=>'226','Lakhisarai'=>'227','Khagaria'=>'223','Madhepura'=>'213','Madhubani'=>'207','Muzaffarpur'=>'216','Nalanda'=>'229','Pashchim Champaran'=>'203','Nawada'=>'237','Patna'=>'230','Purba Champaran'=>'204','Rohtas'=>'234','Saharsa'=>'214','Samastipur'=>'221','Saran'=>'219','Sheikhpura'=>'228','Sheohar'=>'205','Sitamarhi'=>'206','Siwan'=>'218','Supaul'=>'208'];
 @endphp
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>
@@ -15,6 +15,7 @@ $codes=['Araria'=>'209','Arwal'=>'240','Aurangabad'=>'235','Banka'=>'225','Begus
 <p class="notice">District references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @if($districtNames->contains('Purba Champaran'))<p class="notice">AC 16 Kalyanpur and AC 17 Pipra share names with other Bihar seats. Their membership codes are preserved; individual name-only dashboard context is pending code disambiguation.</p>@endif
 @if($districtNames->contains('Samastipur'))<p class="notice">AC 131 Kalyanpur (SC) shares its normalized name with AC 16 Kalyanpur. Membership codes are preserved; individual name-only dashboard context is pending code disambiguation.</p>@endif
+@if($districtNames->contains('Supaul'))<p class="notice">AC 42 Pipra shares its name with AC 17 Pipra. Membership codes are preserved; individual name-only dashboard context is pending code disambiguation.</p>@endif
 <ul>@foreach($segments as $segment)<li>AC {{ $segment['code'] }} · {{ $segment['name'] }} · {{ $segment['district'] }}@if(isset($segment['source_district_name'])) (CEO source: {{ $segment['source_district_name'] }}; boundary correspondence unverified)@endif</li>@endforeach</ul>
 @foreach($districtNames as $district)
 @if(isset($codes[$district]))
