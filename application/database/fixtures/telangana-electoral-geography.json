@@ -4,11 +4,12 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial official2014 Telangana schedule: historical Adilabad AC1-10 and complete associated PC1/2 segments; omitted seats pending",
+  "scope": "Partial dated2014 historical Adilabad/Nizamabad districts and complete associated PC1/2/4/5 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
-    "Other2014 PC source code conflicts pending extraction; no silent recoding"
+    "Other2014 PC source code conflicts pending extraction; no silent recoding",
+    "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified"
   ],
   "district_rows": [
     {
@@ -72,6 +73,72 @@
       "page": 40
     },
     {
+      "code": 11,
+      "name": "Armur",
+      "district": "Nizamabad",
+      "page": 40
+    },
+    {
+      "code": 12,
+      "name": "Bodhan",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 13,
+      "name": "Jukkal (SC)",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 14,
+      "name": "Banswada",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 15,
+      "name": "Yellareddy",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 16,
+      "name": "Kamareddy",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 17,
+      "name": "Nizamabad (Urban)",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 18,
+      "name": "Nizamabad (Rural)",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 19,
+      "name": "Balkonda",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 20,
+      "name": "Koratla",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 21,
+      "name": "Jagtial",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
       "code": 22,
       "name": "Dharmapuri (SC)",
       "district": "Karimnagar",
@@ -94,6 +161,24 @@
       "name": "Peddapalle",
       "district": "Karimnagar",
       "page": 41
+    },
+    {
+      "code": 35,
+      "name": "Narayankhed",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 36,
+      "name": "Andole (SC)",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 38,
+      "name": "Zahirabad (SC)",
+      "district": "Medak",
+      "page": 42
     }
   ],
   "pcs": [
@@ -124,6 +209,44 @@
         25
       ],
       "page": 46
+    },
+    {
+      "code": 4,
+      "name": "Nizamabad",
+      "ac_codes": [
+        11,
+        12,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "raw_ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B repeats1-7 for named segments; Table A identities and preserved official CEO PC list support11,12,17,18,19,20,21. Original retained; formal correction review pending."
+    },
+    {
+      "code": 5,
+      "name": "Zahirabad",
+      "ac_codes": [
+        13,
+        14,
+        15,
+        16,
+        35,
+        36,
+        38
+      ],
+      "page": 46
     }
   ],
   "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
@@ -131,5 +254,13 @@
   "district_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "pc_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
   "pc_source_date": "2014-03-01",
-  "pc_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa"
+  "pc_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "supplementary_pc_source": {
+    "url": "https://ceotelangana.nic.in/General_Information/pclist.pdf",
+    "sha256": "677094082ff76a23a2346f897f9b7a8f50c857bc1ccb0be477b9ffb758965c75",
+    "preserved_path": "pilot\\raw\\telangana-soi\\ceo-pc-list.pdf",
+    "source_date": "undated; publication date unverified",
+    "observed_at": "2026-10-12",
+    "status": "extracted; source-code comparison pending"
+  }
 }
