@@ -2807,14 +2807,59 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "856 unlinked shapes;2 ambiguous codes; no population allocated",
+        "Invalid shapes083235/082995 excluded without repair",
+        "Dated shared electoral membership prepared; not deployed",
+        "Historical source geography retained; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/112/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/112/dashboard",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 856,
+          "ambiguous": 2
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "083235",
+            "reason": "Invalid source shape"
+          },
+          {
+            "code": "082995",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI TONK label retained; Census name Tonk; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "b2ba5ce2aba72a5c564854345d612c3523d6037d69db37bcba543cb844626f7c",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "visually_audited": true,
+        "pdf_pages": [
+          358,
+          366
+        ],
+        "district_ac_codes": [
+          94,
+          95,
+          96,
+          97
+        ],
+        "shared_pc_codes": [
+          12
+        ],
+        "note": "Complete shared PC12 retains Sawai Madhopur AC90-93; current crosswalk and matching source boundary edition unverified."
+      }
     },
     {
       "district_code": "113",
@@ -5485,10 +5530,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T08:46:35.926308+00:00",
-    "live_commit": "35d3fc0df3537219ac698cce1a345545c6da58c1",
-    "action": "Sikar deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
-    "next_action": "Continue Tonk112 using audited AC94-97 and complete shared PC12; extract district source map"
+    "checked_at": "2026-10-12T08:50:26.081437+00:00",
+    "live_commit": "acefb11be6c96c6f8cba36b1835b6c644f235df1",
+    "action": "Tonk full source map JSON/hash validated with two invalid shapes excluded; complete audited PC12 retained; not deployed",
+    "next_action": "Enable Tonk112 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link on completion."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
