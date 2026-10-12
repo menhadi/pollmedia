@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 6 and PC8 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 8 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -362,6 +362,54 @@
       "page": 154
     },
     {
+      "code": 60,
+      "name": "Meham",
+      "district": "Rohtak",
+      "page": 154
+    },
+    {
+      "code": 61,
+      "name": "Garhi Sampla-Kiloi",
+      "district": "Rohtak",
+      "page": 154
+    },
+    {
+      "code": 62,
+      "name": "Rohtak",
+      "district": "Rohtak",
+      "page": 154
+    },
+    {
+      "code": 63,
+      "name": "Kalanaur (SC)",
+      "district": "Rohtak",
+      "page": 154
+    },
+    {
+      "code": 64,
+      "name": "Bahadurgarh",
+      "district": "Jhajjar",
+      "page": 155
+    },
+    {
+      "code": 65,
+      "name": "Badli",
+      "district": "Jhajjar",
+      "page": 155
+    },
+    {
+      "code": 66,
+      "name": "Jhajjar (SC)",
+      "district": "Jhajjar",
+      "page": 155
+    },
+    {
+      "code": 67,
+      "name": "Beri",
+      "district": "Jhajjar",
+      "page": 155
+    },
+    {
       "code": 68,
       "name": "Ateli",
       "district": "Mahendragarh",
@@ -383,6 +431,12 @@
       "code": 71,
       "name": "Nangal Chaudhry",
       "district": "Mahendragarh",
+      "page": 155
+    },
+    {
+      "code": 73,
+      "name": "Kosli",
+      "district": "Rewari",
       "page": 155
     }
   ],
@@ -480,6 +534,22 @@
         34,
         35,
         36
+      ],
+      "page": 158
+    },
+    {
+      "code": 7,
+      "name": "Rohtak",
+      "ac_codes": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        73
       ],
       "page": 158
     },

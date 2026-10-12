@@ -577,6 +577,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/arunachal-pradesh-tawang-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Tawang', 'Arunachal Pradesh');
         }
+        if ($state === '06' && $district === '082') {
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Rohtak', 'Haryana');
+            $mapFile = 'maps/rohtak-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
