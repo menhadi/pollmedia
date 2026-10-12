@@ -1993,14 +1993,58 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1219 unlinked and85 ambiguous shapes; no population allocation",
+        "Source edition and Census boundary correspondence unverified; coverage gaps visible",
+        "Shared PC7 retains Sagar and Chhatarpur membership",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/428/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/428/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1219,
+          "ambiguous": 85
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI DAMOH label retained; Census name Damoh; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "electoral_evidence": {
+        "district_ac_pages": [
+          230,
+          231,
+          232
+        ],
+        "pc_page": 251,
+        "visually_audited": true,
+        "district_ac_codes": [
+          54,
+          55,
+          56,
+          57
+        ],
+        "shared_pcs": [
+          7
+        ]
+      },
+      "deployment": {
+        "live_commit": "84d019c6a458ba7b5af393f91656bae0f320726e",
+        "rollback_base": "99030069960aa510009910351f734aa8099a55b3",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_canonical_totals_and_shared_names": "Passed population households literates children and AC names/map URL",
+        "tests": "59 tests240 assertions",
+        "local_bundle_and_github_backup": "Verified 84d019c6a458ba7b5af393f91656bae0f320726e",
+        "detailed_rendered_source_election_audits": "Deferred"
+      }
     },
     {
       "district_code": "429",
@@ -7471,10 +7515,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T02:54:56.562263+00:00",
-    "live_commit": "279ce25bde297a141f053c747d3def4771f866be",
-    "action": "Sagar deployed; canonical public totals/shared membership and backups verified",
-    "next_action": "Continue Damoh428; AC54-57/sharedPC7 already audited232/251; build map/integrate"
+    "checked_at": "2026-10-12T03:00:05.277882+00:00",
+    "live_commit": "84d019c6a458ba7b5af393f91656bae0f320726e",
+    "action": "Damoh deployed; canonical public totals/shared membership and backups verified",
+    "next_action": "Continue Satna429; audit AC61-67/PC9 pages232/233/251 then map/integrate"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
