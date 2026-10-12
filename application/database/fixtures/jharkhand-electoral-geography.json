@@ -537,5 +537,11 @@
     "reference_year": 2019,
     "publication_date": "unverified",
     "sha256": "9fd08d7d7121b45718a88a240b8476c71e73e10a3afd7a746878254b0761a121"
+  },
+  "latehar_2019_source": {
+    "sha256": "2b46c4a374aaf22028c98f6943e974be518475dd57fbdb5188ade0c3b6086b15",
+    "url": "https://latehar.nic.in/lok-sabha-election-2019/",
+    "reference_year": 2019,
+    "publication_date": "unverified"
   }
 }
