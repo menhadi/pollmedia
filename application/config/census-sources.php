@@ -1,6 +1,36 @@
 <?php
 
 return [
+    'odisha-baudh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Baudh Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2122',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6582/download/9659/DDW_PCA2122_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6582',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-subarnapur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Subarnapur Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2123',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6583/download/9660/DDW_PCA2123_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6583',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-nabarangapur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Nabarangapur Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2128',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6588/download/9665/DDW_PCA2128_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6588',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-kendujhar-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Kendujhar Census 2011 â€” rural village PCA',
