@@ -1,4 +1,4 @@
-@if(in_array([($data['census_district_code'] ?? ''), trim($data['name'])], [['069', 'Panchkula'], ['070', 'Ambala'], ['071', 'Yamunanagar'], ['072', 'Kurukshetra'], ['073', 'Kaithal'], ['074', 'Karnal'], ['075', 'Panipat'], ['076', 'Sonipat'], ['077', 'Jind'], ['078', 'Fatehabad'], ['079', 'Sirsa'], ['080', 'Hisar'], ['081', 'Bhiwani'], ['082', 'Rohtak'], ['083', 'Jhajjar'], ['084', 'Mahendragarh'], ['085', 'Rewari'], ['086', 'Gurgaon'], ['087', 'Mewat'], ['088', 'Faridabad'], ['089', 'Palwal'], ['035', 'Gurdaspur'], ['036', 'Kapurthala']], true))
+@if(in_array([($data['census_district_code'] ?? ''), trim($data['name'])], [['069', 'Panchkula'], ['070', 'Ambala'], ['071', 'Yamunanagar'], ['072', 'Kurukshetra'], ['073', 'Kaithal'], ['074', 'Karnal'], ['075', 'Panipat'], ['076', 'Sonipat'], ['077', 'Jind'], ['078', 'Fatehabad'], ['079', 'Sirsa'], ['080', 'Hisar'], ['081', 'Bhiwani'], ['082', 'Rohtak'], ['083', 'Jhajjar'], ['084', 'Mahendragarh'], ['085', 'Rewari'], ['086', 'Gurgaon'], ['087', 'Mewat'], ['088', 'Faridabad'], ['089', 'Palwal'], ['035', 'Gurdaspur'], ['036', 'Kapurthala'], ['037', 'Jalandhar']], true))
 @if(($data['census_district_code'] ?? '') === '081')
 <p class="source-note">Map coverage: 270 SOI Bhiwani shapes versus 444 Census 2011 villages. The later Charkhi Dadri area is outside this map selection. This is not the full historical district boundary; boundary editions and village crosswalks remain unverified.</p>
 @endif
@@ -19,6 +19,9 @@
 @endif
 @if(($data['census_district_code'] ?? '') === '036')
 <p class="source-note">Map coverage: 651 SOI Kapurthala source shapes versus 688 Census 2011 villages; 27 duplicate-code shapes remain ambiguous. These inventories do not establish complete village coverage or a historical district boundary. Source editions and village crosswalks remain unverified; district constituency links await a dated electoral source audit.</p>
+@endif
+@if(($data['census_district_code'] ?? '') === '037')
+<p class="source-note">Map coverage: 983 SOI Jalandhar source shapes versus 941 Census 2011 villages; 68 duplicate-code shapes remain ambiguous. These inventories do not establish complete village coverage or a historical district boundary. Source editions and village crosswalks remain unverified; district constituency links await a dated electoral source audit.</p>
 @endif
 @php
     $haryanaVillageCandidates = array_map(fn (array $row): array => [
