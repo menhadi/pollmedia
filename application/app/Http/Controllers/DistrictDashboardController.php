@@ -453,6 +453,22 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(['Jhunjhunun' => 'Jhunjhunu', 'Dhaulpur' => 'Dholpur', 'Jalor' => 'Jalore'][$rjDistrict] ?? $rjDistrict, 'Rajasthan');
             $mapFile = 'maps/'.str_replace(' ', '-', strtolower($rjDistrict)).'-villages.geojson';
         }
+        if ($state === '20' && $district === '346') {
+            $mapFile = 'maps/jharkhand-garhwa-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Garhwa', 'Jharkhand');
+        }
+        if ($state === '20' && $district === '358') {
+            $mapFile = 'maps/jharkhand-palamu-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Palamu', 'Jharkhand');
+        }
+        if ($state === '20' && $district === '347') {
+            $mapFile = 'maps/jharkhand-chatra-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Chatra', 'Jharkhand');
+        }
+        if ($state === '20' && $district === '348') {
+            $mapFile = 'maps/jharkhand-kodarma-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kodarma', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));

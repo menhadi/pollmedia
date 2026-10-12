@@ -3,14 +3,27 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial fixture: Garhwa and dated Palamau AC73-81, complete Palamu PC13 and Chatra PC4 shared scopes. Other seats pending.",
+  "scope": "Partial dated fixture: Garhwa, historical Palamau and Chatra district coverage plus Kodarma AC19; complete shared PC4,5,13 scopes. Other seats pending.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
     "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
     "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
-    "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only."
+    "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
+    "SOI KODERMA and Census/gazette Kodarma spellings retained; name correspondence does not verify boundary editions."
   ],
   "district_rows": [
+    {
+      "code": 19,
+      "name": "Kodarma",
+      "district": "Kodarma",
+      "page": 168
+    },
+    {
+      "code": 20,
+      "name": "Barkatha",
+      "district": "Hazaribagh",
+      "page": 168
+    },
     {
       "code": 26,
       "name": "Simaria (SC)",
@@ -23,6 +36,30 @@
       "name": "Chatra (SC)",
       "district": "Chatra",
       "context_district": "Chatra",
+      "page": 169
+    },
+    {
+      "code": 28,
+      "name": "Dhanwar",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 29,
+      "name": "Bagodar",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 30,
+      "name": "Jamua (SC)",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 31,
+      "name": "Gandey",
+      "district": "Giridih",
       "page": 169
     },
     {
@@ -112,6 +149,19 @@
         74,
         75,
         73
+      ],
+      "page": 175
+    },
+    {
+      "code": 5,
+      "name": "Kodarma",
+      "ac_codes": [
+        19,
+        20,
+        28,
+        29,
+        30,
+        31
       ],
       "page": 175
     }
