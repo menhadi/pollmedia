@@ -770,6 +770,9 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/mizoram-saiha-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Saiha', 'Mizoram');
         }
+        if ($state === '03' && $district === '038') {
+            $mapFile = 'maps/hoshiarpur-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
