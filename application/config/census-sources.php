@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-malkangiri-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Malkangiri Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2130',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6590/download/9667/DDW_PCA2130_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6590',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-balangir-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Balangir Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2124',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6584/download/9661/DDW_PCA2124_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6584',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-ambala-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Ambala Census 2011 — district, town, village and ward PCA',
