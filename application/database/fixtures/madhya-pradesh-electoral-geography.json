@@ -1007,6 +1007,54 @@
       "name": "Badwani (ST)",
       "district": "Barwani",
       "page": 246
+    },
+    {
+      "code": 149,
+      "name": "Berasia (SC)",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 150,
+      "name": "Bhopal Uttar",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 151,
+      "name": "Narela",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 152,
+      "name": "Bhopal Dakshin-Paschim",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 153,
+      "name": "Bhopal Madhya",
+      "district": "Bhopal",
+      "page": 242
+    },
+    {
+      "code": 154,
+      "name": "Govindpura",
+      "district": "Bhopal",
+      "page": 242
+    },
+    {
+      "code": 155,
+      "name": "Huzur",
+      "district": "Bhopal",
+      "page": 242
+    },
+    {
+      "code": 159,
+      "name": "Sehore",
+      "district": "Sehore",
+      "page": 242
     }
   ],
   "pcs": [
@@ -1323,6 +1371,21 @@
         190
       ],
       "page": 253
+    },
+    {
+      "code": 19,
+      "name": "Bhopal",
+      "ac_codes": [
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        159
+      ],
+      "page": 252
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
