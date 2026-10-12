@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirty-eight PCs recorded; remaining Bihar membership pending",
+  "coverage": "Thirty-nine PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1672,6 +1672,48 @@
       "district": "Sitamarhi",
       "source_page_label": "6 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 105,
+      "name": "Siwan",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 106,
+      "name": "Ziradei",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 107,
+      "name": "Darauli (SC)",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 108,
+      "name": "Raghunathpur",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 109,
+      "name": "Daraundha",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 110,
+      "name": "Barharia",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -2379,6 +2421,24 @@
       ],
       "cross_district_scope": [
         "Sitamarhi"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 18,
+      "name": "Siwan",
+      "ac_codes": [
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "cross_district_scope": [
+        "Siwan"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
