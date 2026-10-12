@@ -4162,14 +4162,58 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "791 unlinked shapes; no population allocated",
+        "Invalid shape091176 excluded without repair",
+        "Dated shared electoral membership prepared; not deployed",
+        "Historical source geography retained; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/118/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/118/dashboard",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 791
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "091176",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI BARMER label retained; Census name Barmer; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "46d42bc0125bc64cd1fd2baba0241de63ba59b3d730c4925c5b540b6e389e6cf",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "territorial_reference_date": "2004-02-15",
+        "visually_audited": true,
+        "pdf_pages": [
+          361,
+          367
+        ],
+        "district_ac_codes": [
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140
+        ],
+        "shared_pc_codes": [
+          17
+        ],
+        "note": "Complete shared PC17 retains Jaisalmer AC132; matching boundary editions/current crosswalk unverified."
+      }
     },
     {
       "district_code": "119",
@@ -6000,10 +6044,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:01:54.883929+00:00",
+    "checked_at": "2026-10-12T10:04:41.518769+00:00",
     "live_commit": "76b28eb3dfc856432b21c33b8e91927ee70047d2",
-    "action": "Jaisalmer deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
-    "next_action": "Continue Barmer118 using audited AC134-140 and complete shared PC17; extract district source map, test, deploy and verify"
+    "action": "Barmer full map JSON/hash validated with invalid shape excluded; complete audited shared PC17 retained; not deployed",
+    "next_action": "Enable Barmer118 controller/context/switcher, run checks, deploy under both locks with clean staged preflight and verify actual public totals/full map/context/backups; include dashboard link."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
