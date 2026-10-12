@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first twelve historical districts plus complete associated PCs; omitted seats pending, not absent",
+  "scope": "All175 dated 2014 Andhra Pradesh AC rows and25 PCs; historical district references retained; current/Census/SOI boundary correspondence unverified; PC7 original conflict retained",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -1009,6 +1009,12 @@
       "page": 38
     },
     {
+      "code": 166,
+      "name": "Chandragiri",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
       "code": 167,
       "name": "Tirupati",
       "district": "Chittoor",
@@ -1023,6 +1029,42 @@
     {
       "code": 169,
       "name": "Satyavedu (SC)",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 170,
+      "name": "Nagari",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 171,
+      "name": "Gangadhara Nellore (SC)",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 172,
+      "name": "Chittoor",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 173,
+      "name": "Puthalapattu (SC)",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 174,
+      "name": "Palamaner",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 175,
+      "name": "Kuppam",
       "district": "Chittoor",
       "page": 38
     }
@@ -1371,6 +1413,20 @@
         163,
         164,
         165
+      ],
+      "page": 40
+    },
+    {
+      "code": 25,
+      "name": "Chittoor (SC)",
+      "ac_codes": [
+        166,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175
       ],
       "page": 40
     }

@@ -18,7 +18,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
 <p class="notice">2014 reorganisation schedule district references are retained. Current district correspondence, SOI boundary edition and accepted Census/LGD village links remain unverified. No district totals are assigned to constituencies.</p>
-<p class="notice">Partial electoral fixture: the prepared historical district rows and complete associated PC segments are included. Omitted seats remain pending. Current SOI district coverage differs from historical Census and electoral geography.</p>
+<p class="notice">Dated electoral fixture includes all175 AC rows and25 PCs from the 2014 schedule. Source conflicts remain flagged for formal review; complete code coverage does not certify current boundaries or data accuracy. Current SOI district coverage differs from historical Census and electoral geography.</p>
 <p class="notice">PC7 source conflict: the 2014 parliamentary table names Mandapeta but prints AC47; the Assembly table identifies Mandapeta as AC48. Links use Assembly-table code48 and retain the original conflict for formal review. No boundary correspondence is implied.</p>
 <p class="notice">The 2014 electoral schedule uses Nellore; Census district28/550 is Sri Potti Sriramulu Nellore. This historical district context does not establish correspondence with later SOI boundaries.</p>
 <p class="notice">The 2014 electoral schedule labels this district Kadapa; Census28/551 and the preserved SOI source use Y.S.R. Context retains these dated names without certifying matching boundaries.</p>
