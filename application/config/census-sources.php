@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-bhadrak-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Bhadrak Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2109',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6569/download/9646/DDW_PCA2109_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6569',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-kendrapara-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kendrapara Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2110',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6570/download/9647/DDW_PCA2110_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6570',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-dhenkanal-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Dhenkanal Census 2011 â€” rural village PCA',
