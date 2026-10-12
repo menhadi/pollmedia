@@ -767,6 +767,102 @@
       "name": "Sarangpur (SC)",
       "district": "Rajgarh",
       "page": 242
+    },
+    {
+      "code": 173,
+      "name": "Khategaon",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 174,
+      "name": "Bagali (ST)",
+      "district": "Dewas",
+      "page": 244
+    },
+    {
+      "code": 175,
+      "name": "Mandhata",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 177,
+      "name": "Khandwa (SC)",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 178,
+      "name": "Pandhana (ST)",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 179,
+      "name": "Nepanagar (ST)",
+      "district": "Burhanpur",
+      "page": 244
+    },
+    {
+      "code": 180,
+      "name": "Burhanpur",
+      "district": "Burhanpur",
+      "page": 244
+    },
+    {
+      "code": 181,
+      "name": "Bhikangaon (ST)",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 182,
+      "name": "Badwah",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 141,
+      "name": "Bhojpur",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 142,
+      "name": "Sanchi (SC)",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 143,
+      "name": "Silwani",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 144,
+      "name": "Vidisha",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 145,
+      "name": "Basoda",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 156,
+      "name": "Budhni",
+      "district": "Sehore",
+      "page": 242
+    },
+    {
+      "code": 158,
+      "name": "Ichhawar",
+      "district": "Sehore",
+      "page": 242
     }
   ],
   "pcs": [
@@ -1008,6 +1104,36 @@
         172
       ],
       "page": 252
+    },
+    {
+      "code": 18,
+      "name": "Vidisha",
+      "ac_codes": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        156,
+        158,
+        173
+      ],
+      "page": 252
+    },
+    {
+      "code": 28,
+      "name": "Khandwa",
+      "ac_codes": [
+        174,
+        175,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182
+      ],
+      "page": 253
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
