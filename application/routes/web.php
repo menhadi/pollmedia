@@ -58,6 +58,7 @@ use App\Http\Middleware\RequireAdministrator;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/odisha-source.php';
+require __DIR__.'/uttarakhand-source.php';
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 

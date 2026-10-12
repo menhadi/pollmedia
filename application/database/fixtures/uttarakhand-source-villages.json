@@ -1,0 +1,134 @@
+{
+  "districts": [
+    {
+      "source_name": "CHAMOLI",
+      "slug": "chamoli",
+      "file": "maps/uttarakhand-source-villages/chamoli.geojson",
+      "features": 1237,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 40,
+      "bytes": 4822640,
+      "sha256": "2516ad292f94ba7a639b2f676dcc97b47807b8f480d1873a907b2f743b1b21fa"
+    },
+    {
+      "source_name": "CHAMPAWAT",
+      "slug": "champawat",
+      "file": "maps/uttarakhand-source-villages/champawat.geojson",
+      "features": 735,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 44,
+      "bytes": 2654795,
+      "sha256": "f824ce2efe79b23465319ba041abd41180a1f1484a6e52193b51dd8b1359803c"
+    },
+    {
+      "source_name": "DEHRADUN",
+      "slug": "dehradun",
+      "file": "maps/uttarakhand-source-villages/dehradun.geojson",
+      "features": 714,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 37,
+      "bytes": 2722208,
+      "sha256": "ab26b4ad94e075d41e37d06d2aa36ecece01373f6ca36966142b8459d8f55514"
+    },
+    {
+      "source_name": "HARIDWAR",
+      "slug": "haridwar",
+      "file": "maps/uttarakhand-source-villages/haridwar.geojson",
+      "features": 619,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 1,
+      "bytes": 2827229,
+      "sha256": "122a91bd95a156c588738cbb12e72950f05a88906d3f310bbbabc29b38b7f653"
+    },
+    {
+      "source_name": "PITHORAGARH",
+      "slug": "pithoragarh",
+      "file": "maps/uttarakhand-source-villages/pithoragarh.geojson",
+      "features": 1651,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 49,
+      "bytes": 5410650,
+      "sha256": "61a52e2ca90031fbd57796ed82f4e5c7ddf88d83ca1d55e2f8a1cedaa73de157"
+    },
+    {
+      "source_name": "RUDRAPRAYAG",
+      "slug": "rudraprayag",
+      "file": "maps/uttarakhand-source-villages/rudraprayag.geojson",
+      "features": 679,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 16,
+      "bytes": 2180625,
+      "sha256": "107f875f28b7540b5cc86b2382629f1b13343fae1ce60bf456b9bc21db4c48f6"
+    },
+    {
+      "source_name": "TEHRI GARHWAL",
+      "slug": "tehri-garhwal",
+      "file": "maps/uttarakhand-source-villages/tehri-garhwal.geojson",
+      "features": 1956,
+      "invalid_retained": 3,
+      "ambiguous_shapes": 100,
+      "bytes": 7635983,
+      "sha256": "9bbe88254be53c145e584423bb68336c28cd28f1ce1cd26bcec3e4b30e557af0"
+    },
+    {
+      "source_name": "UDHAM SINGH NAGAR",
+      "slug": "udham-singh-nagar",
+      "file": "maps/uttarakhand-source-villages/udham-singh-nagar.geojson",
+      "features": 674,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 12,
+      "bytes": 3523745,
+      "sha256": "52d8e67ed439251180243d447283f13b9ff05d82ba147f5b411ea6edd7fd2934"
+    },
+    {
+      "source_name": "UTTARKASHI",
+      "slug": "uttarkashi",
+      "file": "maps/uttarakhand-source-villages/uttarkashi.geojson",
+      "features": 744,
+      "invalid_retained": 2,
+      "ambiguous_shapes": 57,
+      "bytes": 3292254,
+      "sha256": "6286fa2293af77c3211a3e10d7f28aa2d66a0a8a722c23392b9863636aa5d9c5"
+    },
+    {
+      "source_name": "GARHWAL",
+      "slug": "garhwal",
+      "file": "maps/uttarakhand-source-villages/garhwal.geojson",
+      "features": 3430,
+      "invalid_retained": 2,
+      "ambiguous_shapes": 79,
+      "bytes": 11428479,
+      "sha256": "20d4973fb0b685813657b878d368c36b9e1459b93d04921616c9511a8f378674"
+    },
+    {
+      "source_name": "ALMORA",
+      "slug": "almora",
+      "file": "maps/uttarakhand-source-villages/almora.geojson",
+      "features": 2312,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 73,
+      "bytes": 8452810,
+      "sha256": "abba833fc50c04092cecb250d991cdd1c6b7030ca98824604d089788b012c8b9"
+    },
+    {
+      "source_name": "NAINITAL",
+      "slug": "nainital",
+      "file": "maps/uttarakhand-source-villages/nainital.geojson",
+      "features": 1070,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 28,
+      "bytes": 3347768,
+      "sha256": "213be5d66fd215d1035747e228837b964afc45e6cf05fd83717fb5d01bde9927"
+    },
+    {
+      "source_name": "BAGESHWAR",
+      "slug": "bageshwar",
+      "file": "maps/uttarakhand-source-villages/bageshwar.geojson",
+      "features": 958,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 44,
+      "bytes": 3012705,
+      "sha256": "662b021b821f351ef211ea51c243a7ff230e0da3e35950be69a9f610acbc665b"
+    }
+  ]
+}
