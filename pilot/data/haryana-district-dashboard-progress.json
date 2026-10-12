@@ -331,13 +331,23 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/072/dashboard",
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "local_map_prepared_electoral_audit_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted Census/LGD links pending",
         "Historical source geography retained; later splits not backcast"
-      ]
+      ],
+      "map_preparation": {
+        "ambiguous": 3,
+        "shapes": 418,
+        "rejected": 0,
+        "accepted_links": 0,
+        "unlinked": 415,
+        "source_district_code": "72",
+        "source_edition": "Unverified",
+        "deployed": false
+      }
     },
     {
       "district_code": "073",
@@ -1454,9 +1464,9 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:32:12.8313859Z",
-    "live_commit": "c8ddf4c7f76e81c3490a7910d1360bc99fc93466",
-    "action": "Public Panchkula request still times out20s; no live changes. Direct Haryana regression tests pass2 tests12 assertions:complete shared Ambala PC membership,correct06 Census request on each render,district links and explicit coverage gaps. Public/rendered live verification remains pending.",
+    "checked_at": "2026-10-12T11:37:19.0128160Z",
+    "live_commit": "e7ddcd21c17e393602fb8fcc6cb22c4da2559fdb",
+    "action": "Panchkula public request still times out20s. Live census-sources.php staged by concurrent work; no live mutation. Kurukshetra local map prepared418 shapes0 rejected0 accepted links; electoral visual audit remains pending.",
     "next_action": "Retry bounded public actual district/PC/AC checks once dynamic site responds; do not mark complete or advance until verified. Preserve other tasks and deployment locks.",
     "context_fix": "Live f39b4a10c5af753d2b48b99fa3fa3b70bd2cf318 corrects Census lookup and district links from state08 to06. Both locks held; view cache cleared. Local bundle verified and GitHub backup exact SHA verified. Public district request timed out20s; remains pending full verification."
   },
