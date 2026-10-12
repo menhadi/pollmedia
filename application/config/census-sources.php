@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-gurgaon-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Gurgaon Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6277/download/9354/DDW_PCA0618_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6277',
+        'format' => 'xlsx', 'sheet' => 'EB-0618',
+    ],
     'jammu-kashmir-ganderbal-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Ganderbal Census 2011 — rural village PCA',
