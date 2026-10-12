@@ -61,7 +61,7 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/069/dashboard",
-      "workflow_status": "dashboard_foundation_regression_passed_deployment_pending",
+      "workflow_status": "deployed_public_verification_pending_timeouts",
       "flags": [
         "Boundary edition unverified",
         "Source district code69 and Census069 are distinct identifiers; no accepted village join",
@@ -107,6 +107,18 @@
         "syntax_and_formatter": "Passed",
         "map_full_json": "243 valid features; accepted Census joins unavailable",
         "electoral_fixture": "Visually audited AC1/2 and complete Ambala PC1"
+      },
+      "deployment": {
+        "live_commit": "cf5cda1cb87844d30e54e65119003c10b4894ebf",
+        "rollback_base": "1a6466f67bc3c7b73c2e0972d7c5419649264aac",
+        "both_locks_held": true
+      },
+      "validation": {
+        "regression_tests": "59 tests /240 assertions passed before unchanged deployment",
+        "server_php_syntax": "Passed",
+        "server_uploaded_map_json": "Parsed243 features before mutation",
+        "public_checks": "District/PC/AC requests timed out; not verified and not counted complete",
+        "backup_local_bundle": "Verified chain from7bd7c2ff to cf5cda1c"
       }
     },
     {
@@ -1419,10 +1431,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:02:08.827765+00:00",
-    "live_commit": "160342f875fdd14b1cc00fc5481c639e31ac0d52",
-    "action": "Own regression suite passed; fresh narrow live patch preparation started; no deployment",
-    "next_action": "Use own prepare-panchkula-patch.py to refresh live files/base; review patch and deploy with both locks, staged-clean/scoped-clean preflight, rollback branch, JSON validation, cache clearing; verify actual public district/PC/AC data and backups."
+    "checked_at": "2026-10-12T11:08:57.523297+00:00",
+    "live_commit": "cf5cda1cb87844d30e54e65119003c10b4894ebf",
+    "action": "Panchkula/Haryana foundation deployed under both locks; public requests timed out; do not count rollout complete",
+    "next_action": "First retry bounded public district/map/PC/AC actual-data checks; confirm own GitHub backup cf5cda1c; investigate persistent timeouts read-only and use serialized fix/rollback if needed; only advance after essential verification."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
