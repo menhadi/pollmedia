@@ -1,0 +1,1186 @@
+{
+  "district_source": {
+    "date": "2024-03-28",
+    "url": "https://cdnbbsr.s3waas.gov.in/s3cbf8710b43df3f2c1553e649403426df/uploads/2025/02/202502131535383755.pdf",
+    "archive": "D:/pollmedia/pilot/raw/uttarakhand-intake/ceo-ac-district-20240328.pdf",
+    "sha256": "545c1365fd84e85e06e4d8292860593ca7222ed23edc6c4f9fb6d6aa118360f9"
+  },
+  "pc_source": {
+    "date": "2024-03-28",
+    "url": "https://cdnbbsr.s3waas.gov.in/s3cbf8710b43df3f2c1553e649403426df/uploads/2025/02/20250213334818586.pdf",
+    "archive": "D:/pollmedia/pilot/raw/uttarakhand-intake/ceo-pc-ac-20240328.pdf",
+    "sha256": "0cc7ca181bec641ec52f17b6d5e350b2a967a4e302db4f201a7522bbe7ed2b2b"
+  },
+  "districts": [
+    {
+      "number": 1,
+      "name": "Uttarkashi",
+      "acs": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Chamoli",
+      "acs": [
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Rudraprayag",
+      "acs": [
+        7,
+        8
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Tehri Garhwal",
+      "acs": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "number": 5,
+      "name": "Dehradun",
+      "acs": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ]
+    },
+    {
+      "number": 6,
+      "name": "Haridwar",
+      "acs": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    {
+      "number": 7,
+      "name": "Pauri Garhwal",
+      "acs": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ]
+    },
+    {
+      "number": 8,
+      "name": "Pithoragarh",
+      "acs": [
+        42,
+        43,
+        44,
+        45
+      ]
+    },
+    {
+      "number": 9,
+      "name": "Bageshwar",
+      "acs": [
+        46,
+        47
+      ]
+    },
+    {
+      "number": 10,
+      "name": "Almora",
+      "acs": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ]
+    },
+    {
+      "number": 11,
+      "name": "Champawat",
+      "acs": [
+        54,
+        55
+      ]
+    },
+    {
+      "number": 12,
+      "name": "Nainital",
+      "acs": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61
+      ]
+    },
+    {
+      "number": 13,
+      "name": "U.S. Nagar",
+      "acs": [
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ]
+    }
+  ],
+  "acs": [
+    {
+      "number": 1,
+      "name": "PUROLA (SC)",
+      "district": "Uttarkashi",
+      "pc": 1,
+      "pc_source_name": "PUROLA (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Purola",
+        "record_code": 1,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 2,
+      "name": "YAMUNOTRI",
+      "district": "Uttarkashi",
+      "pc": 1,
+      "pc_source_name": "YAMUNOTRI",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Yamunotri",
+        "record_code": 2,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 3,
+      "name": "GANGOTRI",
+      "district": "Uttarkashi",
+      "pc": 1,
+      "pc_source_name": "GANGOTRI",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Gangotri",
+        "record_code": 3,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 4,
+      "name": "BADRINATH",
+      "district": "Chamoli",
+      "pc": 2,
+      "pc_source_name": "BADRINATH",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Badrinath",
+        "record_code": 4,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 5,
+      "name": "THARALI (SC)",
+      "district": "Chamoli",
+      "pc": 2,
+      "pc_source_name": "THARALI (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Tharali",
+        "record_code": 5,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 6,
+      "name": "KARANPRAYAG",
+      "district": "Chamoli",
+      "pc": 2,
+      "pc_source_name": "KARANPRAYAG"
+    },
+    {
+      "number": 7,
+      "name": "KEDARNATH",
+      "district": "Rudraprayag",
+      "pc": 2,
+      "pc_source_name": "KEDARNATH",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kedarnath",
+        "record_code": 7,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 8,
+      "name": "RUDRAPRAYAG",
+      "district": "Rudraprayag",
+      "pc": 2,
+      "pc_source_name": "RUDRAPRAYAG",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rudraprayag",
+        "record_code": 8,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 9,
+      "name": "GHANSALI (SC)",
+      "district": "Tehri Garhwal",
+      "pc": 1,
+      "pc_source_name": "GHANSALI (SC)"
+    },
+    {
+      "number": 10,
+      "name": "DEOPRAYAG",
+      "district": "Tehri Garhwal",
+      "pc": 2,
+      "pc_source_name": "DEOPRAYAG",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Deoprayag",
+        "record_code": 10,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 11,
+      "name": "NARENDRANAGAR",
+      "district": "Tehri Garhwal",
+      "pc": 2,
+      "pc_source_name": "NARENDRANAGAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Narendranagar",
+        "record_code": 11,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 12,
+      "name": "PRATAPNAGAR",
+      "district": "Tehri Garhwal",
+      "pc": 1,
+      "pc_source_name": "PRATAPNAGAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pratapnagar",
+        "record_code": 12,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 13,
+      "name": "TEHRI",
+      "district": "Tehri Garhwal",
+      "pc": 1,
+      "pc_source_name": "TEHRI",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Tehri",
+        "record_code": 13,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 14,
+      "name": "DHANOLTI",
+      "district": "Tehri Garhwal",
+      "pc": 1,
+      "pc_source_name": "DHANOLTI",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dhanolti",
+        "record_code": 14,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 15,
+      "name": "CHAKRATA (ST)",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "CHAKRATA (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chakrata",
+        "record_code": 15,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 16,
+      "name": "VIKASNAGAR",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "VIKASNAGAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Vikasnagar",
+        "record_code": 16,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 17,
+      "name": "SAHASPUR",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "SAHASPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sahaspur",
+        "record_code": 17,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 18,
+      "name": "DHARAMPUR",
+      "district": "Dehradun",
+      "pc": 5,
+      "pc_source_name": "DHARAMPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dharampur",
+        "record_code": 18,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 19,
+      "name": "RAIPUR",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "RAIPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Raipur",
+        "record_code": 19,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 20,
+      "name": "RAJPUR ROAD (SC)",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "RAJPUR ROAD (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rajpur Road",
+        "record_code": 20,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 21,
+      "name": "DEHRADUN CANT.",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "DEHRADUN CANT."
+    },
+    {
+      "number": 22,
+      "name": "MUSSOORIE",
+      "district": "Dehradun",
+      "pc": 1,
+      "pc_source_name": "MUSSOORIE",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Mussoorie",
+        "record_code": 22,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 23,
+      "name": "DOIWWALA",
+      "district": "Dehradun",
+      "pc": 5,
+      "pc_source_name": "DOIWWALA"
+    },
+    {
+      "number": 24,
+      "name": "RISHIKESH",
+      "district": "Dehradun",
+      "pc": 5,
+      "pc_source_name": "RISHIKESH",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rishikesh",
+        "record_code": 24,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 25,
+      "name": "HARIDWAR",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "HARIDWAR"
+    },
+    {
+      "number": 26,
+      "name": "BHEL RANIPUR",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "BHEL RANIPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "B.H.E.L. Ranipur",
+        "record_code": 26,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 27,
+      "name": "JWALAPUR (SC)",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "JWALAPUR (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jwalapur",
+        "record_code": 27,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 28,
+      "name": "BHAGWANPUR (SC)",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "BHAGWANPUR (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhagwanpur",
+        "record_code": 28,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 29,
+      "name": "JHABRERA (SC)",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "JHABRERA (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jhabrera",
+        "record_code": 29,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 30,
+      "name": "PIRANKALIYAR",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "PIRANKALIYAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pirankaliyar",
+        "record_code": 30,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 31,
+      "name": "ROORKEE",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "ROORKEE",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Roorkee",
+        "record_code": 31,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 32,
+      "name": "KHANPUR",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "KHANPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Khanpur",
+        "record_code": 32,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 33,
+      "name": "MANGLOR",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "MANGLOR"
+    },
+    {
+      "number": 34,
+      "name": "LAKSAR",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "LAKSAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Laksar",
+        "record_code": 34,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 35,
+      "name": "HARIDWAR RURAL",
+      "district": "Haridwar",
+      "pc": 5,
+      "pc_source_name": "HARIDWAR RURAL"
+    },
+    {
+      "number": 36,
+      "name": "YAMKESHWAR",
+      "district": "Pauri Garhwal",
+      "pc": 2,
+      "pc_source_name": "YAMKESHWAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Yamkeshwar",
+        "record_code": 36,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 37,
+      "name": "PAURI (SC)",
+      "district": "Pauri Garhwal",
+      "pc": 2,
+      "pc_source_name": "PAURI (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pauri",
+        "record_code": 37,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 38,
+      "name": "SHRINAGAR",
+      "district": "Pauri Garhwal",
+      "pc": 2,
+      "pc_source_name": "SHRINAGAR"
+    },
+    {
+      "number": 39,
+      "name": "CHAUBATAKHAL",
+      "district": "Pauri Garhwal",
+      "pc": 2,
+      "pc_source_name": "CHAUBATAKHAL"
+    },
+    {
+      "number": 40,
+      "name": "LANSDOWNE",
+      "district": "Pauri Garhwal",
+      "pc": 2,
+      "pc_source_name": "LANSDOWNE",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Lansdowne",
+        "record_code": 40,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 41,
+      "name": "KOTDWAR",
+      "district": "Pauri Garhwal",
+      "pc": 2,
+      "pc_source_name": "KOTDWAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kotdwar",
+        "record_code": 41,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 42,
+      "name": "DHARCHULA",
+      "district": "Pithoragarh",
+      "pc": 3,
+      "pc_source_name": "DHARCHULA",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dharchula",
+        "record_code": 42,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 43,
+      "name": "DIDIHAT",
+      "district": "Pithoragarh",
+      "pc": 3,
+      "pc_source_name": "DIDIHAT",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Didihat",
+        "record_code": 43,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 44,
+      "name": "PITHORAGARH",
+      "district": "Pithoragarh",
+      "pc": 3,
+      "pc_source_name": "PITHORAGARH",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pithoragarh",
+        "record_code": 44,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 45,
+      "name": "GANGOLIHAT (SC)",
+      "district": "Pithoragarh",
+      "pc": 3,
+      "pc_source_name": "GANGOLIHAT (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Gangolihat",
+        "record_code": 45,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 46,
+      "name": "KAPKOT",
+      "district": "Bageshwar",
+      "pc": 3,
+      "pc_source_name": "KAPKOT",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kapkot",
+        "record_code": 46,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 47,
+      "name": "BAGESHWWAR",
+      "district": "Bageshwar",
+      "pc": 3,
+      "pc_source_name": "BAGESHWWAR"
+    },
+    {
+      "number": 48,
+      "name": "DWARAHAT",
+      "district": "Almora",
+      "pc": 3,
+      "pc_source_name": "DWARAHAT",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dwarahat",
+        "record_code": 48,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 49,
+      "name": "SALT",
+      "district": "Almora",
+      "pc": 3,
+      "pc_source_name": "SALT",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Salt",
+        "record_code": 49,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 50,
+      "name": "RANIKHET",
+      "district": "Almora",
+      "pc": 3,
+      "pc_source_name": "RANIKHET",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Ranikhet",
+        "record_code": 50,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 51,
+      "name": "SOMESHWAR (SC)",
+      "district": "Almora",
+      "pc": 3,
+      "pc_source_name": "SOMESHWAR (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Someshwar",
+        "record_code": 51,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 52,
+      "name": "ALMORA",
+      "district": "Almora",
+      "pc": 3,
+      "pc_source_name": "ALMORA",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Almora",
+        "record_code": 52,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 53,
+      "name": "JAGESHWAR",
+      "district": "Almora",
+      "pc": 3,
+      "pc_source_name": "JAGESHWAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jageshwar",
+        "record_code": 53,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 54,
+      "name": "LOHAGHAT",
+      "district": "Champawat",
+      "pc": 3,
+      "pc_source_name": "LOHAGHAT",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Lohaghat",
+        "record_code": 54,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 55,
+      "name": "CHAMPAWAT",
+      "district": "Champawat",
+      "pc": 3,
+      "pc_source_name": "CHAMPAWAT",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Champawat",
+        "record_code": 55,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 56,
+      "name": "LALKUWAN",
+      "district": "Nainital",
+      "pc": 4,
+      "pc_source_name": "LALKUWAN"
+    },
+    {
+      "number": 57,
+      "name": "BHIMTAL",
+      "district": "Nainital",
+      "pc": 4,
+      "pc_source_name": "BHIMTAL",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhimtal",
+        "record_code": 57,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 58,
+      "name": "NAINITAL (SC)",
+      "district": "Nainital",
+      "pc": 4,
+      "pc_source_name": "NAINITAL (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Nainital",
+        "record_code": 58,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 59,
+      "name": "HALDWANI",
+      "district": "Nainital",
+      "pc": 4,
+      "pc_source_name": "HALDWANI",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Haldwani",
+        "record_code": 59,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 60,
+      "name": "KALADHUNGI",
+      "district": "Nainital",
+      "pc": 4,
+      "pc_source_name": "KALADHUNGI",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kaladhungi",
+        "record_code": 60,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 61,
+      "name": "RAMNAGAR",
+      "district": "Nainital",
+      "pc": 2,
+      "pc_source_name": "RAMNAGAR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Ramnagar",
+        "record_code": 61,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 62,
+      "name": "JASPUR",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "JASPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jaspur",
+        "record_code": 62,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 63,
+      "name": "KASHIPUR",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "KASHIPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kashipur",
+        "record_code": 63,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 64,
+      "name": "BAZPUR (SC)",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "BAZPUR (SC)"
+    },
+    {
+      "number": 65,
+      "name": "GADARPUR",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "GADARPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Gadarpur",
+        "record_code": 65,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 66,
+      "name": "RUDRAPUR",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "RUDRAPUR",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rudrapur",
+        "record_code": 66,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 67,
+      "name": "KICHHA",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "KICHHA",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kichha",
+        "record_code": 67,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 68,
+      "name": "SITARGANJ",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "SITARGANJ",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sitarganj",
+        "record_code": 68,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    },
+    {
+      "number": 69,
+      "name": "NANAKMATA (ST)",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "NANAKMATA (ST)"
+    },
+    {
+      "number": 70,
+      "name": "KHATIMA",
+      "district": "U.S. Nagar",
+      "pc": 4,
+      "pc_source_name": "KHATIMA",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Khatima",
+        "record_code": 70,
+        "edition_id": "97f1188522fae15955708c0a",
+        "year": 2022
+      }
+    }
+  ],
+  "pcs": [
+    {
+      "number": 1,
+      "name": "Tehri Garhwal",
+      "acs": [
+        1,
+        2,
+        3,
+        9,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        21,
+        22
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Tehri Garhwal",
+        "record_code": 502,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 2,
+      "name": "Garhwal",
+      "acs": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        11,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        61
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Garhwal",
+        "record_code": 503,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 3,
+      "name": "Almora (SC)",
+      "acs": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Almora",
+        "record_code": 504,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 4,
+      "name": "Nainital -Udham Singh Nagar",
+      "acs": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Nainital-Udhamsingh Nagar",
+        "record_code": 505,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 5,
+      "name": "Hardwar",
+      "acs": [
+        18,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ]
+    }
+  ],
+  "note": "Published electoral snapshot 28 March 2024. Original spellings retained; no map-edition correspondence inferred. Elector counts not imported."
+}
