@@ -1464,10 +1464,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T14:42:33.4950519Z",
-    "live_commit": "72e91d651e1b8c3948337dc34703067016f98f19",
-    "action": "Automation original scope restored. Public district canonical totals and PC/AC contextual population now pass; full public map JSON243 parsed and SHA matches local. Rendered checks and village-link source import remain pending. Official Census village workbook located catalog6260 download9337.",
-    "next_action": "Prioritize acquiring official Haryana village directory/Census village source and validating accepted identifiers and scoped crosswalks; then implement map-to-village profile links using previous pilot pattern, with per-reload canonical data and unresolved matches explicit. Resume5-minute automation active.",
+    "checked_at": "2026-10-12T14:46:42.9629401Z",
+    "live_commit": "bfe8c21e56607f52b47c0429c6de8477189a0270",
+    "action": "Official Panchkula workbook validated219 distinct village rows; village population sum248063 equals published rural district total. Map audit:101 unique code/name candidates,60 code/name disagreements,81 duplicate-code shapes,1 unmatched. No accepted links or live changes.",
+    "next_action": "Prepare standard checksummed Census package for catalog6260 workbook, add narrow source config under both live locks and import only own source after rollback/database backup. Then implement evidence-aware village links;101 code/name matches are candidates, not yet accepted namespace crosswalks. Preserve61 unmatched/disagreement and81 duplicate shapes explicitly.",
     "context_fix": "Live f39b4a10c5af753d2b48b99fa3fa3b70bd2cf318 corrects Census lookup and district links from state08 to06. Both locks held; view cache cleared. Local bundle verified and GitHub backup exact SHA verified. Public district request timed out20s; remains pending full verification."
   },
   "source_inventory": {

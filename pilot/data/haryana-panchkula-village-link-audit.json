@@ -1,0 +1,1961 @@
+{
+  "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6260/download/9337/DDW_PCA0601_2011_MDDS%20with%20UI.xlsx",
+  "source_sha256": "a8eafa7ad73d0d219e3aaee99c49d8cf0773a891b406c67a5b16e59f5ba27aa7",
+  "census_villages": 219,
+  "village_population_sum": 248063,
+  "district_rural_population": 248063,
+  "candidate_counts": {
+    "code_name_disagreement": 60,
+    "code_and_name_candidate": 101,
+    "duplicate_source_code": 81,
+    "no_census_code": 1
+  },
+  "links_accepted": false,
+  "note": "Source Vill_LGD numbers overlap Census codes; namespace correspondence and boundary edition are not assumed. Candidates only.",
+  "candidates": [
+    {
+      "shape_id": "3373",
+      "source_code": "56967",
+      "source_name": "NANGAL RUTAL",
+      "census_name": "Nagal Rootal (133)",
+      "census_code": "056967",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3376",
+      "source_code": "56971",
+      "source_name": "PAPLOHA",
+      "census_name": "Paploha (139)",
+      "census_code": "056971",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3389",
+      "source_code": "56964",
+      "source_name": "BANOI KHUDABAKSH",
+      "census_name": "Banoi Khuda Bax (131)",
+      "census_code": "056964",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3390",
+      "source_code": "57154",
+      "source_name": "THARWA",
+      "census_name": "Tharwa (18)",
+      "census_code": "057154",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3460",
+      "source_code": "57013",
+      "source_name": "JABROT",
+      "census_name": "Jabrot (166)",
+      "census_code": "057013",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3467",
+      "source_code": "57041",
+      "source_name": "BANSGHATI",
+      "census_name": "Bansghati (180)",
+      "census_code": "057041",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3476",
+      "source_code": "57038",
+      "source_name": "DERA GURU",
+      "census_name": "Dera Guru (184)",
+      "census_code": "057038",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3479",
+      "source_code": "56957",
+      "source_name": "NANAKPUR",
+      "census_name": "Nanakpur (91)",
+      "census_code": "056957",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3487",
+      "source_code": "57101",
+      "source_name": "BHUR2",
+      "census_name": "Bhud (215)",
+      "census_code": "057101",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3497",
+      "source_code": "57026",
+      "source_name": "PATTAN",
+      "census_name": "Patan (189)",
+      "census_code": "057026",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3503",
+      "source_code": "57037",
+      "source_name": "FATEHPUR DIWANWALA",
+      "census_name": "Fatehpur Diwanwala (181)",
+      "census_code": "057037",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3512",
+      "source_code": "56968",
+      "source_name": "BAR",
+      "census_name": "Bar (135)",
+      "census_code": "056968",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3520",
+      "source_code": "57007",
+      "source_name": "DAKROG",
+      "census_name": "Dakrog (169)",
+      "census_code": "057007",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3521",
+      "source_code": "56949",
+      "source_name": "GORAKHNATH",
+      "census_name": "Gorakhnath (97)",
+      "census_code": "056949",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3526",
+      "source_code": "57030",
+      "source_name": "KHARKUA",
+      "census_name": "Kharkua (183)",
+      "census_code": "057030",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3537",
+      "source_code": "57157",
+      "source_name": "SARAKPUR",
+      "census_name": "Sarakpur (14)",
+      "census_code": "057157",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3545",
+      "source_code": "57000",
+      "source_name": "BHAWANA",
+      "census_name": "Bhawana (155)",
+      "census_code": "057000",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3551",
+      "source_code": "57040",
+      "source_name": "KOTIAN",
+      "census_name": "Kotian (196)",
+      "census_code": "057040",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3559",
+      "source_code": "57161",
+      "source_name": "BAHBALPUR",
+      "census_name": "Bahbalpur (21)",
+      "census_code": "057161",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3563",
+      "source_code": "57089",
+      "source_name": "BATWAL",
+      "census_name": "Batwal (5)",
+      "census_code": "057089",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3580",
+      "source_code": "57015",
+      "source_name": "KAJIAN",
+      "census_name": "Kajiyana (161)",
+      "census_code": "057015",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3589",
+      "source_code": "57144",
+      "source_name": "SAMALHERI",
+      "census_name": "Samlehri (11)",
+      "census_code": "057144",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3609",
+      "source_code": "57083",
+      "source_name": "FATEHPUR VIRAN",
+      "census_name": "Fatehpur Viran (250)",
+      "census_code": "057083",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3618",
+      "source_code": "57150",
+      "source_name": "BAZIDPUR",
+      "census_name": "Bazidpur (267)",
+      "census_code": "057150",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3622",
+      "source_code": "56952",
+      "source_name": "MARHANWALA",
+      "census_name": "Maranwala (95)",
+      "census_code": "056952",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3626",
+      "source_code": "57022",
+      "source_name": "BERGATI",
+      "census_name": "Ber Ghati (173)",
+      "census_code": "057022",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3639",
+      "source_code": "57008",
+      "source_name": "JANAULI",
+      "census_name": "Janouli (162)",
+      "census_code": "057008",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3644",
+      "source_code": "57093",
+      "source_name": "AMRALA",
+      "census_name": "Amrala (242)",
+      "census_code": "057093",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3651",
+      "source_code": "57023",
+      "source_name": "MALLA",
+      "census_name": "Malla (174)",
+      "census_code": "057023",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3655",
+      "source_code": "56946",
+      "source_name": "SHAHPUR",
+      "census_name": "Shahpur (99)",
+      "census_code": "056946",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3667",
+      "source_code": "56950",
+      "source_name": "SITO MAJRA",
+      "census_name": "Sitoo  Majra (96)",
+      "census_code": "056950",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3676",
+      "source_code": "56972",
+      "source_name": "KIRATPUR",
+      "census_name": "Kiratpur (127)",
+      "census_code": "056972",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3684",
+      "source_code": "800363",
+      "source_name": "BIR BABUPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "3694",
+      "source_code": "56961",
+      "source_name": "JHOLUWALA",
+      "census_name": "Johlowal (129)",
+      "census_code": "056961",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3703",
+      "source_code": "57127",
+      "source_name": "MASUMPUR",
+      "census_name": "Masumpur (201)",
+      "census_code": "057127",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3711",
+      "source_code": "57014",
+      "source_name": "NALADHAMER",
+      "census_name": "Nala Domehar (164)",
+      "census_code": "057014",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3720",
+      "source_code": "57029",
+      "source_name": "CHIKAN",
+      "census_name": "Chikan (185)",
+      "census_code": "057029",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3725",
+      "source_code": "57133",
+      "source_name": "ALIPUR",
+      "census_name": "Alipur (206)",
+      "census_code": "057133",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3730",
+      "source_code": "57019",
+      "source_name": "NALABALOG",
+      "census_name": "Nala Bloug (165)",
+      "census_code": "057019",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3739",
+      "source_code": "57094",
+      "source_name": "MANAK TABRA",
+      "census_name": "Manak Tabra (244)",
+      "census_code": "057094",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3742",
+      "source_code": "56954",
+      "source_name": "RAMPUR JANGI",
+      "census_name": "Rampur Jangi (92)",
+      "census_code": "056954",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3752",
+      "source_code": "57141",
+      "source_name": "HANGOLA",
+      "census_name": "Hangola (265)",
+      "census_code": "057141",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3760",
+      "source_code": "56969",
+      "source_name": "PARGIAN",
+      "census_name": "Pargian (136)",
+      "census_code": "056969",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3770",
+      "source_code": "57170",
+      "source_name": "RAIPUR RANI",
+      "census_name": null,
+      "census_code": null,
+      "status": "no_census_code"
+    },
+    {
+      "shape_id": "3773",
+      "source_code": "57104",
+      "source_name": "GANESHPUR",
+      "census_name": "Ganeshpur (221)",
+      "census_code": "057104",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3781",
+      "source_code": "57021",
+      "source_name": "TIBBI",
+      "census_name": "Tibi (172)",
+      "census_code": "057021",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3790",
+      "source_code": "57119",
+      "source_name": "BHOJ JABYAL",
+      "census_name": "Bhoj Jabial (324)",
+      "census_code": "057119",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3794",
+      "source_code": "57148",
+      "source_name": "KHERI",
+      "census_name": "Kheri (10)",
+      "census_code": "057148",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3799",
+      "source_code": "57131",
+      "source_name": "RAMPUR",
+      "census_name": "Rampur (209)",
+      "census_code": "057131",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3800",
+      "source_code": "56953",
+      "source_name": "KONA",
+      "census_name": "Kona (93)",
+      "census_code": "056953",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3805",
+      "source_code": "57016",
+      "source_name": "DATHOGRAN",
+      "census_name": "Dhato Ghran (160)",
+      "census_code": "057016",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3813",
+      "source_code": "57060",
+      "source_name": "ASREWALI",
+      "census_name": "Asrewali (226)",
+      "census_code": "057060",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3819",
+      "source_code": "57099",
+      "source_name": "Taparian(Kandaiwala, Laskari wala)",
+      "census_name": "Taparian (214)",
+      "census_code": "057099",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "3902",
+      "source_code": "57010",
+      "source_name": "KHOI",
+      "census_name": "Khoi (167)",
+      "census_code": "057010",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3932",
+      "source_code": "57155",
+      "source_name": "GOLPURA",
+      "census_name": "Golpura (17)",
+      "census_code": "057155",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3939",
+      "source_code": "57011",
+      "source_name": "BAGHARNI",
+      "census_name": "Bagharni (168)",
+      "census_code": "057011",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3942",
+      "source_code": "57033",
+      "source_name": "SANDASPUR",
+      "census_name": "Sandaspur (178)",
+      "census_code": "057033",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "3952",
+      "source_code": "57031",
+      "source_name": "HARIPUR HARISINGH",
+      "census_name": "Haripur Harisingh (182)",
+      "census_code": "057031",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4249",
+      "source_code": "57035",
+      "source_name": "NANDPUR",
+      "census_name": "Nandpur (175)",
+      "census_code": "057035",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4306",
+      "source_code": "57145",
+      "source_name": "CHHOTA BARONA",
+      "census_name": "Barauna Chhota (7)",
+      "census_code": "057145",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "4312",
+      "source_code": "57146",
+      "source_name": "TIBBI MAJRA",
+      "census_name": "Tibi Majra (8)",
+      "census_code": "057146",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "4317",
+      "source_code": "56958",
+      "source_name": "Khol Albala",
+      "census_name": "Khol Albala (89)",
+      "census_code": "056958",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4326",
+      "source_code": "56962",
+      "source_name": "CHARNIAN",
+      "census_name": "Charnian (128)",
+      "census_code": "056962",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4336",
+      "source_code": "57147",
+      "source_name": "Barauna Kalan",
+      "census_name": "Barauna Kalan (9)",
+      "census_code": "057147",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4498",
+      "source_code": "800363",
+      "source_name": "NAGAL",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4499",
+      "source_code": "800363",
+      "source_name": "MADANPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4500",
+      "source_code": "800363",
+      "source_name": "RAMGARH",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4501",
+      "source_code": "800361",
+      "source_name": "MANAKPUR THAKAR DASS",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4502",
+      "source_code": "800361",
+      "source_name": "MANAKPUR NANAKCHAND",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4503",
+      "source_code": "800361",
+      "source_name": "KHERA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4504",
+      "source_code": "800361",
+      "source_name": "TIPRA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4505",
+      "source_code": "800363",
+      "source_name": "DEVINAGAR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4506",
+      "source_code": "800363",
+      "source_name": "ALIPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4507",
+      "source_code": "800361",
+      "source_name": "RAIPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4508",
+      "source_code": "800361",
+      "source_name": "DHAMALA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4509",
+      "source_code": "800361",
+      "source_name": "BHAGWANPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4510",
+      "source_code": "800361",
+      "source_name": "DHARAMPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4511",
+      "source_code": "0",
+      "source_name": "FOREST",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4512",
+      "source_code": "800361",
+      "source_name": "MAJRA MAHTAN",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4513",
+      "source_code": "800361",
+      "source_name": "KANGUWALA(PART)",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4514",
+      "source_code": "800361",
+      "source_name": "TAGRA KALIRAM",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4515",
+      "source_code": "800361",
+      "source_name": "TAGRA SAHU",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4516",
+      "source_code": "800361",
+      "source_name": "TAGRA HARISINGH",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4517",
+      "source_code": "800361",
+      "source_name": "HAKIMPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4518",
+      "source_code": "800361",
+      "source_name": "TAGRA HAUSA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4519",
+      "source_code": "800363",
+      "source_name": "JHARIWALA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4520",
+      "source_code": "800363",
+      "source_name": "BILA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4521",
+      "source_code": "800363",
+      "source_name": "SUKHDARSHANPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4522",
+      "source_code": "800361",
+      "source_name": "NANAKPUR DEVILAL",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4523",
+      "source_code": "800361",
+      "source_name": "RAJIPUR JHAJAR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4524",
+      "source_code": "800361",
+      "source_name": "MILK",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4525",
+      "source_code": "800361",
+      "source_name": "NAGAL SODHAIN",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4526",
+      "source_code": "800363",
+      "source_name": "CHANDIMANDIR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4527",
+      "source_code": "0",
+      "source_name": "Forest",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4528",
+      "source_code": "800363",
+      "source_name": "NADAH",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4529",
+      "source_code": "800361",
+      "source_name": "GUNTHALA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4530",
+      "source_code": "800361",
+      "source_name": "MAJRI JATAN",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4531",
+      "source_code": "800361",
+      "source_name": "BASDEVPURA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4532",
+      "source_code": "800361",
+      "source_name": "LOHGARH NANAKCHAND",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4533",
+      "source_code": "800361",
+      "source_name": "BHARON KI SER",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4534",
+      "source_code": "800361",
+      "source_name": "KHERA SITA RAM",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4535",
+      "source_code": "800361",
+      "source_name": "BATINAN",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4536",
+      "source_code": "800361",
+      "source_name": "RATHPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4537",
+      "source_code": "800363",
+      "source_name": "BIR AROZRI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4538",
+      "source_code": "800363",
+      "source_name": "JALAULI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4539",
+      "source_code": "800361",
+      "source_name": "RAMPUR SEORI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4540",
+      "source_code": "57138",
+      "source_name": "KASAMPUR",
+      "census_name": "Qasampur (251)",
+      "census_code": "057138",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "4541",
+      "source_code": "800361",
+      "source_name": "KURARI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4542",
+      "source_code": "800361",
+      "source_name": "TAGRA KANGAN",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4543",
+      "source_code": "800361",
+      "source_name": "BASAWAL",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4544",
+      "source_code": "800363",
+      "source_name": "NAGAL MOGINAND",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4545",
+      "source_code": "800363",
+      "source_name": "JASWANTGARH",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4546",
+      "source_code": "800363",
+      "source_name": "DABKAURI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4547",
+      "source_code": "800363",
+      "source_name": "KHANGESRA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4548",
+      "source_code": "800361",
+      "source_name": "SURAJPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4549",
+      "source_code": "57056",
+      "source_name": "NADIAN",
+      "census_name": "Nadian (227)",
+      "census_code": "057056",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4550",
+      "source_code": "800361",
+      "source_name": "ISLAMNAGAR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4551",
+      "source_code": "800361",
+      "source_name": "MIRANPUR BAKHSHIWALA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4552",
+      "source_code": "800361",
+      "source_name": "BHOGPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4553",
+      "source_code": "800361",
+      "source_name": "DAMDAMA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4554",
+      "source_code": "57047",
+      "source_name": "Suketri",
+      "census_name": "Suketri (376)",
+      "census_code": "057047",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4555",
+      "source_code": "800363",
+      "source_name": "BHAINSA TIBA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4556",
+      "source_code": "800363",
+      "source_name": "KHATAULI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4557",
+      "source_code": "57129",
+      "source_name": "GOBINDPUR",
+      "census_name": "Gobindpur (205)",
+      "census_code": "057129",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "4558",
+      "source_code": "0",
+      "source_name": "FIROZPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4559",
+      "source_code": "800363",
+      "source_name": "KOT",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "4560",
+      "source_code": "800363",
+      "source_name": "TOKA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6213",
+      "source_code": "56965",
+      "source_name": "BANOI SAYALIA",
+      "census_name": "Banoi Sanwalia (132)",
+      "census_code": "056965",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6214",
+      "source_code": "56966",
+      "source_name": "THANA KI SER",
+      "census_name": "Thane Ki Ser (134)",
+      "census_code": "056966",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6215",
+      "source_code": "56970",
+      "source_name": "NAGAL BHAGA",
+      "census_name": "Nagal Bhaga (138)",
+      "census_code": "056970",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6216",
+      "source_code": "56975",
+      "source_name": "KANDIALA",
+      "census_name": "Kandiala (137)",
+      "census_code": "056975",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6217",
+      "source_code": "56976",
+      "source_name": "AUHRIAN",
+      "census_name": "Orian (147)",
+      "census_code": "056976",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6218",
+      "source_code": "57065",
+      "source_name": "BUNGA",
+      "census_name": "Boonga (225)",
+      "census_code": "057065",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6219",
+      "source_code": "57108",
+      "source_name": "SABILPUR",
+      "census_name": "Sabilpur (219)",
+      "census_code": "057108",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6220",
+      "source_code": "57107",
+      "source_name": "TIBBI",
+      "census_name": "Tibbi (220)",
+      "census_code": "057107",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6221",
+      "source_code": "57092",
+      "source_name": "SYAMTU",
+      "census_name": "Shamtoo (241)",
+      "census_code": "057092",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6222",
+      "source_code": "57068",
+      "source_name": "KANAULI",
+      "census_name": "Kanauli (223)",
+      "census_code": "057068",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6223",
+      "source_code": "57036",
+      "source_name": "JALA",
+      "census_name": "Jalla (179)",
+      "census_code": "057036",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6224",
+      "source_code": "57082",
+      "source_name": "SANGRANA",
+      "census_name": "Sangrana (251)",
+      "census_code": "057082",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6225",
+      "source_code": "56955",
+      "source_name": "Khol Mola",
+      "census_name": "Khol Mola (101)",
+      "census_code": "056955",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6226",
+      "source_code": "56956",
+      "source_name": "Khol Fatehsingh",
+      "census_name": "Khol Fatehsingh (102)",
+      "census_code": "056956",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6227",
+      "source_code": "56951",
+      "source_name": "LAHRONDI",
+      "census_name": "Lehroundi (94)",
+      "census_code": "056951",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6228",
+      "source_code": "57017",
+      "source_name": "GANESHPUR BHORIAN",
+      "census_name": "Ganeshpur (188)",
+      "census_code": "057017",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6229",
+      "source_code": "57078",
+      "source_name": "SUNDERPUR",
+      "census_name": "Raipur Alias Sunderpur(244)",
+      "census_code": "057078",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6230",
+      "source_code": "57086",
+      "source_name": "RAHAWAR",
+      "census_name": "Rehawar (239)",
+      "census_code": "057086",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6231",
+      "source_code": "57077",
+      "source_name": "PALASRA",
+      "census_name": "Palasra (242)",
+      "census_code": "057077",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6232",
+      "source_code": "57085",
+      "source_name": "BATAWAR",
+      "census_name": "Bataur (247)",
+      "census_code": "057085",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6233",
+      "source_code": "57080",
+      "source_name": "BARWALA",
+      "census_name": "Barwala (246)",
+      "census_code": "057080",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6234",
+      "source_code": "57084",
+      "source_name": "BHAGWANPUR",
+      "census_name": "Bhagwanpur (248)",
+      "census_code": "057084",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6235",
+      "source_code": "57159",
+      "source_name": "NAYAGAON",
+      "census_name": "Nawagaon Urf Khader (24)",
+      "census_code": "057159",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6236",
+      "source_code": "57160",
+      "source_name": "NATWAL",
+      "census_name": "Natwal (23)",
+      "census_code": "057160",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6237",
+      "source_code": "57165",
+      "source_name": "TODA",
+      "census_name": "Toda (25)",
+      "census_code": "057165",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6238",
+      "source_code": "57166",
+      "source_name": "JASPUR",
+      "census_name": "Jaspur (32)",
+      "census_code": "057166",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6239",
+      "source_code": "57164",
+      "source_name": "KAKRALI",
+      "census_name": "Kakrali (22)",
+      "census_code": "057164",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6240",
+      "source_code": "57163",
+      "source_name": "BAGHWALA",
+      "census_name": "Bagwala (20)",
+      "census_code": "057163",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6241",
+      "source_code": "57142",
+      "source_name": "BHAOLI",
+      "census_name": "Bhanvli (264)",
+      "census_code": "057142",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6242",
+      "source_code": "57158",
+      "source_name": "TABAR",
+      "census_name": "Tabar (15)",
+      "census_code": "057158",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6243",
+      "source_code": "57096",
+      "source_name": "KAZIMPUR",
+      "census_name": "Kazampur (211)",
+      "census_code": "057096",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6244",
+      "source_code": "57136",
+      "source_name": "DHANDHALWAR",
+      "census_name": "Dandlawar (249)",
+      "census_code": "057136",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6245",
+      "source_code": "57140",
+      "source_name": "FIROZPUR",
+      "census_name": "Ferozepur (247)",
+      "census_code": "057140",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6246",
+      "source_code": "57143",
+      "source_name": "SHAHJAHNPUR",
+      "census_name": "Shahjahanpur (246)",
+      "census_code": "057143",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6247",
+      "source_code": "57139",
+      "source_name": "BHAGPUR",
+      "census_name": "Bhagpur (248)",
+      "census_code": "057139",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6248",
+      "source_code": "57125",
+      "source_name": "GANOLI",
+      "census_name": "Ganauli (200)",
+      "census_code": "057125",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6249",
+      "source_code": "57124",
+      "source_name": "BHUD",
+      "census_name": "Bhud (199)",
+      "census_code": "057124",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6250",
+      "source_code": "57098",
+      "source_name": "Kaimbwala",
+      "census_name": "Kaimbwala (213)",
+      "census_code": "057098",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6251",
+      "source_code": "57121",
+      "source_name": "BHOJ NAGAL",
+      "census_name": "Bhoj Nagal (326)",
+      "census_code": "057121",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6252",
+      "source_code": "57134",
+      "source_name": "SULTANPUR",
+      "census_name": "Sultanpur (203)",
+      "census_code": "057134",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6253",
+      "source_code": "57117",
+      "source_name": "BHOJ PANOTA",
+      "census_name": "Bhoj Ponta (315)",
+      "census_code": "057117",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6254",
+      "source_code": "57112",
+      "source_name": "BOJ NAITA",
+      "census_name": "Bhoj Naita (319)",
+      "census_code": "057112",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6255",
+      "source_code": "57114",
+      "source_name": "BHOJ DARADA",
+      "census_name": "Bhoj Darara (321)",
+      "census_code": "057114",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6256",
+      "source_code": "57115",
+      "source_name": "BHOJ KOTI",
+      "census_name": "Bhoj Koti (322)",
+      "census_code": "057115",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6257",
+      "source_code": "57120",
+      "source_name": "BHOJ KOTHI",
+      "census_name": "Bhoj Kothi (323)",
+      "census_code": "057120",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6258",
+      "source_code": "57110",
+      "source_name": "BHOJ PLASRA",
+      "census_name": "Bhoj Palasra (316)",
+      "census_code": "057110",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6259",
+      "source_code": "57123",
+      "source_name": "MANDIAL",
+      "census_name": "Mandlai (198)",
+      "census_code": "057123",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6260",
+      "source_code": "57118",
+      "source_name": "BHOJ KUDANA",
+      "census_name": "Bhoj Kudana (314)",
+      "census_code": "057118",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6261",
+      "source_code": "57079",
+      "source_name": "JEETPUR",
+      "census_name": "Jitpur (245)",
+      "census_code": "057079",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6708",
+      "source_code": "56960",
+      "source_name": "KARANPUR",
+      "census_name": "Karanpur (88)",
+      "census_code": "056960",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6709",
+      "source_code": "57034",
+      "source_name": "KIDARPUR",
+      "census_name": "Kidarpur (176)",
+      "census_code": "057034",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6710",
+      "source_code": "57106",
+      "source_name": "KHETPURALI",
+      "census_name": "Khet Parali (218)",
+      "census_code": "057106",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6711",
+      "source_code": "57162",
+      "source_name": "BAGHWALI",
+      "census_name": "Bagwali (19)",
+      "census_code": "057162",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6712",
+      "source_code": "57149",
+      "source_name": "HARIPUR",
+      "census_name": "Haripur (13)",
+      "census_code": "057149",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6713",
+      "source_code": "57116",
+      "source_name": "BHOJ BALAG",
+      "census_name": "Bhoj Balig (325)",
+      "census_code": "057116",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6714",
+      "source_code": "57135",
+      "source_name": "GARHI",
+      "census_name": "Garhi (245)",
+      "census_code": "057135",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6715",
+      "source_code": "56963",
+      "source_name": "KHERIANWALI",
+      "census_name": "Kheranwali (130)",
+      "census_code": "056963",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6716",
+      "source_code": "56973",
+      "source_name": "GARIRAN",
+      "census_name": "Gariran (126)",
+      "census_code": "056973",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6717",
+      "source_code": "57105",
+      "source_name": "RATEWALI",
+      "census_name": "Rattewali (222)",
+      "census_code": "057105",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6718",
+      "source_code": "56947",
+      "source_name": "KHOKHRA",
+      "census_name": "Khokhra (100)",
+      "census_code": "056947",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6719",
+      "source_code": "56948",
+      "source_name": "NAWANNAGAR",
+      "census_name": "Nawannagar (98)",
+      "census_code": "056948",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6720",
+      "source_code": "57012",
+      "source_name": "GAWAHI",
+      "census_name": "Gawahi (170)",
+      "census_code": "057012",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6721",
+      "source_code": "57076",
+      "source_name": "KAMI",
+      "census_name": "Kami (243)",
+      "census_code": "057076",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6722",
+      "source_code": "57081",
+      "source_name": "BHARAILI",
+      "census_name": "Bhareli (249)",
+      "census_code": "057081",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6723",
+      "source_code": "57156",
+      "source_name": "MAULI",
+      "census_name": "Mauli (16)",
+      "census_code": "057156",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6724",
+      "source_code": "57153",
+      "source_name": "SAMANWA",
+      "census_name": "Samanwa (268)",
+      "census_code": "057153",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6725",
+      "source_code": "57088",
+      "source_name": "DHANDARU",
+      "census_name": "Dhandaurru (4)",
+      "census_code": "057088",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6726",
+      "source_code": "57100",
+      "source_name": "KHERWALI PARWALA",
+      "census_name": "Kherwali Palwala (243)",
+      "census_code": "057100",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6727",
+      "source_code": "57152",
+      "source_name": "HANGOLI",
+      "census_name": "Hangoli (266)",
+      "census_code": "057152",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6728",
+      "source_code": "57137",
+      "source_name": "PIAREWALA",
+      "census_name": "Pyarewala (250)",
+      "census_code": "057137",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6729",
+      "source_code": "57126",
+      "source_name": "DEBAR",
+      "census_name": "Debar (202)",
+      "census_code": "057126",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6730",
+      "source_code": "57128",
+      "source_name": "RAHNA",
+      "census_name": "Rahna (204)",
+      "census_code": "057128",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6875",
+      "source_code": "56959",
+      "source_name": "RAMNAGAR",
+      "census_name": "Ramnagar  (90)",
+      "census_code": "056959",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6876",
+      "source_code": "800361",
+      "source_name": "TEKWANA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6877",
+      "source_code": "800361",
+      "source_name": "BAGLANA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6878",
+      "source_code": "800361",
+      "source_name": "MUHBATPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6879",
+      "source_code": "57025",
+      "source_name": "HARIPUR CHOPAHAR",
+      "census_name": "Haripur Chopahar (187)",
+      "census_code": "057025",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6880",
+      "source_code": "57024",
+      "source_name": "JODHPUR",
+      "census_name": "Jodhpur (186)",
+      "census_code": "057024",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6881",
+      "source_code": "57032",
+      "source_name": "MALPUR",
+      "census_name": "Malpur (177)",
+      "census_code": "057032",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6882",
+      "source_code": "800363",
+      "source_name": "SOORAJPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6883",
+      "source_code": "800363",
+      "source_name": "KHARAD MANGOLI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6884",
+      "source_code": "800363",
+      "source_name": "CHAUKI",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6885",
+      "source_code": "800363",
+      "source_name": "BIR GHAGHAR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6886",
+      "source_code": "800363",
+      "source_name": "DHASOO",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6887",
+      "source_code": "800363",
+      "source_name": "MANKAN",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6888",
+      "source_code": "800363",
+      "source_name": "SHIMLIPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6889",
+      "source_code": "800363",
+      "source_name": "BHANOO",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6890",
+      "source_code": "57075",
+      "source_name": "SULTANPUR",
+      "census_name": "Sultanpur (241)",
+      "census_code": "057075",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6891",
+      "source_code": "57097",
+      "source_name": "BHAROLI",
+      "census_name": "Bharauli (212)",
+      "census_code": "057097",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6892",
+      "source_code": "57102",
+      "source_name": "Trilokpur",
+      "census_name": "Tarlokpur (216)",
+      "census_code": "057102",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6893",
+      "source_code": "57103",
+      "source_name": "DULLOPUR",
+      "census_name": "Dullopur (217)",
+      "census_code": "057103",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6894",
+      "source_code": "57095",
+      "source_name": "SHAHPUR",
+      "census_name": "Shahpur (210)",
+      "census_code": "057095",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6895",
+      "source_code": "57130",
+      "source_name": "BADHOUR",
+      "census_name": "Badhaur (208)",
+      "census_code": "057130",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6896",
+      "source_code": "57132",
+      "source_name": "NARAYANPUR",
+      "census_name": "Narainpur (207)",
+      "census_code": "057132",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6897",
+      "source_code": "800361",
+      "source_name": "PINJORE",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6898",
+      "source_code": "800361",
+      "source_name": "ABDULLAPUR",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6899",
+      "source_code": "800361",
+      "source_name": "DAIWAL",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6900",
+      "source_code": "800363",
+      "source_name": "PANCHKULA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6901",
+      "source_code": "800361",
+      "source_name": "KALKA",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6902",
+      "source_code": "57009",
+      "source_name": "TORAN",
+      "census_name": "Toran (159)",
+      "census_code": "057009",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6903",
+      "source_code": "57006",
+      "source_name": "JAITHAL",
+      "census_name": "Jaithal (156)",
+      "census_code": "057006",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6904",
+      "source_code": "57005",
+      "source_name": "NOULTA, NOULTA 2",
+      "census_name": "Noulta (158)",
+      "census_code": "057005",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "6905",
+      "source_code": "0",
+      "source_name": "FOREST",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6906",
+      "source_code": "0",
+      "source_name": "BIR SHIKARGARH RF",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6907",
+      "source_code": "57018",
+      "source_name": "NALA DAKROG",
+      "census_name": "Nala Dakrog (163)",
+      "census_code": "057018",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6939",
+      "source_code": "57151",
+      "source_name": "HARULI",
+      "census_name": "Haruli (12)",
+      "census_code": "057151",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6993",
+      "source_code": "57113",
+      "source_name": "BHOJ TIPRA",
+      "census_name": "Bhoj Tipra (320)",
+      "census_code": "057113",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6994",
+      "source_code": "57122",
+      "source_name": "BHOJ RAJPURA",
+      "census_name": "Bhoj Rajpura (313)",
+      "census_code": "057122",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6995",
+      "source_code": "57020",
+      "source_name": "Dhamsoo",
+      "census_name": "Dhamsoo (171)",
+      "census_code": "057020",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6996",
+      "source_code": "0",
+      "source_name": "THADUGARH RF",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6997",
+      "source_code": "0",
+      "source_name": "Forest",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    },
+    {
+      "shape_id": "6998",
+      "source_code": "57109",
+      "source_name": "BHOJ MATAUR",
+      "census_name": "Bhoj Mataur (317)",
+      "census_code": "057109",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "6999",
+      "source_code": "57111",
+      "source_name": "Bhoj Dharti",
+      "census_name": "Bhoj Dharti (318)",
+      "census_code": "057111",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "7000",
+      "source_code": "56998",
+      "source_name": "PREM PURA",
+      "census_name": "Bhogpur (190)",
+      "census_code": "056998",
+      "status": "code_name_disagreement"
+    },
+    {
+      "shape_id": "7001",
+      "source_code": "56993",
+      "source_name": "Manakpur Kholgaman",
+      "census_name": "Manakpur Kholgaman (104)",
+      "census_code": "056993",
+      "status": "code_and_name_candidate"
+    },
+    {
+      "shape_id": "7006",
+      "source_code": "0",
+      "source_name": "NEPLI RF",
+      "census_name": null,
+      "census_code": null,
+      "status": "duplicate_source_code"
+    }
+  ]
+}
