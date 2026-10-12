@@ -3700,16 +3700,17 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "implementation_tested_deployment_deferred_held_lock",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "835 unlinked shapes; no population allocated",
-        "Invalid source shape089635 excluded without repair",
-        "Dated shared electoral membership prepared; not deployed",
-        "Historical source geography retained; later splits not backcast"
+        "Invalid shape089635 excluded without repair",
+        "Dated PCs15/16 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/116/dashboard",
-      "status": "implementation_tested_deployment_deferred_held_lock",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3783,6 +3784,40 @@
           "flags": []
         },
         "deployment_attempt": "Exit75; deployment lock held; no live mutation performed"
+      },
+      "deployment": {
+        "live_commit": "b9f0ac5a88edfdfd7de65544a4bba4de4d98ee58",
+        "rollback_base": "f75d3f77b5c856d98d53f278563c7287d0f14b6d",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7373,
+          "name": "Jalor",
+          "code": "116",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1828730,
+          "households": 326134,
+          "literates": 829582,
+          "children": 316455,
+          "male": 936634,
+          "female": 892096,
+          "workers": 896644,
+          "literacy": 54.86,
+          "male_literacy": 70.67,
+          "female_literacy": 38.47,
+          "source_row": 709,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;835 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed before unchanged implementation deployment",
+        "local_bundle_and_github_backup": "Verified d274216cc5551ca370a119eccbff342013011f4e; includes concurrent changes",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5894,10 +5929,11 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:46:00.593187+00:00",
-    "live_commit": "e387ce8eee4c16f6a7744b1848b9cbcaf46753f4",
-    "action": "Jodhpur implementation/tests ready; serialized deployment deferred on held lock; no bypass and no live changes",
-    "next_action": "Retry Jodhpur116 with fresh live HEAD/scoped patch under both locks when available; verify actual public totals/full map/PC-AC context/backups before marking complete."
+    "checked_at": "2026-10-12T09:51:01.902182+00:00",
+    "live_commit": "b9f0ac5a88edfdfd7de65544a4bba4de4d98ee58",
+    "backup_commit": "d274216cc5551ca370a119eccbff342013011f4e",
+    "action": "Jodhpur deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Jaisalmer117; audit AC132 and complete associated PCs16/17 with Barmer outside members before fixture use; extract district map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
