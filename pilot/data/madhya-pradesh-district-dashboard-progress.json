@@ -7090,10 +7090,11 @@
         "both_locks_held": true
       },
       "validation": {
-        "public_canonical_totals_and_names": "Pending: external and server-origin public requests timed out at25s on2026-10-12; no data verification claimed",
+        "public_canonical_totals_and_names": "Pending: public HTTPS timed out25s; direct origin HTTPS certificate chain not trusted; no certificate verification bypass",
         "tests": "59 tests240 assertions",
         "local_bundle_and_github_backup": "Verified 09d33a8df191976cd95d0b165f8319f6194ce042",
-        "detailed_rendered_source_election_audits": "Deferred"
+        "detailed_rendered_source_election_audits": "Deferred",
+        "origin_http_actual_totals_and_names": "Passed full origin HTTP dashboard response: population2090922 households443361 literates1294198 children272289; AC122-128 names and source map URL; public HTTPS remains pending"
       }
     },
     {
@@ -8799,10 +8800,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T05:26:59.193538+00:00",
+    "checked_at": "2026-10-12T05:29:43.941831+00:00",
     "live_commit": "09d33a8df191976cd95d0b165f8319f6194ce042",
-    "action": "Chhindwara public verification still pending: external/server-origin timeout; preparing Seoni locally",
-    "next_action": "Retry Chhindwara actual public totals before Seoni live deployment; Seoni1755-shape source map prepared locally, AC114-117/PC14-15 integration pending",
+    "action": "Chhindwara full origin HTTP actual totals and AC links verified; public HTTPS still pending",
+    "next_action": "Finish public HTTPS verification before Seoni deployment; Seoni source map already prepared",
     "observed_live_head": "12c2a7d2bd20718849d4be69b4a490367c2c6e08"
   },
   "source_inventory": {
