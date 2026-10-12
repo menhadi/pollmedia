@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='336' && $sourceMap==='maps/west-bengal-nadia-villages.geojson')<p class="notice">Nadia source coverage: 1,363 valid shapes; two duplicate-code shapes remain ambiguous. Boundary edition and Census/LGD links are unverified. This is source coverage, not a certified district perimeter; no population is assigned to shapes. Complete official AC/PC membership verification is pending.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='333' && $sourceMap==='maps/west-bengal-murshidabad-villages.geojson')<p class="notice">Murshidabad source coverage: 2,217 shapes; invalid geometry 199 is retained without repair and two duplicate-code shapes remain ambiguous. Boundary edition and Census/LGD links are unverified. This is source coverage, not a certified district perimeter; no population is assigned to shapes. Official AC/PC membership verification is pending.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='211' && $sourceMap==='maps/bihar-purnia-villages.geojson')<p class="notice">Purnia source coverage: 1,227 shapes; six invalid source geometries (32956, 32957, 33015, 33295, 33425, 33911) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
