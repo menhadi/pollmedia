@@ -842,6 +842,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/tripura-north-tripura-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('North Tripura', 'Tripura');
         }
+        if ($state === '03' && $district === '042') {
+            $mapFile = 'maps/moga-villages.geojson';
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
