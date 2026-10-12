@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated Haryana ECI2008 scope; complete shared Ambala PC1 retains Panchkula, Ambala and Yamunanagar members. Territorial references dated2004-02-15; current crosswalk and boundary editions unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete shared Ambala PC1 and Kurukshetra PC2 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -60,6 +60,60 @@
       "name": "Yamunanagar",
       "district": "Yamunanagar",
       "page": 149
+    },
+    {
+      "name": "Radaur",
+      "district": "Yamunanagar",
+      "page": 150,
+      "code": 10
+    },
+    {
+      "name": "Ladwa",
+      "district": "Kurukshetra",
+      "page": 150,
+      "code": 11
+    },
+    {
+      "name": "Shahbad (SC)",
+      "district": "Kurukshetra",
+      "page": 150,
+      "code": 12
+    },
+    {
+      "name": "Thanesar",
+      "district": "Kurukshetra",
+      "page": 150,
+      "code": 13
+    },
+    {
+      "name": "Pehowa",
+      "district": "Kurukshetra",
+      "page": 150,
+      "code": 14
+    },
+    {
+      "name": "Guhla (SC)",
+      "district": "Kaithal",
+      "page": 150,
+      "code": 15
+    },
+    {
+      "name": "Kalayat",
+      "district": "Kaithal",
+      "page": 150,
+      "code": 16
+    },
+    {
+      "name": "Kaithal",
+      "district": "Kaithal",
+      "page": 150,
+      "code": 17
+    },
+    {
+      "name": "Pundri",
+      "district": "Kaithal",
+      "page": 150,
+      "code": 18
     }
   ],
   "pcs": [
@@ -78,6 +132,22 @@
         9
       ],
       "page": 158
+    },
+    {
+      "name": "Kurukshetra",
+      "page": 158,
+      "ac_codes": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "code": 2
     }
   ]
 }

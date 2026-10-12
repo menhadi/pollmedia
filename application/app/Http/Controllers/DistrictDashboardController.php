@@ -473,6 +473,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/jharkhand-latehar-villages.geojson';
             $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->latehar();
         }
+        if ($state === '06' && $district === '071') {
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Yamunanagar', 'Haryana');
+            $mapFile = 'maps/yamunanagar-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
