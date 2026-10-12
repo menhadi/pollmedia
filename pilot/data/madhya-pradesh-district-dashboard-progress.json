@@ -7598,14 +7598,61 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1340 unlinked and 47 ambiguous source shapes; no population allocation",
+        "Source editions and Census correspondence unverified; coverage gaps visible",
+        "Shared PC4/20 outside district membership retained",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/458/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/458/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1340,
+          "ambiguous": 47
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI GUNA label retained; Census name Guna; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "electoral_evidence": {
+        "district_ac_pages": [
+          229,
+          230
+        ],
+        "pc_pages": [
+          251,
+          252
+        ],
+        "visually_audited": true,
+        "district_ac_codes": [
+          28,
+          29,
+          30,
+          31
+        ],
+        "shared_pcs": [
+          4,
+          20
+        ]
+      },
+      "deployment": {
+        "live_commit": "798c03585465a71f460e7aef9b3c02e9cdd43dc4",
+        "rollback_base": "234dd927117e8991c33a7774bb278169fa359fa0",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_canonical_totals_and_names": "Passed population households literates children and shared AC names/map URL",
+        "tests": "59 tests240 assertions",
+        "local_bundle_and_github_backup": "Verified 798c03585465a71f460e7aef9b3c02e9cdd43dc4",
+        "detailed_rendered_source_election_audits": "Deferred"
+      }
     },
     {
       "district_code": "459",
@@ -8876,10 +8923,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T05:40:27.065582+00:00",
-    "live_commit": "2e649a55fd33e2fc12b386f4444a68883dfa4216",
-    "action": "Balaghat deployed; public actual totals/membership and backups verified",
-    "next_action": "Continue Guna458; AC28-31 and shared PC4/20 already audited229/230/251/252"
+    "checked_at": "2026-10-12T05:45:18.840564+00:00",
+    "live_commit": "798c03585465a71f460e7aef9b3c02e9cdd43dc4",
+    "action": "Guna deployed; public actual totals/membership and backups verified",
+    "next_action": "Continue Ashoknagar459; dated Ashok Nagar AC32-34 and shared PC4 already audited230/251; preserve names"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
