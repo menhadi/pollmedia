@@ -3027,7 +3027,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_electoral_fixture_completion_pending_not_deployed",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -3035,7 +3035,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/113/dashboard",
-      "status": "source_map_prepared_electoral_fixture_completion_pending_not_deployed",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3065,6 +3065,35 @@
         ],
         "territorial_reference_date": "2004-02-15",
         "note": "PC13 complete fixture available. PC22 outside district rows require visual audit before fixture use; no new membership fixture added."
+      },
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "territorial_reference_date": "2004-02-15",
+        "visually_audited": true,
+        "pdf_pages": [
+          354,
+          358,
+          359,
+          363,
+          364,
+          366,
+          367
+        ],
+        "district_ac_codes": [
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ],
+        "shared_pc_codes": [
+          13,
+          22
+        ],
+        "note": "Complete shared PCs13/22 retain Jaipur, Nagaur, Pali and Rajsamand members; current crosswalk remains unverified."
       }
     },
     {
@@ -5596,10 +5625,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:05:13.079275+00:00",
-    "live_commit": "bbfe261eee675baf9e00e6062b12e8f68e39244f",
-    "action": "Ajmer full source map JSON/hash validated and PC22 extent visually audited; outside district AC evidence pending; not deployed",
-    "next_action": "Audit PDF359 AC103/111/112/116 and locate Rajsamand AC173-176 district pages visually; prepare complete PCs13/22 fixture before enabling and deploying Ajmer113."
+    "checked_at": "2026-10-12T09:10:51.408440+00:00",
+    "live_commit": "7ec167f8b82e054b5de4bc4df73c61195876ad0f",
+    "action": "Ajmer complete dated AC98-105 and shared PCs13/22 visually audited and fixture prepared; not deployed",
+    "next_action": "Enable Ajmer113 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/PC-AC context/backups; include dashboard link on completion."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
