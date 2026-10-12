@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first ten historical districts plus complete associated PCs; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first eleven historical districts plus complete associated PCs; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -816,6 +816,90 @@
       "page": 36
     },
     {
+      "code": 134,
+      "name": "Allagadda",
+      "district": "Kurnool",
+      "page": 36
+    },
+    {
+      "code": 135,
+      "name": "Srisailam",
+      "district": "Kurnool",
+      "page": 36
+    },
+    {
+      "code": 136,
+      "name": "Nandikotkur (SC)",
+      "district": "Kurnool",
+      "page": 36
+    },
+    {
+      "code": 137,
+      "name": "Kurnool",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 138,
+      "name": "Panyam",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 139,
+      "name": "Nandyal",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 140,
+      "name": "Banaganapalle",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 141,
+      "name": "Dhone",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 142,
+      "name": "Pattikonda",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 143,
+      "name": "Kodumur (SC)",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 144,
+      "name": "Yemmiganur",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 145,
+      "name": "Mantralayam",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 146,
+      "name": "Adoni",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 147,
+      "name": "Alur",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
       "code": 162,
       "name": "Thamballapalle",
       "district": "Chittoor",
@@ -1090,6 +1174,34 @@
         111,
         112,
         113
+      ],
+      "page": 39
+    },
+    {
+      "code": 17,
+      "name": "Nandyal",
+      "ac_codes": [
+        134,
+        135,
+        136,
+        138,
+        139,
+        140,
+        141
+      ],
+      "page": 39
+    },
+    {
+      "code": 18,
+      "name": "Kurnool",
+      "ac_codes": [
+        137,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147
       ],
       "page": 39
     },

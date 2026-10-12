@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Srikakulam'=>'542','Vizianagaram'=>'543','Visakhapatnam'=>'544','East Godavari'=>'545','West Godavari'=>'546','Krishna'=>'547','Guntur'=>'548','Prakasam'=>'549','Nellore'=>'550','Chittoor'=>'554','Kadapa'=>'551'];
+$codes=['Srikakulam'=>'542','Vizianagaram'=>'543','Visakhapatnam'=>'544','East Godavari'=>'545','West Godavari'=>'546','Krishna'=>'547','Guntur'=>'548','Prakasam'=>'549','Nellore'=>'550','Chittoor'=>'554','Kadapa'=>'551','Kurnool'=>'552'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
