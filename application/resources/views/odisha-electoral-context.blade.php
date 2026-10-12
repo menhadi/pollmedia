@@ -21,13 +21,14 @@
 </form>
 @if($electoralDistrict)
 <h3>{{ $electoralDistrict['name'] }} · {{ $districtAcs->count() }} ACs in the district table</h3>
-<div class="table-wrap"><table data-electoral-acs><thead><tr><th>AC number / source name</th><th>Reservation</th><th>PC in the separate CEO list</th></tr></thead><tbody>
-@foreach($districtAcs as $ac)<tr data-ac="{{ $ac['number'] }}"><td>{{ $ac['number'] }} · {{ $ac['name'] }}</td><td>{{ $ac['reservation'] }}</td><td>@if($ac['pc']){{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}@if(isset($ac['pc_source'])) � CEO map, order 15 December 2006 @endif@else Unavailable — omitted from the reviewed PC list @endif</td></tr>@endforeach
+<div class="table-wrap"><table data-electoral-acs><thead><tr><th>AC number / source name</th><th>Reservation</th><th>PC in the cited sources</th><th>Election history</th></tr></thead><tbody>
+@foreach($districtAcs as $ac)<tr data-ac="{{ $ac['number'] }}"><td>{{ $ac['number'] }} · {{ $ac['name'] }}</td><td>{{ $ac['reservation'] }}</td><td>@if($ac['pc']){{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}@if(isset($ac['pc_source'])) · CEO map, order 15 December 2006 @endif@else Unavailable — omitted from the reviewed PC list @endif</td><td><a data-ac-archive="{{ $ac['number'] }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>@endforeach
 </tbody></table></div>
 <h3>Associated PCs · shared membership</h3>
 @foreach($districtPcs as $pcNumber)
 @php($pc = $electoralPcs[$pcNumber])
 <details data-pc="{{ $pcNumber }}"><summary>PC {{ $pcNumber }} · {{ $pc['name'] }} · {{ count($pc['acs']) }} listed ACs</summary>
+<p><a data-pc-archive="{{ $pcNumber }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'pc', 'q' => $pc['name']]) }}">Search this PC in historical reports</a>. Report editions and historical spelling may differ; a name search does not establish boundary equivalence.</p>
 <p>All listed segments are shown, including those grouped under other districts in the Draft 2020 table.</p>
 <ul>@foreach($pc['acs'] as $acNumber)@php($segment = $electoralAcs[$acNumber])<li>{{ $acNumber }} · {{ $segment['name'] }} — {{ $segment['district'] }}@if($segment['district'] !== $electoralDistrict['name']) (other district in source)@endif</li>@endforeach</ul>
 </details>
@@ -35,7 +36,7 @@
 @else
 <p>Select the district spelling used in the electoral source to view its ACs and shared PCs. Name variants are not automatically treated as boundary equivalence.</p>
 @endif
-<p>Source exception retained: the reviewed PC list omitted AC 132 GOPALPUR. Its association with PC 20 BERHAMPUR is supplied by the separate <a href="{{ $electoral['supplemental_pc_source']['url'] }}">official CEO / ORSAC map � order dated 15 December 2006</a>, which shows all seven segments. This does not establish a match to the village-map edition.</p>
+<p>Source exception retained: the reviewed PC list omitted AC 132 GOPALPUR. Its association with PC 20 BERHAMPUR is supplied by the separate <a href="{{ $electoral['supplemental_pc_source']['url'] }}">official CEO / ORSAC map · order dated 15 December 2006</a>, which shows all seven segments. This does not establish a match to the village-map edition.</p>
 <p><a href="{{ $electoral['district_source']['url'] }}">Official district / AC table · Draft 2020 directory</a> · <a href="{{ $electoral['pc_source']['url'] }}">Official PC / AC list · undated</a></p>
 <p>Election archives retain their own report editions: <a href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'pc']) }}">Odisha parliamentary archives</a> · <a href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'ac']) }}">Odisha assembly archives</a> · <a href="{{ route('elections.constituencies', ['state' => 'Orissa', 'kind' => 'pc']) }}">Orissa parliamentary archives</a> · <a href="{{ route('elections.constituencies', ['state' => 'Orissa', 'kind' => 'ac']) }}">Orissa assembly archives</a>.</p>
 </section>
