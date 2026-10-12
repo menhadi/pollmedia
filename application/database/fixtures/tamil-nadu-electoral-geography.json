@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction through dated Perambalur with complete shared PC segments; current split correspondence pending",
+  "scope": "Partial extraction through Cuddalore and complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -820,6 +820,42 @@
       }
     },
     {
+      "code": 151,
+      "name": "Tittakudi (SC)",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 152,
+      "name": "Vriddhachalam",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 153,
+      "name": "Neyveli",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 154,
+      "name": "Panruti",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 155,
+      "name": "Cuddalore",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 156,
+      "name": "Kurinjipadi",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
       "code": 157,
       "name": "Bhuvanagiri",
       "district": "Cuddalore",
@@ -1140,6 +1176,19 @@
         145,
         146,
         147
+      ],
+      "page": 449
+    },
+    {
+      "code": 26,
+      "name": "Cuddalore",
+      "ac_codes": [
+        151,
+        152,
+        153,
+        154,
+        155,
+        156
       ],
       "page": 449
     },
