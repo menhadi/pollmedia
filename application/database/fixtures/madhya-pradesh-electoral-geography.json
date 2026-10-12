@@ -479,6 +479,54 @@
       "name": "Gurh",
       "district": "Rewa",
       "page": 234
+    },
+    {
+      "code": 84,
+      "name": "Jaisinghnagar (ST)",
+      "district": "Shahdol",
+      "page": 235
+    },
+    {
+      "code": 85,
+      "name": "Jaitpur (ST)",
+      "district": "Shahdol",
+      "page": 235
+    },
+    {
+      "code": 86,
+      "name": "Kotma",
+      "district": "Anuppur",
+      "page": 235
+    },
+    {
+      "code": 87,
+      "name": "Anuppur (ST)",
+      "district": "Anuppur",
+      "page": 235
+    },
+    {
+      "code": 88,
+      "name": "Pushprajgarh (ST)",
+      "district": "Anuppur",
+      "page": 235
+    },
+    {
+      "code": 89,
+      "name": "Bandhavgarh (ST)",
+      "district": "Umaria",
+      "page": 235
+    },
+    {
+      "code": 90,
+      "name": "Manpur (ST)",
+      "district": "Umaria",
+      "page": 235
+    },
+    {
+      "code": 91,
+      "name": "Barwara (ST)",
+      "district": "Katni",
+      "page": 235
     }
   ],
   "pcs": [
@@ -630,6 +678,21 @@
         75
       ],
       "page": 251
+    },
+    {
+      "code": 12,
+      "name": "Shahdol (ST)",
+      "ac_codes": [
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91
+      ],
+      "page": 252
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
