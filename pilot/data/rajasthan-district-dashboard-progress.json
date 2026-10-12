@@ -6242,7 +6242,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6250,7 +6250,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/128/dashboard",
-      "status": "deployed_public_verification_pending",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6290,9 +6290,31 @@
       "deployment_commit": "8b36be84253068a36d443dff759445b67e214804",
       "validation": {
         "regression_tests": "59 tests240 assertions passed",
-        "public_verification": "Receipts acquired; actual-data checks pending",
+        "public_verification": "Passed actual canonical four totals, complete PC24 AC names, PC Kota and AC Pipalda district context; detailed rendered audit deferred",
         "github_backup": "Verified exact ls-remote8b36be84253068a36d443dff759445b67e214804",
-        "local_bundle": "Verified8b36be84253068a36d443dff759445b67e214804"
+        "local_bundle": "Verified8b36be84253068a36d443dff759445b67e214804",
+        "public_map_full_json_sha256": "Exact public/local bytes and1225 features passed",
+        "canonical_totals": {
+          "id": 7470,
+          "name": "Baran",
+          "code": "128",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1222755,
+          "households": 241428,
+          "literates": 693307,
+          "children": 182665,
+          "male": 633945,
+          "female": 588810,
+          "workers": 552583,
+          "literacy": 66.66,
+          "male_literacy": 80.35,
+          "female_literacy": 51.96,
+          "source_row": 806,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        }
       }
     },
     {
@@ -6724,10 +6746,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T19:36:35.6303911+05:30",
-    "live_commit": "f5446d2646619d6f612c865612580e9ec5b4c8a8",
-    "action": "Kota deployed under both locks with verified backups",
-    "next_action": "Verify Kota actual totals/full map1225 features and complete PC24 membership, PC Kota and AC Pipalda district context"
+    "checked_at": "2026-10-12T14:21:33.7914160+00:00",
+    "live_commit": "5e6c64b0e1423af03e79529890d67cd6644830b3",
+    "action": "Kota verified; Rajasthan30 of33 handled with deferred flags",
+    "next_action": "Prepare Baran129 with complete dated PC25 membership, then Jhalawar130 and Pratapgarh131"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
