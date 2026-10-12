@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-ambala-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Ambala Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6261/download/9338/DDW_PCA0602_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6261',
+        'format' => 'xlsx', 'sheet' => 'EB-0602',
+    ],
     'haryana-panchkula-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Panchkula Census 2011 — district, town, village and ward PCA',
