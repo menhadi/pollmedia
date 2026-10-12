@@ -5064,7 +5064,14 @@
         ],
         "note": "Complete shared PC23 retains Bundi AC184 Hindoli; current crosswalk unverified."
       },
-      "deployment_commit": "2866883bb34f873e49c67e050009a778adf0e8bf"
+      "deployment_commit": "2866883bb34f873e49c67e050009a778adf0e8bf",
+      "validation": {
+        "regression_tests": "59 tests /240 assertions passed",
+        "github_backup": "Pending isolated bundle fetch/push session15650",
+        "public_map_full_json_sha256": "Passed exact public/local bytes and1909 features",
+        "public_verification": "Passed actual canonical totals, complete shared PC23 AC names, PC Bhilwara and AC Bhilwara district population context",
+        "local_bundle": "Full history bundle verified in isolated own repository;4c44bbe007f091c51861297b3ae20a52c88eb8b0"
+      }
     },
     {
       "district_code": "123",
@@ -6335,10 +6342,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T18:13:25.2662992+05:30",
-    "live_commit": "147ad6bd8107c69d39ec634588c9575dea320259",
-    "action": "Bhilwara deployed under both locks; complete canonical and public verification pending",
-    "next_action": "Verify Bhilwara fresh canonical totals, full public map and shared PC23/AC context, then continue Rajsamand"
+    "checked_at": "2026-10-12T13:02:57.7863902+00:00",
+    "live_commit": "a6d06fe38a4cfa8a5d75cc124acdc4aa01a0f3fe",
+    "action": "Bhilwara public actual data checks passed; full local backup verified; GitHub backup still pending",
+    "next_action": "Finish own isolated backup fetch/push and verify exact GitHub SHA, then mark Bhilwara handled and proceed Rajsamand"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
