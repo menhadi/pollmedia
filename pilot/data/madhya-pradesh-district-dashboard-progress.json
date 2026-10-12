@@ -7036,14 +7036,65 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1706 unlinked and 190 ambiguous source shapes; no population allocation",
+        "Invalid source shape with NA code excluded without repair",
+        "Source editions and Census correspondence unverified; coverage gaps visible",
+        "Dated Pandhurna membership retained; later district split not backcast",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/455/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/455/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1706,
+          "ambiguous": 190
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "NA",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI CHHINDWARA label retained; Census name Chhindwara; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "electoral_evidence": {
+        "district_ac_pages": [
+          239
+        ],
+        "pc_page": 252,
+        "visually_audited": true,
+        "district_ac_codes": [
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128
+        ],
+        "shared_pcs": [
+          16
+        ]
+      },
+      "deployment": {
+        "live_commit": "09d33a8df191976cd95d0b165f8319f6194ce042",
+        "rollback_base": "9e89d874a50932ac9e8818f976dd85989ae42830",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_canonical_totals_and_names": "Pending after public request timeout; fresh canonical service totals retrieved",
+        "tests": "59 tests240 assertions",
+        "local_bundle_and_github_backup": "Verified 09d33a8df191976cd95d0b165f8319f6194ce042",
+        "detailed_rendered_source_election_audits": "Deferred"
+      }
     },
     {
       "district_code": "456",
@@ -8734,10 +8785,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T05:15:17.642311+00:00",
-    "live_commit": "9e89d874a50932ac9e8818f976dd85989ae42830",
-    "action": "Mandla deployed; canonical public totals/membership and backups verified",
-    "next_action": "Continue Chhindwara455; AC122-128 and PC16 already audited239/252; flag later Pandhurna split"
+    "checked_at": "2026-10-12T05:21:17.887803+00:00",
+    "live_commit": "09d33a8df191976cd95d0b165f8319f6194ce042",
+    "action": "Chhindwara deployed; public verification pending after timeout; backups verified",
+    "next_action": "Finish Chhindwara public actual-total verification before Seoni456; no redeployment needed"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
