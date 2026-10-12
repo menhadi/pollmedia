@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial district extraction through Madurai with complete associated PC segments; remaining districts pending",
+  "scope": "Partial district extraction through Virudhunagar with complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -1126,6 +1126,18 @@
       "page": 437
     },
     {
+      "code": 202,
+      "name": "Rajapalayam",
+      "district": "Virudhunagar",
+      "page": 438
+    },
+    {
+      "code": 203,
+      "name": "Srivilliputhur (SC)",
+      "district": "Virudhunagar",
+      "page": 438
+    },
+    {
       "code": 204,
       "name": "Sattur",
       "district": "Virudhunagar",
@@ -1178,6 +1190,30 @@
       "name": "Mudhukulathur",
       "district": "Ramanathapuram",
       "page": 441
+    },
+    {
+      "code": 219,
+      "name": "Sankarankovil (SC)",
+      "district": "Tirunelveli",
+      "page": 443
+    },
+    {
+      "code": 220,
+      "name": "Vasudevanallur (SC)",
+      "district": "Tirunelveli",
+      "page": 443
+    },
+    {
+      "code": 221,
+      "name": "Kadayanallur",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 222,
+      "name": "Tenkasi",
+      "district": "Tirunelveli",
+      "page": 444
     }
   ],
   "pcs": [
@@ -1594,6 +1630,19 @@
         210,
         211,
         212
+      ],
+      "page": 449
+    },
+    {
+      "code": 37,
+      "name": "Tenkasi (SC)",
+      "ac_codes": [
+        202,
+        203,
+        219,
+        220,
+        221,
+        222
       ],
       "page": 449
     }
