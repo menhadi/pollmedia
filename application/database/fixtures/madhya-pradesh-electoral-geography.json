@@ -1055,6 +1055,54 @@
       "name": "Sehore",
       "district": "Sehore",
       "page": 242
+    },
+    {
+      "code": 140,
+      "name": "Udaipura",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 119,
+      "name": "Narsingpur",
+      "district": "Narsinghpur",
+      "page": 238
+    },
+    {
+      "code": 120,
+      "name": "Tendukheda",
+      "district": "Narsinghpur",
+      "page": 238
+    },
+    {
+      "code": 121,
+      "name": "Gadarwara",
+      "district": "Narsinghpur",
+      "page": 239
+    },
+    {
+      "code": 136,
+      "name": "Seoni-Malwa",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 137,
+      "name": "Hoshangabad",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 138,
+      "name": "Sohagpur",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 139,
+      "name": "Pipariya (SC)",
+      "district": "Hoshangabad",
+      "page": 240
     }
   ],
   "pcs": [
@@ -1384,6 +1432,21 @@
         154,
         155,
         159
+      ],
+      "page": 252
+    },
+    {
+      "code": 17,
+      "name": "Hoshangabad",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        136,
+        137,
+        138,
+        139,
+        140
       ],
       "page": 252
     }
