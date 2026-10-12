@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete shared Ambala PC1, Kurukshetra PC2 , Karnal PC5 and Sonipat PC6 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 6 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -222,6 +222,114 @@
       "name": "Jind",
       "district": "Jind",
       "page": 152
+    },
+    {
+      "code": 37,
+      "name": "Uchana Kalan",
+      "district": "Jind",
+      "page": 152
+    },
+    {
+      "code": 38,
+      "name": "Narwana (SC)",
+      "district": "Jind",
+      "page": 152
+    },
+    {
+      "code": 39,
+      "name": "Tohana",
+      "district": "Fatehabad",
+      "page": 152
+    },
+    {
+      "code": 40,
+      "name": "Fatehabad",
+      "district": "Fatehabad",
+      "page": 152
+    },
+    {
+      "code": 41,
+      "name": "Ratia (SC)",
+      "district": "Fatehabad",
+      "page": 152
+    },
+    {
+      "code": 42,
+      "name": "Kalanwali (SC)",
+      "district": "Sirsa",
+      "page": 153
+    },
+    {
+      "code": 43,
+      "name": "Dabwali",
+      "district": "Sirsa",
+      "page": 153
+    },
+    {
+      "code": 44,
+      "name": "Rania",
+      "district": "Sirsa",
+      "page": 153
+    },
+    {
+      "code": 45,
+      "name": "Sirsa",
+      "district": "Sirsa",
+      "page": 153
+    },
+    {
+      "code": 46,
+      "name": "Ellenabad",
+      "district": "Sirsa",
+      "page": 153
+    },
+    {
+      "code": 47,
+      "name": "Adampur",
+      "district": "Hisar",
+      "page": 153
+    },
+    {
+      "code": 48,
+      "name": "Uklana (SC)",
+      "district": "Hisar",
+      "page": 153
+    },
+    {
+      "code": 49,
+      "name": "Narnaund",
+      "district": "Hisar",
+      "page": 153
+    },
+    {
+      "code": 50,
+      "name": "Hansi",
+      "district": "Hisar",
+      "page": 153
+    },
+    {
+      "code": 51,
+      "name": "Barwala",
+      "district": "Hisar",
+      "page": 153
+    },
+    {
+      "code": 52,
+      "name": "Hisar",
+      "district": "Hisar",
+      "page": 154
+    },
+    {
+      "code": 53,
+      "name": "Nalwa",
+      "district": "Hisar",
+      "page": 154
+    },
+    {
+      "code": 59,
+      "name": "Bawani Khera (SC)",
+      "district": "Bhiwani",
+      "page": 154
     }
   ],
   "pcs": [
@@ -256,6 +364,38 @@
         18
       ],
       "code": 2
+    },
+    {
+      "code": 3,
+      "name": "Sirsa (SC)",
+      "ac_codes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "page": 158
+    },
+    {
+      "code": 4,
+      "name": "Hisar",
+      "ac_codes": [
+        37,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        59
+      ],
+      "page": 158
     },
     {
       "code": 5,
