@@ -390,5 +390,10 @@
     "PartB PC2 raw spelling ARUNAHCAL retained",
     "PartB57 Bagapani vs PartA Bogapani and PartB60 Pongchou vs PartA Pongchao retained in preserved source; names use PartA where reviewed",
     "Other spelling and precise village correspondence review pending"
-  ]
+  ],
+  "papum_pare_source": {
+    "url": "https://papumpare.nic.in/constituencies/",
+    "sha256": "72bd66e5df15b1b1b14d04f1479ec71978d94e7dfd107933cc573a74ad55fb5d",
+    "publication_date": "unverified"
+  }
 }
