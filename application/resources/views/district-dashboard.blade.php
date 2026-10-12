@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='338' && $sourceMap==='maps/west-bengal-hugli-villages.geojson')<p class="notice">Hugli source coverage: 1,944 valid shapes. Boundary edition and Census/LGD links remain unverified; this is source coverage, not a certified district perimeter. No population assigned to shapes. Complete official constituency membership verification pending.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='337' && $sourceMap==='maps/west-bengal-north-twenty-four-parganas-villages.geojson')<p class="notice">North Twenty Four Parganas source coverage: 1,635 shapes; invalid geometry4191 retained without repair and two duplicate-code shapes ambiguous. Boundary edition and Census/LGD links remain unverified; source coverage is not a certified perimeter. No population assigned to shapes. Complete constituency membership verification pending.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='336' && $sourceMap==='maps/west-bengal-nadia-villages.geojson')<p class="notice">Nadia source coverage: 1,363 valid shapes; two duplicate-code shapes remain ambiguous. Boundary edition and Census/LGD links are unverified. This is source coverage, not a certified district perimeter; no population is assigned to shapes. Complete official AC/PC membership verification is pending.</p>@endif
