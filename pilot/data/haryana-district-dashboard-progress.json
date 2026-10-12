@@ -1,7 +1,7 @@
 {
   "state": "Haryana",
   "state_code": "06",
-  "checked_at": "2026-10-12T10:37:01.076550+00:00",
+  "checked_at": "2026-10-12T16:07:01.07655+05:30",
   "priority": "Haryana first then Punjab; breadth-first; essential integrity/deployment verification retained; detailed audits deferred explicitly",
   "districts": [
     {
@@ -1434,10 +1434,11 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:11:55.786744+00:00",
+    "checked_at": "2026-10-12T16:41:55.786744+05:30",
     "live_commit": "39f0c5c722ed08fd62c14bea6c370c3405095846",
     "action": "Full public map JSON/hash verified; dynamic district and homepage requests time out from server as well; no live mutation; essential dashboard checks pending",
-    "next_action": "Retry bounded public actual district/PC/AC checks once dynamic site responds; do not mark complete or advance until verified. Preserve other tasks and deployment locks."
+    "next_action": "Retry bounded public actual district/PC/AC checks once dynamic site responds; do not mark complete or advance until verified. Preserve other tasks and deployment locks.",
+    "context_fix": "Live f39b4a10c5af753d2b48b99fa3fa3b70bd2cf318 corrects Census lookup and district links from state08 to06. Both locks held; view cache cleared. Local bundle verified and GitHub backup exact SHA verified. Public district request timed out20s; remains pending full verification."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
@@ -1445,7 +1446,7 @@
       "size": 9667232,
       "sha256": "26cbd66f2f6b3217417b182157b96e4bf2956516789c027668193162076740af",
       "zip_integrity": "All entries passed",
-      "retrieved_at": "2026-10-12T10:41:28.586611+00:00"
+      "retrieved_at": "2026-10-12T16:11:28.586611+05:30"
     },
     "source_district_records": [
       {
