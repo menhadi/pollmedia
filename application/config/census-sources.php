@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-karimganj-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Karimganj Census 2011 — rural village PCA',
+        'sheet' => 'EB-1818',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6508/download/9585/DDW_PCA1818_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6508',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-dima-hasao-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Dima Hasao Census 2011 — rural village PCA',
