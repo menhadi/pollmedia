@@ -1122,6 +1122,42 @@
       "name": "Kushalgarh",
       "district": "Banswara",
       "page": 363
+    },
+    {
+      "code": 167,
+      "name": "Kapasan",
+      "district": "Chittorgarh",
+      "page": 363
+    },
+    {
+      "code": 168,
+      "name": "Begun",
+      "district": "Chittorgarh",
+      "page": 363
+    },
+    {
+      "code": 169,
+      "name": "Chittorgarh",
+      "district": "Chittorgarh",
+      "page": 363
+    },
+    {
+      "code": 170,
+      "name": "Nimbahera",
+      "district": "Chittorgarh",
+      "page": 363
+    },
+    {
+      "code": 171,
+      "name": "Bari Sadri",
+      "district": "Chittorgarh",
+      "page": 363
+    },
+    {
+      "code": 172,
+      "name": "Pratapgarh",
+      "district": "Chittorgarh",
+      "page": 363
     }
   ],
   "pcs": [
@@ -1467,6 +1503,21 @@
         164,
         165,
         166
+      ],
+      "page": 367
+    },
+    {
+      "code": 21,
+      "name": "Chittorgarh",
+      "ac_codes": [
+        154,
+        155,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172
       ],
       "page": 367
     }
