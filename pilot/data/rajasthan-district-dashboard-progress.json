@@ -2585,14 +2585,61 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1216 unlinked shapes; no population allocated",
+        "Invalid source shape081670 excluded without repair",
+        "Dated shared electoral membership prepared; not deployed",
+        "AC38 Neema/Neem source spelling variation retained",
+        "Historical source geography retained; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/111/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/111/dashboard",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1216
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [
+          {
+            "code": "081670",
+            "reason": "Invalid source shape"
+          }
+        ],
+        "note": "SOI SIKAR label retained; Census name Sikar; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "c15bc640623867c879f6b9f82948d38f9fcc7ced9edb777c0229cd35fadb9ef0",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "visually_audited": true,
+        "pdf_pages": [
+          353,
+          354,
+          366
+        ],
+        "district_ac_codes": [
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "shared_pc_codes": [
+          4,
+          5
+        ],
+        "note": "Complete PCs4/5 retain Jhunjhunu members and Jaipur AC43; AC38 source spelling Neema/Neem differs."
+      }
     },
     {
       "district_code": "112",
@@ -5403,10 +5450,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T08:39:01.746904+00:00",
-    "live_commit": "9a52f9076b1417597b7238499a38163eeecb8373",
-    "action": "Jaipur deployed under both locks; actual totals/full map/all five shared PC memberships/PC-AC context/tests/backups verified",
-    "next_action": "Continue Sikar111 using audited AC32-39 and complete shared PCs4/5; extract district source map and retain AC38 source spelling variation"
+    "checked_at": "2026-10-12T08:40:23.831939+00:00",
+    "live_commit": "5b22dc4df1b43fece68b81c11bede1971fb3f429",
+    "action": "Sikar source map JSON/hash validated; invalid shape excluded and complete audited PCs4/5 retained; not deployed",
+    "next_action": "Enable Sikar111 controller/context/switcher, run required checks, deploy under both locks and verify actual public totals/full map/PC-AC context/backups."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
