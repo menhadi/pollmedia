@@ -61,13 +61,30 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/069/dashboard",
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_electoral_audit_pending_not_deployed",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted Census/LGD links pending",
+        "Source district code69 and Census069 are distinct identifiers; no accepted village join",
+        "162 unlinked shapes;81 ambiguous code shapes; no population allocation",
+        "Dated district and full shared-PC visual audit pending; no electoral fixture yet",
         "Historical source geography retained; later splits not backcast"
-      ]
+      ],
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/HARYANA.zip",
+        "sha256": "26cbd66f2f6b3217417b182157b96e4bf2956516789c027668193162076740af",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 162,
+          "ambiguous": 81
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI PANCHKULA label retained; Census name Panchkula; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "ed69106cad754deb102cdc25a6eac8410416c6a3e72a15d1e0491ac2a0c12627"
     },
     {
       "district_code": "070",
@@ -1379,10 +1396,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:41:28.586611+00:00",
-    "live_commit": "1adfeb0714400f14bd992dbc33a732e2b1300c47",
-    "action": "Official Haryana archive acquired; complete ZIP/hash verified; source district codes inventoried; no deployment",
-    "next_action": "Inspect source Panchkula code without inferred Census join, build valid source map with explicit gaps, visually audit dated ECI district/shared PC membership before fixture use"
+    "checked_at": "2026-10-12T10:47:00.542414+00:00",
+    "live_commit": "d827963c8cd0e36ab4fab5f2f084351d4d30756d",
+    "action": "Panchkula complete map JSON/hash validated with explicit unlinked/ambiguous codes; official dated electoral PDF verified; no deployment",
+    "next_action": "Visually audit Haryana PDF149 and158 plus outside Ambala/Yamunanagar members for complete shared PC; prepare fixture and own dashboard integration after evidence."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
@@ -1503,6 +1520,16 @@
         "source_label": "PANIPAT",
         "records": 195
       }
-    ]
+    ],
+    "electoral_source": {
+      "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+      "source_date": "2008-12-17",
+      "acquisition": "Existing official source PDF copied read-only and hash verified after direct download returned406",
+      "candidate_pdf_pages": [
+        149,
+        158
+      ],
+      "visually_audited": false
+    }
   }
 }
