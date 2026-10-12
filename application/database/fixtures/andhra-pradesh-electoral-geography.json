@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first four historical districts plus complete associated PC1-8 segments; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first five historical districts plus complete associated PC1-10 segments; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -344,9 +344,93 @@
       "page": 32
     },
     {
+      "code": 56,
+      "name": "Achanta",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 57,
+      "name": "Palacole",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 58,
+      "name": "Narasapuram",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 59,
+      "name": "Bhimavaram",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 60,
+      "name": "Undi",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 61,
+      "name": "Tanuku",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 62,
+      "name": "Tadepalligudem",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 63,
+      "name": "Unguturu",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 64,
+      "name": "Denduluru",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 65,
+      "name": "Eluru",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
       "code": 66,
       "name": "Gopalapuram (SC)",
       "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 67,
+      "name": "Polavaram (ST)",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 68,
+      "name": "Chintalapudi (SC)",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 70,
+      "name": "Nuzvid",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 73,
+      "name": "Kaikalur",
+      "district": "Krishna",
       "page": 33
     }
   ],
@@ -470,6 +554,34 @@
         54,
         55,
         66
+      ],
+      "page": 39
+    },
+    {
+      "code": 9,
+      "name": "Narsapuram",
+      "ac_codes": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ],
+      "page": 39
+    },
+    {
+      "code": 10,
+      "name": "Eluru",
+      "ac_codes": [
+        63,
+        64,
+        65,
+        67,
+        68,
+        70,
+        73
       ],
       "page": 39
     }
