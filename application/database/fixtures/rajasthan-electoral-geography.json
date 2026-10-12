@@ -1158,6 +1158,54 @@
       "name": "Pratapgarh",
       "district": "Chittorgarh",
       "page": 363
+    },
+    {
+      "code": 193,
+      "name": "Anta",
+      "district": "Baran",
+      "page": 365
+    },
+    {
+      "code": 194,
+      "name": "Kishanganj",
+      "district": "Baran",
+      "page": 365
+    },
+    {
+      "code": 195,
+      "name": "Baran-Atru",
+      "district": "Baran",
+      "page": 365
+    },
+    {
+      "code": 196,
+      "name": "Chhabra",
+      "district": "Baran",
+      "page": 365
+    },
+    {
+      "code": 197,
+      "name": "Dag",
+      "district": "Jhalawar",
+      "page": 365
+    },
+    {
+      "code": 198,
+      "name": "Jhalrapatan",
+      "district": "Jhalawar",
+      "page": 365
+    },
+    {
+      "code": 199,
+      "name": "Khanpur",
+      "district": "Jhalawar",
+      "page": 365
+    },
+    {
+      "code": 200,
+      "name": "Manohar Thana",
+      "district": "Jhalawar",
+      "page": 365
     }
   ],
   "pcs": [
@@ -1518,6 +1566,21 @@
         170,
         171,
         172
+      ],
+      "page": 367
+    },
+    {
+      "code": 25,
+      "name": "Jhalawar-Baran",
+      "ac_codes": [
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200
       ],
       "page": 367
     }
