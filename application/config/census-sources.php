@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-kaithal-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Kaithal Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6264/download/9341/DDW_PCA0605_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6264',
+        'format' => 'xlsx', 'sheet' => 'EB-0605',
+    ],
     'haryana-kurukshetra-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Kurukshetra Census 2011 — district, town, village and ward PCA',
