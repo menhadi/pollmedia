@@ -8,9 +8,11 @@
 <section class="panel" id="selected-census-context"><h2>Published Census 2011 district context</h2>
 <p>Exact-name Census districts appear by default. Other source spellings require an explicit selection until identity references are verified. These figures describe the selected Census geography, not the map shapes.</p>
 <p class="notice"><strong>Current map: {{ $district['source_name'] }}.</strong> This selector changes figures and history only. Use the district selector at the top to change maps.</p>
-<form method="get" action="{{ url()->current() }}#selected-census-context"><label>Census district<select name="census"><option value="">Choose a Census 2011 district</option>@foreach($censusDistricts as $item)<option value="{{ $item['code'] }}" @selected($selectedCensusCode === $item['code'])>{{ $item['name'] }} · Census 2011</option>@endforeach</select></label><button type="submit">Show figures & history</button></form>
+<form method="get" action="{{ url()->current() }}#selected-census-context">
+@if(request()->has('electoral'))<input type="hidden" name="electoral" value="{{ request()->query('electoral') }}">@endif
+<label>Census district<select name="census"><option value="">Choose a Census 2011 district</option>@foreach($censusDistricts as $item)<option value="{{ $item['code'] }}" @selected($selectedCensusCode === $item['code'])>{{ $item['name'] }} Â· Census 2011</option>@endforeach</select></label><button type="submit">Show figures & history</button></form>
 @if($selectedCensusData)
-<h3>{{ $selectedCensusData['name'] }} · Census {{ $selectedCensusData['year'] }}</h3>
+<h3>{{ $selectedCensusData['name'] }} Â· Census {{ $selectedCensusData['year'] }}</h3>
 @php($censusTotals = $selectedCensusData['totals']['Total'])
 @include('district-dashboard-overview', ['data' => $selectedCensusData, 'total' => $censusTotals, 'display' => fn ($value, $digits = 0) => $value === null ? 'Unavailable' : number_format($value, $digits), 'share' => fn ($value, $denominator) => $value !== null && $denominator > 0 ? 100 * $value / $denominator : null])
 <h3>Census 2011 rural and urban breakdown</h3>
