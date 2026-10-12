@@ -5615,7 +5615,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5623,7 +5623,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/125/dashboard",
-      "status": "deployed_public_verification_pending",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -5658,7 +5658,35 @@
         "note": "Dated PC20 retains outside-district Dungarpur AC158,160,161;2004 territorial reference/current crosswalk unverified",
         "source_date": "2008-12-17"
       },
-      "deployment_commit": "db1c966898b0101ff1c90dbef3c70684b9dc7ee0"
+      "deployment_commit": "db1c966898b0101ff1c90dbef3c70684b9dc7ee0",
+      "validation": {
+        "regression_tests": "59 tests /240 assertions passed",
+        "github_backup": "Verified exact ls-remotedb1c966898b0101ff1c90dbef3c70684b9dc7ee0",
+        "local_bundle": "Verified isolated own chain bundledb1c966898b0101ff1c90dbef3c70684b9dc7ee0",
+        "public_verification": "Passed actual canonical population, households, literates, children; complete shared PC20 AC names; PC Banswara and AC Banswara district context. Detailed rendered/source audits deferred",
+        "canonical_totals": {
+          "id": 7447,
+          "name": "Banswara",
+          "code": "125",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1797485,
+          "households": 367797,
+          "literates": 829343,
+          "children": 325283,
+          "male": 907754,
+          "female": 889731,
+          "workers": 916574,
+          "literacy": 56.33,
+          "male_literacy": 69.48,
+          "female_literacy": 43.06,
+          "source_row": 783,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_map_full_json_sha256": "Passed exact bytes and1547 features"
+      }
     },
     {
       "district_code": "126",
@@ -6509,10 +6537,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T18:57:15.4206923+05:30",
-    "live_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3",
-    "action": "Banswara deployed under both locks; canonical/public receipts acquired for verification",
-    "next_action": "Finish Banswara actual-data and public-map checks, confirm backup session23305, then mark handled"
+    "checked_at": "2026-10-12T13:41:31.4709669+00:00",
+    "live_commit": "9f102aaace19059556cfa9ae05a4bc2d6e6d298d",
+    "action": "Banswara verified; Rajasthan27 of33 handled with explicit deferred flags",
+    "next_action": "Prepare Udaipur126 source map and complete shared PC19/21 dated membership"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
