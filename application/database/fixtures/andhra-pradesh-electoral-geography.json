@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first eleven historical districts plus complete associated PCs; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first twelve historical districts plus complete associated PCs; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -14,7 +14,8 @@
     "AC46 Gannavaram(SC) and AC71 Gannavaram share normalized name; name-only routing must retain ambiguous identity and pending context rather than assign district totals",
     "AC36 Prathipadu and AC93 Prathipadu(SC) share normalized name; name-only district context remains ambiguous",
     "AC98 Table A Sattenapalle versus Table B Sattenapalli spelling retained for later review",
-    "Dated schedule uses Kadapa; Census and preserved SOI label use Y.S.R.; contextual association does not certify boundary editions"
+    "Dated schedule uses Kadapa; Census and preserved SOI label use Y.S.R.; contextual association does not certify boundary editions",
+    "SOI uses later Ananthapuramu coverage; historical Census/electoral Anantapur scope includes areas outside that source label; boundary correspondence pending"
   ],
   "district_rows": [
     {
@@ -900,6 +901,90 @@
       "page": 37
     },
     {
+      "code": 148,
+      "name": "Rayadurg",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 149,
+      "name": "Uravakonda",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 150,
+      "name": "Guntakal",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 151,
+      "name": "Tadpatri",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 152,
+      "name": "Singanamala (SC)",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 153,
+      "name": "Anantapur Urban",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 154,
+      "name": "Kalyandurg",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 155,
+      "name": "Raptadu",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 156,
+      "name": "Madakasira (SC)",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 157,
+      "name": "Hindupur",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 158,
+      "name": "Penukonda",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 159,
+      "name": "Puttaparthi",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 160,
+      "name": "Dharmavaram",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 161,
+      "name": "Kadiri",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
       "code": 162,
       "name": "Thamballapalle",
       "district": "Chittoor",
@@ -1204,6 +1289,34 @@
         147
       ],
       "page": 39
+    },
+    {
+      "code": 19,
+      "name": "Anantapur",
+      "ac_codes": [
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154
+      ],
+      "page": 39
+    },
+    {
+      "code": 20,
+      "name": "Hindupur",
+      "ac_codes": [
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161
+      ],
+      "page": 40
     },
     {
       "code": 21,
