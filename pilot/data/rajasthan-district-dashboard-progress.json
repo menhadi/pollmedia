@@ -6651,7 +6651,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6659,7 +6659,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/130/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6693,6 +6693,13 @@
         "visually_audited": true,
         "source_date": "2008-12-17",
         "note": "Complete dated PC25 retains outside-district Baran AC193..196;2004 territorial reference/current crosswalk unverified"
+      },
+      "deployment_commit": "0657db1d34f98b3fc031f5cf641497e128bd3458",
+      "validation": {
+        "local_bundle": "Verified0657db1d34f98b3fc031f5cf641497e128bd3458",
+        "github_backup": "Verified exact ls-remote0657db1d34f98b3fc031f5cf641497e128bd3458",
+        "public_verification": "Receipts acquired; actual-data checks pending",
+        "regression_tests": "59 tests240 assertions passed"
       }
     },
     {
@@ -6846,8 +6853,8 @@
   "last_run": {
     "checked_at": "2026-10-12T20:06:27.9402071+05:30",
     "live_commit": "72e91d651e1b8c3948337dc34703067016f98f19",
-    "action": "Baran verified; Rajasthan31 of33 handled with deferred flags",
-    "next_action": "Jhalawar1919 shapes prepared; finish regression88599 then locked deployment"
+    "action": "Jhalawar deployed under both locks with verified backups",
+    "next_action": "Verify Jhalawar actual totals/full map1919 features and complete PC25 membership, PC Jhalawar-Baran and AC Jhalrapatan context"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
