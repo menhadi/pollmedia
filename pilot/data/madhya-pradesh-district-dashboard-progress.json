@@ -501,14 +501,58 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "943 unlinked and72 ambiguous shapes; no population allocation",
+        "Source editions/current crosswalk unverified",
+        "Datia map integration pending; shared membership visible",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/420/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/420/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 943,
+          "ambiguous": 72
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI BHIND label retained; Census name Bhind; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "a367ab2fd5fc78ab5854c0d214172e0236527e93f6967007e966c7889d2cb3b1",
+      "electoral_evidence": {
+        "district_ac_pages": [
+          228,
+          229
+        ],
+        "pc_page": 251,
+        "visually_audited": true,
+        "district_ac_codes": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "shared_pc2_outside_district": "Datia AC20-22"
+      },
+      "deployment": {
+        "live_commit": "619c1d50a6740f71588c5a201ca7351f12dfa9a5",
+        "rollback_base": "36615d9fe064f549fbeecaddc37bcbf766a21c96",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_population_households_literates_children_match_canonical": true,
+        "assembly_and_outside_district_names_and_map_url": true,
+        "tests": "59 tests240 assertions",
+        "detailed_rendered_source_election_audits": "Deferred",
+        "local_bundle_and_github_backup": "Verified 619c1d50a6740f71588c5a201ca7351f12dfa9a5"
+      }
     },
     {
       "district_code": "421",
@@ -7099,10 +7143,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T02:09:53.593179+00:00",
-    "live_commit": "acb114a97e97f794db3e865ae99f63332ea9f714",
-    "action": "Morena deployed; canonical public totals and membership verified; backups verified",
-    "next_action": "Continue Bhind420; visually audit AC9-13 district membership then map/integrate"
+    "checked_at": "2026-10-12T02:21:36.423448+00:00",
+    "live_commit": "619c1d50a6740f71588c5a201ca7351f12dfa9a5",
+    "action": "Bhind deployed and canonical public totals/shared membership verified; backups verified",
+    "next_action": "Continue Gwalior421; audit shared PC3 Shivpuri AC23-24, GwaliorAC14-19 already audited228; build map/integrate"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
