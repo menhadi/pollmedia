@@ -2585,17 +2585,18 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "1216 unlinked shapes; no population allocated",
         "Invalid source shape081670 excluded without repair",
-        "Dated shared electoral membership prepared; not deployed",
+        "Dated PCs4/5 cross-district membership visible; current crosswalk unverified",
         "AC38 Neema/Neem source spelling variation retained",
-        "Historical source geography retained; later splits not backcast"
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/111/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -2639,6 +2640,40 @@
           5
         ],
         "note": "Complete PCs4/5 retain Jhunjhunu members and Jaipur AC43; AC38 source spelling Neema/Neem differs."
+      },
+      "deployment": {
+        "live_commit": "35d3fc0df3537219ac698cce1a345545c6da58c1",
+        "rollback_base": "86049a7b1d559f2e9d0b261703bfb592b3245ac7",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7334,
+          "name": "Sikar",
+          "code": "111",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 2677333,
+          "households": 444816,
+          "literates": 1652117,
+          "children": 379874,
+          "male": 1374990,
+          "female": 1302343,
+          "workers": 1006504,
+          "literacy": 71.91,
+          "male_literacy": 85.11,
+          "female_literacy": 58.23,
+          "source_row": 670,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;1216 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 35d3fc0df3537219ac698cce1a345545c6da58c1",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5450,10 +5485,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T08:40:23.831939+00:00",
-    "live_commit": "5b22dc4df1b43fece68b81c11bede1971fb3f429",
-    "action": "Sikar source map JSON/hash validated; invalid shape excluded and complete audited PCs4/5 retained; not deployed",
-    "next_action": "Enable Sikar111 controller/context/switcher, run required checks, deploy under both locks and verify actual public totals/full map/PC-AC context/backups."
+    "checked_at": "2026-10-12T08:46:35.926308+00:00",
+    "live_commit": "35d3fc0df3537219ac698cce1a345545c6da58c1",
+    "action": "Sikar deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Tonk112 using audited AC94-97 and complete shared PC12; extract district source map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
@@ -5470,5 +5505,6 @@
       "zip_integrity": "Passed all entries",
       "retrieved_at": "2026-10-12T06:36:02.031442+00:00"
     }
-  }
+  },
+  "notification_preference": "Include direct district dashboard link with each completed deployment notification"
 }
