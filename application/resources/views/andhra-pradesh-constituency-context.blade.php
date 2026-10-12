@@ -22,6 +22,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">PC7 source conflict: the 2014 parliamentary table names Mandapeta but prints AC47; the Assembly table identifies Mandapeta as AC48. Links use Assembly-table code48 and retain the original conflict for formal review. No boundary correspondence is implied.</p>
 <p class="notice">The 2014 electoral schedule uses Nellore; Census district28/550 is Sri Potti Sriramulu Nellore. This historical district context does not establish correspondence with later SOI boundaries.</p>
 <p class="notice">The 2014 electoral schedule labels this district Kadapa; Census28/551 and the preserved SOI source use Y.S.R. Context retains these dated names without certifying matching boundaries.</p>
+<p><a href="{{ route('andhra-pradesh-source-maps') }}">Additional SOI physical source maps</a> · Explicit source labels; district correspondence unverified.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>

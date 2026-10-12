@@ -100,6 +100,15 @@ Route::get('/india/pilots/pilibhit-ac-villages', [PilibhitAcPilotController::cla
 Route::get('/india/pilots/pilibhit-district', [PilibhitDistrictPilotController::class, 'index'])->name('pilibhit-district-pilot');
 Route::get('/india/pilots/rampur-district', [RampurDistrictPilotController::class, 'index'])->name('rampur-district-pilot');
 Route::get('/india/districts/modern/west-bengal/{slug}/dashboard', [\App\Http\Controllers\ModernDistrictSourceMapController::class, 'index'])->where('slug', 'purba-bardhaman|paschim-bardhaman|jhargram|paschim-medinipur|alipurduar|kalimpong|darjiling|jalpaiguri')->name('modern-district-source-map');
+Route::get('/india/andhra-pradesh/source-maps', function (\Illuminate\Http\Request $request) {
+    $fixture = json_decode(file_get_contents(database_path('fixtures/andhra-pradesh-source-maps.json')), true, 512, JSON_THROW_ON_ERROR);
+    $sourceMaps = $fixture['maps'];
+    $sourceSlug = $request->query('source', array_key_first($sourceMaps));
+    abort_unless(is_string($sourceSlug) && isset($sourceMaps[$sourceSlug]), 404);
+
+    return view('andhra-pradesh-source-maps', ['sourceMaps' => $sourceMaps, 'sourceSlug' => $sourceSlug, 'selected' => $sourceMaps[$sourceSlug], 'archiveSha' => $fixture['sha256']]);
+})->name('andhra-pradesh-source-maps');
+
 Route::get('/india/districts/dashboard', [DistrictDashboardController::class, 'directory'])->name('district-dashboard-directory');
 Route::get('/india/districts/19/{district}/dashboard', [\App\Http\Controllers\WestBengalDistrictDashboardController::class, 'index'])->where('district', '[0-9]{3}')->name('west-bengal-district-dashboard');
 Route::get('/india/districts/{state}/{district}/dashboard', [DistrictDashboardController::class, 'index'])->where(['state' => '[0-9]{2}', 'district' => '[0-9]{3}'])->name('district-dashboard');
