@@ -97,9 +97,10 @@ class DistrictDashboardController extends Controller
             }, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
         }
-        if ($state === '08' && $district === '099') {
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Ganganagar', 'Rajasthan');
-            $mapFile = 'maps/ganganagar-villages.geojson';
+        if ($state === '08' && in_array($district, ['099', '100'], true)) {
+            $rjDistrict = ['099' => 'Ganganagar', '100' => 'Hanumangarh'][$district];
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($rjDistrict, 'Rajasthan');
+            $mapFile = 'maps/'.strtolower($rjDistrict).'-villages.geojson';
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
