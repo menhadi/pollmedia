@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-baleshwar-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Baleshwar Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2108',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6568/download/9645/DDW_PCA2108_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6568',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-mayurbhanj-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Mayurbhanj Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2107',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6567/download/9644/DDW_PCA2107_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6567',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-malkangiri-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Malkangiri Census 2011 â€” rural village PCA',
