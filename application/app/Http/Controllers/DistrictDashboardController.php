@@ -621,6 +621,9 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/arunachal-pradesh-east-siang-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('East Siang', 'Arunachal Pradesh');
         }
+        if ($state === '06' && $district === '086') {
+            $mapFile = 'maps/gurgaon-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
