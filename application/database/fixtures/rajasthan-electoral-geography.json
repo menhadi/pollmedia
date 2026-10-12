@@ -918,6 +918,102 @@
       "name": "Reodar (SC)",
       "district": "Sirohi",
       "page": 362
+    },
+    {
+      "code": 177,
+      "name": "Asind",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 178,
+      "name": "Mandal",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 179,
+      "name": "Sahara",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 180,
+      "name": "Bhilwara",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 181,
+      "name": "Shahpura (SC)",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 182,
+      "name": "Jahazpur",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 183,
+      "name": "Mandalgarh",
+      "district": "Bhilwara",
+      "page": 364
+    },
+    {
+      "code": 184,
+      "name": "Hindoli",
+      "district": "Bundi",
+      "page": 364
+    },
+    {
+      "code": 185,
+      "name": "Keshoraipatan (SC)",
+      "district": "Bundi",
+      "page": 364
+    },
+    {
+      "code": 186,
+      "name": "Bundi",
+      "district": "Bundi",
+      "page": 364
+    },
+    {
+      "code": 187,
+      "name": "Pipalda",
+      "district": "Kota",
+      "page": 364
+    },
+    {
+      "code": 188,
+      "name": "Sangod",
+      "district": "Kota",
+      "page": 364
+    },
+    {
+      "code": 189,
+      "name": "Kota North",
+      "district": "Kota",
+      "page": 364
+    },
+    {
+      "code": 190,
+      "name": "Kota South",
+      "district": "Kota",
+      "page": 364
+    },
+    {
+      "code": 191,
+      "name": "Ladpura",
+      "district": "Kota",
+      "page": 365
+    },
+    {
+      "code": 192,
+      "name": "Ramganj Mandi (SC)",
+      "district": "Kota",
+      "page": 365
     }
   ],
   "pcs": [
@@ -1203,6 +1299,36 @@
         146,
         147,
         148
+      ],
+      "page": 367
+    },
+    {
+      "code": 23,
+      "name": "Bhilwara",
+      "ac_codes": [
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184
+      ],
+      "page": 367
+    },
+    {
+      "code": 24,
+      "name": "Kota",
+      "ac_codes": [
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192
       ],
       "page": 367
     }
