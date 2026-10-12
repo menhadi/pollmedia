@@ -7,6 +7,7 @@ class ModernDistrictSourceMapController extends Controller
     public function index(string $slug): View
     {
         $districts = [
+            'jhargram' => ['Jhargram', 2994, 'https://jhargram.gov.in/about-district/'],
             'purba-bardhaman' => ['Purba Bardhaman', 2191, 'https://purbabardhamanpolice.wb.gov.in/HistoryofPurbaBardhamanDistrictPolice'],
             'paschim-bardhaman' => ['Paschim Bardhaman', 406, 'https://paschimbardhaman.gov.in/history/'],
         ];

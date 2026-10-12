@@ -965,10 +965,11 @@
     {
       "code": 220,
       "name": "Nayagram",
-      "district": "District unresolved (AC220)",
+      "district": "Jhargram",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "Suffix absent;not inferred",
-      "source_note": "AC220 district label ambiguous across page break;membership identity pending"
+      "source_note": "Official district website corroborates AC220 membership;2024 page-break ambiguity retained as historical source note",
+      "district_identity_source_url": "https://jhargram.gov.in/constituencies/"
     },
     {
       "code": 221,
