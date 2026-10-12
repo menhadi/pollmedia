@@ -6030,7 +6030,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6040,7 +6040,7 @@
         "Dated Chittorgarh territorial reference includes later Pratapgarh district areas; current crosswalk unavailable"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/127/dashboard",
-      "status": "deployed_public_verification_pending",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6084,9 +6084,31 @@
       "deployment_commit": "77c4a24226dcdb2878741432990aaf977dd43367",
       "validation": {
         "github_backup": "Verified exact ls-remote77c4a24226dcdb2878741432990aaf977dd43367",
-        "public_verification": "Receipts acquired; actual-data verification pending",
+        "public_verification": "Passed actual canonical four totals, complete PC21 AC names, PC Chittorgarh and AC Chittorgarh district context; detailed rendered audit deferred",
         "local_bundle": "Verified77c4a24226dcdb2878741432990aaf977dd43367",
-        "regression_tests": "59 tests240 assertions passed"
+        "regression_tests": "59 tests240 assertions passed",
+        "public_map_full_json_sha256": "Exact public/local bytes and880 features passed",
+        "canonical_totals": {
+          "id": 7464,
+          "name": "Kota",
+          "code": "127",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1951014,
+          "households": 396501,
+          "literates": 1298345,
+          "children": 255056,
+          "male": 1021161,
+          "female": 929853,
+          "workers": 748811,
+          "literacy": 76.56,
+          "male_literacy": 86.31,
+          "female_literacy": 65.87,
+          "source_row": 800,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        }
       }
     },
     {
@@ -6658,10 +6680,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T19:22:51.9941181+05:30",
-    "live_commit": "a4031b046b49325747dd77c8fd776c6a9f6df9b0",
-    "action": "Chittaurgarh deployed under both locks with verified backups",
-    "next_action": "Verify Chittaurgarh canonical totals/full map880 features and PC21 AC names/context from acquired public receipts"
+    "checked_at": "2026-10-12T14:06:35.6303911+00:00",
+    "live_commit": "f5446d2646619d6f612c865612580e9ec5b4c8a8",
+    "action": "Chittaurgarh verified; Rajasthan29 of33 handled with deferred flags",
+    "next_action": "Prepare Kota128 source map and already audited complete shared PC24 membership"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
