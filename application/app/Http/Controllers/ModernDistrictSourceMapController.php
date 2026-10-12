@@ -9,6 +9,7 @@ class ModernDistrictSourceMapController extends Controller
         $districts = [
             'paschim-medinipur' => ['Paschim Medinipur', 5714, 'https://jhargram.gov.in/about-district/'],
             'alipurduar' => ['Alipurduar', 435, 'https://alipurduar.gov.in/about-district/'],
+            'kalimpong' => ['Kalimpong', 193, 'https://kalimpong.gov.in/election/election-info/'],
             'jhargram' => ['Jhargram', 2994, 'https://jhargram.gov.in/about-district/'],
             'purba-bardhaman' => ['Purba Bardhaman', 2191, 'https://purbabardhamanpolice.wb.gov.in/HistoryofPurbaBardhamanDistrictPolice'],
             'paschim-bardhaman' => ['Paschim Bardhaman', 406, 'https://paschimbardhaman.gov.in/history/'],
