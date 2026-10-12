@@ -525,6 +525,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/jharkhand-simdega-villages.geojson';
             $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->simdega();
         }
+        if ($state === '20' && $district === '368') {
+            $mapFile = 'maps/jharkhand-pashchimi-singhbhum-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Pashchimi Singhbhum', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));

@@ -328,13 +328,57 @@
       "code": 50,
       "name": "Ichagarh",
       "district": "(West) Singhbhum",
+      "page": 171,
+      "context_district": "Pashchimi Singhbhum"
+    },
+    {
+      "code": 51,
+      "name": "Seraikella (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 52,
+      "name": "Chaibasa (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 53,
+      "name": "Majhgaon (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 54,
+      "name": "Jaganathpur (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 55,
+      "name": "Manoharpur (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 56,
+      "name": "Chakradharpur (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
       "page": 171
     },
     {
       "code": 57,
       "name": "Kharsawan (ST)",
       "district": "(West) Singhbhum",
-      "page": 172
+      "page": 172,
+      "context_district": "Pashchimi Singhbhum"
     },
     {
       "code": 58,
@@ -615,6 +659,19 @@
       ],
       "page": 175,
       "source_code_note": "The2008 PC9 table prints41 Bahragora, while PartA uses44 Baharagora and41 Jharia. Runtime identity44 follows PartA and the official district2019 election list; raw printed41 is retained. Formal source discrepancy review pending."
+    },
+    {
+      "code": 10,
+      "name": "Singhbhum (ST)",
+      "ac_codes": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 175
     },
     {
       "code": 11,
