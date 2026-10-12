@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial district extraction through Virudhunagar with complete associated PC segments; remaining districts pending",
+  "scope": "Partial district extraction through Thoothukkudi with complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -1192,6 +1192,42 @@
       "page": 441
     },
     {
+      "code": 213,
+      "name": "Vilathikulam",
+      "district": "Thoothukkudi",
+      "page": 441
+    },
+    {
+      "code": 214,
+      "name": "Thoothukkudi",
+      "district": "Thoothukkudi",
+      "page": 441
+    },
+    {
+      "code": 215,
+      "name": "Tiruchendur",
+      "district": "Thoothukkudi",
+      "page": 441
+    },
+    {
+      "code": 216,
+      "name": "Srivaikuntam",
+      "district": "Thoothukkudi",
+      "page": 442
+    },
+    {
+      "code": 217,
+      "name": "Ottapidaram (SC)",
+      "district": "Thoothukkudi",
+      "page": 442
+    },
+    {
+      "code": 218,
+      "name": "Kovilpatti",
+      "district": "Thoothukkudi",
+      "page": 443
+    },
+    {
       "code": 219,
       "name": "Sankarankovil (SC)",
       "district": "Tirunelveli",
@@ -1630,6 +1666,19 @@
         210,
         211,
         212
+      ],
+      "page": 449
+    },
+    {
+      "code": 36,
+      "name": "Thoothukkudi",
+      "ac_codes": [
+        213,
+        214,
+        215,
+        216,
+        217,
+        218
       ],
       "page": 449
     },
