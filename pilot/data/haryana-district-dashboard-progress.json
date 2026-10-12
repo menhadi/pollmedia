@@ -1464,9 +1464,9 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:37:19.0128160Z",
-    "live_commit": "e7ddcd21c17e393602fb8fcc6cb22c4da2559fdb",
-    "action": "Panchkula public request still times out20s. Live census-sources.php staged by concurrent work; no live mutation. Kurukshetra local map prepared418 shapes0 rejected0 accepted links; electoral visual audit remains pending.",
+    "checked_at": "2026-10-12T11:42:16.0058972Z",
+    "live_commit": "0e4c7e544b1bd4ec7d30c43ab0755285dea40678",
+    "action": "Public request still times out20s; no live mutation. Visually audited ECI PDF150: Radaur10 continues Yamunanagar; Kurukshetra11-14; Kaithal15-18. Own local fixture expanded with complete shared PC2 AC10-18 from previously audited PDF158; not deployed.",
     "next_action": "Retry bounded public actual district/PC/AC checks once dynamic site responds; do not mark complete or advance until verified. Preserve other tasks and deployment locks.",
     "context_fix": "Live f39b4a10c5af753d2b48b99fa3fa3b70bd2cf318 corrects Census lookup and district links from state08 to06. Both locks held; view cache cleared. Local bundle verified and GitHub backup exact SHA verified. Public district request timed out20s; remains pending full verification."
   },
