@@ -61,7 +61,7 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/069/dashboard",
-      "workflow_status": "dashboard_foundation_implemented_required_tests_and_deployment_pending",
+      "workflow_status": "dashboard_foundation_regression_passed_deployment_pending",
       "flags": [
         "Boundary edition unverified",
         "Source district code69 and Census069 are distinct identifiers; no accepted village join",
@@ -101,6 +101,12 @@
           1
         ],
         "note": "Complete shared PC1 includes Ambala AC3-6 and Yamunanagar AC7-9."
+      },
+      "predeployment_validation": {
+        "regression_suite": "59 tests /240 assertions passed; existing dashboard regression scope",
+        "syntax_and_formatter": "Passed",
+        "map_full_json": "243 valid features; accepted Census joins unavailable",
+        "electoral_fixture": "Visually audited AC1/2 and complete Ambala PC1"
       }
     },
     {
@@ -1413,10 +1419,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:56:43.291080+00:00",
-    "live_commit": "e635282a684a9c3818f9dfe623929d0ee6c9400a",
-    "action": "Own Haryana service/controller/context/switcher integration implemented and PHP syntax/formatter passed; no live deployment",
-    "next_action": "Run required regression tests using own bootstrap; prepare fresh narrow live patch preserving concurrent service/controller/shared includes; deploy under both locks with rollback, verify actual public canonical totals/full map/PC-AC context and own backups before notifying link."
+    "checked_at": "2026-10-12T11:02:08.827765+00:00",
+    "live_commit": "160342f875fdd14b1cc00fc5481c639e31ac0d52",
+    "action": "Own regression suite passed; fresh narrow live patch preparation started; no deployment",
+    "next_action": "Use own prepare-panchkula-patch.py to refresh live files/base; review patch and deploy with both locks, staged-clean/scoped-clean preflight, rollback branch, JSON validation, cache clearing; verify actual public district/PC/AC data and backups."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
