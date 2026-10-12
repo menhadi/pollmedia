@@ -696,5 +696,11 @@
     "sha256": "2c034372faaf0e61951c93ebba265ded48ae5101d014b3c0f3542b3cfa671219",
     "publication_date": "2019-12-11",
     "preserved_path": "pilot/raw/jharkhand-soi/jamtara-pib-2019.html"
+  },
+  "khunti_2019_source": {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1593525&lang=2&reg=48",
+    "sha256": "5bbe74d02fed913b89488f1e12b536c05e6273bb12818e55284b91ce07b73f1c",
+    "publication_date": "2019-11-26",
+    "preserved_path": "pilot/raw/jharkhand-soi/khunti-pib-2019.html"
   }
 }

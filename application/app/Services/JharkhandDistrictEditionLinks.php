@@ -34,6 +34,21 @@ class JharkhandDistrictEditionLinks
         return $links;
     }
 
+    public function khunti(): array
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Ranchi', 'Jharkhand');
+        $links['assembly'] = array_values(array_filter($links['assembly'], fn (array $seat): bool => in_array($seat['code'], [59, 60], true)));
+        $links['parliamentary'] = array_values(array_filter($links['parliamentary'], fn (array $seat): bool => $seat['code'] === 11));
+        $fixture = json_decode(file_get_contents(database_path('fixtures/jharkhand-electoral-geography.json')), true, 512, JSON_THROW_ON_ERROR);
+        foreach ($links['parliamentary'] as &$pc) {
+            $pc['outside_district'] = collect($fixture['district_rows'])->whereIn('code', array_diff($pc['ac_codes'], [59, 60]))->map(fn (array $seat): array => ['code' => $seat['code'], 'name' => $seat['name'], 'district' => $seat['context_district'] ?? $seat['district']])->values()->all();
+        }
+        unset($pc);
+        $links['sources'][] = ['label' => 'Khunti electoral context: ECI fact sheet published by PIB on 26 November 2019 lists AC59 and AC60; original 2008 Ranchi headings retained; Census boundary correspondence pending', 'url' => $fixture['khunti_2019_source']['url'], 'date' => '2019-11-26', 'sha256' => $fixture['khunti_2019_source']['sha256']];
+
+        return $links;
+    }
+
     public function latehar(): array
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Palamu', 'Jharkhand');
