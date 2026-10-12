@@ -1,0 +1,252 @@
+{
+  "sha256": "7549e9ebd84b7bc2ec36265afcd2077a97f12d8d73a65aa3968f137f8958b9ea",
+  "maps": {
+    "peddapalli": {
+      "source_label": "PEDDAPALLI",
+      "source_records": 204,
+      "map_path": "maps/telangana-source-villages/peddapalli.geojson",
+      "accepted_shapes": 204,
+      "statuses": {
+        "unlinked": 204
+      },
+      "rejected": []
+    },
+    "rajanna-sircilla": {
+      "source_label": "RAJANNA SIRCILLA",
+      "source_records": 165,
+      "map_path": "maps/telangana-source-villages/rajanna-sircilla.geojson",
+      "accepted_shapes": 165,
+      "statuses": {
+        "unlinked": 165
+      },
+      "rejected": []
+    },
+    "nirmal": {
+      "source_label": "NIRMAL",
+      "source_records": 424,
+      "map_path": "maps/telangana-source-villages/nirmal.geojson",
+      "accepted_shapes": 423,
+      "statuses": {
+        "unlinked": 421,
+        "ambiguous": 2
+      },
+      "rejected": [
+        {
+          "code": "570264",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "mancherial": {
+      "source_label": "MANCHERIAL",
+      "source_records": 376,
+      "map_path": "maps/telangana-source-villages/mancherial.geojson",
+      "accepted_shapes": 376,
+      "statuses": {
+        "unlinked": 376
+      },
+      "rejected": []
+    },
+    "jangoan": {
+      "source_label": "JANGOAN",
+      "source_records": 176,
+      "map_path": "maps/telangana-source-villages/jangoan.geojson",
+      "accepted_shapes": 176,
+      "statuses": {
+        "unlinked": 176
+      },
+      "rejected": []
+    },
+    "yadadri-bhuvanagiri": {
+      "source_label": "YADADRI BHUVANAGIRI",
+      "source_records": 310,
+      "map_path": "maps/telangana-source-villages/yadadri-bhuvanagiri.geojson",
+      "accepted_shapes": 310,
+      "statuses": {
+        "unlinked": 310
+      },
+      "rejected": []
+    },
+    "jayashankar-bhupalpalli": {
+      "source_label": "JAYASHANKAR BHUPALPALLI",
+      "source_records": 223,
+      "map_path": "maps/telangana-source-villages/jayashankar-bhupalpalli.geojson",
+      "accepted_shapes": 223,
+      "statuses": {
+        "unlinked": 223
+      },
+      "rejected": []
+    },
+    "jagtial": {
+      "source_label": "JAGTIAL",
+      "source_records": 295,
+      "map_path": "maps/telangana-source-villages/jagtial.geojson",
+      "accepted_shapes": 295,
+      "statuses": {
+        "unlinked": 291,
+        "ambiguous": 4
+      },
+      "rejected": []
+    },
+    "kumuram-bheem": {
+      "source_label": "KUMURAM BHEEM",
+      "source_records": 432,
+      "map_path": "maps/telangana-source-villages/kumuram-bheem.geojson",
+      "accepted_shapes": 432,
+      "statuses": {
+        "unlinked": 432
+      },
+      "rejected": []
+    },
+    "siddipet": {
+      "source_label": "SIDDIPET",
+      "source_records": 373,
+      "map_path": "maps/telangana-source-villages/siddipet.geojson",
+      "accepted_shapes": 373,
+      "statuses": {
+        "unlinked": 373
+      },
+      "rejected": []
+    },
+    "medchal-malkajgiri": {
+      "source_label": "MEDCHAL_MALKAJGIRI",
+      "source_records": 89,
+      "map_path": "maps/telangana-source-villages/medchal-malkajgiri.geojson",
+      "accepted_shapes": 89,
+      "statuses": {
+        "unlinked": 82,
+        "ambiguous": 7
+      },
+      "rejected": []
+    },
+    "nagarkurnool": {
+      "source_label": "NAGARKURNOOL",
+      "source_records": 348,
+      "map_path": "maps/telangana-source-villages/nagarkurnool.geojson",
+      "accepted_shapes": 348,
+      "statuses": {
+        "unlinked": 343,
+        "ambiguous": 5
+      },
+      "rejected": []
+    },
+    "wanaparthy": {
+      "source_label": "WANAPARTHY",
+      "source_records": 224,
+      "map_path": "maps/telangana-source-villages/wanaparthy.geojson",
+      "accepted_shapes": 224,
+      "statuses": {
+        "unlinked": 222,
+        "ambiguous": 2
+      },
+      "rejected": []
+    },
+    "mahabubabad": {
+      "source_label": "MAHABUBABAD",
+      "source_records": 291,
+      "map_path": "maps/telangana-source-villages/mahabubabad.geojson",
+      "accepted_shapes": 291,
+      "statuses": {
+        "unlinked": 283,
+        "ambiguous": 8
+      },
+      "rejected": []
+    },
+    "suryapet": {
+      "source_label": "SURYAPET",
+      "source_records": 270,
+      "map_path": "maps/telangana-source-villages/suryapet.geojson",
+      "accepted_shapes": 270,
+      "statuses": {
+        "unlinked": 268,
+        "ambiguous": 2
+      },
+      "rejected": []
+    },
+    "bhadradri-kothagudem": {
+      "source_label": "BHADRADRI KOTHAGUDEM",
+      "source_records": 382,
+      "map_path": "maps/telangana-source-villages/bhadradri-kothagudem.geojson",
+      "accepted_shapes": 382,
+      "statuses": {
+        "unlinked": 371,
+        "ambiguous": 11
+      },
+      "rejected": []
+    },
+    "mulugu": {
+      "source_label": "MULUGU",
+      "source_records": 343,
+      "map_path": "maps/telangana-source-villages/mulugu.geojson",
+      "accepted_shapes": 343,
+      "statuses": {
+        "unlinked": 336,
+        "ambiguous": 7
+      },
+      "rejected": []
+    },
+    "hanumakonda": {
+      "source_label": "HANUMAKONDA",
+      "source_records": 144,
+      "map_path": "maps/telangana-source-villages/hanumakonda.geojson",
+      "accepted_shapes": 144,
+      "statuses": {
+        "unlinked": 139,
+        "ambiguous": 5
+      },
+      "rejected": []
+    },
+    "jogulamba-gadwal": {
+      "source_label": "JOGULAMBA GADWAL",
+      "source_records": 199,
+      "map_path": "maps/telangana-source-villages/jogulamba-gadwal.geojson",
+      "accepted_shapes": 199,
+      "statuses": {
+        "unlinked": 199
+      },
+      "rejected": []
+    },
+    "narayanpet": {
+      "source_label": "NARAYANPET",
+      "source_records": 246,
+      "map_path": "maps/telangana-source-villages/narayanpet.geojson",
+      "accepted_shapes": 246,
+      "statuses": {
+        "unlinked": 246
+      },
+      "rejected": []
+    },
+    "vikarabad": {
+      "source_label": "VIKARABAD",
+      "source_records": 497,
+      "map_path": "maps/telangana-source-villages/vikarabad.geojson",
+      "accepted_shapes": 497,
+      "statuses": {
+        "unlinked": 493,
+        "ambiguous": 4
+      },
+      "rejected": []
+    },
+    "sangareddy": {
+      "source_label": "SANGAREDDY",
+      "source_records": 583,
+      "map_path": "maps/telangana-source-villages/sangareddy.geojson",
+      "accepted_shapes": 583,
+      "statuses": {
+        "unlinked": 576,
+        "ambiguous": 7
+      },
+      "rejected": []
+    },
+    "kamareddy": {
+      "source_label": "KAMAREDDY",
+      "source_records": 465,
+      "map_path": "maps/telangana-source-villages/kamareddy.geojson",
+      "accepted_shapes": 465,
+      "statuses": {
+        "unlinked": 465
+      },
+      "rejected": []
+    }
+  }
+}
