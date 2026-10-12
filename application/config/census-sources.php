@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-gurdaspur-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Gurdaspur Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6226/download/9303/DDW_PCA0301_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6226',
+        'format' => 'xlsx', 'sheet' => 'EB-0301',
+    ],
     'haryana-palwal-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Palwal Census 2011 — district, town, village and ward PCA',
