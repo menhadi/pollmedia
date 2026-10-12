@@ -1,0 +1,1321 @@
+{
+  "state": "Punjab",
+  "state_code": "03",
+  "checked_at": "2026-10-12T10:37:01.076550+00:00",
+  "priority": "Haryana first then Punjab; breadth-first; essential integrity/deployment verification retained; detailed audits deferred explicitly",
+  "districts": [
+    {
+      "district_code": "035",
+      "name": "Gurdaspur",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6902,
+        "name": "Gurdaspur",
+        "code": "035",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 2298323,
+        "households": 443666,
+        "literates": 1634719,
+        "children": 253579,
+        "male": 1212617,
+        "female": 1085706,
+        "workers": 757138,
+        "literacy": 79.95,
+        "male_literacy": 84.56,
+        "female_literacy": 74.85,
+        "source_row": 238,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/035/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "036",
+      "name": "Kapurthala",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6908,
+        "name": "Kapurthala",
+        "code": "036",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 815168,
+        "households": 167989,
+        "literates": 576567,
+        "children": 86025,
+        "male": 426311,
+        "female": 388857,
+        "workers": 284165,
+        "literacy": 79.07,
+        "male_literacy": 83.15,
+        "female_literacy": 74.63,
+        "source_row": 244,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/036/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "037",
+      "name": "Jalandhar",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6913,
+        "name": "Jalandhar",
+        "code": "037",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 2193590,
+        "households": 461635,
+        "literates": 1622537,
+        "children": 226302,
+        "male": 1145211,
+        "female": 1048379,
+        "workers": 774472,
+        "literacy": 82.48,
+        "male_literacy": 86.15,
+        "female_literacy": 78.48,
+        "source_row": 249,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/037/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "038",
+      "name": "Hoshiarpur",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6919,
+        "name": "Hoshiarpur",
+        "code": "038",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 1586625,
+        "households": 336994,
+        "literates": 1199699,
+        "children": 168331,
+        "male": 809057,
+        "female": 777568,
+        "workers": 499822,
+        "literacy": 84.59,
+        "male_literacy": 88.75,
+        "female_literacy": 80.31,
+        "source_row": 255,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/038/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "039",
+      "name": "Shahid Bhagat Singh Nagar",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6924,
+        "name": "Shahid Bhagat Singh Nagar",
+        "code": "039",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 612310,
+        "households": 129500,
+        "literates": 438459,
+        "children": 62719,
+        "male": 313291,
+        "female": 299019,
+        "workers": 204329,
+        "literacy": 79.78,
+        "male_literacy": 85.41,
+        "female_literacy": 73.93,
+        "source_row": 260,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/039/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "040",
+      "name": "Fatehgarh Sahib",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6927,
+        "name": "Fatehgarh Sahib",
+        "code": "040",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 600163,
+        "households": 118100,
+        "literates": 426033,
+        "children": 63271,
+        "male": 320795,
+        "female": 279368,
+        "workers": 214783,
+        "literacy": 79.35,
+        "male_literacy": 83.33,
+        "female_literacy": 74.8,
+        "source_row": 263,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/040/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "041",
+      "name": "Ludhiana",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6932,
+        "name": "Ludhiana",
+        "code": "041",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 3498739,
+        "households": 716826,
+        "literates": 2560225,
+        "children": 384114,
+        "male": 1867816,
+        "female": 1630923,
+        "workers": 1284822,
+        "literacy": 82.2,
+        "male_literacy": 85.98,
+        "female_literacy": 77.88,
+        "source_row": 268,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/041/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "042",
+      "name": "Moga",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6940,
+        "name": "Moga",
+        "code": "042",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 995746,
+        "households": 193256,
+        "literates": 627889,
+        "children": 107336,
+        "male": 525920,
+        "female": 469826,
+        "workers": 359172,
+        "literacy": 70.68,
+        "male_literacy": 74.44,
+        "female_literacy": 66.48,
+        "source_row": 276,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/042/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "043",
+      "name": "Firozpur",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6944,
+        "name": "Firozpur",
+        "code": "043",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 2029074,
+        "households": 385994,
+        "literates": 1227511,
+        "children": 248103,
+        "male": 1071637,
+        "female": 957437,
+        "workers": 756695,
+        "literacy": 68.92,
+        "male_literacy": 75.44,
+        "female_literacy": 61.69,
+        "source_row": 280,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/043/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "044",
+      "name": "Muktsar",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6950,
+        "name": "Muktsar",
+        "code": "044",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 901896,
+        "households": 174360,
+        "literates": 524848,
+        "children": 104419,
+        "male": 475622,
+        "female": 426274,
+        "workers": 335326,
+        "literacy": 65.81,
+        "male_literacy": 71.76,
+        "female_literacy": 59.24,
+        "source_row": 286,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/044/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "045",
+      "name": "Faridkot",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6954,
+        "name": "Faridkot",
+        "code": "045",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 617508,
+        "households": 120893,
+        "literates": 381285,
+        "children": 69311,
+        "male": 326671,
+        "female": 290837,
+        "workers": 221555,
+        "literacy": 69.55,
+        "male_literacy": 74.6,
+        "female_literacy": 63.91,
+        "source_row": 290,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/045/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "046",
+      "name": "Bathinda",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6957,
+        "name": "Bathinda",
+        "code": "046",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 1388525,
+        "households": 273902,
+        "literates": 844868,
+        "children": 151145,
+        "male": 743197,
+        "female": 645328,
+        "workers": 549986,
+        "literacy": 68.28,
+        "male_literacy": 73.79,
+        "female_literacy": 61.94,
+        "source_row": 293,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/046/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "047",
+      "name": "Mansa",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6961,
+        "name": "Mansa",
+        "code": "047",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 769751,
+        "households": 149630,
+        "literates": 423560,
+        "children": 84763,
+        "male": 408732,
+        "female": 361019,
+        "workers": 328512,
+        "literacy": 61.83,
+        "male_literacy": 67.31,
+        "female_literacy": 55.68,
+        "source_row": 297,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/047/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "048",
+      "name": "Patiala",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6965,
+        "name": "Patiala",
+        "code": "048",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 1895686,
+        "households": 372293,
+        "literates": 1266791,
+        "children": 212892,
+        "male": 1002522,
+        "female": 893164,
+        "workers": 660267,
+        "literacy": 75.28,
+        "male_literacy": 80.2,
+        "female_literacy": 69.8,
+        "source_row": 301,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/048/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "049",
+      "name": "Amritsar",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6971,
+        "name": "Amritsar",
+        "code": "049",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 2490656,
+        "households": 488898,
+        "literates": 1684770,
+        "children": 281795,
+        "male": 1318408,
+        "female": 1172248,
+        "workers": 917856,
+        "literacy": 76.27,
+        "male_literacy": 80.15,
+        "female_literacy": 71.96,
+        "source_row": 307,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/049/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "050",
+      "name": "Tarn Taran",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6976,
+        "name": "Tarn Taran",
+        "code": "050",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 1119627,
+        "households": 203421,
+        "literates": 666162,
+        "children": 137223,
+        "male": 589369,
+        "female": 530258,
+        "workers": 380702,
+        "literacy": 67.81,
+        "male_literacy": 73.24,
+        "female_literacy": 61.85,
+        "source_row": 312,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/050/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "051",
+      "name": "Rupnagar",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6980,
+        "name": "Rupnagar",
+        "code": "051",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 684627,
+        "households": 135635,
+        "literates": 502731,
+        "children": 72926,
+        "male": 357485,
+        "female": 327142,
+        "workers": 233676,
+        "literacy": 82.19,
+        "male_literacy": 87.5,
+        "female_literacy": 76.42,
+        "source_row": 316,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/051/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "052",
+      "name": "Sahibzada Ajit Singh Nagar",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6985,
+        "name": "Sahibzada Ajit Singh Nagar",
+        "code": "052",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 994628,
+        "households": 205411,
+        "literates": 736575,
+        "children": 115644,
+        "male": 529253,
+        "female": 465375,
+        "workers": 355995,
+        "literacy": 83.8,
+        "male_literacy": 87.89,
+        "female_literacy": 79.18,
+        "source_row": 321,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/052/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "053",
+      "name": "Sangrur",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6989,
+        "name": "Sangrur",
+        "code": "053",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 1655169,
+        "households": 318870,
+        "literates": 1002077,
+        "children": 181334,
+        "male": 878029,
+        "female": 777140,
+        "workers": 568758,
+        "literacy": 67.99,
+        "male_literacy": 73.18,
+        "female_literacy": 62.17,
+        "source_row": 325,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/053/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    },
+    {
+      "district_code": "054",
+      "name": "Barnala",
+      "published_editions": [
+        {
+          "id": 3,
+          "source_key": "india-basic-2011-urban",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:53:40",
+          "status": "published"
+        },
+        {
+          "id": 1,
+          "source_key": "india-basic-2011-rural",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:45:58",
+          "status": "published"
+        },
+        {
+          "id": 2,
+          "source_key": "india-basic-2011-total",
+          "year": 2011,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "landing_url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+          "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+          "retrieved_at": "2026-09-17 18:44:47",
+          "status": "published"
+        }
+      ],
+      "canonical_totals": {
+        "id": 6996,
+        "name": "Barnala",
+        "code": "054",
+        "subdistrict_code": "00000",
+        "residence": "Total",
+        "population": 595527,
+        "households": 115798,
+        "literates": 359831,
+        "children": 64987,
+        "male": 317522,
+        "female": 278005,
+        "workers": 209331,
+        "literacy": 67.82,
+        "male_literacy": 71.57,
+        "female_literacy": 63.57,
+        "source_row": 332,
+        "edition_id": 2,
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+        "flags": []
+      },
+      "dashboard_url": "https://pollmedia.org/india/districts/03/054/dashboard",
+      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "flags": [
+        "Boundary edition unverified",
+        "Electoral membership audit pending",
+        "Accepted Census/LGD links pending",
+        "Historical source geography retained; later splits not backcast"
+      ]
+    }
+  ],
+  "notification_preference": "Include direct district dashboard link after each verified completion",
+  "deployment_coordination": {
+    "locks": [
+      "/home/pollmedia/.pollmedia-live-deployment.lock",
+      "/home/pollmedia/tmp/.pollmedia-election-release.lock"
+    ],
+    "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
+  },
+  "last_run": {
+    "action": "Separate own managed worktree and branch established; fresh canonical published inventory read; no live deployment",
+    "live_commit": "c73352a0130e0c4dcd3bbc5ccdf6456692fdd3c6",
+    "next_action": "Pending Haryana scope completion; then acquire official Punjab archive and audit dated membership"
+  }
+}
