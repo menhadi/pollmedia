@@ -1,0 +1,394 @@
+{
+  "state": "Arunachal Pradesh",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Lumla (ST)",
+      "district": "Tawang"
+    },
+    {
+      "code": 2,
+      "name": "Tawang (ST)",
+      "district": "Tawang"
+    },
+    {
+      "code": 3,
+      "name": "Mukto (ST)",
+      "district": "Tawang"
+    },
+    {
+      "code": 4,
+      "name": "Dirang (ST)",
+      "district": "West Kameng"
+    },
+    {
+      "code": 5,
+      "name": "Kalaktang (ST)",
+      "district": "West Kameng"
+    },
+    {
+      "code": 6,
+      "name": "Thrizino-Buragaon (ST)",
+      "district": "West Kameng"
+    },
+    {
+      "code": 7,
+      "name": "Bomdila (ST)",
+      "district": "West Kameng"
+    },
+    {
+      "code": 8,
+      "name": "Bameng (ST)",
+      "district": "East Kameng"
+    },
+    {
+      "code": 9,
+      "name": "Chayangtajo (ST)",
+      "district": "East Kameng"
+    },
+    {
+      "code": 10,
+      "name": "Seppa East (ST)",
+      "district": "East Kameng"
+    },
+    {
+      "code": 11,
+      "name": "Seppa West (ST)",
+      "district": "East Kameng"
+    },
+    {
+      "code": 12,
+      "name": "Pakke-Kasang (ST)",
+      "district": "East Kameng"
+    },
+    {
+      "code": 13,
+      "name": "Itanagar (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 14,
+      "name": "Doimukh (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 15,
+      "name": "Sagalee (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 16,
+      "name": "Yachuli (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 17,
+      "name": "Ziro-Hapoli (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 18,
+      "name": "Palin (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 19,
+      "name": "Nyapin (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 20,
+      "name": "Tali (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 21,
+      "name": "Koloriang (ST)",
+      "district": "Lower Subansiri"
+    },
+    {
+      "code": 22,
+      "name": "Nacho (ST)",
+      "district": "Upper Subansiri"
+    },
+    {
+      "code": 23,
+      "name": "Taliha (ST)",
+      "district": "Upper Subansiri"
+    },
+    {
+      "code": 24,
+      "name": "Daporijo (ST)",
+      "district": "Upper Subansiri"
+    },
+    {
+      "code": 25,
+      "name": "Raga (ST)",
+      "district": "Upper Subansiri"
+    },
+    {
+      "code": 26,
+      "name": "Damporijo (ST)",
+      "district": "Upper Subansiri"
+    },
+    {
+      "code": 27,
+      "name": "Liromoba (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 28,
+      "name": "Likabali (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 29,
+      "name": "Basar (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 30,
+      "name": "Along West (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 31,
+      "name": "Along East (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 32,
+      "name": "Rumgong (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 33,
+      "name": "Mechuka (ST)",
+      "district": "West Siang"
+    },
+    {
+      "code": 34,
+      "name": "Tuting-Yingkiong (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 35,
+      "name": "Pangin (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 36,
+      "name": "Nari-Koyu (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 37,
+      "name": "Pasighat West (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 38,
+      "name": "Pasighat East (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 39,
+      "name": "Mebo (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 40,
+      "name": "Mariyang-Geku (ST)",
+      "district": "East Siang"
+    },
+    {
+      "code": 41,
+      "name": "Anini (ST)",
+      "district": "Dibang Valley"
+    },
+    {
+      "code": 42,
+      "name": "Dambuk (ST)",
+      "district": "Dibang Valley"
+    },
+    {
+      "code": 43,
+      "name": "Roing (ST)",
+      "district": "Dibang Valley"
+    },
+    {
+      "code": 44,
+      "name": "Tezu (ST)",
+      "district": "Lohit"
+    },
+    {
+      "code": 45,
+      "name": "Hayuliang (ST)",
+      "district": "Lohit"
+    },
+    {
+      "code": 46,
+      "name": "Chowkham (ST)",
+      "district": "Lohit"
+    },
+    {
+      "code": 47,
+      "name": "Namsai (ST)",
+      "district": "Lohit"
+    },
+    {
+      "code": 48,
+      "name": "Lekang (ST)",
+      "district": "Lohit"
+    },
+    {
+      "code": 49,
+      "name": "Bordumsa-Diyum",
+      "district": "Changlang"
+    },
+    {
+      "code": 50,
+      "name": "Miao (ST)",
+      "district": "Changlang"
+    },
+    {
+      "code": 51,
+      "name": "Nampong (ST)",
+      "district": "Changlang"
+    },
+    {
+      "code": 52,
+      "name": "Changlang South (ST)",
+      "district": "Changlang"
+    },
+    {
+      "code": 53,
+      "name": "Changlang North (ST)",
+      "district": "Changlang"
+    },
+    {
+      "code": 54,
+      "name": "Namsang (ST)",
+      "district": "Tirap"
+    },
+    {
+      "code": 55,
+      "name": "Khonsa East (ST)",
+      "district": "Tirap"
+    },
+    {
+      "code": 56,
+      "name": "Khonsa West (ST)",
+      "district": "Tirap"
+    },
+    {
+      "code": 57,
+      "name": "Borduria-Bogapani (ST)",
+      "district": "Tirap"
+    },
+    {
+      "code": 58,
+      "name": "Kanubari (ST)",
+      "district": "Tirap"
+    },
+    {
+      "code": 59,
+      "name": "Longding-Pumao (ST)",
+      "district": "Tirap"
+    },
+    {
+      "code": 60,
+      "name": "Pongchao-Wakka (ST)",
+      "district": "Tirap"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Arunachal West",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "page": 42
+    },
+    {
+      "code": 2,
+      "name": "Arunachal East",
+      "raw_name": "ARUNAHCAL EAST",
+      "ac_codes": [
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "page": 42
+    }
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "1989-07-01 territorial reference; 1989-07-17 notification reproduced in2008",
+  "pc_source_date": "2008 ScheduleIV TableB; territorial reference1989-07-01",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "flags": [
+    "Historical district headings retained; correspondence to current and Census2011 districts unverified",
+    "PartB PC2 raw spelling ARUNAHCAL retained",
+    "PartB57 Bagapani vs PartA Bogapani and PartB60 Pongchou vs PartA Pongchao retained in preserved source; names use PartA where reviewed",
+    "Other spelling and precise village correspondence review pending"
+  ]
+}
