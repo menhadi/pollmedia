@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-kamrup-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kamrup Census 2011 — rural village PCA',
+        'sheet' => 'EB-1822',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6512/download/9589/DDW_PCA1822_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6512',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-kamrup-metro-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Kamrup Metropolitan Census 2011 — rural village PCA',
