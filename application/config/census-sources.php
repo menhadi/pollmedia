@@ -1,6 +1,36 @@
 <?php
 
 return [
+    'uttarakhand-uttarkashi-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Uttarkashi Census 2011 — rural village PCA',
+        'sheet' => 'EB-0501',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6247/download/9324/DDW_PCA0501_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6247',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'uttarakhand-chamoli-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Chamoli Census 2011 — rural village PCA',
+        'sheet' => 'EB-0502',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6248/download/9325/DDW_PCA0502_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6248',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'uttarakhand-rudraprayag-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Rudraprayag Census 2011 — rural village PCA',
+        'sheet' => 'EB-0503',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6249/download/9326/DDW_PCA0503_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6249',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'uttarakhand-nainital-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Nainital Census 2011 — rural village PCA',
