@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-golaghat-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Golaghat Census 2011 — rural village PCA',
+        'sheet' => 'EB-1814',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6504/download/9581/DDW_PCA1814_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6504',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-hailakandi-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Hailakandi Census 2011 — rural village PCA',
