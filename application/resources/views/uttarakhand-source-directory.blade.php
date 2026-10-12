@@ -1,0 +1,14 @@
+@php
+    $uttarakhandVillageGroups = json_decode(file_get_contents(database_path('fixtures/uttarakhand-source-villages.json')), true, 512, JSON_THROW_ON_ERROR)['districts'];
+    $uttarakhandOutlineGroups = json_decode(file_get_contents(database_path('fixtures/uttarakhand-source-district-outlines.json')), true, 512, JSON_THROW_ON_ERROR)['districts'];
+@endphp
+<section class="panel" id="uttarakhand-source-maps"><h2>Uttarakhand district and village maps</h2><p>Choose a source district below. Village groups and district outlines retain their original names and separate editions; these links do not establish Census or electoral boundary equivalence.</p>
+<h3>Village maps</h3><div class="source-grid">
+@foreach($uttarakhandVillageGroups as $sourceDistrict)
+<article><h3><a data-uttarakhand-village="{{ $sourceDistrict['slug'] }}" href="{{ route('uttarakhand-source-village-map', ['slug' => $sourceDistrict['slug']]) }}">{{ $sourceDistrict['source_name'] }}</a></h3><p>{{ number_format($sourceDistrict['features']) }} source shapes · Census context and election archives</p></article>
+@endforeach
+</div><details><summary>13 district outlines · original SOI source names</summary><ul>
+@foreach($uttarakhandOutlineGroups as $sourceDistrict)
+<li><a data-uttarakhand-outline="{{ $sourceDistrict['slug'] }}" href="{{ route('uttarakhand-source-district-map', ['slug' => $sourceDistrict['slug']]) }}">{{ $sourceDistrict['source_name'] }}</a></li>
+@endforeach
+</ul><p>Some original outline labels contain unusual characters. They are retained pending verified display-name references.</p></details></section>
