@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Kasaragod'=>'588','Kannur'=>'589','Wayanad'=>'590','Kozhikode'=>'591','Malappuram'=>'592','Palakkad'=>'593','Thrissur'=>'594','Ernakulam'=>'595'];
+$codes=['Kasaragod'=>'588','Kannur'=>'589','Wayanad'=>'590','Kozhikode'=>'591','Malappuram'=>'592','Palakkad'=>'593','Thrissur'=>'594','Ernakulam'=>'595','Idukki'=>'596'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
