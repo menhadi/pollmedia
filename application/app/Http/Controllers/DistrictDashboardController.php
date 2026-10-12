@@ -217,8 +217,8 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/west-bengal-murshidabad-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Murshidabad', 'West Bengal');
         }
-        if ($state === '23' && in_array($district, ['418', '419', '420', '421', '422', '423', '424', '425'], true)) {
-            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior', '422' => 'Datia', '423' => 'Shivpuri', '424' => 'Tikamgarh', '425' => 'Chhatarpur'][$district];
+        if ($state === '23' && in_array($district, ['418', '419', '420', '421', '422', '423', '424', '425', '426'], true)) {
+            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior', '422' => 'Datia', '423' => 'Shivpuri', '424' => 'Tikamgarh', '425' => 'Chhatarpur', '426' => 'Panna'][$district];
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($mpDistrict, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
         }
