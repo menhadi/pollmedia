@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-kurukshetra-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Kurukshetra Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6263/download/9340/DDW_PCA0604_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6263',
+        'format' => 'xlsx', 'sheet' => 'EB-0604',
+    ],
     'odisha-baudh-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Baudh Census 2011 â€” rural village PCA',
