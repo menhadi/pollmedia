@@ -6448,7 +6448,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6456,7 +6456,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/129/dashboard",
-      "status": "deployed_public_verification_pending",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6494,8 +6494,30 @@
       "validation": {
         "regression_tests": "59 tests240 assertions passed",
         "github_backup": "Verified exact ls-remotefd068783e39b30e96199905ae852e0f314e6f432",
-        "public_verification": "Receipts acquired; actual-data checks pending",
-        "local_bundle": "Verifiedfd068783e39b30e96199905ae852e0f314e6f432"
+        "public_verification": "Passed actual canonical four totals, complete PC25 AC names, PC Jhalawar-Baran and AC Anta district context; detailed rendered audit deferred",
+        "local_bundle": "Verifiedfd068783e39b30e96199905ae852e0f314e6f432",
+        "public_map_full_json_sha256": "Exact public/local bytes and1631 features passed",
+        "canonical_totals": {
+          "id": 7479,
+          "name": "Jhalawar",
+          "code": "129",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1411129,
+          "households": 283295,
+          "literates": 739792,
+          "children": 208205,
+          "male": 725143,
+          "female": 685986,
+          "workers": 685950,
+          "literacy": 61.5,
+          "male_literacy": 75.75,
+          "female_literacy": 46.53,
+          "source_row": 815,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        }
       }
     },
     {
@@ -6787,10 +6809,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T19:51:33.791416+05:30",
-    "live_commit": "5e6c64b0e1423af03e79529890d67cd6644830b3",
-    "action": "Baran deployed under both locks with verified backups",
-    "next_action": "Verify Baran actual totals/full map1631 features and complete PC25 membership, PC Jhalawar-Baran and AC Anta district context"
+    "checked_at": "2026-10-12T14:36:27.9402071+00:00",
+    "live_commit": "72e91d651e1b8c3948337dc34703067016f98f19",
+    "action": "Baran verified; Rajasthan31 of33 handled with deferred flags",
+    "next_action": "Prepare Jhalawar130 source map and already audited complete PC25 membership"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
