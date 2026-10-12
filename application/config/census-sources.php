@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-panipat-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Panipat Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6266/download/9343/DDW_PCA0607_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6266',
+        'format' => 'xlsx', 'sheet' => 'EB-0607',
+    ],
     'haryana-karnal-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Karnal Census 2011 — district, town, village and ward PCA',
