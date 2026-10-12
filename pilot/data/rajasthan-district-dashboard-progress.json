@@ -6448,7 +6448,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6456,7 +6456,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/129/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6489,6 +6489,13 @@
         ],
         "source_date": "2008-12-17",
         "visually_audited": true
+      },
+      "deployment_commit": "fd068783e39b30e96199905ae852e0f314e6f432",
+      "validation": {
+        "regression_tests": "59 tests240 assertions passed",
+        "github_backup": "Verified exact ls-remotefd068783e39b30e96199905ae852e0f314e6f432",
+        "public_verification": "Receipts acquired; actual-data checks pending",
+        "local_bundle": "Verifiedfd068783e39b30e96199905ae852e0f314e6f432"
       }
     },
     {
@@ -6782,8 +6789,8 @@
   "last_run": {
     "checked_at": "2026-10-12T19:51:33.791416+05:30",
     "live_commit": "5e6c64b0e1423af03e79529890d67cd6644830b3",
-    "action": "Kota verified; Rajasthan30 of33 handled with deferred flags",
-    "next_action": "Baran1631 source shapes and complete PC25 prepared; finish regression14343 then locked deployment"
+    "action": "Baran deployed under both locks with verified backups",
+    "next_action": "Verify Baran actual totals/full map1631 features and complete PC25 membership, PC Jhalawar-Baran and AC Anta district context"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
