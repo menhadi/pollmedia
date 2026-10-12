@@ -1379,8 +1379,130 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "action": "Separate own managed worktree and branch established; fresh canonical published inventory read; no live deployment",
-    "live_commit": "c73352a0130e0c4dcd3bbc5ccdf6456692fdd3c6",
-    "next_action": "Acquire official Haryana SOI archive and verify full ZIP/hash; audit dated ECI membership for first district before fixture use"
+    "checked_at": "2026-10-12T10:41:28.586611+00:00",
+    "live_commit": "1adfeb0714400f14bd992dbc33a732e2b1300c47",
+    "action": "Official Haryana archive acquired; complete ZIP/hash verified; source district codes inventoried; no deployment",
+    "next_action": "Inspect source Panchkula code without inferred Census join, build valid source map with explicit gaps, visually audit dated ECI district/shared PC membership before fixture use"
+  },
+  "source_inventory": {
+    "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
+    "soi_acquisition": {
+      "size": 9667232,
+      "sha256": "26cbd66f2f6b3217417b182157b96e4bf2956516789c027668193162076740af",
+      "zip_integrity": "All entries passed",
+      "retrieved_at": "2026-10-12T10:41:28.586611+00:00"
+    },
+    "source_district_records": [
+      {
+        "source_code": "85",
+        "source_label": "REWARI",
+        "records": 403
+      },
+      {
+        "source_code": "83",
+        "source_label": "JHAJJAR",
+        "records": 265
+      },
+      {
+        "source_code": "88",
+        "source_label": "FARIDABAD",
+        "records": 189
+      },
+      {
+        "source_code": "80",
+        "source_label": "HISAR",
+        "records": 267
+      },
+      {
+        "source_code": "84",
+        "source_label": "MAHENDRAGARH",
+        "records": 360
+      },
+      {
+        "source_code": "82",
+        "source_label": "ROHTAK",
+        "records": 145
+      },
+      {
+        "source_code": "081N001",
+        "source_label": "CHARKI DADRI",
+        "records": 172
+      },
+      {
+        "source_code": "81",
+        "source_label": "BHIWANI",
+        "records": 270
+      },
+      {
+        "source_code": "86",
+        "source_label": "GURUGRAM",
+        "records": 287
+      },
+      {
+        "source_code": "76",
+        "source_label": "SONIPAT",
+        "records": 344
+      },
+      {
+        "source_code": "87",
+        "source_label": "NUH",
+        "records": 441
+      },
+      {
+        "source_code": "89",
+        "source_label": "PALWAL",
+        "records": 281
+      },
+      {
+        "source_code": "72",
+        "source_label": "KURUKSHETRA",
+        "records": 418
+      },
+      {
+        "source_code": "71",
+        "source_label": "YAMUNANAGAR",
+        "records": 655
+      },
+      {
+        "source_code": "78",
+        "source_label": "FATEHABAD",
+        "records": 244
+      },
+      {
+        "source_code": "69",
+        "source_label": "PANCHKULA",
+        "records": 243
+      },
+      {
+        "source_code": "73",
+        "source_label": "KAITHAL",
+        "records": 278
+      },
+      {
+        "source_code": "70",
+        "source_label": "AMBALA",
+        "records": 487
+      },
+      {
+        "source_code": "74",
+        "source_label": "KARNAL",
+        "records": 430
+      },
+      {
+        "source_code": "79",
+        "source_label": "SIRSA",
+        "records": 327
+      },
+      {
+        "source_code": "77",
+        "source_label": "JIND",
+        "records": 305
+      },
+      {
+        "source_code": "75",
+        "source_label": "PANIPAT",
+        "records": 195
+      }
+    ]
   }
 }
