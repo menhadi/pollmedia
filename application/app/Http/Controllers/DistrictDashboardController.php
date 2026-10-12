@@ -626,6 +626,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '252') {
             $mapFile = 'maps/arunachal-pradesh-upper-siang-villages.geojson';
+            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Upper Siang');
         }
         if ($state === '12' && $district === '253') {
             $mapFile = 'maps/arunachal-pradesh-changlang-villages.geojson';
@@ -637,6 +638,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '256') {
             $mapFile = 'maps/arunachal-pradesh-kurung-kumey-villages.geojson';
+            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Kurung Kumey');
         }
         if ($state === '12' && $district === '257') {
             $mapFile = 'maps/arunachal-pradesh-dibang-valley-villages.geojson';
@@ -644,6 +646,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '258') {
             $mapFile = 'maps/arunachal-pradesh-lower-dibang-valley-villages.geojson';
+            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Lower Dibang Valley');
         }
         if ($state === '12' && $district === '259') {
             $mapFile = 'maps/arunachal-pradesh-lohit-villages.geojson';
@@ -651,6 +654,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '260') {
             $mapFile = 'maps/arunachal-pradesh-anjaw-villages.geojson';
+            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Anjaw');
         }
         if ($state === '06' && $district === '087') {
             $mapFile = 'maps/mewat-villages.geojson';
