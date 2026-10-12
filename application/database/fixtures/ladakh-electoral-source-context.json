@@ -1,0 +1,23 @@
+{
+  "official_pc_number": 1,
+  "archive": {
+    "kind": "pc",
+    "constituency_name": "Ladakh",
+    "record_code": 542,
+    "edition_id": "349e04305ee4652986f79497",
+    "year": 2024
+  },
+  "sources": [
+    {
+      "url": "https://www.mha.gov.in/en/divisionofmha/jammu-kashmir-and-ladakh-affairs",
+      "checked_at": "2026-10-12",
+      "verification": "Official indexed source checked via web tool; raw HTML archival attempt timed out, not retried."
+    },
+    {
+      "url": "https://ceo.ladakh.gov.in/ro/",
+      "checked_at": "2026-10-12",
+      "verification": "Official indexed source checked via web tool; raw HTML archival attempt timed out, not retried."
+    }
+  ],
+  "note": "Archive record_code542 is not official constituency number. Shared UT parliamentary constituency; no current Legislative Assembly. Historical editions do not establish current district boundary correspondence."
+}
