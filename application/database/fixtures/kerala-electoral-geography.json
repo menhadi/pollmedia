@@ -9,11 +9,12 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Kollam with complete associated PC15/16/18 segments; Thiruvananthapuram pending",
+  "scope": "All140 dated Kerala AC rows and20 PCs extracted; current/Census/SOI boundary correspondence unverified",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent",
-    "AC81 Table A Thripunithura versus Table B Tripunithura source spelling retained; runtime alias review pending"
+    "AC81 Table A Thripunithura versus Table B Tripunithura source spelling retained; runtime alias review pending",
+    "AC132 TableA Kazhakoottam versus TableB Kazhakkoottam retained; runtime source/name review pending"
   ],
   "district_rows": [
     {
@@ -771,6 +772,90 @@
       "name": "Chathannoor",
       "district": "Kollam",
       "page": 220
+    },
+    {
+      "code": 127,
+      "name": "Varkala",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 128,
+      "name": "Attingal (SC)",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 129,
+      "name": "Chirayinkeezhu (SC)",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 130,
+      "name": "Nedumangad",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 131,
+      "name": "Vamanapuram",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 132,
+      "name": "Kazhakoottam",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 133,
+      "name": "Vattiyoorkavu",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 134,
+      "name": "Thiruvananthapuram",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 135,
+      "name": "Nemom",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 136,
+      "name": "Aruvikkara",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 137,
+      "name": "Parassala",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 138,
+      "name": "Kattakkada",
+      "district": "Thiruvananthapuram",
+      "page": 222
+    },
+    {
+      "code": 139,
+      "name": "Kovalam",
+      "district": "Thiruvananthapuram",
+      "page": 222
+    },
+    {
+      "code": 140,
+      "name": "Neyyattinkara",
+      "district": "Thiruvananthapuram",
+      "page": 222
     }
   ],
   "pcs": [
@@ -1023,6 +1108,34 @@
         124,
         125,
         126
+      ],
+      "page": 224
+    },
+    {
+      "code": 19,
+      "name": "Attingal",
+      "ac_codes": [
+        127,
+        128,
+        129,
+        130,
+        131,
+        136,
+        138
+      ],
+      "page": 224
+    },
+    {
+      "code": 20,
+      "name": "Thiruvananthapuram",
+      "ac_codes": [
+        132,
+        133,
+        134,
+        135,
+        137,
+        139,
+        140
       ],
       "page": 224
     }
