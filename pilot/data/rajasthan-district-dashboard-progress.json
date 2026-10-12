@@ -4381,15 +4381,17 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "775 unlinked shapes; no population allocated",
+        "Census Jalor and dated ECI Jalore labels retained",
+        "Dated PC18 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/119/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -4425,6 +4427,40 @@
           18
         ],
         "note": "Census Jalor versus dated ECI Jalore retained; complete shared PC18 includes Sirohi AC146-148; current crosswalk unverified."
+      },
+      "deployment": {
+        "live_commit": "92705aab393dcecc22cc76923e22d6b19d220c30",
+        "rollback_base": "7716edc301b3cfadd9d272c72525dba24a26a944",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7397,
+          "name": "Ajmer",
+          "code": "119",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 2583052,
+          "households": 494832,
+          "literates": 1526673,
+          "children": 381167,
+          "male": 1324085,
+          "female": 1258967,
+          "workers": 1053722,
+          "literacy": 69.33,
+          "male_literacy": 82.44,
+          "female_literacy": 55.68,
+          "source_row": 733,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;775 features",
+        "pc_and_ac_published_district_context_and_alias": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified d23fe62807baafe5f984b9d4826898b898f2f78a; includes concurrent changes",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -6116,10 +6152,11 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:15:07.846733+00:00",
-    "live_commit": "fea426ac73ba37a1506aa89aa1d7822e71e5a408",
-    "action": "Jalor full map JSON/hash and complete audited shared PC18 fixture prepared; not deployed",
-    "next_action": "Enable Jalor119 with ECI Jalore alias in controller/context/switcher, test, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link."
+    "checked_at": "2026-10-12T10:26:20.876406+00:00",
+    "live_commit": "92705aab393dcecc22cc76923e22d6b19d220c30",
+    "backup_commit": "d23fe62807baafe5f984b9d4826898b898f2f78a",
+    "action": "Jalor deployed under both locks; actual totals/full map/shared membership/PC-AC alias context/tests/backups verified",
+    "next_action": "Continue Sirohi120 using audited AC146-148 and complete shared PC18; extract district map, test, deploy and verify"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
