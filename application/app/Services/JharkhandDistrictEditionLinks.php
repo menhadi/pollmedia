@@ -4,6 +4,22 @@ namespace App\Services;
 
 class JharkhandDistrictEditionLinks
 {
+    public function saraikelaKharsawan(): array
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Pashchimi Singhbhum', 'Jharkhand');
+        $codes = [50, 51, 57];
+        $links['assembly'] = array_values(array_filter($links['assembly'], fn (array $seat): bool => in_array($seat['code'], $codes, true)));
+        $fixture = json_decode(file_get_contents(database_path('fixtures/jharkhand-electoral-geography.json')), true, 512, JSON_THROW_ON_ERROR);
+        foreach ($links['parliamentary'] as &$pc) {
+            $pc['outside_district'] = collect($fixture['district_rows'])->whereIn('code', array_diff($pc['ac_codes'], $codes))->map(fn (array $seat): array => ['code' => $seat['code'], 'name' => $seat['name'], 'district' => $seat['context_district'] ?? $seat['district']])->values()->all();
+        }
+        unset($pc);
+        $links['sources'][] = ['label' => 'Saraikela-Kharsawan later electoral context: ECI fact sheet published by PIB on 26 November 2019 lists AC51 and AC57; original 2008 West Singhbhum headings retained; Census boundary correspondence pending', 'url' => $fixture['khunti_2019_source']['url'], 'date' => '2019-11-26', 'sha256' => $fixture['khunti_2019_source']['sha256']];
+        $links['sources'][] = ['label' => 'ECI fact sheet published by PIB on 4 December 2019 lists AC50 under Saraikella-Kharsawan; source spelling retained', 'url' => $fixture['ramgarh_2019_source']['url'], 'date' => '2019-12-04', 'sha256' => $fixture['ramgarh_2019_source']['sha256']];
+
+        return $links;
+    }
+
     public function ramgarh(): array
     {
         $links = app(DistrictConstituencyLinks::class)->forDistrict('Hazaribagh', 'Jharkhand');

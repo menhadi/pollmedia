@@ -533,6 +533,10 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Sonipat', 'Haryana');
             $mapFile = 'maps/sonipat-villages.geojson';
         }
+        if ($state === '20' && $district === '369') {
+            $mapFile = 'maps/jharkhand-saraikela-kharsawan-villages.geojson';
+            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->saraikelaKharsawan();
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
