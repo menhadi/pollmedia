@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-jajapur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Jajapur Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2113',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6573/download/9650/DDW_PCA2113_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6573',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-jagatsinghapur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Jagatsinghapur Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2111',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6571/download/9648/DDW_PCA2111_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6571',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-bhadrak-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Bhadrak Census 2011 â€” rural village PCA',
