@@ -21,14 +21,14 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
 @if(isset($codes[$district]))
-@php($context=app(\App\Services\DistrictDashboardData::class)->published($codes[$district], '08'))
+@php($context=app(\App\Services\DistrictDashboardData::class)->published($codes[$district], '06'))
 @if($context)
 <p>Census {{ $context['year'] }} district population: {{ $context['totals']['Total']['population']===null?'Unavailable':number_format($context['totals']['Total']['population']) }}.</p>
 <p>Literacy age 7+: {{ $context['totals']['Total']['literacy']===null?'Unavailable':number_format($context['totals']['Total']['literacy'],2).'%' }}.</p><p>Read from published records on this request.</p>
 @else
 <p>Published district Census records are unavailable here. No population is inferred.</p>
 @endif
-<a href="{{ route('district-dashboard',['state'=>'08','district'=>$codes[$district]]) }}">District map, Census history & graphs Ã¢â€ â€™</a>
+<a href="{{ route('district-dashboard',['state'=>'06','district'=>$codes[$district]]) }}">District map, Census history & graphs Ã¢â€ â€™</a>
 @else
 <p>District code crosswalk is not established in this panel. See the dated geographic source.</p>
 @endif
