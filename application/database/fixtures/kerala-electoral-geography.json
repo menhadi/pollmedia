@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial Kasaragod extraction with full associated PC1 segments; other districts pending",
+  "scope": "Partial extraction through Kannur with full PC1/2/3 including outside districts; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent"
@@ -56,6 +56,90 @@
       "name": "Kalliasseri",
       "district": "Kannur",
       "page": 209
+    },
+    {
+      "code": 8,
+      "name": "Taliparamba",
+      "district": "Kannur",
+      "page": 209
+    },
+    {
+      "code": 9,
+      "name": "Irikkur",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 10,
+      "name": "Azhikode",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 11,
+      "name": "Kannur",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 12,
+      "name": "Dharmadam",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 13,
+      "name": "Thalassery",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 14,
+      "name": "Kuthuparamba",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 15,
+      "name": "Mattannur",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 16,
+      "name": "Peravoor",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 20,
+      "name": "Vadakara",
+      "district": "Kozhikode",
+      "page": 210
+    },
+    {
+      "code": 21,
+      "name": "Kuttiadi",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 22,
+      "name": "Nadapuram",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 23,
+      "name": "Quilandy",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 24,
+      "name": "Perambra",
+      "district": "Kozhikode",
+      "page": 211
     }
   ],
   "pcs": [
@@ -70,6 +154,34 @@
         5,
         6,
         7
+      ],
+      "page": 223
+    },
+    {
+      "code": 2,
+      "name": "Kannur",
+      "ac_codes": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16
+      ],
+      "page": 223
+    },
+    {
+      "code": 3,
+      "name": "Vadakara",
+      "ac_codes": [
+        13,
+        14,
+        20,
+        21,
+        22,
+        23,
+        24
       ],
       "page": 223
     }
