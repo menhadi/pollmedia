@@ -820,6 +820,9 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/nagaland-peren-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Peren', 'Nagaland');
         }
+        if ($state === '03' && $district === '040') {
+            $mapFile = 'maps/fatehgarh-sahib-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
