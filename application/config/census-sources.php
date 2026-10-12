@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-kokrajhar-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kokrajhar Census 2011 — rural village PCA',
+        'sheet' => 'EB-1801',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6491/download/9568/DDW_PCA1801_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6491',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-dibrugarh-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Dibrugarh Census 2011 — rural village PCA',
