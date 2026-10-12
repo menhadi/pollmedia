@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-udalguri-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Udalguri Census 2011 — rural village PCA',
+        'sheet' => 'EB-1827',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6517/download/9594/DDW_PCA1827_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6517',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-nalbari-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Nalbari Census 2011 — rural village PCA',
