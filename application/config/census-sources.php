@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-nayagarh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Nayagarh Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2116',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6576/download/9653/DDW_PCA2116_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6576',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-kandhamal-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kandhamal Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2121',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6581/download/9658/DDW_PCA2121_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6581',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-ganjam-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Ganjam Census 2011 â€” rural village PCA',
