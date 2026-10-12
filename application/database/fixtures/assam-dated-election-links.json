@@ -1,0 +1,931 @@
+{
+  "scope": "Exact name references to indexed Assam PC2024 and AC2026 reports;case and outer whitespace only normalized.No boundary continuity asserted.",
+  "pc": {
+    "2": {
+      "source_name": "Dhubri",
+      "record_name": "Dhubri",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 29
+    },
+    "3": {
+      "source_name": "Barpeta",
+      "record_name": "Barpeta",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 30
+    },
+    "4": {
+      "source_name": "Darrang-Udalguri",
+      "record_name": "Darrang-Udalguri",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 31
+    },
+    "5": {
+      "source_name": "Guwahati",
+      "record_name": "Guwahati",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 32
+    },
+    "7": {
+      "source_name": "Karimganj",
+      "record_name": "Karimganj",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 34
+    },
+    "9": {
+      "source_name": "Nagaon",
+      "record_name": "Nagaon",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 36
+    },
+    "10": {
+      "source_name": "Kaziranga",
+      "record_name": "Kaziranga",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 37
+    },
+    "11": {
+      "source_name": "Sonitpur",
+      "record_name": "Sonitpur",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 38
+    },
+    "12": {
+      "source_name": "Lakhimpur",
+      "record_name": "Lakhimpur",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 39
+    },
+    "13": {
+      "source_name": "Dibrugarh",
+      "record_name": "Dibrugarh",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 40
+    },
+    "14": {
+      "source_name": "Jorhat",
+      "record_name": "Jorhat",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 41
+    }
+  },
+  "ac": {
+    "1": {
+      "source_name": "Gossaigaon",
+      "record_name": "GOSSAIGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 1
+    },
+    "2": {
+      "source_name": "Dotma (ST)",
+      "record_name": "DOTMA (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 2
+    },
+    "3": {
+      "source_name": "Kokrajhar (ST)",
+      "record_name": "KOKRAJHAR (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 3
+    },
+    "4": {
+      "source_name": "Baokhungri",
+      "record_name": "BAOKHUNGRI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 4
+    },
+    "5": {
+      "source_name": "Parbatjhora",
+      "record_name": "PARBATJHORA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 5
+    },
+    "6": {
+      "source_name": "Golakganj",
+      "record_name": "GOLAKGANJ",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 6
+    },
+    "7": {
+      "source_name": "Gauripur",
+      "record_name": "GAURIPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 7
+    },
+    "8": {
+      "source_name": "Dhubri",
+      "record_name": "DHUBRI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 8
+    },
+    "9": {
+      "source_name": "Birsing Jarua",
+      "record_name": "BIRSING JARUA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 9
+    },
+    "10": {
+      "source_name": "Bilasipara",
+      "record_name": "BILASIPARA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 10
+    },
+    "11": {
+      "source_name": "Mankachar",
+      "record_name": "MANKACHAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 11
+    },
+    "12": {
+      "source_name": "Jaleshwar",
+      "record_name": "JALESHWAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 12
+    },
+    "13": {
+      "source_name": "Goalpara West (ST)",
+      "record_name": "GOALPARA WEST (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 13
+    },
+    "14": {
+      "source_name": "Goalpara East",
+      "record_name": "GOALPARA EAST",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 14
+    },
+    "15": {
+      "source_name": "Dudhnai (ST)",
+      "record_name": "DUDHNAI (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 15
+    },
+    "16": {
+      "source_name": "Abhayapuri",
+      "record_name": "ABHAYAPURI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 16
+    },
+    "17": {
+      "source_name": "Srijangram",
+      "record_name": "SRIJANGRAM",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 17
+    },
+    "18": {
+      "source_name": "Bongaigaon",
+      "record_name": "BONGAIGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 18
+    },
+    "19": {
+      "source_name": "Sidli Chirang (ST)",
+      "record_name": "SIDLI CHIRANG (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 19
+    },
+    "20": {
+      "source_name": "Bijni",
+      "record_name": "BIJNI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 20
+    },
+    "22": {
+      "source_name": "Mandia",
+      "record_name": "MANDIA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 22
+    },
+    "23": {
+      "source_name": "Chenga",
+      "record_name": "CHENGA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 23
+    },
+    "24": {
+      "source_name": "Barpeta (SC)",
+      "record_name": "BARPETA (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 24
+    },
+    "25": {
+      "source_name": "Pakabetbari",
+      "record_name": "PAKABETBARI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 25
+    },
+    "26": {
+      "source_name": "Bajali",
+      "record_name": "BAJALI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 26
+    },
+    "27": {
+      "source_name": "Chamaria",
+      "record_name": "CHAMARIA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 27
+    },
+    "28": {
+      "source_name": "Boko-Chaygaon (ST)",
+      "record_name": "BOKO-CHAYGAON (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 28
+    },
+    "29": {
+      "source_name": "Palasbari",
+      "record_name": "PALASBARI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 29
+    },
+    "30": {
+      "source_name": "Hajo-Sualkuchi (SC)",
+      "record_name": "HAJO-SUALKUCHI (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 30
+    },
+    "31": {
+      "source_name": "Rangia",
+      "record_name": "RANGIA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 31
+    },
+    "32": {
+      "source_name": "Kamalpur",
+      "record_name": "KAMALPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 32
+    },
+    "33": {
+      "source_name": "Dispur",
+      "record_name": "DISPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 33
+    },
+    "34": {
+      "source_name": "Dimoria (SC)",
+      "record_name": "DIMORIA (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 34
+    },
+    "35": {
+      "source_name": "New Guwahati",
+      "record_name": "NEW GUWAHATI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 35
+    },
+    "36": {
+      "source_name": "Guwahati Central",
+      "record_name": "GUWAHATI CENTRAL",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 36
+    },
+    "37": {
+      "source_name": "Jalukbari",
+      "record_name": "JALUKBARI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 37
+    },
+    "38": {
+      "source_name": "Barkhetri",
+      "record_name": "BARKHETRI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 38
+    },
+    "39": {
+      "source_name": "Nalbari",
+      "record_name": "NALBARI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 39
+    },
+    "40": {
+      "source_name": "Tihu",
+      "record_name": "TIHU",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 40
+    },
+    "41": {
+      "source_name": "Manas",
+      "record_name": "MANAS",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 41
+    },
+    "42": {
+      "source_name": "Baksa (ST)",
+      "record_name": "BAKSA (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 42
+    },
+    "43": {
+      "source_name": "Tamulpur (ST)",
+      "record_name": "TAMULPUR (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 43
+    },
+    "44": {
+      "source_name": "Goreswar",
+      "record_name": "GORESWAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 44
+    },
+    "45": {
+      "source_name": "Bhergaon",
+      "record_name": "BHERGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 45
+    },
+    "46": {
+      "source_name": "Udalguri (ST)",
+      "record_name": "UDALGURI (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 46
+    },
+    "47": {
+      "source_name": "Mazbat",
+      "record_name": "MAZBAT",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 47
+    },
+    "48": {
+      "source_name": "Tangla",
+      "record_name": "TANGLA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 48
+    },
+    "49": {
+      "source_name": "Sipajhar",
+      "record_name": "SIPAJHAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 49
+    },
+    "50": {
+      "source_name": "Mangaldai",
+      "record_name": "MANGALDAI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 50
+    },
+    "51": {
+      "source_name": "Dalgaon",
+      "record_name": "DALGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 51
+    },
+    "52": {
+      "source_name": "Jagiroad (SC)",
+      "record_name": "JAGIROAD (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 52
+    },
+    "53": {
+      "source_name": "Laharighat",
+      "record_name": "LAHARIGHAT",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 53
+    },
+    "54": {
+      "source_name": "Morigaon",
+      "record_name": "MORIGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 54
+    },
+    "55": {
+      "source_name": "Dhing",
+      "record_name": "DHING",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 55
+    },
+    "56": {
+      "source_name": "Rupahihat",
+      "record_name": "RUPAHIHAT",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 56
+    },
+    "57": {
+      "source_name": "Kaliabor",
+      "record_name": "KALIABOR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 57
+    },
+    "58": {
+      "source_name": "Samaguri",
+      "record_name": "SAMAGURI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 58
+    },
+    "59": {
+      "source_name": "Barhampur",
+      "record_name": "BARHAMPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 59
+    },
+    "60": {
+      "source_name": "Nagaon-Batadraba",
+      "record_name": "NAGAON-BATADRABA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 60
+    },
+    "61": {
+      "source_name": "Raha (SC)",
+      "record_name": "RAHA (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 61
+    },
+    "62": {
+      "source_name": "Binnakandi",
+      "record_name": "BINNAKANDI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 62
+    },
+    "63": {
+      "source_name": "Hojai",
+      "record_name": "HOJAI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 63
+    },
+    "64": {
+      "source_name": "Lumding",
+      "record_name": "LUMDING",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 64
+    },
+    "65": {
+      "source_name": "Dhekiajuli",
+      "record_name": "DHEKIAJULI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 65
+    },
+    "66": {
+      "source_name": "Barchalla",
+      "record_name": "BARCHALLA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 66
+    },
+    "67": {
+      "source_name": "Tezpur",
+      "record_name": "TEZPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 67
+    },
+    "68": {
+      "source_name": "Rangapara",
+      "record_name": "RANGAPARA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 68
+    },
+    "69": {
+      "source_name": "Naduar",
+      "record_name": "NADUAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 69
+    },
+    "70": {
+      "source_name": "Biswanath",
+      "record_name": "BISWANATH",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 70
+    },
+    "71": {
+      "source_name": "Behali (SC)",
+      "record_name": "BEHALI (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 71
+    },
+    "72": {
+      "source_name": "Gohpur",
+      "record_name": "GOHPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 72
+    },
+    "73": {
+      "source_name": "Bihpuria",
+      "record_name": "BIHPURIA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 73
+    },
+    "74": {
+      "source_name": "Rongonadi",
+      "record_name": "RONGONADI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 74
+    },
+    "75": {
+      "source_name": "Nowboicha (SC)",
+      "record_name": "NOWBOICHA (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 75
+    },
+    "76": {
+      "source_name": "Lakhimpur",
+      "record_name": "LAKHIMPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 76
+    },
+    "77": {
+      "source_name": "Dhakuakhana (ST)",
+      "record_name": "DHAKUAKHANA (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 77
+    },
+    "78": {
+      "source_name": "Dhemaji (ST)",
+      "record_name": "DHEMAJI (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 78
+    },
+    "79": {
+      "source_name": "Sissibargaon",
+      "record_name": "SISSIBARGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 79
+    },
+    "80": {
+      "source_name": "Jonai (ST)",
+      "record_name": "JONAI (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 80
+    },
+    "81": {
+      "source_name": "Sadiya",
+      "record_name": "SADIYA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 81
+    },
+    "82": {
+      "source_name": "Doomdooma",
+      "record_name": "DOOMDOOMA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 82
+    },
+    "83": {
+      "source_name": "Margherita",
+      "record_name": "MARGHERITA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 83
+    },
+    "84": {
+      "source_name": "Digboi",
+      "record_name": "DIGBOI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 84
+    },
+    "85": {
+      "source_name": "Makum",
+      "record_name": "MAKUM",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 85
+    },
+    "86": {
+      "source_name": "Tinsukia",
+      "record_name": "TINSUKIA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 86
+    },
+    "87": {
+      "source_name": "Chabua-Lahowal",
+      "record_name": "CHABUA-LAHOWAL",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 87
+    },
+    "89": {
+      "source_name": "Khowang",
+      "record_name": "KHOWANG",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 89
+    },
+    "90": {
+      "source_name": "Duliajan",
+      "record_name": "DULIAJAN",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 90
+    },
+    "91": {
+      "source_name": "Tingkhong",
+      "record_name": "TINGKHONG",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 91
+    },
+    "92": {
+      "source_name": "Naharkatia",
+      "record_name": "NAHARKATIA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 92
+    },
+    "93": {
+      "source_name": "Sonari",
+      "record_name": "SONARI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 93
+    },
+    "94": {
+      "source_name": "Mahmora",
+      "record_name": "MAHMORA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 94
+    },
+    "95": {
+      "source_name": "Demow",
+      "record_name": "DEMOW",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 95
+    },
+    "96": {
+      "source_name": "Sibsagar",
+      "record_name": "SIBSAGAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 96
+    },
+    "97": {
+      "source_name": "Nazira",
+      "record_name": "NAZIRA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 97
+    },
+    "98": {
+      "source_name": "Majuli (ST)",
+      "record_name": "MAJULI (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 98
+    },
+    "99": {
+      "source_name": "Teok",
+      "record_name": "TEOK",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 99
+    },
+    "100": {
+      "source_name": "Jorhat",
+      "record_name": "JORHAT",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 100
+    },
+    "101": {
+      "source_name": "Mariani",
+      "record_name": "MARIANI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 101
+    },
+    "102": {
+      "source_name": "Titabor",
+      "record_name": "TITABOR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 102
+    },
+    "103": {
+      "source_name": "Golaghat",
+      "record_name": "GOLAGHAT",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 103
+    },
+    "104": {
+      "source_name": "Dergaon",
+      "record_name": "DERGAON",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 104
+    },
+    "105": {
+      "source_name": "Bokakhat",
+      "record_name": "BOKAKHAT",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 105
+    },
+    "106": {
+      "source_name": "Khumtai",
+      "record_name": "KHUMTAI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 106
+    },
+    "107": {
+      "source_name": "Sarupathar",
+      "record_name": "SARUPATHAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 107
+    },
+    "108": {
+      "source_name": "Bokajan (ST)",
+      "record_name": "BOKAJAN (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 108
+    },
+    "110": {
+      "source_name": "Diphu (ST)",
+      "record_name": "DIPHU (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 110
+    },
+    "111": {
+      "source_name": "Rongkhang (ST)",
+      "record_name": "RONGKHANG (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 111
+    },
+    "112": {
+      "source_name": "Amri (ST)",
+      "record_name": "AMRI (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 112
+    },
+    "113": {
+      "source_name": "Haflong (ST)",
+      "record_name": "HAFLONG (ST)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 113
+    },
+    "114": {
+      "source_name": "Lakhipur",
+      "record_name": "LAKHIPUR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 114
+    },
+    "115": {
+      "source_name": "Udharbond",
+      "record_name": "UDHARBOND",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 115
+    },
+    "116": {
+      "source_name": "Katigorah",
+      "record_name": "KATIGORAH",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 116
+    },
+    "118": {
+      "source_name": "Silchar",
+      "record_name": "SILCHAR",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 118
+    },
+    "119": {
+      "source_name": "Sonai",
+      "record_name": "SONAI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 119
+    },
+    "120": {
+      "source_name": "Dholai (SC)",
+      "record_name": "DHOLAI (SC)",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 120
+    },
+    "121": {
+      "source_name": "Hailakandi",
+      "record_name": "HAILAKANDI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 121
+    },
+    "122": {
+      "source_name": "Algapur-Katlicherra",
+      "record_name": "ALGAPUR-KATLICHERRA",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 122
+    },
+    "123": {
+      "source_name": "Karimganj North",
+      "record_name": "KARIMGANJ NORTH",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 123
+    },
+    "124": {
+      "source_name": "Karimganj South",
+      "record_name": "KARIMGANJ SOUTH",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 124
+    },
+    "125": {
+      "source_name": "Patharkandi",
+      "record_name": "PATHARKANDI",
+      "year": 2026,
+      "edition": "023d25078cffaec1db910705",
+      "record_code": 125
+    }
+  }
+}

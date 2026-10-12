@@ -1,5 +1,6 @@
 @php
     $electoralSource = json_decode(file_get_contents(database_path('fixtures/assam-2023-source-membership.json')), true, 512, JSON_THROW_ON_ERROR);
+    $datedElectionLinks = json_decode(file_get_contents(database_path('fixtures/assam-dated-election-links.json')), true, 512, JSON_THROW_ON_ERROR);
     $electoralHeadings = array_values(array_unique(array_column($electoralSource['acs'], 'source_district')));
     $candidateHeading = strtoupper(trim($district['source_name']));
     if ($district['slug'] === 'sribhumi') {
@@ -49,6 +50,7 @@
 <p class="notice">No exact 2023 district heading is matched to this map’s source name. Choose the dated heading below; no constituency membership has been inferred for this map.</p>
 @endif
 <p>Territorial references are dated 1 January 2023; Guwahati Municipal Corporation ward extents use Census 2001. Effective-date and subsequent corrigendum checks remain pending. Older election figures and maps are not assigned to these 2023 constituencies.</p>
+<p>Individual result links below use exact name references to the indexed 2024 parliamentary and 2026 assembly reports. Report codes are kept separately from the 2023 order numbers. Eight names with spelling or reservation-label differences remain unresolved; these links do not certify matching boundary editions.</p>
 <label>District heading in the 2023 order<select id="assam-electoral-district"><option value="all" @selected($initialHeading === 'all')>All 2023 district headings</option>
 @foreach($electoralHeadings as $heading)<option value="{{ $heading }}" @selected($initialHeading === $heading)>{{ $heading }}</option>@endforeach
 </select></label>
@@ -56,9 +58,22 @@
 @foreach($electoralSource['pcs'] as $pc)
 @php($matchesHeading = $initialHeading === 'all' || in_array($initialHeading, $pc['source_districts'], true))
 <details data-assam-pc="{{ $pc['code'] }}" @if(!$matchesHeading) hidden @endif @if($matchesHeading && $initialHeading !== 'all') open @endif><summary>{{ $pc['code'] }}. {{ $pc['source_name'] }} · {{ count($pc['ac_codes']) }} ACs</summary><p>District headings in this order: {{ implode(', ', $pc['source_districts']) }}</p><ul>
+@php($pcResult = $datedElectionLinks['pc'][$pc['code']] ?? null)
+@if($pcResult)
+<li><a data-assam-result="pc-{{ $pc['code'] }}" href="{{ route('elections.history', ['edition' => $pcResult['edition'], 'state' => 'Assam', 'code' => $pcResult['record_code']]) }}">{{ $pcResult['record_name'] }} · {{ $pcResult['year'] }} parliamentary results</a></li>
+@else
+<li>Parliamentary result identity unresolved; use the dated archive above.</li>
+@endif
 @foreach($pc['ac_codes'] as $acCode)
 @php($ac = $electoralAcs[$acCode])
-<li data-assam-ac="{{ $ac['code'] }}" data-electoral-district="{{ $ac['source_district'] }}" style="font-weight: {{ $initialHeading === $ac['source_district'] ? '700' : '400' }}">{{ $ac['code'] }}. {{ $ac['source_name'] }} — {{ $ac['source_district'] }}</li>
+<li data-assam-ac="{{ $ac['code'] }}" data-electoral-district="{{ $ac['source_district'] }}" style="font-weight: {{ $initialHeading === $ac['source_district'] ? '700' : '400' }}">{{ $ac['code'] }}. {{ $ac['source_name'] }} — {{ $ac['source_district'] }}
+@php($acResult = $datedElectionLinks['ac'][$ac['code']] ?? null)
+@if($acResult)
+ · <a data-assam-result="ac-{{ $ac['code'] }}" href="{{ route('elections.assembly', ['edition' => $acResult['edition'], 'state' => 'Assam', 'code' => $acResult['record_code']]) }}">{{ $acResult['record_name'] }} · {{ $acResult['year'] }} assembly results</a>
+@else
+ · Result identity unresolved; use the dated archive above.
+@endif
+</li>
 @endforeach
 </ul></details>
 @endforeach
