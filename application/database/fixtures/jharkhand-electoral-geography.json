@@ -3,16 +3,59 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial dated district fixture including Deoghar and complete shared PC2,3,4,5,6,13 scopes. Other seats pending.",
+  "scope": "Partial dated district fixture including Sahibganj and complete shared PC1,2,3,4,5,6,13 scopes. Other seats pending.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
     "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
     "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
     "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
     "SOI KODERMA and Census/gazette Kodarma spellings retained; name correspondence does not verify boundary editions.",
-    "2008 Dumka source district references for Nala/Jamtara retained. Modern Jamtara district correspondence is pending; not silently reassigned. PC2 printed Skiaripara spelling retained in source PDF; AC7 identity uses Part A Sikaripara."
+    "2008 Dumka source district references for Nala/Jamtara retained. Modern Jamtara district correspondence is pending; not silently reassigned. PC2 printed Skiaripara spelling retained in source PDF; AC7 identity uses Part A Sikaripara.",
+    "Sahebganj/Sahibganj and Pakaur/Pakur spellings preserved; aliases do not verify historical boundaries. PC1 prints Boiro while Part A gives Borio; raw PDF retained for review."
   ],
   "district_rows": [
+    {
+      "code": 1,
+      "name": "Rajmahal",
+      "district": "Sahebganj",
+      "context_district": "Sahibganj",
+      "page": 167
+    },
+    {
+      "code": 2,
+      "name": "Borio (ST)",
+      "district": "Sahebganj",
+      "context_district": "Sahibganj",
+      "page": 167
+    },
+    {
+      "code": 3,
+      "name": "Barhait (ST)",
+      "district": "Sahebganj",
+      "context_district": "Sahibganj",
+      "page": 167
+    },
+    {
+      "code": 4,
+      "name": "Litipara (ST)",
+      "district": "Pakaur",
+      "context_district": "Pakur",
+      "page": 167
+    },
+    {
+      "code": 5,
+      "name": "Pakaur",
+      "district": "Pakaur",
+      "context_district": "Pakur",
+      "page": 167
+    },
+    {
+      "code": 6,
+      "name": "Maheshpur (ST)",
+      "district": "Pakaur",
+      "context_district": "Pakur",
+      "page": 167
+    },
     {
       "code": 7,
       "name": "Sikaripara (ST)",
@@ -310,6 +353,19 @@
         16,
         17,
         18
+      ],
+      "page": 175
+    },
+    {
+      "code": 1,
+      "name": "Rajmahal (ST)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ],
       "page": 175
     }

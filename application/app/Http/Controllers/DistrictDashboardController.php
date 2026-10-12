@@ -481,6 +481,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/jharkhand-godda-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Godda', 'Jharkhand');
         }
+        if ($state === '20' && $district === '352') {
+            $mapFile = 'maps/jharkhand-sahibganj-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Sahibganj', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
