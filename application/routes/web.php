@@ -58,6 +58,14 @@ use App\Http\Middleware\RequireAdministrator;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+
+Route::get('/india/districts/source/assam/{slug}/dashboard', function (string $slug) {
+    $manifest = json_decode(file_get_contents(database_path('fixtures/assam-source-district-outlines.json')), true, 512, JSON_THROW_ON_ERROR);
+    $district = collect($manifest['districts'])->firstWhere('slug', $slug);
+    abort_unless($district, 404);
+    return view('assam-source-district-map', ['district' => $district, 'districts' => $manifest['districts']]);
+})->where('slug', '[a-z-]+')->name('assam-source-district-map');
+
 Route::get('/issues', [CitizenIssueController::class, 'index'])->name('issues.index');
 Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('throttle:3,10')->name('issues.store');
 Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
