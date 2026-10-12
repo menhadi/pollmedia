@@ -393,8 +393,9 @@
     },
     {
       "code": 21,
-      "source_name": "Bhowanipur-",
-      "source_district": "BARPETA"
+      "source_name": "Bhowanipur-Sorbhog",
+      "source_district": "BARPETA",
+      "extraction_review": "Original PDF printed page237: second name line retained; visually verified."
     },
     {
       "code": 22,
@@ -918,8 +919,9 @@
     },
     {
       "code": 126,
-      "source_name": "Ram Krishana",
-      "source_district": "KARIMGANJ"
+      "source_name": "Ram Krishna Nagar (SC)",
+      "source_district": "KARIMGANJ",
+      "extraction_review": "Original PDF printed page257: visual text reads Ram Krishna / Nagar (SC); extracted text has an extra a. Visually verified."
     }
   ],
   "district_headings": [
