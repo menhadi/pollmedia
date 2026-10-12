@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-mewat-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Mewat Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6278/download/9355/DDW_PCA0619_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6278',
+        'format' => 'xlsx', 'sheet' => 'EB-0619',
+    ],
     'ladakh-leh-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Leh Census 2011 — rural village PCA',
