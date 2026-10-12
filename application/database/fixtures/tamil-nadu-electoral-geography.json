@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction through Thiruvarur with complete associated PC segments; remaining districts pending",
+  "scope": "Partial district extraction through Pudukkottai with complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -998,6 +998,78 @@
       "name": "Pudukkottai",
       "district": "Pudukkottai",
       "page": null
+    },
+    {
+      "code": 181,
+      "name": "Thirumayam",
+      "district": "Pudukkottai",
+      "page": 432
+    },
+    {
+      "code": 182,
+      "name": "Alangudi",
+      "district": "Pudukkottai",
+      "page": 433
+    },
+    {
+      "code": 183,
+      "name": "Aranthangi",
+      "district": "Pudukkottai",
+      "page": 433
+    },
+    {
+      "code": 184,
+      "name": "Karaikudi",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 185,
+      "name": "Tiruppattur",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 186,
+      "name": "Sivaganga",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 187,
+      "name": "Manamadurai (SC)",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 208,
+      "name": "Tiruchuli",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 209,
+      "name": "Paramakudi (SC)",
+      "district": "Ramanathapuram",
+      "page": 440
+    },
+    {
+      "code": 210,
+      "name": "Tiruvadanai",
+      "district": "Ramanathapuram",
+      "page": 440
+    },
+    {
+      "code": 211,
+      "name": "Ramanathapuram",
+      "district": "Ramanathapuram",
+      "page": 440
+    },
+    {
+      "code": 212,
+      "name": "Mudhukulathur",
+      "district": "Ramanathapuram",
+      "page": 441
     }
   ],
   "pcs": [
@@ -1349,6 +1421,32 @@
         175,
         176,
         177
+      ],
+      "page": 449
+    },
+    {
+      "code": 31,
+      "name": "Sivaganga",
+      "ac_codes": [
+        181,
+        182,
+        184,
+        185,
+        186,
+        187
+      ],
+      "page": 449
+    },
+    {
+      "code": 35,
+      "name": "Ramanathapuram",
+      "ac_codes": [
+        183,
+        208,
+        209,
+        210,
+        211,
+        212
       ],
       "page": 449
     }
