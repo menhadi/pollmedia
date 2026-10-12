@@ -870,6 +870,54 @@
       "name": "Chohtan (SC)",
       "district": "Barmer",
       "page": 361
+    },
+    {
+      "code": 141,
+      "name": "Ahore",
+      "district": "Jalore",
+      "page": 361
+    },
+    {
+      "code": 142,
+      "name": "Jalore (SC)",
+      "district": "Jalore",
+      "page": 361
+    },
+    {
+      "code": 143,
+      "name": "Bhinmal",
+      "district": "Jalore",
+      "page": 361
+    },
+    {
+      "code": 144,
+      "name": "Sanchore",
+      "district": "Jalore",
+      "page": 361
+    },
+    {
+      "code": 145,
+      "name": "Raniwara",
+      "district": "Jalore",
+      "page": 361
+    },
+    {
+      "code": 146,
+      "name": "Sirohi",
+      "district": "Sirohi",
+      "page": 361
+    },
+    {
+      "code": 147,
+      "name": "Pindwara-Abu (ST)",
+      "district": "Sirohi",
+      "page": 362
+    },
+    {
+      "code": 148,
+      "name": "Reodar (SC)",
+      "district": "Sirohi",
+      "page": 362
     }
   ],
   "pcs": [
@@ -1140,6 +1188,21 @@
         138,
         139,
         140
+      ],
+      "page": 367
+    },
+    {
+      "code": 18,
+      "name": "Jalore",
+      "ac_codes": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148
       ],
       "page": 367
     }
