@@ -453,6 +453,10 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(['Jhunjhunun' => 'Jhunjhunu', 'Dhaulpur' => 'Dholpur', 'Jalor' => 'Jalore'][$rjDistrict] ?? $rjDistrict, 'Rajasthan');
             $mapFile = 'maps/'.str_replace(' ', '-', strtolower($rjDistrict)).'-villages.geojson';
         }
+        if ($state === '20' && $district === '349') {
+            $mapFile = 'maps/jharkhand-giridih-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Giridih', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
@@ -469,10 +473,6 @@ class DistrictDashboardController extends Controller
                 ->where('e.status', 'published')->where('e.year', 2011)->where('c.level', 'DISTRICT')->where('c.residence', 'Total')
                 ->whereNotLike('e.source_key', 'census-a02-%')
                 ->select('c.state_code', 'c.district_code', 'c.name')->orderBy('c.name')->get()->unique(fn (object $row): string => $row->state_code.':'.$row->district_code)->values();
-        if ($state === '20' && $district === '349') {
-            $mapFile = 'maps/jharkhand-giridih-villages.geojson';
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Giridih', 'Jharkhand');
-        }
         }
         if ($districts->isEmpty()) {
             $districts = collect([(object) ['state_code' => '09', 'district_code' => '136', 'name' => 'Rampur'], (object) ['state_code' => '09', 'district_code' => '151', 'name' => 'Pilibhit']]);
