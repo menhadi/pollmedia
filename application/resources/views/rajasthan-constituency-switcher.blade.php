@@ -6,7 +6,7 @@ $switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district
 $switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
 $switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
 $switchSeen=[];
-$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Ganganagar','Hanumangarh','Bikaner','Churu'],true));
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Ganganagar','Hanumangarh','Bikaner','Churu','Jhunjhunu'],true));
 @endphp
 @if($switchDistricts->isNotEmpty())
 <link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">
