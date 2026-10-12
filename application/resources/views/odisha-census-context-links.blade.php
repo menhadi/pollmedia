@@ -2,6 +2,7 @@
     $censusDistricts = json_decode(file_get_contents(database_path('fixtures/odisha-published-census-districts.json')), true, 512, JSON_THROW_ON_ERROR);
     $sameName = collect($censusDistricts)->first(fn ($item) => strtoupper(trim($item['name'])) === strtoupper(trim($district['source_name'])));
     $verifiedNameContexts = [
+        'nabarangpur' => ['code' => '397', 'label' => 'Nabarangpur / Nabarangapur', 'url' => 'https://censusindia.gov.in/nada/index.php/catalog/959', 'reference' => 'Census 2011 district handbook, PDF page 5'],
         'deogarh' => ['code' => '373', 'label' => 'Deogarh / Debagarh', 'url' => 'https://censusindia.gov.in/nada/index.php/catalog/928', 'reference' => 'Census 2011 district handbook, PDF page 13'],
         'sonepur' => ['code' => '392', 'label' => 'Sonepur / Subarnapur', 'url' => 'https://eodbodisha.odisha.gov.in/District/Home?distid=nGTbzCiAbFU%3D', 'reference' => 'Government of Odisha district profile'],
     ];
