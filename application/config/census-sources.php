@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-sonitpur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Sonitpur Census 2011 — rural village PCA',
+        'sheet' => 'EB-1807',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6497/download/9574/DDW_PCA1807_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6497',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-nagaon-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Nagaon Census 2011 — rural village PCA',
