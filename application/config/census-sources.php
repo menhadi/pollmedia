@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-nuapada-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Nuapada Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2125',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6585/download/9662/DDW_PCA2125_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6585',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-kalahandi-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kalahandi Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2126',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6586/download/9663/DDW_PCA2126_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6586',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-sambalpur-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Sambalpur Census 2011 â€” rural village PCA',
