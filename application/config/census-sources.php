@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-sambalpur-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Sambalpur Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2103',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6563/download/9640/DDW_PCA2103_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6563',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-sundargarh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Sundargarh Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2105',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6565/download/9642/DDW_PCA2105_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6565',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-bargarh-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Bargarh Census 2011 â€” rural village PCA',
