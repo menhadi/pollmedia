@@ -486,6 +486,150 @@
       "name": "Deoli-Uniara",
       "district": "Tonk",
       "page": 358
+    },
+    {
+      "code": 33,
+      "name": "Lachhmangarh",
+      "district": "Sikar",
+      "page": 353
+    },
+    {
+      "code": 34,
+      "name": "Dhod (SC)",
+      "district": "Sikar",
+      "page": 353
+    },
+    {
+      "code": 35,
+      "name": "Sikar",
+      "district": "Sikar",
+      "page": 353
+    },
+    {
+      "code": 36,
+      "name": "Danta Ramgarh",
+      "district": "Sikar",
+      "page": 353
+    },
+    {
+      "code": 37,
+      "name": "Khandela",
+      "district": "Sikar",
+      "page": 354
+    },
+    {
+      "code": 38,
+      "name": "Neema Ka Thana",
+      "district": "Sikar",
+      "page": 354
+    },
+    {
+      "code": 39,
+      "name": "Srimadhopur",
+      "district": "Sikar",
+      "page": 354
+    },
+    {
+      "code": 43,
+      "name": "Chomu",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 45,
+      "name": "Dudu (SC)",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 49,
+      "name": "Hawa Mahal",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 50,
+      "name": "Vidhyadhar Nagar",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 51,
+      "name": "Civil Lines",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 52,
+      "name": "Kishan Pole",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 53,
+      "name": "Adarsh Nagar",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 54,
+      "name": "Malviya Nagar",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 55,
+      "name": "Sanganer",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 56,
+      "name": "Bagru (SC)",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 98,
+      "name": "Kishangarh",
+      "district": "Ajmer",
+      "page": 358
+    },
+    {
+      "code": 99,
+      "name": "Pushkar",
+      "district": "Ajmer",
+      "page": 358
+    },
+    {
+      "code": 100,
+      "name": "Ajmer North",
+      "district": "Ajmer",
+      "page": 358
+    },
+    {
+      "code": 101,
+      "name": "Ajmer South (SC)",
+      "district": "Ajmer",
+      "page": 358
+    },
+    {
+      "code": 102,
+      "name": "Nasirabad",
+      "district": "Ajmer",
+      "page": 358
+    },
+    {
+      "code": 104,
+      "name": "Masuda",
+      "district": "Ajmer",
+      "page": 359
+    },
+    {
+      "code": 105,
+      "name": "Kekri",
+      "district": "Ajmer",
+      "page": 359
     }
   ],
   "pcs": [
@@ -638,6 +782,54 @@
         97
       ],
       "page": 366
+    },
+    {
+      "code": 5,
+      "name": "Sikar",
+      "ac_codes": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        43
+      ],
+      "page": 366
+    },
+    {
+      "code": 7,
+      "name": "Jaipur",
+      "ac_codes": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 366
+    },
+    {
+      "code": 13,
+      "name": "Ajmer",
+      "ac_codes": [
+        45,
+        98,
+        99,
+        100,
+        101,
+        102,
+        104,
+        105
+      ],
+      "page": 366
     }
-  ]
+  ],
+  "source_name_variants": {
+    "38": "AC page354 Neema Ka Thana; PC page366 Neem Ka Thana. Code-based dated membership retained."
+  }
 }
