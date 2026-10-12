@@ -453,6 +453,10 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(['Jhunjhunun' => 'Jhunjhunu', 'Dhaulpur' => 'Dholpur', 'Jalor' => 'Jalore', 'Chittaurgarh' => 'Chittorgarh'][$rjDistrict] ?? $rjDistrict, 'Rajasthan');
             $mapFile = 'maps/'.str_replace(' ', '-', strtolower($rjDistrict)).'-villages.geojson';
         }
+        if ($state === '20' && $district === '355') {
+            $mapFile = 'maps/jharkhand-bokaro-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Bokaro', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
