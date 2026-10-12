@@ -3,7 +3,7 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial dated district fixture including Lohardaga; complete shared PC1,2,3,4,5,6,7,12,13 scopes. Other seats pending.",
+  "scope": "Partial district fixture including Purbi Singhbhum; complete PC1,2,3,4,5,6,7,9,12,13 scopes. Other seats pending. PC9 raw code conflict retained.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
     "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
@@ -252,6 +252,48 @@
       "page": 170
     },
     {
+      "code": 44,
+      "name": "Baharagora",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 170
+    },
+    {
+      "code": 45,
+      "name": "Ghatsila (ST)",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 170
+    },
+    {
+      "code": 46,
+      "name": "Potka (ST)",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 170
+    },
+    {
+      "code": 47,
+      "name": "Jugsalai (SC)",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 48,
+      "name": "Jamshedpur East",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 49,
+      "name": "Jamshedpur West",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 171
+    },
+    {
       "code": 66,
       "name": "Mandar (ST)",
       "district": "Ranchi",
@@ -460,6 +502,28 @@
         72
       ],
       "page": 175
+    },
+    {
+      "code": 9,
+      "name": "Jamshedpur",
+      "ac_codes": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "raw_ac_codes": [
+        41,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "page": 175,
+      "source_code_note": "The2008 PC9 table prints41 Bahragora, while PartA uses44 Baharagora and41 Jharia. Runtime identity44 follows PartA and the official district2019 election list; raw printed41 is retained. Formal source discrepancy review pending."
     }
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
@@ -467,5 +531,11 @@
   "district_source_date": "2008; exact notification date pending",
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "pc_source_date": "2008; exact notification date pending"
+  "pc_source_date": "2008; exact notification date pending",
+  "supplementary_pc_source": {
+    "url": "https://jamshedpur.nic.in/parliamentary-election-2019/",
+    "reference_year": 2019,
+    "publication_date": "unverified",
+    "sha256": "9fd08d7d7121b45718a88a240b8476c71e73e10a3afd7a746878254b0761a121"
+  }
 }
