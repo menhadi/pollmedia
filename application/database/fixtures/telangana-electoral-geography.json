@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 historical Adilabad/Nizamabad districts and complete associated PC1/2/4/5 segments; omitted seats pending",
+  "scope": "Partial dated2014 Adilabad, Nizamabad and Karimnagar historical districts; complete associated PC1-5 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
@@ -163,6 +163,48 @@
       "page": 41
     },
     {
+      "code": 26,
+      "name": "Karimnagar",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 27,
+      "name": "Choppadandi (SC)",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 28,
+      "name": "Vemulawada",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 29,
+      "name": "Sircilla",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 30,
+      "name": "Manakondur (SC)",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 31,
+      "name": "Huzurabad",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 32,
+      "name": "Husnabad",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
       "code": 35,
       "name": "Narayankhed",
       "district": "Medak",
@@ -207,6 +249,20 @@
         23,
         24,
         25
+      ],
+      "page": 46
+    },
+    {
+      "code": 3,
+      "name": "Karimnagar",
+      "ac_codes": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
       ],
       "page": 46
     },
