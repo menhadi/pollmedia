@@ -2351,15 +2351,17 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "1995 unlinked shapes;6 ambiguous codes; no population allocated",
-        "Complete district/shared electoral fixture audit pending; not deployed",
-        "Historical source geography retained; later splits not backcast"
+        "Dated PCs5/6/7/11/13 cross-district membership visible; current crosswalk unverified",
+        "AC38 source spelling Neema/Neem varies; detailed label display audit deferred",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/110/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -2416,6 +2418,40 @@
           13
         ],
         "note": "Complete shared PCs retain outside members; AC38 name variation Neema/Neem visible in fixture."
+      },
+      "deployment": {
+        "live_commit": "9a52f9076b1417597b7238499a38163eeecb8373",
+        "rollback_base": "389cebd955e5690fe3c41f458d2b66fef7e43c79",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7320,
+          "name": "Jaipur",
+          "code": "110",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 6626178,
+          "households": 1177096,
+          "literates": 4300965,
+          "children": 929926,
+          "male": 3468507,
+          "female": 3157671,
+          "workers": 2464893,
+          "literacy": 75.51,
+          "male_literacy": 86.05,
+          "female_literacy": 64.02,
+          "source_row": 656,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_five_shared_pc_memberships": "Passed",
+        "public_map_full_json_sha256_and_dashboard_url": "Passed;2001 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 9a52f9076b1417597b7238499a38163eeecb8373",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5367,10 +5403,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T08:29:58.359179+00:00",
-    "live_commit": "ffae56eff8d6d9edd5a27ab930d3c86b58534334",
-    "action": "Jaipur district AC40-58 and complete PCs5/6/7/11/13 audited and fixture prepared; not deployed",
-    "next_action": "Enable Jaipur110 controller/context/switcher; run checks, deploy under both locks and verify actual public totals/full map/context/backups."
+    "checked_at": "2026-10-12T08:39:01.746904+00:00",
+    "live_commit": "9a52f9076b1417597b7238499a38163eeecb8373",
+    "action": "Jaipur deployed under both locks; actual totals/full map/all five shared PC memberships/PC-AC context/tests/backups verified",
+    "next_action": "Continue Sikar111 using audited AC32-39 and complete shared PCs4/5; extract district source map and retain AC38 source spelling variation"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
