@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Ernakulam with complete associated PC11/12/13/14 segments; other districts pending",
+  "scope": "Partial extraction through Kottayam with complete associated PC14/16/17 segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent",
@@ -603,6 +603,90 @@
       "name": "Puthuppally",
       "district": "Kottayam",
       "page": 218
+    },
+    {
+      "code": 99,
+      "name": "Changanassery",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 100,
+      "name": "Kanjirappally",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 101,
+      "name": "Poonjar",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 106,
+      "name": "Kuttanad",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 109,
+      "name": "Mavelikkara (SC)",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 110,
+      "name": "Chengannur",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 111,
+      "name": "Thiruvalla",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 112,
+      "name": "Ranni",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 113,
+      "name": "Aranmula",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 114,
+      "name": "Konni",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 115,
+      "name": "Adoor (SC)",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 118,
+      "name": "Kunnathur (SC)",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 119,
+      "name": "Kottarakkara",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 120,
+      "name": "Pathanapuram",
+      "district": "Kollam",
+      "page": 220
     }
   ],
   "pcs": [
@@ -801,6 +885,35 @@
         98
       ],
       "page": 224
+    },
+    {
+      "code": 16,
+      "name": "Mavelikkara (SC)",
+      "ac_codes": [
+        99,
+        106,
+        109,
+        110,
+        118,
+        119,
+        120
+      ],
+      "page": 224
+    },
+    {
+      "code": 17,
+      "name": "Pathanamthitta",
+      "ac_codes": [
+        100,
+        101,
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "page": 224
     }
-  ]
+  ],
+  "territorial_reference_date": "2005-05-16"
 }

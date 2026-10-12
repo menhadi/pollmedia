@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Kasaragod'=>'588','Kannur'=>'589','Wayanad'=>'590','Kozhikode'=>'591','Malappuram'=>'592','Palakkad'=>'593','Thrissur'=>'594','Ernakulam'=>'595','Idukki'=>'596'];
+$codes=['Kasaragod'=>'588','Kannur'=>'589','Wayanad'=>'590','Kozhikode'=>'591','Malappuram'=>'592','Palakkad'=>'593','Thrissur'=>'594','Ernakulam'=>'595','Idukki'=>'596','Kottayam'=>'597'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -39,6 +39,6 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($kind==='pc')
 <p>Assembly segments: {{ $segments->map(fn(array $row):string=>$row['name'].' (AC '.$row['code'].')')->implode(', ') }}.</p>
 @endif
-<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">Districtâ€“Assembly source â†—</a> Â· <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source â†—</a></details></section>
+<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Territorial divisions refer to 16 May 2005. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">Districtâ€“Assembly source â†—</a> Â· <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source â†—</a></details></section>
 @endif
 @endif
