@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-firozpur-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Firozpur Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6234/download/9311/DDW_PCA0309_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6234',
+        'format' => 'xlsx', 'sheet' => 'EB-0309',
+    ],
     'punjab-moga-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Moga Census 2011 — district, town, village and ward PCA',
