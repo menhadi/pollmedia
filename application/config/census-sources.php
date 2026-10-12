@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-jorhat-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Jorhat Census 2011 — rural village PCA',
+        'sheet' => 'EB-1813',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6503/download/9580/DDW_PCA1813_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6503',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-dhubri-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Dhubri Census 2011 — rural village PCA',
