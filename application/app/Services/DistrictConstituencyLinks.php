@@ -12,6 +12,7 @@ class DistrictConstituencyLinks
             return $empty;
         }
         $path = database_path(match ($state) {
+            'Haryana' => 'fixtures/haryana-electoral-geography.json',
             'Telangana' => 'fixtures/telangana-electoral-geography.json',
             'Chhattisgarh' => 'fixtures/chhattisgarh-electoral-geography.json',
             'Andhra Pradesh' => 'fixtures/andhra-pradesh-electoral-geography.json',
