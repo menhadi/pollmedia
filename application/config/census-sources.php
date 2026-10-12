@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-rohtak-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Rohtak Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6273/download/9350/DDW_PCA0614_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6273',
+        'format' => 'xlsx', 'sheet' => 'EB-0614',
+    ],
     'uttarakhand-tehri-garhwal-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Tehri Garhwal Census 2011 — rural village PCA',
