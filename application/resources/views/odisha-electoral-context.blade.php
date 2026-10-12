@@ -2,6 +2,12 @@
     $electoral = json_decode(file_get_contents(database_path('fixtures/odisha-electoral-source-context.json')), true, 512, JSON_THROW_ON_ERROR);
     $electoralDistricts = collect($electoral['districts']);
     $defaultElectoral = $electoralDistricts->firstWhere('name', strtoupper(trim($district['source_name'])));
+    $electoralNameContexts = [
+        'khordha' => ['name' => 'KHURDA', 'url' => 'https://khordha.odisha.gov.in/en/about-district/history'],
+        'sonepur' => ['name' => 'SUBARNAPUR', 'url' => 'https://eodbodisha.odisha.gov.in/District/Home?distid=nGTbzCiAbFU%3D'],
+    ];
+    $electoralNameContext = $electoralNameContexts[$district['slug']] ?? null;
+    $defaultElectoral ??= $electoralNameContext ? $electoralDistricts->firstWhere('name', $electoralNameContext['name']) : null;
     $electoralNumber = (int) request()->query('electoral', $defaultElectoral['number'] ?? 0);
     $electoralDistrict = $electoralDistricts->firstWhere('number', $electoralNumber);
     $electoralAcs = collect($electoral['acs'])->keyBy('number');
@@ -13,6 +19,9 @@
 <section class="panel" id="odisha-electoral-context">
 <h2>PC / AC details and election history</h2>
 <p>District grouping: CEO Draft 2020 electoral-roll analysis. PC membership: separate, undated CEO list, supplemented for Gopalpur by the CEO map citing the 15 December 2006 delimitation order. These source records are not a boundary match to the village map or Census edition, and are not certified as the current legal geography.</p>
+@if($electoralNameContext)
+<p data-electoral-name-reference>Named district context: {{ $district['source_name'] }} / {{ $electoralNameContext['name'] }} — <a href="{{ $electoralNameContext['url'] }}">official district naming reference</a>. This establishes the name context only; map and electoral boundary editions remain separate.</p>
+@endif
 <form method="get" action="{{ url()->current() }}#odisha-electoral-context">
 @if(request()->has('census'))<input type="hidden" name="census" value="{{ request()->query('census') }}">@endif
 <label for="odisha-electoral-district">Electoral source district</label>
