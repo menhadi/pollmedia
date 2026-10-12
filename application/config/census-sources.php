@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-rayagada-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Rayagada Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2127',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6587/download/9664/DDW_PCA2127_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6587',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-koraput-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Koraput Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2129',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6589/download/9666/DDW_PCA2129_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6589',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-nuapada-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Nuapada Census 2011 â€” rural village PCA',
