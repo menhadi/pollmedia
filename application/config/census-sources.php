@@ -1,6 +1,46 @@
 <?php
 
 return [
+    'jammu-kashmir-kupwara-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kupwara Census 2011 — rural village PCA',
+        'sheet' => 'EB-0101',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6192/download/9269/DDW_PCA0101_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6192',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'jammu-kashmir-badgam-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Badgam Census 2011 — rural village PCA',
+        'sheet' => 'EB-0102',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6193/download/9270/DDW_PCA0102_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6193',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'jammu-kashmir-punch-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Punch Census 2011 — rural village PCA',
+        'sheet' => 'EB-0105',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6196/download/9273/DDW_PCA0105_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6196',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'jammu-kashmir-rajouri-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Rajouri Census 2011 — rural village PCA',
+        'sheet' => 'EB-0106',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6197/download/9274/DDW_PCA0106_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6197',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-mahendragarh-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Mahendragarh Census 2011 — district, town, village and ward PCA',
