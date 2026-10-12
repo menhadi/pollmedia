@@ -8,6 +8,7 @@
     $electoralPcs = collect($electoral['pcs'])->keyBy('number');
     $districtAcs = $electoralDistrict ? $electoralAcs->only($electoralDistrict['acs']) : collect();
     $districtPcs = $districtAcs->pluck('pc')->filter()->unique()->sort();
+    $archiveUrl = fn ($seat) => route('constituency.overview', ['state' => 'Odisha', 'kind' => $seat['archive']['kind'], 'name' => $seat['archive']['constituency_name'], 'edition' => $seat['archive']['edition_id'], 'code' => $seat['archive']['record_code']]);
 @endphp
 <section class="panel" id="odisha-electoral-context">
 <h2>PC / AC details and election history</h2>
@@ -22,15 +23,16 @@
 @if($electoralDistrict)
 <h3>{{ $electoralDistrict['name'] }} · {{ $districtAcs->count() }} ACs in the district table</h3>
 <div class="table-wrap"><table data-electoral-acs><thead><tr><th>AC number / source name</th><th>Reservation</th><th>PC in the cited sources</th><th>Election history</th></tr></thead><tbody>
-@foreach($districtAcs as $ac)<tr data-ac="{{ $ac['number'] }}"><td>{{ $ac['number'] }} · {{ $ac['name'] }}</td><td>{{ $ac['reservation'] }}</td><td>@if($ac['pc']){{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}@if(isset($ac['pc_source'])) · CEO map, order 15 December 2006 @endif@else Unavailable — omitted from the reviewed PC list @endif</td><td><a data-ac-archive="{{ $ac['number'] }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>@endforeach
+@foreach($districtAcs as $ac)<tr data-ac="{{ $ac['number'] }}"><td><a data-ac-dashboard="{{ $ac['number'] }}" href="{{ $archiveUrl($ac) }}">{{ $ac['number'] }} · {{ $ac['name'] }}</a></td><td>{{ $ac['reservation'] }}</td><td>@if($ac['pc']){{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}@if(isset($ac['pc_source'])) · CEO map, order 15 December 2006 @endif@else Unavailable — omitted from the reviewed PC list @endif</td><td><a data-ac-archive="{{ $ac['number'] }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>@endforeach
 </tbody></table></div>
 <h3>Associated PCs · shared membership</h3>
 @foreach($districtPcs as $pcNumber)
 @php($pc = $electoralPcs[$pcNumber])
 <details data-pc="{{ $pcNumber }}"><summary>PC {{ $pcNumber }} · {{ $pc['name'] }} · {{ count($pc['acs']) }} listed ACs</summary>
 <p><a data-pc-archive="{{ $pcNumber }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'pc', 'q' => $pc['name']]) }}">Search this PC in historical reports</a>. Report editions and historical spelling may differ; a name search does not establish boundary equivalence.</p>
+<p><a data-pc-dashboard="{{ $pcNumber }}" href="{{ $archiveUrl($pc) }}">Open {{ $pc['name'] }} constituency dashboard</a> · archive edition {{ $pc['archive']['year'] }}</p>
 <p>All listed segments are shown, including those grouped under other districts in the Draft 2020 table.</p>
-<ul>@foreach($pc['acs'] as $acNumber)@php($segment = $electoralAcs[$acNumber])<li>{{ $acNumber }} · {{ $segment['name'] }} — {{ $segment['district'] }}@if($segment['district'] !== $electoralDistrict['name']) (other district in source)@endif</li>@endforeach</ul>
+<ul>@foreach($pc['acs'] as $acNumber)@php($segment = $electoralAcs[$acNumber])<li><a href="{{ $archiveUrl($segment) }}">{{ $acNumber }} · {{ $segment['name'] }}</a> — {{ $segment['district'] }}@if($segment['district'] !== $electoralDistrict['name']) (other district in source)@endif</li>@endforeach</ul>
 </details>
 @endforeach
 @else

@@ -348,917 +348,1834 @@
       "name": "PADAMPUR",
       "reservation": "GEN",
       "district": "BARGARH",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Padampur",
+        "record_code": 1,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 2,
       "name": "BIJEPUR",
       "reservation": "GEN",
       "district": "BARGARH",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bijepur",
+        "record_code": 2,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 3,
       "name": "BARGARH",
       "reservation": "GEN",
       "district": "BARGARH",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bargarh",
+        "record_code": 3,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 4,
       "name": "ATTABIRA",
       "reservation": "SC",
       "district": "BARGARH",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Attabira (SC)",
+        "record_code": 4,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 5,
       "name": "BHATLI",
       "reservation": "GEN",
       "district": "BARGARH",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhatli",
+        "record_code": 5,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 6,
       "name": "BRAJARAJNAGAR",
       "reservation": "GEN",
       "district": "JHARSUGUDA",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Brajarajnagar",
+        "record_code": 6,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 7,
       "name": "JHARSUGUDA",
       "reservation": "GEN",
       "district": "JHARSUGUDA",
-      "pc": 1
+      "pc": 1,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jharsuguda",
+        "record_code": 7,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 8,
       "name": "TALSARA",
       "reservation": "ST",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Talsara (ST)",
+        "record_code": 8,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 9,
       "name": "SUNDARGARH",
       "reservation": "ST",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sundargarh (ST)",
+        "record_code": 9,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 10,
       "name": "BIRAMITRAPUR",
       "reservation": "ST",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Biramitrapur (ST)",
+        "record_code": 10,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 11,
       "name": "RAGHUNATHPALI",
       "reservation": "SC",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Raghunathpali (SC)",
+        "record_code": 11,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 12,
       "name": "ROURKELA",
       "reservation": "GEN",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rourkela",
+        "record_code": 12,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 13,
       "name": "RAJGANGAPUR",
       "reservation": "ST",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rajgangapur",
+        "record_code": 13,
+        "edition_id": "0a4291c9d78750bc8c920cc6",
+        "year": 2019
+      }
     },
     {
       "number": 14,
       "name": "BONAI",
       "reservation": "ST",
       "district": "SUNDARGARH",
-      "pc": 2
+      "pc": 2,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bonai (ST)",
+        "record_code": 14,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 15,
       "name": "KUCHINDA",
       "reservation": "ST",
       "district": "SAMBALPUR",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kuchinda (ST)",
+        "record_code": 15,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 16,
       "name": "RENGALI",
       "reservation": "SC",
       "district": "SAMBALPUR",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rengali (SC)",
+        "record_code": 16,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 17,
       "name": "SAMBALPUR",
       "reservation": "GEN",
       "district": "SAMBALPUR",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sambalpur",
+        "record_code": 17,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 18,
       "name": "RAIRAKHOL",
       "reservation": "GEN",
       "district": "SAMBALPUR",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rairakhol",
+        "record_code": 18,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 19,
       "name": "DEOGARH",
       "reservation": "GEN",
       "district": "DEOGARH",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Deogarh",
+        "record_code": 19,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 20,
       "name": "TELKOI",
       "reservation": "ST",
       "district": "KEONJHAR",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Telkoi (ST)",
+        "record_code": 20,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 21,
       "name": "GHASIPURA",
       "reservation": "GEN",
       "district": "KEONJHAR",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Ghasipura",
+        "record_code": 21,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 22,
       "name": "ANANDAPUR",
       "reservation": "SC",
       "district": "KEONJHAR",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Anandapur (SC)",
+        "record_code": 22,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 23,
       "name": "PATNA",
       "reservation": "ST",
       "district": "KEONJHAR",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Patna (ST)",
+        "record_code": 23,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 24,
       "name": "KEONJHAR",
       "reservation": "ST",
       "district": "KEONJHAR",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Keonjhar (ST)",
+        "record_code": 24,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 25,
       "name": "CHAMPUA",
       "reservation": "GEN",
       "district": "KEONJHAR",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Champua",
+        "record_code": 25,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 26,
       "name": "JASHIPUR",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jashipur (ST)",
+        "record_code": 26,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 27,
       "name": "SARASKANA",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Saraskana (ST)",
+        "record_code": 27,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 28,
       "name": "RAIRANGPUR",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rairangpur (ST)",
+        "record_code": 28,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 29,
       "name": "BANGRIPOSI",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bangriposi (ST)",
+        "record_code": 29,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 30,
       "name": "KARANJIA",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 4
+      "pc": 4,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Karanjia (ST)",
+        "record_code": 30,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 31,
       "name": "UDALA",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Udala (ST)",
+        "record_code": 31,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 32,
       "name": "BADASAHI",
       "reservation": "SC",
       "district": "MAYURBHANJ",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Badasahi (SC)",
+        "record_code": 32,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 33,
       "name": "BARIPADA",
       "reservation": "ST",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Baripada (ST)",
+        "record_code": 33,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 34,
       "name": "MORADA",
       "reservation": "GEN",
       "district": "MAYURBHANJ",
-      "pc": 5
+      "pc": 5,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Morada",
+        "record_code": 34,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 35,
       "name": "JALESWAR",
       "reservation": "GEN",
       "district": "BALASORE",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jaleswar",
+        "record_code": 35,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 36,
       "name": "BHOGRAI",
       "reservation": "GEN",
       "district": "BALASORE",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhograi",
+        "record_code": 36,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 37,
       "name": "BASTA",
       "reservation": "GEN",
       "district": "BALASORE",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Basta",
+        "record_code": 37,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 38,
       "name": "BALASORE",
       "reservation": "GEN",
       "district": "BALASORE",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Balasore",
+        "record_code": 38,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 39,
       "name": "REMUNA",
       "reservation": "SC",
       "district": "BALASORE",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Remuna (SC)",
+        "record_code": 39,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 40,
       "name": "NILGIRI",
       "reservation": "GEN",
       "district": "BALASORE",
-      "pc": 6
+      "pc": 6,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Nilgiri",
+        "record_code": 40,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 41,
       "name": "SORO",
       "reservation": "SC",
       "district": "BALASORE",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Soro (SC)",
+        "record_code": 41,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 42,
       "name": "SIMULIA",
       "reservation": "GEN",
       "district": "BALASORE",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Simulia",
+        "record_code": 42,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 43,
       "name": "BHANDARIPOKHARI",
       "reservation": "GEN",
       "district": "BHADRAK",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhandaripokhari",
+        "record_code": 43,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 44,
       "name": "BHADRAK",
       "reservation": "GEN",
       "district": "BHADRAK",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhadrak",
+        "record_code": 44,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 45,
       "name": "BASUDEVPUR",
       "reservation": "GEN",
       "district": "BHADRAK",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Basudevpur",
+        "record_code": 45,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 46,
       "name": "DHAMNAGAR",
       "reservation": "SC",
       "district": "BHADRAK",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dhamnagar (SC)",
+        "record_code": 46,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 47,
       "name": "CHANDABALI",
       "reservation": "GEN",
       "district": "BHADRAK",
-      "pc": 7
+      "pc": 7,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chandabali",
+        "record_code": 47,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 48,
       "name": "BINJHARPUR",
       "reservation": "SC",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Binjharpur (SC)",
+        "record_code": 48,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 49,
       "name": "BARI",
       "reservation": "GEN",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bari",
+        "record_code": 49,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 50,
       "name": "BARACHANA",
       "reservation": "GEN",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Barachana",
+        "record_code": 50,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 51,
       "name": "DHARMASALA",
       "reservation": "GEN",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dharmasala",
+        "record_code": 51,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 52,
       "name": "JAJPUR",
       "reservation": "GEN",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jajpur",
+        "record_code": 52,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 53,
       "name": "KOREI",
       "reservation": "GEN",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Korei",
+        "record_code": 53,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 54,
       "name": "SUKINDA",
       "reservation": "GEN",
       "district": "JAJPUR",
-      "pc": 8
+      "pc": 8,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sukinda",
+        "record_code": 54,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 55,
       "name": "DHENKANAL",
       "reservation": "GEN",
       "district": "DHENKANAL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dhenkanal",
+        "record_code": 55,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 56,
       "name": "HINDOL",
       "reservation": "SC",
       "district": "DHENKANAL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Hindol (SC)",
+        "record_code": 56,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 57,
       "name": "KAMAKHYANAGAR",
       "reservation": "GEN",
       "district": "DHENKANAL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kamakhyanagar",
+        "record_code": 57,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 58,
       "name": "PARJANGA",
       "reservation": "GEN",
       "district": "DHENKANAL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Parjanga",
+        "record_code": 58,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 59,
       "name": "PALLAHARA",
       "reservation": "GEN",
       "district": "ANGUL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pallahara",
+        "record_code": 59,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 60,
       "name": "TALCHER",
       "reservation": "GEN",
       "district": "ANGUL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Talcher",
+        "record_code": 60,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 61,
       "name": "ANGUL",
       "reservation": "GEN",
       "district": "ANGUL",
-      "pc": 9
+      "pc": 9,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Angul",
+        "record_code": 61,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 62,
       "name": "CHHENDIPADA",
       "reservation": "SC",
       "district": "ANGUL",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chhendipada (SC)",
+        "record_code": 62,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 63,
       "name": "ATHAMALLIK",
       "reservation": "GEN",
       "district": "ANGUL",
-      "pc": 3
+      "pc": 3,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Athamallik",
+        "record_code": 63,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 64,
       "name": "BIRMAHARAJPUR",
       "reservation": "SC",
       "district": "SUBARNAPUR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Birmaharajpur (SC)",
+        "record_code": 64,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 65,
       "name": "SONEPUR",
       "reservation": "GEN",
       "district": "SUBARNAPUR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sonepur",
+        "record_code": 65,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 66,
       "name": "LOISINGHA",
       "reservation": "SC",
       "district": "BOLANGIR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Loisingha (SC)",
+        "record_code": 66,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 67,
       "name": "PATNAGARH",
       "reservation": "GEN",
       "district": "BOLANGIR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Patnagarh",
+        "record_code": 67,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 68,
       "name": "BOLANGIR",
       "reservation": "GEN",
       "district": "BOLANGIR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bolangir",
+        "record_code": 68,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 69,
       "name": "TITLAGARH",
       "reservation": "GEN",
       "district": "BOLANGIR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Titlagarh",
+        "record_code": 69,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 70,
       "name": "KANTABANJI",
       "reservation": "GEN",
       "district": "BOLANGIR",
-      "pc": 10
+      "pc": 10,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kantabanji",
+        "record_code": 70,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 71,
       "name": "NUAPADA",
       "reservation": "GEN",
       "district": "NUAPADA",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Nuapada",
+        "record_code": 71,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 72,
       "name": "KHARIAR",
       "reservation": "GEN",
       "district": "NUAPADA",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Khariar",
+        "record_code": 72,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 73,
       "name": "UMERKOTE",
       "reservation": "ST",
       "district": "NABARANGPUR",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Umerkote (ST)",
+        "record_code": 73,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 74,
       "name": "JHARIGAM",
       "reservation": "ST",
       "district": "NABARANGPUR",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jharigam (ST)",
+        "record_code": 74,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 75,
       "name": "NABARANGPUR",
       "reservation": "ST",
       "district": "NABARANGPUR",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Nabarangpur (ST)",
+        "record_code": 75,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 76,
       "name": "DABUGAM",
       "reservation": "ST",
       "district": "NABARANGPUR",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dabugam (ST)",
+        "record_code": 76,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 77,
       "name": "LANJIGARH",
       "reservation": "ST",
       "district": "KALAHANDI",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Lanjigarh (ST)",
+        "record_code": 77,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 78,
       "name": "JUNAGARH",
       "reservation": "GEN",
       "district": "KALAHANDI",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Junagarh",
+        "record_code": 78,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 79,
       "name": "DHARMGARH",
       "reservation": "GEN",
       "district": "KALAHANDI",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Dharmgarh",
+        "record_code": 79,
+        "edition_id": "0a4291c9d78750bc8c920cc6",
+        "year": 2019
+      }
     },
     {
       "number": 80,
       "name": "BHAWANIPATNA",
       "reservation": "SC",
       "district": "KALAHANDI",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhawanipatna (SC)",
+        "record_code": 80,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 81,
       "name": "NARLA",
       "reservation": "GEN",
       "district": "KALAHANDI",
-      "pc": 11
+      "pc": 11,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Narla",
+        "record_code": 81,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 82,
       "name": "BALIGUDA",
       "reservation": "ST",
       "district": "KANDHAMAL",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Baliguda (ST)",
+        "record_code": 82,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 83,
       "name": "G- UDAYAGIRI",
       "reservation": "ST",
       "district": "KANDHAMAL",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "G. Udayagiri (ST)",
+        "record_code": 83,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 84,
       "name": "PHULBANI",
       "reservation": "ST",
       "district": "KANDHAMAL",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Phulbani (ST)",
+        "record_code": 84,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 85,
       "name": "KANTAMAL",
       "reservation": "GEN",
       "district": "BOUDH",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kantamal",
+        "record_code": 85,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 86,
       "name": "BOUDH",
       "reservation": "GEN",
       "district": "BOUDH",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Boudh",
+        "record_code": 86,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 87,
       "name": "BARAMBA",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Baramba",
+        "record_code": 87,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 88,
       "name": "BANKI",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Banki",
+        "record_code": 88,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 89,
       "name": "ATHAGARH",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Athagarh",
+        "record_code": 89,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 90,
       "name": "BARABATI-CUTTACK",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Barabati-Cuttack",
+        "record_code": 90,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 91,
       "name": "CHOUDWAR-CUTTACK",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Choudwar-Cuttack",
+        "record_code": 91,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 92,
       "name": "NIALI",
       "reservation": "SC",
       "district": "CUTTACK",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Niali (SC)",
+        "record_code": 92,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 93,
       "name": "CUTTACK SADAR",
       "reservation": "SC",
       "district": "CUTTACK",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Cuttack Sadar (SC)",
+        "record_code": 93,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 94,
       "name": "SALIPUR",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Salipur",
+        "record_code": 94,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 95,
       "name": "MAHANGA",
       "reservation": "GEN",
       "district": "CUTTACK",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Mahanga",
+        "record_code": 95,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 96,
       "name": "PATKURA",
       "reservation": "GEN",
       "district": "KENDRAPARA",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Patkura",
+        "record_code": 96,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 97,
       "name": "KENDRAPARA",
       "reservation": "SC",
       "district": "KENDRAPARA",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kendrapara (SC)",
+        "record_code": 97,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 98,
       "name": "AUL",
       "reservation": "GEN",
       "district": "KENDRAPARA",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Aul",
+        "record_code": 98,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 99,
       "name": "RAJANAGAR",
       "reservation": "GEN",
       "district": "KENDRAPARA",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rajanagar",
+        "record_code": 99,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 100,
       "name": "MAHAKALAPADA",
       "reservation": "GEN",
       "district": "KENDRAPARA",
-      "pc": 15
+      "pc": 15,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Mahakalapada",
+        "record_code": 100,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 101,
       "name": "PARADEEP",
       "reservation": "GEN",
       "district": "JAGATSINGHPUR",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Paradeep",
+        "record_code": 101,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 102,
       "name": "TIRTOL",
       "reservation": "SC",
       "district": "JAGATSINGHPUR",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Tirtol (SC)",
+        "record_code": 102,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 103,
       "name": "BALIKUDA-ERASAMA",
       "reservation": "GEN",
       "district": "JAGATSINGHPUR",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Balikuda-Erasama",
+        "record_code": 103,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 104,
       "name": "JAGATSINGHPUR",
       "reservation": "GEN",
       "district": "JAGATSINGHPUR",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jagatsinghpur",
+        "record_code": 104,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 105,
       "name": "KAKATPUR",
       "reservation": "SC",
       "district": "PURI",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kakatpur (SC)",
+        "record_code": 105,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 106,
       "name": "NIMAPARA",
       "reservation": "GEN",
       "district": "PURI",
-      "pc": 16
+      "pc": 16,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Nimapara",
+        "record_code": 106,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 107,
       "name": "PURI",
       "reservation": "GEN",
       "district": "PURI",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Puri",
+        "record_code": 107,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 108,
       "name": "BRAHMAGIRI",
       "reservation": "GEN",
       "district": "PURI",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Brahmagiri",
+        "record_code": 108,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 109,
       "name": "SATYABADI",
       "reservation": "GEN",
       "district": "PURI",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Satyabadi",
+        "record_code": 109,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 110,
       "name": "PIPILI",
       "reservation": "GEN",
       "district": "PURI",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pipili",
+        "record_code": 110,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 111,
       "name": "JAYADEV",
       "reservation": "SC",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jayadev (SC)",
+        "record_code": 111,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 112,
       "name": "BHUBANESWAR CENTRAL (MADHYA)",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhubaneswar Central (Madhya)",
+        "record_code": 112,
+        "edition_id": "0a4291c9d78750bc8c920cc6",
+        "year": 2019
+      }
     },
     {
       "number": 113,
       "name": "BHUBANESWAR NORTH (UTTAR)",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhubaneswar North (Uttar)",
+        "record_code": 113,
+        "edition_id": "0a4291c9d78750bc8c920cc6",
+        "year": 2019
+      }
     },
     {
       "number": 114,
       "name": "EKAMRA-BHUBANESWAR",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Ekamra-Bhubaneswar",
+        "record_code": 114,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 115,
       "name": "JATANI",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jatani",
+        "record_code": 115,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 116,
       "name": "BEGUNIA",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Begunia",
+        "record_code": 116,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 117,
       "name": "KHURDA",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 18
+      "pc": 18,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Khurda",
+        "record_code": 117,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 118,
       "name": "CHILIKA",
       "reservation": "GEN",
       "district": "KHURDA",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chilika",
+        "record_code": 118,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 119,
       "name": "RANPUR",
       "reservation": "GEN",
       "district": "NAYAGARH",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Ranpur",
+        "record_code": 119,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 120,
       "name": "KHANDAPADA",
       "reservation": "GEN",
       "district": "NAYAGARH",
-      "pc": 14
+      "pc": 14,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Khandapada",
+        "record_code": 120,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 121,
       "name": "DASPALLA",
       "reservation": "SC",
       "district": "NAYAGARH",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Daspalla (SC)",
+        "record_code": 121,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 122,
       "name": "NAYAGARH",
       "reservation": "GEN",
       "district": "NAYAGARH",
-      "pc": 17
+      "pc": 17,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Nayagarh",
+        "record_code": 122,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 123,
       "name": "BHANJANAGAR",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 13
+      "pc": 13,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bhanjanagar",
+        "record_code": 123,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 124,
       "name": "POLASARA",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Polasara",
+        "record_code": 124,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 125,
       "name": "KABISURYANAGAR",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kabisuryanagar",
+        "record_code": 125,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 126,
       "name": "KHALIKOTE",
       "reservation": "SC",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Khalikote (SC)",
+        "record_code": 126,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 127,
       "name": "CHHATRAPUR",
       "reservation": "SC",
       "district": "GANJAM",
-      "pc": 20
+      "pc": 20,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chhatrapur (SC)",
+        "record_code": 127,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 128,
       "name": "ASKA",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Aska",
+        "record_code": 128,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 129,
       "name": "SURADA",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Surada",
+        "record_code": 129,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 130,
       "name": "SANAKHEMUNDI",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Sanakhemundi",
+        "record_code": 130,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 131,
       "name": "HINJILI",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 19
+      "pc": 19,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Hinjili",
+        "record_code": 131,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 132,
@@ -1266,112 +2183,224 @@
       "reservation": "GEN",
       "district": "GANJAM",
       "pc": 20,
-      "pc_source": "supplemental_pc_source"
+      "pc_source": "supplemental_pc_source",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Gopalpur",
+        "record_code": 132,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 133,
       "name": "BERHAMPUR",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 20
+      "pc": 20,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Berhampur",
+        "record_code": 133,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 134,
       "name": "DIGAPAHANDI",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 20
+      "pc": 20,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Digapahandi",
+        "record_code": 134,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 135,
       "name": "CHIKITI",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": 20
+      "pc": 20,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chikiti",
+        "record_code": 135,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 136,
       "name": "MOHANA",
       "reservation": "ST",
       "district": "GAJAPATI",
-      "pc": 20
+      "pc": 20,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Mohana (ST)",
+        "record_code": 136,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 137,
       "name": "PARALAKHEMUNDI",
       "reservation": "GEN",
       "district": "GAJAPATI",
-      "pc": 20
+      "pc": 20,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Paralakhemundi",
+        "record_code": 137,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 138,
       "name": "GUNUPUR",
       "reservation": "ST",
       "district": "RAYAGADA",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Gunupur (ST)",
+        "record_code": 138,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 139,
       "name": "BISSAM CUTTACK",
       "reservation": "ST",
       "district": "RAYAGADA",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Bissam Cuttack (ST)",
+        "record_code": 139,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 140,
       "name": "RAYAGADA",
       "reservation": "ST",
       "district": "RAYAGADA",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Rayagada (ST)",
+        "record_code": 140,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 141,
       "name": "LAXMIPUR",
       "reservation": "ST",
       "district": "KORAPUT",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Laxmipur",
+        "record_code": 141,
+        "edition_id": "0a4291c9d78750bc8c920cc6",
+        "year": 2019
+      }
     },
     {
       "number": 142,
       "name": "KOTPAD",
       "reservation": "ST",
       "district": "KORAPUT",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Kotpad (ST)",
+        "record_code": 142,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 143,
       "name": "JEYPORE",
       "reservation": "GEN",
       "district": "KORAPUT",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Jeypore",
+        "record_code": 143,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 144,
       "name": "KORAPUT",
       "reservation": "SC",
       "district": "KORAPUT",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Koraput (SC)",
+        "record_code": 144,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 145,
       "name": "POTTANGI",
       "reservation": "ST",
       "district": "KORAPUT",
-      "pc": 21
+      "pc": 21,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Pottangi (ST)",
+        "record_code": 145,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 146,
       "name": "MALKANGIRI",
       "reservation": "ST",
       "district": "MALKANGIRI",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Malkangiri (ST)",
+        "record_code": 146,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     },
     {
       "number": 147,
       "name": "CHITRAKONDA",
       "reservation": "ST",
       "district": "MALKANGIRI",
-      "pc": 12
+      "pc": 12,
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "Chitrakonda (ST)",
+        "record_code": 147,
+        "edition_id": "f68b1692049160f59dfb355a",
+        "year": 2024
+      }
     }
   ],
   "pcs": [
@@ -1386,7 +2415,14 @@
         5,
         6,
         7
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Bargarh",
+        "record_code": 254,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 2,
@@ -1399,7 +2435,14 @@
         12,
         13,
         14
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Sundargarh",
+        "record_code": 255,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 3,
@@ -1412,7 +2455,14 @@
         19,
         62,
         63
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Sambalpur",
+        "record_code": 256,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 4,
@@ -1425,7 +2475,14 @@
         24,
         25,
         30
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Keonjhar",
+        "record_code": 257,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 5,
@@ -1438,7 +2495,14 @@
         31,
         33,
         34
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Mayurbhanj",
+        "record_code": 258,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 6,
@@ -1451,7 +2515,14 @@
         38,
         39,
         40
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Balasore",
+        "record_code": 259,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 7,
@@ -1464,7 +2535,14 @@
         45,
         46,
         47
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Bhadrak",
+        "record_code": 260,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 8,
@@ -1477,7 +2555,14 @@
         52,
         53,
         54
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Jajpur",
+        "record_code": 261,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 9,
@@ -1490,7 +2575,14 @@
         59,
         60,
         61
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Dhenkanal",
+        "record_code": 262,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 10,
@@ -1503,7 +2595,14 @@
         68,
         69,
         70
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Bolangir",
+        "record_code": 263,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 11,
@@ -1516,7 +2615,14 @@
         79,
         80,
         81
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Kalahandi",
+        "record_code": 264,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 12,
@@ -1529,7 +2635,14 @@
         142,
         146,
         147
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Nabarangpur",
+        "record_code": 265,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 13,
@@ -1542,7 +2655,14 @@
         86,
         121,
         123
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Kandhamal",
+        "record_code": 266,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 14,
@@ -1555,7 +2675,14 @@
         91,
         93,
         120
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Cuttack",
+        "record_code": 267,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 15,
@@ -1568,7 +2695,14 @@
         98,
         99,
         100
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Kendrapara",
+        "record_code": 268,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 16,
@@ -1581,7 +2715,14 @@
         104,
         105,
         106
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Jagatsinghpur",
+        "record_code": 269,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 17,
@@ -1594,7 +2735,14 @@
         118,
         119,
         122
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Puri",
+        "record_code": 270,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 18,
@@ -1607,7 +2755,14 @@
         115,
         116,
         117
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Bhubaneswar",
+        "record_code": 271,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 19,
@@ -1620,7 +2775,14 @@
         129,
         130,
         131
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Aska",
+        "record_code": 272,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 20,
@@ -1633,7 +2795,14 @@
         135,
         136,
         137
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Berhampur",
+        "record_code": 273,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     },
     {
       "number": 21,
@@ -1646,7 +2815,14 @@
         143,
         144,
         145
-      ]
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "Koraput",
+        "record_code": 274,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
     }
   ],
   "supplemental_pc_source": {
