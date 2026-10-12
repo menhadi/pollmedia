@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'uttarakhand-nainital-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Nainital Census 2011 — rural village PCA',
+        'sheet' => 'EB-0511',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6257/download/9334/DDW_PCA0511_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6257',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'uttarakhand-dehradun-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Dehradun Census 2011 — rural village PCA',
+        'sheet' => 'EB-0505',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6251/download/9328/DDW_PCA0505_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6251',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'uttarakhand-almora-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Almora Census 2011 â€” rural village PCA',
