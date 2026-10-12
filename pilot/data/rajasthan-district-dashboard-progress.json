@@ -6030,7 +6030,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6040,7 +6040,7 @@
         "Dated Chittorgarh territorial reference includes later Pratapgarh district areas; current crosswalk unavailable"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/127/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6080,6 +6080,13 @@
         "shared_pc_codes": [
           21
         ]
+      },
+      "deployment_commit": "77c4a24226dcdb2878741432990aaf977dd43367",
+      "validation": {
+        "github_backup": "Verified exact ls-remote77c4a24226dcdb2878741432990aaf977dd43367",
+        "public_verification": "Receipts acquired; actual-data verification pending",
+        "local_bundle": "Verified77c4a24226dcdb2878741432990aaf977dd43367",
+        "regression_tests": "59 tests240 assertions passed"
       }
     },
     {
@@ -6653,8 +6660,8 @@
   "last_run": {
     "checked_at": "2026-10-12T19:22:51.9941181+05:30",
     "live_commit": "a4031b046b49325747dd77c8fd776c6a9f6df9b0",
-    "action": "Udaipur verified; Rajasthan28 of33 handled with deferred flags",
-    "next_action": "Finish Chittaurgarh regression session93460, then locked narrow deploy and public/backups verification"
+    "action": "Chittaurgarh deployed under both locks with verified backups",
+    "next_action": "Verify Chittaurgarh canonical totals/full map880 features and PC21 AC names/context from acquired public receipts"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
