@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='341' && $sourceMap==='maps/west-bengal-howrah-villages.geojson')<p class="notice">Haora Census identity; SOI source uses HOWRAH. 789 source shapes, with boundary edition and Census/LGD correspondence unverified. Source coverage is not a certified perimeter; no population assigned to shapes.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='334' && $sourceMap==='maps/west-bengal-birbhum-villages.geojson')<p class="notice">Birbhum source coverage: 2,463 shapes. Boundary edition and Census/LGD correspondence remain unverified; coverage is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='332' && $sourceMap==='maps/west-bengal-maldah-villages.geojson')<p class="notice">Maldah source coverage: 1,803 shapes. Boundary edition and Census/LGD correspondence remain unverified; coverage is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
