@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Wayanad with complete associated PC segments; other districts pending",
+  "scope": "Partial extraction through Kozhikode with complete associated PC segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent"
@@ -160,6 +160,48 @@
       "page": 211
     },
     {
+      "code": 25,
+      "name": "Balusseri (SC)",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 26,
+      "name": "Elathur",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 27,
+      "name": "Kozhikode North",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 28,
+      "name": "Kozhikode South",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 29,
+      "name": "Beypore",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 30,
+      "name": "Kunnamangalam",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 31,
+      "name": "Koduvally",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
       "code": 32,
       "name": "Thiruvambadi",
       "district": "Kozhikode",
@@ -238,6 +280,20 @@
         34,
         35,
         36
+      ],
+      "page": 223
+    },
+    {
+      "code": 5,
+      "name": "Kozhikode",
+      "ac_codes": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
       ],
       "page": 223
     }
