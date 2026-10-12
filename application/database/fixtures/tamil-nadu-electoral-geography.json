@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial district extraction through Pudukkottai with complete associated PC segments; remaining districts pending",
+  "scope": "Partial district extraction through Madurai with complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -1042,6 +1042,114 @@
       "page": 434
     },
     {
+      "code": 188,
+      "name": "Melur",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 189,
+      "name": "Madurai East",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 190,
+      "name": "Sholavandan (SC)",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 191,
+      "name": "Madurai North",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 192,
+      "name": "Madurai South",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 193,
+      "name": "Madurai Central",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 194,
+      "name": "Madurai West",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 195,
+      "name": "Thiruparankundram",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 196,
+      "name": "Thirumangalam",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 197,
+      "name": "Usilampatti",
+      "district": "Madurai",
+      "page": 437
+    },
+    {
+      "code": 198,
+      "name": "Andipatti",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 199,
+      "name": "Periyakulam (SC)",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 200,
+      "name": "Bodinayakanur",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 201,
+      "name": "Cumbum",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 204,
+      "name": "Sattur",
+      "district": "Virudhunagar",
+      "page": 438
+    },
+    {
+      "code": 205,
+      "name": "Sivakasi",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 206,
+      "name": "Virudhunagar",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 207,
+      "name": "Aruppukkottai",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
       "code": 208,
       "name": "Tiruchuli",
       "district": "Virudhunagar",
@@ -1434,6 +1542,45 @@
         185,
         186,
         187
+      ],
+      "page": 449
+    },
+    {
+      "code": 32,
+      "name": "Madurai",
+      "ac_codes": [
+        188,
+        189,
+        191,
+        192,
+        193,
+        194
+      ],
+      "page": 449
+    },
+    {
+      "code": 33,
+      "name": "Theni",
+      "ac_codes": [
+        190,
+        197,
+        198,
+        199,
+        200,
+        201
+      ],
+      "page": 449
+    },
+    {
+      "code": 34,
+      "name": "Virudhunagar",
+      "ac_codes": [
+        195,
+        196,
+        204,
+        205,
+        206,
+        207
       ],
       "page": 449
     },
