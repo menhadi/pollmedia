@@ -273,27 +273,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/west-bengal-murshidabad-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Murshidabad', 'West Bengal');
         }
-        if ($state === '23' && in_array($district, ['418', '419', '420', '421', '422', '423', '424', '425', '426', '427', '428', '429', '430', '431', '432', '433', '434', '435', '436', '437', '438', '439', '440', '441'], true)) {
-            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior', '422' => 'Datia', '423' => 'Shivpuri', '424' => 'Tikamgarh', '425' => 'Chhatarpur', '426' => 'Panna', '427' => 'Sagar', '428' => 'Damoh', '429' => 'Satna', '430' => 'Rewa', '431' => 'Umaria', '432' => 'Neemuch', '433' => 'Mandsaur', '434' => 'Ratlam', '435' => 'Ujjain', '436' => 'Shajapur', '437' => 'Dewas', '438' => 'Dhar', '439' => 'Indore', '440' => 'Khargone', '441' => 'Barwani'][$district];
+        if ($state === '23' && in_array($district, ['418', '419', '420', '421', '422', '423', '424', '425', '426', '427', '428', '429', '430', '431', '432', '433', '434', '435', '436', '437', '438', '439', '440', '441', '442'], true)) {
+            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior', '422' => 'Datia', '423' => 'Shivpuri', '424' => 'Tikamgarh', '425' => 'Chhatarpur', '426' => 'Panna', '427' => 'Sagar', '428' => 'Damoh', '429' => 'Satna', '430' => 'Rewa', '431' => 'Umaria', '432' => 'Neemuch', '433' => 'Mandsaur', '434' => 'Ratlam', '435' => 'Ujjain', '436' => 'Shajapur', '437' => 'Dewas', '438' => 'Dhar', '439' => 'Indore', '440' => 'Khargone', '441' => 'Barwani', '442' => 'Rajgarh'][$district];
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($mpDistrict, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
-        }
-        if ($state === '19' && in_array($district, ['333','336','337','338','340','339','329','345','330','331','332','334'], true)) {
-            $mapFile = match ($district) {
-                '333' => 'maps/west-bengal-murshidabad-villages.geojson',
-                '336' => 'maps/west-bengal-nadia-villages.geojson',
-                '337' => 'maps/west-bengal-north-twenty-four-parganas-villages.geojson',
-                '338' => 'maps/west-bengal-hugli-villages.geojson',
-                '340' => 'maps/west-bengal-puruliya-villages.geojson',
-                '339' => 'maps/west-bengal-bankura-villages.geojson',
-                '329' => 'maps/west-bengal-koch-bihar-villages.geojson',
-                '345' => 'maps/west-bengal-purba-medinipur-villages.geojson',
-                '330' => 'maps/west-bengal-uttar-dinajpur-villages.geojson',
-                '331' => 'maps/west-bengal-dakshin-dinajpur-villages.geojson',
-                '332' => 'maps/west-bengal-maldah-villages.geojson',
-                '334' => 'maps/west-bengal-birbhum-villages.geojson',
-            };
-            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'West Bengal');
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
