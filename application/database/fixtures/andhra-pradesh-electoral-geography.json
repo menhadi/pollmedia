@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first eight historical districts plus complete associated PCs; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first nine historical districts plus complete associated PCs; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -725,10 +725,52 @@
       "page": 35
     },
     {
+      "code": 119,
+      "name": "Sarvepalli",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 120,
+      "name": "Gudur (SC)",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 121,
+      "name": "Sullurpeta (SC)",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 122,
+      "name": "Venkatagiri",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
       "code": 123,
       "name": "Udayagiri",
       "district": "Nellore",
       "page": 36
+    },
+    {
+      "code": 167,
+      "name": "Tirupati",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 168,
+      "name": "Srikalahasti",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 169,
+      "name": "Satyavedu (SC)",
+      "district": "Chittoor",
+      "page": 38
     }
   ],
   "pcs": [
@@ -977,6 +1019,20 @@
         117,
         118,
         123
+      ],
+      "page": 40
+    },
+    {
+      "code": 23,
+      "name": "Tirupati (SC)",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        122,
+        167,
+        168,
+        169
       ],
       "page": 40
     }
