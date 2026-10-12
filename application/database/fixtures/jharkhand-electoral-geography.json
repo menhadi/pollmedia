@@ -3,7 +3,7 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial district fixture including Purbi Singhbhum; complete PC1,2,3,4,5,6,7,9,12,13 scopes. Other seats pending. PC9 raw code conflict retained.",
+  "scope": "Partial dated district fixture including historical Hazaribagh; complete shared PC1,2,3,4,5,6,7,9,12,13,14 scopes. Other seats pending.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
     "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
@@ -12,7 +12,8 @@
     "SOI KODERMA and Census/gazette Kodarma spellings retained; name correspondence does not verify boundary editions.",
     "2008 Dumka source district references for Nala/Jamtara retained. Modern Jamtara district correspondence is pending; not silently reassigned. PC2 printed Skiaripara spelling retained in source PDF; AC7 identity uses Part A Sikaripara.",
     "Sahebganj/Sahibganj and Pakaur/Pakur spellings preserved; aliases do not verify historical boundaries. PC1 prints Boiro while Part A gives Borio; raw PDF retained for review.",
-    "PC12 prints Lohardagga for AC72 while Part A uses Lohardaga. Original source retained; Part A identity used. Name does not certify boundary correspondence."
+    "PC12 prints Lohardagga for AC72 while Part A uses Lohardaga. Original source retained; Part A identity used. Name does not certify boundary correspondence.",
+    "2008 Hazaribagh district reference includes Ramgarh/Barkagaon/Mandu source scopes; modern Ramgarh district correspondence pending. No silent reassignment to Census2011 geography."
   ],
   "district_rows": [
     {
@@ -140,6 +141,36 @@
       "name": "Barkatha",
       "district": "Hazaribagh",
       "page": 168
+    },
+    {
+      "code": 21,
+      "name": "Barhi",
+      "district": "Hazaribagh",
+      "page": 168
+    },
+    {
+      "code": 22,
+      "name": "Barkagaon",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 23,
+      "name": "Ramgarh",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 24,
+      "name": "Mandu",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 25,
+      "name": "Hazaribagh",
+      "district": "Hazaribagh",
+      "page": 169
     },
     {
       "code": 26,
@@ -524,6 +555,18 @@
       ],
       "page": 175,
       "source_code_note": "The2008 PC9 table prints41 Bahragora, while PartA uses44 Baharagora and41 Jharia. Runtime identity44 follows PartA and the official district2019 election list; raw printed41 is retained. Formal source discrepancy review pending."
+    },
+    {
+      "code": 14,
+      "name": "Hazaribagh",
+      "ac_codes": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "page": 175
     }
   ],
   "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",

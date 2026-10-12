@@ -477,6 +477,10 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Yamunanagar', 'Haryana');
             $mapFile = 'maps/yamunanagar-villages.geojson';
         }
+        if ($state === '20' && $district === '360') {
+            $mapFile = 'maps/jharkhand-hazaribagh-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Hazaribagh', 'Jharkhand');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
