@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-hisar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Hisar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6271/download/9348/DDW_PCA0612_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6271',
+        'format' => 'xlsx', 'sheet' => 'EB-0612',
+    ],
     'haryana-sirsa-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Sirsa Census 2011 — district, town, village and ward PCA',
