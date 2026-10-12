@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction through Cuddalore and complete associated PC segments; remaining districts pending",
+  "scope": "Partial extraction through dated Nagapattinam with complete shared PC segments; later district crosswalks pending",
   "district_rows": [
     {
       "code": 1,
@@ -874,6 +874,78 @@
       "page": null
     },
     {
+      "code": 160,
+      "name": "Sirkazhi (SC)",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 161,
+      "name": "Mayiladuthurai",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 162,
+      "name": "Poompuhar",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 163,
+      "name": "Nagapattinam",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 164,
+      "name": "Kilvelur (SC)",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 165,
+      "name": "Vedaranyam",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 166,
+      "name": "Thiruthuraipoondi (SC)",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 168,
+      "name": "Thiruvarur",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 169,
+      "name": "Nannilam",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 170,
+      "name": "Thiruvidaimarudur (SC)",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 171,
+      "name": "Kumbakonam",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 172,
+      "name": "Papanasam",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
       "code": 178,
       "name": "Gandarvakottai (SC)",
       "district": "Pudukkottai",
@@ -1204,6 +1276,32 @@
         159
       ],
       "page": 448
+    },
+    {
+      "code": 28,
+      "name": "Mayiladuthurai",
+      "ac_codes": [
+        160,
+        161,
+        162,
+        170,
+        171,
+        172
+      ],
+      "page": 448
+    },
+    {
+      "code": 29,
+      "name": "Nagapattinam (SC)",
+      "ac_codes": [
+        163,
+        164,
+        165,
+        166,
+        168,
+        169
+      ],
+      "page": 449
     }
   ],
   "flags": [

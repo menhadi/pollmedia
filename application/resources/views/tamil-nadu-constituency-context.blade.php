@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Thiruvallur'=>'602','Chennai'=>'603','Kancheepuram'=>'604','Vellore'=>'605','Tiruvannamalai'=>'606','Viluppuram'=>'607','Salem'=>'608','Namakkal'=>'609','Erode'=>'610','The Nilgiris'=>'611','Dindigul'=>'612','Karur'=>'613','Tiruchirappalli'=>'614','Perambalur'=>'615','Ariyalur'=>'616','Cuddalore'=>'617'];
+$codes=['Thiruvallur'=>'602','Chennai'=>'603','Kancheepuram'=>'604','Vellore'=>'605','Tiruvannamalai'=>'606','Viluppuram'=>'607','Salem'=>'608','Namakkal'=>'609','Erode'=>'610','The Nilgiris'=>'611','Dindigul'=>'612','Karur'=>'613','Tiruchirappalli'=>'614','Perambalur'=>'615','Ariyalur'=>'616','Cuddalore'=>'617','Nagapattinam'=>'618'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -24,6 +24,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->contains('Erode'))<p class="notice">District links retain ECI 2008 Erode references, including Dharapuram and Kangayam. Later Tiruppur district correspondence and equivalence to Census 2011 Erode boundaries remain unverified. District figures are context only; no constituency totals are inferred.</p>@endif
 @if($districtNames->contains('Perambalur'))<p class="notice">ECI 2008 Perambalur references include Ariyalur and Jayankondam AC149/150. Correspondence to later Ariyalur district and Census 2011 district boundaries remains unverified. Dated membership is retained; district totals are context only.</p>@endif
 @if($districtNames->contains('Ariyalur'))<p class="notice">Ariyalur AC149 and Jayankondam AC150 district context follows the official district election page observed 12 October 2026. ECI 2008 Perambalur references are preserved; Census boundary equivalence remains unverified. <a href="https://ariyalur.nic.in/departments/election/">Official district seat source</a>.</p>@endif
+@if($districtNames->contains('Nagapattinam'))<p class="notice">Partial source coverage: SOI Nagapattinam is not established as the complete Census 2011 outline. Later Mayiladuthurai shapes are not merged or backcast; dated ECI membership, current districts and matching Census/LGD boundary editions remain separate and unverified.</p>@endif
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>

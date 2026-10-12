@@ -153,6 +153,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '33' && $district === '618') {
             $mapFile = 'maps/nagapattinam-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Nagapattinam', 'Tamil Nadu');
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
