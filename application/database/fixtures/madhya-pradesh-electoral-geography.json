@@ -1289,6 +1289,54 @@
       "name": "Pandhurna (ST)",
       "district": "Chhindwara",
       "page": 239
+    },
+    {
+      "code": 108,
+      "name": "Baihar (ST)",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 109,
+      "name": "Lanji",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 110,
+      "name": "Paraswada",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 111,
+      "name": "Balaghat",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 112,
+      "name": "Waraseoni",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 113,
+      "name": "Katangi",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 114,
+      "name": "Barghat (ST)",
+      "district": "Seoni",
+      "page": 237
+    },
+    {
+      "code": 115,
+      "name": "Seoni",
+      "district": "Seoni",
+      "page": 238
     }
   ],
   "pcs": [
@@ -1692,6 +1740,21 @@
         126,
         127,
         128
+      ],
+      "page": 252
+    },
+    {
+      "code": 15,
+      "name": "Balaghat",
+      "ac_codes": [
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115
       ],
       "page": 252
     }
