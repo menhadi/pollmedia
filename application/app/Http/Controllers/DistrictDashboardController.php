@@ -141,6 +141,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '33' && $district === '616') {
             $mapFile = 'maps/ariyalur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Ariyalur', 'Tamil Nadu');
         }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 

@@ -795,13 +795,29 @@
       "code": 149,
       "name": "Ariyalur",
       "district": "Perambalur",
-      "page": 420
+      "page": 420,
+      "context_district": "Ariyalur",
+      "context_source": {
+        "url": "https://ariyalur.nic.in/departments/election/",
+        "observed_at": "2026-10-12",
+        "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
+        "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
+        "scope": "District seat references only, not Census boundary certification"
+      }
     },
     {
       "code": 150,
       "name": "Jayankondam",
       "district": "Perambalur",
-      "page": 420
+      "page": 420,
+      "context_district": "Ariyalur",
+      "context_source": {
+        "url": "https://ariyalur.nic.in/departments/election/",
+        "observed_at": "2026-10-12",
+        "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
+        "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
+        "scope": "District seat references only, not Census boundary certification"
+      }
     },
     {
       "code": 157,
@@ -1151,5 +1167,14 @@
     "ECI2008 Erode references for Dharapuram/Kangayam retained; later Tiruppur district correspondence not inferred",
     "Dindigul AC129 Table A Athoor versus Table B Attur spelling retained; runtime mapping audit pending",
     "ECI2008 Perambalur includes AC149 Ariyalur and150 Jayankondam; later Ariyalur/Census2011 crosswalk unverified. Dated district references retained, not certified current membership."
-  ]
+  ],
+  "context_sources": {
+    "Ariyalur": {
+      "url": "https://ariyalur.nic.in/departments/election/",
+      "observed_at": "2026-10-12",
+      "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
+      "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
+      "scope": "District seat references only, not Census boundary certification"
+    }
+  }
 }
