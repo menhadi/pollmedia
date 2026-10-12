@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first seven historical districts and complete associated PC1-15 segments; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first eight historical districts plus complete associated PCs; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -623,6 +623,18 @@
       "page": 35
     },
     {
+      "code": 102,
+      "name": "Yerragondapalem (SC)",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 103,
+      "name": "Darsi",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
       "code": 104,
       "name": "Parchur",
       "district": "Prakasam",
@@ -645,6 +657,78 @@
       "name": "Santhanuthalapadu (SC)",
       "district": "Prakasam",
       "page": 35
+    },
+    {
+      "code": 108,
+      "name": "Ongole",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 109,
+      "name": "Kandukur",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 110,
+      "name": "Kondapi (SC)",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 111,
+      "name": "Markapuram",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 112,
+      "name": "Giddalur",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 113,
+      "name": "Kanigiri",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 114,
+      "name": "Kavali",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 115,
+      "name": "Atmakur",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 116,
+      "name": "Kovur",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 117,
+      "name": "Nellore City",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 118,
+      "name": "Nellore Rural",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 123,
+      "name": "Udayagiri",
+      "district": "Nellore",
+      "page": 36
     }
   ],
   "pcs": [
@@ -867,6 +951,34 @@
         107
       ],
       "page": 39
+    },
+    {
+      "code": 16,
+      "name": "Ongole",
+      "ac_codes": [
+        102,
+        103,
+        108,
+        110,
+        111,
+        112,
+        113
+      ],
+      "page": 39
+    },
+    {
+      "code": 22,
+      "name": "Nellore",
+      "ac_codes": [
+        109,
+        114,
+        115,
+        116,
+        117,
+        118,
+        123
+      ],
+      "page": 40
     }
   ],
   "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",

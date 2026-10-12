@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Srikakulam'=>'542','Vizianagaram'=>'543','Visakhapatnam'=>'544','East Godavari'=>'545','West Godavari'=>'546','Krishna'=>'547','Guntur'=>'548','Prakasam'=>'549'];
+$codes=['Srikakulam'=>'542','Vizianagaram'=>'543','Visakhapatnam'=>'544','East Godavari'=>'545','West Godavari'=>'546','Krishna'=>'547','Guntur'=>'548','Prakasam'=>'549','Nellore'=>'550'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -20,6 +20,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">2014 reorganisation schedule district references are retained. Current district correspondence, SOI boundary edition and accepted Census/LGD village links remain unverified. No district totals are assigned to constituencies.</p>
 <p class="notice">Partial electoral fixture: the prepared historical district rows and complete associated PC segments are included. Omitted seats remain pending. Current SOI district coverage differs from historical Census and electoral geography.</p>
 <p class="notice">PC7 source conflict: the 2014 parliamentary table names Mandapeta but prints AC47; the Assembly table identifies Mandapeta as AC48. Links use Assembly-table code48 and retain the original conflict for formal review. No boundary correspondence is implied.</p>
+<p class="notice">The 2014 electoral schedule uses Nellore; Census district28/550 is Sri Potti Sriramulu Nellore. This historical district context does not establish correspondence with later SOI boundaries.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
