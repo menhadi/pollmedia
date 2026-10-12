@@ -3483,15 +3483,16 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "2099 unlinked shapes; no population allocated",
-        "Dated shared electoral membership prepared; not deployed",
-        "Historical source geography retained; later splits not backcast"
+        "Dated PCs15/22 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/115/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3532,6 +3533,40 @@
           22
         ],
         "note": "Complete shared PCs retain Jodhpur, Ajmer, Nagaur and Rajsamand members; current crosswalk remains unverified."
+      },
+      "deployment": {
+        "live_commit": "aacfd9a899e55729b4c2c0da7d095c7524403626",
+        "rollback_base": "4f49fb02de02f87cc8dbd849c657f0cb76cc514b",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7364,
+          "name": "Barmer",
+          "code": "115",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 2603751,
+          "households": 451629,
+          "literates": 1188322,
+          "children": 501522,
+          "male": 1369022,
+          "female": 1234729,
+          "workers": 1202482,
+          "literacy": 56.53,
+          "male_literacy": 70.86,
+          "female_literacy": 40.63,
+          "source_row": 700,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;2099 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 96fb92447f8584c5d7707338dbc7fae4aadd9c1b; includes concurrent changes",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5783,10 +5818,11 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:30:52.605184+00:00",
-    "live_commit": "ac2bccdcc280894d24570cb87134469ae89925f0",
-    "action": "Pali full map JSON/hash and complete audited district/shared PC15/22 fixture prepared; not deployed",
-    "next_action": "Enable Pali115 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link."
+    "checked_at": "2026-10-12T09:37:38.592940+00:00",
+    "live_commit": "aacfd9a899e55729b4c2c0da7d095c7524403626",
+    "backup_commit": "96fb92447f8584c5d7707338dbc7fae4aadd9c1b",
+    "action": "Pali deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Jodhpur116; audit missing AC122-124/127-130 and outside Pokaran133 for full associated PCs15/16 before fixture use; extract district map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
