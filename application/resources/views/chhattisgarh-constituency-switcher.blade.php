@@ -1,0 +1,31 @@
+@if($state==='Chhattisgarh' && !$exactSeatOnly)
+@php
+$switchFixture=json_decode(file_get_contents(database_path('fixtures/chhattisgarh-electoral-geography.json')),true,512,JSON_THROW_ON_ERROR);
+$switchNormalize=fn(string $value):string=>str_replace('thiruvottiyur','tiruvottiyur',mb_strtolower(trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$value))));
+$switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district_rows'])->filter(fn(array $seat):bool=>$switchNormalize($seat['name'])===$switchNormalize($name));
+$switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
+$switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
+$switchSegments=$switchSegments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
+$switchSeen=[];
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Koriya'],true));
+@endphp
+@if($switchDistricts->isNotEmpty())
+<link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">
+<nav class="constituency-dashboard-switcher" aria-label="District and constituency dashboards"><a href="{{ route('district-dashboard-directory') }}">Change district â†’</a><label>Change constituency<select data-constituency-switcher><option value="" selected>{{ strtoupper($kind) }} Â· {{ $name }}</option>
+@foreach($switchDistricts as $switchDistrict)
+@php($switchLinks=app(\App\Services\DistrictConstituencyLinks::class)->forDistrict($switchDistrict, $state))
+@foreach(['parliamentary'=>'PC','assembly'=>'AC'] as $switchKey=>$switchLabel)
+<optgroup label="{{ $switchDistrict }} Â· {{ $switchLabel }}">
+@foreach($switchLinks[$switchKey] as $switchOption)
+@php($switchIdentity=$switchKey.':'.$switchOption['code'])
+@continue(isset($switchSeen[$switchIdentity]))
+@php($switchSeen[$switchIdentity]=true)
+<option value="{{ route('constituency.overview',['kind'=>$switchKey==='assembly'?'ac':'pc','state'=>$state,'name'=>$switchOption['name']==='Tiruvottiyur'?'Thiruvottiyur':trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$switchOption['name']))],false) }}">{{ $switchLabel }} {{ $switchOption['code'] }} Â· {{ $switchOption['name'] }}</option>
+@endforeach
+</optgroup>
+@endforeach
+@endforeach
+</select></label><a href="#census-context">Census context</a><a href="#history">Historical graphs & results</a></nav>
+<script src="{{ asset('js/constituency-dashboard-switcher.js') }}" defer></script>
+@endif
+@endif

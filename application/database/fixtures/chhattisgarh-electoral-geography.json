@@ -1,0 +1,93 @@
+{
+  "state": "Chhattisgarh",
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008; exact notification date pending",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "territorial_reference_date": "2004-02-15",
+  "scope": "Partial2008 Koria historical district and full associated Korba PC4 segments; other seats pending",
+  "flags": [
+    "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
+    "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending"
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Bharatpur-Sonhat (ST)",
+      "district": "Koria",
+      "context_district": "Koriya",
+      "page": 98
+    },
+    {
+      "code": 2,
+      "name": "Manendragarh",
+      "district": "Koria",
+      "context_district": "Koriya",
+      "page": 98
+    },
+    {
+      "code": 3,
+      "name": "Baikunthpur",
+      "district": "Koria",
+      "context_district": "Koriya",
+      "page": 98
+    },
+    {
+      "code": 20,
+      "name": "Rampur (ST)",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 21,
+      "name": "Korba",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 22,
+      "name": "Katghora",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 23,
+      "name": "Pali-Tanakhar (ST)",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 24,
+      "name": "Marwahi (ST)",
+      "district": "Bilaspur",
+      "context_district": "Bilaspur",
+      "page": 101
+    }
+  ],
+  "pcs": [
+    {
+      "code": 4,
+      "name": "Korba",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "page": 109
+    }
+  ],
+  "district_source_date": "2008; exact notification date pending",
+  "pc_source_date": "2008; exact notification date pending",
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69"
+}
