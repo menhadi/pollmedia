@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Thirty-four complete PC segment lists;remaining state membership pending",
+  "coverage": "Thirty-six complete PC segment lists;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1739,6 +1739,118 @@
       "district": "Birbhum",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 169,
+      "name": "Bally",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 170,
+      "name": "Howrah Uttar",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 171,
+      "name": "Howrah Madhya",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 172,
+      "name": "Shibpur",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 173,
+      "name": "Howrah Dakshin",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 174,
+      "name": "Sankrail",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 175,
+      "name": "Panchla",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 176,
+      "name": "Uluberia Purba",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 177,
+      "name": "Uluberia Uttar",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 178,
+      "name": "Uluberia Dakshin",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 179,
+      "name": "Shyampur",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 180,
+      "name": "Bagnan",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 181,
+      "name": "Amta",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 182,
+      "name": "Udaynarayanpur",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
     }
   ],
   "pcs": [
@@ -2281,6 +2393,38 @@
         292,
         293,
         294
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 25,
+      "name": "Howrah",
+      "ac_codes": [
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 26,
+      "name": "Uluberia",
+      "ac_codes": [
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
