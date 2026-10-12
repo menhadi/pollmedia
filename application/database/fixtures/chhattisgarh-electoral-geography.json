@@ -4,7 +4,7 @@
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial2008 historical district coverage through Durg with full associated PC1-7 and11 scopes; other seats pending",
+  "scope": "Partial2008 historical district coverage through Raipur with full associated PC1-9 and11 scopes; omitted seats pending",
   "flags": [
     "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
     "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending",
@@ -248,6 +248,30 @@
       "page": 102
     },
     {
+      "code": 39,
+      "name": "Saraipali (SC)",
+      "district": "Mahasamund",
+      "page": 102
+    },
+    {
+      "code": 40,
+      "name": "Basna",
+      "district": "Mahasamund",
+      "page": 102
+    },
+    {
+      "code": 41,
+      "name": "Khallari",
+      "district": "Mahasamund",
+      "page": 102
+    },
+    {
+      "code": 42,
+      "name": "Mahasamund",
+      "district": "Mahasamund",
+      "page": 103
+    },
+    {
       "code": 43,
       "name": "Bilaigarh (SC)",
       "district": "Raipur",
@@ -260,10 +284,88 @@
       "page": 103
     },
     {
+      "code": 45,
+      "name": "Baloda Bazar",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 46,
+      "name": "Bhatapara",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 47,
+      "name": "Dharsiwa",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 48,
+      "name": "Raipur Rural",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 49,
+      "name": "Raipur City West",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 50,
+      "name": "Raipur City North",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 51,
+      "name": "Raipur City South",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 52,
+      "name": "Arang (SC)",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 53,
+      "name": "Abhanpur",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 54,
+      "name": "Rajim",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 55,
+      "name": "Bindranawagarh (ST)",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
       "code": 56,
       "name": "Sihawa (ST)",
       "district": "Dhamtari",
       "context_district": "Dhamtari",
+      "page": 104
+    },
+    {
+      "code": 57,
+      "name": "Kurud",
+      "district": "Dhamtari",
+      "page": 104
+    },
+    {
+      "code": 58,
+      "name": "Dhamtari",
+      "district": "Dhamtari",
       "page": 104
     },
     {
@@ -527,6 +629,37 @@
         68,
         69,
         70
+      ],
+      "page": 109
+    },
+    {
+      "code": 8,
+      "name": "Raipur",
+      "ac_codes": [
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ],
+      "page": 109
+    },
+    {
+      "code": 9,
+      "name": "Mahasamund",
+      "ac_codes": [
+        39,
+        40,
+        41,
+        42,
+        54,
+        55,
+        57,
+        58
       ],
       "page": 109
     },
