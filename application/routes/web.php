@@ -60,6 +60,7 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/odisha-source.php';
 require __DIR__.'/uttarakhand-source.php';
 require __DIR__.'/himachal-pradesh-source.php';
+require __DIR__.'/jammu-kashmir-source.php';
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 

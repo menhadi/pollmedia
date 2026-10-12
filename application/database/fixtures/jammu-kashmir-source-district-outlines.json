@@ -1,0 +1,198 @@
+{
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "geometry_scope": "district outline",
+    "simplification_metres": 0,
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "census_lgd_join": "unverified",
+    "electoral_edition_join": "unverified;dated electoral source required",
+    "note": "Exact source record reprojected;source spelling retained;no population allocated."
+  },
+  "districts": [
+    {
+      "source_name": "PUNCH",
+      "slug": "punch",
+      "file": "maps/jammu-kashmir-source-districts/punch.geojson",
+      "source_geometry_valid": true,
+      "bytes": 36695,
+      "sha256": "552038c312bd57b61a87031618a34b1d2dccb696ca33e3343b3e0a235a87bf7b"
+    },
+    {
+      "source_name": "ANANTNAG",
+      "slug": "anantnag",
+      "file": "maps/jammu-kashmir-source-districts/anantnag.geojson",
+      "source_geometry_valid": true,
+      "bytes": 51689,
+      "sha256": "82ad77fb30acb5f6efc43552ffe6fcc531516b13bf8b36af006ce58ce5b3f6bc"
+    },
+    {
+      "source_name": "BARAMULA",
+      "slug": "baramula",
+      "file": "maps/jammu-kashmir-source-districts/baramula.geojson",
+      "source_geometry_valid": true,
+      "bytes": 47556,
+      "sha256": "64d0376608c81faeea8c1f913f97c37b98eb8b585c9e3907f696c304787d5211"
+    },
+    {
+      "source_name": "KATHUA",
+      "slug": "kathua",
+      "file": "maps/jammu-kashmir-source-districts/kathua.geojson",
+      "source_geometry_valid": true,
+      "bytes": 91537,
+      "sha256": "eb235238b6351ac89d57455cc0a325b47b2e01f2c610793a148d840e94ff5670"
+    },
+    {
+      "source_name": "UDHAMPUR",
+      "slug": "udhampur",
+      "file": "maps/jammu-kashmir-source-districts/udhampur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 30450,
+      "sha256": "caa58d5001ba669b330e60eab732d3686eb08ecf42c77ae5a8b826c4f86741d9"
+    },
+    {
+      "source_name": "BADGAM",
+      "slug": "badgam",
+      "file": "maps/jammu-kashmir-source-districts/badgam.geojson",
+      "source_geometry_valid": true,
+      "bytes": 20620,
+      "sha256": "a0d67ddaa1b89d6e64ae63bb669319549cb7e67525d8930387ff556805251704"
+    },
+    {
+      "source_name": "BANDIPURA",
+      "slug": "bandipura",
+      "file": "maps/jammu-kashmir-source-districts/bandipura.geojson",
+      "source_geometry_valid": true,
+      "bytes": 45125,
+      "sha256": "c60a81cbef6ee7d6978d59e59c317a78bded4f02729b93fbe1db28aae5a4bdfe"
+    },
+    {
+      "source_name": "GANDERBAL",
+      "slug": "ganderbal",
+      "file": "maps/jammu-kashmir-source-districts/ganderbal.geojson",
+      "source_geometry_valid": true,
+      "bytes": 48281,
+      "sha256": "d2970271175152a2a4146a56a9a5d1391534d25d54323206657b2f34228a1045"
+    },
+    {
+      "source_name": "KULGAM",
+      "slug": "kulgam",
+      "file": "maps/jammu-kashmir-source-districts/kulgam.geojson",
+      "source_geometry_valid": true,
+      "bytes": 21059,
+      "sha256": "e851f176319de0b7624b34dfc883dce87d02c957005840824b17612c04cfbad7"
+    },
+    {
+      "source_name": "KUPWARA",
+      "slug": "kupwara",
+      "file": "maps/jammu-kashmir-source-districts/kupwara.geojson",
+      "source_geometry_valid": true,
+      "bytes": 30262,
+      "sha256": "b8b6a1aa95b41eabf9454656e414e264d1a0915c1ee74af94e040788be1f914a"
+    },
+    {
+      "source_name": "PULWAMA",
+      "slug": "pulwama",
+      "file": "maps/jammu-kashmir-source-districts/pulwama.geojson",
+      "source_geometry_valid": true,
+      "bytes": 22386,
+      "sha256": "29c154149e14dd9d0946b6c9e03f6bb2edee1a37cc5918b51fe40cf789d9a795"
+    },
+    {
+      "source_name": "RAJAURI",
+      "slug": "rajauri",
+      "file": "maps/jammu-kashmir-source-districts/rajauri.geojson",
+      "source_geometry_valid": true,
+      "bytes": 45752,
+      "sha256": "39831d63f7f0955b1d7ebcdf779bb10b118896e770c349158dcfa0ed03988916"
+    },
+    {
+      "source_name": "RAMBAN",
+      "slug": "ramban",
+      "file": "maps/jammu-kashmir-source-districts/ramban.geojson",
+      "source_geometry_valid": true,
+      "bytes": 16622,
+      "sha256": "33ca317f55a258c1fea9a76de22f5d4de5326de77e9195e448c46235069d2c3f"
+    },
+    {
+      "source_name": "RIASI",
+      "slug": "riasi",
+      "file": "maps/jammu-kashmir-source-districts/riasi.geojson",
+      "source_geometry_valid": true,
+      "bytes": 30103,
+      "sha256": "c76f046689def33f495cc548d98354e1c21dd435604c6a69c62cb781011f3eec"
+    },
+    {
+      "source_name": "SHUPIYAN",
+      "slug": "shupiyan",
+      "file": "maps/jammu-kashmir-source-districts/shupiyan.geojson",
+      "source_geometry_valid": true,
+      "bytes": 21185,
+      "sha256": "2f5dfd45bb35e6f061e8cfa6d9797f06296facb915bef27384fe78089d6418fb"
+    },
+    {
+      "source_name": "SRINAGAR",
+      "slug": "srinagar",
+      "file": "maps/jammu-kashmir-source-districts/srinagar.geojson",
+      "source_geometry_valid": true,
+      "bytes": 25319,
+      "sha256": "5407003425e011e9e332c43e50e2070048c65e03ac67d1ea26dbb1a2f4123f23"
+    },
+    {
+      "source_name": "KISHTWAR",
+      "slug": "kishtwar",
+      "file": "maps/jammu-kashmir-source-districts/kishtwar.geojson",
+      "source_geometry_valid": true,
+      "bytes": 146086,
+      "sha256": "91bd33e20bb9e35d0bb99d7769ea904641add555745e42e965c572c1037ce223"
+    },
+    {
+      "source_name": "DODA",
+      "slug": "doda",
+      "file": "maps/jammu-kashmir-source-districts/doda.geojson",
+      "source_geometry_valid": true,
+      "bytes": 38346,
+      "sha256": "e010cbecb941e1bda13f8af54ff4d2fa1b597d9178866e18a3ef99d87bb4e821"
+    },
+    {
+      "source_name": "SAMBA",
+      "slug": "samba",
+      "file": "maps/jammu-kashmir-source-districts/samba.geojson",
+      "source_geometry_valid": true,
+      "bytes": 24145,
+      "sha256": "dbd50210d0487676aa0a8761bae2a19c345487d8876eaa51c7d43a223e5a4d81"
+    },
+    {
+      "source_name": "JAMMU",
+      "slug": "jammu",
+      "file": "maps/jammu-kashmir-source-districts/jammu.geojson",
+      "source_geometry_valid": true,
+      "bytes": 52578,
+      "sha256": "9086284de6b405649bf936fd6f52a49f6c3bf3f5c5a3d33d23c7f7e604ab9cf1"
+    }
+  ],
+  "excluded_source_records": [
+    {
+      "source_name": "MIRPUR",
+      "slug": "mirpur",
+      "file": "maps/jammu-kashmir-source-districts/mirpur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 69822,
+      "sha256": "851b7f1342bd4e2975ef6e8af606a5368cf571f3df279ff66e7deb530149cf10"
+    },
+    {
+      "source_name": "MUZAFFARABAD",
+      "slug": "muzaffarabad",
+      "file": "maps/jammu-kashmir-source-districts/muzaffarabad.geojson",
+      "source_geometry_valid": true,
+      "bytes": 60022,
+      "sha256": "c5582e23b0c4fdd24ff0e036812584bfc98f2f9681c3368cecaf656f66dccfa8"
+    }
+  ]
+}
