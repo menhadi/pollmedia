@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Kottayam with complete associated PC14/16/17 segments; other districts pending",
+  "scope": "Partial extraction through Alappuzha with complete associated PC15/16 segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent",
@@ -623,10 +623,46 @@
       "page": 218
     },
     {
+      "code": 102,
+      "name": "Aroor",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 103,
+      "name": "Cherthala",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 104,
+      "name": "Alappuzha",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 105,
+      "name": "Ambalappuzha",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
       "code": 106,
       "name": "Kuttanad",
       "district": "Alappuzha",
       "page": 218
+    },
+    {
+      "code": 107,
+      "name": "Haripad",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 108,
+      "name": "Kayamkulam",
+      "district": "Alappuzha",
+      "page": 219
     },
     {
       "code": 109,
@@ -669,6 +705,12 @@
       "name": "Adoor (SC)",
       "district": "Pathanamthitta",
       "page": 219
+    },
+    {
+      "code": 116,
+      "name": "Karunagappally",
+      "district": "Kollam",
+      "page": 220
     },
     {
       "code": 118,
@@ -883,6 +925,20 @@
         96,
         97,
         98
+      ],
+      "page": 224
+    },
+    {
+      "code": 15,
+      "name": "Alappuzha",
+      "ac_codes": [
+        102,
+        103,
+        104,
+        105,
+        107,
+        108,
+        116
       ],
       "page": 224
     },
