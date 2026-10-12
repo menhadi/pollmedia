@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-kapurthala-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Kapurthala Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6227/download/9304/DDW_PCA0302_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6227',
+        'format' => 'xlsx', 'sheet' => 'EB-0302',
+    ],
     'punjab-gurdaspur-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Gurdaspur Census 2011 — district, town, village and ward PCA',
