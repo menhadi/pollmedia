@@ -1,6 +1,36 @@
 <?php
 
 return [
+    'himachal-pradesh-chamba-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Chamba Census 2011 — rural village PCA',
+        'sheet' => 'EB-0201',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6214/download/9291/DDW_PCA0201_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6214',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'himachal-pradesh-kangra-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kangra Census 2011 — rural village PCA',
+        'sheet' => 'EB-0202',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6215/download/9292/DDW_PCA0202_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6215',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'himachal-pradesh-lahul-spiti-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Lahul Spiti Census 2011 — rural village PCA',
+        'sheet' => 'EB-0203',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6216/download/9293/DDW_PCA0203_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6216',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-rohtak-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Rohtak Census 2011 — district, town, village and ward PCA',
