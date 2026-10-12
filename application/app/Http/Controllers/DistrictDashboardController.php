@@ -150,6 +150,9 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/cuddalore-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Cuddalore', 'Tamil Nadu');
         }
+        if ($state === '33' && $district === '618') {
+            $mapFile = 'maps/nagapattinam-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
