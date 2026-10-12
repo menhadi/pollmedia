@@ -5615,7 +5615,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5623,7 +5623,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/125/dashboard",
-      "status": "source_map_prepared_not_deployed",
+      "status": "deployed_public_verification_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -5657,7 +5657,8 @@
         ],
         "note": "Dated PC20 retains outside-district Dungarpur AC158,160,161;2004 territorial reference/current crosswalk unverified",
         "source_date": "2008-12-17"
-      }
+      },
+      "deployment_commit": "db1c966898b0101ff1c90dbef3c70684b9dc7ee0"
     },
     {
       "district_code": "126",
@@ -6510,8 +6511,8 @@
   "last_run": {
     "checked_at": "2026-10-12T18:57:15.4206923+05:30",
     "live_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3",
-    "action": "Dungarpur verified; Rajasthan26 of33 handled with explicit deferred flags",
-    "next_action": "Banswara map1547 shapes prepared; finish regression then locked narrow deployment and public verification"
+    "action": "Banswara deployed under both locks; canonical/public receipts acquired for verification",
+    "next_action": "Finish Banswara actual-data and public-map checks, confirm backup session23305, then mark handled"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
