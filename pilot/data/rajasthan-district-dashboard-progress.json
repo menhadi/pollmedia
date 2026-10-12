@@ -4804,7 +4804,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_public_verification_pending_timeouts",
       "flags": [
         "Boundary edition unverified",
         "895 unlinked shapes; no population allocated",
@@ -4813,7 +4813,7 @@
         "Historical source geography retained; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/121/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_public_verification_pending_timeouts",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -4853,6 +4853,38 @@
           24
         ],
         "note": "Complete shared PCs23/24 retain Bhilwara and Kota members; current crosswalk and boundary editions unverified."
+      },
+      "deployment": {
+        "live_commit": "6e7326f66c873af143a03a6a3474837eebda3f95",
+        "rollback_base": "bfa6b28e4e2fe5157aa11cf9744d5521dac47a9c",
+        "both_locks_held": true
+      },
+      "validation": {
+        "regression_tests": "59 tests /240 assertions passed",
+        "canonical_totals": {
+          "id": 7415,
+          "name": "Bundi",
+          "code": "121",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1110906,
+          "households": 220768,
+          "literates": 585044,
+          "children": 159884,
+          "male": 577160,
+          "female": 533746,
+          "workers": 526091,
+          "literacy": 61.52,
+          "male_literacy": 75.44,
+          "female_literacy": 46.55,
+          "source_row": 751,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_verification": "Incomplete: district page repeated zero-byte timeouts; other public requests timed out. No data verification claimed.",
+        "local_bundle": "Verified 6e7326f66c873af143a03a6a3474837eebda3f95",
+        "github_backup": "Push in progress; confirm next run"
       }
     },
     {
@@ -6264,10 +6296,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:38:14.516651+00:00",
-    "live_commit": "c73352a0130e0c4dcd3bbc5ccdf6456692fdd3c6",
-    "action": "Bundi full map JSON/hash and complete audited shared PC23/24 fixture prepared; not deployed",
-    "next_action": "Enable Bundi121 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link."
+    "checked_at": "2026-10-12T10:45:57.493789+00:00",
+    "live_commit": "6e7326f66c873af143a03a6a3474837eebda3f95",
+    "action": "Bundi deployed under both locks; public checks timed out and remain incomplete; do not advance",
+    "next_action": "Recheck public availability and actual Bundi totals/full map/PC-AC context; confirm GitHub backup. Keep rollout at22 verified until checks pass."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
