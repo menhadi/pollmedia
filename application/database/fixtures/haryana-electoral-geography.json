@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete shared Ambala PC1 and Kurukshetra PC2 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete shared Ambala PC1, Kurukshetra PC2 and Karnal PC5 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -114,6 +114,60 @@
       "district": "Kaithal",
       "page": 150,
       "code": 18
+    },
+    {
+      "code": 19,
+      "name": "Nilokheri (SC)",
+      "district": "Karnal",
+      "page": 150
+    },
+    {
+      "code": 20,
+      "name": "Indri",
+      "district": "Karnal",
+      "page": 150
+    },
+    {
+      "code": 21,
+      "name": "Karnal",
+      "district": "Karnal",
+      "page": 150
+    },
+    {
+      "code": 22,
+      "name": "Gharaunda",
+      "district": "Karnal",
+      "page": 151
+    },
+    {
+      "code": 23,
+      "name": "Assandh",
+      "district": "Karnal",
+      "page": 151
+    },
+    {
+      "code": 24,
+      "name": "Panipat Rural",
+      "district": "Panipat",
+      "page": 151
+    },
+    {
+      "code": 25,
+      "name": "Panipat City",
+      "district": "Panipat",
+      "page": 151
+    },
+    {
+      "code": 26,
+      "name": "Israna (SC)",
+      "district": "Panipat",
+      "page": 151
+    },
+    {
+      "code": 27,
+      "name": "Samalkha",
+      "district": "Panipat",
+      "page": 151
     }
   ],
   "pcs": [
@@ -148,6 +202,22 @@
         18
       ],
       "code": 2
+    },
+    {
+      "code": 5,
+      "name": "Karnal",
+      "ac_codes": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "page": 158
     }
   ]
 }
