@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Thirty-three complete PC segment lists;remaining state membership pending",
+  "coverage": "Thirty-four complete PC segment lists;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1690,6 +1690,55 @@
       "district": "Maldah",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 284,
+      "name": "Dubrajpur",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 285,
+      "name": "Suri",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 289,
+      "name": "Sainthia",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 291,
+      "name": "Rampurhat",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 292,
+      "name": "Hansan",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 293,
+      "name": "Nalhati",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 294,
+      "name": "Murarai",
+      "district": "Birbhum",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
     }
   ],
   "pcs": [
@@ -2216,6 +2265,22 @@
         47,
         48,
         50
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 42,
+      "name": "Birbhum",
+      "ac_codes": [
+        284,
+        285,
+        289,
+        291,
+        292,
+        293,
+        294
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
