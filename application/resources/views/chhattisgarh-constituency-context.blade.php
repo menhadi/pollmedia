@@ -20,7 +20,6 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">2008 Chhattisgarh electoral district references are retained. Current district correspondence, SOI boundary edition and accepted Census/LGD village links remain unverified. No district totals are assigned to constituencies.</p>
 <p class="notice">Census context uses published state22 historical district records. The2008 gazette,2011 Census and33 SOI source labels describe differing geography. Partial electoral fixture; omitted seats remain pending. No boundary correspondence is inferred.</p>
 @if(isset($seat['source_code_note']))<p class="notice">{{ $seat['source_code_note'] }} Original source codes: {{ implode(', ', $seat['raw_ac_codes']) }}. Formal source review remains pending.</p><p><a href="{{ $fixture['supplementary_pc_source']['url'] }}">Official CEO PC list (publication date unverified)</a></p>@endif
-<p><a href="{{ route('chhattisgarh-source-maps') }}">Additional SOI physical source maps</a> · Explicit source labels; district correspondence unverified.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
