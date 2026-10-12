@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-bargarh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Bargarh Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2101',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6561/download/9638/DDW_PCA2101_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6561',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-jharsuguda-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Jharsuguda Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2102',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6562/download/9639/DDW_PCA2102_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6562',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'odisha-jajapur-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Jajapur Census 2011 â€” rural village PCA',
