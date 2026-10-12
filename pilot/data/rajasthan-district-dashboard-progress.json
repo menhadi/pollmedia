@@ -5204,7 +5204,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_prepared_not_deployed",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -5247,7 +5247,36 @@
           367
         ]
       },
-      "status": "source_map_prepared_not_deployed"
+      "status": "verified_breadth_scope_with_deferred_flags",
+      "deployment_commit": "3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
+      "validation": {
+        "canonical_totals": {
+          "id": 7434,
+          "name": "Rajsamand",
+          "code": "123",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1156597,
+          "households": 243078,
+          "literates": 619139,
+          "children": 176041,
+          "male": 581339,
+          "female": 575258,
+          "workers": 550831,
+          "literacy": 63.14,
+          "male_literacy": 78.42,
+          "female_literacy": 47.95,
+          "source_row": 770,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_verification": "Passed actual canonical population, households, literates, children; complete shared PC22 AC names; PC Rajsamand and AC Rajsamand district context. Detailed rendered/source audits deferred",
+        "local_bundle": "Verified own isolated chain bundle3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
+        "github_backup": "Verified exact ls-remote3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
+        "regression_tests": "59 tests /240 assertions passed",
+        "public_map_full_json_sha256": "Passed exact bytes and1063 features"
+      }
     },
     {
       "district_code": "124",
@@ -6378,10 +6407,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T18:32:57.7863902+05:30",
-    "live_commit": "a6d06fe38a4cfa8a5d75cc124acdc4aa01a0f3fe",
-    "action": "Bhilwara verified; Rajasthan24 of33 handled with explicit deferred flags",
-    "next_action": "Rajsamand59 regression tests passed; perform narrow locked deployment, backups and canonical/public checks"
+    "checked_at": "2026-10-12T13:13:41.3049006+00:00",
+    "live_commit": "3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
+    "action": "Rajsamand verified; Rajasthan25 of33 handled with explicit deferred flags",
+    "next_action": "Prepare Dungarpur124 dated ECI district and complete shared PCs before deployment"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
