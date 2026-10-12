@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'ladakh-leh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Leh Census 2011 — rural village PCA',
+        'sheet' => 'EB-0103',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6194/download/9271/DDW_PCA0103_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6194',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'ladakh-kargil-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kargil Census 2011 — rural village PCA',
+        'sheet' => 'EB-0104',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6195/download/9272/DDW_PCA0104_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6195',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-gurgaon-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Gurgaon Census 2011 — district, town, village and ward PCA',
