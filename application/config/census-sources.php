@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-sirsa-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Sirsa Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6270/download/9347/DDW_PCA0611_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6270',
+        'format' => 'xlsx', 'sheet' => 'EB-0611',
+    ],
     'haryana-fatehabad-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Fatehabad Census 2011 — district, town, village and ward PCA',
