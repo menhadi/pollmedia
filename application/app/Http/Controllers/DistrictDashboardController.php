@@ -253,6 +253,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/adilabad-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Adilabad', 'Telangana');
         }
+        if ($state === '22' && $district === '404') {
+            $mapFile = 'maps/korba-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Korba', 'Chhattisgarh');
+        }
         if ($state === '22' && $district === '403') {
             $mapFile = 'maps/raigarh-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Raigarh', 'Chhattisgarh');
