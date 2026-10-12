@@ -589,6 +589,10 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Jhajjar', 'Haryana');
             $mapFile = 'maps/jhajjar-villages.geojson';
         }
+        if ($state === '12' && $district === '247') {
+            $mapFile = 'maps/arunachal-pradesh-east-kameng-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('East Kameng', 'Arunachal Pradesh');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
