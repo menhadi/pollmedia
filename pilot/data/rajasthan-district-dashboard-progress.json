@@ -6242,14 +6242,51 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted map Census/LGD links pending",
         "Historical rows retain source geography; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/128/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/128/dashboard",
+      "status": "source_map_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1225
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "Census name Kota retained; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "b706d9426a32b121efce81e3806f74c47dee5c1f325cec59e3d2f27bb165a33f",
+      "electoral_evidence": {
+        "note": "Complete dated PC24 retains outside-district Bundi AC185,186;2004 territorial reference/current crosswalk unverified",
+        "district_ac_codes": [
+          187,
+          188,
+          189,
+          190,
+          191,
+          192
+        ],
+        "visually_audited": true,
+        "source_date": "2008-12-17",
+        "shared_pc_codes": [
+          24
+        ],
+        "pdf_pages": [
+          364,
+          365,
+          367
+        ]
+      }
     },
     {
       "district_code": "129",
@@ -6680,10 +6717,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T14:06:35.6303911+00:00",
+    "checked_at": "2026-10-12T19:36:35.6303911+05:30",
     "live_commit": "f5446d2646619d6f612c865612580e9ec5b4c8a8",
     "action": "Chittaurgarh verified; Rajasthan29 of33 handled with deferred flags",
-    "next_action": "Prepare Kota128 source map and already audited complete shared PC24 membership"
+    "next_action": "Kota1225 source shapes prepared; finish regression50554 then locked narrow deployment"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
