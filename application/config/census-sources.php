@@ -12,6 +12,17 @@ return [
         'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
     ],
 
+    'assam-barpeta-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Barpeta Census 2011 — rural village PCA',
+        'sheet' => 'EB-1804',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6494/download/9571/DDW_PCA1804_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6494',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+
     'assam-morigaon-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Morigaon Census 2011 — rural village PCA',
