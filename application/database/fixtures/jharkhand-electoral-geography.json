@@ -3,15 +3,88 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial dated fixture: Garhwa, historical Palamau, Chatra, Kodarma and Giridih district coverage; complete shared PC4,5,6,13 scopes. Other seats pending.",
+  "scope": "Partial dated district fixture including Deoghar and complete shared PC2,3,4,5,6,13 scopes. Other seats pending.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
     "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
     "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
     "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
-    "SOI KODERMA and Census/gazette Kodarma spellings retained; name correspondence does not verify boundary editions."
+    "SOI KODERMA and Census/gazette Kodarma spellings retained; name correspondence does not verify boundary editions.",
+    "2008 Dumka source district references for Nala/Jamtara retained. Modern Jamtara district correspondence is pending; not silently reassigned. PC2 printed Skiaripara spelling retained in source PDF; AC7 identity uses Part A Sikaripara."
   ],
   "district_rows": [
+    {
+      "code": 7,
+      "name": "Sikaripara (ST)",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 8,
+      "name": "Nala",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 9,
+      "name": "Jamtara",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 10,
+      "name": "Dumka (ST)",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 11,
+      "name": "Jama (ST)",
+      "district": "Dumka",
+      "page": 168
+    },
+    {
+      "code": 12,
+      "name": "Jarmundi",
+      "district": "Dumka",
+      "page": 168
+    },
+    {
+      "code": 13,
+      "name": "Madhupur",
+      "district": "Deoghar",
+      "page": 168
+    },
+    {
+      "code": 14,
+      "name": "Sarath",
+      "district": "Deoghar",
+      "page": 168
+    },
+    {
+      "code": 15,
+      "name": "Deoghar (SC)",
+      "district": "Deoghar",
+      "page": 168
+    },
+    {
+      "code": 16,
+      "name": "Poreyahat",
+      "district": "Godda",
+      "page": 168
+    },
+    {
+      "code": 17,
+      "name": "Godda",
+      "district": "Godda",
+      "page": 168
+    },
+    {
+      "code": 18,
+      "name": "Mahagama",
+      "district": "Godda",
+      "page": 168
+    },
     {
       "code": 19,
       "name": "Kodarma",
@@ -211,6 +284,32 @@
         35,
         42,
         43
+      ],
+      "page": 175
+    },
+    {
+      "code": 2,
+      "name": "Dumka (ST)",
+      "ac_codes": [
+        7,
+        8,
+        9,
+        14,
+        10,
+        11
+      ],
+      "page": 175
+    },
+    {
+      "code": 3,
+      "name": "Godda",
+      "ac_codes": [
+        13,
+        15,
+        12,
+        16,
+        17,
+        18
       ],
       "page": 175
     }
