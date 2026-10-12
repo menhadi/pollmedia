@@ -5409,14 +5409,51 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted map Census/LGD links pending",
         "Historical rows retain source geography; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/124/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/124/dashboard",
+      "status": "source_map_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1035,
+          "ambiguous": 21
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "Census name Dungarpur retained; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "574049832c344acd6bc23940e2124153a0654d861afbe5351472da8030ab1cd6",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "district_ac_codes": [
+          158,
+          159,
+          160,
+          161
+        ],
+        "pdf_pages": [
+          362,
+          363,
+          367
+        ],
+        "shared_pc_codes": [
+          19,
+          20
+        ],
+        "note": "Dated complete PC19/20 memberships retain outside-district Udaipur and Banswara ACs;2004 territorial reference and current crosswalk unverified",
+        "visually_audited": true
+      }
     },
     {
       "district_code": "125",
@@ -6407,10 +6444,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T13:13:41.3049006+00:00",
+    "checked_at": "2026-10-12T18:43:41.3049006+05:30",
     "live_commit": "3e9a38372f6c98b9480955e8c5cd3f279b2cf96e",
     "action": "Rajsamand verified; Rajasthan25 of33 handled with explicit deferred flags",
-    "next_action": "Prepare Dungarpur124 dated ECI district and complete shared PCs before deployment"
+    "next_action": "Enable Dungarpur locally, test, then deploy narrow patch under both locks and verify actual public data/backups"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",

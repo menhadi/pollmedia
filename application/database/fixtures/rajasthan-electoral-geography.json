@@ -1014,6 +1014,114 @@
       "name": "Ramganj Mandi (SC)",
       "district": "Kota",
       "page": 365
+    },
+    {
+      "code": 149,
+      "name": "Gogunda",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 150,
+      "name": "Jhadol",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 151,
+      "name": "Kherwara",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 152,
+      "name": "Udaipur Rural",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 153,
+      "name": "Udaipur",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 154,
+      "name": "Mavli",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 155,
+      "name": "Vallabhnagar",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 156,
+      "name": "Salumber",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 157,
+      "name": "Dhariawad",
+      "district": "Udaipur",
+      "page": 362
+    },
+    {
+      "code": 158,
+      "name": "Dungarpur",
+      "district": "Dungarpur",
+      "page": 362
+    },
+    {
+      "code": 159,
+      "name": "Aspur",
+      "district": "Dungarpur",
+      "page": 363
+    },
+    {
+      "code": 160,
+      "name": "Sagwara",
+      "district": "Dungarpur",
+      "page": 363
+    },
+    {
+      "code": 161,
+      "name": "Chorasi",
+      "district": "Dungarpur",
+      "page": 363
+    },
+    {
+      "code": 162,
+      "name": "Ghatol",
+      "district": "Banswara",
+      "page": 363
+    },
+    {
+      "code": 163,
+      "name": "Garhi",
+      "district": "Banswara",
+      "page": 363
+    },
+    {
+      "code": 164,
+      "name": "Banswara",
+      "district": "Banswara",
+      "page": 363
+    },
+    {
+      "code": 165,
+      "name": "Bagidora",
+      "district": "Banswara",
+      "page": 363
+    },
+    {
+      "code": 166,
+      "name": "Kushalgarh",
+      "district": "Banswara",
+      "page": 363
     }
   ],
   "pcs": [
@@ -1329,6 +1437,36 @@
         190,
         191,
         192
+      ],
+      "page": 367
+    },
+    {
+      "code": 19,
+      "name": "Udaipur",
+      "ac_codes": [
+        149,
+        150,
+        151,
+        152,
+        153,
+        156,
+        157,
+        159
+      ],
+      "page": 367
+    },
+    {
+      "code": 20,
+      "name": "Banswara",
+      "ac_codes": [
+        158,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166
       ],
       "page": 367
     }
