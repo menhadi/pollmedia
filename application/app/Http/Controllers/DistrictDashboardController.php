@@ -90,8 +90,8 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($gujaratDistrict, 'Gujarat');
             $mapFile = $district === '489' ? 'maps/dangs-villages.geojson' : 'maps/'.strtolower($gujaratDistrict).'-villages.geojson';
         }
-        if ($state === '23' && in_array($district, ['418', '419', '420', '421', '422', '423', '424', '425', '426', '427', '428', '429', '430', '431', '432', '433'], true)) {
-            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior', '422' => 'Datia', '423' => 'Shivpuri', '424' => 'Tikamgarh', '425' => 'Chhatarpur', '426' => 'Panna', '427' => 'Sagar', '428' => 'Damoh', '429' => 'Satna', '430' => 'Rewa', '431' => 'Umaria', '432' => 'Neemuch', '433' => 'Mandsaur'][$district];
+        if ($state === '23' && in_array($district, ['418', '419', '420', '421', '422', '423', '424', '425', '426', '427', '428', '429', '430', '431', '432', '433', '434'], true)) {
+            $mpDistrict = ['418' => 'Sheopur', '419' => 'Morena', '420' => 'Bhind', '421' => 'Gwalior', '422' => 'Datia', '423' => 'Shivpuri', '424' => 'Tikamgarh', '425' => 'Chhatarpur', '426' => 'Panna', '427' => 'Sagar', '428' => 'Damoh', '429' => 'Satna', '430' => 'Rewa', '431' => 'Umaria', '432' => 'Neemuch', '433' => 'Mandsaur', '434' => 'Ratlam'][$district];
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($mpDistrict, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
         }

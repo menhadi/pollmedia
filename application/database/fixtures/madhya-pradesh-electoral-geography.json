@@ -575,6 +575,102 @@
       "name": "Jawad",
       "district": "Neemuch",
       "page": 250
+    },
+    {
+      "code": 219,
+      "name": "Ratlam Rural (ST)",
+      "district": "Ratlam",
+      "page": 248
+    },
+    {
+      "code": 220,
+      "name": "Ratlam City",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 221,
+      "name": "Sailana (ST)",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 223,
+      "name": "Alot (SC)",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 191,
+      "name": "Alirajpur (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 192,
+      "name": "Jobat (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 193,
+      "name": "Jhabua (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 194,
+      "name": "Thandla (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 195,
+      "name": "Petlawad (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 212,
+      "name": "Nagada-Khachrod",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 213,
+      "name": "Mahidpur",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 214,
+      "name": "Tarana (SC)",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 215,
+      "name": "Ghatiya (SC)",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 216,
+      "name": "Ujjain Uttar",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 217,
+      "name": "Ujjain Dakshin",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 218,
+      "name": "Badnagar",
+      "district": "Ujjain",
+      "page": 248
     }
   ],
   "pcs": [
@@ -756,6 +852,36 @@
         230
       ],
       "page": 252
+    },
+    {
+      "code": 22,
+      "name": "Ujjain (SC)",
+      "ac_codes": [
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        223
+      ],
+      "page": 252
+    },
+    {
+      "code": 24,
+      "name": "Ratlam (ST)",
+      "ac_codes": [
+        191,
+        192,
+        193,
+        194,
+        195,
+        219,
+        220,
+        221
+      ],
+      "page": 253
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
