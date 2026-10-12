@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Twenty-five complete PC segment lists;remaining state membership pending",
+  "coverage": "Twenty-nine complete PC segment lists;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1298,6 +1298,202 @@
       "source_district_name": "JALPAIGURI",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 203,
+      "name": "Tamluk",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 204,
+      "name": "Panskura Purba",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 205,
+      "name": "Panskura Paschim",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 206,
+      "name": "Moyna",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 207,
+      "name": "Nandakumar",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 208,
+      "name": "Mahishadal",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 209,
+      "name": "Haldia",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 210,
+      "name": "Nandigram",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 211,
+      "name": "Chandipur",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 212,
+      "name": "Patashpur",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 213,
+      "name": "Kanthi Uttar",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 214,
+      "name": "Bhagabanpur",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 215,
+      "name": "Khejuri",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 216,
+      "name": "Kanthi Dakshin",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 217,
+      "name": "Ramnagar",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 218,
+      "name": "Egra",
+      "district": "Purba Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 219,
+      "name": "Dantan",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 223,
+      "name": "Keshiary",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 224,
+      "name": "Kharagpur Sadar",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 225,
+      "name": "Narayangarh",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 226,
+      "name": "Sabang",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 227,
+      "name": "Pingla",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 228,
+      "name": "Kharagpur",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 229,
+      "name": "Debra",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 230,
+      "name": "Daspur",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 231,
+      "name": "Ghatal",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 235,
+      "name": "Keshpur",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 236,
+      "name": "Medinipur",
+      "district": "Paschim Medinipur",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent in source table;not inferred"
     }
   ],
   "pcs": [
@@ -1696,6 +1892,70 @@
         18,
         19,
         20
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 30,
+      "name": "Tamluk",
+      "ac_codes": [
+        203,
+        204,
+        206,
+        207,
+        208,
+        209,
+        210
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 31,
+      "name": "Kanthi",
+      "ac_codes": [
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 32,
+      "name": "Ghatal",
+      "ac_codes": [
+        205,
+        226,
+        227,
+        229,
+        230,
+        231,
+        235
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 34,
+      "name": "Medinipur",
+      "ac_codes": [
+        218,
+        219,
+        223,
+        224,
+        225,
+        228,
+        236
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
