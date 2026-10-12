@@ -24,6 +24,11 @@
 @endphp
 <section class="panel" id="assam-2023-electoral-context"><h2>Assam 2023 PC and AC details</h2>
 <p>ECI final Order No.2, O.N.33(E), 11 August 2023. District labels and membership below follow that order.</p>
+<div class="source-grid" aria-label="Assam election archives">
+<article><h3>Parliamentary election records</h3><p><a href="{{ route('elections.constituencies', ['state' => 'Assam', 'kind' => 'pc', 'year' => 2024]) }}">Browse Assam PC records · 2024</a></p><p><a href="{{ route('elections.constituencies', ['state' => 'Assam', 'kind' => 'pc']) }}">All indexed Assam parliamentary editions</a></p></article>
+<article><h3>Assembly election records</h3><p><a href="{{ route('elections.constituencies', ['state' => 'Assam', 'kind' => 'ac', 'year' => 2026]) }}">Browse Assam AC records · 2026</a></p><p><a href="{{ route('elections.constituencies', ['state' => 'Assam', 'kind' => 'ac']) }}">All indexed Assam assembly editions</a></p></article>
+</div>
+<p>These links open the statewide archive with its election year and source edition. Coverage varies by edition. Earlier records retain their original constituencies; matching names or numbers do not establish continuity with the 2023 membership below.</p>
 @if($initialHeading !== 'all')
 <div data-district-electoral-summary="{{ $initialHeading }}"><h3>{{ $initialHeading }} · 2023 electoral district heading</h3>
 <p>{{ $districtAcs->count() }} ACs under this heading, associated with {{ $districtPcs->count() }} unique PCs. Their full membership is expanded below, including ACs from other district headings.</p>
