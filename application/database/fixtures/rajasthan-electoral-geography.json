@@ -678,6 +678,54 @@
       "name": "Nathdwara",
       "district": "Rajsamand",
       "page": 364
+    },
+    {
+      "code": 106,
+      "name": "Ladnun",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 107,
+      "name": "Deedwana",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 108,
+      "name": "Jayal (SC)",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 109,
+      "name": "Nagaur",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 110,
+      "name": "Khinwsar",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 113,
+      "name": "Makrana",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 114,
+      "name": "Parbatsar",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 115,
+      "name": "Nawan",
+      "district": "Nagaur",
+      "page": 359
     }
   ],
   "pcs": [
@@ -890,6 +938,21 @@
         176
       ],
       "page": 367
+    },
+    {
+      "code": 14,
+      "name": "Nagaur",
+      "ac_codes": [
+        106,
+        107,
+        108,
+        109,
+        110,
+        113,
+        114,
+        115
+      ],
+      "page": 366
     }
   ],
   "source_name_variants": {

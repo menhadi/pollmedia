@@ -3262,14 +3262,60 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "841 unlinked shapes;14 ambiguous codes; no population allocated",
+        "Dated shared electoral membership prepared; not deployed",
+        "Historical source geography retained; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/114/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/114/dashboard",
+      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 841,
+          "ambiguous": 14
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI NAGAUR label retained; Census name Nagaur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "8c3773bc7f9813bd7bbd4d65c939e3bdc12cf33a28641975f51c27c333d57215",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "territorial_reference_date": "2004-02-15",
+        "visually_audited": true,
+        "pdf_pages": [
+          359,
+          363,
+          364,
+          366,
+          367
+        ],
+        "district_ac_codes": [
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115
+        ],
+        "shared_pc_codes": [
+          14,
+          22
+        ],
+        "note": "Complete shared PC22 retains Ajmer, Pali and Rajsamand members; current crosswalk and matching geometry edition unverified."
+      }
     },
     {
       "district_code": "115",
@@ -5660,11 +5706,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:17:36.265429+00:00",
-    "live_commit": "fea249919ac646c58038affe6c4c87d2c7dffdfd",
-    "backup_commit": "eb348178e4ca48a1a5a6d7101df2f54b93fc59cd",
-    "action": "Ajmer deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
-    "next_action": "Continue Nagaur114; audit missing AC106-110/113-115 and complete associated PCs14/22 before fixture use; extract district map"
+    "checked_at": "2026-10-12T09:20:29.465207+00:00",
+    "live_commit": "49f5da826c48340de28aba6a77c3c169eff35e4f",
+    "action": "Nagaur full source map JSON/hash and complete audited AC106-115/PC14/22 fixture prepared; not deployed",
+    "next_action": "Enable Nagaur114 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link on completion."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
