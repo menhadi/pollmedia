@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Palakkad with complete associated PC7/8/9 segments; other districts pending",
+  "scope": "Partial extraction through Thrissur with complete associated PC9/10/11 segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent"
@@ -388,10 +388,94 @@
       "page": 214
     },
     {
+      "code": 63,
+      "name": "Guruvayoor",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 64,
+      "name": "Manalur",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
       "code": 65,
       "name": "Wadakkanchery",
       "district": "Thrissur",
       "page": 214
+    },
+    {
+      "code": 66,
+      "name": "Ollur",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 67,
+      "name": "Thrissur",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 68,
+      "name": "Nattika (SC)",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 69,
+      "name": "Kaipamangalam",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 70,
+      "name": "Irinjalakuda",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 71,
+      "name": "Pudukkad",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 72,
+      "name": "Chalakudy",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 73,
+      "name": "Kodungallur",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 74,
+      "name": "Perumbavoor",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 75,
+      "name": "Angamaly",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 76,
+      "name": "Aluva",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 84,
+      "name": "Kunnathunad (SC)",
+      "district": "Ernakulam",
+      "page": 216
     }
   ],
   "pcs": [
@@ -518,6 +602,34 @@
         61,
         62,
         65
+      ],
+      "page": 223
+    },
+    {
+      "code": 10,
+      "name": "Thrissur",
+      "ac_codes": [
+        63,
+        64,
+        66,
+        67,
+        68,
+        70,
+        71
+      ],
+      "page": 223
+    },
+    {
+      "code": 11,
+      "name": "Chalakudy",
+      "ac_codes": [
+        69,
+        72,
+        73,
+        74,
+        75,
+        76,
+        84
       ],
       "page": 223
     }
