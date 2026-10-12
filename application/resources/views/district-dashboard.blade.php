@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='330' && $sourceMap==='maps/west-bengal-uttar-dinajpur-villages.geojson')<p class="notice">Uttar Dinajpur source coverage: 1,499 shapes. Boundary edition and Census/LGD correspondence remain unverified. This coverage is not a certified perimeter; source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='345' && $sourceMap==='maps/west-bengal-purba-medinipur-villages.geojson')<p class="notice">Purba Medinipur source coverage: 3,023 shapes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified perimeter; duplicate-code and geometry flags remain in downloadable metadata. No population assigned to shapes. Official electoral membership pending.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='329' && $sourceMap==='maps/west-bengal-koch-bihar-villages.geojson')<p class="notice">Koch Bihar source coverage: 1,187 shapes. Boundary edition and Census/LGD correspondence remain unverified. This source coverage is not a certified perimeter, including historical enclave changes. Shape flags remain in downloadable metadata; no population assigned to shapes. Official electoral membership pending.</p>@endif
