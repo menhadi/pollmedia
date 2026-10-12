@@ -1,6 +1,6 @@
 {
   "state": "Bihar",
-  "coverage": "Thirty-five PCs recorded; remaining Bihar membership pending",
+  "coverage": "Thirty-seven PCs recorded; remaining Bihar membership pending",
   "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
   "district_source_date": "2019 election list; boundary effective date unverified",
   "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
@@ -1546,6 +1546,90 @@
       "district": "Samastipur",
       "source_page_label": "4 of 10",
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 111,
+      "name": "Goriakothi",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 112,
+      "name": "Maharajganj",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 113,
+      "name": "Ekma",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 114,
+      "name": "Manjhi",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 115,
+      "name": "Baniapur",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 116,
+      "name": "Taraiya",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 117,
+      "name": "Marhaura",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 118,
+      "name": "Chapra",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 119,
+      "name": "Garkha (SC)",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 120,
+      "name": "Amnour",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 121,
+      "name": "Parsa",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 122,
+      "name": "Sonepur",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
     }
   ],
   "pcs": [
@@ -2198,6 +2282,43 @@
       "cross_district_scope": [
         "Vaishali",
         "Samastipur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 19,
+      "name": "Maharajganj",
+      "ac_codes": [
+        111,
+        112,
+        113,
+        114,
+        115,
+        116
+      ],
+      "cross_district_scope": [
+        "Siwan",
+        "Saran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 20,
+      "name": "Saran",
+      "ac_codes": [
+        117,
+        118,
+        119,
+        120,
+        121,
+        122
+      ],
+      "cross_district_scope": [
+        "Saran"
       ],
       "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
       "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
