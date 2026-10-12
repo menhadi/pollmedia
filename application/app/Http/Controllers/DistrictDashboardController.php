@@ -253,6 +253,18 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/adilabad-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Adilabad', 'Telangana');
         }
+        if ($state === '22' && $district === '415') {
+            $mapFile = 'maps/narayanpur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Narayanpur', 'Chhattisgarh');
+        }
+        if ($state === '22' && $district === '416') {
+            $mapFile = 'maps/dantewada-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Dakshin Bastar (Dantewada)', 'Chhattisgarh');
+        }
+        if ($state === '22' && $district === '417') {
+            $mapFile = 'maps/chhattisgarh-bijapur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Bijapur', 'Chhattisgarh');
+        }
         if ($state === '22' && $district === '414') {
             $mapFile = 'maps/bastar-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Bastar', 'Chhattisgarh');
