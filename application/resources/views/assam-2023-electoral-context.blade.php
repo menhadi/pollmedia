@@ -8,6 +8,9 @@
     if ($district['slug'] === 'sivasagar') {
         $candidateHeading = 'SIBSAGAR';
     }
+    if ($district['slug'] === 'marigaon') {
+        $candidateHeading = 'MORIGAON';
+    }
     $initialHeading = in_array($candidateHeading, $electoralHeadings, true) ? $candidateHeading : 'all';
     $electoralAcs = collect($electoralSource['acs'])->keyBy('code');
     $districtAcs = $initialHeading === 'all' ? collect() : $electoralAcs->where('source_district', $initialHeading);
@@ -21,7 +24,10 @@
 @if($district['slug'] === 'sivasagar')
 <p><a href="https://sivasagar.assam.gov.in/about-district/district-glance">Sivasagar district administration’s profile</a> also uses Sibsagar for the district. The 2023 ECI heading SIBSAGAR is retained below; this name reference does not establish equal boundary extents.</p>
 @endif
-<p class="notice">Shown by matching source name{{ $district['slug'] === 'sribhumi' ? ' through the verified Karimganj–Sribhumi rename' : ($district['slug'] === 'sivasagar' ? ' using the official Sivasagar/Sibsagar name reference' : '') }}. This is dated electoral context; it does not certify that these constituencies cover the village shapes or newer district outline.</p></div>
+@if($district['slug'] === 'marigaon')
+<p>The <a href="https://fcsca.assam.gov.in/about-us/detail/district-officials-of-fpdca-department">Assam government district directory</a> lists MARIGAON and links it to the Morigaon district administration. The ECI 2023 MORIGAON heading is retained here; this identifies a name reference, not equal boundary extents.</p>
+@endif
+<p class="notice">Shown by matching source name{{ $district['slug'] === 'sribhumi' ? ' through the verified Karimganj–Sribhumi rename' : ($district['slug'] === 'sivasagar' ? ' using the official Sivasagar/Sibsagar name reference' : ($district['slug'] === 'marigaon' ? ' using the official Marigaon/Morigaon directory reference' : '')) }}. This is dated electoral context; it does not certify that these constituencies cover the village shapes or newer district outline.</p></div>
 @else
 <p class="notice">No exact 2023 district heading is matched to this map’s source name. Choose the dated heading below; no constituency membership has been inferred for this map.</p>
 @endif
