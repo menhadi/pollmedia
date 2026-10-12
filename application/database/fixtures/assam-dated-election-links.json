@@ -1,5 +1,5 @@
 {
-  "scope": "Exact name references to indexed Assam PC2024 and AC2026 reports;case and outer whitespace only normalized.No boundary continuity asserted.",
+  "scope": "Exact name references and three documented PC reservation-label references to indexed Assam PC2024 and AC2026 reports. No boundary continuity asserted.",
   "pc": {
     "2": {
       "source_name": "Dhubri",
@@ -77,6 +77,45 @@
       "year": 2024,
       "edition": "349e04305ee4652986f79497",
       "record_code": 41
+    },
+    "1": {
+      "source_name": "Kokrajhar (ST)",
+      "record_name": "Kokrajhar",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 28,
+      "identity_evidence": {
+        "url": "https://ceochhattisgarh.nic.in/assets/pdf%20files/Press%20Note%20of%20ECI2024.pdf",
+        "pdf_page": 71,
+        "sha256": "029eee7d32cebd9f8c822830052ad8115f474269eb30dfa4c31f113f9b8f8066",
+        "note": "Official2024 schedule lists PC number,name and reservation separately;indexed report omits reservation label.No boundary continuity asserted."
+      }
+    },
+    "6": {
+      "source_name": "Diphu (ST)",
+      "record_name": "Diphu",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 33,
+      "identity_evidence": {
+        "url": "https://ceochhattisgarh.nic.in/assets/pdf%20files/Press%20Note%20of%20ECI2024.pdf",
+        "pdf_page": 71,
+        "sha256": "029eee7d32cebd9f8c822830052ad8115f474269eb30dfa4c31f113f9b8f8066",
+        "note": "Official2024 schedule lists PC number,name and reservation separately;indexed report omits reservation label.No boundary continuity asserted."
+      }
+    },
+    "8": {
+      "source_name": "Silchar (SC)",
+      "record_name": "Silchar",
+      "year": 2024,
+      "edition": "349e04305ee4652986f79497",
+      "record_code": 35,
+      "identity_evidence": {
+        "url": "https://ceochhattisgarh.nic.in/assets/pdf%20files/Press%20Note%20of%20ECI2024.pdf",
+        "pdf_page": 71,
+        "sha256": "029eee7d32cebd9f8c822830052ad8115f474269eb30dfa4c31f113f9b8f8066",
+        "note": "Official2024 schedule lists PC number,name and reservation separately;indexed report omits reservation label.No boundary continuity asserted."
+      }
     }
   },
   "ac": {
