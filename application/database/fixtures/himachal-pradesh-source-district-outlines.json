@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "geometry_scope": "district outline",
+    "simplification_metres": 0,
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "census_lgd_join": "unverified",
+    "electoral_edition_join": "unverified;dated electoral source required",
+    "note": "Exact source record reprojected;source spelling retained;no population allocated."
+  },
+  "districts": [
+    {
+      "source_name": "BIL>SPUR",
+      "slug": "bil-spur",
+      "file": "maps/himachal-pradesh-source-districts/bil-spur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 158532,
+      "sha256": "b6bd24bff81e93f7775553dcfaf1d51ff86203bedf4c87994e36d158f2628119"
+    },
+    {
+      "source_name": "SHIMLA",
+      "slug": "shimla",
+      "file": "maps/himachal-pradesh-source-districts/shimla.geojson",
+      "source_geometry_valid": true,
+      "bytes": 267172,
+      "sha256": "424a45e4a76b4c028ceabed1e61032322453b7f04a559fac2e3fc1846d5e1303"
+    },
+    {
+      "source_name": "KINNAUR",
+      "slug": "kinnaur",
+      "file": "maps/himachal-pradesh-source-districts/kinnaur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 195079,
+      "sha256": "b55fd545acc29e96108d4f649f1593b97d1f885ebf5113670288ac35596a6b3a"
+    },
+    {
+      "source_name": "SOLAN",
+      "slug": "solan",
+      "file": "maps/himachal-pradesh-source-districts/solan.geojson",
+      "source_geometry_valid": true,
+      "bytes": 196616,
+      "sha256": "140bb6c2d49c19af2dbcfcd9362c3134097b07a38a0b4b07b2c26656ee2c6b3d"
+    },
+    {
+      "source_name": "SIRMAUR",
+      "slug": "sirmaur",
+      "file": "maps/himachal-pradesh-source-districts/sirmaur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 197484,
+      "sha256": "a2a841ece37c757edd2a0a56682776591d590fb0729e26b8c77e368ab63c0c4a"
+    },
+    {
+      "source_name": "KULLU",
+      "slug": "kullu",
+      "file": "maps/himachal-pradesh-source-districts/kullu.geojson",
+      "source_geometry_valid": true,
+      "bytes": 258370,
+      "sha256": "b68f7b03e2ba47187adb4669bfd8bddd097794491611ad1f49279fae1059988f"
+    },
+    {
+      "source_name": "CHAMBA",
+      "slug": "chamba",
+      "file": "maps/himachal-pradesh-source-districts/chamba.geojson",
+      "source_geometry_valid": true,
+      "bytes": 232312,
+      "sha256": "98429a5f2d21ff80019345bd405d08d001a9174b28471e515ee3e082ffc1e7ac"
+    },
+    {
+      "source_name": "MANDI",
+      "slug": "mandi",
+      "file": "maps/himachal-pradesh-source-districts/mandi.geojson",
+      "source_geometry_valid": true,
+      "bytes": 204359,
+      "sha256": "be0b3391a2f95b3a587d6c2b7fd8deb0124bfd9121de125f2f0f199607afb4e6"
+    },
+    {
+      "source_name": "K>NGRA",
+      "slug": "k-ngra",
+      "file": "maps/himachal-pradesh-source-districts/k-ngra.geojson",
+      "source_geometry_valid": true,
+      "bytes": 280442,
+      "sha256": "5d46c41578e7623b160d28006de04be4a8f3e56ae330689e11bbe327020d5ad6"
+    },
+    {
+      "source_name": "HAM|RPUR",
+      "slug": "ham-rpur",
+      "file": "maps/himachal-pradesh-source-districts/ham-rpur.geojson",
+      "source_geometry_valid": true,
+      "bytes": 106960,
+      "sha256": "814cfce3a3f6e1a4259d1097a8376468858f2a339c9908f973e129ab4558bc3e"
+    },
+    {
+      "source_name": "UNA",
+      "slug": "una",
+      "file": "maps/himachal-pradesh-source-districts/una.geojson",
+      "source_geometry_valid": true,
+      "bytes": 143722,
+      "sha256": "aaaad178dcf8179339816f96738db1b725208a1fb8c83722e855699bb215e186"
+    },
+    {
+      "source_name": "LAHUL & SPITI",
+      "slug": "lahul-spiti",
+      "file": "maps/himachal-pradesh-source-districts/lahul-spiti.geojson",
+      "source_geometry_valid": true,
+      "bytes": 411178,
+      "sha256": "20a89e63c9684c32dca51ff0884daf70ba1dedd1b07c7d1275ec2c755014ae1c"
+    }
+  ]
+}
