@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-fatehabad-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Fatehabad Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6269/download/9346/DDW_PCA0610_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6269',
+        'format' => 'xlsx', 'sheet' => 'EB-0610',
+    ],
     'haryana-jind-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Jind Census 2011 — district, town, village and ward PCA',
