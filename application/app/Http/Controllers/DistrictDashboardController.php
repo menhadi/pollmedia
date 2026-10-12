@@ -738,6 +738,38 @@ class DistrictDashboardController extends Controller
         if ($state === '03' && $district === '037') {
             $mapFile = 'maps/jalandhar-villages.geojson';
         }
+        if ($state === '15' && $district === '281') {
+            $mapFile = 'maps/mizoram-mamit-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Mamit', 'Mizoram');
+        }
+        if ($state === '15' && $district === '282') {
+            $mapFile = 'maps/mizoram-kolasib-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kolasib', 'Mizoram');
+        }
+        if ($state === '15' && $district === '283') {
+            $mapFile = 'maps/mizoram-aizawl-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Aizawl', 'Mizoram');
+        }
+        if ($state === '15' && $district === '284') {
+            $mapFile = 'maps/mizoram-champhai-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Champhai', 'Mizoram');
+        }
+        if ($state === '15' && $district === '285') {
+            $mapFile = 'maps/mizoram-serchhip-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Serchhip', 'Mizoram');
+        }
+        if ($state === '15' && $district === '286') {
+            $mapFile = 'maps/mizoram-lunglei-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Lunglei', 'Mizoram');
+        }
+        if ($state === '15' && $district === '287') {
+            $mapFile = 'maps/mizoram-lawngtlai-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Lawngtlai', 'Mizoram');
+        }
+        if ($state === '15' && $district === '288') {
+            $mapFile = 'maps/mizoram-saiha-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Saiha', 'Mizoram');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));

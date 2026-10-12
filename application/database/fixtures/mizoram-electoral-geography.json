@@ -1,0 +1,267 @@
+{
+  "state": "Mizoram",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Hachhek (ST)",
+      "district": "Mamit"
+    },
+    {
+      "code": 2,
+      "name": "Dampa (ST)",
+      "district": "Mamit"
+    },
+    {
+      "code": 3,
+      "name": "Mamit (ST)",
+      "district": "Mamit"
+    },
+    {
+      "code": 4,
+      "name": "Tuirial (ST)",
+      "district": "Kolasib"
+    },
+    {
+      "code": 5,
+      "name": "Kolasib (ST)",
+      "district": "Kolasib"
+    },
+    {
+      "code": 6,
+      "name": "Serlui (ST)",
+      "district": "Kolasib"
+    },
+    {
+      "code": 7,
+      "name": "Tuivawl (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 8,
+      "name": "Chalfilh (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 9,
+      "name": "Tawi (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 10,
+      "name": "Aizawl North-I (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 11,
+      "name": "Aizawl North-II (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 12,
+      "name": "Aizawl North-III (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 13,
+      "name": "Aizawl East-I",
+      "district": "Aizawl"
+    },
+    {
+      "code": 14,
+      "name": "Aizawl East-II (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 15,
+      "name": "Aizawl West-I (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 16,
+      "name": "Aizawl West-II (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 17,
+      "name": "Aizawl West-III (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 18,
+      "name": "Aizawl South-I (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 19,
+      "name": "Aizawl South-II (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 20,
+      "name": "Aizawl South-III (ST)",
+      "district": "Aizawl"
+    },
+    {
+      "code": 21,
+      "name": "Lengteng (ST)",
+      "district": "Champhai"
+    },
+    {
+      "code": 22,
+      "name": "Tuichang (ST)",
+      "district": "Champhai"
+    },
+    {
+      "code": 23,
+      "name": "Champhai North (ST)",
+      "district": "Champhai"
+    },
+    {
+      "code": 24,
+      "name": "Champhai South (ST)",
+      "district": "Champhai"
+    },
+    {
+      "code": 25,
+      "name": "East Tuipui (ST)",
+      "district": "Champhai"
+    },
+    {
+      "code": 26,
+      "name": "Serchhip (ST)",
+      "district": "Serchhip"
+    },
+    {
+      "code": 27,
+      "name": "Tuikum (ST)",
+      "district": "Serchhip"
+    },
+    {
+      "code": 28,
+      "name": "Hrangturzo (ST)",
+      "district": "Serchhip"
+    },
+    {
+      "code": 29,
+      "name": "South Tuipui (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 30,
+      "name": "Lunglei North (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 31,
+      "name": "Lunglei East (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 32,
+      "name": "Lunglei West (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 33,
+      "name": "Lunglei South (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 34,
+      "name": "Thorang (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 35,
+      "name": "West Tuipui (ST)",
+      "district": "Lunglei"
+    },
+    {
+      "code": 36,
+      "name": "Tuichawng (ST)",
+      "district": "Lawngtlai"
+    },
+    {
+      "code": 37,
+      "name": "Lawngtlai West (ST)",
+      "district": "Lawngtlai"
+    },
+    {
+      "code": 38,
+      "name": "Lawngtlai East (ST)",
+      "district": "Lawngtlai"
+    },
+    {
+      "code": 39,
+      "name": "Saiha (ST)",
+      "district": "Saiha"
+    },
+    {
+      "code": 40,
+      "name": "Palak (ST)",
+      "district": "Saiha"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Mizoram (ST)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "page": 311,
+      "scope_note": "Order specifies entire State; 40 territorial ACs listed for navigation, not a separately enumerated segment crosswalk"
+    }
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008 Schedule XX; territorial reference 2005-05-16",
+  "pc_source_date": "2008 Schedule XX Table B; PDF311; statewide scope",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "flags": [
+    "Historical 2005 district headings retained; source geometry and Census2011 boundary correspondence unverified",
+    "Statewide PC covers entire State; 40 ACs supplied for navigation, not separately enumerated PC segments",
+    "Source reservation suffix and spelling review pending; no demographic allocation",
+    "Invalid source shapes excluded without repair; Census joins and all accuracy reviews pending"
+  ]
+}
