@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first nine historical districts plus complete associated PCs; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first ten historical districts plus complete associated PCs; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -13,7 +13,8 @@
     "PC7 source conflict: Table B prints47-Mandapeta while Table A gives48; displayed linkage uses Table A code48 with original retained; formal correction review pending",
     "AC46 Gannavaram(SC) and AC71 Gannavaram share normalized name; name-only routing must retain ambiguous identity and pending context rather than assign district totals",
     "AC36 Prathipadu and AC93 Prathipadu(SC) share normalized name; name-only district context remains ambiguous",
-    "AC98 Table A Sattenapalle versus Table B Sattenapalli spelling retained for later review"
+    "AC98 Table A Sattenapalle versus Table B Sattenapalli spelling retained for later review",
+    "Dated schedule uses Kadapa; Census and preserved SOI label use Y.S.R.; contextual association does not certify boundary editions"
   ],
   "district_rows": [
     {
@@ -755,6 +756,90 @@
       "page": 36
     },
     {
+      "code": 124,
+      "name": "Badvel (SC)",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 125,
+      "name": "Rajampet",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 126,
+      "name": "Kadapa",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 127,
+      "name": "Kodur (SC)",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 128,
+      "name": "Rayachoti",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 129,
+      "name": "Pulivendla",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 130,
+      "name": "Kamalapuram",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 131,
+      "name": "Jammalamadugu",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 132,
+      "name": "Proddatur",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 133,
+      "name": "Mydukur",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 162,
+      "name": "Thamballapalle",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 163,
+      "name": "Pileru",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 164,
+      "name": "Madanapalle",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 165,
+      "name": "Punganur",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
       "code": 167,
       "name": "Tirupati",
       "district": "Chittoor",
@@ -1009,6 +1094,20 @@
       "page": 39
     },
     {
+      "code": 21,
+      "name": "Kadapa",
+      "ac_codes": [
+        124,
+        126,
+        129,
+        130,
+        131,
+        132,
+        133
+      ],
+      "page": 40
+    },
+    {
       "code": 22,
       "name": "Nellore",
       "ac_codes": [
@@ -1033,6 +1132,20 @@
         167,
         168,
         169
+      ],
+      "page": 40
+    },
+    {
+      "code": 24,
+      "name": "Rajampet",
+      "ac_codes": [
+        125,
+        127,
+        128,
+        162,
+        163,
+        164,
+        165
       ],
       "page": 40
     }
