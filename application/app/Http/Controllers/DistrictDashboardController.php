@@ -652,6 +652,9 @@ class DistrictDashboardController extends Controller
         if ($state === '12' && $district === '260') {
             $mapFile = 'maps/arunachal-pradesh-anjaw-villages.geojson';
         }
+        if ($state === '06' && $district === '087') {
+            $mapFile = 'maps/mewat-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
