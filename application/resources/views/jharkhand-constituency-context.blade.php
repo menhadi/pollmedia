@@ -6,7 +6,7 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $segments=$segments->map(fn(array $row):array=>array_merge($row,['district'=>$row['context_district']??$row['district']]));
-$codes=['Garhwa'=>'346','Palamu'=>'347'];
+$codes=['Garhwa'=>'346','Palamu'=>'358','Chatra'=>'347'];
 $districtNames=$segments->pluck('district')->unique()->values();
 @endphp
 @if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} Ã‚Â· {{ $candidate['name'] }}@if(isset($candidate['district'])) Ã‚Â· {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
@@ -40,6 +40,6 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($kind==='pc')
 <p>Assembly segments: {{ $segments->map(fn(array $row):string=>$row['name'].' (AC '.$row['code'].')')->implode(', ') }}.</p>
 @endif
-<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Partial fixture covers Garhwa and complete shared Palamu PC13; other seats pending. Official schedule refers to Bihar Re-organization Act2000 continuation. Exact notification date remains pending. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">DistrictÃ¢â‚¬â€œAssembly source Ã¢â€ â€”</a> Ã‚Â· <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source Ã¢â€ â€”</a></details></section>
+<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Partial fixture covers Garhwa and dated Palamau district references, complete shared Palamu PC13 and Chatra PC4; other seats pending. The2008 PALAMAU heading includes Manika and Latehar. Modern Census district correspondence remains unverified; no silent reassignment. Official schedule refers to Bihar Re-organization Act2000 continuation. Exact notification date remains pending. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">DistrictÃ¢â‚¬â€œAssembly source Ã¢â€ â€”</a> Ã‚Â· <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source Ã¢â€ â€”</a></details></section>
 @endif
 @endif

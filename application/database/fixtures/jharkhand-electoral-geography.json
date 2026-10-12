@@ -3,12 +3,49 @@
   "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "scope": "Partial fixture: Garhwa AC80/81 and complete Palamu PC13 cross-district scope. Other seats pending.",
+  "scope": "Partial fixture: Garhwa and dated Palamau AC73-81, complete Palamu PC13 and Chatra PC4 shared scopes. Other seats pending.",
   "flags": [
     "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
-    "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment"
+    "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
+    "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
+    "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only."
   ],
   "district_rows": [
+    {
+      "code": 26,
+      "name": "Simaria (SC)",
+      "district": "Chatra",
+      "context_district": "Chatra",
+      "page": 169
+    },
+    {
+      "code": 27,
+      "name": "Chatra (SC)",
+      "district": "Chatra",
+      "context_district": "Chatra",
+      "page": 169
+    },
+    {
+      "code": 73,
+      "name": "Manika (ST)",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 74,
+      "name": "Latehar (SC)",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 75,
+      "name": "Panki",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
     {
       "code": 76,
       "name": "Daltonganj",
@@ -63,6 +100,18 @@
         77,
         78,
         79
+      ],
+      "page": 175
+    },
+    {
+      "code": 4,
+      "name": "Chatra",
+      "ac_codes": [
+        27,
+        26,
+        74,
+        75,
+        73
       ],
       "page": 175
     }
