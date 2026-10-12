@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial extraction through dated Nagapattinam with complete shared PC segments; later district crosswalks pending",
+  "scope": "Partial extraction through Thiruvarur with complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -916,6 +916,12 @@
       "page": null
     },
     {
+      "code": 167,
+      "name": "Mannargudi",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
       "code": 168,
       "name": "Thiruvarur",
       "district": "Thiruvarur",
@@ -942,6 +948,36 @@
     {
       "code": 172,
       "name": "Papanasam",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 173,
+      "name": "Thiruvaiyaru",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 174,
+      "name": "Thanjavur",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 175,
+      "name": "Orathanadu",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 176,
+      "name": "Pattukkottai",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 177,
+      "name": "Peravurani",
       "district": "Thanjavur",
       "page": null
     },
@@ -1300,6 +1336,19 @@
         166,
         168,
         169
+      ],
+      "page": 449
+    },
+    {
+      "code": 30,
+      "name": "Thanjavur",
+      "ac_codes": [
+        167,
+        173,
+        174,
+        175,
+        176,
+        177
       ],
       "page": 449
     }
