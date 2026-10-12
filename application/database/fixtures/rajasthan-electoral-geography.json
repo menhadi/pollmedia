@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified.",
+  "coverage_note": "Partial dated ECI2008 Rajasthan scope; complete shared PC memberships retained for enabled districts; source editions/current crosswalk unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -198,6 +198,198 @@
       "name": "Fatehpur",
       "district": "Sikar",
       "page": 353
+    },
+    {
+      "code": 40,
+      "name": "Kotputli",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 41,
+      "name": "Viratnagar",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 42,
+      "name": "Shahpura",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 44,
+      "name": "Phulera",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 46,
+      "name": "Jhotwara",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 47,
+      "name": "Amber",
+      "district": "Jaipur",
+      "page": 354
+    },
+    {
+      "code": 48,
+      "name": "Jamwa Ramgarh (ST)",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 57,
+      "name": "Bassi (ST)",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 58,
+      "name": "Chaksu (SC)",
+      "district": "Jaipur",
+      "page": 355
+    },
+    {
+      "code": 59,
+      "name": "Tijara",
+      "district": "Alwar",
+      "page": 355
+    },
+    {
+      "code": 60,
+      "name": "Kishangarh Bas",
+      "district": "Alwar",
+      "page": 355
+    },
+    {
+      "code": 61,
+      "name": "Mundawar",
+      "district": "Alwar",
+      "page": 355
+    },
+    {
+      "code": 62,
+      "name": "Behror",
+      "district": "Alwar",
+      "page": 355
+    },
+    {
+      "code": 63,
+      "name": "Bansur",
+      "district": "Alwar",
+      "page": 355
+    },
+    {
+      "code": 64,
+      "name": "Thanagazi",
+      "district": "Alwar",
+      "page": 356
+    },
+    {
+      "code": 65,
+      "name": "Alwar Rural (SC)",
+      "district": "Alwar",
+      "page": 356
+    },
+    {
+      "code": 66,
+      "name": "Alwar Urban",
+      "district": "Alwar",
+      "page": 356
+    },
+    {
+      "code": 67,
+      "name": "Ramgarh",
+      "district": "Alwar",
+      "page": 356
+    },
+    {
+      "code": 68,
+      "name": "Rajgarh-Laxmangarh (ST)",
+      "district": "Alwar",
+      "page": 356
+    },
+    {
+      "code": 69,
+      "name": "Kathumar (SC)",
+      "district": "Alwar",
+      "page": 356
+    },
+    {
+      "code": 70,
+      "name": "Kaman",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 71,
+      "name": "Nagar",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 72,
+      "name": "Deeg-Kumher",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 73,
+      "name": "Bharatpur",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 74,
+      "name": "Nadbai",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 75,
+      "name": "Weir (SC)",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 76,
+      "name": "Bayana (SC)",
+      "district": "Bharatpur",
+      "page": 356
+    },
+    {
+      "code": 85,
+      "name": "Bandikui",
+      "district": "Dausa",
+      "page": 357
+    },
+    {
+      "code": 86,
+      "name": "Mahuwa",
+      "district": "Dausa",
+      "page": 357
+    },
+    {
+      "code": 87,
+      "name": "Sikrai (SC)",
+      "district": "Dausa",
+      "page": 357
+    },
+    {
+      "code": 88,
+      "name": "Dausa",
+      "district": "Dausa",
+      "page": 357
+    },
+    {
+      "code": 89,
+      "name": "Lalsot (ST)",
+      "district": "Dausa",
+      "page": 358
     }
   ],
   "pcs": [
@@ -258,6 +450,66 @@
         30,
         31,
         32
+      ],
+      "page": 366
+    },
+    {
+      "code": 6,
+      "name": "Jaipur Rural",
+      "ac_codes": [
+        40,
+        41,
+        42,
+        44,
+        46,
+        47,
+        48,
+        63
+      ],
+      "page": 366
+    },
+    {
+      "code": 8,
+      "name": "Alwar",
+      "ac_codes": [
+        59,
+        60,
+        61,
+        62,
+        65,
+        66,
+        67,
+        68
+      ],
+      "page": 366
+    },
+    {
+      "code": 9,
+      "name": "Bharatpur (SC)",
+      "ac_codes": [
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76
+      ],
+      "page": 366
+    },
+    {
+      "code": 11,
+      "name": "Dausa (ST)",
+      "ac_codes": [
+        57,
+        58,
+        64,
+        85,
+        86,
+        87,
+        88,
+        89
       ],
       "page": 366
     }
