@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-mahendragarh-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Mahendragarh Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6275/download/9352/DDW_PCA0616_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6275',
+        'format' => 'xlsx', 'sheet' => 'EB-0616',
+    ],
     'haryana-jhajjar-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Jhajjar Census 2011 — district, town, village and ward PCA',
