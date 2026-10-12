@@ -3027,14 +3027,45 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_electoral_fixture_completion_pending_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted map Census/LGD links pending",
         "Historical rows retain source geography; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/113/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/113/dashboard",
+      "status": "source_map_prepared_electoral_fixture_completion_pending_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1247
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI AJMER label retained; Census name Ajmer; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "b699422613ae1130e7a745ed597218f2ca555cb6944509c5fcaabc8668438586",
+      "electoral_preparation": {
+        "pc22_visually_audited_pdf_page": 367,
+        "pc22_codes": [
+          103,
+          111,
+          112,
+          116,
+          173,
+          174,
+          175,
+          176
+        ],
+        "territorial_reference_date": "2004-02-15",
+        "note": "PC13 complete fixture available. PC22 outside district rows require visual audit before fixture use; no new membership fixture added."
+      }
     },
     {
       "district_code": "114",
@@ -5565,11 +5596,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:03:00.338604+00:00",
-    "live_commit": "0863e8ba8afa367420700ba72ae4ac6a0286f2de",
-    "backup_commit": "bbfe261eee675baf9e00e6062b12e8f68e39244f",
-    "action": "Tonk deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
-    "next_action": "Continue Ajmer113; audit AC103 Beawar and complete associated PCs13/22 outside members before fixture use; extract district source map"
+    "checked_at": "2026-10-12T09:05:13.079275+00:00",
+    "live_commit": "bbfe261eee675baf9e00e6062b12e8f68e39244f",
+    "action": "Ajmer full source map JSON/hash validated and PC22 extent visually audited; outside district AC evidence pending; not deployed",
+    "next_action": "Audit PDF359 AC103/111/112/116 and locate Rajsamand AC173-176 district pages visually; prepare complete PCs13/22 fixture before enabling and deploying Ajmer113."
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
