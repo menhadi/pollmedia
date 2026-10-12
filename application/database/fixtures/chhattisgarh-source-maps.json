@@ -1,0 +1,189 @@
+{
+  "sha256": "110806bdd6455917b027bb80fef404638681450949e509b7983be5136f783e93",
+  "maps": {
+    "khairagarh-chhuikhadan-gandai": {
+      "source_label": "Khairagarh-Chhuikhadan-Gandai",
+      "source_records": 527,
+      "map_path": "maps/chhattisgarh-source-villages/khairagarh-chhuikhadan-gandai.geojson",
+      "accepted_shapes": 527,
+      "statuses": {
+        "unlinked": 483,
+        "ambiguous": 44
+      },
+      "rejected": []
+    },
+    "mohla-manpur-ambagarh-chouki": {
+      "source_label": "Mohla-Manpur-Ambagarh Chouki",
+      "source_records": 578,
+      "map_path": "maps/chhattisgarh-source-villages/mohla-manpur-ambagarh-chouki.geojson",
+      "accepted_shapes": 578,
+      "statuses": {
+        "unlinked": 496,
+        "ambiguous": 82
+      },
+      "rejected": []
+    },
+    "sarangarh-bilaigarh": {
+      "source_label": "Sarangarh-Bilaigarh",
+      "source_records": 790,
+      "map_path": "maps/chhattisgarh-source-villages/sarangarh-bilaigarh.geojson",
+      "accepted_shapes": 790,
+      "statuses": {
+        "unlinked": 749,
+        "ambiguous": 41
+      },
+      "rejected": []
+    },
+    "balodabazar-bhatapara": {
+      "source_label": "Balodabazar-Bhatapara",
+      "source_records": 755,
+      "map_path": "maps/chhattisgarh-source-villages/balodabazar-bhatapara.geojson",
+      "accepted_shapes": 755,
+      "statuses": {
+        "unlinked": 733,
+        "ambiguous": 22
+      },
+      "rejected": []
+    },
+    "mungeli": {
+      "source_label": "Mungeli",
+      "source_records": 703,
+      "map_path": "maps/chhattisgarh-source-villages/mungeli.geojson",
+      "accepted_shapes": 703,
+      "statuses": {
+        "unlinked": 695,
+        "ambiguous": 8
+      },
+      "rejected": []
+    },
+    "gariyaband": {
+      "source_label": "Gariyaband",
+      "source_records": 751,
+      "map_path": "maps/chhattisgarh-source-villages/gariyaband.geojson",
+      "accepted_shapes": 750,
+      "statuses": {
+        "unlinked": 707,
+        "ambiguous": 43
+      },
+      "rejected": [
+        {
+          "code": "445275",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "sukma": {
+      "source_label": "Sukma",
+      "source_records": 435,
+      "map_path": "maps/chhattisgarh-source-villages/sukma.geojson",
+      "accepted_shapes": 435,
+      "statuses": {
+        "unlinked": 397,
+        "ambiguous": 38
+      },
+      "rejected": []
+    },
+    "balod": {
+      "source_label": "Balod",
+      "source_records": 766,
+      "map_path": "maps/chhattisgarh-source-villages/balod.geojson",
+      "accepted_shapes": 766,
+      "statuses": {
+        "unlinked": 705,
+        "ambiguous": 61
+      },
+      "rejected": []
+    },
+    "gaurela-pendra-marwahi": {
+      "source_label": "Gaurela-Pendra-Marwahi",
+      "source_records": 258,
+      "map_path": "maps/chhattisgarh-source-villages/gaurela-pendra-marwahi.geojson",
+      "accepted_shapes": 258,
+      "statuses": {
+        "ambiguous": 37,
+        "unlinked": 221
+      },
+      "rejected": []
+    },
+    "sakti": {
+      "source_label": "Sakti",
+      "source_records": 471,
+      "map_path": "maps/chhattisgarh-source-villages/sakti.geojson",
+      "accepted_shapes": 471,
+      "statuses": {
+        "unlinked": 463,
+        "ambiguous": 8
+      },
+      "rejected": []
+    },
+    "kondagaon": {
+      "source_label": "Kondagaon",
+      "source_records": 618,
+      "map_path": "maps/chhattisgarh-source-villages/kondagaon.geojson",
+      "accepted_shapes": 617,
+      "statuses": {
+        "unlinked": 577,
+        "ambiguous": 40
+      },
+      "rejected": [
+        {
+          "code": "449030",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "balrampur-ramanujganj": {
+      "source_label": "Balrampur-Ramanujganj",
+      "source_records": 751,
+      "map_path": "maps/chhattisgarh-source-villages/balrampur-ramanujganj.geojson",
+      "accepted_shapes": 751,
+      "statuses": {
+        "ambiguous": 112,
+        "unlinked": 639
+      },
+      "rejected": []
+    },
+    "bemetara": {
+      "source_label": "Bemetara",
+      "source_records": 699,
+      "map_path": "maps/chhattisgarh-source-villages/bemetara.geojson",
+      "accepted_shapes": 699,
+      "statuses": {
+        "unlinked": 699
+      },
+      "rejected": []
+    },
+    "manendragarh-chirmiri-bharatpur-mcb": {
+      "source_label": "Manendragarh-Chirmiri-Bharatpur (MCB)",
+      "source_records": 396,
+      "map_path": "maps/chhattisgarh-source-villages/manendragarh-chirmiri-bharatpur-mcb.geojson",
+      "accepted_shapes": 395,
+      "statuses": {
+        "unlinked": 371,
+        "ambiguous": 24
+      },
+      "rejected": [
+        {
+          "code": "51",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "surajpur": {
+      "source_label": "Surajpur",
+      "source_records": 641,
+      "map_path": "maps/chhattisgarh-source-villages/surajpur.geojson",
+      "accepted_shapes": 640,
+      "statuses": {
+        "unlinked": 548,
+        "ambiguous": 92
+      },
+      "rejected": [
+        {
+          "code": "51",
+          "reason": "Invalid source shape"
+        }
+      ]
+    }
+  }
+}
