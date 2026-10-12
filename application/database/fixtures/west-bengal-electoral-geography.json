@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Eleven complete PCs prepared;remaining state membership pending",
+  "coverage": "Fourteen complete PCs;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -548,6 +548,174 @@
       "district": "North Twenty Four Parganas",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "Reservation suffix absent from administrative table;not inferred"
+    },
+    {
+      "code": 183,
+      "name": "Jagatballavpur",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 184,
+      "name": "Domjur",
+      "district": "Haora",
+      "source_district_name": "HOWRAH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 185,
+      "name": "Uttarpara",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 186,
+      "name": "Sreerampur",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 187,
+      "name": "Champdani",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 188,
+      "name": "Singur",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 189,
+      "name": "Chandannagar",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 190,
+      "name": "Chunchura",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 191,
+      "name": "Balagarh",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 192,
+      "name": "Pandua",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 193,
+      "name": "Saptagram",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 194,
+      "name": "Chanditala",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 195,
+      "name": "Jangipara",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 196,
+      "name": "Haripal",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 197,
+      "name": "Dhanekhali",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 198,
+      "name": "Tarakeswar",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 199,
+      "name": "Pursurah",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 200,
+      "name": "Arambag",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 201,
+      "name": "Goghat",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 202,
+      "name": "Khanakul",
+      "district": "Hugli",
+      "source_district_name": "HOOGHLY",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
+    },
+    {
+      "code": 232,
+      "name": "Chandrakona",
+      "district": "Paschim Medinipur",
+      "source_district_name": "PASCHIM MEDINIPUR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC reservation suffix absent in source table;not inferred"
     }
   ],
   "pcs": [
@@ -726,6 +894,54 @@
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
       "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 27,
+      "name": "Sreerampur",
+      "ac_codes": [
+        183,
+        184,
+        185,
+        186,
+        187,
+        194,
+        195
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 28,
+      "name": "Hooghly",
+      "ac_codes": [
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        197
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 29,
+      "name": "Arambag (SC)",
+      "ac_codes": [
+        196,
+        198,
+        199,
+        200,
+        201,
+        202,
+        232
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
     }
   ]
 }
