@@ -2807,16 +2807,17 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "856 unlinked shapes;2 ambiguous codes; no population allocated",
         "Invalid shapes083235/082995 excluded without repair",
-        "Dated shared electoral membership prepared; not deployed",
-        "Historical source geography retained; later splits not backcast"
+        "Dated shared PC12 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/112/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -2859,6 +2860,40 @@
           12
         ],
         "note": "Complete shared PC12 retains Sawai Madhopur AC90-93; current crosswalk and matching source boundary edition unverified."
+      },
+      "deployment": {
+        "live_commit": "0863e8ba8afa367420700ba72ae4ac6a0286f2de",
+        "rollback_base": "75dc29ebb694194e636cb67281b809d03544c9cb",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7341,
+          "name": "Nagaur",
+          "code": "112",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 3307743,
+          "households": 578809,
+          "literates": 1758624,
+          "children": 507176,
+          "male": 1696325,
+          "female": 1611418,
+          "workers": 1425882,
+          "literacy": 62.8,
+          "male_literacy": 77.17,
+          "female_literacy": 47.82,
+          "source_row": 677,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;858 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified bbfe261eee675baf9e00e6062b12e8f68e39244f; includes task deployment plus concurrent changes",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5530,10 +5565,11 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T08:50:26.081437+00:00",
-    "live_commit": "acefb11be6c96c6f8cba36b1835b6c644f235df1",
-    "action": "Tonk full source map JSON/hash validated with two invalid shapes excluded; complete audited PC12 retained; not deployed",
-    "next_action": "Enable Tonk112 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/context/backups; include dashboard link on completion."
+    "checked_at": "2026-10-12T09:03:00.338604+00:00",
+    "live_commit": "0863e8ba8afa367420700ba72ae4ac6a0286f2de",
+    "backup_commit": "bbfe261eee675baf9e00e6062b12e8f68e39244f",
+    "action": "Tonk deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Ajmer113; audit AC103 Beawar and complete associated PCs13/22 outside members before fixture use; extract district source map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
