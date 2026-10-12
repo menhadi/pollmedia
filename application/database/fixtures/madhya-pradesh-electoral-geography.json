@@ -911,6 +911,54 @@
       "name": "Dr. Ambedkar Nagar-Mhow",
       "district": "Indore",
       "page": 248
+    },
+    {
+      "code": 203,
+      "name": "Depalpur",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 204,
+      "name": "Indore-1",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 205,
+      "name": "Indore-2",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 206,
+      "name": "Indore-3",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 207,
+      "name": "Indore-4",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 208,
+      "name": "Indore-5",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 210,
+      "name": "Rau",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 211,
+      "name": "Sanwer (SC)",
+      "district": "Indore",
+      "page": 248
     }
   ],
   "pcs": [
@@ -1195,6 +1243,21 @@
         201,
         202,
         209
+      ],
+      "page": 253
+    },
+    {
+      "code": 26,
+      "name": "Indore",
+      "ac_codes": [
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        210,
+        211
       ],
       "page": 253
     }
