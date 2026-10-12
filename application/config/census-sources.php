@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-moga-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Moga Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6233/download/9310/DDW_PCA0308_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6233',
+        'format' => 'xlsx', 'sheet' => 'EB-0308',
+    ],
     'punjab-ludhiana-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Ludhiana Census 2011 — district, town, village and ward PCA',
