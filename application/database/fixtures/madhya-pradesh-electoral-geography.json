@@ -149,6 +149,54 @@
       "name": "Pohari",
       "district": "Shivpuri",
       "page": 229
+    },
+    {
+      "code": 25,
+      "name": "Shivpuri",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 26,
+      "name": "Pichhore",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 27,
+      "name": "Kolaras",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 28,
+      "name": "Bamori",
+      "district": "Guna",
+      "page": 229
+    },
+    {
+      "code": 29,
+      "name": "Guna (SC)",
+      "district": "Guna",
+      "page": 229
+    },
+    {
+      "code": 32,
+      "name": "Ashok Nagar (SC)",
+      "district": "Ashok Nagar",
+      "page": 230
+    },
+    {
+      "code": 33,
+      "name": "Chanderi",
+      "district": "Ashok Nagar",
+      "page": 230
+    },
+    {
+      "code": 34,
+      "name": "Mungaoli",
+      "district": "Ashok Nagar",
+      "page": 230
     }
   ],
   "pcs": [
@@ -194,6 +242,21 @@
         19,
         23,
         24
+      ],
+      "page": 251
+    },
+    {
+      "code": 4,
+      "name": "Guna",
+      "ac_codes": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        32,
+        33,
+        34
       ],
       "page": 251
     }

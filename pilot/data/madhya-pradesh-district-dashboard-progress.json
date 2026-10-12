@@ -1052,14 +1052,61 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1362 unlinked and146 ambiguous shapes; no population allocation",
+        "Source editions/current crosswalk unverified",
+        "Shared PCs3/4 retain outside-district membership",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/423/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/423/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1362,
+          "ambiguous": 146
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI SHIVPURI label retained; Census name Shivpuri; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "6c45d24980323e82075b8883fc278b8e911bf62cdefc52b12024ee687cad21cd",
+      "electoral_evidence": {
+        "district_ac_pages": [
+          229,
+          230
+        ],
+        "pc_page": 251,
+        "visually_audited": true,
+        "district_ac_codes": [
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "shared_pcs": [
+          3,
+          4
+        ]
+      },
+      "deployment": {
+        "live_commit": "205f876c7d6289399a60f2c3c138c99c59da923d",
+        "rollback_base": "5764826aa47581dfac114d4f1c4a5e197892eb3e",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_population_households_literates_children_match_canonical": true,
+        "assembly_and_outside_district_names_and_map_url": true,
+        "tests": "59 tests240 assertions",
+        "detailed_rendered_source_election_audits": "Deferred",
+        "local_bundle_and_github_backup": "Verified 205f876c7d6289399a60f2c3c138c99c59da923d"
+      }
     },
     {
       "district_code": "424",
@@ -7230,10 +7277,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T02:30:01.258327+00:00",
-    "live_commit": "82f34417c1874d3dbb1a1eb2370ddad7404c022d",
-    "action": "Datia deployed and canonical public totals/shared membership verified; backups verified",
-    "next_action": "Continue Shivpuri423; AC23-27 audited229; PC3 audited251; audit PC4 full outside-district district assignments before fixture use"
+    "checked_at": "2026-10-12T02:34:45.566861+00:00",
+    "live_commit": "205f876c7d6289399a60f2c3c138c99c59da923d",
+    "action": "Shivpuri deployed and canonical public totals/shared membership verified; backups verified",
+    "next_action": "Continue Tikamgarh424 in Census inventory order; audit AC43-47 and sharedPC6 outside-district membership then map/integrate"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
