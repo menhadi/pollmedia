@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-sbs-nagar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Shahid Bhagat Singh Nagar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6230/download/9307/DDW_PCA0305_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6230',
+        'format' => 'xlsx', 'sheet' => 'EB-0305',
+    ],
     'punjab-hoshiarpur-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Hoshiarpur Census 2011 — district, town, village and ward PCA',
