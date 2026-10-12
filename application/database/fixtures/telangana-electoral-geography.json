@@ -4,14 +4,15 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 Adilabad, Nizamabad, Karimnagar, Medak and Hyderabad historical districts; complete associated PC1-9 segments; omitted seats pending",
+  "scope": "Partial dated2014 historical Adilabad, Nizamabad, Karimnagar, Medak, Hyderabad and Rangareddi district coverage; complete associated PC1-10 and14 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
     "Other2014 PC source code conflicts pending extraction; no silent recoding",
     "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified",
     "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending",
-    "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending"
+    "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending",
+    "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending"
   ],
   "district_rows": [
     {
@@ -302,11 +303,67 @@
       "page": 42
     },
     {
+      "code": 48,
+      "name": "Ibrahimpatnam",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
       "code": 49,
       "name": "Lal Bahadur Nagar",
       "district": "Rangareddi",
       "context_district": "Rangareddy",
       "page": 42
+    },
+    {
+      "code": 50,
+      "name": "Maheswaram",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 51,
+      "name": "Rajendranagar",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 52,
+      "name": "Serilingampally",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 53,
+      "name": "Chevella (SC)",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 54,
+      "name": "Pargi",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 55,
+      "name": "Vicarabad (SC)",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 43
+    },
+    {
+      "code": 56,
+      "name": "Tandur",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 43
     },
     {
       "code": 57,
@@ -397,6 +454,42 @@
       "name": "Secunderabad Cantt. (SC)",
       "district": "Hyderabad",
       "page": 44
+    },
+    {
+      "code": 93,
+      "name": "Munugode",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 94,
+      "name": "Bhongir",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 95,
+      "name": "Nakrekal (SC)",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 96,
+      "name": "Thungathurthi (SC)",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 97,
+      "name": "Alair",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 98,
+      "name": "Jangaon",
+      "district": "Warangal",
+      "page": 45
     }
   ],
   "pcs": [
@@ -565,6 +658,44 @@
       ],
       "page": 46,
       "source_code_note": "2014 Table B printed22-28 conflicts with Table A identities; Table A names and official CEO list support58,64,65,66,67,68,69. Original retained; formal review pending."
+    },
+    {
+      "code": 10,
+      "name": "Chevella",
+      "ac_codes": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "raw_ac_codes": [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed29-35 conflicts with Table A identities. Named Table A segments and official CEO list support50-56. Original codes retained; formal review pending."
+    },
+    {
+      "code": 14,
+      "name": "Bhongir",
+      "ac_codes": [
+        48,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "page": 47
     }
   ],
   "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
