@@ -32,7 +32,16 @@
 @if($electoralDistrict)
 <h3>{{ $electoralDistrict['name'] }} · {{ $districtAcs->count() }} ACs in the district table</h3>
 <div class="table-wrap"><table data-electoral-acs><thead><tr><th>AC number / source name</th><th>Reservation</th><th>PC in the cited sources</th><th>Election history</th></tr></thead><tbody>
-@foreach($districtAcs as $ac)<tr data-ac="{{ $ac['number'] }}"><td><a data-ac-dashboard="{{ $ac['number'] }}" href="{{ $archiveUrl($ac) }}">{{ $ac['number'] }} · {{ $ac['name'] }}</a></td><td>{{ $ac['reservation'] }}</td><td>@if($ac['pc']){{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}@if(isset($ac['pc_source'])) · CEO map, order 15 December 2006 @endif@else Unavailable — omitted from the reviewed PC list @endif</td><td><a data-ac-archive="{{ $ac['number'] }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>@endforeach
+@foreach($districtAcs as $ac)<tr data-ac="{{ $ac['number'] }}"><td><a data-ac-dashboard="{{ $ac['number'] }}" href="{{ $archiveUrl($ac) }}">{{ $ac['number'] }} · {{ $ac['name'] }}</a></td><td>{{ $ac['reservation'] }}</td><td>
+@if($ac['pc'])
+{{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}
+@if(isset($ac['pc_source']))
+ · CEO map, order 15 December 2006
+@endif
+@else
+Unavailable — omitted from the reviewed PC list
+@endif
+</td><td><a data-ac-archive="{{ $ac['number'] }}" href="{{ route('elections.constituencies', ['state' => 'Odisha', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>@endforeach
 </tbody></table></div>
 <h3>Associated PCs · shared membership</h3>
 @foreach($districtPcs as $pcNumber)
