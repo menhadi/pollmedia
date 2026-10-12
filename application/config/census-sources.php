@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-yamunanagar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Yamunanagar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6262/download/9339/DDW_PCA0603_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6262',
+        'format' => 'xlsx', 'sheet' => 'EB-0603',
+    ],
     'odisha-baleshwar-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Baleshwar Census 2011 â€” rural village PCA',
