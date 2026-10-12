@@ -16,7 +16,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 @if($districtNames->count()>1)
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
-<p class="notice">Partial dated ECI2008 Madhya Pradesh scope. Sheopur has596 unlinked and25 ambiguous source shapes. PC1 Morena retains SheopurAC1-2 and MorenaAC3-8. Morena has 846 unlinked and 33 ambiguous source shapes. Bhind has 943 unlinked and 72 ambiguous shapes; shared PC2 includes Datia AC20-22, whose map integration remains pending. PC3 Gwalior also retains Shivpuri AC23-24; Shivpuri map integration is pending. Accepted Census/LGD map links, matching source editions and historical crosswalks remain unverified; no population is assigned to shapes.</p>
+<p class="notice">Partial dated ECI2008 Madhya Pradesh scope. Sheopur has596 unlinked and25 ambiguous source shapes. PC1 Morena retains SheopurAC1-2 and MorenaAC3-8. Morena has 846 unlinked and 33 ambiguous source shapes. Bhind has 943 unlinked and 72 ambiguous shapes; shared PC2 includes Datia AC20-22, with district map integration enabled. PC3 Gwalior also retains Shivpuri AC23-24; Shivpuri map integration is pending. Accepted Census/LGD map links, matching source editions and historical crosswalks remain unverified; no population is assigned to shapes.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>
