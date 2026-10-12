@@ -390,6 +390,54 @@
       "name": "Lalsot (ST)",
       "district": "Dausa",
       "page": 358
+    },
+    {
+      "code": 77,
+      "name": "Baseri (SC)",
+      "district": "Dholpur",
+      "page": 357
+    },
+    {
+      "code": 78,
+      "name": "Bari",
+      "district": "Dholpur",
+      "page": 357
+    },
+    {
+      "code": 79,
+      "name": "Dholpur",
+      "district": "Dholpur",
+      "page": 357
+    },
+    {
+      "code": 80,
+      "name": "Rajakhera",
+      "district": "Dholpur",
+      "page": 357
+    },
+    {
+      "code": 81,
+      "name": "Todabhim (ST)",
+      "district": "Karauli",
+      "page": 357
+    },
+    {
+      "code": 82,
+      "name": "Hindaun (SC)",
+      "district": "Karauli",
+      "page": 357
+    },
+    {
+      "code": 83,
+      "name": "Karauli",
+      "district": "Karauli",
+      "page": 357
+    },
+    {
+      "code": 84,
+      "name": "Sapotra (ST)",
+      "district": "Karauli",
+      "page": 357
     }
   ],
   "pcs": [
@@ -510,6 +558,21 @@
         87,
         88,
         89
+      ],
+      "page": 366
+    },
+    {
+      "code": 10,
+      "name": "Karauli-Dholpur (SC)",
+      "ac_codes": [
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
       ],
       "page": 366
     }
