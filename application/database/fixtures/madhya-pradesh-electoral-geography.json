@@ -1151,6 +1151,54 @@
       "name": "Harsud (ST)",
       "district": "Khandwa",
       "page": 244
+    },
+    {
+      "code": 95,
+      "name": "Patan",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 96,
+      "name": "Bargi",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 97,
+      "name": "Jabalpur Purba (SC)",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 98,
+      "name": "Jabalpur Uttar",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 99,
+      "name": "Jabalpur Cantt.",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 100,
+      "name": "Jabalpur Paschim",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 101,
+      "name": "Panagar",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 102,
+      "name": "Sihora (ST)",
+      "district": "Jabalpur",
+      "page": 236
     }
   ],
   "pcs": [
@@ -1512,6 +1560,21 @@
         176
       ],
       "page": 253
+    },
+    {
+      "code": 13,
+      "name": "Jabalpur",
+      "ac_codes": [
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "page": 252
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
