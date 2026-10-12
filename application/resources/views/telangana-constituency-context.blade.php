@@ -18,7 +18,7 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
 <p class="notice">2014 Telangana electoral district references are retained. Current district correspondence, SOI boundary edition and accepted Census/LGD village links remain unverified. No district totals are assigned to constituencies.</p>
-<p class="notice">Census2011 context uses original undivided Andhra Pradesh state28 records. Current Telangana SOI district coverage differs from historical Census/electoral districts; no state36 totals or boundary correspondence are inferred. Partial electoral fixture; omitted seats remain pending.</p>
+<p class="notice">Census2011 context uses original undivided Andhra Pradesh state28 records. Current Telangana SOI district coverage differs from historical Census/electoral districts; no state36 totals or boundary correspondence are inferred. All119 dated Table A AC identities and17 PC scopes are included; formal source-code review remains pending.</p>
 @if(isset($seat['source_code_note']))<p class="notice">{{ $seat['source_code_note'] }} Original source codes: {{ implode(', ', $seat['raw_ac_codes']) }}. Formal source review remains pending.</p><p><a href="{{ $fixture['supplementary_pc_source']['url'] }}">Official CEO PC list (publication date unverified)</a></p>@endif
 <div class="metrics">
 @foreach($districtNames as $district)

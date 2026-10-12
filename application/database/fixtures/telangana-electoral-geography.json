@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 historical district coverage through Warangal; complete associated PC1-16 segments; omitted Khammam seats pending",
+  "scope": "All119 Table A AC identities across10 historical district references and17 associated PC segment scopes; original source-code conflicts retained, boundary correspondence and formal source reviews pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
@@ -15,7 +15,8 @@
     "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending",
     "PC11 printed36-42 source codes preserved alongside named identity reconciliation; undated CEO list and formal source review pending",
     "PC13 original printed43-49 retained alongside named identity reconciliation; undated CEO list and formal source review pending",
-    "PC15 printed50-56 retained alongside named identity reconciliation; Waradhanapet Table A/Wardhannapet Table B spelling conflict retained for review"
+    "PC15 printed50-56 retained alongside named identity reconciliation; Waradhanapet Table A/Wardhannapet Table B spelling conflict retained for review",
+    "PC17 original printed57-63 retained alongside named identity reconciliation; undated CEO list and formal source review pending"
   ],
   "district_rows": [
     {
@@ -699,6 +700,48 @@
       "page": 46
     },
     {
+      "code": 112,
+      "name": "Khammam",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 113,
+      "name": "Palair",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 114,
+      "name": "Madhira (SC)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 115,
+      "name": "Wyra (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 116,
+      "name": "Sathupalle (SC)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 117,
+      "name": "Kothagudem",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 118,
+      "name": "Aswaraopeta (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
       "code": 119,
       "name": "Bhadrachalam (ST)",
       "district": "Khammam",
@@ -1009,6 +1052,30 @@
         119
       ],
       "page": 47
+    },
+    {
+      "code": 17,
+      "name": "Khammam",
+      "ac_codes": [
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118
+      ],
+      "raw_ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed57-63 conflicts with Table A identities. Named Table A segments and official CEO list support112-118. Original codes retained; formal review pending."
     }
   ],
   "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
