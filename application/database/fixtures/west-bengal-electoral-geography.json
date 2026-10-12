@@ -1,0 +1,276 @@
+{
+  "state": "West Bengal",
+  "coverage": "Four complete PCs recorded; remaining state membership pending",
+  "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+  "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+  "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
+  "pc_source_date": "2024 parliamentary administrative list; boundary edition unverified",
+  "district_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+  "pc_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+  "district_source_label": "Official CEO2024 district and AC list",
+  "pc_source_label": "Official CEO2024 PC segment list",
+  "district_rows": [
+    {
+      "code": 49,
+      "name": "Manikchak",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 51,
+      "name": "Englishbazar",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 52,
+      "name": "Mothabari",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 53,
+      "name": "Sujapur",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 54,
+      "name": "Baisnabnagar",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 55,
+      "name": "Farakka",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 56,
+      "name": "Samserganj",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 57,
+      "name": "Suti",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 58,
+      "name": "Jangipur",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 59,
+      "name": "RaghunathGanj",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 60,
+      "name": "Sagardighi",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 61,
+      "name": "Lalgola",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 62,
+      "name": "Bhagabangola",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 63,
+      "name": "Raninagar",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 64,
+      "name": "Murshidabad",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 65,
+      "name": "Nabagram (SC)",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://murshidabad.nic.in/constituencies/"
+    },
+    {
+      "code": 66,
+      "name": "Khargram (SC)",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://murshidabad.nic.in/constituencies/"
+    },
+    {
+      "code": 67,
+      "name": "Burwan (SC)",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://murshidabad.nic.in/constituencies/"
+    },
+    {
+      "code": 68,
+      "name": "Kandi",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 69,
+      "name": "Bharatpur",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 70,
+      "name": "Rejinagar",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 71,
+      "name": "Beldanga",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 72,
+      "name": "Baharampur",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 73,
+      "name": "Hariharpara",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 74,
+      "name": "Naoda",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 75,
+      "name": "Domkal",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 76,
+      "name": "Jalangi",
+      "district": "Murshidabad",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    },
+    {
+      "code": 77,
+      "name": "Karimpur",
+      "district": "Nadia",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": null
+    }
+  ],
+  "pcs": [
+    {
+      "code": 8,
+      "name": "Maldaha Dakshin",
+      "ac_codes": [
+        49,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 9,
+      "name": "Jangipur",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        65,
+        66
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 10,
+      "name": "Baharampur",
+      "ac_codes": [
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        74
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    },
+    {
+      "code": 11,
+      "name": "Murshidabad",
+      "ac_codes": [
+        62,
+        63,
+        64,
+        73,
+        75,
+        76,
+        77
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list"
+    }
+  ]
+}
