@@ -1,0 +1,393 @@
+{
+  "state": "Meghalaya",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Nartiang (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 2,
+      "name": "Jowai (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 3,
+      "name": "Raliang (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 4,
+      "name": "Mowkaiaw (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 5,
+      "name": "Sutnga-Saipung (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 6,
+      "name": "Khliehriat (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 7,
+      "name": "Amlarem (ST)",
+      "district": "Jaintia Hills"
+    },
+    {
+      "code": 8,
+      "name": "Mawhati (ST)",
+      "district": "Ribhoi"
+    },
+    {
+      "code": 9,
+      "name": "Nongpoh (ST)",
+      "district": "Ribhoi"
+    },
+    {
+      "code": 10,
+      "name": "Jirang (ST)",
+      "district": "Ribhoi"
+    },
+    {
+      "code": 11,
+      "name": "Umsning (ST)",
+      "district": "Ribhoi"
+    },
+    {
+      "code": 12,
+      "name": "Umroi (ST)",
+      "district": "Ribhoi"
+    },
+    {
+      "code": 13,
+      "name": "Mawryngkneng (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 14,
+      "name": "Pynthorumkhrah",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 15,
+      "name": "Mawlai (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 16,
+      "name": "East Shillong (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 17,
+      "name": "North Shillong (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 18,
+      "name": "West Shillong",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 19,
+      "name": "South Shillong",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 20,
+      "name": "Mylliem (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 21,
+      "name": "Nongthymmai (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 22,
+      "name": "Nongkrem (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 23,
+      "name": "Sohiong (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 24,
+      "name": "Mawphlang (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 25,
+      "name": "Mawsynram (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 26,
+      "name": "Shella (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 27,
+      "name": "Pynursla (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 28,
+      "name": "Sohra (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 29,
+      "name": "Mawkynrew (ST)",
+      "district": "East Khasi Hills"
+    },
+    {
+      "code": 30,
+      "name": "Mairang (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 31,
+      "name": "Mawthadraishan (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 32,
+      "name": "Nongstoin (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 33,
+      "name": "Rambrai Jyrngam (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 34,
+      "name": "Mawshynrut (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 35,
+      "name": "Ranikor (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 36,
+      "name": "Mawkyrwat (ST)",
+      "district": "West Khasi Hills"
+    },
+    {
+      "code": 37,
+      "name": "Kharkutta (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 38,
+      "name": "Mendipathar (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 39,
+      "name": "Resubelpara (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 40,
+      "name": "Bajengdoba (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 41,
+      "name": "Songsak (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 42,
+      "name": "Rongjeng (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 43,
+      "name": "William Nagar (ST)",
+      "district": "East Garo Hills"
+    },
+    {
+      "code": 44,
+      "name": "Raksamgre (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 45,
+      "name": "Tikrikila (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 46,
+      "name": "Phulbari",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 47,
+      "name": "Rajabala",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 48,
+      "name": "Selsella (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 49,
+      "name": "Dadenggre (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 50,
+      "name": "North Tura (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 51,
+      "name": "SouthTura (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 52,
+      "name": "Rangsakona (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 53,
+      "name": "Ampati (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 54,
+      "name": "Mahendraganj (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 55,
+      "name": "Salmanpara (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 56,
+      "name": "Gambegre (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 57,
+      "name": "Dalu (ST)",
+      "district": "West Garo Hills"
+    },
+    {
+      "code": 58,
+      "name": "Rongara-Siju (ST)",
+      "district": "South Garo Hills"
+    },
+    {
+      "code": 59,
+      "name": "Chokpot (ST)",
+      "district": "South Garo Hills"
+    },
+    {
+      "code": 60,
+      "name": "Baghmara (ST)",
+      "district": "South Garo Hills"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Shillong (ST)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36
+      ],
+      "page": 302
+    },
+    {
+      "code": 2,
+      "name": "Tura (ST)",
+      "ac_codes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "page": 302
+    }
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008 Schedule XIX; territorial reference 2004-02-15",
+  "pc_source_date": "2008 Schedule XIX Table B; PDF302",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "flags": [
+    "Historical 2004 district headings retained; modern source geometry and Census2011 correspondence unverified",
+    "Jaintia source map shows East and West successor labels together; no historical boundary certification",
+    "Official source SouthTura and William Nagar spellings retained; display and route-name review pending",
+    "Invalid source shapes excluded without repair; Census joins and all accuracy reviews pending"
+  ]
+}

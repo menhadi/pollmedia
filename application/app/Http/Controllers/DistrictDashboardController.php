@@ -707,6 +707,34 @@ class DistrictDashboardController extends Controller
         if ($state === '03' && $district === '036') {
             $mapFile = 'maps/kapurthala-villages.geojson';
         }
+        if ($state === '17' && $district === '293') {
+            $mapFile = 'maps/meghalaya-west-garo-hills-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('West Garo Hills', 'Meghalaya');
+        }
+        if ($state === '17' && $district === '294') {
+            $mapFile = 'maps/meghalaya-east-garo-hills-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('East Garo Hills', 'Meghalaya');
+        }
+        if ($state === '17' && $district === '295') {
+            $mapFile = 'maps/meghalaya-south-garo-hills-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('South Garo Hills', 'Meghalaya');
+        }
+        if ($state === '17' && $district === '296') {
+            $mapFile = 'maps/meghalaya-west-khasi-hills-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('West Khasi Hills', 'Meghalaya');
+        }
+        if ($state === '17' && $district === '297') {
+            $mapFile = 'maps/meghalaya-ribhoi-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Ribhoi', 'Meghalaya');
+        }
+        if ($state === '17' && $district === '298') {
+            $mapFile = 'maps/meghalaya-east-khasi-hills-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('East Khasi Hills', 'Meghalaya');
+        }
+        if ($state === '17' && $district === '299') {
+            $mapFile = 'maps/meghalaya-jaintia-hills-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Jaintia Hills', 'Meghalaya');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
