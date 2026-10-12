@@ -527,6 +527,54 @@
       "name": "Barwara (ST)",
       "district": "Katni",
       "page": 235
+    },
+    {
+      "code": 222,
+      "name": "Jaora",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 224,
+      "name": "Mandsour",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 225,
+      "name": "Malhargarh (SC)",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 226,
+      "name": "Suwasra",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 227,
+      "name": "Garoth",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 228,
+      "name": "Manasa",
+      "district": "Neemuch",
+      "page": 250
+    },
+    {
+      "code": 229,
+      "name": "Neemuch",
+      "district": "Neemuch",
+      "page": 250
+    },
+    {
+      "code": 230,
+      "name": "Jawad",
+      "district": "Neemuch",
+      "page": 250
     }
   ],
   "pcs": [
@@ -691,6 +739,21 @@
         89,
         90,
         91
+      ],
+      "page": 252
+    },
+    {
+      "code": 23,
+      "name": "Mandsour",
+      "ac_codes": [
+        222,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230
       ],
       "page": 252
     }
