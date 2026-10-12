@@ -609,6 +609,18 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Rewari', 'Haryana');
             $mapFile = 'maps/rewari-villages.geojson';
         }
+        if ($state === '12' && $district === '249') {
+            $mapFile = 'maps/arunachal-pradesh-upper-subansiri-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Upper Subansiri', 'Arunachal Pradesh');
+        }
+        if ($state === '12' && $district === '250') {
+            $mapFile = 'maps/arunachal-pradesh-west-siang-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('West Siang', 'Arunachal Pradesh');
+        }
+        if ($state === '12' && $district === '251') {
+            $mapFile = 'maps/arunachal-pradesh-east-siang-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('East Siang', 'Arunachal Pradesh');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
