@@ -685,14 +685,59 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "622 unlinked and66 ambiguous shapes; no population allocation",
+        "Source editions/current crosswalk unverified",
+        "Shivpuri map integration pending; shared membership visible",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/421/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/421/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 622,
+          "ambiguous": 66
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI GWALIOR label retained; Census name Gwalior; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "73dfe5cfc24391dd1d296c27259a24239601b5b471f34dec78e08da05b04ae36",
+      "electoral_evidence": {
+        "district_ac_pages": [
+          228,
+          229
+        ],
+        "pc_page": 251,
+        "visually_audited": true,
+        "district_ac_codes": [
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "shared_pc3_outside_district": "Shivpuri AC23-24"
+      },
+      "deployment": {
+        "live_commit": "991507ef2721b40b627e416a725a9b1bef3469c5",
+        "rollback_base": "8eb9d18f8865319c55b92acf14e1f7435b4862f3",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_population_households_literates_children_match_canonical": true,
+        "assembly_and_outside_district_names_and_map_url": true,
+        "tests": "59 tests240 assertions",
+        "detailed_rendered_source_election_audits": "Deferred",
+        "local_bundle_and_github_backup": "Verified 991507ef2721b40b627e416a725a9b1bef3469c5"
+      }
     },
     {
       "district_code": "422",
@@ -7143,10 +7188,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T02:21:36.423448+00:00",
-    "live_commit": "619c1d50a6740f71588c5a201ca7351f12dfa9a5",
-    "action": "Bhind deployed and canonical public totals/shared membership verified; backups verified",
-    "next_action": "Continue Gwalior421; audit shared PC3 Shivpuri AC23-24, GwaliorAC14-19 already audited228; build map/integrate"
+    "checked_at": "2026-10-12T02:25:19.647123+00:00",
+    "live_commit": "991507ef2721b40b627e416a725a9b1bef3469c5",
+    "action": "Gwalior deployed and canonical public totals/shared membership verified; backups verified",
+    "next_action": "Continue Datia422; AC20-22 and sharedPC2 already audited228/229/251; build map/integrate"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
