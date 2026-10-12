@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-ludhiana-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Ludhiana Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6232/download/9309/DDW_PCA0307_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6232',
+        'format' => 'xlsx', 'sheet' => 'EB-0307',
+    ],
     'punjab-fatehgarh-sahib-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Fatehgarh Sahib Census 2011 — district, town, village and ward PCA',
