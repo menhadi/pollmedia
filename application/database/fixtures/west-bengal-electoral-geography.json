@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Thirty-two complete PC segment lists;remaining state membership pending",
+  "coverage": "Thirty-three complete PC segment lists;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1641,6 +1641,55 @@
       "district": "Dakshin Dinajpur",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "AC suffix absent in source table;not inferred"
+    },
+    {
+      "code": 43,
+      "name": "Habibpur",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 44,
+      "name": "Gazole",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 45,
+      "name": "Chanchal",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 46,
+      "name": "Harischandrapur",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 47,
+      "name": "Malatipur",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 48,
+      "name": "Ratua",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
+    },
+    {
+      "code": 50,
+      "name": "Maldaha",
+      "district": "Maldah",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "Suffix absent in source table;not inferred"
     }
   ],
   "pcs": [
@@ -2151,6 +2200,22 @@
         40,
         41,
         42
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 7,
+      "name": "Maldaha Uttar",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        50
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
