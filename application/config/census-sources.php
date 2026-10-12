@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-faridkot-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Faridkot Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6236/download/9313/DDW_PCA0311_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6236',
+        'format' => 'xlsx', 'sheet' => 'EB-0311',
+    ],
     'punjab-muktsar-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Muktsar Census 2011 — district, town, village and ward PCA',
