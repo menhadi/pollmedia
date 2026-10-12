@@ -1,6 +1,26 @@
 <?php
 
 return [
+    'odisha-kendujhar-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Kendujhar Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2106',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6566/download/9643/DDW_PCA2106_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6566',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
+    'odisha-debagarh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Debagarh Census 2011 â€” rural village PCA',
+        'sheet' => 'EB-2104',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6564/download/9641/DDW_PCA2104_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6564',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'haryana-yamunanagar-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Yamunanagar Census 2011 — district, town, village and ward PCA',
