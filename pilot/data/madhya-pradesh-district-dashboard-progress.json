@@ -135,11 +135,11 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "596 unlinked and25 ambiguous shapes; no rejected shapes; no population assigned",
-        "Shared PC1 Morena retains outside MorenaAC3-8; dated ECI2008 evidence audited",
-        "Integration/deployment pending; source editions/current crosswalk and detailed audits unavailable"
+        "Shared PC1 retains MorenaAC3-8; no district populations combined",
+        "Boundary editions/current crosswalk and detailed source/rendered/election/mobile audits pending"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/23/418/dashboard",
       "map_metadata": {
@@ -180,6 +180,27 @@
             8
           ]
         }
+      },
+      "deployment": {
+        "live_commit": "16e1ed847e01b9742177a1a9b54f49b98e5c6d3c",
+        "rollback_commit": "dd7939de15157b9910e624d733c1993e6bd16b79",
+        "locks": "Both flock -n held across fresh HEAD narrow patch map commit cache clearing"
+      },
+      "validation": {
+        "public": "Published totals and shared outside membership match HTML; detailed audits pending",
+        "rendered": "Pending",
+        "canonical_data": {
+          "population": 687861,
+          "households": 146043,
+          "public_match": true,
+          "scope": "Fresh receipt-joined service totals match public HTML; independent source audit pending"
+        },
+        "dedicated_tests": {
+          "tests": 59,
+          "assertions": 240,
+          "result": "Passed"
+        },
+        "backup": "Local chain and GitHub3cd765d9b349d92f325eeb891f21b4127b05f7e9 verified; includes concurrent follow-up; no backups deleted"
       }
     },
     {
@@ -7051,10 +7072,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T01:52:10.558405+00:00",
-    "live_commit": "b304781c4c8d52fb672d5b1a647310196548b45c",
-    "action": "Sheopur621 source shapes prepared; ECI227/251 visual audit establishesAC1-2 and PC1 with Morena3-8; no deployment yet",
-    "next_action": "Integrate Madhya Pradesh service fixture routing, Sheopur district/map, dedicated PC/AC context/switcher; preserve concurrent live changes; test deploy under both locks then actual-data/public/backups checks"
+    "checked_at": "2026-10-12T02:02:10.387634+00:00",
+    "live_commit": "16e1ed847e01b9742177a1a9b54f49b98e5c6d3c",
+    "action": "Sheopur deployed; public published totals/shared membership checked;59 tests passed; backups verified",
+    "next_action": "Continue Morena419; AC3-8 and shared PC1 already visually audited page227/251; build SOI map then integrate/test/deploy/verify"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",

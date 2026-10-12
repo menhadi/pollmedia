@@ -544,4 +544,13 @@ class MaharashtraDashboardScopeTest extends TestCase
         $this->assertSame([23, 24, 25], array_column($links['parliamentary'], 'code'));
         $this->assertFalse(app(DistrictConstituencyLinks::class)->forDistrict('Tapi', 'Gujarat')['available']);
     }
+
+    public function test_sheopur_keeps_morena_shared_pc_membership(): void
+    {
+        $links = app(DistrictConstituencyLinks::class)->forDistrict('Sheopur', 'Madhya Pradesh');
+        $this->assertSame([1, 2], array_column($links['assembly'], 'code'));
+        $this->assertSame([1], array_column($links['parliamentary'], 'code'));
+        $this->assertSame(range(3, 8), array_column($links['parliamentary'][0]['outside_district'], 'code'));
+        $this->assertSame('Morena', $links['parliamentary'][0]['outside_district'][0]['district']);
+    }
 }
