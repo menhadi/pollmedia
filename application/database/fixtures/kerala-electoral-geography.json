@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Kannur with full PC1/2/3 including outside districts; other districts pending",
+  "scope": "Partial extraction through Wayanad with complete associated PC segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent"
@@ -112,6 +112,24 @@
       "page": 210
     },
     {
+      "code": 17,
+      "name": "Mananthavady (ST)",
+      "district": "Wayanad",
+      "page": 210
+    },
+    {
+      "code": 18,
+      "name": "Sulthanbathery (ST)",
+      "district": "Wayanad",
+      "page": 210
+    },
+    {
+      "code": 19,
+      "name": "Kalpetta",
+      "district": "Wayanad",
+      "page": 210
+    },
+    {
       "code": 20,
       "name": "Vadakara",
       "district": "Kozhikode",
@@ -140,6 +158,30 @@
       "name": "Perambra",
       "district": "Kozhikode",
       "page": 211
+    },
+    {
+      "code": 32,
+      "name": "Thiruvambadi",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 34,
+      "name": "Ernad",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 35,
+      "name": "Nilambur",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 36,
+      "name": "Wandoor (SC)",
+      "district": "Malappuram",
+      "page": 212
     }
   ],
   "pcs": [
@@ -182,6 +224,20 @@
         22,
         23,
         24
+      ],
+      "page": 223
+    },
+    {
+      "code": 4,
+      "name": "Wayanad",
+      "ac_codes": [
+        17,
+        18,
+        19,
+        32,
+        34,
+        35,
+        36
       ],
       "page": 223
     }
