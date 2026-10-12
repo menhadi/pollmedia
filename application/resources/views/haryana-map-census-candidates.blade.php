@@ -1,4 +1,4 @@
-@if(in_array([($data['census_district_code'] ?? ''), trim($data['name'])], [['069', 'Panchkula'], ['070', 'Ambala'], ['071', 'Yamunanagar'], ['072', 'Kurukshetra'], ['073', 'Kaithal'], ['074', 'Karnal'], ['075', 'Panipat'], ['076', 'Sonipat'], ['077', 'Jind'], ['078', 'Fatehabad'], ['079', 'Sirsa'], ['080', 'Hisar'], ['081', 'Bhiwani'], ['082', 'Rohtak'], ['083', 'Jhajjar'], ['084', 'Mahendragarh'], ['085', 'Rewari'], ['086', 'Gurgaon'], ['087', 'Mewat'], ['088', 'Faridabad'], ['089', 'Palwal'], ['035', 'Gurdaspur'], ['036', 'Kapurthala'], ['037', 'Jalandhar'], ['038', 'Hoshiarpur'], ['039', 'Shahid Bhagat Singh Nagar'], ['040', 'Fatehgarh Sahib'], ['041', 'Ludhiana'], ['042', 'Moga'], ['043', 'Firozpur'], ['044', 'Muktsar']], true))
+@if(in_array([($data['census_district_code'] ?? ''), trim($data['name'])], [['069', 'Panchkula'], ['070', 'Ambala'], ['071', 'Yamunanagar'], ['072', 'Kurukshetra'], ['073', 'Kaithal'], ['074', 'Karnal'], ['075', 'Panipat'], ['076', 'Sonipat'], ['077', 'Jind'], ['078', 'Fatehabad'], ['079', 'Sirsa'], ['080', 'Hisar'], ['081', 'Bhiwani'], ['082', 'Rohtak'], ['083', 'Jhajjar'], ['084', 'Mahendragarh'], ['085', 'Rewari'], ['086', 'Gurgaon'], ['087', 'Mewat'], ['088', 'Faridabad'], ['089', 'Palwal'], ['035', 'Gurdaspur'], ['036', 'Kapurthala'], ['037', 'Jalandhar'], ['038', 'Hoshiarpur'], ['039', 'Shahid Bhagat Singh Nagar'], ['040', 'Fatehgarh Sahib'], ['041', 'Ludhiana'], ['042', 'Moga'], ['043', 'Firozpur'], ['044', 'Muktsar'], ['045', 'Faridkot']], true))
 @if(($data['census_district_code'] ?? '') === '081')
 <p class="source-note">Map coverage: 270 SOI Bhiwani shapes versus 444 Census 2011 villages. The later Charkhi Dadri area is outside this map selection. This is not the full historical district boundary; boundary editions and village crosswalks remain unverified.</p>
 @endif
@@ -43,6 +43,9 @@
 @endif
 @if(($data['census_district_code'] ?? '') === '044')
 <p class="source-note">Map coverage: 235 SOI Muktsar source shapes versus 234 Census 2011 villages. These inventories do not establish complete village coverage or a historical district boundary. Source editions and village crosswalks remain unverified; district constituency links await a dated electoral source audit.</p>
+@endif
+@if(($data['census_district_code'] ?? '') === '045')
+<p class="source-note">Map coverage: 168 SOI Faridkot source shapes versus 171 Census 2011 villages; two duplicate-code shapes remain ambiguous. These inventories do not establish complete village coverage or a historical district boundary. Source editions and village crosswalks remain unverified; district constituency links await a dated electoral source audit.</p>
 @endif
 @php
     $haryanaVillageCandidates = array_map(fn (array $row): array => [
