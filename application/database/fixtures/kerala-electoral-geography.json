@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Kozhikode with complete associated PC segments; other districts pending",
+  "scope": "Partial extraction through Malappuram with complete associated PC4/6/7 segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
     "Partial state extraction; omitted seats are pending, not absent"
@@ -208,6 +208,12 @@
       "page": 211
     },
     {
+      "code": 33,
+      "name": "Kondotty",
+      "district": "Malappuram",
+      "page": 211
+    },
+    {
       "code": 34,
       "name": "Ernad",
       "district": "Malappuram",
@@ -224,6 +230,84 @@
       "name": "Wandoor (SC)",
       "district": "Malappuram",
       "page": 212
+    },
+    {
+      "code": 37,
+      "name": "Manjeri",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 38,
+      "name": "Perinthalmanna",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 39,
+      "name": "Mankada",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 40,
+      "name": "Malappuram",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 41,
+      "name": "Vengara",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 42,
+      "name": "Vallikunnu",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 43,
+      "name": "Tirurangadi",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 44,
+      "name": "Tanur",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 45,
+      "name": "Tirur",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 46,
+      "name": "Kottakkal",
+      "district": "Malappuram",
+      "page": 213
+    },
+    {
+      "code": 47,
+      "name": "Thavanur",
+      "district": "Malappuram",
+      "page": 213
+    },
+    {
+      "code": 48,
+      "name": "Ponnani",
+      "district": "Malappuram",
+      "page": 213
+    },
+    {
+      "code": 49,
+      "name": "Thrithala",
+      "district": "Palakkad",
+      "page": 213
     }
   ],
   "pcs": [
@@ -294,6 +378,34 @@
         29,
         30,
         31
+      ],
+      "page": 223
+    },
+    {
+      "code": 6,
+      "name": "Malappuram",
+      "ac_codes": [
+        33,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "page": 223
+    },
+    {
+      "code": 7,
+      "name": "Ponnani",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
       ],
       "page": 223
     }
