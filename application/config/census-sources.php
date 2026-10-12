@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-jalandhar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Jalandhar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6228/download/9305/DDW_PCA0303_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6228',
+        'format' => 'xlsx', 'sheet' => 'EB-0303',
+    ],
     'punjab-kapurthala-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Kapurthala Census 2011 — district, town, village and ward PCA',
