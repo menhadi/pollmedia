@@ -4,13 +4,14 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first five historical districts plus complete associated PC1-10 segments; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first six historical districts plus complete associated PC1-12 segments; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
     "Partial extraction; runtime integration and public/rendered checks pending",
     "AC20 Table A Bhimili versus Table B Bhimli spelling retained; runtime alias review deferred",
-    "PC7 source conflict: Table B prints47-Mandapeta while Table A gives48; displayed linkage uses Table A code48 with original retained; formal correction review pending"
+    "PC7 source conflict: Table B prints47-Mandapeta while Table A gives48; displayed linkage uses Table A code48 with original retained; formal correction review pending",
+    "AC46 Gannavaram(SC) and AC71 Gannavaram share normalized name; name-only routing must retain ambiguous identity and pending context rather than assign district totals"
   ],
   "district_rows": [
     {
@@ -422,8 +423,26 @@
       "page": 33
     },
     {
+      "code": 69,
+      "name": "Tiruvuru (SC)",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
       "code": 70,
       "name": "Nuzvid",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 71,
+      "name": "Gannavaram",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 72,
+      "name": "Gudivada",
       "district": "Krishna",
       "page": 33
     },
@@ -432,6 +451,72 @@
       "name": "Kaikalur",
       "district": "Krishna",
       "page": 33
+    },
+    {
+      "code": 74,
+      "name": "Pedana",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 75,
+      "name": "Machilipatnam",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 76,
+      "name": "Avanigadda",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 77,
+      "name": "Pamarru (SC)",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 78,
+      "name": "Penamaluru",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 79,
+      "name": "Vijayawada West",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 80,
+      "name": "Vijayawada Central",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 81,
+      "name": "Vijayawada East",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 82,
+      "name": "Mylavaram",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 83,
+      "name": "Nandigama (SC)",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 84,
+      "name": "Jaggayyapeta",
+      "district": "Krishna",
+      "page": 34
     }
   ],
   "pcs": [
@@ -582,6 +667,34 @@
         68,
         70,
         73
+      ],
+      "page": 39
+    },
+    {
+      "code": 11,
+      "name": "Machilipatnam",
+      "ac_codes": [
+        71,
+        72,
+        74,
+        75,
+        76,
+        77,
+        78
+      ],
+      "page": 39
+    },
+    {
+      "code": 12,
+      "name": "Vijayawada",
+      "ac_codes": [
+        69,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
       ],
       "page": 39
     }

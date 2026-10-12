@@ -181,6 +181,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/west-godavari-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('West Godavari', 'Andhra Pradesh');
         }
+        if ($state === '28' && $district === '547') {
+            $mapFile = 'maps/krishna-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Krishna', 'Andhra Pradesh');
+        }
         if ($state === '28' && $district === '542') {
             $mapFile = 'maps/srikakulam-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Srikakulam', 'Andhra Pradesh');
