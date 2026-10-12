@@ -863,6 +863,54 @@
       "name": "Ichhawar",
       "district": "Sehore",
       "page": 242
+    },
+    {
+      "code": 196,
+      "name": "Sardarpur (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 197,
+      "name": "Gandhwani (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 198,
+      "name": "Kukshi (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 199,
+      "name": "Manawar (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 200,
+      "name": "Dharampuri (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 201,
+      "name": "Dhar",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 202,
+      "name": "Badnawar",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 209,
+      "name": "Dr. Ambedkar Nagar-Mhow",
+      "district": "Indore",
+      "page": 248
     }
   ],
   "pcs": [
@@ -1132,6 +1180,21 @@
         180,
         181,
         182
+      ],
+      "page": 253
+    },
+    {
+      "code": 25,
+      "name": "Dhar (ST)",
+      "ac_codes": [
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        209
       ],
       "page": 253
     }
