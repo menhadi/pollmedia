@@ -47,19 +47,19 @@
 @if($selectedCensusData)
 <h3>{{ $selectedCensusData['name'] }} · Census {{ $selectedCensusData['year'] }}</h3>
 @php($censusTotals = $selectedCensusData['totals']['Total'])
-<dl class="stats-grid">
+<div class="metrics">
 @foreach(['population'=>'Population','households'=>'Households','male'=>'Male population','female'=>'Female population','literates'=>'Literate persons','workers'=>'Workers','children'=>'Children aged 0–6'] as $key=>$label)
-<div><dt>{{ $label }}</dt><dd>{{ ($censusTotals[$key] ?? null) === null ? 'Unavailable' : number_format($censusTotals[$key]) }}</dd></div>
+<article><span>{{ $label }}</span><strong>{{ ($censusTotals[$key] ?? null) === null ? 'Unavailable' : number_format($censusTotals[$key]) }}</strong><small>Census {{ $selectedCensusData['year'] }} · {{ $selectedCensusData['name'] }}</small></article>
 @endforeach
-</dl>
+</div>
 <h3>Census 2011 rural and urban breakdown</h3>
-<table><thead><tr><th>Residence</th><th>Population</th><th>Households</th><th>Literate persons</th><th>Workers</th></tr></thead><tbody>
+<div class="table-wrap"><table><thead><tr><th>Residence</th><th>Population</th><th>Households</th><th>Literate persons</th><th>Workers</th></tr></thead><tbody>
 @foreach(['Rural', 'Urban'] as $residence)
 @if(isset($selectedCensusData['totals'][$residence]))
 <tr><th>{{ $residence }}</th>@foreach(['population', 'households', 'literates', 'workers'] as $metric)<td>{{ ($selectedCensusData['totals'][$residence][$metric] ?? null) === null ? 'Unavailable' : number_format($selectedCensusData['totals'][$residence][$metric]) }}</td>@endforeach</tr>
 @endif
 @endforeach
-</tbody></table>
+</tbody></table></div>
 <p>{{ $selectedCensusData['census_village_rows'] }} published village Census rows available in the selected edition.</p>
 @foreach($selectedCensusData['census_editions'] as $edition)<p><a href="{{ $edition['source_url'] }}">{{ $edition['source_key'] }} · official source</a></p>@endforeach
 <p><a href="{{ route('district-dashboard', ['state'=>'18','district'=>$selectedCensusCode]) }}">Open the complete {{ $selectedCensusData['name'] }} Census dashboard</a></p>
