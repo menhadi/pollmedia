@@ -3027,15 +3027,16 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1247 unlinked shapes; no population allocated",
+        "Dated PCs13/22 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/113/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -3094,6 +3095,40 @@
           22
         ],
         "note": "Complete shared PCs13/22 retain Jaipur, Nagaur, Pali and Rajsamand members; current crosswalk remains unverified."
+      },
+      "deployment": {
+        "live_commit": "fea249919ac646c58038affe6c4c87d2c7dffdfd",
+        "rollback_base": "867c6d3d67c2660a41a93f9d7c0aa7d6722d9405",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7352,
+          "name": "Jodhpur",
+          "code": "113",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 3687165,
+          "households": 649013,
+          "literates": 2031532,
+          "children": 606490,
+          "male": 1923928,
+          "female": 1763237,
+          "workers": 1489741,
+          "literacy": 65.94,
+          "male_literacy": 78.95,
+          "female_literacy": 51.83,
+          "source_row": 688,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;1247 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified eb348178e4ca48a1a5a6d7101df2f54b93fc59cd; includes task deployment plus concurrent changes",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5625,10 +5660,11 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T09:10:51.408440+00:00",
-    "live_commit": "7ec167f8b82e054b5de4bc4df73c61195876ad0f",
-    "action": "Ajmer complete dated AC98-105 and shared PCs13/22 visually audited and fixture prepared; not deployed",
-    "next_action": "Enable Ajmer113 controller/context/switcher, run checks, deploy under both locks and verify actual public totals/full map/PC-AC context/backups; include dashboard link on completion."
+    "checked_at": "2026-10-12T09:17:36.265429+00:00",
+    "live_commit": "fea249919ac646c58038affe6c4c87d2c7dffdfd",
+    "backup_commit": "eb348178e4ca48a1a5a6d7101df2f54b93fc59cd",
+    "action": "Ajmer deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Nagaur114; audit missing AC106-110/113-115 and complete associated PCs14/22 before fixture use; extract district map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
