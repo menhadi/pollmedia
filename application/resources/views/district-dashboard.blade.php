@@ -5,6 +5,8 @@ $total=$data['totals']['Total'];
 $display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
 $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
 @endphp
+@if(($data['census_district_code'] ?? '')==='339' && $sourceMap==='maps/west-bengal-bankura-villages.geojson')<p class="notice">Bankura source coverage: 3,835 shapes. Boundary edition and Census/LGD links remain unverified; source coverage is not a certified perimeter. Duplicate-code and geometry flags are recorded in downloadable metadata. No population assigned to shapes.</p>@endif
+
 @if(($data['census_district_code'] ?? '')==='340' && $sourceMap==='maps/west-bengal-puruliya-villages.geojson')<p class="notice">Puruliya source coverage: 2,699 shapes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified perimeter; no population assigned to shapes. Duplicate-code shapes remain ambiguous where recorded in the downloadable metadata. Official constituency membership verification pending.</p>@endif
 
 @if(($data['census_district_code'] ?? '')==='338' && $sourceMap==='maps/west-bengal-hugli-villages.geojson')<p class="notice">Hugli source coverage: 1,944 valid shapes. Boundary edition and Census/LGD links remain unverified; this is source coverage, not a certified district perimeter. No population assigned to shapes. Complete official constituency membership verification pending.</p>@endif
