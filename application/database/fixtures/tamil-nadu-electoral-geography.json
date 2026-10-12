@@ -615,13 +615,17 @@
       "code": 101,
       "name": "Dharapuram (SC)",
       "district": "Erode",
-      "page": null
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 102,
       "name": "Kangayam",
       "district": "Erode",
-      "page": null
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 103,
@@ -681,25 +685,33 @@
       "code": 112,
       "name": "Avanashi (SC)",
       "district": "Coimbatore",
-      "page": null
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 113,
       "name": "Tiruppur (North)",
       "district": "Coimbatore",
-      "page": null
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 114,
       "name": "Tiruppur (South)",
       "district": "Coimbatore",
-      "page": null
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 115,
       "name": "Palladam",
       "district": "Coimbatore",
-      "page": 411
+      "page": 411,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 116,
@@ -759,13 +771,17 @@
       "code": 125,
       "name": "Udumalaipettai",
       "district": "Coimbatore",
-      "page": 413
+      "page": 413,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 126,
       "name": "Madathukulam",
       "district": "Coimbatore",
-      "page": 414
+      "page": 414,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
     },
     {
       "code": 127,
@@ -1959,6 +1975,23 @@
       "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
       "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
       "scope": "District seat references only, not Census boundary certification"
+    },
+    "Tiruppur": {
+      "url": "https://tiruppur.nic.in/constituencies-2/",
+      "source_date": "2021-11-18",
+      "observed_at": "2026-10-12",
+      "sha256": "df9e781490dd2edd988c3e08194485404a0046cf76b4b1dd3d3532d2e3ebddba",
+      "assembly_codes": [
+        101,
+        102,
+        112,
+        113,
+        114,
+        115,
+        125,
+        126
+      ],
+      "note": "Official district membership; does not establish Census2011/SOI boundary equivalence"
     }
   }
 }
