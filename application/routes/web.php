@@ -85,6 +85,7 @@ Route::get('/india/pilots/pilibhit-district', [PilibhitDistrictPilotController::
 Route::get('/india/pilots/rampur-district', [RampurDistrictPilotController::class, 'index'])->name('rampur-district-pilot');
 Route::get('/india/districts/modern/west-bengal/{slug}/dashboard', [\App\Http\Controllers\ModernDistrictSourceMapController::class, 'index'])->where('slug', 'purba-bardhaman|paschim-bardhaman|jhargram')->name('modern-district-source-map');
 Route::get('/india/districts/dashboard', [DistrictDashboardController::class, 'directory'])->name('district-dashboard-directory');
+Route::get('/india/districts/19/{district}/dashboard', [\App\Http\Controllers\WestBengalDistrictDashboardController::class, 'index'])->where('district', '[0-9]{3}')->name('west-bengal-district-dashboard');
 Route::get('/india/districts/{state}/{district}/dashboard', [DistrictDashboardController::class, 'index'])->where(['state' => '[0-9]{2}', 'district' => '[0-9]{3}'])->name('district-dashboard');
 Route::get('/india/elections/assembly/sources/{archive}', [HistoricalElectionController::class, 'sourceFiles'])->where('archive', '[a-f0-9]{24}')->name('elections.assembly-source-files');
 Route::get('/india/elections/assembly/sources', [HistoricalElectionController::class, 'sources'])->name('elections.assembly-sources');
