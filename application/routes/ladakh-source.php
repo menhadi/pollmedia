@@ -11,3 +11,11 @@ foreach (['ladakh' => ['ladakh-source-district-outlines.json', 'ladakh-source-di
         return view($view, ['district' => $district, 'districts' => $manifest['districts']]);
     })->where('slug', '[a-z-]+')->name($view);
 }
+
+Route::get('/india/districts/current/ladakh/{slug}/dashboard', function (string $slug) {
+    $source = json_decode(file_get_contents(database_path('fixtures/ladakh-2026-revenue-villages.json')), true, 512, JSON_THROW_ON_ERROR);
+    $district = collect($source['districts'])->firstWhere('slug', $slug);
+    abort_unless($district, 404);
+
+    return view('ladakh-current-district', ['district' => $district, 'source' => $source]);
+})->where('slug', '[a-z-]+')->name('ladakh-current-district');
