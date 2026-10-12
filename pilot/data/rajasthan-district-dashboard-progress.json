@@ -1929,15 +1929,16 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "833 unlinked shapes; no population allocated",
+        "Dated PC12 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/108/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -1970,6 +1971,40 @@
           12
         ],
         "note": "Complete shared PC12 retains Tonk AC94-97; source boundary edition and current crosswalk remain unverified."
+      },
+      "deployment": {
+        "live_commit": "1cd064188bd37f75772051cce57a919309d67d51",
+        "rollback_base": "335628667daf42dc4b9ed004cd7c3cf90ddf36a2",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7306,
+          "name": "Sawai Madhopur",
+          "code": "108",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 1335551,
+          "households": 254716,
+          "literates": 741748,
+          "children": 201188,
+          "male": 704031,
+          "female": 631520,
+          "workers": 578068,
+          "literacy": 65.39,
+          "male_literacy": 81.51,
+          "female_literacy": 47.51,
+          "source_row": 642,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256_and_dashboard_url": "Passed;833 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 1cd064188bd37f75772051cce57a919309d67d51",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -5201,10 +5236,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T08:06:19.705732+00:00",
-    "live_commit": "335628667daf42dc4b9ed004cd7c3cf90ddf36a2",
-    "action": "Sawai Madhopur source map JSON/hash and complete dated PC12 fixture prepared; not deployed",
-    "next_action": "Enable Sawai Madhopur108 in controller/context/switcher, use explicit hyphenated map slug, run checks and deploy under both locks; verify actual public totals/full map/context/backups."
+    "checked_at": "2026-10-12T08:11:28.249982+00:00",
+    "live_commit": "1cd064188bd37f75772051cce57a919309d67d51",
+    "action": "Sawai Madhopur deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Dausa109 using audited AC85-89 and complete shared PC11; extract and validate source map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
