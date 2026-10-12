@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-jhajjar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Jhajjar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6274/download/9351/DDW_PCA0615_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6274',
+        'format' => 'xlsx', 'sheet' => 'EB-0615',
+    ],
     'himachal-pradesh-kullu-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Kullu Census 2011 — rural village PCA',
