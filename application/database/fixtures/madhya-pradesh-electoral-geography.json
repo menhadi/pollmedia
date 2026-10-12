@@ -1,0 +1,76 @@
+{
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_source_date": "2008-12-17",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Sheopur",
+      "district": "Sheopur",
+      "page": 227
+    },
+    {
+      "code": 2,
+      "name": "Vijaypur",
+      "district": "Sheopur",
+      "page": 227
+    },
+    {
+      "code": 3,
+      "name": "Sabalgarh",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 4,
+      "name": "Joura",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 5,
+      "name": "Sumawali",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 6,
+      "name": "Morena",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 7,
+      "name": "Dimani",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 8,
+      "name": "Ambah (SC)",
+      "district": "Morena",
+      "page": 227
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Morena",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "page": 251
+    }
+  ],
+  "coverage_note": "Partial dated ECI2008 scope; Morena outside-district membership retained; current crosswalk and source boundary editions remain unverified."
+}
