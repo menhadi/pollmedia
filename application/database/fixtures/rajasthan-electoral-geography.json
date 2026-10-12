@@ -726,6 +726,54 @@
       "name": "Nawan",
       "district": "Nagaur",
       "page": 359
+    },
+    {
+      "code": 117,
+      "name": "Sojat (SC)",
+      "district": "Pali",
+      "page": 360
+    },
+    {
+      "code": 118,
+      "name": "Pali",
+      "district": "Pali",
+      "page": 360
+    },
+    {
+      "code": 119,
+      "name": "Marwar Junction",
+      "district": "Pali",
+      "page": 360
+    },
+    {
+      "code": 120,
+      "name": "Bali",
+      "district": "Pali",
+      "page": 360
+    },
+    {
+      "code": 121,
+      "name": "Sumerpur",
+      "district": "Pali",
+      "page": 360
+    },
+    {
+      "code": 125,
+      "name": "Osian",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 126,
+      "name": "Bhopalgarh (SC)",
+      "district": "Jodhpur",
+      "page": 360
+    },
+    {
+      "code": 131,
+      "name": "Bilara (SC)",
+      "district": "Jodhpur",
+      "page": 360
     }
   ],
   "pcs": [
@@ -951,6 +999,21 @@
         113,
         114,
         115
+      ],
+      "page": 366
+    },
+    {
+      "code": 15,
+      "name": "Pali",
+      "ac_codes": [
+        117,
+        118,
+        119,
+        120,
+        121,
+        125,
+        126,
+        131
       ],
       "page": 366
     }
