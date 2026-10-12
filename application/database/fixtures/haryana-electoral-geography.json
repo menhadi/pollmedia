@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 6 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 6 and PC8 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -326,10 +326,64 @@
       "page": 154
     },
     {
+      "code": 54,
+      "name": "Loharu",
+      "district": "Bhiwani",
+      "page": 154
+    },
+    {
+      "code": 55,
+      "name": "Badhra",
+      "district": "Bhiwani",
+      "page": 154
+    },
+    {
+      "code": 56,
+      "name": "Dadri",
+      "district": "Bhiwani",
+      "page": 154
+    },
+    {
+      "code": 57,
+      "name": "Bhiwani",
+      "district": "Bhiwani",
+      "page": 154
+    },
+    {
+      "code": 58,
+      "name": "Tosham",
+      "district": "Bhiwani",
+      "page": 154
+    },
+    {
       "code": 59,
       "name": "Bawani Khera (SC)",
       "district": "Bhiwani",
       "page": 154
+    },
+    {
+      "code": 68,
+      "name": "Ateli",
+      "district": "Mahendragarh",
+      "page": 155
+    },
+    {
+      "code": 69,
+      "name": "Mahendragarh",
+      "district": "Mahendragarh",
+      "page": 155
+    },
+    {
+      "code": 70,
+      "name": "Narnaul",
+      "district": "Mahendragarh",
+      "page": 155
+    },
+    {
+      "code": 71,
+      "name": "Nangal Chaudhry",
+      "district": "Mahendragarh",
+      "page": 155
     }
   ],
   "pcs": [
@@ -426,6 +480,22 @@
         34,
         35,
         36
+      ],
+      "page": 158
+    },
+    {
+      "code": 8,
+      "name": "Bhiwani-Mahendragarh",
+      "ac_codes": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        68,
+        69,
+        70,
+        71
       ],
       "page": 158
     }
