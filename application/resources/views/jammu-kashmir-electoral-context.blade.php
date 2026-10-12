@@ -8,7 +8,7 @@
     $electoralPcs = collect($electoral['pcs'])->keyBy('number');
     $districtAcs = $electoralDistrict ? $electoralAcs->only($electoralDistrict['acs']) : collect();
     $districtPcs = $districtAcs->pluck('pc')->unique()->sort();
-    $archiveUrl = fn ($seat) => route('constituency.overview', ['state' => 'Jammu and Kashmir', 'kind' => $seat['archive']['kind'], 'name' => $seat['archive']['constituency_name'], 'edition' => $seat['archive']['edition_id'], 'code' => $seat['archive']['record_code']]);
+    $archiveUrl = fn ($seat) => route('constituency.overview', ['state' => $seat['archive']['state_label'] ?? 'Jammu and Kashmir', 'kind' => $seat['archive']['kind'], 'name' => $seat['archive']['constituency_name'], 'edition' => $seat['archive']['edition_id'], 'code' => $seat['archive']['record_code']]);
 @endphp
 <section class="panel" id="jammu-kashmir-electoral-context"><h2>PC / AC details and election history</h2>
 <p>District grouping and PC membership: final Delimitation Order No. 2 of 5 May 2022, effective 20 May 2022, with territorial references to 15 June 2020. AC names retain Table B spelling; AC 87 is Thannamandi in Table A and Thana Mandi in Table B. Earlier election geography is a separate edition. These records do not establish equivalence with the map or Census boundaries.</p>
@@ -30,7 +30,7 @@
 @else
 {{ $ac['number'] }} · {{ $ac['name'] }}<small>Post-2022 AC archive not yet verified</small>
 @endif
-</td><td>{{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}</td><td><a href="{{ route('elections.constituencies', ['state' => 'Jammu and Kashmir', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>
+</td><td>{{ $ac['pc'] }} · {{ $electoralPcs[$ac['pc']]['name'] }}</td><td><a href="{{ route('elections.constituencies', ['state' => 'Jammu & Kashmir', 'kind' => 'ac', 'q' => $ac['name']]) }}">Search historical reports</a></td></tr>
 @endforeach
 </tbody></table></div><h3>Associated PCs · shared membership</h3>
 @foreach($districtPcs as $pcNumber)
@@ -61,4 +61,4 @@
 @else
 <p>Select the electoral source district to view its ACs and shared PCs. Different source spellings require explicit selection. This selector changes electoral context only, not the map.</p>
 @endif
-<p><a href="{{ $electoral['district_source']['url'] }}">Official MHA archive · final 2022 Delimitation Order No. 2</a></p><p>Direct PC links use verified 2024 archive identities. Post-2022 AC archive targets remain unverified. Historical search may include pre-delimitation constituencies; matching names alone do not establish the same geography.</p></section>
+<p><a href="{{ $electoral['district_source']['url'] }}">Official MHA archive · final 2022 Delimitation Order No. 2</a></p><p>Direct AC and PC links use verified 2024 archive identities. Original archive labels, including repeated reservation suffixes, are retained on their destination dashboards. Historical search may include pre-delimitation constituencies; matching names alone do not establish the same geography.</p></section>
