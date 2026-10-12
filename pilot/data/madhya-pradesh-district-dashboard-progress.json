@@ -135,14 +135,52 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_dated_membership_prepared_integration_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "596 unlinked and25 ambiguous shapes; no rejected shapes; no population assigned",
+        "Shared PC1 Morena retains outside MorenaAC3-8; dated ECI2008 evidence audited",
+        "Integration/deployment pending; source editions/current crosswalk and detailed audits unavailable"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/418/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/418/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 596,
+          "ambiguous": 25
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI SHEOPUR label retained; Census name Sheopur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "6bf8c4a37784fac4e6198da93ea026544c4d29f452b63652bd00dcd4c76466c0",
+      "membership_evidence": {
+        "visually_inspected_pdf_pages": [
+          227,
+          251
+        ],
+        "ac_codes": [
+          1,
+          2
+        ],
+        "pcs": [
+          1
+        ],
+        "outside_district": {
+          "Morena": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        }
+      }
     },
     {
       "district_code": "419",
@@ -7013,8 +7051,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "action": "Complete MP source archive acquired and integrity verified",
-    "next_action": "Extract Sheopur418 source geometry and visually audit dated ECI AC/PC membership before dashboard integration"
+    "checked_at": "2026-10-12T01:52:10.558405+00:00",
+    "live_commit": "b304781c4c8d52fb672d5b1a647310196548b45c",
+    "action": "Sheopur621 source shapes prepared; ECI227/251 visual audit establishesAC1-2 and PC1 with Morena3-8; no deployment yet",
+    "next_action": "Integrate Madhya Pradesh service fixture routing, Sheopur district/map, dedicated PC/AC context/switcher; preserve concurrent live changes; test deploy under both locks then actual-data/public/backups checks"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
