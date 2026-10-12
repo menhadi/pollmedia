@@ -1,0 +1,10 @@
+@if(($data['census_district_code'] ?? '') === '069' && $data['name'] === 'Panchkula')
+@php
+    $haryanaVillageCandidates = array_map(fn (array $row): array => [
+        'code' => $row['code'],
+        'name' => $row['name'],
+        'url' => route('civic.place', ['record' => $row['id']], false),
+    ], $data['census_villages'] ?? []);
+@endphp
+<script type="application/json" id="haryana-map-census-candidates">{!! json_encode($haryanaVillageCandidates, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) !!}</script>
+@endif
