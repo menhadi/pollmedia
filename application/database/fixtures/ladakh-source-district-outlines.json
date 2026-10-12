@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "geometry_scope": "district outline",
+    "simplification_metres": 0,
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "census_lgd_join": "unverified",
+    "electoral_edition_join": "unverified;dated electoral source required",
+    "note": "Exact source record reprojected;source spelling retained;no population allocated."
+  },
+  "districts": [
+    {
+      "source_name": "LEH",
+      "slug": "leh",
+      "file": "maps/ladakh-source-districts/leh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 362630,
+      "sha256": "031c627634ee4e45e7fc83c49906898146e5ad32f0b5a7d51d3249846e49ffc9"
+    },
+    {
+      "source_name": "KARGIL",
+      "slug": "kargil",
+      "file": "maps/ladakh-source-districts/kargil.geojson",
+      "source_geometry_valid": true,
+      "bytes": 298355,
+      "sha256": "9fe58258d4e8bb12cc0c8b72b9c5f13bca827e503e1cb0207dc95975063ac771"
+    }
+  ]
+}

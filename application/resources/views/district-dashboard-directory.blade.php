@@ -2,4 +2,5 @@
 @include('uttarakhand-source-directory')
 @include('himachal-pradesh-source-directory')
 @include('jammu-kashmir-source-directory')
+@include('ladakh-source-directory')
 </main></body></html>
