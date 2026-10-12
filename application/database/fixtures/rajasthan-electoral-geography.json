@@ -1,0 +1,139 @@
+{
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_source_date": "2008-12-17",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified.",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Sadulshahar",
+      "district": "Ganganagar",
+      "page": 351
+    },
+    {
+      "code": 2,
+      "name": "Ganganagar",
+      "district": "Ganganagar",
+      "page": 351
+    },
+    {
+      "code": 3,
+      "name": "Karanpur",
+      "district": "Ganganagar",
+      "page": 351
+    },
+    {
+      "code": 4,
+      "name": "Suratgarh",
+      "district": "Ganganagar",
+      "page": 351
+    },
+    {
+      "code": 5,
+      "name": "Raisinghnagar (SC)",
+      "district": "Ganganagar",
+      "page": 351
+    },
+    {
+      "code": 6,
+      "name": "Anupgarh (SC)",
+      "district": "Ganganagar",
+      "page": 351
+    },
+    {
+      "code": 7,
+      "name": "Sangaria",
+      "district": "Hanumangarh",
+      "page": 351
+    },
+    {
+      "code": 8,
+      "name": "Hanumangarh",
+      "district": "Hanumangarh",
+      "page": 351
+    },
+    {
+      "code": 9,
+      "name": "Pilibanga (SC)",
+      "district": "Hanumangarh",
+      "page": 351
+    },
+    {
+      "code": 12,
+      "name": "Khajuwala (SC)",
+      "district": "Bikaner",
+      "page": 352
+    },
+    {
+      "code": 13,
+      "name": "Bikaner West",
+      "district": "Bikaner",
+      "page": 352
+    },
+    {
+      "code": 14,
+      "name": "Bikaner East",
+      "district": "Bikaner",
+      "page": 352
+    },
+    {
+      "code": 15,
+      "name": "Kolayat",
+      "district": "Bikaner",
+      "page": 352
+    },
+    {
+      "code": 16,
+      "name": "Lunkaransar",
+      "district": "Bikaner",
+      "page": 352
+    },
+    {
+      "code": 17,
+      "name": "Dungargarh",
+      "district": "Bikaner",
+      "page": 352
+    },
+    {
+      "code": 18,
+      "name": "Nokha",
+      "district": "Bikaner",
+      "page": 352
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Ganganagar (SC)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "page": 366
+    },
+    {
+      "code": 2,
+      "name": "Bikaner (SC)",
+      "ac_codes": [
+        6,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "page": 366
+    }
+  ]
+}

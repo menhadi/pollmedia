@@ -135,12 +135,13 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_and_audited_fixture_prepared_live_integration_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "3060 unlinked source shapes; no population allocation",
+        "Source editions and Census/LGD correspondence unverified",
+        "Dated PC1/2 retain Hanumangarh and Bikaner outside membership",
+        "Rajasthan controller/service/shared-view integration and live checks pending",
+        "Detailed rendered/source/election audits deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/099/dashboard",
       "electoral_evidence": {
@@ -165,6 +166,20 @@
           1,
           2
         ]
+      },
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 3060
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI GANGANAGAR label retained; Census name Ganganagar; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       }
     },
     {
@@ -4656,10 +4671,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T06:36:02.031442+00:00",
-    "observed_live_head": "450262e1a3cbba412ea383676e2300207622d5e7",
-    "action": "Rajasthan archive full ZIP/hash verified; Ganganagar dated membership visually audited351/352/366",
-    "next_action": "Prepare Ganganagar099 source map and Rajasthan district/PC/AC foundation; shared PC1/2 retain Hanumangarh/Bikaner membership"
+    "checked_at": "2026-10-12T06:41:57.810558+00:00",
+    "observed_live_head": "6cecb30e5ce338854cc4fb45997487709f55f60d",
+    "action": "Ganganagar3060-shape map, audited electoral fixture and own constituency views prepared locally",
+    "next_action": "Add Rajasthan controller/service/shared-view hooks; test; deploy narrow foundation patch under both locks; verify actual public district/PC/AC data and backups"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
