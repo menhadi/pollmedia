@@ -1,12 +1,20 @@
 @php
     $censusDistricts = json_decode(file_get_contents(database_path('fixtures/odisha-published-census-districts.json')), true, 512, JSON_THROW_ON_ERROR);
     $sameName = collect($censusDistricts)->first(fn ($item) => strtoupper(trim($item['name'])) === strtoupper(trim($district['source_name'])));
-    $selectedCensusCode = (string) request()->query('census', $sameName['code'] ?? '');
+    $verifiedNameContexts = [
+        'deogarh' => ['code' => '373', 'label' => 'Deogarh / Debagarh', 'url' => 'https://censusindia.gov.in/nada/index.php/catalog/928', 'reference' => 'Census 2011 district handbook, PDF page 13'],
+        'sonepur' => ['code' => '392', 'label' => 'Sonepur / Subarnapur', 'url' => 'https://eodbodisha.odisha.gov.in/District/Home?distid=nGTbzCiAbFU%3D', 'reference' => 'Government of Odisha district profile'],
+    ];
+    $nameContext = $verifiedNameContexts[$district['slug']] ?? null;
+    $selectedCensusCode = (string) request()->query('census', $sameName['code'] ?? $nameContext['code'] ?? '');
     $selectedCensusData = in_array($selectedCensusCode, array_column($censusDistricts, 'code'), true)
         ? app(\App\Services\DistrictDashboardData::class)->published($selectedCensusCode, '21') : null;
 @endphp
 <section class="panel" id="selected-census-context"><h2>Published Census 2011 district context</h2>
-<p>Exact-name Census districts appear by default. Other source spellings require an explicit selection until identity references are verified. These figures describe the selected Census geography, not the map shapes.</p>
+<p>Exact-name Census districts and the officially documented name variants below appear by default. Other source spellings require an explicit selection. These figures describe the selected Census geography, not the map shapes.</p>
+@if($nameContext)
+<p data-census-name-reference>Named district context: {{ $nameContext['label'] }} — <a href="{{ $nameContext['url'] }}">{{ $nameContext['reference'] }}</a>. This naming reference does not establish that source-map boundaries match Census 2011 boundaries.</p>
+@endif
 <p class="notice"><strong>Current map: {{ $district['source_name'] }}.</strong> This selector changes figures and history only. Use the district selector at the top to change maps.</p>
 <form method="get" action="{{ url()->current() }}#selected-census-context">
 @if(request()->has('electoral'))<input type="hidden" name="electoral" value="{{ request()->query('electoral') }}">@endif
