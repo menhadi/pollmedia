@@ -9,10 +9,11 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Kerala",
-  "scope": "Partial extraction through Thrissur with complete associated PC9/10/11 segments; other districts pending",
+  "scope": "Partial extraction through Ernakulam with complete associated PC11/12/13/14 segments; other districts pending",
   "flags": [
     "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
-    "Partial state extraction; omitted seats are pending, not absent"
+    "Partial state extraction; omitted seats are pending, not absent",
+    "AC81 Table A Thripunithura versus Table B Tripunithura source spelling retained; runtime alias review pending"
   ],
   "district_rows": [
     {
@@ -472,10 +473,136 @@
       "page": 215
     },
     {
+      "code": 77,
+      "name": "Kalamassery",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 78,
+      "name": "Paravur",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 79,
+      "name": "Vypeen",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 80,
+      "name": "Kochi",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 81,
+      "name": "Thripunithura",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 82,
+      "name": "Ernakulam",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 83,
+      "name": "Thrikkakara",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
       "code": 84,
       "name": "Kunnathunad (SC)",
       "district": "Ernakulam",
       "page": 216
+    },
+    {
+      "code": 85,
+      "name": "Piravom",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 86,
+      "name": "Muvattupuzha",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 87,
+      "name": "Kothamangalam",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 88,
+      "name": "Devikulam (SC)",
+      "district": "Idukki",
+      "page": 216
+    },
+    {
+      "code": 89,
+      "name": "Udumbanchola",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 90,
+      "name": "Thodupuzha",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 91,
+      "name": "Idukki",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 92,
+      "name": "Peerumade",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 93,
+      "name": "Pala",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 94,
+      "name": "Kaduthuruthy",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 95,
+      "name": "Vaikom (SC)",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 96,
+      "name": "Ettumanoor",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 97,
+      "name": "Kottayam",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 98,
+      "name": "Puthuppally",
+      "district": "Kottayam",
+      "page": 218
     }
   ],
   "pcs": [
@@ -632,6 +759,48 @@
         84
       ],
       "page": 223
+    },
+    {
+      "code": 12,
+      "name": "Ernakulam",
+      "ac_codes": [
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "page": 223
+    },
+    {
+      "code": 13,
+      "name": "Idukki",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92
+      ],
+      "page": 224
+    },
+    {
+      "code": 14,
+      "name": "Kottayam",
+      "ac_codes": [
+        85,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "page": 224
     }
   ]
 }
