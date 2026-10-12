@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 historical Adilabad, Nizamabad, Karimnagar, Medak, Hyderabad and Rangareddi district coverage; complete associated PC1-10 and14 segments; omitted seats pending",
+  "scope": "Partial dated2014 historical district coverage through Mahbubnagar; complete associated PC1-12 and14 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
@@ -12,7 +12,8 @@
     "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified",
     "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending",
     "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending",
-    "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending"
+    "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending",
+    "PC11 printed36-42 source codes preserved alongside named identity reconciliation; undated CEO list and formal source review pending"
   ],
   "district_rows": [
     {
@@ -456,6 +457,90 @@
       "page": 44
     },
     {
+      "code": 72,
+      "name": "Kodangal",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 73,
+      "name": "Narayanpet",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 74,
+      "name": "Mahbubnagar",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 75,
+      "name": "Jadcherla",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 76,
+      "name": "Devarkadra",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 77,
+      "name": "Makthal",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 78,
+      "name": "Wanaparthy",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 79,
+      "name": "Gadwal",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 80,
+      "name": "Alampur (SC)",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 81,
+      "name": "Nagarkurnool",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 82,
+      "name": "Achampet (SC)",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 83,
+      "name": "Kalwakurthy",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 84,
+      "name": "Shadnagar",
+      "district": "Mahbubnagar",
+      "page": 45
+    },
+    {
+      "code": 85,
+      "name": "Kollapur",
+      "district": "Mahbubnagar",
+      "page": 45
+    },
+    {
       "code": 93,
       "name": "Munugode",
       "district": "Nalgonda",
@@ -682,6 +767,44 @@
       ],
       "page": 46,
       "source_code_note": "2014 Table B printed29-35 conflicts with Table A identities. Named Table A segments and official CEO list support50-56. Original codes retained; formal review pending."
+    },
+    {
+      "code": 11,
+      "name": "Mahbubnagar",
+      "ac_codes": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        84
+      ],
+      "raw_ac_codes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed36-42 conflicts with Table A identities. Named Table A segments and official CEO list support72,73,74,75,76,77,84. Original codes retained; formal review pending."
+    },
+    {
+      "code": 12,
+      "name": "Nagarkurnool (SC)",
+      "ac_codes": [
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        85
+      ],
+      "page": 47
     },
     {
       "code": 14,
