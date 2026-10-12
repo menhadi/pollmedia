@@ -8,13 +8,14 @@ class DistrictConstituencyLinks
     public function forDistrict(string $district, string $state = 'Uttar Pradesh'): array
     {
         $empty = ['available' => false, 'assembly' => [], 'parliamentary' => [], 'sources' => []];
-        if (! in_array($state, ['Mizoram', 'Meghalaya', 'Manipur', 'Arunachal Pradesh', 'Haryana', 'Jharkhand', 'Chhattisgarh', 'Telangana', 'Andhra Pradesh', 'Kerala', 'Uttar Pradesh', 'Karnataka', 'Maharashtra', 'Bihar', 'Tamil Nadu', 'Gujarat', 'Madhya Pradesh', 'West Bengal', 'Rajasthan'], true)) {
+        if (! in_array($state, ['Nagaland', 'Mizoram', 'Meghalaya', 'Manipur', 'Arunachal Pradesh', 'Haryana', 'Jharkhand', 'Chhattisgarh', 'Telangana', 'Andhra Pradesh', 'Kerala', 'Uttar Pradesh', 'Karnataka', 'Maharashtra', 'Bihar', 'Tamil Nadu', 'Gujarat', 'Madhya Pradesh', 'West Bengal', 'Rajasthan'], true)) {
             return $empty;
         }
         $path = database_path(match ($state) {
             'Manipur' => 'fixtures/manipur-electoral-geography.json',
             'Meghalaya' => 'fixtures/meghalaya-electoral-geography.json',
             'Mizoram' => 'fixtures/mizoram-electoral-geography.json',
+            'Nagaland' => 'fixtures/nagaland-electoral-geography.json',
             'Arunachal Pradesh' => 'fixtures/arunachal-pradesh-electoral-geography.json',
             'Haryana' => 'fixtures/haryana-electoral-geography.json',
             'Telangana' => 'fixtures/telangana-electoral-geography.json',

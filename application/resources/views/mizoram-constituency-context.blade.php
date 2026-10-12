@@ -13,7 +13,7 @@ $mizoramMapCodes=['Mamit'=>'281','Kolasib'=>'282','Aizawl'=>'283','Champhai'=>'2
 <p>Village shapes use the official NWIC payload attributed to SOI. Modern source labels are retained separately from eight Census districts; boundary edition and Census correspondence remain unverified. Partial-coverage placeholders, duplicate codes and unavailable Census joins remain flagged. Invalid shapes are excluded without repair; payload demographic values are withheld.</p>
 @foreach($mizoramMapCodes as $mizoramMapName=>$mizoramMapCode)
 @if($mizoramDistricts->contains($mizoramMapName))
-<p><a href="{{ route('district-dashboard',['state'=>'14','district'=>$mizoramMapCode]) }}#map">{{ $mizoramMapName }} village map, Census history & graphs</a> · Modern source scope; historical boundary correspondence pending.</p>
+<p><a href="{{ route('district-dashboard',['state'=>'15','district'=>$mizoramMapCode]) }}#map">{{ $mizoramMapName }} village map, Census history & graphs</a> · Modern source scope; historical boundary correspondence pending.</p>
 @endif
 @endforeach
 <p>Electoral district references: {{ $mizoramDistricts->isEmpty()?'Unavailable':$mizoramDistricts->implode(', ') }}. Separate successor district map navigation remains pending.</p>

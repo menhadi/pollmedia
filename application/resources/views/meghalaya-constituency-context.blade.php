@@ -13,7 +13,7 @@ $meghalayaMapCodes=['West Garo Hills'=>'293','East Garo Hills'=>'294','South Gar
 <p>Village shapes use the official NWIC payload attributed to SOI. Modern source labels are retained separately from seven Census districts; East and West Jaintia source labels are explicitly presented together without certifying the historical boundary. Partial-coverage placeholders, duplicate codes and unavailable Census joins remain flagged. Invalid shapes are excluded without repair; payload demographic values are withheld.</p>
 @foreach($meghalayaMapCodes as $meghalayaMapName=>$meghalayaMapCode)
 @if($meghalayaDistricts->contains($meghalayaMapName))
-<p><a href="{{ route('district-dashboard',['state'=>'14','district'=>$meghalayaMapCode]) }}#map">{{ $meghalayaMapName }} village map, Census history & graphs</a> · Modern source scope; historical boundary correspondence pending.</p>
+<p><a href="{{ route('district-dashboard',['state'=>'17','district'=>$meghalayaMapCode]) }}#map">{{ $meghalayaMapName }} village map, Census history & graphs</a> · Modern source scope; historical boundary correspondence pending.</p>
 @endif
 @endforeach
 <p>Electoral district references: {{ $meghalayaDistricts->isEmpty()?'Unavailable':$meghalayaDistricts->implode(', ') }}. Separate successor district map navigation remains pending.</p>

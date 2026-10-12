@@ -776,6 +776,50 @@ class DistrictDashboardController extends Controller
         if ($state === '03' && $district === '039') {
             $mapFile = 'maps/sbs-nagar-villages.geojson';
         }
+        if ($state === '13' && $district === '261') {
+            $mapFile = 'maps/nagaland-mon-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Mon', 'Nagaland');
+        }
+        if ($state === '13' && $district === '262') {
+            $mapFile = 'maps/nagaland-mokokchung-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Mokokchung', 'Nagaland');
+        }
+        if ($state === '13' && $district === '263') {
+            $mapFile = 'maps/nagaland-zunheboto-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Zunheboto', 'Nagaland');
+        }
+        if ($state === '13' && $district === '264') {
+            $mapFile = 'maps/nagaland-wokha-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Wokha', 'Nagaland');
+        }
+        if ($state === '13' && $district === '265') {
+            $mapFile = 'maps/nagaland-dimapur-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Dimapur', 'Nagaland');
+        }
+        if ($state === '13' && $district === '266') {
+            $mapFile = 'maps/nagaland-phek-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Phek', 'Nagaland');
+        }
+        if ($state === '13' && $district === '267') {
+            $mapFile = 'maps/nagaland-tuensang-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Tuensang', 'Nagaland');
+        }
+        if ($state === '13' && $district === '268') {
+            $mapFile = 'maps/nagaland-longleng-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Longleng', 'Nagaland');
+        }
+        if ($state === '13' && $district === '269') {
+            $mapFile = 'maps/nagaland-kiphire-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kiphire', 'Nagaland');
+        }
+        if ($state === '13' && $district === '270') {
+            $mapFile = 'maps/nagaland-kohima-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Kohima', 'Nagaland');
+        }
+        if ($state === '13' && $district === '271') {
+            $mapFile = 'maps/nagaland-peren-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Peren', 'Nagaland');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
