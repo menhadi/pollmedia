@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-hoshiarpur-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Hoshiarpur Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6229/download/9306/DDW_PCA0304_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6229',
+        'format' => 'xlsx', 'sheet' => 'EB-0304',
+    ],
     'punjab-jalandhar-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Jalandhar Census 2011 — district, town, village and ward PCA',
