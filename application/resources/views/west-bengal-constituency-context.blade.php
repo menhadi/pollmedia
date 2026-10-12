@@ -15,6 +15,9 @@ $codes=['Murshidabad'=>'333','Nadia'=>'336','North Twenty Four Parganas'=>'337',
 <p class="notice">District references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 <ul>@foreach($segments as $segment)<li>AC {{ $segment['code'] }} · {{ $segment['name'] }} · {{ $segment['district'] }}@if(isset($segment['source_district_name'])) (CEO source: {{ $segment['source_district_name'] }}; boundary correspondence unverified)@endif</li>@endforeach</ul>
 @foreach($districtNames as $district)
+@if(in_array($district,['Purba Bardhaman','Paschim Bardhaman'],true))
+<p><a href="{{ route('modern-district-source-map',['slug'=>strtolower(str_replace(' ','-',$district))]) }}">{{ $district }} source map &amp; geographic evidence</a>. Formed in 2017; Census2011 parent totals are not assigned.</p>
+@endif
 @if(isset($codes[$district]))
 @php($context=app(\App\Services\DistrictDashboardData::class)->published($codes[$district],'19'))
 @if($context)
