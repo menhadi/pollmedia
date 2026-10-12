@@ -61,7 +61,7 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/069/dashboard",
-      "workflow_status": "source_map_prepared_electoral_audit_pending_not_deployed",
+      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Source district code69 and Census069 are distinct identifiers; no accepted village join",
@@ -84,7 +84,24 @@
         "rejected": [],
         "note": "SOI PANCHKULA label retained; Census name Panchkula; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
       },
-      "map_sha256": "ed69106cad754deb102cdc25a6eac8410416c6a3e72a15d1e0491ac2a0c12627"
+      "map_sha256": "ed69106cad754deb102cdc25a6eac8410416c6a3e72a15d1e0491ac2a0c12627",
+      "electoral_evidence": {
+        "source_date": "2008-12-17",
+        "territorial_reference_date": "2004-02-15",
+        "visually_audited": true,
+        "pdf_pages": [
+          149,
+          158
+        ],
+        "district_ac_codes": [
+          1,
+          2
+        ],
+        "shared_pc_codes": [
+          1
+        ],
+        "note": "Complete shared PC1 includes Ambala AC3-6 and Yamunanagar AC7-9."
+      }
     },
     {
       "district_code": "070",
@@ -1396,10 +1413,9 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:47:00.542414+00:00",
-    "live_commit": "d827963c8cd0e36ab4fab5f2f084351d4d30756d",
-    "action": "Panchkula complete map JSON/hash validated with explicit unlinked/ambiguous codes; official dated electoral PDF verified; no deployment",
-    "next_action": "Visually audit Haryana PDF149 and158 plus outside Ambala/Yamunanagar members for complete shared PC; prepare fixture and own dashboard integration after evidence."
+    "checked_at": "2026-10-12T10:51:08.663694+00:00",
+    "action": "Panchkula dated AC1/2 and full shared Ambala PC1 visually audited; own fixture prepared; no deployment",
+    "next_action": "Implement Haryana service support and own constituency context/switcher with canonical data reload; enable Panchkula069; test and deploy narrow patches under both locks, verify actual public data/map and backups."
   },
   "source_inventory": {
     "soi_download_url": "https://surveyofindia.gov.in/documents/HARYANA.zip",
@@ -1529,7 +1545,7 @@
         149,
         158
       ],
-      "visually_audited": false
+      "visually_audited": true
     }
   }
 }
