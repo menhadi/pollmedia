@@ -624,6 +624,34 @@ class DistrictDashboardController extends Controller
         if ($state === '06' && $district === '086') {
             $mapFile = 'maps/gurgaon-villages.geojson';
         }
+        if ($state === '12' && $district === '252') {
+            $mapFile = 'maps/arunachal-pradesh-upper-siang-villages.geojson';
+        }
+        if ($state === '12' && $district === '253') {
+            $mapFile = 'maps/arunachal-pradesh-changlang-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Changlang', 'Arunachal Pradesh');
+        }
+        if ($state === '12' && $district === '254') {
+            $mapFile = 'maps/arunachal-pradesh-tirap-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Tirap', 'Arunachal Pradesh');
+        }
+        if ($state === '12' && $district === '256') {
+            $mapFile = 'maps/arunachal-pradesh-kurung-kumey-villages.geojson';
+        }
+        if ($state === '12' && $district === '257') {
+            $mapFile = 'maps/arunachal-pradesh-dibang-valley-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Dibang Valley', 'Arunachal Pradesh');
+        }
+        if ($state === '12' && $district === '258') {
+            $mapFile = 'maps/arunachal-pradesh-lower-dibang-valley-villages.geojson';
+        }
+        if ($state === '12' && $district === '259') {
+            $mapFile = 'maps/arunachal-pradesh-lohit-villages.geojson';
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Lohit', 'Arunachal Pradesh');
+        }
+        if ($state === '12' && $district === '260') {
+            $mapFile = 'maps/arunachal-pradesh-anjaw-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
