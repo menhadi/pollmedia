@@ -60,6 +60,19 @@
 @endif
 @endforeach
 </tbody></table></div>
+@foreach(['subdistricts' => 'Subdistricts', 'towns' => 'Towns'] as $unitKey => $unitLabel)
+<section id="census-{{ $unitKey }}" aria-label="{{ $unitLabel }} in the selected Census district">
+<h3>{{ $unitLabel }} · {{ $selectedCensusData['name'] }} · Census {{ $selectedCensusData['year'] }}</h3>
+<p>{{ count($selectedCensusData[$unitKey]) }} published {{ strtolower($unitLabel) }} in this Census edition. These records are not linked to the source map shapes or 2023 constituencies.</p>
+<div class="table-wrap"><table><thead><tr><th>Place / Census code</th><th>Population</th><th>Households</th><th>Literacy aged 7+</th></tr></thead><tbody>
+@forelse($selectedCensusData[$unitKey] as $place)
+<tr><td><a href="{{ route('civic.place', ['record' => $place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small></td><td>{{ $place['population'] === null ? 'Unavailable' : number_format($place['population']) }}</td><td>{{ $place['households'] === null ? 'Unavailable' : number_format($place['households']) }}</td><td>{{ $place['literacy'] === null ? 'Unavailable' : number_format($place['literacy'], 2).'%' }}</td></tr>
+@empty
+<tr><td colspan="4">No published {{ strtolower($unitLabel) }} records available.</td></tr>
+@endforelse
+</tbody></table></div>
+</section>
+@endforeach
 <p>{{ $selectedCensusData['census_village_rows'] }} published village Census rows available in the selected edition.</p>
 @foreach($selectedCensusData['census_editions'] as $edition)<p><a href="{{ $edition['source_url'] }}">{{ $edition['source_key'] }} · official source</a></p>@endforeach
 <p><a href="{{ route('district-dashboard', ['state'=>'18','district'=>$selectedCensusCode]) }}">Open the complete {{ $selectedCensusData['name'] }} Census dashboard</a></p>
