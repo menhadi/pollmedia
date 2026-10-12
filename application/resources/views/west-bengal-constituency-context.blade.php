@@ -6,12 +6,13 @@ $seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(f
 $seat=$seats->count()===1?$seats->first():null;
 $segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
 $districtNames=$segments->pluck('district')->unique()->values();
-$codes=['Murshidabad'=>'333','Nadia'=>'336','North Twenty Four Parganas'=>'337','Hugli'=>'338','Puruliya'=>'340','Bankura'=>'339','Koch Bihar'=>'329','Purba Medinipur'=>'345','Uttar Dinajpur'=>'330','Dakshin Dinajpur'=>'331','Maldah'=>'332','Birbhum'=>'334','Haora'=>'341','Kolkata'=>'342'];
+$codes=['Murshidabad'=>'333','Nadia'=>'336','North Twenty Four Parganas'=>'337','Hugli'=>'338','Puruliya'=>'340','Bankura'=>'339','Koch Bihar'=>'329','Purba Medinipur'=>'345','Uttar Dinajpur'=>'330','Dakshin Dinajpur'=>'331','Maldah'=>'332','Birbhum'=>'334','Haora'=>'341','Kolkata'=>'342','South Twenty Four Parganas'=>'343'];
 @endphp
+@if(!$seat && $seats->count()>1)<p class="notice">Multiple official constituency codes share this name. District context is withheld until the route identifies the exact code; no geographic match is inferred.</p>@endif
 @if($seat)
 <section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District context & geographic scope</h2>
 <p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Membership follows preserved official CEO sources.</p>
-<p class="notice">District figures are context, never constituency population. Boundary edition and Census/LGD correspondence remain unverified. The West Bengal membership fixture is partial; these complete PC segments follow the preserved CEO 2024 administrative list. Boundary correspondence is unverified. Population is never allocated by polygon area.</p>
+<p class="notice">District figures are context, never constituency population. Boundary edition and Census/LGD correspondence remain unverified. The West Bengal fixture contains all 294 AC codes and 42 complete PC segment lists; these complete PC segments follow the preserved CEO 2024 administrative list. Boundary correspondence is unverified. Population is never allocated by polygon area.</p>
 <p class="notice">District references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 <ul>@foreach($segments as $segment)<li>AC {{ $segment['code'] }} · {{ $segment['name'] }} · {{ $segment['district'] }}@if(isset($segment['source_district_name'])) (CEO source: {{ $segment['source_district_name'] }}; boundary correspondence unverified)@endif</li>@endforeach</ul>
 @foreach($districtNames as $district)

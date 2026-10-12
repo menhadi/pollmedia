@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Thirty-eight complete PC segment lists;remaining state membership pending",
+  "coverage": "All42 complete PC segment lists and all294 AC codes;district/source boundary correspondence flags remain",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1977,6 +1977,202 @@
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "AC suffix absent;not inferred",
       "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 127,
+      "name": "Gosaba",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 128,
+      "name": "Basanti",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 129,
+      "name": "Kultali",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 130,
+      "name": "Patharpratima",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 131,
+      "name": "Kakdwip",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 132,
+      "name": "Sagar",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 133,
+      "name": "Kulpi",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 134,
+      "name": "Raidighi",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 135,
+      "name": "Mandirbazar",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 136,
+      "name": "Joynagar",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 137,
+      "name": "Baruipur Purba",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 138,
+      "name": "Canning Paschim",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 139,
+      "name": "Canning Purba",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 140,
+      "name": "Baruipur Paschim",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 141,
+      "name": "Magrahat Purba",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 142,
+      "name": "Magrahat Paschim",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 143,
+      "name": "Diamond Harbour",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 144,
+      "name": "Falta",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 145,
+      "name": "Satgachhia",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 146,
+      "name": "Bishnupur",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 147,
+      "name": "Sonarpur Dakshin",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 148,
+      "name": "Bhangar",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 150,
+      "name": "Jadavpur",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 151,
+      "name": "Sonarpur Uttar",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 152,
+      "name": "Tollyganj",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 155,
+      "name": "Maheshtala",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 156,
+      "name": "Budge Budge",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 157,
+      "name": "Metiaburuz",
+      "district": "South Twenty Four Parganas",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred"
     }
   ],
   "pcs": [
@@ -2583,6 +2779,70 @@
         166,
         167,
         168
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 19,
+      "name": "Jaynagar (SC)",
+      "ac_codes": [
+        127,
+        128,
+        129,
+        136,
+        138,
+        139,
+        141
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 20,
+      "name": "Mathurapur (SC)",
+      "ac_codes": [
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        142
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 21,
+      "name": "Diamond Harbour",
+      "ac_codes": [
+        143,
+        144,
+        145,
+        146,
+        155,
+        156,
+        157
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 22,
+      "name": "Jadavpur",
+      "ac_codes": [
+        137,
+        140,
+        147,
+        148,
+        150,
+        151,
+        152
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
