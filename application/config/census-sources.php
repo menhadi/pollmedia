@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-faridabad-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Faridabad Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6279/download/9356/DDW_PCA0620_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6279',
+        'format' => 'xlsx', 'sheet' => 'EB-0620',
+    ],
     'haryana-mewat-pca-2011' => [
         'year' => 2011,
         'name' => 'Haryana Mewat Census 2011 — district, town, village and ward PCA',
