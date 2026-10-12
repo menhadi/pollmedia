@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-bongaigaon-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Bongaigaon Census 2011 — rural village PCA',
+        'sheet' => 'EB-1820',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6510/download/9587/DDW_PCA1820_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6510',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-udalguri-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Udalguri Census 2011 — rural village PCA',
