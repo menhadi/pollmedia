@@ -4,14 +4,16 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: first six historical districts plus complete associated PC1-12 segments; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first seven historical districts and complete associated PC1-15 segments; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
     "Partial extraction; runtime integration and public/rendered checks pending",
     "AC20 Table A Bhimili versus Table B Bhimli spelling retained; runtime alias review deferred",
     "PC7 source conflict: Table B prints47-Mandapeta while Table A gives48; displayed linkage uses Table A code48 with original retained; formal correction review pending",
-    "AC46 Gannavaram(SC) and AC71 Gannavaram share normalized name; name-only routing must retain ambiguous identity and pending context rather than assign district totals"
+    "AC46 Gannavaram(SC) and AC71 Gannavaram share normalized name; name-only routing must retain ambiguous identity and pending context rather than assign district totals",
+    "AC36 Prathipadu and AC93 Prathipadu(SC) share normalized name; name-only district context remains ambiguous",
+    "AC98 Table A Sattenapalle versus Table B Sattenapalli spelling retained for later review"
   ],
   "district_rows": [
     {
@@ -517,6 +519,132 @@
       "name": "Jaggayyapeta",
       "district": "Krishna",
       "page": 34
+    },
+    {
+      "code": 85,
+      "name": "Pedakurapadu",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 86,
+      "name": "Tadikonda (SC)",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 87,
+      "name": "Mangalagiri",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 88,
+      "name": "Ponnuru",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 89,
+      "name": "Vemuru (SC)",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 90,
+      "name": "Repalle",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 91,
+      "name": "Tenali",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 92,
+      "name": "Bapatla",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 93,
+      "name": "Prathipadu (SC)",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 94,
+      "name": "Guntur West",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 95,
+      "name": "Guntur East",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 96,
+      "name": "Chilakaluripet",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 97,
+      "name": "Narasaraopet",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 98,
+      "name": "Sattenapalle",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 99,
+      "name": "Vinukonda",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 100,
+      "name": "Gurajala",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 101,
+      "name": "Macherla",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 104,
+      "name": "Parchur",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 105,
+      "name": "Addanki",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 106,
+      "name": "Chirala",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 107,
+      "name": "Santhanuthalapadu (SC)",
+      "district": "Prakasam",
+      "page": 35
     }
   ],
   "pcs": [
@@ -695,6 +823,48 @@
         82,
         83,
         84
+      ],
+      "page": 39
+    },
+    {
+      "code": 13,
+      "name": "Guntur",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        91,
+        93,
+        94,
+        95
+      ],
+      "page": 39
+    },
+    {
+      "code": 14,
+      "name": "Narasaraopet",
+      "ac_codes": [
+        85,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101
+      ],
+      "page": 39
+    },
+    {
+      "code": 15,
+      "name": "Bapatla (SC)",
+      "ac_codes": [
+        89,
+        90,
+        92,
+        104,
+        105,
+        106,
+        107
       ],
       "page": 39
     }
