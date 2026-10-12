@@ -630,6 +630,54 @@
       "name": "Kekri",
       "district": "Ajmer",
       "page": 359
+    },
+    {
+      "code": 103,
+      "name": "Beawar",
+      "district": "Ajmer",
+      "page": 359
+    },
+    {
+      "code": 111,
+      "name": "Merta (SC)",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 112,
+      "name": "Degana",
+      "district": "Nagaur",
+      "page": 359
+    },
+    {
+      "code": 116,
+      "name": "Jaitaran",
+      "district": "Pali",
+      "page": 359
+    },
+    {
+      "code": 173,
+      "name": "Bhim",
+      "district": "Rajsamand",
+      "page": 363
+    },
+    {
+      "code": 174,
+      "name": "Kumbhalgarh",
+      "district": "Rajsamand",
+      "page": 363
+    },
+    {
+      "code": 175,
+      "name": "Rajsamand",
+      "district": "Rajsamand",
+      "page": 363
+    },
+    {
+      "code": 176,
+      "name": "Nathdwara",
+      "district": "Rajsamand",
+      "page": 364
     }
   ],
   "pcs": [
@@ -827,6 +875,21 @@
         105
       ],
       "page": 366
+    },
+    {
+      "code": 22,
+      "name": "Rajsamand",
+      "ac_codes": [
+        103,
+        111,
+        112,
+        116,
+        173,
+        174,
+        175,
+        176
+      ],
+      "page": 367
     }
   ],
   "source_name_variants": {
