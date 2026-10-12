@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Twenty-two complete PC segment lists;remaining membership and flagged district identities pending",
+  "coverage": "Twenty-five complete PC segment lists;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1130,6 +1130,174 @@
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "Suffix absent;not inferred",
       "source_note": "2024 source district naming;boundary correspondence unverified"
+    },
+    {
+      "code": 1,
+      "name": "Mekliganj (SC)",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 2,
+      "name": "Mathabhanga (SC)",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 3,
+      "name": "Coochbehar Uttar (SC)",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 4,
+      "name": "Coochbehar Dakshin",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 5,
+      "name": "Sitalkuchi (SC)",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 6,
+      "name": "Sitai (SC)",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 7,
+      "name": "Dinhata",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 8,
+      "name": "Natabari",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 9,
+      "name": "Tufanganj",
+      "district": "Koch Bihar",
+      "source_district_name": "COOCHBEHAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 10,
+      "name": "Kumargram (ST)",
+      "district": "Alipurduar",
+      "source_district_name": "ALIPURDUAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 11,
+      "name": "Kalchini (ST)",
+      "district": "Alipurduar",
+      "source_district_name": "ALIPURDUAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 12,
+      "name": "Alipurduars",
+      "district": "Alipurduar",
+      "source_district_name": "ALIPURDUAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 13,
+      "name": "Falakata (SC)",
+      "district": "Alipurduar",
+      "source_district_name": "ALIPURDUAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 14,
+      "name": "Madarihat (ST)",
+      "district": "Alipurduar",
+      "source_district_name": "ALIPURDUAR",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 15,
+      "name": "Dhupguri (SC)",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 16,
+      "name": "Maynaguri (SC)",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 17,
+      "name": "Jalpaiguri (SC)",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 18,
+      "name": "Rajganj (SC)",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 19,
+      "name": "Dabgram-Fulbari",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 20,
+      "name": "Mal (ST)",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
+    },
+    {
+      "code": 21,
+      "name": "Nagrakata (ST)",
+      "district": "Jalpaiguri",
+      "source_district_name": "JALPAIGURI",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf"
     }
   ],
   "pcs": [
@@ -1480,6 +1648,54 @@
         250,
         251,
         252
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 1,
+      "name": "Coochbehar (SC)",
+      "ac_codes": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 2,
+      "name": "Alipurduars (ST)",
+      "ac_codes": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        21
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 3,
+      "name": "Jalpaiguri (SC)",
+      "ac_codes": [
+        1,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
