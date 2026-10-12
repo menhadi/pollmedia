@@ -605,6 +605,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/arunachal-pradesh-lower-subansiri-villages.geojson';
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Lower Subansiri', 'Arunachal Pradesh');
         }
+        if ($state === '06' && $district === '085') {
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Rewari', 'Haryana');
+            $mapFile = 'maps/rewari-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));

@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 8 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete PCs 1 through 9 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -434,10 +434,64 @@
       "page": 155
     },
     {
+      "code": 72,
+      "name": "Bawal (SC)",
+      "district": "Rewari",
+      "page": 155
+    },
+    {
       "code": 73,
       "name": "Kosli",
       "district": "Rewari",
       "page": 155
+    },
+    {
+      "code": 74,
+      "name": "Rewari",
+      "district": "Rewari",
+      "page": 155
+    },
+    {
+      "code": 75,
+      "name": "Pataudi (SC)",
+      "district": "Gurgaon",
+      "page": 156
+    },
+    {
+      "code": 76,
+      "name": "Badshahpur",
+      "district": "Gurgaon",
+      "page": 156
+    },
+    {
+      "code": 77,
+      "name": "Gurgaon",
+      "district": "Gurgaon",
+      "page": 156
+    },
+    {
+      "code": 78,
+      "name": "Sohna",
+      "district": "Gurgaon",
+      "page": 156
+    },
+    {
+      "code": 79,
+      "name": "Nuh",
+      "district": "Gurgaon",
+      "page": 156
+    },
+    {
+      "code": 80,
+      "name": "Ferozepur Jhirka",
+      "district": "Gurgaon",
+      "page": 156
+    },
+    {
+      "code": 81,
+      "name": "Punahana",
+      "district": "Gurgaon",
+      "page": 156
     }
   ],
   "pcs": [
@@ -566,6 +620,22 @@
         69,
         70,
         71
+      ],
+      "page": 158
+    },
+    {
+      "code": 9,
+      "name": "Gurgaon",
+      "ac_codes": [
+        72,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81
       ],
       "page": 158
     }
