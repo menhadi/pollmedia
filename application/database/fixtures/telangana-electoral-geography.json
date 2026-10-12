@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 historical district coverage through Mahbubnagar; complete associated PC1-12 and14 segments; omitted seats pending",
+  "scope": "Partial dated2014 historical district coverage through Nalgonda; complete associated PC1-14 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
@@ -13,7 +13,8 @@
     "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending",
     "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending",
     "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending",
-    "PC11 printed36-42 source codes preserved alongside named identity reconciliation; undated CEO list and formal source review pending"
+    "PC11 printed36-42 source codes preserved alongside named identity reconciliation; undated CEO list and formal source review pending",
+    "PC13 original printed43-49 retained alongside named identity reconciliation; undated CEO list and formal source review pending"
   ],
   "district_rows": [
     {
@@ -541,6 +542,48 @@
       "page": 45
     },
     {
+      "code": 86,
+      "name": "Devarakonda (ST)",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 87,
+      "name": "Nagarjuna Sagar",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 88,
+      "name": "Miryalaguda",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 89,
+      "name": "Huzurnagar",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 90,
+      "name": "Kodad",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 91,
+      "name": "Suryapet",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 92,
+      "name": "Nalgonda",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
       "code": 93,
       "name": "Munugode",
       "district": "Nalgonda",
@@ -805,6 +848,30 @@
         85
       ],
       "page": 47
+    },
+    {
+      "code": 13,
+      "name": "Nalgonda",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92
+      ],
+      "raw_ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed43-49 conflicts with Table A identities. Named Table A segments and official CEO list support86-92. Original codes retained; formal review pending."
     },
     {
       "code": 14,
