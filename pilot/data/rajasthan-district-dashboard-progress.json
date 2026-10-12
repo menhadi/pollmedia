@@ -4162,16 +4162,17 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
         "Boundary edition unverified",
         "791 unlinked shapes; no population allocated",
         "Invalid shape091176 excluded without repair",
-        "Dated shared electoral membership prepared; not deployed",
-        "Historical source geography retained; later splits not backcast"
+        "Dated shared PC17 cross-district membership visible; current crosswalk unverified",
+        "Historical source geography retained; later splits not backcast",
+        "Detailed rendered/source/election audits and minor display fixes deferred"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/118/dashboard",
-      "status": "source_map_and_dated_electoral_fixture_prepared_not_deployed",
+      "status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -4213,6 +4214,40 @@
           17
         ],
         "note": "Complete shared PC17 retains Jaisalmer AC132; matching boundary editions/current crosswalk unverified."
+      },
+      "deployment": {
+        "live_commit": "7bd7c2ffcc9942b530eee453a4166936d6e760bc",
+        "rollback_base": "b92adced11d729b672368c236f1fe191551ac7a0",
+        "both_locks_held": true
+      },
+      "validation": {
+        "canonical_totals": {
+          "id": 7387,
+          "name": "Pali",
+          "code": "118",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 2037573,
+          "households": 418157,
+          "literates": 1085693,
+          "children": 297434,
+          "male": 1025422,
+          "female": 1012151,
+          "workers": 842327,
+          "literacy": 62.39,
+          "male_literacy": 76.81,
+          "female_literacy": 48.01,
+          "source_row": 723,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        },
+        "public_totals_and_all_shared_members": "Passed",
+        "public_map_full_json_sha256": "Passed;791 features",
+        "pc_and_ac_published_district_context": "Passed",
+        "regression_tests": "59 tests /240 assertions passed",
+        "local_bundle_and_github_backup": "Verified 7bd7c2ffcc9942b530eee453a4166936d6e760bc",
+        "detailed_rendered_source_election_audits": "Deferred"
       }
     },
     {
@@ -6044,10 +6079,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T10:04:41.518769+00:00",
-    "live_commit": "76b28eb3dfc856432b21c33b8e91927ee70047d2",
-    "action": "Barmer full map JSON/hash validated with invalid shape excluded; complete audited shared PC17 retained; not deployed",
-    "next_action": "Enable Barmer118 controller/context/switcher, run checks, deploy under both locks with clean staged preflight and verify actual public totals/full map/context/backups; include dashboard link."
+    "checked_at": "2026-10-12T10:12:50.653900+00:00",
+    "live_commit": "7bd7c2ffcc9942b530eee453a4166936d6e760bc",
+    "action": "Barmer deployed under both locks; actual totals/full map/shared membership/PC-AC context/tests/backups verified",
+    "next_action": "Continue Jalor119; retain dated ECI Jalore alias; audit AC141-145 and outside Sirohi146-148 for complete shared PC18 before fixture use; extract district map"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
