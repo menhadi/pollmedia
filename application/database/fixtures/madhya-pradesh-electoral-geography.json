@@ -1247,6 +1247,48 @@
       "name": "Gotegaon (SC)",
       "district": "Narsinghpur",
       "page": 238
+    },
+    {
+      "code": 122,
+      "name": "Junnardeo (ST)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 123,
+      "name": "Amarwara (ST)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 124,
+      "name": "Churai",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 125,
+      "name": "Saunsar",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 126,
+      "name": "Chhindwara",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 127,
+      "name": "Parasia (SC)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 128,
+      "name": "Pandhurna (ST)",
+      "district": "Chhindwara",
+      "page": 239
     }
   ],
   "pcs": [
@@ -1636,6 +1678,20 @@
         116,
         117,
         118
+      ],
+      "page": 252
+    },
+    {
+      "code": 16,
+      "name": "Chhindwara",
+      "ac_codes": [
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128
       ],
       "page": 252
     }
