@@ -18,7 +18,8 @@ $districtNames=$segments->pluck('district')->unique()->values();
 <p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
 @endif
 <p class="notice">2014 reorganisation schedule district references are retained. Current district correspondence, SOI boundary edition and accepted Census/LGD village links remain unverified. No district totals are assigned to constituencies.</p>
-<p class="notice">Partial electoral fixture: only Srikakulam and complete segments of its three associated PCs are included. Omitted seats remain pending. Current SOI district coverage differs from historical Census and electoral geography.</p>
+<p class="notice">Partial electoral fixture: the prepared historical district rows and complete associated PC segments are included. Omitted seats remain pending. Current SOI district coverage differs from historical Census and electoral geography.</p>
+<p class="notice">PC7 source conflict: the 2014 parliamentary table names Mandapeta but prints AC47; the Assembly table identifies Mandapeta as AC48. Links use Assembly-table code48 and retain the original conflict for formal review. No boundary correspondence is implied.</p>
 <div class="metrics">
 @foreach($districtNames as $district)
 <article><h3>{{ $district }} district</h3>

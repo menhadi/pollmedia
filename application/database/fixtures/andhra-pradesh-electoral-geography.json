@@ -4,12 +4,13 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: Srikakulam, Vizianagaram and Visakhapatnam district rows with complete associated PCs1-5; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: first four historical districts plus complete associated PC1-8 segments; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
     "Partial extraction; runtime integration and public/rendered checks pending",
-    "AC20 Table A Bhimili versus Table B Bhimli spelling retained; runtime alias review deferred"
+    "AC20 Table A Bhimili versus Table B Bhimli spelling retained; runtime alias review deferred",
+    "PC7 source conflict: Table B prints47-Mandapeta while Table A gives48; displayed linkage uses Table A code48 with original retained; formal correction review pending"
   ],
   "district_rows": [
     {
@@ -217,10 +218,136 @@
       "page": 31
     },
     {
+      "code": 35,
+      "name": "Tuni",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 36,
+      "name": "Prathipadu",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 37,
+      "name": "Pithapuram",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 38,
+      "name": "Kakinada Rural",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 39,
+      "name": "Peddapuram",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 40,
+      "name": "Anaparthy",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 41,
+      "name": "Kakinada City",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 42,
+      "name": "Ramachandrapuram",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 43,
+      "name": "Mummidivaram",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 44,
+      "name": "Amalapuram (SC)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 45,
+      "name": "Razole (SC)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 46,
+      "name": "Gannavaram (SC)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 47,
+      "name": "Kothapeta",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 48,
+      "name": "Mandapeta",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 49,
+      "name": "Rajanagaram",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 50,
+      "name": "Rajahmundry City",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 51,
+      "name": "Rajahmundry Rural",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 52,
+      "name": "Jaggampeta",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
       "code": 53,
       "name": "Rampachodavaram (ST)",
       "district": "East Godavari",
       "page": 32
+    },
+    {
+      "code": 54,
+      "name": "Kovvur (SC)",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 55,
+      "name": "Nidadavole",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 66,
+      "name": "Gopalapuram (SC)",
+      "district": "West Godavari",
+      "page": 33
     }
   ],
   "pcs": [
@@ -291,6 +418,58 @@
         32,
         33,
         34
+      ],
+      "page": 39
+    },
+    {
+      "code": 6,
+      "name": "Kakinada",
+      "ac_codes": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        41,
+        52
+      ],
+      "page": 39
+    },
+    {
+      "code": 7,
+      "name": "Amalapuram (SC)",
+      "ac_codes": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "raw_ac_codes": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        47
+      ],
+      "page": 39,
+      "code_conflict": "Table B explicitly names Mandapeta but prints47; Table A gives48. Runtime uses Table A seat identity; conflicting original retained. Formal correction review pending."
+    },
+    {
+      "code": 8,
+      "name": "Rajahmundry",
+      "ac_codes": [
+        40,
+        49,
+        50,
+        51,
+        54,
+        55,
+        66
       ],
       "page": 39
     }
