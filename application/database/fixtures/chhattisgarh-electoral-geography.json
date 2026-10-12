@@ -4,7 +4,7 @@
   "source_date": "2008; exact notification date pending",
   "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial2008 Koria and Surguja historical districts with full associated PC1/4 segments; omitted seats pending",
+  "scope": "Partial2008 Koria,Surguja,Jashpur historical districts and full associated PC1,2,4 segments; other seats pending",
   "flags": [
     "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
     "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending"
@@ -80,6 +80,54 @@
       "page": 99
     },
     {
+      "code": 12,
+      "name": "Jashpur (ST)",
+      "district": "Jashpur",
+      "page": 99
+    },
+    {
+      "code": 13,
+      "name": "Kunkuri (ST)",
+      "district": "Jashpur",
+      "page": 99
+    },
+    {
+      "code": 14,
+      "name": "Pathalgaon (ST)",
+      "district": "Jashpur",
+      "page": 99
+    },
+    {
+      "code": 15,
+      "name": "Lailunga (ST)",
+      "district": "Raigarh",
+      "page": 99
+    },
+    {
+      "code": 16,
+      "name": "Raigarh",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 17,
+      "name": "Sarangarh (SC)",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 18,
+      "name": "Kharsia",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 19,
+      "name": "Dharamjaigarh (ST)",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
       "code": 20,
       "name": "Rampur (ST)",
       "district": "Korba",
@@ -128,6 +176,21 @@
         9,
         10,
         11
+      ],
+      "page": 109
+    },
+    {
+      "code": 2,
+      "name": "Raigarh (ST)",
+      "ac_codes": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
       ],
       "page": 109
     },
