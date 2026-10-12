@@ -5,7 +5,7 @@
   "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
   "pc_source_date": "2008-12-17",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
-  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete shared Ambala PC1, Kurukshetra PC2 and Karnal PC5 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
+  "coverage_note": "Partial dated ECI 2008 Haryana scope. Complete shared Ambala PC1, Kurukshetra PC2 , Karnal PC5 and Sonipat PC6 retain all Assembly members and cross-district references. Territorial reference 2004-02-15; later boundary crosswalks remain unverified.",
   "district_rows": [
     {
       "code": 1,
@@ -168,6 +168,60 @@
       "name": "Samalkha",
       "district": "Panipat",
       "page": 151
+    },
+    {
+      "code": 28,
+      "name": "Ganaur",
+      "district": "Sonipat",
+      "page": 151
+    },
+    {
+      "code": 29,
+      "name": "Rai",
+      "district": "Sonipat",
+      "page": 151
+    },
+    {
+      "code": 30,
+      "name": "Kharkhauda (SC)",
+      "district": "Sonipat",
+      "page": 151
+    },
+    {
+      "code": 31,
+      "name": "Sonipat",
+      "district": "Sonipat",
+      "page": 151
+    },
+    {
+      "code": 32,
+      "name": "Gohana",
+      "district": "Sonipat",
+      "page": 151
+    },
+    {
+      "code": 33,
+      "name": "Baroda",
+      "district": "Sonipat",
+      "page": 151
+    },
+    {
+      "code": 34,
+      "name": "Julana",
+      "district": "Jind",
+      "page": 152
+    },
+    {
+      "code": 35,
+      "name": "Safidon",
+      "district": "Jind",
+      "page": 152
+    },
+    {
+      "code": 36,
+      "name": "Jind",
+      "district": "Jind",
+      "page": 152
     }
   ],
   "pcs": [
@@ -216,6 +270,22 @@
         25,
         26,
         27
+      ],
+      "page": 158
+    },
+    {
+      "code": 6,
+      "name": "Sonipat",
+      "ac_codes": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36
       ],
       "page": 158
     }
