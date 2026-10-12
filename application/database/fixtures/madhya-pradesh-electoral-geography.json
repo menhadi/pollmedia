@@ -53,6 +53,54 @@
       "name": "Ambah (SC)",
       "district": "Morena",
       "page": 227
+    },
+    {
+      "code": 9,
+      "name": "Ater",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 10,
+      "name": "Bhind",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 11,
+      "name": "Lahar",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 12,
+      "name": "Mehgaon",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 13,
+      "name": "Gohad (SC)",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 20,
+      "name": "Sewda",
+      "district": "Datia",
+      "page": 228
+    },
+    {
+      "code": 21,
+      "name": "Bhander (SC)",
+      "district": "Datia",
+      "page": 229
+    },
+    {
+      "code": 22,
+      "name": "Datia",
+      "district": "Datia",
+      "page": 229
     }
   ],
   "pcs": [
@@ -70,7 +118,22 @@
         8
       ],
       "page": 251
+    },
+    {
+      "code": 2,
+      "name": "Bhind (SC)",
+      "ac_codes": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        20,
+        21,
+        22
+      ],
+      "page": 251
     }
   ],
-  "coverage_note": "Partial dated ECI2008 scope; Morena outside-district membership retained; current crosswalk and source boundary editions remain unverified."
+  "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
 }
