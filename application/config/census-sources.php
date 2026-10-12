@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-dhemaji-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Dhemaji Census 2011 — rural village PCA',
+        'sheet' => 'EB-1809',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6499/download/9576/DDW_PCA1809_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6499',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-kokrajhar-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Kokrajhar Census 2011 — rural village PCA',
