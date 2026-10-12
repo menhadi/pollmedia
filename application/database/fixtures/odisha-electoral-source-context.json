@@ -10,7 +10,7 @@
     "sha256": "75bd6af8f2fce000157768c678dd73318a8a9a29821b29052c3882cb731a0089"
   },
   "exceptions": [
-    "AC 132 GOPALPUR is present under GANJAM in the district table, but omitted from the reviewed PC list. Its PC association is left unavailable.",
+    "Original reviewed PC list omitted AC132; its PC20 association is supplied separately by the CEO Berhampur map citing the 15 December 2006 delimitation order.",
     "District grouping and PC membership are separately sourced; current legal boundary equivalence is not certified."
   ],
   "districts": [
@@ -1265,7 +1265,8 @@
       "name": "GOPALPUR",
       "reservation": "GEN",
       "district": "GANJAM",
-      "pc": null
+      "pc": 20,
+      "pc_source": "supplemental_pc_source"
     },
     {
       "number": 133,
@@ -1626,6 +1627,7 @@
       "name": "Berhampur",
       "acs": [
         127,
+        132,
         133,
         134,
         135,
@@ -1646,5 +1648,11 @@
         145
       ]
     }
-  ]
+  ],
+  "supplemental_pc_source": {
+    "url": "https://ceoodisha.nic.in/pcmaps/BERHAMPUR.pdf",
+    "edition": "CEO / ORSAC map citing Delimitation Commission order dated 15 December 2006; publication date unprinted",
+    "sha256": "5e5899fe08bfedaa587c93130992f2a5e804ab819a36dc3b4b5ead51da688480",
+    "scope": "AC 132 Gopalpur association with PC 20 Berhampur; no village-map correspondence asserted"
+  }
 }
