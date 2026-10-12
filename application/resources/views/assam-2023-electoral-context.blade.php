@@ -5,6 +5,9 @@
     if ($district['slug'] === 'sribhumi') {
         $candidateHeading = 'KARIMGANJ';
     }
+    if ($district['slug'] === 'sivasagar') {
+        $candidateHeading = 'SIBSAGAR';
+    }
     $initialHeading = in_array($candidateHeading, $electoralHeadings, true) ? $candidateHeading : 'all';
     $electoralAcs = collect($electoralSource['acs'])->keyBy('code');
     $districtAcs = $initialHeading === 'all' ? collect() : $electoralAcs->where('source_district', $initialHeading);
@@ -15,7 +18,10 @@
 @if($initialHeading !== 'all')
 <div data-district-electoral-summary="{{ $initialHeading }}"><h3>{{ $initialHeading }} · 2023 electoral district heading</h3>
 <p>{{ $districtAcs->count() }} ACs under this heading, associated with {{ $districtPcs->count() }} unique PCs. Their full membership is expanded below, including ACs from other district headings.</p>
-<p class="notice">Shown by matching source name{{ $district['slug'] === 'sribhumi' ? ' through the verified Karimganj–Sribhumi rename' : '' }}. This is dated electoral context; it does not certify that these constituencies cover the village shapes or newer district outline.</p></div>
+@if($district['slug'] === 'sivasagar')
+<p><a href="https://sivasagar.assam.gov.in/about-district/district-glance">Sivasagar district administration’s profile</a> also uses Sibsagar for the district. The 2023 ECI heading SIBSAGAR is retained below; this name reference does not establish equal boundary extents.</p>
+@endif
+<p class="notice">Shown by matching source name{{ $district['slug'] === 'sribhumi' ? ' through the verified Karimganj–Sribhumi rename' : ($district['slug'] === 'sivasagar' ? ' using the official Sivasagar/Sibsagar name reference' : '') }}. This is dated electoral context; it does not certify that these constituencies cover the village shapes or newer district outline.</p></div>
 @else
 <p class="notice">No exact 2023 district heading is matched to this map’s source name. Choose the dated heading below; no constituency membership has been inferred for this map.</p>
 @endif
