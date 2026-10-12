@@ -142,7 +142,30 @@
         "Accepted map Census/LGD links pending",
         "Historical rows retain source geography; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/099/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/099/dashboard",
+      "electoral_evidence": {
+        "district_ac_pages": [
+          351
+        ],
+        "outside_ac_pages": [
+          351,
+          352
+        ],
+        "pc_page": 366,
+        "visually_audited": true,
+        "district_ac_codes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "shared_pcs": [
+          1,
+          2
+        ]
+      }
     },
     {
       "district_code": "100",
@@ -4633,23 +4656,25 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T06:33:20.688048+00:00",
-    "action": "Madhya Pradesh50 district breadth scope handled; Rajasthan source download partial at45s timeout",
-    "next_action": "Resume RAJASTHAN.zip from62265475 bytes; verify full ZIP/hash before source use, then audit Ganganagar099 dated ECI membership"
+    "checked_at": "2026-10-12T06:36:02.031442+00:00",
+    "observed_live_head": "450262e1a3cbba412ea383676e2300207622d5e7",
+    "action": "Rajasthan archive full ZIP/hash verified; Ganganagar dated membership visually audited351/352/366",
+    "next_action": "Prepare Ganganagar099 source map and Rajasthan district/PC/AC foundation; shared PC1/2 retain Hanumangarh/Bikaner membership"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
     "soi_download_url": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
-    "soi_status": "Partial download; integrity not verified; resume required",
+    "soi_status": "Downloaded, complete ZIP integrity verified",
     "electoral_source": {
       "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
       "source_date": "2008-12-17",
       "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69"
     },
     "soi_acquisition": {
-      "downloaded_bytes": 62265475,
-      "expected_http_bytes": 91661022,
-      "zip_integrity": "Pending, partial file must not be used"
+      "size": 91661022,
+      "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+      "zip_integrity": "Passed all entries",
+      "retrieved_at": "2026-10-12T06:36:02.031442+00:00"
     }
   }
 }
