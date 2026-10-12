@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-rewari-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Rewari Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6276/download/9353/DDW_PCA0617_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6276',
+        'format' => 'xlsx', 'sheet' => 'EB-0617',
+    ],
     'jammu-kashmir-kupwara-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Kupwara Census 2011 — rural village PCA',
