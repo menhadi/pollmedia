@@ -959,6 +959,54 @@
       "name": "Sanwer (SC)",
       "district": "Indore",
       "page": 248
+    },
+    {
+      "code": 183,
+      "name": "Maheshwar (SC)",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 184,
+      "name": "Kasrawad",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 185,
+      "name": "Khargone",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 186,
+      "name": "Bhagwanpura (ST)",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 187,
+      "name": "Sendhawa (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 188,
+      "name": "Rajpur (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 189,
+      "name": "Pansemal (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 190,
+      "name": "Badwani (ST)",
+      "district": "Barwani",
+      "page": 246
     }
   ],
   "pcs": [
@@ -1258,6 +1306,21 @@
         208,
         210,
         211
+      ],
+      "page": 253
+    },
+    {
+      "code": 27,
+      "name": "Khargone (ST)",
+      "ac_codes": [
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190
       ],
       "page": 253
     }
