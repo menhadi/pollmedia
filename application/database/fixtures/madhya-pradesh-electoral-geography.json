@@ -1103,6 +1103,54 @@
       "name": "Pipariya (SC)",
       "district": "Hoshangabad",
       "page": 240
+    },
+    {
+      "code": 129,
+      "name": "Multai",
+      "district": "Betul",
+      "page": 239
+    },
+    {
+      "code": 130,
+      "name": "Amla (SC)",
+      "district": "Betul",
+      "page": 239
+    },
+    {
+      "code": 131,
+      "name": "Betul",
+      "district": "Betul",
+      "page": 239
+    },
+    {
+      "code": 132,
+      "name": "Ghoradongri (ST)",
+      "district": "Betul",
+      "page": 240
+    },
+    {
+      "code": 133,
+      "name": "Bhainsdehi (ST)",
+      "district": "Betul",
+      "page": 240
+    },
+    {
+      "code": 134,
+      "name": "Timarni (ST)",
+      "district": "Harda",
+      "page": 240
+    },
+    {
+      "code": 135,
+      "name": "Harda",
+      "district": "Harda",
+      "page": 240
+    },
+    {
+      "code": 176,
+      "name": "Harsud (ST)",
+      "district": "Khandwa",
+      "page": 244
     }
   ],
   "pcs": [
@@ -1449,6 +1497,21 @@
         140
       ],
       "page": 252
+    },
+    {
+      "code": 29,
+      "name": "Betul (ST)",
+      "ac_codes": [
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        176
+      ],
+      "page": 253
     }
   ],
   "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
