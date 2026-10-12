@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'assam-dibrugarh-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Dibrugarh Census 2011 — rural village PCA',
+        'sheet' => 'EB-1811',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6501/download/9578/DDW_PCA1811_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6501',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'india-decadal-1901-2011-xls' => [
         'name' => 'India A-02 decadal population 1901–2011 (2011 jurisdictions)',
         'url' => 'https://censusindia.gov.in/nada/index.php/catalog/43333/download/47001/00%20A%202-India.xls',
