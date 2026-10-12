@@ -4,13 +4,14 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 Adilabad, Nizamabad, Karimnagar and Medak historical districts; complete associated PC1-6 segments; omitted seats pending",
+  "scope": "Partial dated2014 Adilabad, Nizamabad, Karimnagar, Medak and Hyderabad historical districts; complete associated PC1-9 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
     "Other2014 PC source code conflicts pending extraction; no silent recoding",
     "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified",
-    "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending"
+    "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending",
+    "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending"
   ],
   "district_rows": [
     {
@@ -264,6 +265,138 @@
       "name": "Gajwel",
       "district": "Medak",
       "page": 42
+    },
+    {
+      "code": 43,
+      "name": "Medchal",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 44,
+      "name": "Malkajgiri",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 45,
+      "name": "Quthbullapur",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 46,
+      "name": "Kukatpalle",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 47,
+      "name": "Uppal",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 49,
+      "name": "Lal Bahadur Nagar",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 57,
+      "name": "Musheerabad",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 58,
+      "name": "Malakpet",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 59,
+      "name": "Amberpet",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 60,
+      "name": "Khairatabad",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 61,
+      "name": "Jubilee Hills",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 62,
+      "name": "Sanathnagar",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 63,
+      "name": "Nampally",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 64,
+      "name": "Karwan",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 65,
+      "name": "Goshamahal",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 66,
+      "name": "Charminar",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 67,
+      "name": "Chandrayangutta",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 68,
+      "name": "Yakutpura",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 69,
+      "name": "Bahadurpura",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 70,
+      "name": "Secunderabad",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 71,
+      "name": "Secunderabad Cantt. (SC)",
+      "district": "Hyderabad",
+      "page": 44
     }
   ],
   "pcs": [
@@ -370,6 +503,68 @@
       ],
       "page": 46,
       "source_code_note": "2014 Table B printed8-14 conflicts with Table A identities. Table A names and preserved official CEO list support33,34,37,39,40,41,42. Original retained; formal source review pending."
+    },
+    {
+      "code": 7,
+      "name": "Malkajgiri",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        49,
+        71
+      ],
+      "raw_ac_codes": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed15-21 conflicts with Table A identities; Table A names and official CEO list support43,44,45,46,47,49,71. Original retained; formal review pending."
+    },
+    {
+      "code": 8,
+      "name": "Secunderabad",
+      "ac_codes": [
+        57,
+        59,
+        60,
+        61,
+        62,
+        63,
+        70
+      ],
+      "page": 46
+    },
+    {
+      "code": 9,
+      "name": "Hyderabad",
+      "ac_codes": [
+        58,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "raw_ac_codes": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed22-28 conflicts with Table A identities; Table A names and official CEO list support58,64,65,66,67,68,69. Original retained; formal review pending."
     }
   ],
   "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
