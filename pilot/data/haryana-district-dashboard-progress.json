@@ -61,7 +61,7 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/069/dashboard",
-      "workflow_status": "deployed_public_verification_pending_timeouts",
+      "workflow_status": "village_directory_and_candidate_map_navigation_verified_remaining_scope_check",
       "flags": [
         "Boundary edition unverified",
         "Source district code69 and Census069 are distinct identifiers; no accepted village join",
@@ -1464,10 +1464,10 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T14:58:36.7250156Z",
-    "live_commit": "0657db1d34f98b3fc031f5cf641497e128bd3458",
-    "action": "LIVE e800e0b imported own Panchkula Census source306 rows with0 discrepancy notes under both locks. Canonical read confirms219 villages sum248063. Own-scope database rollback snapshot SHAe2997a375b9c4126b8a7c2315ca282ec88eda7c472420be26b298aef3350a330 saved before import. Backup transfer/public checks in progress.",
-    "next_action": "Finish own backup verification and public/rendered village directory checks. Implement map-to-village navigation with explicit candidate status until source namespace crosswalk validated. Do not rerun completed import.",
+    "checked_at": "2026-10-12T15:06:08.8936196Z",
+    "live_commit": "39f450407fc4ec9537acf8da891d393aba48aa1e",
+    "action": "Deployed candidate navigation531b939 and restored missing live Panchkula map mapping39f4504 under both locks. Browser clicked PAPLOHA map shape then canonical village page789869 successfully. Candidate code/name matches explicitly unverified; duplicate/name disagreements excluded. Source import219 villages confirmed. Local backup bundles verified with isolated own bare verifier to avoid unrelated broken Codex refs.",
+    "next_action": "Verify remaining district PC/AC live membership after concurrent controller mapping was found absent. Candidate navigation is deployed and rendered; exact geometry/Census correspondence remains deferred. Continue Ambala breadth-first when essential district scope verified.",
     "context_fix": "Live f39b4a10c5af753d2b48b99fa3fa3b70bd2cf318 corrects Census lookup and district links from state08 to06. Both locks held; view cache cleared. Local bundle verified and GitHub backup exact SHA verified. Public district request timed out20s; remains pending full verification."
   },
   "source_inventory": {
