@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'haryana-bhiwani-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Haryana Bhiwani Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6272/download/9349/DDW_PCA0613_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6272',
+        'format' => 'xlsx', 'sheet' => 'EB-0613',
+    ],
     'uttarakhand-uttarkashi-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Uttarkashi Census 2011 — rural village PCA',
