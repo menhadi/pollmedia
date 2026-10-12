@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'odisha-cuttack-pca-2011-rural' => [
+        'year' => 2011,
+        'name' => 'Cuttack Census 2011 — rural village PCA',
+        'sheet' => 'EB-2112',
+        'filter_column' => 'TRU', 'filter_value' => 'Rural',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6572/download/9649/DDW_PCA2112_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6572',
+        'format' => 'xlsx',
+        'scope_note' => 'Census 2011 rural records only. No correspondence to newer source map boundaries or LGD codes is established.',
+    ],
     'assam-bongaigaon-pca-2011-rural' => [
         'year' => 2011,
         'name' => 'Bongaigaon Census 2011 — rural village PCA',
