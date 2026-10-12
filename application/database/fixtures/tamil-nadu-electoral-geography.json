@@ -9,7 +9,7 @@
   "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
   "state": "Tamil Nadu",
-  "scope": "Partial district extraction through Thoothukkudi with complete associated PC segments; remaining districts pending",
+  "scope": "Partial district extraction through Tirunelveli with complete associated PC segments; remaining districts pending",
   "district_rows": [
     {
       "code": 1,
@@ -1250,6 +1250,42 @@
       "name": "Tenkasi",
       "district": "Tirunelveli",
       "page": 444
+    },
+    {
+      "code": 223,
+      "name": "Alangulam",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 224,
+      "name": "Tirunelveli",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 225,
+      "name": "Ambasamudram",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 226,
+      "name": "Palayamkottai",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 227,
+      "name": "Nanguneri",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 228,
+      "name": "Radhapuram",
+      "district": "Tirunelveli",
+      "page": 445
     }
   ],
   "pcs": [
@@ -1692,6 +1728,19 @@
         220,
         221,
         222
+      ],
+      "page": 449
+    },
+    {
+      "code": 38,
+      "name": "Tirunelveli",
+      "ac_codes": [
+        223,
+        224,
+        225,
+        226,
+        227,
+        228
       ],
       "page": 449
     }
