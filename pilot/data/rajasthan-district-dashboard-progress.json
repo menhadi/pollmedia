@@ -5615,14 +5615,49 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "source_map_prepared_not_deployed",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted map Census/LGD links pending",
         "Historical rows retain source geography; later splits not backcast"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/08/125/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/08/125/dashboard",
+      "status": "source_map_prepared_not_deployed",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
+        "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1547
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "Census name Banswara retained; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "map_sha256": "c6fc32f9ba47d3949f27e4b002481d11a827832a7faa9ebd99842f46ed8a21e9",
+      "electoral_evidence": {
+        "shared_pc_codes": [
+          20
+        ],
+        "pdf_pages": [
+          363,
+          367
+        ],
+        "visually_audited": true,
+        "district_ac_codes": [
+          162,
+          163,
+          164,
+          165,
+          166
+        ],
+        "note": "Dated PC20 retains outside-district Dungarpur AC158,160,161;2004 territorial reference/current crosswalk unverified",
+        "source_date": "2008-12-17"
+      }
     },
     {
       "district_code": "126",
@@ -6473,10 +6508,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T13:27:15.4206923+00:00",
+    "checked_at": "2026-10-12T18:57:15.4206923+05:30",
     "live_commit": "07f8b6654f1cdd85e6d9e037816a901265d4a0c3",
     "action": "Dungarpur verified; Rajasthan26 of33 handled with explicit deferred flags",
-    "next_action": "Prepare Banswara125 source map and already visually audited dated membership, then test and locked deploy"
+    "next_action": "Banswara map1547 shapes prepared; finish regression then locked narrow deployment and public verification"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
