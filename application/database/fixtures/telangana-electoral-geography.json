@@ -4,12 +4,13 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated2014 Adilabad, Nizamabad and Karimnagar historical districts; complete associated PC1-5 segments; omitted seats pending",
+  "scope": "Partial dated2014 Adilabad, Nizamabad, Karimnagar and Medak historical districts; complete associated PC1-6 segments; omitted seats pending",
   "flags": [
     "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
     "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
     "Other2014 PC source code conflicts pending extraction; no silent recoding",
-    "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified"
+    "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified",
+    "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending"
   ],
   "district_rows": [
     {
@@ -205,6 +206,18 @@
       "page": 41
     },
     {
+      "code": 33,
+      "name": "Siddipet",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 34,
+      "name": "Medak",
+      "district": "Medak",
+      "page": 41
+    },
+    {
       "code": 35,
       "name": "Narayankhed",
       "district": "Medak",
@@ -217,8 +230,38 @@
       "page": 41
     },
     {
+      "code": 37,
+      "name": "Narsapur",
+      "district": "Medak",
+      "page": 42
+    },
+    {
       "code": 38,
       "name": "Zahirabad (SC)",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 39,
+      "name": "Sangareddy",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 40,
+      "name": "Patancheru",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 41,
+      "name": "Dubbak",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 42,
+      "name": "Gajwel",
       "district": "Medak",
       "page": 42
     }
@@ -303,6 +346,30 @@
         38
       ],
       "page": 46
+    },
+    {
+      "code": 6,
+      "name": "Medak",
+      "ac_codes": [
+        33,
+        34,
+        37,
+        39,
+        40,
+        41,
+        42
+      ],
+      "raw_ac_codes": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed8-14 conflicts with Table A identities. Table A names and preserved official CEO list support33,34,37,39,40,41,42. Original retained; formal source review pending."
     }
   ],
   "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
