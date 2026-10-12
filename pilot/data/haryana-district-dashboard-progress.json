@@ -256,13 +256,23 @@
         "flags": []
       },
       "dashboard_url": "https://pollmedia.org/india/districts/06/071/dashboard",
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "local_map_prepared_live_deployment_pending",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
         "Accepted Census/LGD links pending",
         "Historical source geography retained; later splits not backcast"
-      ]
+      ],
+      "map_preparation": {
+        "source_district_code": "71",
+        "ambiguous": 52,
+        "shapes": 655,
+        "unlinked": 603,
+        "accepted_links": 0,
+        "deployed": false,
+        "source_edition": "Unverified",
+        "rejected": 0
+      }
     },
     {
       "district_code": "072",
@@ -1444,9 +1454,9 @@
     "method": "Both flock -n held across fresh HEAD preflight through narrow deployment/import commit and cache clear; never bypass"
   },
   "last_run": {
-    "checked_at": "2026-10-12T11:22:16.3663988Z",
-    "live_commit": "5ae7e165bd1b0e40f87e325784199fb52bdc1396",
-    "action": "Panchkula public request still timed out20s; Ambala local map prepared from hash-validated archive:487 shapes,0 rejected,0 accepted links. No live changes.",
+    "checked_at": "2026-10-12T11:26:59.5601959Z",
+    "live_commit": "0851c9aa4ff505c617df92a828394e60cc5ece84",
+    "action": "Panchkula public request timed out20s again. Read-only server load48.86 with active PHP workers; no other-task processes changed. Yamunanagar local map prepared655 shapes,0 rejected,0 accepted links; no live deployment.",
     "next_action": "Retry bounded public actual district/PC/AC checks once dynamic site responds; do not mark complete or advance until verified. Preserve other tasks and deployment locks.",
     "context_fix": "Live f39b4a10c5af753d2b48b99fa3fa3b70bd2cf318 corrects Census lookup and district links from state08 to06. Both locks held; view cache cleared. Local bundle verified and GitHub backup exact SHA verified. Public district request timed out20s; remains pending full verification."
   },
