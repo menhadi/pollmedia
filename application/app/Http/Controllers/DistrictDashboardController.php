@@ -773,6 +773,9 @@ class DistrictDashboardController extends Controller
         if ($state === '03' && $district === '038') {
             $mapFile = 'maps/hoshiarpur-villages.geojson';
         }
+        if ($state === '03' && $district === '039') {
+            $mapFile = 'maps/sbs-nagar-villages.geojson';
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
