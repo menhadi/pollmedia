@@ -11,6 +11,12 @@
     if ($district['slug'] === 'marigaon') {
         $candidateHeading = 'MORIGAON';
     }
+    if ($district['slug'] === 'kamrup-metro') {
+        $candidateHeading = 'KAMRUP (METROPOLITIAN)';
+    }
+    if ($district['slug'] === 'south-salmara-mancachar') {
+        $candidateHeading = 'SOUTH SALMARA';
+    }
     $initialHeading = in_array($candidateHeading, $electoralHeadings, true) ? $candidateHeading : 'all';
     $electoralAcs = collect($electoralSource['acs'])->keyBy('code');
     $districtAcs = $initialHeading === 'all' ? collect() : $electoralAcs->where('source_district', $initialHeading);
@@ -27,7 +33,13 @@
 @if($district['slug'] === 'marigaon')
 <p>The <a href="https://fcsca.assam.gov.in/about-us/detail/district-officials-of-fpdca-department">Assam government district directory</a> lists MARIGAON and links it to the Morigaon district administration. The ECI 2023 MORIGAON heading is retained here; this identifies a name reference, not equal boundary extents.</p>
 @endif
-<p class="notice">Shown by matching source name{{ $district['slug'] === 'sribhumi' ? ' through the verified Karimganj–Sribhumi rename' : ($district['slug'] === 'sivasagar' ? ' using the official Sivasagar/Sibsagar name reference' : ($district['slug'] === 'marigaon' ? ' using the official Marigaon/Morigaon directory reference' : '')) }}. This is dated electoral context; it does not certify that these constituencies cover the village shapes or newer district outline.</p></div>
+@if($district['slug'] === 'kamrup-metro')
+<p>The official district profile uses Kamrup Metropolitan and Kamrup (Metro). The original ECI spelling KAMRUP (METROPOLITIAN) is retained below. <a href="https://kamrupmetro.assam.gov.in/about-us/about-district">Official district profile</a>. This provides dated context, not matching map extents.</p>
+@endif
+@if($district['slug'] === 'south-salmara-mancachar')
+<p>The district profile lists AC11 Mankachar; the 2023 ECI order places that AC under SOUTH SALMARA and in PC2 Dhubri. The profile page shows an update date of 24 June 2024. <a href="https://southsalmaramankachar.assam.gov.in/about-us/district-profile">Official district profile</a>. This provides dated context, not matching map extents.</p>
+@endif
+<p class="notice">The default selection uses an exact source name or the documented official reference above. This is dated electoral context; it does not certify that these constituencies cover the village shapes or newer district outline.</p></div>
 @else
 <p class="notice">No exact 2023 district heading is matched to this map’s source name. Choose the dated heading below; no constituency membership has been inferred for this map.</p>
 @endif
