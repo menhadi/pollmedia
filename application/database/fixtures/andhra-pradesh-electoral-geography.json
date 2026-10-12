@@ -4,7 +4,7 @@
   "source_date": "2014-03-01",
   "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
   "territorial_reference_date": "2004-02-15",
-  "scope": "Partial dated 2014 schedule: Srikakulam and Vizianagaram district rows, complete segments of associated PCs1-4; omitted seats pending, not absent",
+  "scope": "Partial dated 2014 schedule: Srikakulam, Vizianagaram and Visakhapatnam district rows with complete associated PCs1-5; omitted seats pending, not absent",
   "flags": [
     "Historical district references retained; current/Census/SOI boundary correspondence unverified",
     "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
@@ -163,6 +163,18 @@
       "page": 31
     },
     {
+      "code": 26,
+      "name": "Chodavaram",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 27,
+      "name": "Madugula",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
       "code": 28,
       "name": "Araku Valley (ST)",
       "district": "Visakhapatnam",
@@ -171,6 +183,36 @@
     {
       "code": 29,
       "name": "Paderu (ST)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 30,
+      "name": "Anakapalle",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 31,
+      "name": "Pendurthi",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 32,
+      "name": "Yelamanchili",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 33,
+      "name": "Payakaraopet (SC)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 34,
+      "name": "Narsipatnam",
       "district": "Visakhapatnam",
       "page": 31
     },
@@ -235,6 +277,20 @@
         23,
         24,
         25
+      ],
+      "page": 39
+    },
+    {
+      "code": 5,
+      "name": "Anakapalle",
+      "ac_codes": [
+        26,
+        27,
+        30,
+        31,
+        32,
+        33,
+        34
       ],
       "page": 39
     }
