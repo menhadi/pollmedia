@@ -1,6 +1,6 @@
 {
   "state": "West Bengal",
-  "coverage": "Thirty-six complete PC segment lists;remaining state membership pending",
+  "coverage": "Thirty-eight complete PC segment lists;remaining state membership pending",
   "district_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "pc_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
   "district_source_date": "2024 parliamentary administrative list; boundary edition unverified",
@@ -1851,6 +1851,132 @@
       "source_district_name": "HOWRAH",
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "reservation_note": "AC suffix absent;not inferred"
+    },
+    {
+      "code": 149,
+      "name": "Kasba",
+      "district": "South Twenty Four Parganas",
+      "source_district_name": "SOUTH 24 PARGANAS",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 153,
+      "name": "Behala Purba",
+      "district": "South Twenty Four Parganas",
+      "source_district_name": "SOUTH 24 PARGANAS",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 154,
+      "name": "Behala Paschim",
+      "district": "South Twenty Four Parganas",
+      "source_district_name": "SOUTH 24 PARGANAS",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 158,
+      "name": "Kolkata Port",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA SOUTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 159,
+      "name": "Bhabanipur",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA SOUTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 160,
+      "name": "Rashbehari",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA SOUTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 161,
+      "name": "Ballygunge",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA SOUTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 162,
+      "name": "Chowrangee",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 163,
+      "name": "Entally",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 164,
+      "name": "Beleghata",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 165,
+      "name": "Jorasanko",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 166,
+      "name": "Shyampukur",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 167,
+      "name": "Maniktola",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
+    },
+    {
+      "code": 168,
+      "name": "Kashipur-Belgachhia",
+      "district": "Kolkata",
+      "source_district_name": "KOLKATA NORTH",
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "reservation_note": "AC suffix absent;not inferred",
+      "source_note": "CEO electoral administration labels retained;Census district boundary correspondence unverified"
     }
   ],
   "pcs": [
@@ -2425,6 +2551,38 @@
         180,
         181,
         182
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 23,
+      "name": "Kolkata Dakshin",
+      "ac_codes": [
+        149,
+        153,
+        154,
+        158,
+        159,
+        160,
+        161
+      ],
+      "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
+      "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
+      "source_period": "2024 parliamentary administrative list; boundary edition unverified"
+    },
+    {
+      "code": 24,
+      "name": "Kolkata Uttar",
+      "ac_codes": [
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168
       ],
       "source_url": "https://ceowestbengal.wb.gov.in/Downloads/Election/GE2024/Phasewise_PCwise_Elector_Polling%20Station_PE2024.pdf",
       "source_sha256": "8e16dcd4243767f16ab151b4e5a4cc53639edf40c9683d297db2bed42bda34d6",
