@@ -1,0 +1,301 @@
+{
+  "districts": [
+    {
+      "source_name": "South Salmara Mancachar",
+      "slug": "south-salmara-mancachar",
+      "file": "maps/assam-source-villages/south-salmara-mancachar.geojson",
+      "features": 315,
+      "invalid_retained": 0,
+      "sha256": "1cd8262f3c3c826f5411a033b422dfa52c3299a2d977d61b38ebb029bbe16681",
+      "bytes": 415275
+    },
+    {
+      "source_name": "Kokrajhar",
+      "slug": "kokrajhar",
+      "file": "maps/assam-source-villages/kokrajhar.geojson",
+      "features": 1076,
+      "invalid_retained": 0,
+      "sha256": "5adc6f7e9f20cd1afae514ca75bb33ee059282e777a9d62fa928180bf8cf0253",
+      "bytes": 1223257
+    },
+    {
+      "source_name": "Hailakandi",
+      "slug": "hailakandi",
+      "file": "maps/assam-source-villages/hailakandi.geojson",
+      "features": 337,
+      "invalid_retained": 0,
+      "sha256": "cea8f9f12676de4ec5661fda4ae778fe62010a26d4bd934040c3a9de7a894065",
+      "bytes": 540963
+    },
+    {
+      "source_name": "Majuli",
+      "slug": "majuli",
+      "file": "maps/assam-source-villages/majuli.geojson",
+      "features": 249,
+      "invalid_retained": 1,
+      "sha256": "0696865e9d8950ff73eb715b0686e37785d361b7e66a927fe98ca7d8e0dc205c",
+      "bytes": 224953
+    },
+    {
+      "source_name": "Baksa",
+      "slug": "baksa",
+      "file": "maps/assam-source-villages/baksa.geojson",
+      "features": 695,
+      "invalid_retained": 0,
+      "sha256": "61349b482b1ae55eaecbecd8e022ba83c6dc81414eab6bc72249ae04ed887952",
+      "bytes": 613790
+    },
+    {
+      "source_name": "Karimganj",
+      "slug": "karimganj",
+      "file": "maps/assam-source-villages/karimganj.geojson",
+      "features": 950,
+      "invalid_retained": 0,
+      "sha256": "ee8f61ed1ce2d8a772038b01ba14dbb9f031b87853f1a05904abf1bbd2bac424",
+      "bytes": 969452
+    },
+    {
+      "source_name": "Dhemaji",
+      "slug": "dhemaji",
+      "file": "maps/assam-source-villages/dhemaji.geojson",
+      "features": 1323,
+      "invalid_retained": 1,
+      "sha256": "c1e0f98d7e108f971104c2a5ef9f0bb8fead5ea089455d4028819159a809b986",
+      "bytes": 1215525
+    },
+    {
+      "source_name": "Cachar",
+      "slug": "cachar",
+      "file": "maps/assam-source-villages/cachar.geojson",
+      "features": 1066,
+      "invalid_retained": 1,
+      "sha256": "6eea78de52d3e1712b91b5389fac24dd97b7a119e7791318a22825969a498588",
+      "bytes": 1749157
+    },
+    {
+      "source_name": "Dima Hasao",
+      "slug": "dima-hasao",
+      "file": "maps/assam-source-villages/dima-hasao.geojson",
+      "features": 702,
+      "invalid_retained": 0,
+      "sha256": "9e8831ab6d87a360147f9f9ee6bed9d74a8bf9fd87d5d049d0792372beb76370",
+      "bytes": 1477972
+    },
+    {
+      "source_name": "Dibrugarh",
+      "slug": "dibrugarh",
+      "file": "maps/assam-source-villages/dibrugarh.geojson",
+      "features": 1367,
+      "invalid_retained": 0,
+      "sha256": "634d18cc9fc03d4f0a3d41f506a3eeb89a99472749e622d0b335fe859dceb501",
+      "bytes": 1489693
+    },
+    {
+      "source_name": "Kamrup",
+      "slug": "kamrup",
+      "file": "maps/assam-source-villages/kamrup.geojson",
+      "features": 1097,
+      "invalid_retained": 0,
+      "sha256": "b1d932f977273b940235143cd036ea075ff0771b6dc22c5b952e7d5a20de5910",
+      "bytes": 1495369
+    },
+    {
+      "source_name": "Golaghat",
+      "slug": "golaghat",
+      "file": "maps/assam-source-villages/golaghat.geojson",
+      "features": 1126,
+      "invalid_retained": 0,
+      "sha256": "09295e5084f2ce7cf6c1f6bd1f16b511f0d7056884102af33e006bf9e594782e",
+      "bytes": 1637989
+    },
+    {
+      "source_name": "Goalpara",
+      "slug": "goalpara",
+      "file": "maps/assam-source-villages/goalpara.geojson",
+      "features": 840,
+      "invalid_retained": 0,
+      "sha256": "ec286f231ca38f15b34fc80db602f4a73709a480a90a42decd703a6539662b38",
+      "bytes": 919525
+    },
+    {
+      "source_name": "Tinsukia",
+      "slug": "tinsukia",
+      "file": "maps/assam-source-villages/tinsukia.geojson",
+      "features": 1201,
+      "invalid_retained": 1,
+      "sha256": "4455c89489c2c8a9a8223430c736d8c34c3e6963155f4044c538b9b9026dc7d7",
+      "bytes": 1354873
+    },
+    {
+      "source_name": "Nagaon",
+      "slug": "nagaon",
+      "file": "maps/assam-source-villages/nagaon.geojson",
+      "features": 1026,
+      "invalid_retained": 0,
+      "sha256": "1c0239fb8c1bc2586335b79e2d9b343ad4c0cfd76c2dd19fb93473083db6f0c8",
+      "bytes": 1522882
+    },
+    {
+      "source_name": "Dhubri",
+      "slug": "dhubri",
+      "file": "maps/assam-source-villages/dhubri.geojson",
+      "features": 786,
+      "invalid_retained": 0,
+      "sha256": "1fdbc347996661c7731bc4e88e043439528ef1120ef36cfc307e7bc3207925ec",
+      "bytes": 931036
+    },
+    {
+      "source_name": "Udalguri",
+      "slug": "udalguri",
+      "file": "maps/assam-source-villages/udalguri.geojson",
+      "features": 804,
+      "invalid_retained": 0,
+      "sha256": "98fb9416e2714dbff04db85cc5862d3c54c998b27b2c5eba7aa964ca5673478c",
+      "bytes": 696535
+    },
+    {
+      "source_name": "Karbi Anglong",
+      "slug": "karbi-anglong",
+      "file": "maps/assam-source-villages/karbi-anglong.geojson",
+      "features": 2277,
+      "invalid_retained": 3,
+      "sha256": "b8429b6f48b4de44253b5beef33a0a11ffc394dc75e3ad2c5008a12f75a8b77d",
+      "bytes": 3776116
+    },
+    {
+      "source_name": "Barpeta",
+      "slug": "barpeta",
+      "file": "maps/assam-source-villages/barpeta.geojson",
+      "features": 846,
+      "invalid_retained": 0,
+      "sha256": "187a61cb09da47ad4a8c1463601a56185479da1b8bb47d94a38424d6eeae5c3e",
+      "bytes": 1040986
+    },
+    {
+      "source_name": "Chirang",
+      "slug": "chirang",
+      "file": "maps/assam-source-villages/chirang.geojson",
+      "features": 515,
+      "invalid_retained": 0,
+      "sha256": "1ced69871796fb3d8109783abecbd65685413ba348572962adff7978f461a409",
+      "bytes": 470704
+    },
+    {
+      "source_name": "Nalbari",
+      "slug": "nalbari",
+      "file": "maps/assam-source-villages/nalbari.geojson",
+      "features": 467,
+      "invalid_retained": 0,
+      "sha256": "29a2b71b358805c35e45e6b8f0e0ffbfdd1e10a048c8c2d10b95d11705312cb2",
+      "bytes": 559379
+    },
+    {
+      "source_name": "Hojai",
+      "slug": "hojai",
+      "file": "maps/assam-source-villages/hojai.geojson",
+      "features": 414,
+      "invalid_retained": 0,
+      "sha256": "c4c6ead9048194e52c409f52f554d5401847435fcf59c026a02b2023b9196e6c",
+      "bytes": 393386
+    },
+    {
+      "source_name": "West Karbi Anglong",
+      "slug": "west-karbi-anglong",
+      "file": "maps/assam-source-villages/west-karbi-anglong.geojson",
+      "features": 569,
+      "invalid_retained": 0,
+      "sha256": "d9d34ec9790bdac72eef08a872176769bb3ccc5497c1ee5a4215aa2992179e95",
+      "bytes": 1022608
+    },
+    {
+      "source_name": "Kamrup Metro",
+      "slug": "kamrup-metro",
+      "file": "maps/assam-source-villages/kamrup-metro.geojson",
+      "features": 228,
+      "invalid_retained": 0,
+      "sha256": "4a432cb2ac712bd5282235b64dd296fd908ab5a403ff3114135a4604622b2642",
+      "bytes": 311210
+    },
+    {
+      "source_name": "Darrang",
+      "slug": "darrang",
+      "file": "maps/assam-source-villages/darrang.geojson",
+      "features": 564,
+      "invalid_retained": 0,
+      "sha256": "2029a19fc0acd48a354587d05361346bafe4c71dce80c670fe500a5b73092b60",
+      "bytes": 527750
+    },
+    {
+      "source_name": "Marigaon",
+      "slug": "marigaon",
+      "file": "maps/assam-source-villages/marigaon.geojson",
+      "features": 641,
+      "invalid_retained": 0,
+      "sha256": "f8e2b3f1d151f84cdc1d1ac13ef5f036773d4b3432531eb15deed4d5d1c31024",
+      "bytes": 803422
+    },
+    {
+      "source_name": "Sonitpur",
+      "slug": "sonitpur",
+      "file": "maps/assam-source-villages/sonitpur.geojson",
+      "features": 1064,
+      "invalid_retained": 0,
+      "sha256": "f50f34431b57e05a5ef30eb1c7180eba540100d1873670e39a2201634ed36d00",
+      "bytes": 1139172
+    },
+    {
+      "source_name": "Biswanath",
+      "slug": "biswanath",
+      "file": "maps/assam-source-villages/biswanath.geojson",
+      "features": 841,
+      "invalid_retained": 0,
+      "sha256": "42a0e7d4d00eef124126fe1b8716238e8c135fe9e1271840ba9f6f4d5b6e0b2f",
+      "bytes": 835627
+    },
+    {
+      "source_name": "Jorhat",
+      "slug": "jorhat",
+      "file": "maps/assam-source-villages/jorhat.geojson",
+      "features": 625,
+      "invalid_retained": 0,
+      "sha256": "80af94221d573b566919f060bb9df74af8d51d7f3dcd7e4fba294ed12bd9f54f",
+      "bytes": 909971
+    },
+    {
+      "source_name": "Lakhimpur",
+      "slug": "lakhimpur",
+      "file": "maps/assam-source-villages/lakhimpur.geojson",
+      "features": 1194,
+      "invalid_retained": 0,
+      "sha256": "26a8f3f376d9605cf2cafd4acd72e2fbe6166ef75252434960d814f2454cd324",
+      "bytes": 1367072
+    },
+    {
+      "source_name": "Sivasagar",
+      "slug": "sivasagar",
+      "file": "maps/assam-source-villages/sivasagar.geojson",
+      "features": 539,
+      "invalid_retained": 0,
+      "sha256": "ebb4ada8e1860a350494e8b061157aa2cf0ff4c68ad2750673a3e2d662dabb55",
+      "bytes": 568322
+    },
+    {
+      "source_name": "Bongaigaon",
+      "slug": "bongaigaon",
+      "file": "maps/assam-source-villages/bongaigaon.geojson",
+      "features": 569,
+      "invalid_retained": 0,
+      "sha256": "99f8e6d681eed09d624766f6cf9b32d20cdd8c39f84ef8fc269f171550a5e231",
+      "bytes": 598508
+    },
+    {
+      "source_name": "Charaideo",
+      "slug": "charaideo",
+      "file": "maps/assam-source-villages/charaideo.geojson",
+      "features": 349,
+      "invalid_retained": 0,
+      "sha256": "852735a6a70c7bb4b1e9cb458d17330cf0fcede6ec6be0211c545b05f413f255",
+      "bytes": 364079
+    }
+  ]
+}
