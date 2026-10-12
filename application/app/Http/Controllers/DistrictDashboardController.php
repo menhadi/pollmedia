@@ -238,6 +238,18 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($mpDistrict, 'Madhya Pradesh');
             $mapFile = 'maps/'.strtolower($mpDistrict).'-villages.geojson';
         }
+        if ($state === '19' && in_array($district, ['329','333','336','337','338','339','340'], true)) {
+            $mapFile = match ($district) {
+                '329' => 'maps/west-bengal-koch-bihar-villages.geojson',
+                '333' => 'maps/west-bengal-murshidabad-villages.geojson',
+                '336' => 'maps/west-bengal-nadia-villages.geojson',
+                '337' => 'maps/west-bengal-north-twenty-four-parganas-villages.geojson',
+                '338' => 'maps/west-bengal-hugli-villages.geojson',
+                '339' => 'maps/west-bengal-bankura-villages.geojson',
+                '340' => 'maps/west-bengal-puruliya-villages.geojson',
+            };
+            $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'West Bengal');
+        }
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
