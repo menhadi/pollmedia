@@ -47,11 +47,7 @@
 @if($selectedCensusData)
 <h3>{{ $selectedCensusData['name'] }} · Census {{ $selectedCensusData['year'] }}</h3>
 @php($censusTotals = $selectedCensusData['totals']['Total'])
-<div class="metrics">
-@foreach(['population'=>'Population','households'=>'Households','male'=>'Male population','female'=>'Female population','literates'=>'Literate persons','workers'=>'Workers','children'=>'Children aged 0–6'] as $key=>$label)
-<article><span>{{ $label }}</span><strong>{{ ($censusTotals[$key] ?? null) === null ? 'Unavailable' : number_format($censusTotals[$key]) }}</strong><small>Census {{ $selectedCensusData['year'] }} · {{ $selectedCensusData['name'] }}</small></article>
-@endforeach
-</div>
+@include('district-dashboard-overview', ['data' => $selectedCensusData, 'total' => $censusTotals, 'display' => fn ($value, $digits = 0) => $value === null ? 'Unavailable' : number_format($value, $digits), 'share' => fn ($value, $denominator) => $value !== null && $denominator > 0 ? 100 * $value / $denominator : null])
 <h3>Census 2011 rural and urban breakdown</h3>
 <div class="table-wrap"><table><thead><tr><th>Residence</th><th>Population</th><th>Households</th><th>Literate persons</th><th>Workers</th></tr></thead><tbody>
 @foreach(['Rural', 'Urban'] as $residence)
@@ -76,9 +72,13 @@
 <p>{{ $selectedCensusData['census_village_rows'] }} published village Census rows available in the selected edition.</p>
 @foreach($selectedCensusData['census_editions'] as $edition)<p><a href="{{ $edition['source_url'] }}">{{ $edition['source_key'] }} · official source</a></p>@endforeach
 <p><a href="{{ route('district-dashboard', ['state'=>'18','district'=>$selectedCensusCode]) }}">Open the complete {{ $selectedCensusData['name'] }} Census dashboard</a></p>
+<section id="villages" class="panel"><p class="eyebrow">Published Census records</p><h2>Village directory · {{ $selectedCensusData['year'] }}</h2><p class="notice">{{ $selectedCensusData['census_village_rows'] }} published village records are available. These are Census records, not an accepted LGD directory. Map-to-Census and LGD links remain pending; map selection does not assign population.</p><label>Find a Census village<input id="village-search" type="search" maxlength="120" placeholder="Village name or Census code"></label><p id="village-results" role="status"></p><div class="table-wrap"><table id="census-villages"><thead><tr><th>Village / Census code</th><th>Population</th><th>Households</th><th>Literacy 7+</th></tr></thead><tbody>@forelse(($selectedCensusData['census_villages']??[]) as $place)<tr><td><a href="{{ route('civic.place',['record'=>$place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small></td><td>{{ ($place['population'] === null ? 'Unavailable' : number_format($place['population'])) }}</td><td>{{ ($place['households'] === null ? 'Unavailable' : number_format($place['households'])) }}</td><td>{{ ($place['literacy'] === null ? 'Unavailable' : number_format($place['literacy'], 2)) }}{{ $place['literacy']!==null?'%':'' }}</td></tr>@empty<tr data-empty><td colspan="4">Village Census records are unavailable in the selected published sources.</td></tr>@endforelse</tbody></table></div></section>
 @include('district-dashboard-history', ['data'=>$selectedCensusData, 'censusSeries'=>$selectedCensusData['history']])
 <script src="{{ asset('js/history-lines.js') }}" defer></script>
-@elseif($selectedCensusCode !== '')
-<p role="status">Published figures for that Census district selection are unavailable. Choose a district from the list.</p>
+@else
+<p role="status">No published Census district is selected. Choose a Census 2011 district above to view its separately labelled figures, directory and history.</p>
+@foreach(['census-subdistricts' => 'Subdistricts', 'census-towns' => 'Towns', 'villages' => 'Village directory', 'history' => 'History & graphs'] as $sectionId => $sectionLabel)
+<section id="{{ $sectionId }}"><h3>{{ $sectionLabel }}</h3><p>Unavailable until a published Census district is selected. No parent-district figures are assigned automatically.</p></section>
+@endforeach
 @endif
 </section>
