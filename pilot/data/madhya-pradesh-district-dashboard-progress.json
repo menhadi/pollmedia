@@ -1421,14 +1421,64 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "published_inventory_recorded_source_scope_pending",
+      "workflow_status": "deployed_canonical_public_totals_checked_detailed_audits_pending",
       "flags": [
-        "Boundary edition unverified",
-        "Electoral membership audit pending",
-        "Accepted map Census/LGD links pending",
-        "Historical rows retain source geography; later splits not backcast"
+        "1224 unlinked and94 ambiguous shapes; no population allocation",
+        "Source edition and Census boundary correspondence unverified; coverage gaps visible",
+        "Shared PCs6/7/8 preserve outside-district membership",
+        "Detailed rendered/source/election audits deferred"
       ],
-      "dashboard_url": "https://pollmedia.org/india/districts/23/425/dashboard"
+      "dashboard_url": "https://pollmedia.org/india/districts/23/425/dashboard",
+      "map_metadata": {
+        "source": "https://surveyofindia.gov.in/documents/MADHYA_PRADESH.zip",
+        "sha256": "ad0b7d2c15bf644e6a9b259be7965f82c7155179200cb99620617069f3559f86",
+        "output_crs": "EPSG:4326",
+        "simplification_metres": 15,
+        "source_edition": "Unverified",
+        "statuses": {
+          "unlinked": 1224,
+          "ambiguous": 94
+        },
+        "linked_directory_villages": 0,
+        "directory_villages_without_shape": null,
+        "rejected": [],
+        "note": "SOI CHHATARPUR label retained; Census name Chhatarpur; matching boundary editions remain unverified. Boundary edition unverified; accepted Census/LGD links pending. No population assigned to shapes. Electoral membership uses the dated ECI 2008 order; current crosswalk remains unverified."
+      },
+      "electoral_evidence": {
+        "district_ac_pages": [
+          230,
+          231,
+          232,
+          235,
+          236
+        ],
+        "pc_page": 251,
+        "visually_audited": true,
+        "district_ac_codes": [
+          48,
+          49,
+          50,
+          51,
+          52,
+          53
+        ],
+        "shared_pcs": [
+          6,
+          7,
+          8
+        ]
+      },
+      "deployment": {
+        "live_commit": "99712666ef5a465bb3f0f55fcf02569119fdf045",
+        "rollback_base": "22f34926ebfdb159497c965016a89d8c46429704",
+        "both_locks_held": true
+      },
+      "validation": {
+        "public_canonical_totals_and_shared_names": "Passed population households literates children and AC names/map URL",
+        "tests": "59 tests240 assertions",
+        "local_bundle_and_github_backup": "Verified 99712666ef5a465bb3f0f55fcf02569119fdf045",
+        "detailed_rendered_source_election_audits": "Deferred"
+      }
     },
     {
       "district_code": "426",
@@ -7319,10 +7369,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T02:40:28.812339+00:00",
-    "live_commit": "8a080bd691a92af0a1ee4f554ba1a3b02dd373f1",
-    "action": "Tikamgarh deployed; canonical public totals/shared membership and backups verified",
-    "next_action": "Continue Chhatarpur425; AC48-53 audited231/232; audit sharedPC7/PC8 complete outside-district membership before fixture use"
+    "checked_at": "2026-10-12T02:45:33.947902+00:00",
+    "live_commit": "99712666ef5a465bb3f0f55fcf02569119fdf045",
+    "action": "Chhatarpur deployed; canonical public totals/shared membership and backups verified",
+    "next_action": "Continue Panna426; AC58-60 and sharedPC8 already audited232/235/236/251; build map/integrate"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
