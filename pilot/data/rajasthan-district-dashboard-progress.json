@@ -6651,7 +6651,7 @@
           "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5"
         }
       ],
-      "workflow_status": "deployed_public_verification_pending",
+      "workflow_status": "verified_breadth_scope_with_deferred_flags",
       "flags": [
         "Boundary edition unverified",
         "Electoral membership audit pending",
@@ -6659,7 +6659,7 @@
         "Historical rows retain source geography; later splits not backcast"
       ],
       "dashboard_url": "https://pollmedia.org/india/districts/08/130/dashboard",
-      "status": "deployed_public_verification_pending",
+      "status": "verified_breadth_scope_with_deferred_flags",
       "map_metadata": {
         "source": "https://surveyofindia.gov.in/documents/RAJASTHAN.zip",
         "sha256": "dad0c70f173805f04e5726d41548477ba3373f965ade57443fb7440138081d6e",
@@ -6698,8 +6698,30 @@
       "validation": {
         "local_bundle": "Verified0657db1d34f98b3fc031f5cf641497e128bd3458",
         "github_backup": "Verified exact ls-remote0657db1d34f98b3fc031f5cf641497e128bd3458",
-        "public_verification": "Receipts acquired; actual-data checks pending",
-        "regression_tests": "59 tests240 assertions passed"
+        "public_verification": "Passed actual canonical four totals, complete PC25 AC names, PC Jhalawar-Baran and AC Jhalrapatan district context; detailed rendered audit deferred",
+        "regression_tests": "59 tests240 assertions passed",
+        "public_map_full_json_sha256": "Exact public/local bytes and1919 features passed",
+        "canonical_totals": {
+          "id": 7487,
+          "name": "Udaipur",
+          "code": "130",
+          "subdistrict_code": "00000",
+          "residence": "Total",
+          "population": 3068420,
+          "households": 623531,
+          "literates": 1582629,
+          "children": 508550,
+          "male": 1566801,
+          "female": 1501619,
+          "workers": 1365783,
+          "literacy": 61.82,
+          "male_literacy": 74.74,
+          "female_literacy": 48.45,
+          "source_row": 823,
+          "edition_id": 2,
+          "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx",
+          "flags": []
+        }
       }
     },
     {
@@ -6851,10 +6873,10 @@
     "method": "Both flock -n held from fresh HEAD preflight through narrow patch/import commit cache clearing; never bypass held lock"
   },
   "last_run": {
-    "checked_at": "2026-10-12T20:06:27.9402071+05:30",
-    "live_commit": "72e91d651e1b8c3948337dc34703067016f98f19",
-    "action": "Jhalawar deployed under both locks with verified backups",
-    "next_action": "Verify Jhalawar actual totals/full map1919 features and complete PC25 membership, PC Jhalawar-Baran and AC Jhalrapatan context"
+    "checked_at": "2026-10-12T14:51:29.4605474+00:00",
+    "live_commit": "0657db1d34f98b3fc031f5cf641497e128bd3458",
+    "action": "Jhalawar verified; Rajasthan32 of33 handled with deferred flags",
+    "next_action": "Prepare Pratapgarh131 source map; dated ECI2004 district geography predates split, so do not invent current district electoral crosswalk"
   },
   "source_inventory": {
     "soi_landing_url": "https://surveyofindia.gov.in/pages/village-boundary-data-base-of-entire-india",
