@@ -1,6 +1,13 @@
 <?php
 
 return json_decode(file_get_contents(__DIR__.'/northeast-village-census.json'), true, flags: JSON_THROW_ON_ERROR) + [
+    'chandigarh-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Chandigarh Census 2011 - district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6246/download/9323/DDW_PCA0401_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6246',
+        'format' => 'xlsx', 'sheet' => 'EB-0401',
+    ],
     'delhi-south-pca-2011' => [
         'year' => 2011,
         'name' => 'South Delhi Census 2011 — district, town, village and ward PCA',
