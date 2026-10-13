@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-mansa-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Mansa Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6238/download/9315/DDW_PCA0313_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6238',
+        'format' => 'xlsx', 'sheet' => 'EB-0313',
+    ],
     'punjab-bathinda-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Bathinda Census 2011 — district, town, village and ward PCA',
