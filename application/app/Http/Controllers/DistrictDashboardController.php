@@ -882,6 +882,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/rupnagar-villages.geojson';
         }
 
+        if ($state === '03' && $district === '052') {
+            $mapFile = 'maps/sas-nagar-villages.geojson';
+        }
+
         if ($state === '03' && in_array($district, array_map(fn ($code) => str_pad((string) $code, 3, '0', STR_PAD_LEFT), range(35, 54)), true)) {
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(trim($data['name']), 'Punjab');
         }
