@@ -1,0 +1,149 @@
+[
+  {
+    "region": "lakshadweep",
+    "district": "lakshadweep-district",
+    "name": "Minicoy CT",
+    "source_code": "627056",
+    "linked": true
+  },
+  {
+    "region": "lakshadweep",
+    "district": "lakshadweep-district",
+    "name": "Kalpeni CT",
+    "source_code": "627054",
+    "linked": true
+  },
+  {
+    "region": "lakshadweep",
+    "district": "lakshadweep-district",
+    "name": "Kavaratti CT",
+    "source_code": "627038",
+    "linked": true
+  },
+  {
+    "region": "lakshadweep",
+    "district": "lakshadweep-district",
+    "name": "Andrott CT",
+    "source_code": "627046",
+    "linked": true
+  },
+  {
+    "region": "lakshadweep",
+    "district": "lakshadweep-district",
+    "name": "Amini CT",
+    "source_code": "627030",
+    "linked": true
+  },
+  {
+    "region": "lakshadweep",
+    "district": "lakshadweep-district",
+    "name": "Kadmat CT",
+    "source_code": "627034",
+    "linked": true
+  },
+  {
+    "region": "puducherry",
+    "district": "karaikal",
+    "name": "Karaikal",
+    "source_code": "253096",
+    "linked": false
+  },
+  {
+    "region": "puducherry",
+    "district": "karaikal",
+    "name": "Thirumalairayanpattinam CT",
+    "source_code": "644995",
+    "linked": true
+  },
+  {
+    "region": "puducherry",
+    "district": "mahe",
+    "name": "Mahe",
+    "source_code": "253095",
+    "linked": false
+  },
+  {
+    "region": "puducherry",
+    "district": "pondicherry",
+    "name": "Pondicherry",
+    "source_code": "253094",
+    "linked": false
+  },
+  {
+    "region": "puducherry",
+    "district": "pondicherry",
+    "name": "Ozhukarai",
+    "source_code": "253093",
+    "linked": false
+  },
+  {
+    "region": "puducherry",
+    "district": "pondicherry",
+    "name": "Villianur CT",
+    "source_code": "644959",
+    "linked": true
+  },
+  {
+    "region": "puducherry",
+    "district": "pondicherry",
+    "name": "Kurumbapet Gp Plus Og",
+    "source_code": "804038",
+    "linked": true
+  },
+  {
+    "region": "puducherry",
+    "district": "pondicherry",
+    "name": "Ariyankuppam",
+    "source_code": "644921",
+    "linked": true
+  },
+  {
+    "region": "puducherry",
+    "district": "pondicherry",
+    "name": "Manaveli",
+    "source_code": "644922",
+    "linked": true
+  },
+  {
+    "region": "puducherry",
+    "district": "yanam",
+    "name": "Yanam",
+    "source_code": "253092",
+    "linked": false
+  },
+  {
+    "region": "andaman-nicobar",
+    "district": "north-and-middle-andaman",
+    "name": "Bakultala CT",
+    "source_code": "645439",
+    "linked": true
+  },
+  {
+    "region": "andaman-nicobar",
+    "district": "south-andamans",
+    "name": "Port Blair M Cl",
+    "source_code": "253098",
+    "linked": false
+  },
+  {
+    "region": "andaman-nicobar",
+    "district": "south-andamans",
+    "name": "Prothrapur CT",
+    "source_code": "645550",
+    "linked": true
+  },
+  {
+    "region": "andaman-nicobar",
+    "district": "south-andamans",
+    "name": "Garacharma CT",
+    "source_code": "645551",
+    "linked": true
+  },
+  {
+    "region": "andaman-nicobar",
+    "district": "south-andamans",
+    "name": "Bambooflat CT",
+    "source_code": "645516",
+    "linked": true
+  }
+]

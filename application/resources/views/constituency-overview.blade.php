@@ -11,6 +11,7 @@ $placeTrail=[['label'=>'India','url'=>route('home')],['label'=>$state,'url'=>$st
 @include('election-map',['mapKind'=>$kind,'mapStateName'=>$state,'mapSelectedName'=>$name,'mapMode'=>'focus'])
 @include('constituency-district-dashboard-context')
 @include('ut-constituency-map-context')
+@include('island-constituency-map-context')
 @include('place-history-charts')
 @php $hasSourceReportedPolled=false; @endphp
 @if($modernSeatScope ?? false)<p class="notice">This dashboard covers {{ $name }} AC {{ $rows->first()['entry']->record_code }} from 2012 onwards. Older same-name records contain distinct same-name seats and are not merged into this history. Their original source records remain available in the <a href="{{ route('elections.constituencies',['kind'=>$kind,'state'=>$state,'q'=>$name]) }}">election directory</a>. Boundary equivalence across editions is unverified.</p>@endif

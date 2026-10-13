@@ -1,0 +1,77 @@
+{
+  "region": "puducherry",
+  "label": "Puducherry",
+  "districts": [
+    {
+      "source_name": "Karaikal",
+      "slug": "karaikal",
+      "file": "maps/puducherry-source-villages/karaikal.geojson",
+      "features": 30,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "place_types": {
+        "rural": 28,
+        "urban": 2
+      },
+      "bytes": 133604,
+      "sha256": "0e2d6095de1af03582ee8a9c29beaba13b4a064dbcc9115da71d701a3f73035b",
+      "census_town_context_links": 1
+    },
+    {
+      "source_name": "Mahe",
+      "slug": "mahe",
+      "file": "maps/puducherry-source-villages/mahe.geojson",
+      "features": 1,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "place_types": {
+        "urban": 1
+      },
+      "bytes": 6263,
+      "sha256": "b9243dfeb95142dd4d2384d355623f3000723e8fcaaca249309c0de4cf339e2a",
+      "census_town_context_links": 0
+    },
+    {
+      "source_name": "Pondicherry",
+      "slug": "pondicherry",
+      "file": "maps/puducherry-source-villages/pondicherry.geojson",
+      "features": 69,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "place_types": {
+        "rural": 63,
+        "urban": 6
+      },
+      "bytes": 200862,
+      "sha256": "64071a048161639a33a3eb65c149d58135f9baf089eeb1485e6ced543943ec65",
+      "census_town_context_links": 4
+    },
+    {
+      "source_name": "Yanam",
+      "slug": "yanam",
+      "file": "maps/puducherry-source-villages/yanam.geojson",
+      "features": 1,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "place_types": {
+        "urban": 1
+      },
+      "bytes": 3222,
+      "sha256": "d1422cf10900d1570e988764657797a862e58cfab319c7f3116a091ea171fc9d",
+      "census_town_context_links": 0
+    }
+  ],
+  "excluded_records": [],
+  "metadata": {
+    "source": "https://nwdp.nwic.gov.in/dataset/village-boundary/resource/dd9cd307-f03a-49e1-8409-bad2d5568afc",
+    "archive_sha256": "9b21bec727dcda1481a84ee0ab1323f1ae6192c4d7b72ea9ac3ae3de7a8ee461",
+    "source_crs": "EPSG:7755",
+    "output_crs": "EPSG:4326",
+    "boundary_edition": "unverified; source date not established",
+    "simplification_metres": 0,
+    "geometry_repaired": false,
+    "invalid_source_ids_retained": [],
+    "census_lgd_join": "unverified",
+    "population_attributes": "withheld pending edition and correspondence checks; original archive retained"
+  }
+}

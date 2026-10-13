@@ -5,4 +5,5 @@
 @include('ladakh-source-directory')
 @include('goa-source-directory')
 @include('ut-source-directory')
+@include('island-source-directory')
 </main></body></html>

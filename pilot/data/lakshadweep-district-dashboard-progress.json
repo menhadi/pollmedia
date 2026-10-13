@@ -1,0 +1,14 @@
+{
+  "region": "lakshadweep",
+  "status": "prepared_pending_deployment",
+  "settlement_groups": 1,
+  "named_shapes": 25,
+  "excluded_unnamed": 9,
+  "invalid_geometry_retained": 0,
+  "exceptions": [
+    "Source boundary edition and Census/LGD correspondence unverified",
+    "No village-to-AC allocation inferred",
+    "Six urban code mismatches retained in island-urban-context-ledger.json"
+  ],
+  "public_visual": "pending"
+}

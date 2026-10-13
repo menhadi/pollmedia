@@ -1,0 +1,14 @@
+{
+  "region": "andaman-nicobar",
+  "status": "prepared_pending_deployment",
+  "settlement_groups": 3,
+  "named_shapes": 599,
+  "excluded_unnamed": 70,
+  "invalid_geometry_retained": 8,
+  "exceptions": [
+    "Source boundary edition and Census/LGD correspondence unverified",
+    "No village-to-AC allocation inferred",
+    "Six urban code mismatches retained in island-urban-context-ledger.json"
+  ],
+  "public_visual": "pending"
+}

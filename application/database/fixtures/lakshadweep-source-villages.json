@@ -1,0 +1,80 @@
+{
+  "region": "lakshadweep",
+  "label": "Lakshadweep",
+  "districts": [
+    {
+      "source_name": "Lakshadweep District",
+      "slug": "lakshadweep-district",
+      "file": "maps/lakshadweep-source-villages/lakshadweep-district.geojson",
+      "features": 25,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "place_types": {
+        "rural": 19,
+        "urban": 6
+      },
+      "bytes": 53318,
+      "sha256": "03f09c2be0d3c5e02cf5b897f0adcad7399b57d8259919298a75047416b30def",
+      "census_town_context_links": 6
+    }
+  ],
+  "excluded_records": [
+    {
+      "index": 25,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 26,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 27,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 28,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 29,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 30,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 31,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 32,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    },
+    {
+      "index": 33,
+      "district": "Lakshadweep District",
+      "name": "Not Available"
+    }
+  ],
+  "metadata": {
+    "source": "https://nwdp.nwic.gov.in/dataset/village-boundary/resource/d9e5840a-76cc-4456-88e6-b5d5c4bbab6d",
+    "archive_sha256": "63c232564bdd3cdac4bb0c967f4b088eb470596e60bd35ef7d54d5bf125ed3fb",
+    "source_crs": "EPSG:7755",
+    "output_crs": "EPSG:4326",
+    "boundary_edition": "unverified; source date not established",
+    "simplification_metres": 0,
+    "geometry_repaired": false,
+    "invalid_source_ids_retained": [],
+    "census_lgd_join": "unverified",
+    "population_attributes": "withheld pending edition and correspondence checks; original archive retained"
+  }
+}

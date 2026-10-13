@@ -1,0 +1,419 @@
+{
+  "region": "andaman-nicobar",
+  "label": "Andaman & Nicobar Islands",
+  "districts": [
+    {
+      "source_name": "Nicobars",
+      "slug": "nicobars",
+      "file": "maps/andaman-nicobar-source-villages/nicobars.geojson",
+      "features": 171,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 6,
+      "place_types": {
+        "rural": 166,
+        "unclassified": 5
+      },
+      "bytes": 554876,
+      "sha256": "c32350c4084d56d1d1c7957000ab32b54a999d85cfbd51ddc672180869c6dc70",
+      "census_town_context_links": 0
+    },
+    {
+      "source_name": "North And Middle Andaman",
+      "slug": "north-and-middle-andaman",
+      "file": "maps/andaman-nicobar-source-villages/north-and-middle-andaman.geojson",
+      "features": 265,
+      "invalid_retained": 6,
+      "ambiguous_shapes": 37,
+      "place_types": {
+        "rural": 263,
+        "unclassified": 1,
+        "urban": 1
+      },
+      "bytes": 2653008,
+      "sha256": "eeb2be43b813f568edd7c9c2ef7a85a50891d7e70512dac53467a9f3424388b1",
+      "census_town_context_links": 1
+    },
+    {
+      "source_name": "South Andamans",
+      "slug": "south-andamans",
+      "file": "maps/andaman-nicobar-source-villages/south-andamans.geojson",
+      "features": 163,
+      "invalid_retained": 2,
+      "ambiguous_shapes": 31,
+      "place_types": {
+        "rural": 159,
+        "urban": 4
+      },
+      "bytes": 1214378,
+      "sha256": "a71ae944909baa97e6e6f2904b1eb85d411ce1a56c3d2ab72ba7df5aeb77e3a7",
+      "census_town_context_links": 3
+    }
+  ],
+  "excluded_records": [
+    {
+      "index": 21,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 23,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 83,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 160,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 161,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 162,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 233,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 235,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 238,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 240,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 241,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 249,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 251,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 252,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 253,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 260,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 261,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 269,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 271,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 273,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 274,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 276,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 280,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 282,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 297,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 298,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 308,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 322,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 323,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 326,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 328,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 329,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 344,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 379,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 387,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 388,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 440,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 441,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 443,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 458,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 480,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 487,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 488,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 500,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 502,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 504,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 514,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 538,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 539,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 541,
+      "district": "South Andamans",
+      "name": "Data Partially Available"
+    },
+    {
+      "index": 542,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 570,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 571,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 596,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 600,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 609,
+      "district": "Nicobars",
+      "name": "Not Available"
+    },
+    {
+      "index": 618,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 626,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 628,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 629,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 636,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 638,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 639,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 640,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 646,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 650,
+      "district": "South Andamans",
+      "name": "Not Available"
+    },
+    {
+      "index": 651,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 655,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 656,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    },
+    {
+      "index": 659,
+      "district": "North And Middle Andaman",
+      "name": "Not Available"
+    }
+  ],
+  "metadata": {
+    "source": "https://nwdp.nwic.gov.in/dataset/village-boundary/resource/8ecd1271-1838-4413-9d9a-599b122a2e8a",
+    "archive_sha256": "7cf648fe85c12295eb4b0d2e9a5c53634dd0e7f64cb5cf1b0da56a25b25dfd10",
+    "source_crs": "EPSG:7755",
+    "output_crs": "EPSG:4326",
+    "boundary_edition": "unverified; source date not established",
+    "simplification_metres": 0,
+    "geometry_repaired": false,
+    "invalid_source_ids_retained": [
+      "226",
+      "359"
+    ],
+    "census_lgd_join": "unverified",
+    "population_attributes": "withheld pending edition and correspondence checks; original archive retained"
+  }
+}

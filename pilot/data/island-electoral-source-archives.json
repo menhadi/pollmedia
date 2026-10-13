@@ -1,0 +1,20 @@
+[
+  {
+    "file": "eci-2024-press-note.pdf",
+    "url": "https://elections24.eci.gov.in/docs/press-note-no-23.pdf",
+    "sha256": "029eee7d32cebd9f8c822830052ad8115f474269eb30dfa4c31f113f9b8f8066",
+    "bytes": 34878070
+  },
+  {
+    "file": "puducherry-ac-districts.html",
+    "url": "https://ceopuducherry.py.gov.in/ac_wise_electrol.php",
+    "sha256": "36ca5104dbd7caa19a0030f28379f4889c945e7671968eec3d7560ea2fd57ae3",
+    "bytes": 38468
+  },
+  {
+    "file": "puducherry-maps.html",
+    "url": "https://ceopuducherry.py.gov.in/maps.php",
+    "sha256": "7ace0e0688c917cda66c308d569c6865779bfb3b1825f7d819c2ea6e44e7e96a",
+    "bytes": 33267
+  }
+]
