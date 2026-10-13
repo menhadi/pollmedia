@@ -858,6 +858,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/faridkot-villages.geojson';
         }
 
+        if ($state === '03' && $district === '046') {
+            $mapFile = 'maps/bathinda-villages.geojson';
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
