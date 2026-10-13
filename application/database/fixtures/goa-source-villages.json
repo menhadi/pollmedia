@@ -1,0 +1,40 @@
+{
+  "districts": [
+    {
+      "source_name": "North Goa",
+      "slug": "north-goa",
+      "file": "maps/goa-source-villages/north-goa.geojson",
+      "features": 248,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "bytes": 1252239,
+      "sha256": "57869f20029789293bafef77bc4e6555890a2c87cffffdaa4cdcbd43f6535b39"
+    },
+    {
+      "source_name": "South Goa",
+      "slug": "south-goa",
+      "file": "maps/goa-source-villages/south-goa.geojson",
+      "features": 162,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 0,
+      "bytes": 1266686,
+      "sha256": "a95e934056a67cd707ee40e4cda9e1e23f47de8800f5a3e4e6aef6584c08431a"
+    }
+  ],
+  "excluded_records": [
+    {
+      "index": 311,
+      "district": "South Goa",
+      "name": "Not Available",
+      "reason": "Unidentified coverage polygon or district outside checked administrative register; original archive retained."
+    },
+    {
+      "index": 313,
+      "district": "North Goa",
+      "name": "Not Available",
+      "reason": "Unidentified coverage polygon or district outside checked administrative register; original archive retained."
+    }
+  ],
+  "source_archive_sha256": "5ad0be71ea5082f391e35101c3eed3e24daca1aa7e98104f30c7dd153d2a41a8",
+  "current_districts": "Original two source district groups; not current three-district geography."
+}
