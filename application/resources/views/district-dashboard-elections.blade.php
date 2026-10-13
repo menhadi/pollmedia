@@ -1,3 +1,6 @@
+@if($sourceMap === 'maps/chandigarh-regions.geojson')
+@include('chandigarh-electoral-context')
+@endif
 @if($sourceMap && str_contains($sourceMap, 'maps/delhi-'))
 @include('delhi-electoral-context')
 @endif
