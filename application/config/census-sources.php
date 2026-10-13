@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-rupnagar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Rupnagar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6242/download/9319/DDW_PCA0317_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6242',
+        'format' => 'xlsx', 'sheet' => 'EB-0317',
+    ],
     'punjab-tarn-taran-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Tarn Taran Census 2011 — district, town, village and ward PCA',
