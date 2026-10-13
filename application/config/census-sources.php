@@ -1,6 +1,34 @@
 <?php
 
 return json_decode(file_get_contents(__DIR__.'/northeast-village-census.json'), true, flags: JSON_THROW_ON_ERROR) + [
+    'puducherry-yanam-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Yanam Census 2011 - district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6825/download/9902/DDW_PCA3401_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6825',
+        'format' => 'xlsx', 'sheet' => 'EB-3401',
+    ],
+    'puducherry-puducherry-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Puducherry Census 2011 - district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6826/download/9903/DDW_PCA3402_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6826',
+        'format' => 'xlsx', 'sheet' => 'EB-3402',
+    ],
+    'puducherry-mahe-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Mahe Census 2011 - district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6827/download/9904/DDW_PCA3403_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6827',
+        'format' => 'xlsx', 'sheet' => 'EB-3403',
+    ],
+    'puducherry-karaikal-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Karaikal Census 2011 - district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6828/download/9905/DDW_PCA3404_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6828',
+        'format' => 'xlsx', 'sheet' => 'EB-3404',
+    ],
     'chandigarh-pca-2011' => [
         'year' => 2011,
         'name' => 'Chandigarh Census 2011 - district, town, village and ward PCA',
