@@ -898,6 +898,10 @@ class DistrictDashboardController extends Controller
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict(trim($data['name']), 'Punjab');
         }
 
+        if ($state === '07' && $district === '090') {
+            $mapFile = 'maps/delhi-north-west-villages.geojson';
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
