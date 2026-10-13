@@ -21,6 +21,7 @@ use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\ElectoralMapController;
 use App\Http\Controllers\ElectoralMapReviewController;
+use App\Http\Controllers\ElectoralVillageMapController;
 use App\Http\Controllers\GeographyController;
 use App\Http\Controllers\HistoricalCensusTableController;
 use App\Http\Controllers\HistoricalConstituencyFinderController;
@@ -101,6 +102,10 @@ Route::get('/sources', [SourceController::class, 'index'])->name('sources.index'
 Route::get('/india/elections/lok-sabha', [HistoricalElectionController::class, 'index'])->name('elections.history');
 Route::get('/india/elections/maps/uttar-pradesh', [ElectoralMapController::class, 'index'])->defaults('state', 'uttar-pradesh')->name('elections.map-pilot');
 Route::get('/india/elections/maps', [ElectoralMapController::class, 'index'])->name('elections.maps.index');
+Route::get('/india/elections/village-map', [ElectoralVillageMapController::class, 'index'])->name('electoral-villages.index');
+Route::get('/india/elections/village-map/villages/{code}', [ElectoralVillageMapController::class, 'village'])->where('code', '[0-9]{1,8}')->name('electoral-villages.village');
+Route::get('/api/electoral-villages/membership', [ElectoralVillageMapController::class, 'membership'])->middleware('throttle:120,1')->name('electoral-villages.membership');
+Route::get('/api/electoral-villages/layers/{layer}', [ElectoralVillageMapController::class, 'geometry'])->where('layer', '[a-f0-9]{64}')->name('electoral-villages.geometry');
 Route::get('/api/election-maps/results', [ElectoralMapController::class, 'results'])->middleware('throttle:120,1')->name('elections.maps.results');
 Route::get('/india/elections/maps/{state}', [ElectoralMapController::class, 'index'])->name('elections.maps.show');
 Route::get('/india/elections/constituencies', [HistoricalConstituencyFinderController::class, 'index'])->name('elections.constituencies');

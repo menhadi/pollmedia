@@ -69,6 +69,8 @@
         const project=([x,y]) => [offsetX+(x-minX)*Math.cos(25*Math.PI/180)*scale,offsetY+(maxY-y)*scale];
         function describe(feature, record) {
             selection.replaceChildren();
+            const villageMap=root.querySelector('[data-map-village-link]');
+            if(villageMap){const url=new URL(villageMap.href);url.searchParams.set('state',feature.properties.state||root.dataset.state);url.searchParams.set('kind',feature.properties.kind);url.searchParams.set('name',feature.properties.name);villageMap.href=url.href;villageMap.textContent=`Explore ${feature.properties.name} village polygons →`;}
             const title=document.createElement('strong'); title.textContent=record ? recordText(record) : (feature.properties.name || 'Unnamed constituency');selection.append(title);
             if (record) {
                 if(record.winner){const winner=document.createElement('p');winner.textContent=record.winner;selection.append(winner);}
