@@ -1,6 +1,6 @@
 <?php
 
-return [
+return json_decode(file_get_contents(__DIR__.'/northeast-village-census.json'), true, flags: JSON_THROW_ON_ERROR) + [
     'punjab-rupnagar-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Rupnagar Census 2011 — district, town, village and ward PCA',
