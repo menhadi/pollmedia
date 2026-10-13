@@ -1,0 +1,793 @@
+{
+  "state": "Delhi",
+  "scope": "Territory-wide AC/PC membership only; no Census district membership asserted",
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008-12-17",
+  "source_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "source_pdf_page": 557,
+  "source_printed_page": 556,
+  "visually_audited": true,
+  "territorial_reference_date": "2004-02-15",
+  "district_membership_status": "unavailable_in_this_table",
+  "assembly": [
+    {
+      "code": 1,
+      "name": "Nerela",
+      "archive_record_code": 1,
+      "archive_name": "NERELA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=NERELA&edition=cfc5b3791f1dd7fd83da511b&code=1"
+    },
+    {
+      "code": 2,
+      "name": "Burari",
+      "archive_record_code": 2,
+      "archive_name": "BURARI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BURARI&edition=cfc5b3791f1dd7fd83da511b&code=2"
+    },
+    {
+      "code": 3,
+      "name": "Timarpur",
+      "archive_record_code": 3,
+      "archive_name": "TIMARPUR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=TIMARPUR&edition=cfc5b3791f1dd7fd83da511b&code=3"
+    },
+    {
+      "code": 4,
+      "name": "Adarsh Nagar",
+      "archive_record_code": 4,
+      "archive_name": "ADARSH NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=ADARSH+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=4"
+    },
+    {
+      "code": 5,
+      "name": "Badli",
+      "archive_record_code": 5,
+      "archive_name": "BADLI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BADLI&edition=cfc5b3791f1dd7fd83da511b&code=5"
+    },
+    {
+      "code": 6,
+      "name": "Rithala",
+      "archive_record_code": 6,
+      "archive_name": "RITHALA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=RITHALA&edition=cfc5b3791f1dd7fd83da511b&code=6"
+    },
+    {
+      "code": 7,
+      "name": "Bawana (SC)",
+      "archive_record_code": 7,
+      "archive_name": "BAWANA (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BAWANA+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=7"
+    },
+    {
+      "code": 8,
+      "name": "Mundka",
+      "archive_record_code": 8,
+      "archive_name": "MUNDKA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MUNDKA&edition=cfc5b3791f1dd7fd83da511b&code=8"
+    },
+    {
+      "code": 9,
+      "name": "Kirari",
+      "archive_record_code": 9,
+      "archive_name": "KIRARI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KIRARI&edition=cfc5b3791f1dd7fd83da511b&code=9"
+    },
+    {
+      "code": 10,
+      "name": "Sultan Pur Majra (SC)",
+      "archive_record_code": 10,
+      "archive_name": "SULTANPUR MAJRA (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SULTANPUR+MAJRA+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=10"
+    },
+    {
+      "code": 11,
+      "name": "Nangloi Jat",
+      "archive_record_code": 11,
+      "archive_name": "NANGLOI JAT",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=NANGLOI+JAT&edition=cfc5b3791f1dd7fd83da511b&code=11"
+    },
+    {
+      "code": 12,
+      "name": "Mangol Puri (SC)",
+      "archive_record_code": 12,
+      "archive_name": "MANGOL PURI (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MANGOL+PURI+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=12"
+    },
+    {
+      "code": 13,
+      "name": "Rohini",
+      "archive_record_code": 13,
+      "archive_name": "ROHINI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=ROHINI&edition=cfc5b3791f1dd7fd83da511b&code=13"
+    },
+    {
+      "code": 14,
+      "name": "Shalimar Bagh",
+      "archive_record_code": 14,
+      "archive_name": "SHALIMAR BAGH",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SHALIMAR+BAGH&edition=cfc5b3791f1dd7fd83da511b&code=14"
+    },
+    {
+      "code": 15,
+      "name": "Shakur Basti",
+      "archive_record_code": 15,
+      "archive_name": "SHAKUR BASTI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SHAKUR+BASTI&edition=cfc5b3791f1dd7fd83da511b&code=15"
+    },
+    {
+      "code": 16,
+      "name": "Tri Nagar",
+      "archive_record_code": 16,
+      "archive_name": "TRI NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=TRI+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=16"
+    },
+    {
+      "code": 17,
+      "name": "Wazirpur",
+      "archive_record_code": 17,
+      "archive_name": "WAZIRPUR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=WAZIRPUR&edition=cfc5b3791f1dd7fd83da511b&code=17"
+    },
+    {
+      "code": 18,
+      "name": "Model Town",
+      "archive_record_code": 18,
+      "archive_name": "MODEL TOWN",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MODEL+TOWN&edition=cfc5b3791f1dd7fd83da511b&code=18"
+    },
+    {
+      "code": 19,
+      "name": "Sadar Bazar",
+      "archive_record_code": 19,
+      "archive_name": "SADAR BAZAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SADAR+BAZAR&edition=cfc5b3791f1dd7fd83da511b&code=19"
+    },
+    {
+      "code": 20,
+      "name": "Chandni Chowk",
+      "archive_record_code": 20,
+      "archive_name": "CHANDNI CHOWK",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=CHANDNI+CHOWK&edition=cfc5b3791f1dd7fd83da511b&code=20"
+    },
+    {
+      "code": 21,
+      "name": "Matia Mahal",
+      "archive_record_code": 21,
+      "archive_name": "MATIA MAHAL",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MATIA+MAHAL&edition=cfc5b3791f1dd7fd83da511b&code=21"
+    },
+    {
+      "code": 22,
+      "name": "Ballimaran",
+      "archive_record_code": 22,
+      "archive_name": "BALLIMARAN",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BALLIMARAN&edition=cfc5b3791f1dd7fd83da511b&code=22"
+    },
+    {
+      "code": 23,
+      "name": "Karol Bagh (SC)",
+      "archive_record_code": 23,
+      "archive_name": "KAROL BAGH (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KAROL+BAGH+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=23"
+    },
+    {
+      "code": 24,
+      "name": "Patel Nagar (SC)",
+      "archive_record_code": 24,
+      "archive_name": "PATEL NAGAR (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=PATEL+NAGAR+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=24"
+    },
+    {
+      "code": 25,
+      "name": "Moti Nagar",
+      "archive_record_code": 25,
+      "archive_name": "MOTI NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MOTI+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=25"
+    },
+    {
+      "code": 26,
+      "name": "Madipur (SC)",
+      "archive_record_code": 26,
+      "archive_name": "MADIPUR (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MADIPUR+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=26"
+    },
+    {
+      "code": 27,
+      "name": "Rajouri Garden",
+      "archive_record_code": 27,
+      "archive_name": "RAJOURI GARDEN",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=RAJOURI+GARDEN&edition=cfc5b3791f1dd7fd83da511b&code=27"
+    },
+    {
+      "code": 28,
+      "name": "Hari Nagar",
+      "archive_record_code": 28,
+      "archive_name": "HARI NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=HARI+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=28"
+    },
+    {
+      "code": 29,
+      "name": "Tilak Nagar",
+      "archive_record_code": 29,
+      "archive_name": "TILAK NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=TILAK+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=29"
+    },
+    {
+      "code": 30,
+      "name": "Janakpuri",
+      "archive_record_code": 30,
+      "archive_name": "JANAKPURI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=JANAKPURI&edition=cfc5b3791f1dd7fd83da511b&code=30"
+    },
+    {
+      "code": 31,
+      "name": "Vikaspuri",
+      "archive_record_code": 31,
+      "archive_name": "VIKASPURI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=VIKASPURI&edition=cfc5b3791f1dd7fd83da511b&code=31"
+    },
+    {
+      "code": 32,
+      "name": "Uttam Nagar",
+      "archive_record_code": 32,
+      "archive_name": "UTTAM NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=UTTAM+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=32"
+    },
+    {
+      "code": 33,
+      "name": "Dwarka",
+      "archive_record_code": 33,
+      "archive_name": "DWARKA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=DWARKA&edition=cfc5b3791f1dd7fd83da511b&code=33"
+    },
+    {
+      "code": 34,
+      "name": "Matiala",
+      "archive_record_code": 34,
+      "archive_name": "MATIALA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MATIALA&edition=cfc5b3791f1dd7fd83da511b&code=34"
+    },
+    {
+      "code": 35,
+      "name": "Najafgarh",
+      "archive_record_code": 35,
+      "archive_name": "NAJAFGARH",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=NAJAFGARH&edition=cfc5b3791f1dd7fd83da511b&code=35"
+    },
+    {
+      "code": 36,
+      "name": "Bijwasan",
+      "archive_record_code": 36,
+      "archive_name": "BIJWASAN",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BIJWASAN&edition=cfc5b3791f1dd7fd83da511b&code=36"
+    },
+    {
+      "code": 37,
+      "name": "Palam",
+      "archive_record_code": 37,
+      "archive_name": "PALAM",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=PALAM&edition=cfc5b3791f1dd7fd83da511b&code=37"
+    },
+    {
+      "code": 38,
+      "name": "Delhi Cantt",
+      "archive_record_code": 38,
+      "archive_name": "DELHI CANTT",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=DELHI+CANTT&edition=cfc5b3791f1dd7fd83da511b&code=38"
+    },
+    {
+      "code": 39,
+      "name": "Rajinder Nagar",
+      "archive_record_code": 39,
+      "archive_name": "RAJINDER NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=RAJINDER+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=39"
+    },
+    {
+      "code": 40,
+      "name": "New Delhi",
+      "archive_record_code": 40,
+      "archive_name": "NEW DELHI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=NEW+DELHI&edition=cfc5b3791f1dd7fd83da511b&code=40"
+    },
+    {
+      "code": 41,
+      "name": "Jangpura",
+      "archive_record_code": 41,
+      "archive_name": "JANGPURA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=JANGPURA&edition=cfc5b3791f1dd7fd83da511b&code=41"
+    },
+    {
+      "code": 42,
+      "name": "Kasturba Nagar",
+      "archive_record_code": 42,
+      "archive_name": "KASTURBA NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KASTURBA+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=42"
+    },
+    {
+      "code": 43,
+      "name": "Malviya Nagar",
+      "archive_record_code": 43,
+      "archive_name": "MALVIYA NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MALVIYA+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=43"
+    },
+    {
+      "code": 44,
+      "name": "R.K. Puram",
+      "archive_record_code": 44,
+      "archive_name": "R. K. PURAM",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=R.+K.+PURAM&edition=cfc5b3791f1dd7fd83da511b&code=44"
+    },
+    {
+      "code": 45,
+      "name": "Mehrauli",
+      "archive_record_code": 45,
+      "archive_name": "MEHRAULI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MEHRAULI&edition=cfc5b3791f1dd7fd83da511b&code=45"
+    },
+    {
+      "code": 46,
+      "name": "Chhatarpur",
+      "archive_record_code": 46,
+      "archive_name": "CHHATARPUR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=CHHATARPUR&edition=cfc5b3791f1dd7fd83da511b&code=46"
+    },
+    {
+      "code": 47,
+      "name": "Deoli (SC)",
+      "archive_record_code": 47,
+      "archive_name": "DEOLI (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=DEOLI+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=47"
+    },
+    {
+      "code": 48,
+      "name": "Ambedkar Nagar (SC)",
+      "archive_record_code": 48,
+      "archive_name": "AMBEDKAR NAGAR (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=AMBEDKAR+NAGAR+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=48"
+    },
+    {
+      "code": 49,
+      "name": "Sangam Vihar",
+      "archive_record_code": 49,
+      "archive_name": "SANGAM VIHAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SANGAM+VIHAR&edition=cfc5b3791f1dd7fd83da511b&code=49"
+    },
+    {
+      "code": 50,
+      "name": "Greater Kailash",
+      "archive_record_code": 50,
+      "archive_name": "GREATER KAILASH",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=GREATER+KAILASH&edition=cfc5b3791f1dd7fd83da511b&code=50"
+    },
+    {
+      "code": 51,
+      "name": "Kalkaji",
+      "archive_record_code": 51,
+      "archive_name": "KALKAJI",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KALKAJI&edition=cfc5b3791f1dd7fd83da511b&code=51"
+    },
+    {
+      "code": 52,
+      "name": "Tughlakabad",
+      "archive_record_code": 52,
+      "archive_name": "TUGHLAKABAD",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=TUGHLAKABAD&edition=cfc5b3791f1dd7fd83da511b&code=52"
+    },
+    {
+      "code": 53,
+      "name": "Badarpur",
+      "archive_record_code": 53,
+      "archive_name": "BADARPUR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BADARPUR&edition=cfc5b3791f1dd7fd83da511b&code=53"
+    },
+    {
+      "code": 54,
+      "name": "Okhla",
+      "archive_record_code": 54,
+      "archive_name": "OKHLA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=OKHLA&edition=cfc5b3791f1dd7fd83da511b&code=54"
+    },
+    {
+      "code": 55,
+      "name": "Trilokpuri (SC)",
+      "archive_record_code": 55,
+      "archive_name": "TRILOKPURI (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=TRILOKPURI+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=55"
+    },
+    {
+      "code": 56,
+      "name": "Kondli (SC)",
+      "archive_record_code": 56,
+      "archive_name": "KONDLI (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KONDLI+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=56"
+    },
+    {
+      "code": 57,
+      "name": "Patparganj",
+      "archive_record_code": 57,
+      "archive_name": "PATPARGANJ",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=PATPARGANJ&edition=cfc5b3791f1dd7fd83da511b&code=57"
+    },
+    {
+      "code": 58,
+      "name": "Laxmi Nagar",
+      "archive_record_code": 58,
+      "archive_name": "LAXMI NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=LAXMI+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=58"
+    },
+    {
+      "code": 59,
+      "name": "Vishwas Nagar",
+      "archive_record_code": 59,
+      "archive_name": "VISHWAS NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=VISHWAS+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=59"
+    },
+    {
+      "code": 60,
+      "name": "Krishna Nagar",
+      "archive_record_code": 60,
+      "archive_name": "KRISHNA NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KRISHNA+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=60"
+    },
+    {
+      "code": 61,
+      "name": "Gandhi Nagar",
+      "archive_record_code": 61,
+      "archive_name": "GANDHI NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=GANDHI+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=61"
+    },
+    {
+      "code": 62,
+      "name": "Shahdara",
+      "archive_record_code": 62,
+      "archive_name": "SHAHDARA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SHAHDARA&edition=cfc5b3791f1dd7fd83da511b&code=62"
+    },
+    {
+      "code": 63,
+      "name": "Seemapuri (SC)",
+      "archive_record_code": 63,
+      "archive_name": "SEEMAPURI (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SEEMAPURI+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=63"
+    },
+    {
+      "code": 64,
+      "name": "Rohtas Nagar",
+      "archive_record_code": 64,
+      "archive_name": "ROHTAS NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=ROHTAS+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=64"
+    },
+    {
+      "code": 65,
+      "name": "Seelam Pur",
+      "archive_record_code": 65,
+      "archive_name": "SEELAM PUR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=SEELAM+PUR&edition=cfc5b3791f1dd7fd83da511b&code=65"
+    },
+    {
+      "code": 66,
+      "name": "Ghonda",
+      "archive_record_code": 66,
+      "archive_name": "GHONDA",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=GHONDA&edition=cfc5b3791f1dd7fd83da511b&code=66"
+    },
+    {
+      "code": 67,
+      "name": "Babarpur",
+      "archive_record_code": 67,
+      "archive_name": "BABARPUR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=BABARPUR&edition=cfc5b3791f1dd7fd83da511b&code=67"
+    },
+    {
+      "code": 68,
+      "name": "Gokalpur (SC)",
+      "archive_record_code": 68,
+      "archive_name": "GOKALPUR (SC)",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=GOKALPUR+%28SC%29&edition=cfc5b3791f1dd7fd83da511b&code=68"
+    },
+    {
+      "code": 69,
+      "name": "Mustafabad",
+      "archive_record_code": 69,
+      "archive_name": "MUSTAFABAD",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=MUSTAFABAD&edition=cfc5b3791f1dd7fd83da511b&code=69"
+    },
+    {
+      "code": 70,
+      "name": "Karawal Nagar",
+      "archive_record_code": 70,
+      "archive_name": "KARAWAL NAGAR",
+      "archive_year": 2025,
+      "edition_id": "cfc5b3791f1dd7fd83da511b",
+      "url": "https://pollmedia.org/india/constituency?kind=ac&state=Delhi&name=KARAWAL+NAGAR&edition=cfc5b3791f1dd7fd83da511b&code=70"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Chandni Chowk",
+      "ac_codes": [
+        4,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22
+      ],
+      "archive_record_code": 528,
+      "archive_name": "Chandni Chowk",
+      "archive_year": 2024,
+      "edition_id": "349e04305ee4652986f79497",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=Chandni+Chowk&edition=349e04305ee4652986f79497&code=528"
+    },
+    {
+      "code": 2,
+      "name": "North East Delhi",
+      "ac_codes": [
+        2,
+        3,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ],
+      "archive_record_code": 535,
+      "archive_name": "NORTH EAST DELHI",
+      "archive_year": 2019,
+      "edition_id": "70e603b1037bf7ca8e1350b0",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=NORTH+EAST+DELHI&edition=70e603b1037bf7ca8e1350b0&code=535"
+    },
+    {
+      "code": 3,
+      "name": "East Delhi",
+      "ac_codes": [
+        41,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ],
+      "archive_record_code": 530,
+      "archive_name": "East Delhi",
+      "archive_year": 2024,
+      "edition_id": "349e04305ee4652986f79497",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=East+Delhi&edition=349e04305ee4652986f79497&code=530"
+    },
+    {
+      "code": 4,
+      "name": "New Delhi",
+      "ac_codes": [
+        23,
+        24,
+        25,
+        38,
+        39,
+        40,
+        42,
+        43,
+        44,
+        50
+      ],
+      "archive_record_code": 531,
+      "archive_name": "New Delhi",
+      "archive_year": 2024,
+      "edition_id": "349e04305ee4652986f79497",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=New+Delhi&edition=349e04305ee4652986f79497&code=531"
+    },
+    {
+      "code": 5,
+      "name": "North West Delhi (SC)",
+      "ac_codes": [
+        1,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "archive_record_code": 538,
+      "archive_name": "NORTH WEST DELHI",
+      "archive_year": 2019,
+      "edition_id": "70e603b1037bf7ca8e1350b0",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=NORTH+WEST+DELHI&edition=70e603b1037bf7ca8e1350b0&code=538"
+    },
+    {
+      "code": 6,
+      "name": "West Delhi",
+      "ac_codes": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "archive_record_code": 533,
+      "archive_name": "West Delhi",
+      "archive_year": 2024,
+      "edition_id": "349e04305ee4652986f79497",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=West+Delhi&edition=349e04305ee4652986f79497&code=533"
+    },
+    {
+      "code": 7,
+      "name": "South Delhi",
+      "ac_codes": [
+        36,
+        37,
+        45,
+        46,
+        47,
+        48,
+        49,
+        51,
+        52,
+        53
+      ],
+      "archive_record_code": 534,
+      "archive_name": "South Delhi",
+      "archive_year": 2024,
+      "edition_id": "349e04305ee4652986f79497",
+      "url": "https://pollmedia.org/india/constituency?kind=pc&state=Delhi&name=South+Delhi&edition=349e04305ee4652986f79497&code=534"
+    }
+  ]
+}

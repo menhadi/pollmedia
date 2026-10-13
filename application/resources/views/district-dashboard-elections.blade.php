@@ -1,3 +1,6 @@
+@if($sourceMap && str_contains($sourceMap, 'maps/delhi-'))
+@include('delhi-electoral-context')
+@endif
 @if($constituencyLinks['available'])
 <section id="elections" class="panel">
 <p class="eyebrow">District → constituencies</p><h2>Election results & history</h2>
