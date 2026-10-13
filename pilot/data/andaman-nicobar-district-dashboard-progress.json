@@ -1,6 +1,6 @@
 {
   "region": "andaman-nicobar",
-  "status": "prepared_pending_deployment",
+  "status": "available_source_rollout_server_verified",
   "settlement_groups": 3,
   "named_shapes": 599,
   "excluded_unnamed": 70,
@@ -10,5 +10,15 @@
     "No village-to-AC allocation inferred",
     "Six urban code mismatches retained in island-urban-context-ledger.json"
   ],
-  "public_visual": "pending"
+  "public_visual": "Passed: Puducherry urban filter/selection and PC link; Lakshadweep 25 shapes loaded; South Andamans 163 shapes loaded with invalid and ambiguous counts visible.",
+  "live_commit": "696276ddbecb93c0c7d8754ec1c122ab078c6c73",
+  "rollback_ref": "rollback/island-ut-6773019",
+  "verification": {
+    "map_pages": 14,
+    "constituency_dashboards": 33,
+    "backlinks": "all passed",
+    "map_hashes": "all passed",
+    "javascript_syntax": "passed",
+    "pint": "unavailable on server"
+  }
 }
