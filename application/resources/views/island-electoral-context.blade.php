@@ -1,3 +1,8 @@
+@php
+    $islandElectoral = json_decode(file_get_contents(database_path('fixtures/island-electoral-context.json')), true, 512, JSON_THROW_ON_ERROR);
+    $islandPc = collect($islandElectoral['pcs'])->firstWhere('region', $region);
+    $islandAcs = collect($islandElectoral['acs'])->filter(fn ($ac) => $region === 'puducherry' && ($ac['group'] === $district['slug'] || $ac['outline'] === $district['slug']));
+@endphp
 <section class="panel" id="island-electoral-context"><h2>AC / PC dashboards and election history</h2>
 <p><a data-pc-dashboard href="{{ route('constituency.overview', ['state'=>$islandPc['state'], 'kind'=>'pc', 'name'=>$islandPc['archive_name'], 'edition'=>$islandPc['edition'], 'code'=>$islandPc['code']]) }}">{{ $islandPc['name'] }} · Parliamentary dashboard · 2024</a></p>
 <p>All source groups in this territory share this single parliamentary constituency. The PC is listed once per page; source-map boundaries and constituency boundaries are separate editions.</p>
