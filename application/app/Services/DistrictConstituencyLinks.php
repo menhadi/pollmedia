@@ -8,10 +8,11 @@ class DistrictConstituencyLinks
     public function forDistrict(string $district, string $state = 'Uttar Pradesh'): array
     {
         $empty = ['available' => false, 'assembly' => [], 'parliamentary' => [], 'sources' => []];
-        if (! in_array($state, ['Tripura', 'Nagaland', 'Mizoram', 'Meghalaya', 'Manipur', 'Arunachal Pradesh', 'Haryana', 'Jharkhand', 'Chhattisgarh', 'Telangana', 'Andhra Pradesh', 'Kerala', 'Uttar Pradesh', 'Karnataka', 'Maharashtra', 'Bihar', 'Tamil Nadu', 'Gujarat', 'Madhya Pradesh', 'West Bengal', 'Rajasthan'], true)) {
+        if (! in_array($state, ['Punjab', 'Tripura', 'Nagaland', 'Mizoram', 'Meghalaya', 'Manipur', 'Arunachal Pradesh', 'Haryana', 'Jharkhand', 'Chhattisgarh', 'Telangana', 'Andhra Pradesh', 'Kerala', 'Uttar Pradesh', 'Karnataka', 'Maharashtra', 'Bihar', 'Tamil Nadu', 'Gujarat', 'Madhya Pradesh', 'West Bengal', 'Rajasthan'], true)) {
             return $empty;
         }
         $path = database_path(match ($state) {
+            'Punjab' => 'fixtures/punjab-electoral-geography.json',
             'Manipur' => 'fixtures/manipur-electoral-geography.json',
             'Meghalaya' => 'fixtures/meghalaya-electoral-geography.json',
             'Mizoram' => 'fixtures/mizoram-electoral-geography.json',
@@ -38,7 +39,8 @@ class DistrictConstituencyLinks
             return $empty;
         }
         $fixture = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
-        $assembly = collect($fixture['district_rows'])->filter(fn (array $row): bool => strcasecmp($row['context_district'] ?? $row['district'], $district) === 0)->sortBy('code')->values();
+        $supplement = $state === 'Punjab' ? ($fixture['supplemental_districts'][$district] ?? null) : null;
+        $assembly = collect($fixture['district_rows'])->filter(fn (array $row): bool => $supplement ? in_array($row['code'], $supplement['ac_codes'], true) : strcasecmp($row['context_district'] ?? $row['district'], $district) === 0)->sortBy('code')->values();
         if ($assembly->isEmpty()) {
             return $empty;
         }
@@ -53,6 +55,8 @@ class DistrictConstituencyLinks
 
         return [
             'available' => true,
+            'scope_note' => $state === 'Punjab' ? ($supplement ? 'Assembly associations use the official district listing retrieved 2026-10-13. Parliamentary membership uses ECI 2008. This is not an exhaustive boundary overlay or a Census population crosswalk.' : 'Historical district associations: ECI 2008 uses district boundaries as of 2004-02-15. Later district splits are not backcast. These links are historical geographic context, not a current district seat inventory or a Census population crosswalk.') : null,
+            'supplemental_source' => $supplement,
             'assembly' => $assembly->map(fn (array $row): array => $row + ['url' => $this->historyUrl('ac', $row['name'], $state)])->all(),
             'parliamentary' => $parliamentary->all(),
             'sources' => [
@@ -68,6 +72,10 @@ class DistrictConstituencyLinks
 
         if ($state === 'Tamil Nadu' && $kind === 'ac' && $name === 'Tiruvottiyur') {
             $name = 'Thiruvottiyur';
+        }
+
+        if ($state === 'Punjab' && $name === 'S.A.S.Nagar') {
+            $name = 'S.A.S. Nagar';
         }
 
         return 'https://pollmedia.org'.route('constituency.overview', ['kind' => $kind, 'state' => $state, 'name' => $name], false);
