@@ -32,10 +32,10 @@
 @foreach(['subdistricts' => 'Subdistricts', 'towns' => 'Towns'] as $unitKey => $unitLabel)
 <section id="census-{{ $unitKey }}" aria-label="{{ $unitLabel }} in the selected Census district">
 <h3>{{ $unitLabel }} · {{ $selectedCensusData['name'] }} · Census {{ $selectedCensusData['year'] }}</h3>
-<p>{{ count($selectedCensusData[$unitKey]) }} published {{ strtolower($unitLabel) }} in this Census edition. These records are not linked to the source map shapes or electoral constituencies.</p>
+<p>{{ count($selectedCensusData[$unitKey]) }} published {{ strtolower($unitLabel) }} in this Census edition. Available town context links can highlight a named source shape. This does not establish matching boundaries or assign population to polygons.</p>
 <div class="table-wrap"><table><thead><tr><th>Place / Census code</th><th>Population</th><th>Households</th><th>Literacy aged 7+</th></tr></thead><tbody>
 @forelse($selectedCensusData[$unitKey] as $place)
-<tr><td><a href="{{ route('civic.place', ['record' => $place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small></td><td>{{ $place['population'] === null ? 'Unavailable' : number_format($place['population']) }}</td><td>{{ $place['households'] === null ? 'Unavailable' : number_format($place['households']) }}</td><td>{{ $place['literacy'] === null ? 'Unavailable' : number_format($place['literacy'], 2).'%' }}</td></tr>
+<tr><td><a href="{{ route('civic.place', ['record' => $place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small>@if($unitKey === 'towns' && isset($mapTownLinks[(string) $place['id']])) <button type="button" data-map-feature="{{ $mapTownLinks[(string) $place['id']] }}">Show on map</button>@endif</td><td>{{ $place['population'] === null ? 'Unavailable' : number_format($place['population']) }}</td><td>{{ $place['households'] === null ? 'Unavailable' : number_format($place['households']) }}</td><td>{{ $place['literacy'] === null ? 'Unavailable' : number_format($place['literacy'], 2).'%' }}</td></tr>
 @empty
 <tr><td colspan="4">No published {{ strtolower($unitLabel) }} records available.</td></tr>
 @endforelse

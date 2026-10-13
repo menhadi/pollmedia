@@ -9,8 +9,14 @@
       "features": 13,
       "invalid_retained": 0,
       "ambiguous_shapes": 0,
-      "bytes": 183859,
-      "sha256": "79d208e52d42c7b19dbe7418cef48c32c5d4b68ef6fd819f00c48b6731b8acfa"
+      "bytes": 71258,
+      "sha256": "82fe8b9ca053c19671364d4104751fb614e877f27486fe591a55ea580c57f2e0",
+      "place_types": {
+        "rural": 5,
+        "urban": 6,
+        "outgrowth": 2
+      },
+      "census_town_context_links": 6
     }
   ],
   "excluded_records": [],

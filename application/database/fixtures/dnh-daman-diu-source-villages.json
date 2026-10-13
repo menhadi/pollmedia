@@ -9,8 +9,13 @@
       "features": 71,
       "invalid_retained": 0,
       "ambiguous_shapes": 0,
-      "bytes": 613209,
-      "sha256": "a8f403a2d866cffd4b5d7ed3e15dff81720057956d8bf51090f8520d5813faad"
+      "bytes": 236303,
+      "sha256": "07be1b46ffb2b0f23a668a5c04e63f1c6bb420defed7cbab1c9935f26a9ae619",
+      "place_types": {
+        "rural": 65,
+        "urban": 6
+      },
+      "census_town_context_links": 6
     },
     {
       "source_name": "Daman",
@@ -18,9 +23,15 @@
       "file": "maps/dnh-daman-diu-source-villages/daman.geojson",
       "features": 25,
       "invalid_retained": 0,
-      "ambiguous_shapes": 3,
-      "bytes": 250927,
-      "sha256": "6b841c607e487cc1bc0b25b4268bd10b39c5d2907a1292c75319f829e802d013"
+      "ambiguous_shapes": 0,
+      "bytes": 97802,
+      "sha256": "955d6cc670f11fab4c541e92a6b02d049078e07d556c4a2c54b8489293efa236",
+      "place_types": {
+        "rural": 15,
+        "water": 3,
+        "urban": 7
+      },
+      "census_town_context_links": 7
     },
     {
       "source_name": "Diu",
@@ -29,8 +40,13 @@
       "features": 5,
       "invalid_retained": 0,
       "ambiguous_shapes": 0,
-      "bytes": 66701,
-      "sha256": "199f1df133714bd694027b95be1efa1afb96754bfbe0ddba8506964dfa12a20b"
+      "bytes": 25664,
+      "sha256": "77c9e1733356c4da46b80955bf928135b924412eb4f42e462174c18f4234eb2f",
+      "place_types": {
+        "rural": 4,
+        "urban": 1
+      },
+      "census_town_context_links": 1
     }
   ],
   "excluded_records": [],
