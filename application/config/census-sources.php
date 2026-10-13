@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-bathinda-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Bathinda Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6237/download/9314/DDW_PCA0312_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6237',
+        'format' => 'xlsx', 'sheet' => 'EB-0312',
+    ],
     'punjab-faridkot-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Faridkot Census 2011 — district, town, village and ward PCA',
