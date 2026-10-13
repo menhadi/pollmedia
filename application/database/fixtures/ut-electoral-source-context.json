@@ -1,0 +1,48 @@
+{
+  "pcs": [
+    {
+      "number": 1,
+      "name": "Chandigarh",
+      "archive_name": "Chandigarh",
+      "state": "Chandigarh",
+      "edition": "349e04305ee4652986f79497",
+      "code": 525,
+      "year": 2024,
+      "district_slugs": [
+        "chandigarh"
+      ],
+      "region": "chandigarh"
+    },
+    {
+      "number": 1,
+      "name": "Daman & Diu",
+      "archive_name": "Daman & Diu",
+      "state": "Dadra & Nagar Haveli and Daman & Diu",
+      "edition": "349e04305ee4652986f79497",
+      "code": 526,
+      "year": 2024,
+      "district_slugs": [
+        "daman",
+        "diu"
+      ],
+      "region": "dnh-daman-diu"
+    },
+    {
+      "number": 2,
+      "name": "Dadra & Nagar Haveli",
+      "archive_name": "Dadar & Nagar Haveli",
+      "state": "Dadra & Nagar Haveli and Daman & Diu",
+      "edition": "349e04305ee4652986f79497",
+      "code": 527,
+      "year": 2024,
+      "district_slugs": [
+        "dadra-and-nagar-haveli"
+      ],
+      "region": "dnh-daman-diu"
+    }
+  ],
+  "assembly_status": "not applicable: Union Territories without legislature",
+  "source_dd": "https://ceodaman.nic.in/SSR2024.aspx",
+  "source_chandigarh": "https://chandigarh.gov.in/sites/default/files/updation2024/dcord-12744-3005.pdf",
+  "source_institutions": "https://www.mha.gov.in/web/sites/default/files/MHAARE_22042022%5B1%5D.pdf"
+}

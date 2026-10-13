@@ -1,0 +1,29 @@
+{
+  "region": "chandigarh",
+  "label": "Chandigarh",
+  "districts": [
+    {
+      "source_name": "Chandigarh",
+      "slug": "chandigarh",
+      "file": "maps/chandigarh-source-villages/chandigarh.geojson",
+      "features": 13,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "bytes": 183859,
+      "sha256": "79d208e52d42c7b19dbe7418cef48c32c5d4b68ef6fd819f00c48b6731b8acfa"
+    }
+  ],
+  "excluded_records": [],
+  "metadata": {
+    "source": "https://nwdp.nwic.gov.in/dataset/village-boundary/resource/f7c76b46-75a6-4ab8-a64e-fe0764f20c55",
+    "archive_sha256": "1584ba3c58f9bb4008811191e2e1ec82fb131c4678914cfd435d34ee7139be72",
+    "source_crs": "EPSG:7755",
+    "output_crs": "EPSG:4326",
+    "boundary_edition": "unverified; source date not established",
+    "simplification_metres": 0,
+    "geometry_repaired": false,
+    "invalid_source_ids_retained": [],
+    "census_lgd_join": "unverified",
+    "population_attributes": "withheld pending edition and correspondence checks; original archive retained"
+  }
+}

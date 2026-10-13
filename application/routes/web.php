@@ -63,6 +63,7 @@ require __DIR__.'/himachal-pradesh-source.php';
 require __DIR__.'/jammu-kashmir-source.php';
 require __DIR__.'/ladakh-source.php';
 require __DIR__.'/goa-source.php';
+require __DIR__.'/ut-source.php';
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 

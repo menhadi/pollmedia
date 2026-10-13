@@ -1,0 +1,49 @@
+{
+  "region": "dnh-daman-diu",
+  "label": "Dadra & Nagar Haveli and Daman & Diu",
+  "districts": [
+    {
+      "source_name": "Dadra And Nagar Haveli",
+      "slug": "dadra-and-nagar-haveli",
+      "file": "maps/dnh-daman-diu-source-villages/dadra-and-nagar-haveli.geojson",
+      "features": 71,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "bytes": 613209,
+      "sha256": "a8f403a2d866cffd4b5d7ed3e15dff81720057956d8bf51090f8520d5813faad"
+    },
+    {
+      "source_name": "Daman",
+      "slug": "daman",
+      "file": "maps/dnh-daman-diu-source-villages/daman.geojson",
+      "features": 25,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 3,
+      "bytes": 250927,
+      "sha256": "6b841c607e487cc1bc0b25b4268bd10b39c5d2907a1292c75319f829e802d013"
+    },
+    {
+      "source_name": "Diu",
+      "slug": "diu",
+      "file": "maps/dnh-daman-diu-source-villages/diu.geojson",
+      "features": 5,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "bytes": 66701,
+      "sha256": "199f1df133714bd694027b95be1efa1afb96754bfbe0ddba8506964dfa12a20b"
+    }
+  ],
+  "excluded_records": [],
+  "metadata": {
+    "source": "https://nwdp.nwic.gov.in/dataset/village-boundary/resource/2f408b46-6b7b-4cd1-95e6-95b4101b0041",
+    "archive_sha256": "55e93c95b697cfb5f9ebf353109b47c90ac7301fe6756f4254d568d21cf5cffa",
+    "source_crs": "EPSG:7755",
+    "output_crs": "EPSG:4326",
+    "boundary_edition": "unverified; source date not established",
+    "simplification_metres": 0,
+    "geometry_repaired": false,
+    "invalid_source_ids_retained": [],
+    "census_lgd_join": "unverified",
+    "population_attributes": "withheld pending edition and correspondence checks; original archive retained"
+  }
+}

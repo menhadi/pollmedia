@@ -4,4 +4,5 @@
 @include('jammu-kashmir-source-directory')
 @include('ladakh-source-directory')
 @include('goa-source-directory')
+@include('ut-source-directory')
 </main></body></html>
