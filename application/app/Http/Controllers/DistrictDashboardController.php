@@ -914,6 +914,22 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/delhi-east-villages.geojson';
         }
 
+
+        if ($state === '07') {
+            $delhiRegionMaps = [
+                '090' => 'maps/delhi-north-west-regions.geojson',
+                '091' => 'maps/delhi-north-regions.geojson',
+                '092' => 'maps/delhi-north-east-regions.geojson',
+                '093' => 'maps/delhi-east-regions.geojson',
+                '094' => 'maps/delhi-new-delhi-regions.geojson',
+                '095' => 'maps/delhi-central-regions.geojson',
+                '096' => 'maps/delhi-west-regions.geojson',
+                '097' => 'maps/delhi-south-west-regions.geojson',
+                '098' => 'maps/delhi-south-regions.geojson',
+            ];
+            $mapFile = $delhiRegionMaps[$district] ?? null;
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
