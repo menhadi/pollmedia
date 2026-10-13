@@ -910,6 +910,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/delhi-north-east-villages.geojson';
         }
 
+        if ($state === '07' && $district === '093') {
+            $mapFile = 'maps/delhi-east-villages.geojson';
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
