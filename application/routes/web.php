@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__.'/india-map.php';
+
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AiSettingsController;
