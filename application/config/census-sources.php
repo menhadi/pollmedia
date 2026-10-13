@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-amritsar-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Amritsar Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6240/download/9317/DDW_PCA0315_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6240',
+        'format' => 'xlsx', 'sheet' => 'EB-0315',
+    ],
     'punjab-patiala-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Patiala Census 2011 — district, town, village and ward PCA',
