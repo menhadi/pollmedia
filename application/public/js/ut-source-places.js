@@ -22,6 +22,11 @@ async function start(){
         if(p.census_context){
             const c=p.census_context,link=textNode('a',`Open Census ${c.year}: ${c.name}`);link.href=c.url;detail.append(link,textNode('p',`Census code: ${c.code}. ${c.match_basis}.`),textNode('p','This opens the published town record and its figures. Census population is not assigned to this polygon; boundary correspondence remains unverified.'));
         }else detail.append(textNode('p',p.place_type==='water'?'Water feature; no settlement population applies.':'A published Census place context has not been linked.'));
+        if(p.place_type!=='water'){
+            detail.append(textNode('h4','District parliamentary dashboard'));
+            for(const sourceLink of document.querySelectorAll('[data-map-pc-link]'))detail.append(sourceLink.cloneNode(true));
+            detail.append(textNode('p','AC: not applicable. District-level electoral context; source polygon membership has not been independently verified.'));
+        }
         if(p.status==='ambiguous')detail.append(textNode('p','Ambiguous source code; identity needs review.'));
         if(invalidSourceIds.has(String(f.id)))detail.append(textNode('p','Source geometry is invalid and has been retained without repair.'));
         const link=textNode('a','NWIC / SOI source');link.href=map.metadata.source;detail.append(link);

@@ -6,6 +6,7 @@
     $matchingVillageSource = collect($villageSources)->firstWhere('slug', $villageSlug);
 @endphp
 
+@include('ut-map-constituency-links')
 <section id="map" class="panel" data-assam-outline="{{ asset($district['file']) }}"><div class="section-heading"><h2>Physical district map</h2><a href="{{ asset($district['file']) }}">Download source geometry</a></div><div class="map-wrap"><div class="map-controls"><button id="zoom-in" type="button" aria-label="Zoom in">+</button><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="fit-map" type="button">Fit map</button></div><svg id="district-outline" viewBox="0 0 760 540" role="img" aria-label="{{ $district['source_name'] }} SOI district outline"></svg><p id="map-message" role="status">Loading district outline…</p></div><p>This is the district boundary recorded in the SOI source. Settlement and subdistrict shapes are not included. Original source names and codes are preserved in the download.</p></section>
 <nav class="section-nav" aria-label="Dashboard sections"><a href="#map">District map</a><a href="#selected-census-context">District overview</a><a href="#census-subdistricts">Subdistricts</a><a href="#census-towns">Towns</a><a href="#villages">Village directory</a><a href="#history">History & graphs</a><a href="#ut-electoral-context">AC / PC details</a><a href="#sources">Sources & coverage</a><a href="{{ route('district-dashboard-directory') }}">All districts</a></nav>
 <section class="panel" id="village-source-links"><h2>Settlement source maps</h2>
