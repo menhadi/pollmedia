@@ -870,6 +870,10 @@ class DistrictDashboardController extends Controller
             $mapFile = 'maps/patiala-villages.geojson';
         }
 
+        if ($state === '03' && $district === '049') {
+            $mapFile = 'maps/amritsar-villages.geojson';
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
