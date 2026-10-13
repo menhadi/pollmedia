@@ -86,7 +86,9 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 @if(($data['census_district_code'] ?? '')==='464')<p class="notice">Dated ECI2008 Jhabua AC191-195 includes Alirajpur and Jobat references. An accepted crosswalk to Census2011 Jhabua and Alirajpur districts is unavailable. These electoral links retain source geography; later district splits are not backcast.</p>@endif
 @if(($data['census_district_code'] ?? '')==='465')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order records AC191-192 under Jhabua. Their assignment to Census2011 Alirajpur is not inferred. Constituency membership remains unavailable until an accepted crosswalk is established.</p>@endif
 @if($sourceMap)
-@if(str_contains($sourceMap, '-regions.geojson'))
+@if($sourceMap === 'maps/chandigarh-regions.geojson')
+@include('chandigarh-region-map')
+@elseif(str_contains($sourceMap, '-regions.geojson'))
 @include('delhi-region-map')
 @else
 @include('district-source-map')

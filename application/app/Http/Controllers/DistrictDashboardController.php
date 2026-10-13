@@ -930,6 +930,10 @@ class DistrictDashboardController extends Controller
             $mapFile = $delhiRegionMaps[$district] ?? null;
         }
 
+        if ($state === '04' && $district === '055') {
+            $mapFile = 'maps/chandigarh-regions.geojson';
+        }
+
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
         return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
