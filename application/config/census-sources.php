@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'punjab-tarn-taran-pca-2011' => [
+        'year' => 2011,
+        'name' => 'Punjab Tarn Taran Census 2011 — district, town, village and ward PCA',
+        'url' => 'https://censusindia.gov.in/nada/index.php/catalog/6241/download/9318/DDW_PCA0316_2011_MDDS%20with%20UI.xlsx',
+        'landing' => 'https://censusindia.gov.in/nada/index.php/catalog/6241',
+        'format' => 'xlsx', 'sheet' => 'EB-0316',
+    ],
     'punjab-amritsar-pca-2011' => [
         'year' => 2011,
         'name' => 'Punjab Amritsar Census 2011 — district, town, village and ward PCA',
