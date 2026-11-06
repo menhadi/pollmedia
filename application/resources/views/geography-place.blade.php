@@ -1,7 +1,7 @@
 @extends('geography-layout')
 @section('title', $place->name)
 @section('content')
-<p class="muted">{{ $place->country_code }} · {{ \Illuminate\Support\Str::headline($place->type) }}</p><h1>{{ $place->name }}</h1>
+<p class="muted">{{ $place->country_code }} · {{ \Illuminate\Support\Str::headline($place->type) }}</p><h1>{{ $place->name }}</h1><p><a href="{{ route('community.listing',$place->id) }}">Edit data</a></p>
 <p class="notice">This profile contains available accepted evidence for this place. Missing records do not mean zero activity or no responsible authority.</p>
 <p><a href="{{ route('issues.index', ['country' => $place->country_code, 'type' => $place->type, 'place' => $place->id]) }}">Citizen reports for this place</a></p>
 <p><a href="{{ route('indicators.index', ['country' => $place->country_code, 'place' => $place->id]) }}">Browse this place's historical measurements</a></p>

@@ -1,0 +1,4 @@
+@php($listedAuthorityPerson = trim($personContact['raw_officer_name'] ?? '') ?: trim($personContact['listed_person'] ?? ''))
+@if($listedAuthorityPerson !== '')
+<p class="authority-person"><strong>{{ $listedAuthorityPerson }}</strong><br><small>Name in official listing · @if(!empty($personContact['name_checked_on']))Checked {{ $personContact['name_checked_on'] }} · @endif {{ !empty($personContact['source_updated_on']) && (($personContact['name_source_url'] ?? $personContact['source_url'] ?? '') === ($personContact['source_url'] ?? '')) ? 'Source dated '.$personContact['source_updated_on'] : 'Source date unavailable' }}. Posting may have changed. @if(!empty($personContact['name_source_url']))<a href="{{ $personContact['name_source_url'] }}" target="_blank" rel="noopener">Name source ↗</a>@endif</small></p>
+@endif

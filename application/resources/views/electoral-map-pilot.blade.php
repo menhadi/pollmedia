@@ -10,6 +10,7 @@
 <label>Constituency type<select name="kind"><option value="pc" @selected($initialKind==='pc')>Lok Sabha</option><option value="ac" @selected($initialKind==='ac')>State Assembly · AC</option></select></label><button>Show map</button>
 <a href="{{ route('states.show',['state'=>$selectedState['slug']]) }}">Explore {{ $selectedState['name'] }} →</a></form>
 @include('election-map',['mapKind'=>$initialKind,'mapStateName'=>$selectedState['name']])
+<section class="map-notes"><h2>LGD village connections</h2><p><a href="{{ route('electoral-villages.index',['state'=>$selectedState['name'],'kind'=>$initialKind]) }}">Explore official constituency membership and existing village polygons →</a></p><p>Missing memberships, partial coverage and unverified boundary editions remain explicit.</p></section>
 <section class="map-notes" aria-labelledby="boundary-notes"><h2 id="boundary-notes">Boundary sources and limitations</h2>
 @if($sourceNote)<p>{{ $sourceNote }}</p>@endif
 <p>This is a community source, not a verified official electoral map. Parliamentary shapes use the DataMeet 2019 simplified dataset. The Assembly dataset does not establish its boundary year and reports positional shifts and possible incorrect names. These shapes do not define boundaries for every historical election.</p>

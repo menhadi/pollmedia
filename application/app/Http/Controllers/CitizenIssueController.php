@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Services\IssueAuthorities;
+use App\Services\IssueAuthorityCoverage;
 use App\Services\OfficialDownload;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -14,9 +16,38 @@ use Illuminate\View\View;
 
 class CitizenIssueController extends Controller
 {
-    private const CATEGORIES = ['water', 'roads', 'sanitation', 'electricity', 'health', 'education', 'other'];
+    private const CATEGORIES = ['water', 'roads', 'sanitation', 'electricity', 'health', 'education', 'revenue', 'agriculture', 'welfare', 'transport', 'environment', 'other'];
 
     private const PUBLIC_STATUSES = ['open', 'in_progress', 'resolved'];
+
+    public function coverage(Request $request): View
+    {
+        $data = app(IssueAuthorityCoverage::class)->report();
+        $filters = $request->validate(['state' => 'nullable|string|max:100', 'q' => 'nullable|string|max:100', 'department' => ['nullable', Rule::in($data['types'])], 'coverage' => ['nullable', Rule::in(['available', 'routing_only', 'missing', 'incomplete'])]]);
+        $data['states'] = collect($data['rows'])->pluck('state')->unique()->sort()->values();
+        $rows = collect($data['rows'])->filter(function ($row) use ($filters) {
+            if (! empty($filters['state']) && $row['state'] !== $filters['state']) {
+                return false;
+            }
+            if (! empty($filters['q']) && ! str_contains(mb_strtolower($row['name'].' '.$row['key']), mb_strtolower($filters['q']))) {
+                return false;
+            }
+            $status = $filters['coverage'] ?? '';
+            if ($status === 'incomplete') {
+                return ! $row['complete'];
+            }
+            if ($status !== '') {
+                return ! empty($filters['department']) ? $row['types'][$filters['department']]['status'] === $status : collect($row['types'])->contains(fn ($type) => $type['status'] === $status);
+            }
+
+            return true;
+        })->values();
+        $page = max(1, (int) $request->query('page', 1));
+        $data['districts'] = new LengthAwarePaginator($rows->forPage($page, 30)->values(), $rows->count(), 30, $page, ['path' => $request->url(), 'query' => $request->query()]);
+        $data['filters'] = $filters;
+
+        return view('issue-authority-coverage', $data);
+    }
 
     public function index(Request $request): View
     {

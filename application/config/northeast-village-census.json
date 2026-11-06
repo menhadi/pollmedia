@@ -1,0 +1,533 @@
+{
+  "northeast-village-pca-2011-241": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 North  District",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6432/download/9509/DDW_PCA1101_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6432",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-242": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 West District",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6433/download/9510/DDW_PCA1102_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6433",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-243": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 South District",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6434/download/9511/DDW_PCA1103_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6434",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-244": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 East District",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6435/download/9512/DDW_PCA1104_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6435",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-245": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Tawang",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6436/download/9513/DDW_PCA1201_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6436",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-246": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 West Kameng",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6437/download/9514/DDW_PCA1202_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6437",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-247": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 East Kameng",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6438/download/9515/DDW_PCA1203_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6438",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-248": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Papum Pare",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6439/download/9516/DDW_PCA1204_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6439",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-249": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Upper Subansiri",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6440/download/9517/DDW_PCA1205_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6440",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-250": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 West Siang",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6441/download/9518/DDW_PCA1206_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6441",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-251": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 East Siang",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6442/download/9519/DDW_PCA1207_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6442",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-252": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Upper Siang",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6443/download/9520/DDW_PCA1208_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6443",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-253": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Changlang",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6444/download/9521/DDW_PCA1209_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6444",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-254": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Tirap",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6445/download/9522/DDW_PCA1210_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6445",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-255": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Lower Subansiri",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6446/download/9523/DDW_PCA1211_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6446",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-256": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Kurung Kumey",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6447/download/9524/DDW_PCA1212_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6447",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-257": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Dibang Valley",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6448/download/9525/DDW_PCA1213_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6448",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-258": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Lower Dibang Valley",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6449/download/9526/DDW_PCA1214_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6449",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-259": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Lohit",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6450/download/9527/DDW_PCA1215_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6450",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-260": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Anjaw",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6451/download/9528/DDW_PCA1216_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6451",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-261": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Mon",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6452/download/9529/DDW_PCA1301_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6452",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-262": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Mokokchung",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6453/download/9530/DDW_PCA1302_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6453",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-263": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Zunheboto",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6454/download/9531/DDW_PCA1303_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6454",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-264": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Wokha",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6455/download/9532/DDW_PCA1304_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6455",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-265": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Dimapur ",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6456/download/9533/DDW_PCA1305_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6456",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-266": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Phek",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6457/download/9534/DDW_PCA1306_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6457",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-267": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Tuensang",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6458/download/9535/DDW_PCA1307_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6458",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-268": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Longleng",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6459/download/9536/DDW_PCA1308_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6459",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-269": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Kiphire",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6460/download/9537/DDW_PCA1309_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6460",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-270": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Kohima",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6461/download/9538/DDW_PCA1310_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6461",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-271": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Peren",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6462/download/9539/DDW_PCA1311_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6462",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-272": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Senapati",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6463/download/9540/DDW_PCA1401_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6463",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-273": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Tamenglong ",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6464/download/9541/DDW_PCA1402_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6464",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-274": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Churachandpur",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6465/download/9542/DDW_PCA1403_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6465",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-275": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Bishnupur",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6466/download/9543/DDW_PCA1404_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6466",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-276": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Thoubal",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6467/download/9544/DDW_PCA1405_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6467",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-277": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Imphal West",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6468/download/9545/DDW_PCA1406_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6468",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-278": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Imphal East",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6469/download/9546/DDW_PCA1407_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6469",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-279": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Ukhrul",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6470/download/9547/DDW_PCA1408_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6470",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-280": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Chandel",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6471/download/9548/DDW_PCA1409_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6471",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-281": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Mamit",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6472/download/9549/DDW_PCA1501_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6472",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-282": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Kolasib",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6473/download/9550/DDW_PCA1502_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6473",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-283": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Aizawl",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6474/download/9551/DDW_PCA1503_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6474",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-284": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Champhai",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6475/download/9552/DDW_PCA1504_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6475",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-285": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Serchhip",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6476/download/9553/DDW_PCA1505_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6476",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-286": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Lunglei",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6477/download/9554/DDW_PCA1506_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6477",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-287": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Lawngtlai",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6478/download/9555/DDW_PCA1507_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6478",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-288": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Saiha",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6479/download/9556/DDW_PCA1508_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6479",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-289": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 West Tripura ",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6480/download/9557/DDW_PCA1601_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6480",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-290": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 South Tripura ",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6481/download/9558/DDW_PCA1602_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6481",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-291": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Dhalai",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6482/download/9559/DDW_PCA1603_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6482",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-292": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 North Tripura",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6483/download/9560/DDW_PCA1604_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6483",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-293": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 West Garo Hills",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6484/download/9561/DDW_PCA1701_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6484",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-294": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 East Garo Hills",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6485/download/9562/DDW_PCA1702_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6485",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-295": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 South Garo Hills",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6486/download/9563/DDW_PCA1703_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6486",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-296": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 West Khasi Hills",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6487/download/9564/DDW_PCA1704_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6487",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-297": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Ribhoi",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6488/download/9565/DDW_PCA1705_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6488",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-298": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 East Khasi Hills",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6489/download/9566/DDW_PCA1706_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6489",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  },
+  "northeast-village-pca-2011-299": {
+    "year": 2011,
+    "name": "Census 2011 village PCA \u2014 Jaintia Hills",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/6490/download/9567/DDW_PCA1707_2011_MDDS%20with%20UI.xlsx",
+    "landing": "https://censusindia.gov.in/nada/index.php/catalog/6490",
+    "format": "xlsx",
+    "filter_column": "TRU",
+    "filter_value": "Rural"
+  }
+}

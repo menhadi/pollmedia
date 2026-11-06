@@ -1,5 +1,11 @@
 <?php
 
+require __DIR__.'/postal-areas.php';
+
+require __DIR__.'/india-map.php';
+require __DIR__.'/farmers.php';
+require __DIR__.'/my-place.php';
+
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AiSettingsController;
@@ -14,10 +20,12 @@ use App\Http\Controllers\CivicExplorerController;
 use App\Http\Controllers\ConstituencyOverviewController;
 use App\Http\Controllers\CoverageReportController;
 use App\Http\Controllers\DataFeedbackController;
+use App\Http\Controllers\DistrictDashboardController;
 use App\Http\Controllers\ElectionBatchController;
 use App\Http\Controllers\ElectionPublicationController;
 use App\Http\Controllers\ElectoralMapController;
 use App\Http\Controllers\ElectoralMapReviewController;
+use App\Http\Controllers\ElectoralVillageMapController;
 use App\Http\Controllers\GeographyController;
 use App\Http\Controllers\HistoricalCensusTableController;
 use App\Http\Controllers\HistoricalConstituencyFinderController;
@@ -29,10 +37,14 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\OfficialHostController;
 use App\Http\Controllers\OverviewController;
+use App\Http\Controllers\MapStorageController;
 use App\Http\Controllers\PdfStorageController;
+use App\Http\Controllers\PilibhitAcPilotController;
+use App\Http\Controllers\PilibhitDistrictPilotController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\PollingSourceController;
 use App\Http\Controllers\PublicSearchController;
+use App\Http\Controllers\RampurDistrictPilotController;
 use App\Http\Controllers\ReportArchiveController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportScopeController;
@@ -52,14 +64,49 @@ use App\Http\Middleware\AdminTransport;
 use App\Http\Middleware\LocalEditorOnly;
 use App\Http\Middleware\RequireAdministrator;
 use Illuminate\Support\Facades\Route;
+
+require __DIR__.'/odisha-source.php';
+require __DIR__.'/uttarakhand-source.php';
+require __DIR__.'/himachal-pradesh-source.php';
+require __DIR__.'/jammu-kashmir-source.php';
+require __DIR__.'/ladakh-source.php';
+require __DIR__.'/goa-source.php';
+require __DIR__.'/ut-source.php';
+require __DIR__.'/island-source.php';
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-Route::get('/issues', [CitizenIssueController::class, 'index'])->name('issues.index');
+
+
+Route::get('/india/districts/source/assam-villages/{slug}/dashboard', function (string $slug) {
+    $manifest = json_decode(file_get_contents(database_path('fixtures/assam-source-villages.json')), true, 512, JSON_THROW_ON_ERROR);
+    $district = collect($manifest['districts'])->firstWhere('slug', $slug);
+    abort_unless($district, 404);
+    return view('assam-source-village-map', ['district' => $district, 'districts' => $manifest['districts']]);
+})->where('slug', '[a-z-]+')->name('assam-source-village-map');
+
+Route::get('/india/districts/source/assam/{slug}/dashboard', function (string $slug) {
+    $manifest = json_decode(file_get_contents(database_path('fixtures/assam-source-district-outlines.json')), true, 512, JSON_THROW_ON_ERROR);
+    $district = collect($manifest['districts'])->firstWhere('slug', $slug);
+    abort_unless($district, 404);
+    return view('assam-source-district-map', ['district' => $district, 'districts' => $manifest['districts']]);
+})->where('slug', '[a-z-]+')->name('assam-source-district-map');
+
+Route::post('/issues/{issue}/support', [\App\Http\Controllers\IssueParticipationController::class, 'support'])->whereUlid('issue')->middleware('throttle:10,1')->name('issues.support');
+Route::post('/issues/{issue}/contributions', [\App\Http\Controllers\IssueParticipationController::class, 'contribute'])->whereUlid('issue')->middleware('throttle:5,10')->name('issues.contribute');
+Route::get('/issues', [\App\Http\Controllers\LocatedIssueController::class, 'index'])->name('issues.index');
+Route::post('/issues/location', [\App\Http\Controllers\LocatedIssueController::class, 'locate'])->middleware('throttle:10,1')->name('issues.locate');
+Route::get('/issues/location-options', [\App\Http\Controllers\LocatedIssueController::class, 'options'])->middleware('throttle:60,1')->name('issues.location-options');
+Route::post('/issues/problem-location', [\App\Http\Controllers\LocatedIssueController::class, 'selectProblem'])->middleware('throttle:20,1')->name('issues.problem-location');
+Route::post('/issues/publish', [\App\Http\Controllers\LocatedIssueController::class, 'store'])->middleware('throttle:3,10')->name('issues.located.store');
+Route::get('/issues/{issue}/media/{media}', [\App\Http\Controllers\LocatedIssueController::class, 'media'])->whereUlid('issue')->whereNumber('media')->name('issues.media');
 Route::post('/issues', [CitizenIssueController::class, 'store'])->middleware('throttle:3,10')->name('issues.store');
 Route::get('/issues/{issue}', [CitizenIssueController::class, 'show'])->whereUlid('issue')->name('issues.show');
-Route::get('/search', [PublicSearchController::class, 'index'])->name('public.search');
+Route::get('/search', [PublicSearchController::class, 'index'])->middleware('throttle:120,1')->name('public.search');
+Route::redirect('/sitemap/sitemap-index.xml', '/sitemap.xml', 301);
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/india/census/explore', [CivicExplorerController::class, 'index'])->name('civic.index');
+Route::get('/india/census/states/{state}/{census?}', [CivicExplorerController::class, 'state'])->where('state', '[a-z0-9-]+')->where('census', '[0-9]{4}')->name('civic.state');
+Route::get('/india/census/{kind}/{state}/{district}/{slug}-{record}', [CivicExplorerController::class, 'named'])->where('kind', 'subdistricts|villages|towns')->where('state', '[a-z0-9-]+')->where('district', '[a-z0-9-]+')->where('slug', '[a-z0-9-]+')->whereNumber('record')->name('civic.named');
 Route::get('/india/census/places/{record}', [CivicExplorerController::class, 'index'])->whereNumber('record')->name('civic.place');
 Route::get('/india/census/history', [CensusHistoryController::class, 'national'])->name('census.national-history');
 Route::get('/india/census/source-tables', [HistoricalCensusTableController::class, 'index'])->name('census.source-tables');
@@ -70,12 +117,52 @@ Route::get('/sources', [SourceController::class, 'index'])->name('sources.index'
 Route::get('/india/elections/lok-sabha', [HistoricalElectionController::class, 'index'])->name('elections.history');
 Route::get('/india/elections/maps/uttar-pradesh', [ElectoralMapController::class, 'index'])->defaults('state', 'uttar-pradesh')->name('elections.map-pilot');
 Route::get('/india/elections/maps', [ElectoralMapController::class, 'index'])->name('elections.maps.index');
+Route::get('/india/elections/village-map', [ElectoralVillageMapController::class, 'index'])->name('electoral-villages.index');
+Route::get('/india/villages/{state}/{district}/{slug}-{code}', [ElectoralVillageMapController::class, 'namedVillage'])->where('state', '[a-z0-9-]+')->where('district', '[a-z0-9-]+')->where('slug', '[a-z0-9-]+')->where('code', '[0-9]{1,8}')->name('electoral-villages.named');
+Route::get('/india/elections/village-map/villages/{code}', [ElectoralVillageMapController::class, 'village'])->where('code', '[0-9]{1,8}')->name('electoral-villages.village');
+Route::get('/api/electoral-villages/membership', [ElectoralVillageMapController::class, 'membership'])->middleware('throttle:120,1')->name('electoral-villages.membership');
+Route::get('/api/electoral-villages/layers/{layer}', [ElectoralVillageMapController::class, 'geometry'])->where('layer', '[a-f0-9]{64}')->name('electoral-villages.geometry');
 Route::get('/api/election-maps/results', [ElectoralMapController::class, 'results'])->middleware('throttle:120,1')->name('elections.maps.results');
 Route::get('/india/elections/maps/{state}', [ElectoralMapController::class, 'index'])->name('elections.maps.show');
 Route::get('/india/elections/constituencies', [HistoricalConstituencyFinderController::class, 'index'])->name('elections.constituencies');
 Route::get('/india/elections/by-elections', [ByElectionArchiveController::class, 'index'])->name('elections.by-elections');
 Route::get('/india/elections/by-elections/results', [ByElectionResultController::class, 'index'])->name('elections.by-election-results');
 Route::get('/india/elections/polling-stations', [PollingSourceController::class, 'index'])->name('elections.polling-stations');
+Route::get('/india/pilots/pilibhit-ac-villages', [PilibhitAcPilotController::class, 'index'])->name('pilibhit-ac-pilot');
+Route::redirect('/india/pilots/pilibhit-district', '/india/districts/uttar-pradesh/pilibhit', 301)->name('pilibhit-district-pilot');
+Route::redirect('/india/pilots/rampur-district', '/india/districts/uttar-pradesh/rampur', 301)->name('rampur-district-pilot');
+Route::get('/india/districts/modern/west-bengal/{slug}/dashboard', [\App\Http\Controllers\ModernDistrictSourceMapController::class, 'index'])->where('slug', 'purba-bardhaman|paschim-bardhaman|jhargram|paschim-medinipur|alipurduar|kalimpong|darjiling|jalpaiguri')->name('modern-district-source-map');
+Route::get('/india/andhra-pradesh/source-maps', function (\Illuminate\Http\Request $request) {
+    $fixture = json_decode(file_get_contents(database_path('fixtures/andhra-pradesh-source-maps.json')), true, 512, JSON_THROW_ON_ERROR);
+    $sourceMaps = $fixture['maps'];
+    $sourceSlug = $request->query('source', array_key_first($sourceMaps));
+    abort_unless(is_string($sourceSlug) && isset($sourceMaps[$sourceSlug]), 404);
+
+    return view('andhra-pradesh-source-maps', ['sourceMaps' => $sourceMaps, 'sourceSlug' => $sourceSlug, 'selected' => $sourceMaps[$sourceSlug], 'archiveSha' => $fixture['sha256']]);
+})->name('andhra-pradesh-source-maps');
+
+Route::get('/india/telangana/source-maps', function (\Illuminate\Http\Request $request) {
+    $fixture = json_decode(file_get_contents(database_path('fixtures/telangana-source-maps.json')), true, 512, JSON_THROW_ON_ERROR);
+    $sourceMaps = $fixture['maps'];
+    $sourceSlug = $request->query('source', array_key_first($sourceMaps));
+    abort_unless(is_string($sourceSlug) && isset($sourceMaps[$sourceSlug]), 404);
+
+    return view('telangana-source-maps', ['sourceMaps' => $sourceMaps, 'sourceSlug' => $sourceSlug, 'selected' => $sourceMaps[$sourceSlug], 'archiveSha' => $fixture['sha256']]);
+})->name('telangana-source-maps');
+
+Route::get('/india/chhattisgarh/source-maps', function (\Illuminate\Http\Request $request) {
+    $fixture = json_decode(file_get_contents(database_path('fixtures/chhattisgarh-source-maps.json')), true, 512, JSON_THROW_ON_ERROR);
+    $sourceMaps = $fixture['maps'];
+    $sourceSlug = $request->query('source', array_key_first($sourceMaps));
+    abort_unless(is_string($sourceSlug) && isset($sourceMaps[$sourceSlug]), 404);
+
+    return view('chhattisgarh-source-maps', ['sourceMaps' => $sourceMaps, 'sourceSlug' => $sourceSlug, 'selected' => $sourceMaps[$sourceSlug], 'archiveSha' => $fixture['sha256']]);
+})->name('chhattisgarh-source-maps');
+
+Route::get('/india/districts/dashboard', [DistrictDashboardController::class, 'directory'])->name('district-dashboard-directory');
+Route::get('/india/districts/19/{district}/dashboard', [\App\Http\Controllers\WestBengalDistrictDashboardController::class, 'index'])->where('district', '[0-9]{3}')->name('west-bengal-district-dashboard');
+Route::get('/india/districts/{state}/{district}', [\App\Http\Controllers\NamedDistrictDashboardController::class, 'index'])->where(['state' => '[a-z][a-z-]*', 'district' => '[a-z0-9][a-z0-9-]*'])->name('district-dashboard.named');
+Route::get('/india/districts/{state}/{district}/dashboard', [DistrictDashboardController::class, 'index'])->where(['state' => '[0-9]{2}', 'district' => '[0-9]{3}'])->name('district-dashboard');
 Route::get('/india/elections/assembly/sources/{archive}', [HistoricalElectionController::class, 'sourceFiles'])->where('archive', '[a-f0-9]{24}')->name('elections.assembly-source-files');
 Route::get('/india/elections/assembly/sources', [HistoricalElectionController::class, 'sources'])->name('elections.assembly-sources');
 Route::get('/india/elections/assembly', [HistoricalElectionController::class, 'index'])->name('elections.assembly');
@@ -95,6 +182,7 @@ Route::post('/reports/archive', [ReportArchiveController::class, 'store'])->midd
 Route::get('/reports/archive/{report}/download', [ReportArchiveController::class, 'download'])->whereUlid('report')->name('reports.download');
 Route::get('/india/state/{state}', [OverviewController::class, 'index'])->name('states.show');
 Route::get('/india/villages', [VillageController::class, 'index'])->name('villages.index');
+Route::get('/india/village/{state}/{district}/{slug}-{code}', [VillageController::class, 'namedShow'])->where('state', '[a-z0-9-]+')->where('district', '[a-z0-9-]+')->where('slug', '[a-z0-9-]+')->where('code', '(?:[0-9]{6}|[0-9]{8})')->name('villages.named');
 Route::get('/india/village/{code}-{slug}', [VillageController::class, 'show'])->where('code', '(?:[0-9]{6}|[0-9]{8})')->where('slug', '[a-z0-9-]+')->name('villages.show');
 Route::get('/india/{type}/{slug}', [PlaceController::class, 'show'])->whereIn('type', ['district', 'pc', 'ac'])->name('places.show');
 Route::view('/india/sir', 'sir');
@@ -132,6 +220,12 @@ Route::prefix('admin')->middleware(AdminTransport::class)->group(function (): vo
 Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(function (): void {
     Route::get('/admin/election-maps', [ElectoralMapReviewController::class, 'index'])->name('elections.maps.review');
     Route::post('/admin/election-maps/review', [ElectoralMapReviewController::class, 'save'])->middleware('throttle:30,1')->name('elections.maps.review-save');
+    Route::get('/admin/map-storage', [MapStorageController::class, 'index'])->name('map-storage.index');
+    Route::post('/admin/map-storage/category-moves', [MapStorageController::class, 'categoryMove'])->middleware('throttle:2,1')->name('map-storage.category-move');
+    Route::get('/admin/map-storage/files/{file}', [MapStorageController::class, 'download'])->whereNumber('file')->name('map-storage.download');
+    Route::post('/admin/map-storage/settings', [MapStorageController::class, 'save'])->middleware('throttle:10,1')->name('map-storage.save');
+    Route::post('/admin/map-storage/scan', [MapStorageController::class, 'scan'])->middleware('throttle:2,1')->name('map-storage.scan');
+    Route::post('/admin/map-storage/moves', [MapStorageController::class, 'move'])->middleware('throttle:10,1')->name('map-storage.move');
     Route::get('/admin/pdf-storage', [PdfStorageController::class, 'index'])->name('pdf-storage.index');
     Route::post('/admin/pdf-storage/profiles', [PdfStorageController::class, 'save'])->middleware('throttle:10,1')->name('pdf-storage.save');
     Route::post('/admin/pdf-storage/profiles/{profile}/credentials', [PdfStorageController::class, 'credentials'])->whereNumber('profile')->middleware('throttle:10,1')->name('pdf-storage.credentials');
@@ -142,6 +236,8 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(f
     Route::post('/admin/census/prepare/{run}', [CensusCatalogueController::class, 'prepare'])->whereNumber('run')->middleware('throttle:5,1')->name('census-catalogue.prepare');
     Route::post('/admin/census/{edition}/publish', [CensusCatalogueController::class, 'publish'])->whereNumber('edition')->middleware('throttle:5,1')->name('census-catalogue.publish');
     Route::post('/admin/census/{edition}/withdraw', [CensusCatalogueController::class, 'withdraw'])->whereNumber('edition')->name('census-catalogue.withdraw');
+    Route::post('/admin/issues/{issue}/contributions/{contribution}', [\App\Http\Controllers\IssueParticipationController::class, 'review'])->whereUlid('issue')->whereNumber('contribution')->middleware('throttle:20,1')->name('issues.contribution.review');
+    Route::get('/admin/authority-coverage', [CitizenIssueController::class, 'coverage'])->name('issues.authority-coverage');
     Route::get('/admin/issues', [CitizenIssueController::class, 'reviewIndex'])->name('issues.queue');
     Route::post('/admin/issues/{issue}/authority', [CitizenIssueController::class, 'authority'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.authority');
     Route::post('/admin/issues/{issue}/responses', [CitizenIssueController::class, 'response'])->whereUlid('issue')->middleware('throttle:20,1')->name('issues.response');
@@ -206,6 +302,7 @@ Route::prefix('admin/imports')->middleware([AdminTransport::class, RequireAdmini
     Route::post('/publications/{publication}/restore', [CensusPublicationController::class, 'restore'])->whereNumber('publication')->name('imports.census.restore');
 });
 
+Route::get('/india/constituencies/{kind}/{state}/{name}', [ConstituencyOverviewController::class, 'named'])->where('kind', 'ac|pc')->where(['state' => '[a-z0-9-]+', 'name' => '[a-z0-9-]+'])->name('constituency.named');
 Route::get('/india/constituency', [ConstituencyOverviewController::class, 'index'])->name('constituency.overview');
 
 Route::get('/report-problem', [DataFeedbackController::class, 'create'])->name('feedback.create');
@@ -246,3 +343,9 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(f
     Route::get('/admin/translations', [TranslationController::class, 'index'])->name('translations.index');
     Route::post('/admin/translations', [TranslationController::class, 'save'])->name('translations.save');
 });
+
+Route::get('/satellite-content', [MapStorageController::class, 'asset'])->name('map-storage.asset');
+
+require __DIR__.'/community.php';
+
+Route::get('/api/language/hi/names', \App\Http\Controllers\HindiPlaceNameController::class)->middleware('throttle:180,1')->name('language.hindi.names');

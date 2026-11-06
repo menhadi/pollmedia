@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\VillageProfileLinks;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -79,6 +80,12 @@ class VillageController extends Controller
         return view('villages', compact('census', 'release', 'villages', 'options', 'year', 'subdistrict', 'selectedVillage', 'mapping', 'blocks', 'block', 'lgd', 'currentSubdistricts', 'currentSubdistrict', 'currentBlocks', 'currentBlock', 'panchayats', 'panchayat', 'hasSelection', 'electoral', 'assemblyOptions', 'pc', 'ac'));
     }
 
+    public function namedShow(Request $request, string $state, string $district, string $slug, string $code): View|RedirectResponse
+    {
+        abort_unless($state === 'uttar-pradesh' && $district === 'pilibhit', 404);
+        return $this->show($request, $code, $slug);
+    }
+
     public function show(Request $request, string $code, string $slug): View|RedirectResponse
     {
         $request->validate(['year' => 'nullable|in:2011,2001']);
@@ -86,8 +93,9 @@ class VillageController extends Controller
         [$census, $release] = $this->dataset($year);
         $village = collect($census['villages'])->first(fn ($v) => (string) $v['code'] === $code);
         abort_unless($village, 404);
-        if ($slug !== Str::slug($village['name'])) {
-            return redirect()->route('villages.show', array_filter(['code' => $code, 'slug' => Str::slug($village['name']), 'year' => $year === '2001' ? $year : null]), 301);
+        $canonical = route('villages.named', ['state' => 'uttar-pradesh', 'district' => 'pilibhit', 'slug' => Str::slug($village['name']), 'code' => $code], false);
+        if ($request->getPathInfo() !== $canonical) {
+            return redirect(url($canonical).($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);
         }
 
         $mapping = $this->mapping();
@@ -109,9 +117,20 @@ class VillageController extends Controller
 
         $lgd = app(PlaceController::class)->payload('lgd-pilibhit');
         $currentRecords = collect($lgd['villages'])->where('census_'.$year.'_code', $code)->values();
+        $mapVillageCode = null;
+        if ($currentRecords->count() === 1) {
+            $current = $currentRecords->first();
+            $profile = app(VillageProfileLinks::class)->records([
+                'lgd' => (string) $current['code'], 'state' => '9',
+                'census2011' => (string) ($current['census_2011_code'] ?? ''),
+            ], true);
+            if ($year === '2011' || collect($profile['census_history'] ?? [])->contains(fn (array $record): bool => (string) $record['code'] === $code && (int) $record['year'] === (int) $year)) {
+                $mapVillageCode = (string) $current['code'];
+            }
+        }
         $electoral = app(PlaceController::class)->payload('lgd-pilibhit-electoral');
         $electoralMatches = collect($electoral['villages'])->whereIn('lgd_code', $currentRecords->pluck('code'))->values();
 
-        return view('village', compact('census', 'release', 'village', 'year', 'mapping', 'connection', 'counterpart', 'lgd', 'currentRecords', 'electoral', 'electoralMatches'));
+        return view('village', compact('census', 'release', 'village', 'year', 'mapping', 'connection', 'counterpart', 'lgd', 'currentRecords', 'electoral', 'electoralMatches', 'mapVillageCode'));
     }
 }

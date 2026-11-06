@@ -44,7 +44,7 @@ class ElectoralMapResults
                     'name' => $entry->constituency_name, 'code' => $entry->record_code, 'year' => $entry->year,
                     'official_code' => $record['official_pc_code'] ?? $record['official_ac_code'] ?? null,
                     'party' => $result['party'] ?? null, 'winner' => $result['winner'] ?? null,
-                    'url' => route('constituency.overview', ['kind' => $kind, 'state' => $recordState,
+                    'url' => ConstituencyUrls::url(['kind' => $kind, 'state' => $recordState,
                         'name' => $entry->constituency_name, 'edition' => $id, 'code' => $entry->record_code])];
             }
         }
@@ -81,12 +81,8 @@ class ElectoralMapResults
             foreach ($data['additional_sources'] ?? [] as $source) {
                 abort_unless($hashes->get($source['file']) === $source['sha256'], 409, 'Additional election source identity differs.');
             }
-            $records = [];
-            foreach ($data['records'] ?? [] as $record) {
-                $records[$record['code']] = app(HistoricalElectionReview::class)->apply($edition, $record, $data['source_sha256']);
-            }
 
-            return $records;
+            return app(HistoricalElectionReview::class)->applyBatch($edition, $data['records'] ?? [], $data['source_sha256']);
         });
     }
 

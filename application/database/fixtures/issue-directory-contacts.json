@@ -1,0 +1,307 @@
+{
+  "entries": [
+    {
+      "area_keys": [
+        "village:131191"
+      ],
+      "categories": [
+        "roads",
+        "water",
+        "sanitation",
+        "other"
+      ],
+      "contacts": [
+        {
+          "office": "Gram Panchayat Bagnera Bagneri",
+          "department": "Panchayati Raj — local self-government",
+          "role": "Local enquiry / identify the road owner",
+          "phone": "9837788295",
+          "contact_label": "Pradhan contact listed in the official directory (Amit Kumar)",
+          "website": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+          "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+          "checked_on": "2026-10-25",
+          "note": "The official directory identifies Gram Panchayat 81725 in Amariya block. Contact is directory-listed; current tenure and telephone availability have not been independently confirmed."
+        },
+        {
+          "office": "Block Development Officer, Amaria",
+          "department": "Rural Development — Amaria block",
+          "role": "Block-level routing / coordination",
+          "phone": "9454464686",
+          "contact_label": "Officially listed BDO office contact",
+          "website": "https://pilibhit.nic.in/blocks/",
+          "source_url": "https://pilibhit.nic.in/blocks/",
+          "checked_on": "2026-10-25",
+          "note": "District website lists this number. The page shows last updated 25 September 2020; confirm it is still in use before relying on it.",
+          "source_updated_on": "2020-09-25",
+          "freshness": "outdated"
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+          "sha256": "5b96d8146872b805388fad0254ffdf3ff64f96f23b04c93ef9bc54e0c455a437",
+          "snapshot": "tmp\\india-map\\demo-authority-panchayat.html"
+        },
+        {
+          "url": "https://pilibhit.nic.in/blocks/",
+          "sha256": "d2d27e6ac578a742afead12a3f3a2fee327782dad18bb1b3ba1c2ba943856916",
+          "snapshot": "tmp\\india-map\\demo-authority-blocks.html"
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "roads"
+      ],
+      "contacts": [
+        {
+          "office": "Executive Engineer, P.W.D. (Provincial Division) — Pilibhit",
+          "department": "Executive Engineer, P.W.D. (Provincial Division)",
+          "role": "Department contact listed for this district",
+          "phone": "9451922867",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "source_url": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2024-06-21",
+          "freshness": "outdated",
+          "note": "Official page last updated 2024-06-21. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "799fb33d3e1090f92b5d26d9c0523a49675b362e8495c32dd68f2db5b5705e78",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-executive-engineers.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "roads"
+      ],
+      "contacts": [
+        {
+          "office": "Executive Engineer, R.E.S (P.M.G.S.Y.) — Pilibhit",
+          "department": "Executive Engineer, R.E.S (P.M.G.S.Y.)",
+          "role": "Department contact listed for this district",
+          "phone": "7533980063",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "source_url": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2024-06-21",
+          "freshness": "outdated",
+          "note": "Official page last updated 2024-06-21. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "799fb33d3e1090f92b5d26d9c0523a49675b362e8495c32dd68f2db5b5705e78",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-executive-engineers.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "electricity"
+      ],
+      "contacts": [
+        {
+          "office": "Executive Engineer, Electricity, Pilibhit — Pilibhit",
+          "department": "Executive Engineer, Electricity, Pilibhit",
+          "role": "Department contact listed for this district",
+          "phone": "9415901754",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "source_url": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2024-06-21",
+          "freshness": "outdated",
+          "note": "Official page last updated 2024-06-21. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "799fb33d3e1090f92b5d26d9c0523a49675b362e8495c32dd68f2db5b5705e78",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-executive-engineers.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "water"
+      ],
+      "contacts": [
+        {
+          "office": "Executive Engineer, Jal Nigam — Pilibhit",
+          "department": "Executive Engineer, Jal Nigam",
+          "role": "Department contact listed for this district",
+          "phone": "9473942569",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "source_url": "https://pilibhit.nic.in/phone-executive-engineers/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2024-06-21",
+          "freshness": "outdated",
+          "note": "Official page last updated 2024-06-21. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "799fb33d3e1090f92b5d26d9c0523a49675b362e8495c32dd68f2db5b5705e78",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-executive-engineers.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "education"
+      ],
+      "contacts": [
+        {
+          "office": "District Inspector of School — Pilibhit",
+          "department": "District Inspector of School",
+          "role": "Department contact listed for this district",
+          "phone": "9454457301",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-education-department/",
+          "source_url": "https://pilibhit.nic.in/phone-education-department/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2018-02-23",
+          "freshness": "outdated",
+          "note": "Official page last updated 2018-02-23. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "ab43ceebd0fec385502767f191e697c9c348be900027dd4a1d747debb31afe66",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-education-department.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "education"
+      ],
+      "contacts": [
+        {
+          "office": "District Basic Education Officer — Pilibhit",
+          "department": "District Basic Education Officer",
+          "role": "Department contact listed for this district",
+          "phone": "9453004113",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-education-department/",
+          "source_url": "https://pilibhit.nic.in/phone-education-department/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2018-02-23",
+          "freshness": "outdated",
+          "note": "Official page last updated 2018-02-23. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "ab43ceebd0fec385502767f191e697c9c348be900027dd4a1d747debb31afe66",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-education-department.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "health"
+      ],
+      "contacts": [
+        {
+          "office": "Chief Medical Officer — Pilibhit",
+          "department": "Chief Medical Officer",
+          "role": "Department contact listed for this district",
+          "phone": "9319201494",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-medical-department/",
+          "source_url": "https://pilibhit.nic.in/phone-medical-department/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2024-06-21",
+          "freshness": "outdated",
+          "note": "Official page last updated 2024-06-21. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "4c38b8f2c48155393b5a35b8682507cd32e2875992530a4587299fc9ac94eac9",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-medical-department.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "district:9:173",
+        "district:173"
+      ],
+      "categories": [
+        "sanitation"
+      ],
+      "contacts": [
+        {
+          "office": "District Panchayati Raj Officer — Pilibhit",
+          "department": "District Panchayati Raj Officer",
+          "role": "Department contact listed for this district",
+          "phone": "9920731724",
+          "contact_label": "Telephone published in the official district directory",
+          "website": "https://pilibhit.nic.in/phone-development-department/",
+          "source_url": "https://pilibhit.nic.in/phone-development-department/",
+          "checked_on": "2026-10-26",
+          "source_updated_on": "2025-12-18",
+          "freshness": "dated",
+          "note": "Official page last updated 2025-12-18. Current contact availability and responsibility for the specific asset are unconfirmed.",
+          "source_sha256": "0a7f287a36a0a9ee8c6c66ee32001f570bdf97ebbe9445b34a8466f54b7955b5",
+          "source_snapshot": "tmp\\india-map\\authority-sources\\phone-development-department.html",
+          "general_routing": false
+        }
+      ]
+    },
+    {
+      "area_keys": [
+        "state:9"
+      ],
+      "categories": [
+        "water",
+        "roads",
+        "sanitation",
+        "electricity",
+        "health",
+        "education",
+        "revenue",
+        "agriculture",
+        "welfare",
+        "transport",
+        "environment",
+        "other"
+      ],
+      "contacts": [
+        {
+          "office": "Jansunwai–Samadhan, Uttar Pradesh",
+          "department": "Public Grievances Department — Chief Minister Office",
+          "role": "State grievance routing portal",
+          "contact_label": "Official statewide grievance portal",
+          "phone": "",
+          "email": "",
+          "general_routing": true,
+          "website": "https://jansunwai.up.nic.in/",
+          "source_url": "https://jansunwai.up.nic.in/?language=en_US",
+          "source_snapshot": "tmp/india-map/authority-sources/up-jansunwai.html",
+          "source_sha256": "40eabbe2e3ba76a4d72a0d625bfe725b3c80b7e4d1cd6a4549a9cfd1c9ad6dff",
+          "checked_on": "2026-10-26",
+          "source_updated_on": null,
+          "freshness": "undated",
+          "note": "Official statewide grievance registration and tracking portal. General routing service; not the owner of individual roads, schools or other assets. Publication here does not submit a grievance. Technical-support email is intentionally excluded from complaint routing."
+        }
+      ]
+    }
+  ]
+}

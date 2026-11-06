@@ -1,0 +1,442 @@
+{
+  "schema": 1,
+  "publication_enabled": true,
+  "records": [
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "4,56,463.00",
+      "payment_total_decimal": "456463.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1388-source.json",
+      "source_sha256": "b15b046a0daf8d28405f0b29f5603efe81718d74c7c6f2656e968d8b033c9ea9",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T09:34:56.126Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "39,80,633.00",
+      "payment_total_decimal": "3980633.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1399-source.json",
+      "source_sha256": "d4aa72e1aaf197266f5707bbaa18e075babf7af4dd2284785efc08e2d0383c02",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T09:36:17.184Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "12,34,026.00",
+      "payment_total_decimal": "1234026.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1388-source.json",
+      "source_sha256": "7daf715654613c532278d66f67c1b4d6cacfa548feb77ed113c6859c78288811",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T10:00:45.854Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "15,54,891.00",
+      "payment_total_decimal": "1554891.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1399-source.json",
+      "source_sha256": "0954d965f93205c1afda89943fd539243e132e9c8932315d79fe4fe45abd12af",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T10:01:07.604Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "5,28,200.00",
+      "payment_total_decimal": "528200.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1388-source.json",
+      "source_sha256": "3970278bd401cefca3588fcc3b3cd08db926fbc1f18c384a04b18348a3d63224",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T09:59:45.093Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "17,07,735.00",
+      "payment_total_decimal": "1707735.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1399-source.json",
+      "source_sha256": "4060e0f74d35b399f8ab89f67967914b2b5dc9a0108a2feaf66e745a943f1293",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T09:59:55.154Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "13,91,941.00",
+      "payment_total_decimal": "1391941.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1388-source.json",
+      "source_sha256": "8854cfbfcd2f1c3bc42d7178c7ff71e4c8ba58dcb4270c66878351b5a59ce145",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T09:59:19.431Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "13,40,660.00",
+      "payment_total_decimal": "1340660.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1399-source.json",
+      "source_sha256": "96eeef4aa097e0e449039a1b76d480227ef56906d3a9c0df9b5e25ee26582637",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T09:59:32.354Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "10,81,247.00",
+      "payment_total_decimal": "1081247.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1388-source.json",
+      "source_sha256": "33d9b1e0c0ec3c3d4ac4ae073658d9cd3d776df27ab62bfdede2846071e4bd25",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T09:58:46.321Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "15,42,634.00",
+      "payment_total_decimal": "1542634.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1399-source.json",
+      "source_sha256": "e30905edd41e6ae96f8e428cb3ba907036f07d92dfb697e51e5db89835f61ca1",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T09:58:56.652Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "11,78,599.00",
+      "payment_total_decimal": "1178599.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1388-source.json",
+      "source_sha256": "41ad8e9e0fd42abfdef042fbdaa58509198ced260e44e2904eab64b86aa44f00",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T09:57:39.747Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "18,16,079.00",
+      "payment_total_decimal": "1816079.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1399-source.json",
+      "source_sha256": "700107aeabbf483cfa0092937e34162108103b4700fe5ed65475e7c1a3752b53",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T09:57:50.924Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266761",
+      "name": "Bhartar",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1388",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125402",
+        "125403"
+      ],
+      "payment_total_source_text": "7,77,594.00",
+      "payment_total_decimal": "777594.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1388-source.json",
+      "source_sha256": "0549804b7f4009645166b9f55b62e79611cb602773eb3dad963fcc4d42ad59db",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=266761.html",
+      "capture_batch_date": "2026-10-29T09:56:51.995Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "266785",
+      "name": "MangalpurBantara",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1399",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125017",
+        "125022"
+      ],
+      "payment_total_source_text": "20,82,613.00",
+      "payment_total_decimal": "2082613.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1399-source.json",
+      "source_sha256": "08b3f1320e8c697ad09c5f5c032ac58f2e65187da907099f95c7e6e813be9a46",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=266785.html",
+      "capture_batch_date": "2026-10-29T09:57:13.521Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    }
+  ],
+  "sources": {
+    "up-agra-2020-block-1388-source.json": {
+      "sha256": "7daf715654613c532278d66f67c1b4d6cacfa548feb77ed113c6859c78288811",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2020-block-1399-source.json": {
+      "sha256": "0954d965f93205c1afda89943fd539243e132e9c8932315d79fe4fe45abd12af",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2021-block-1388-source.json": {
+      "sha256": "3970278bd401cefca3588fcc3b3cd08db926fbc1f18c384a04b18348a3d63224",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2021-block-1399-source.json": {
+      "sha256": "4060e0f74d35b399f8ab89f67967914b2b5dc9a0108a2feaf66e745a943f1293",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1388-source.json": {
+      "sha256": "8854cfbfcd2f1c3bc42d7178c7ff71e4c8ba58dcb4270c66878351b5a59ce145",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1399-source.json": {
+      "sha256": "96eeef4aa097e0e449039a1b76d480227ef56906d3a9c0df9b5e25ee26582637",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2023-block-1388-source.json": {
+      "sha256": "33d9b1e0c0ec3c3d4ac4ae073658d9cd3d776df27ab62bfdede2846071e4bd25",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2023-block-1399-source.json": {
+      "sha256": "e30905edd41e6ae96f8e428cb3ba907036f07d92dfb697e51e5db89835f61ca1",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2024-block-1388-source.json": {
+      "sha256": "41ad8e9e0fd42abfdef042fbdaa58509198ced260e44e2904eab64b86aa44f00",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2024-block-1399-source.json": {
+      "sha256": "700107aeabbf483cfa0092937e34162108103b4700fe5ed65475e7c1a3752b53",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1388-source.json": {
+      "sha256": "0549804b7f4009645166b9f55b62e79611cb602773eb3dad963fcc4d42ad59db",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1399-source.json": {
+      "sha256": "08b3f1320e8c697ad09c5f5c032ac58f2e65187da907099f95c7e6e813be9a46",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1388-source.json": {
+      "sha256": "b15b046a0daf8d28405f0b29f5603efe81718d74c7c6f2656e968d8b033c9ea9",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1388.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1399-source.json": {
+      "sha256": "d4aa72e1aaf197266f5707bbaa18e075babf7af4dd2284785efc08e2d0383c02",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1399.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    }
+  }
+}

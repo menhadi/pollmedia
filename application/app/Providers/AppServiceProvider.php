@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Services\ArchiveFiles;
+use App\Services\ConstituencyUrls;
+use App\Services\DistrictDashboardUrls;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Queue;
@@ -17,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ArchiveFiles::class);
+        $this->app->scoped(ConstituencyUrls::class);
+        $this->app->scoped(DistrictDashboardUrls::class);
     }
 
     /**

@@ -3,18 +3,17 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class SiteSettings
 {
     public function get(string $key, mixed $default = null): mixed
     {
-        if (! Schema::hasTable('site_settings')) {
+        if (! RequestSchema::hasTable('site_settings')) {
             return $default;
         }
-        $value = DB::table('site_settings')->where('key', $key)->value('value');
+        $value = PublicRequestCache::setting($key);
 
-        return $value === null ? $default : json_decode($value, true);
+        return $value['present'] ? $value['value'] : $default;
     }
 
     public function save(string $key, mixed $value, string $reason = 'Administrative settings update'): void

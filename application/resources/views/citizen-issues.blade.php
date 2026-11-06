@@ -2,7 +2,7 @@
 @section('title', 'Citizen issues')
 @section('content')
 <h1>Citizen issues</h1>
-<p>Report a local service problem and follow reviewed reports. These are citizen accounts, not official statistics or verified findings.</p>
+<p>Raise a local issue, support an existing complaint, add evidence and follow reviewed government updates. These are citizen accounts, not official statistics or verified findings.</p>
 @if(session('status'))<p class="notice" role="status">{{ session('status') }}</p>@endif
 @if($errors->any())<div class="notice" role="alert"><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
 <form class="card filters" method="get">
@@ -13,7 +13,7 @@
 <form class="card filters" method="get"><input type="hidden" name="country" value="{{ $country }}"><input type="hidden" name="type" value="{{ $type }}">
 <div><label for="place">Area</label><select id="place" name="place"><option value="">All loaded areas</option>@foreach($places as $area)<option value="{{ $area->id }}" @selected((string)$place === (string)$area->id)>{{ $area->name }} · {{ $area->slug }}</option>@endforeach</select></div><button>Filter reports</button></form>
 <section class="card"><h2>Published reports</h2>@forelse($issues as $issue)<div class="row"><a href="{{ route('issues.show', $issue->id) }}">{{ $issue->title }}</a><p>{{ \Illuminate\Support\Str::headline($issue->category) }} · {{ \Illuminate\Support\Str::headline($issue->status) }}</p></div>@empty<p>No published reports match these areas.</p>@endforelse{{ $issues->links() }}</section>
-<section class="card"><h2>Report a problem</h2><p>Choose a country and area type above to load locations. Submit only information you agree can be published. Do not include phone numbers, addresses of individuals, identity documents or other private details. Reports are reviewed before publication. This form does not contact emergency services or authorities.</p>
+<section class="card"><h2>Report a problem</h2><p>Check the published reports above first. If someone has reported the same problem, support it or add evidence on its page.</p><p>Choose a country and area type above to load locations. Submit only information you agree can be published. Do not include phone numbers, addresses of individuals, identity documents or other private details. Reports are reviewed before publication. This form does not contact emergency services or authorities.</p>
 <form method="post" action="{{ route('issues.store') }}">@csrf
 <p><label for="place_id">Affected area</label><select name="place_id" id="place_id" required><option value="">Choose an area</option>@foreach($places as $area)<option value="{{ $area->id }}" @selected((string)old('place_id', $place) === (string)$area->id)>{{ $area->name }} · {{ $area->slug }}</option>@endforeach</select></p>
 <p><label for="category">Category</label><select id="category" name="category" required>@foreach($categories as $category)<option value="{{ $category }}" @selected(old('category') === $category)>{{ ucfirst($category) }}</option>@endforeach</select></p>

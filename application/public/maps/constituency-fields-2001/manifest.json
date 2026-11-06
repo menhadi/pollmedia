@@ -1,0 +1,1032 @@
+{
+  "membership_held": {
+    "no_existing_membership_link": 0
+  },
+  "year": 2001,
+  "fields": {
+    "vd_DIST_CODE": {
+      "label": "DIST_CODE",
+      "kind": "category",
+      "sha256": "50769d1f998d4457049dddef2da57a704f1b706559456ecfe9cd3e3535f298c5"
+    },
+    "vd_THSIL_CODE": {
+      "label": "THSIL_CODE",
+      "kind": "category",
+      "sha256": "224532e758a95de29d5b087521dd5c8584fb3c1c8e563752dd39303bfaac0a64"
+    },
+    "vd_BLOCK_CODE": {
+      "label": "BLOCK_CODE",
+      "kind": "category",
+      "sha256": "b05fda5d4bfab6dd79e14859ed701902772e42d2776e52ee75656041f503b4d1"
+    },
+    "vd_V_CT_CODE": {
+      "label": "V_CT_CODE",
+      "kind": "category",
+      "sha256": "36f31e299c3e14daec97a972aeb1e417a05f8f9b716ba96f08dba791e51787a4"
+    },
+    "vd_VILL_NAME": {
+      "label": "VILL_NAME",
+      "kind": "category",
+      "sha256": "625fe473d2ba2db769fdd5192c5b2b6eea094410abba04ee5aa5970fffc966be"
+    },
+    "vd_AREA": {
+      "label": "AREA",
+      "kind": "sum",
+      "sha256": "283f356894f5338ae72b8384b91379862611ce693733670b1401a2eb1e8184a3"
+    },
+    "vd_T_HH": {
+      "label": "T_HH",
+      "kind": "sum",
+      "sha256": "d96e533c57f6d45d04ef22e295c1e6f64a290683cb044ad3e6c47f9b3ac9257b"
+    },
+    "vd_T_P": {
+      "label": "T_P",
+      "kind": "sum",
+      "sha256": "dbae3e9b5c04c5bbcd47f9dbd7374de84d75dc707ddc6d2255a9f6fb78a42ccb"
+    },
+    "vd_T_M": {
+      "label": "T_M",
+      "kind": "sum",
+      "sha256": "83656844fac89f6da65b220e04ce440e62a797fccb5aec8f875eadcbf9183a06"
+    },
+    "vd_T_F": {
+      "label": "T_F",
+      "kind": "sum",
+      "sha256": "f803e96e0adc53cb2f58d5101fd95901f3b437448fa5513abdf4850f10da2191"
+    },
+    "vd_SC_P": {
+      "label": "SC_P",
+      "kind": "sum",
+      "sha256": "a3017e65ea40a7108ad2efdac0285b81b82ef8a27b3342270bfadf57a0227a85"
+    },
+    "vd_SC_M": {
+      "label": "SC_M",
+      "kind": "sum",
+      "sha256": "83787e10e1dcf6cff9392f1eeeed152b12c67726b43ccf4fc6da6f45fda449da"
+    },
+    "vd_SC_F": {
+      "label": "SC_F",
+      "kind": "sum",
+      "sha256": "e82ea0cd0e5618e12c633c4739a9de3c82fce796d881c2733e04173c1719abae"
+    },
+    "vd_ST_P": {
+      "label": "ST_P",
+      "kind": "sum",
+      "sha256": "ca59124e6d0bdf3eb306f9420ca978e97fb33c9d1299b2c38492f7ae03e401ee"
+    },
+    "vd_ST_M": {
+      "label": "ST_M",
+      "kind": "sum",
+      "sha256": "bb7e38ecea3130b273e62239be33ae62cdef7c0cdeea7ec044266762ea6637d0"
+    },
+    "vd_ST_F": {
+      "label": "ST_F",
+      "kind": "sum",
+      "sha256": "f467a6d1460255f2c4b80bd15d3f90bbcd992297e202abbb36d83429c86e24dd"
+    },
+    "vd_EDU_FAC": {
+      "label": "Educational facilities (A/NA)",
+      "kind": "category",
+      "sha256": "e7f6da48ee67b2c32b595db8f8a7ef7723475e84d61b270d9971572fa7f71981"
+    },
+    "vd_P_SCH": {
+      "label": "Number of Primary School",
+      "kind": "sum",
+      "sha256": "630fb3d1a7e9c057fee787e31d03875d3c23f5a748094eb8db70708c3e44dd49"
+    },
+    "vd_RANG_P_SCH": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "58ac02c7ae38c642e7dab7985bb92bb2e6ee3fd120b484df9620cc075cb434a8"
+    },
+    "vd_M_SCH": {
+      "label": "Number of Middle School",
+      "kind": "sum",
+      "sha256": "f29da6f8cdf98a87e2b102763257222472e6134bd2d5cd2483eec9210f4984d2"
+    },
+    "vd_RANG_M_SCH": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "75eee5f15dbd9969526ac5b0bd42cbd6ca83c854ba8a8bd781fbb975fe5303e4"
+    },
+    "vd_S_SCH": {
+      "label": "Number of Secondary School",
+      "kind": "sum",
+      "sha256": "62469815fe1ffb396c7fa3fa84eff513f18c8979b04ffc17b092cbc6eaae5268"
+    },
+    "vd_S_S_SCH": {
+      "label": "Number of Senior Secondary School",
+      "kind": "sum",
+      "sha256": "b8df7791986e09bb32d3e5ca86d10d2645672efbbe22485cf03847caf4ccc146"
+    },
+    "vd_COLLEGE": {
+      "label": "Number of Collage",
+      "kind": "sum",
+      "sha256": "f2def4a36f7e48ef752c98edfc030ad0293135e62ee9bb70214a0e57f4df9064"
+    },
+    "vd_RANG_COLL": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "7358ac6542a9f55501ff120a702a0c639c80958510d005151739847b6a693d4d"
+    },
+    "vd_IND_SCH": {
+      "label": "Number of Industrial School",
+      "kind": "sum",
+      "sha256": "797e0cec9a147a06d2c958790500c9a8ef29c5c49430fb075a5407f606f49190"
+    },
+    "vd_TR_SCH": {
+      "label": "Number of Training School",
+      "kind": "sum",
+      "sha256": "fe63ced0ccaaa8783d3d5860efa3a81dadf8c43c914fce3d36974391dd9de00b"
+    },
+    "vd_ADLT_LT_CT": {
+      "label": "Number of Adult literacy Class/Centre",
+      "kind": "sum",
+      "sha256": "b24fa16b0a92750b73c1b4eaf0c6494f2ca8a2ff104f9fcd0fd470ed59835d20"
+    },
+    "vd_OTH_SCH": {
+      "label": "Number of Other educational facilities",
+      "kind": "sum",
+      "sha256": "75d47b5a20770422c16b1855d22b77b1a6da5ef6fe9f4fb1df510be9dc3df338"
+    },
+    "vd_MEDI_FAC": {
+      "label": "Medical facilities (A/NA)",
+      "kind": "category",
+      "sha256": "d72fc12d2de9dafe06bb0f97648a6e2904a0c900aa4bbf5a5b65d10475bd6728"
+    },
+    "vd_ALL_HOSP": {
+      "label": "Number of Allopathic Hospital",
+      "kind": "sum",
+      "sha256": "f947606398f28ed03c80683c9c327c3d35cd702a25ef026224cb1c06fab66c94"
+    },
+    "vd_RANG_ALL": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "98b5824d38f28fdb13b036bb235fdfd0f3ec80b9982fb462c0273161b1058586"
+    },
+    "vd_AYU_HOSP": {
+      "label": "Number of Ayurvedic Hospital",
+      "kind": "sum",
+      "sha256": "da147c1c55ece917d45af132ec6c66e495be54770272d78bf44b3b2e426915be"
+    },
+    "vd_UN_HOSP": {
+      "label": "Number of Unani Hospital",
+      "kind": "sum",
+      "sha256": "1300e746361c0a184c6c5566c821f12e13539a1fb49434c830bccb948d795282"
+    },
+    "vd_HOM_HOSP": {
+      "label": "Number of Homeopathic Hospital",
+      "kind": "sum",
+      "sha256": "4237f1ca1b907fded443f59c0545e743f9bb57070d6cfa79b01207fef0ceb3f6"
+    },
+    "vd_ALL_DISP": {
+      "label": "Number of Allopathic Dispensary",
+      "kind": "sum",
+      "sha256": "532dbbbfb96488d0967f9185fe16008ec5c8fb58c16ab2d668b5c2ea75cd33ea"
+    },
+    "vd_AYU_DISP": {
+      "label": "Number of Ayurvedic Dispensary",
+      "kind": "sum",
+      "sha256": "97038dfe58576fd5851e29e1d34794b597f762384a06047210326451f6daaf40"
+    },
+    "vd_UN_DISP": {
+      "label": "Number of Unani Dispensary",
+      "kind": "sum",
+      "sha256": "741254e2986cf68b2e9c0c7c5d468b75fa3b2963372aafc0f670bf50964bfdab"
+    },
+    "vd_HOM_DISP": {
+      "label": "Number of Homeopathic Dispensary",
+      "kind": "sum",
+      "sha256": "7638676db5d348792c93b94721dd039b740f27844919155c666db1db39a09a65"
+    },
+    "vd_MCW_CNTR": {
+      "label": "Number of Maternity and Child Welfare Centre",
+      "kind": "sum",
+      "sha256": "14230708c8242896082751e05c4e03d1c08d14ec68c492e8f1f977cf501ea5fe"
+    },
+    "vd_RANG_MCW": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "dbc2243c5d789184f861c2bef63ed53bf020a103a25dfa2782246d2e639c8fb8"
+    },
+    "vd_M_HOME": {
+      "label": "Number of Maternity Home",
+      "kind": "sum",
+      "sha256": "9696ab34e8f43106b424effcc39d484fa0ab4b773247b6232697720e496e0352"
+    },
+    "vd_CWC": {
+      "label": "Number of Child Welfare Centre",
+      "kind": "sum",
+      "sha256": "02f4f7f1fb51b12b36d78e75e130f5de3b8fc1252e8711c818afbe4318362cc5"
+    },
+    "vd_H_CNTR": {
+      "label": "Number of Health Centre",
+      "kind": "sum",
+      "sha256": "865d0a8572eb639374f8c9e71f8a379e2f87a452fc39a97c7270066309665260"
+    },
+    "vd_PH_CNTR": {
+      "label": "Number of Primary Health Centre",
+      "kind": "sum",
+      "sha256": "ab07eb4f67b866487637c2a92c20e43e0b4de88c7b0eb971a5e446ee82c45eec"
+    },
+    "vd_RANG_PHC": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "1dd75abb4db7f65bd026c74cc18d69e32e001e2fbb9976ec8ac1ad719d5f5add"
+    },
+    "vd_PHS_CNT": {
+      "label": "Number of Primary Health Sub Centre",
+      "kind": "sum",
+      "sha256": "004147d9591970dc8e9c3ed1433cfc4ecbd8459c57d638c43105a47ec13203ed"
+    },
+    "vd_FWC_CNTR": {
+      "label": "Number of Family Welfare Centre",
+      "kind": "sum",
+      "sha256": "bf9798fc73fc6d90e0b8d2dc5355ad32e532f9f287eb8bcf32ad9c3d4fbe8e82"
+    },
+    "vd_TB_CLN": {
+      "label": "TB_CLN",
+      "kind": "sum",
+      "sha256": "6b02e76190b55cc80ad5cb6d64604f1c9698c715223baac1e2267c33f369ea2a"
+    },
+    "vd_N_HOME": {
+      "label": "Number of Nursing Home",
+      "kind": "sum",
+      "sha256": "0962975a2da1fd97fffee773e87270fb8f884f7d461e195acb4f6db3d7a71b1a"
+    },
+    "vd_RMP": {
+      "label": "Number of Registered Private Medical Practitioners",
+      "kind": "sum",
+      "sha256": "70234aba7615ef3eb98bf1bb48cefeaf32df140f0d1c498a647ed712fc9183ee"
+    },
+    "vd_SMP": {
+      "label": "Number of Subsided Medical Practitioners",
+      "kind": "sum",
+      "sha256": "7c7f932521520ba7c8e9e9cef69ed2222269ed2081861e8e54e1f23de997a614"
+    },
+    "vd_CHW": {
+      "label": "Number of Community Health workers",
+      "kind": "sum",
+      "sha256": "22fb66892841e5f90a20b98ca3e9b051b8314b36c7313af6ee23674847c7659a"
+    },
+    "vd_OTH_CNTR": {
+      "label": "Number of Other medical facilities",
+      "kind": "sum",
+      "sha256": "8b307c03dbcab6ed1e2d8c51e962ff36e16070cb0bbc11efb1a1a6bcb2118605"
+    },
+    "vd_DRNK_WAT_F": {
+      "label": "Drinking Water facility (A/NA)",
+      "kind": "category",
+      "sha256": "8e8735b598250355eeab15e4e4aba2901fa67a8dac3054ac5f92c4749d10d8d2"
+    },
+    "vd_RANG_WAT_F": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "5313fef06ebf296b9bab61dd96a4ff3ca13e2b1216d3a1800572df580bd27627"
+    },
+    "vd_TAP": {
+      "label": "Tap Water (T)",
+      "kind": "category",
+      "sha256": "d4eb68f85dfca36a0d9f4870751ea3e7517400ee5c8f77aaa088fb1bdc86c0e0"
+    },
+    "vd_WELL": {
+      "label": "Well Water (W)",
+      "kind": "category",
+      "sha256": "0b8ae559f6347a2c9e6d19ca2612767cbf7703a0b33c86fcb479775b6ae543d5"
+    },
+    "vd_TANK": {
+      "label": "Tank Water (TK)",
+      "kind": "category",
+      "sha256": "f0f9558251a95af955af0620fb22ea5cc32e0d19ed02ae450472dedc42ab8297"
+    },
+    "vd_TUBEWELL": {
+      "label": "Tubewell Water (TW)",
+      "kind": "category",
+      "sha256": "50cdd6492d66cad2e82b3c1f6ab5ba0fdf2e30788540a4ca3f458f8c58ca76e6"
+    },
+    "vd_HANDPUMP": {
+      "label": "Handpump (HP)",
+      "kind": "category",
+      "sha256": "7625bee48358f04e3d9c79c3533458c7d4f7698dc0d06a529f28e330988b70a6"
+    },
+    "vd_RIVER": {
+      "label": "River Water(R)",
+      "kind": "category",
+      "sha256": "4f1dca7578a21b7a907638543ad378c7c6cd2ea59c227e687e31184ec28a47cb"
+    },
+    "vd_CANAL": {
+      "label": "Canal (C)",
+      "kind": "category",
+      "sha256": "db35c1b95df6fc89aaaa8ec4c625a8d442088a3aad90cf6da0406f9a6861ec21"
+    },
+    "vd_LAKE": {
+      "label": "Lake (L)",
+      "kind": "category",
+      "sha256": "6fb80f574a06011ec7329fbee22d992f1b70fa07e37720b7daece75d307fda47"
+    },
+    "vd_SPRING": {
+      "label": "Spring (S)",
+      "kind": "category",
+      "sha256": "49c1f397ab7f035b69739e19618e3be667be7d8da9ff6d7773c17c7a8a34cdd0"
+    },
+    "vd_OTHER": {
+      "label": "Other drinking water sources (O)",
+      "kind": "category",
+      "sha256": "cb2929d4c3a583a2893ed1f97ee5ea74ff97f9d5ed8b4c75bfd9de5d24dedbb0"
+    },
+    "vd_SOU_SUMM": {
+      "label": "Source of Drinking Water during Summer (indicate code from above)",
+      "kind": "category",
+      "sha256": "8702ddff32b72a84503a8e325ce815c04aa117ca906acc8707328d68f2b1ac9a"
+    },
+    "vd_RANG_SS": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "2d246e3ad0c0eddfec730fddfe6712f01d40a03090db8254ae535d1949dc3337"
+    },
+    "vd_SS_CODE": {
+      "label": "Source code from above as applicable",
+      "kind": "category",
+      "sha256": "1430dc016956fb4086c059b91a649c58d7c33d401971aa420f7ae9bb60bda337"
+    },
+    "vd_P_T_FAC": {
+      "label": "Post, Telegraph and Telephone facilities (A/NA), if available",
+      "kind": "category",
+      "sha256": "40c9a4bbc8823f0fddbb49ae5472858899c4827a1da7f154c83ef70f729f682c"
+    },
+    "vd_POST_OFF": {
+      "label": "Number of Post Office",
+      "kind": "sum",
+      "sha256": "8b551d1c2df7bbbdd223425811adfe62dcdb87b35b03cdad31c445584bb6f126"
+    },
+    "vd_RANG_PO": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "e8e9a5b523d59028f3b136eb8655fce158e3d76e991c5277fe449510bd8c52d9"
+    },
+    "vd_TELE_OFF": {
+      "label": "Number of Telegraph Office",
+      "kind": "sum",
+      "sha256": "b58b4c72eea3f036999676e4be56e7a1c8b80bcab6fdfe9e7634fee05c00ab37"
+    },
+    "vd_POST_TELE": {
+      "label": "Number of Post and Telegraph Office",
+      "kind": "sum",
+      "sha256": "231620ef7a130e8e6d0f99178626a5770d708677466acadbe1487264e04a4aa7"
+    },
+    "vd_PHONE": {
+      "label": "Number of Telephone connections",
+      "kind": "sum",
+      "sha256": "35d2c1314b4edf611960f22a3789c18f0c1344b2959ee525746d119bfc621cfb"
+    },
+    "vd_RANG_PHONE": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "cd9cdd78dce6bd1ac29d0193e09a6e51ae52437a06477b6ea0f8f7c2d0a3d204"
+    },
+    "vd_COMM_FAC": {
+      "label": "Communication (Y/N)",
+      "kind": "category",
+      "sha256": "fcbe22ff645ec5de42b97153c0e6cbbbacf115d7a48c90873576b8038b05c811"
+    },
+    "vd_BS_FAC": {
+      "label": "Bus services",
+      "kind": "category",
+      "sha256": "e973b370cdabeee10c9e09d773340e7ee2e8a99047ce6a5738b73141a3fc5dd1"
+    },
+    "vd_RANG_BS": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "b9e149ff51d3352fdcf8f8979906172d12c5d765c4f1fc0c0cafd7fc420b4804"
+    },
+    "vd_RS_FAC": {
+      "label": "RS_FAC",
+      "kind": "category",
+      "sha256": "9e00b4b6aa6efb34d1aa51bf0c501c6dba34456360c2362ef3a197bdfc6b93e8"
+    },
+    "vd_RANG_RS": {
+      "label": "Railways services - If not available, Provide the Range Cod",
+      "kind": "category",
+      "sha256": "6e4ce541864b2268a63fafdc22c35efb8ef6da45f09db504b42d325b0330efa2"
+    },
+    "vd_NW_FAC": {
+      "label": "Navigable water way including River, Canal etc.",
+      "kind": "category",
+      "sha256": "837bddbc01d5b27e5a68f991c3d2d05b1d57729fd291641511973abf449fa547"
+    },
+    "vd_RANG_NW": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "71aa76477d5913b67a6aead71c0beabdd1acf93e5cd9466bb2beb4f404058032"
+    },
+    "vd_BANK_FAC": {
+      "label": "Banking facility (Y/N)",
+      "kind": "category",
+      "sha256": "cf55319cd56f1d094f91ed12bb935df84c3f32179a3ac9a84f6d5d434e7aceaa"
+    },
+    "vd_COMM_BANK": {
+      "label": "Number of Commercial Bank",
+      "kind": "sum",
+      "sha256": "cdfd50bd91fd5a01a54b452691260bb6a82604a8172486c4b4bfd32a91848151"
+    },
+    "vd_RANG_COMM": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "4613e21cd9ec6cd75a50ed24d860b70d20fd91ca66766fffdcb81ce8d60989ac"
+    },
+    "vd_COOP_BANK": {
+      "label": "Number of Co-operative Commercial Bank",
+      "kind": "sum",
+      "sha256": "a59bb8e5eaa19a6dcb1fee33614dd84595757f5cd596c477bda3d6776bbb504c"
+    },
+    "vd_RANG_COOP": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "d23a15e42efddde14de92e90f2f1c094ba8b749d39478846807d3fe53fe51bd8"
+    },
+    "vd_CRSOC_FAC": {
+      "label": "Credit Societies (Y/N)",
+      "kind": "category",
+      "sha256": "1f72ff0bb960b62177086fcc9f4697c39e6607e33e938c9c83ba0303c0abde56"
+    },
+    "vd_AC_SOC": {
+      "label": "Number of Agricultural Credit Societies",
+      "kind": "sum",
+      "sha256": "d4d3e5dfadb9c91365165fdcbd29668e7544bcedb835e6a74cc66ca6b7d69294"
+    },
+    "vd_RANG_ACS": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "d529902468f8ae54c9ee179b88902d1fac4fbac5aa9424aaeb34ba12fc82a715"
+    },
+    "vd_NAC_SOC": {
+      "label": "Number of Non Agricultural Credit Societies",
+      "kind": "sum",
+      "sha256": "4cd74af49537d9ab79e9f6c0e18f70234d29fb7dd44f35504162316deac8b1fb"
+    },
+    "vd_RANG_NAC": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "72cf6c1086d22e7f996d83a1cec62654c66c16f5d500b8e61c4204c8f5da31e9"
+    },
+    "vd_OTHER_SOC": {
+      "label": "Number of Other Credit Societies",
+      "kind": "sum",
+      "sha256": "8fbac029b5a6bdfa0a0a5eae53c825ebd43b8ea55dda4b06039f47d8a5ae52eb"
+    },
+    "vd_RANG_OTH": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "b260a5b187d563e345cf1f4f2ff5473d8181975bb25347291136d6d83940f8ff"
+    },
+    "vd_RC_FAC": {
+      "label": "Recreational and Cultural facilities (Y/N)",
+      "kind": "category",
+      "sha256": "8605bfb9be3224cea541fe80d27e0e1e82c50b87ce48eb63b1d015f089015fb1"
+    },
+    "vd_C_V_HALL": {
+      "label": "Number of Cinema/Video-hall",
+      "kind": "sum",
+      "sha256": "951453cbc72227740345223c59c513a01ea5fd970e2d87bc316d848c48e53fa5"
+    },
+    "vd_RANG_CV": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "3f6638362cf1c0767d25bb93ac0f74a21fd15c31a8d711dac4e7acaa2df0e3c2"
+    },
+    "vd_SP_CL_FAC": {
+      "label": "Number of Sports Club",
+      "kind": "sum",
+      "sha256": "55e3ab60d6911c2aa1c368a45dd3a9f2a77c385f412f27efd9e0b7e5feb212d7"
+    },
+    "vd_RANG_SPCL": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "24138c8cbb74c61fd56bbdb797300e0a6a3a9fdbdedc692763b082f57fb0ebf2"
+    },
+    "vd_ST_AU_FAC": {
+      "label": "Number of Stadium/Auditorium",
+      "kind": "sum",
+      "sha256": "aedc352e75eabd6194732bc64dd0023a4566fbadaa3274ba051a659b80b76366"
+    },
+    "vd_RANG_STAU": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "cfb032edc813be9d702c5c81af47279d9f05d848bf6884a764454b949d5ee883"
+    },
+    "vd_APP_PR": {
+      "label": "Approach - Paved Road",
+      "kind": "category",
+      "sha256": "2c6c6875db2c80b4d52cc69ce8d0169e73945c56cbdd01388795e52f9255e39d"
+    },
+    "vd_APP_MR": {
+      "label": "Approach - Mud Road",
+      "kind": "category",
+      "sha256": "c05201f6903a565f337bce0007925445afc1be1eaf0f3e3eaf6d518ddfd5ee5b"
+    },
+    "vd_APP_FP": {
+      "label": "Approach - Foot Pathv",
+      "kind": "category",
+      "sha256": "7b151e71d5bd232aaf1486a7b1728a3096e250177c30f34a0691e8590e1a9ea3"
+    },
+    "vd_APP_NAVRIV": {
+      "label": "Approach - Navigable River",
+      "kind": "category",
+      "sha256": "f3271419c6380192e492baa20f0ee4a8cde710fcfe33e678967bfab0fdbf3777"
+    },
+    "vd_APP_NAVCAN": {
+      "label": "Approach - Navigable Canal",
+      "kind": "category",
+      "sha256": "f940b9a3700bee01b1b59f311034fb67767b55127a6ca18fe005dc3fcb605954"
+    },
+    "vd_APP_NW": {
+      "label": "Approach - Navigable water-way other than river or canal",
+      "kind": "category",
+      "sha256": "4d4bc922d4152f050940873edbfe9c9ca3c93be6aed4652580b530c9ac4e816e"
+    },
+    "vd_NEAR_TOWN": {
+      "label": "Nearest Town",
+      "kind": "category",
+      "sha256": "bc39dc2a588d59e12d1632e6e4f0bdfba7078d80f1b3dde5f11053bd1cdca9c7"
+    },
+    "vd_DIST_TOWN": {
+      "label": "Distance from the nearest Town (in Kilometer(s))",
+      "kind": "mean",
+      "sha256": "ac2be3619149d988e6ff02719b1a800e54e3e7e2a413b3a8b40b4d5382c461db"
+    },
+    "vd_POWER_SUPL": {
+      "label": "Power supply (A/NA)",
+      "kind": "category",
+      "sha256": "230a396749febe37cfbff9ffbd661a3579f7274898d5a3afa1b2e336a59e17cd"
+    },
+    "vd_POWER_DOM": {
+      "label": "Electricity for Domestic use",
+      "kind": "category",
+      "sha256": "dd41ddd9880cd3c33ced0e74a096435950418d85d48e3ebd1eb316ae107667a0"
+    },
+    "vd_POWER_AGR": {
+      "label": "Electricity of Agricultural use",
+      "kind": "category",
+      "sha256": "4b0491384a8f81f672cf7020fe13920efadfe23cde2ebae28ec18931a879e367"
+    },
+    "vd_POWER_OTH": {
+      "label": "Electricity of other purposes",
+      "kind": "category",
+      "sha256": "bbf1bef3de51336a77394b9dc716a0a25344ccddd3c7f0e8e07eb52b5af8ed04"
+    },
+    "vd_POWER_ALL": {
+      "label": "Electricity for all purposes",
+      "kind": "category",
+      "sha256": "e98365dacff0050b85b07c0060c507331bf6f80c99a52a458bcb6e635d0eb3b8"
+    },
+    "vd_PAP_MAG": {
+      "label": "Newspaper/Magazine (Y/N)",
+      "kind": "category",
+      "sha256": "16c5f699f0f34670611b3e9023c294de7cdd0f6e68d5ee436b9a8c26aecf3769"
+    },
+    "vd_NEWS_PAP": {
+      "label": "News Paper (Indicate N, if arrived)",
+      "kind": "category",
+      "sha256": "700a237f329320785a7b0b451e0984dbe17cb9b193ba0b910cdab141f46f1483"
+    },
+    "vd_MAGAZINE": {
+      "label": "Magazine (indicate M, if arrived)",
+      "kind": "category",
+      "sha256": "40eeaa16e625a0499ac3ecace92c163799e1538b727797d08034287b1c3c224e"
+    },
+    "vd_A_INCEXP": {
+      "label": "Separate figures available (Y/N)",
+      "kind": "category",
+      "sha256": "62605966092b75aedc873be98934c4734b1df97a5b7906c78c7fa0a27aa4ec63"
+    },
+    "vd_TOT_INC": {
+      "label": "Total Income",
+      "kind": "sum",
+      "sha256": "47b76690da8031f480a9e3220d0c279d3da7237d7ef876c572366d2d34505495"
+    },
+    "vd_TOT_EXP": {
+      "label": "Total Expenditure",
+      "kind": "sum",
+      "sha256": "cdd9a0af282316caecb5aca7ead999e19dd208c68cb9c40e788ec8ad354bee1c"
+    },
+    "vd_MAN_COMM1": {
+      "label": "Manufactured Item No. 1",
+      "kind": "category",
+      "sha256": "4658550ed2d2946131fade8cc862b1a0cb7ac75388c59868c8c7563a93c369d9"
+    },
+    "vd_MAN_COMM2": {
+      "label": "Manufactured Item No. 2",
+      "kind": "category",
+      "sha256": "1b13867352554e6fa2aca96e06396dbfd081c0ef3c8b27392304f1cd1bd6100c"
+    },
+    "vd_MAN_COMM3": {
+      "label": "Manufactured Item No. 3",
+      "kind": "category",
+      "sha256": "7557352ad44b4b94388745248342d9537d2b0bbd99a7a92dc7b397478baa3b04"
+    },
+    "vd_LAND_FORES": {
+      "label": "Forest",
+      "kind": "sum",
+      "sha256": "a6aa2481ea48d76121bcb935ba4ba04fff05913970e491a728c2e7477a331815"
+    },
+    "vd_CANAL_GOVT": {
+      "label": "Government Canal",
+      "kind": "sum",
+      "sha256": "4d826fdca0dd2841005f5aa75bf95ec7a89fff0fa4bf498297800f955d68bc27"
+    },
+    "vd_CANAL_PVT": {
+      "label": "Private Canal",
+      "kind": "sum",
+      "sha256": "01e3a97a96c4aa34f777cb2e224c10113478e5444238b5d62df7bbd380f57a20"
+    },
+    "vd_WELL_WO_EL": {
+      "label": "Well (without electricity)",
+      "kind": "sum",
+      "sha256": "942a8de5a33e525841f984b3e92d686d35e0558cddc38336c2c84217bd9cc38c"
+    },
+    "vd_WELL_W_EL": {
+      "label": "Well (with electricity)",
+      "kind": "sum",
+      "sha256": "fc8d430d1c08a76eda3ab1aa005e1d86108510e7c8b87a97546a7be5b4f5e2f4"
+    },
+    "vd_TW_WO_EL": {
+      "label": "Tube-well (without electricity)",
+      "kind": "sum",
+      "sha256": "f7bc6d2ffd87f78d1c5619466726276b9c50bc3456bec3340978bdcfc2e0ea7d"
+    },
+    "vd_TW_W_EL": {
+      "label": "Tube-well (with electricity)",
+      "kind": "sum",
+      "sha256": "db8658a3f84509f9256add02f5c06774f0e8b0ceca22dd07a6ffae87a3008235"
+    },
+    "vd_TANK_IRR": {
+      "label": "Tank",
+      "kind": "sum",
+      "sha256": "b3f3abab3862b39c079db8dc87cd0fcda051b16075d2ae70c56fcaf934ee28c8"
+    },
+    "vd_RIVER_IRR": {
+      "label": "River",
+      "kind": "sum",
+      "sha256": "94fe04dc1c0c702a5c19bf5df1a87fe36b6df2af6da3d040e85f72854cd9fe61"
+    },
+    "vd_LAKE_IRR": {
+      "label": "Lake",
+      "kind": "sum",
+      "sha256": "0a3077c5b5a26f4fcd749aa06cc6bd4894574f8efad7cc4b888cdcf9b82ea2ed"
+    },
+    "vd_W_FALL": {
+      "label": "Waterfall",
+      "kind": "sum",
+      "sha256": "261f59cd9f0170af3db15cdb1c71a2b5ab54c48cc5ff9969408e760e28acdd84"
+    },
+    "vd_OTH_IRR": {
+      "label": "Others",
+      "kind": "sum",
+      "sha256": "dc724fefe216ef42be8e7d1ddf699d8b1c095fdafef7456abf60b1255b7ab3cf"
+    },
+    "vd_TOT_IRR": {
+      "label": "Total Irrigated Area",
+      "kind": "sum",
+      "sha256": "3bae5bfd5ab3e846704a98142832874e4a3ff8901c6b998c9d64472b19d3baff"
+    },
+    "vd_UN_IRR": {
+      "label": "Unirrigated Area",
+      "kind": "sum",
+      "sha256": "181189602f0f1bdc862aeb681060703bfeea5b6baca9e937421f58b1978001da"
+    },
+    "vd_CULT_WASTE": {
+      "label": "Culturable waste (including gauchar and groves)",
+      "kind": "sum",
+      "sha256": "df1915948e8e0b14b0b8f08d58f6a62210dc03592b7ce44466befb865bdd3a6f"
+    },
+    "vd_AREA_NA_CU": {
+      "label": "Area not available for cultivation",
+      "kind": "sum",
+      "sha256": "3a957c0de9968384dc204905ae11b719d247df2f1fefe235c2a7456bb53d882d"
+    },
+    "vd_COLUMN_122": {
+      "label": "COLUMN_122",
+      "kind": "category",
+      "sha256": "da32f6ae3b2049a41a0cc0246385e735f0489568011e968534cfbe7f7235c118"
+    },
+    "vd_DR_WAT": {
+      "label": "DR_WAT",
+      "kind": "category",
+      "sha256": "348094f9a5aef829be8a9091cf373e0ec769a62d4b50ea13ce89bafc02bfbf3a"
+    },
+    "vd_COLUMN_70": {
+      "label": "COLUMN_70",
+      "kind": "category",
+      "sha256": "a8d91de7ba7e651b83928fd5de7bf8233f05634e014572bcc62b8bba560fca5c"
+    },
+    "vd_JHUM_CUL": {
+      "label": "JHUM_CUL",
+      "kind": "category",
+      "sha256": "cba64a1c41b258254e376bc4b5209b9b022863fbe989331de013e1fc4d5636ee"
+    },
+    "vd_ROTATION_P": {
+      "label": "ROTATION_P",
+      "kind": "category",
+      "sha256": "a9201f1d51bc3d5a2f0a2bbb051e7512fb681721eb8d1b5709e35b71bfc67b56"
+    },
+    "vd_MAIN_CROP": {
+      "label": "MAIN_CROP",
+      "kind": "category",
+      "sha256": "09ba12edc3d83057d1f64c5c4d7fcea36bd6d1fba89c64d630eef869e374a4d7"
+    },
+    "vd_STATE_CODE": {
+      "label": "STATE_CODE",
+      "kind": "category",
+      "sha256": "a402bb366b24298b6ef3e9ca8e37e6b950147d2ac226abd6f54bcd27c0c752bb"
+    },
+    "pca_No_HH": {
+      "label": "No_HH",
+      "kind": "sum",
+      "sha256": "86010a1330a7eb251da640bdb381cb905dcde22dad616c24cc54d251683ca29a"
+    },
+    "pca_TOT_P": {
+      "label": "Population · total",
+      "kind": "sum",
+      "sha256": "d109e7e8291b9c7363de0a16587949563869283e1b6ecdf9365f0a94e87dfa88"
+    },
+    "pca_TOT_M": {
+      "label": "Population · male",
+      "kind": "sum",
+      "sha256": "7a8ec2c585780f8316ee66be87079a57378f3df07ba764ef2914a6f16ca07594"
+    },
+    "pca_TOT_F": {
+      "label": "Population · female",
+      "kind": "sum",
+      "sha256": "ffd381af0e4454ee0f0f7908e8a1f9c05721fa6665b8f59fbaab419f7bc1dc01"
+    },
+    "pca_P_06": {
+      "label": "Population aged 0–6 · total",
+      "kind": "sum",
+      "sha256": "232a4be1f5ec35fe76a6a3dc257a7ef36e323fe99a2fc6a3d602f3e159665bc4"
+    },
+    "pca_M_06": {
+      "label": "Population aged 0–6 · male",
+      "kind": "sum",
+      "sha256": "68e4fec8cc6d1a8453af9168d497ea55c52afd6b9ec29c94c68e5cb6e6dcc473"
+    },
+    "pca_F_06": {
+      "label": "Population aged 0–6 · female",
+      "kind": "sum",
+      "sha256": "d2080aa6c662c39ec86a0792fc965b7d0b2ff6c7f8413a9cde3507daaa1841e5"
+    },
+    "pca_P_SC": {
+      "label": "P_SC",
+      "kind": "sum",
+      "sha256": "937f3072719f3239d9475a2d4d818de312ee0ccc8f27872732a08b3f891f869a"
+    },
+    "pca_M_SC": {
+      "label": "M_SC",
+      "kind": "sum",
+      "sha256": "6f8e1dbad0ba9ed82f48cf896dd4b7a24a0a2574df4d17a977f3b00a1283531e"
+    },
+    "pca_F_SC": {
+      "label": "F_SC",
+      "kind": "sum",
+      "sha256": "71f442cfd0f457d474d586a6030710538bb378c44748b6fa4bba350fd35bcff2"
+    },
+    "pca_P_ST": {
+      "label": "P_ST",
+      "kind": "sum",
+      "sha256": "5c6328366f1e92d4b49938da684b9087859d303f1afe87d130c3ef0c97447fca"
+    },
+    "pca_M_ST": {
+      "label": "M_ST",
+      "kind": "sum",
+      "sha256": "c0656c8a82f41e1a08efb3ae2ace80f7da094227df6695593108df538ba36d57"
+    },
+    "pca_F_ST": {
+      "label": "F_ST",
+      "kind": "sum",
+      "sha256": "57e7e4ebcae944a4c7c6f674708a876e84d88bf24c90452c504ad382b0fbe3c5"
+    },
+    "pca_P_LIT": {
+      "label": "Literate population · total",
+      "kind": "sum",
+      "sha256": "33ec4d9fcfcdec33776aec0ee69466473df6e6110ff38f3029c6cdfd24b130ae"
+    },
+    "pca_M_LIT": {
+      "label": "Literate population · male",
+      "kind": "sum",
+      "sha256": "91ae9071a39de30b38b7e88f7e564833138581a89ab2c16bf247dfc867b39e32"
+    },
+    "pca_F_LIT": {
+      "label": "Literate population · female",
+      "kind": "sum",
+      "sha256": "de21fd277fa14e675ec786012859c8eb8c5153e18e559bddf2ffe83ce341dd98"
+    },
+    "pca_P_ILL": {
+      "label": "P_ILL",
+      "kind": "sum",
+      "sha256": "96dfe8176481899849704e8b6dd83bc2ca848bf4fe12a7b1bda14776bdd370fb"
+    },
+    "pca_M_ILL": {
+      "label": "M_ILL",
+      "kind": "sum",
+      "sha256": "6ee1d1e8a395c7c418ac2fdb3e1776323296f66634a2ac9ada72728131516a28"
+    },
+    "pca_F_ILL": {
+      "label": "F_ILL",
+      "kind": "sum",
+      "sha256": "78d92e4faab0f5a64c072fdfcdd843fe6664fa43bc1ef07f27e0ca7944253b8c"
+    },
+    "pca_TOT_WORK_P": {
+      "label": "TOT_WORK_P",
+      "kind": "sum",
+      "sha256": "63c6e3952129b0c0c88a36bafc07f2c23204da774fc6b18e9f8597f2e91a07f4"
+    },
+    "pca_TOT_WORK_M": {
+      "label": "TOT_WORK_M",
+      "kind": "sum",
+      "sha256": "648f158c4ed859578447cfc7574b00c0f492623ea45b634170a7bd3972640ecb"
+    },
+    "pca_TOT_WORK_F": {
+      "label": "TOT_WORK_F",
+      "kind": "sum",
+      "sha256": "d96c6e3b48262cfbe42e04e3e8ae4b0a8e8adef8a6fba0ac7eac8a0caeefd847"
+    },
+    "pca_MAINWORK_P": {
+      "label": "MAINWORK_P",
+      "kind": "sum",
+      "sha256": "f48d7dbb871767e62b41f2a1fad819ee87087b337a38f6dfc52a7d1e33315e1d"
+    },
+    "pca_MAINWORK_M": {
+      "label": "MAINWORK_M",
+      "kind": "sum",
+      "sha256": "2d32d5d305fd226730d1e009496521599a355757c399704fcbab2feb689426ea"
+    },
+    "pca_MAINWORK_F": {
+      "label": "MAINWORK_F",
+      "kind": "sum",
+      "sha256": "b5cf48f3af717225190795a0b31a5bff2278554649f80c5bf3bafe8e1913d674"
+    },
+    "pca_MAIN_CL_P": {
+      "label": "MAIN_CL_P",
+      "kind": "sum",
+      "sha256": "964c4a9240f20e4029855e8cb3d331553a397023edbd2e5ad0567b32f6f55247"
+    },
+    "pca_MAIN_CL_M": {
+      "label": "MAIN_CL_M",
+      "kind": "sum",
+      "sha256": "2bb2e95cb40f8b06cc5655cbb12b2f9e894aa37e255abcff3c0deac21a2fa4ab"
+    },
+    "pca_MAIN_CL_F": {
+      "label": "MAIN_CL_F",
+      "kind": "sum",
+      "sha256": "6e09cca9dd70cd79d30d760b5c238daeb9923d16cb72e1ee53d3993df7afa579"
+    },
+    "pca_MAIN_AL_P": {
+      "label": "MAIN_AL_P",
+      "kind": "sum",
+      "sha256": "e3cddd7ea66e01daedbd69993d33e97b8304eb6852a7ea03c5ed443a767915a6"
+    },
+    "pca_MAIN_AL_M": {
+      "label": "MAIN_AL_M",
+      "kind": "sum",
+      "sha256": "fe67d2ce87a2c0c63009a03d685cad4088578e4eedc14bee293cec210f51af60"
+    },
+    "pca_MAIN_AL_F": {
+      "label": "MAIN_AL_F",
+      "kind": "sum",
+      "sha256": "b7cd87784237de0b6fe54ad145aa4ab656a5a784f3fea41c42a14ca2ad6000e7"
+    },
+    "pca_MAIN_HH_P": {
+      "label": "MAIN_HH_P",
+      "kind": "sum",
+      "sha256": "5b939780330a7960e532eb078d79ad9fb1fa9c4aa992caa03aa272fb111401c6"
+    },
+    "pca_MAIN_HH_M": {
+      "label": "MAIN_HH_M",
+      "kind": "sum",
+      "sha256": "990eaf464d95a52b199e1b859c275bbfad47868a71938daf86d6d008ce3c9dce"
+    },
+    "pca_MAIN_HH_F": {
+      "label": "MAIN_HH_F",
+      "kind": "sum",
+      "sha256": "c51afb987efa5133b206f61f51b913cdda2ac7a025dcea5a51ff8b244f3c7438"
+    },
+    "pca_MAIN_OT_P": {
+      "label": "MAIN_OT_P",
+      "kind": "sum",
+      "sha256": "8bcb3344a5e415c7a56414515fd925db60957b266fd503c167cdde06b6df62a0"
+    },
+    "pca_MAIN_OT_M": {
+      "label": "MAIN_OT_M",
+      "kind": "sum",
+      "sha256": "c90c4210e0ad2a084117f796706cc564704228ed6bbbf7d95f539d8de1cae731"
+    },
+    "pca_MAIN_OT_F": {
+      "label": "MAIN_OT_F",
+      "kind": "sum",
+      "sha256": "60157dbfab7635c4104233247fe1787cee215e5f07faf1c3a2ff5fb46a3d7407"
+    },
+    "pca_MARGWORK_P": {
+      "label": "MARGWORK_P",
+      "kind": "sum",
+      "sha256": "d914342fd0e518af5f322816843d05217b9dbf1a0a8d0cc43039b4a038ccdb52"
+    },
+    "pca_MARGWORK_M": {
+      "label": "MARGWORK_M",
+      "kind": "sum",
+      "sha256": "28bdd565dc294bf6fc3f826f2df1174129c7d1c53be6d1064c7d46ff3b0a15b3"
+    },
+    "pca_MARGWORK_F": {
+      "label": "MARGWORK_F",
+      "kind": "sum",
+      "sha256": "89fb9c7b1efcbca59d0d0007e93c210bae6bb8383b19c1b8f89e265be7d65bd8"
+    },
+    "pca_MARG_CL_P": {
+      "label": "MARG_CL_P",
+      "kind": "sum",
+      "sha256": "0ecdcca947c0f1b57d0201ad6c080c231d96abe80975a3adee4c8679b5e1efc3"
+    },
+    "pca_MARG_CL_M": {
+      "label": "MARG_CL_M",
+      "kind": "sum",
+      "sha256": "aa7c0f0303418b737ee8cb799c0f7ea5853d65f441124be83a203a045b85dbad"
+    },
+    "pca_MARG_CL_F": {
+      "label": "MARG_CL_F",
+      "kind": "sum",
+      "sha256": "4d68a80f8bca20397b33154ac74e0d9f130ac1c3d12e9501dec5b0a84a6ea111"
+    },
+    "pca_MARG_AL_P": {
+      "label": "MARG_AL_P",
+      "kind": "sum",
+      "sha256": "556f7c9457bb94e3e7390e17fd6f837d311c8ed2fb52ae0d99e35a97d301ce43"
+    },
+    "pca_MARG_AL_M": {
+      "label": "MARG_AL_M",
+      "kind": "sum",
+      "sha256": "926f23c3137755dc2e1261eca54b40876e8f9bc555d7f0b86dd7563aeac781d5"
+    },
+    "pca_MARG_AL_F": {
+      "label": "MARG_AL_F",
+      "kind": "sum",
+      "sha256": "9f07fda35ce2ac88fb175c2341a2fb0f5ea21a67b3ee702ff3e8b20ab1975fd3"
+    },
+    "pca_MARG_HH_P": {
+      "label": "MARG_HH_P",
+      "kind": "sum",
+      "sha256": "263d68f4d1851216f6dd32ecdf665387c3dcea5e7fac74271c08beec0dfba333"
+    },
+    "pca_MARG_HH_M": {
+      "label": "MARG_HH_M",
+      "kind": "sum",
+      "sha256": "a42163d4ab4e9a2f1bbf97f01c6d59817d5cea179da5c2cde40338710c49fad4"
+    },
+    "pca_MARG_HH_F": {
+      "label": "MARG_HH_F",
+      "kind": "sum",
+      "sha256": "0493799130bfe26d35f1d1c7339d8f7582822fc1461d3c06bbbbd1cde417db52"
+    },
+    "pca_MARG_OT_P": {
+      "label": "MARG_OT_P",
+      "kind": "sum",
+      "sha256": "7cb6e6b047215412485ad6897864da091d83211d10029ffcd69e0ec34004bcc8"
+    },
+    "pca_MARG_OT_M": {
+      "label": "MARG_OT_M",
+      "kind": "sum",
+      "sha256": "21ace060c3961df699463aa7a07d1e8a8da9f6132fe00264478fb7e38360cda5"
+    },
+    "pca_MARG_OT_F": {
+      "label": "MARG_OT_F",
+      "kind": "sum",
+      "sha256": "ea42b07e0f43cefe7f7195aa46ae6e28a2ac457089d0d16251c28d61b0a6b3ab"
+    },
+    "pca_NON_WORK_P": {
+      "label": "NON_WORK_P",
+      "kind": "sum",
+      "sha256": "3e30feb709582efc64921b7c83e5da60941d86dca5207353fce335e60a68cd45"
+    },
+    "pca_NON_WORK_M": {
+      "label": "NON_WORK_M",
+      "kind": "sum",
+      "sha256": "2af016f6ce11931073a93815b4ae30e7fad5efcc4c5c4293b0adc523f58a1c47"
+    },
+    "pca_NON_WORK_F": {
+      "label": "NON_WORK_F",
+      "kind": "sum",
+      "sha256": "0517fb2d445d5667be252e434710bcf298a38d3cb67c1177e5b0296430cdb070"
+    }
+  },
+  "counts": {
+    "vd_": 453651,
+    "pca_": 449678
+  },
+  "held": {
+    "vd_": 125198,
+    "pca_": 118107
+  },
+  "scope": "Existing published records grouped by current official parents; partial coverage, historical boundaries unverified. Category colours show reported-record share, not service availability.",
+  "created_utc": "2026-10-15T12:24:37.274521+00:00",
+  "excluded_metadata_fields": [
+    "vd_ST_CODE",
+    "vd_ST_Code"
+  ]
+}

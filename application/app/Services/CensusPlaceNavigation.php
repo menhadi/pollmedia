@@ -38,6 +38,17 @@ class CensusPlaceNavigation
     {
         $record = $this->record($place);
 
-        return $record ? route('civic.place', ['record' => $record]) : route('geography.show', $place->slug);
+        if ($record) {
+            $row = DB::table('census_catalogue_rows')->where('id', $record)->first();
+            $dashboard = $row ? app(DistrictDashboardUrls::class)->identity($row->state_code, $row->district_code) : null;
+
+            return $dashboard ? url($dashboard['path']) : route('civic.place', ['record' => $record]);
+        }
+
+        if ($place->type === 'district' && ($place->country_code ?? 'IN') === 'IN') {
+            $matches = collect(app(DistrictDashboardUrls::class)->all())->filter(fn ($row) => \Illuminate\Support\Str::slug($row['name']) === \Illuminate\Support\Str::slug($place->name));
+            if ($matches->count() === 1) { return url($matches->first()['path']); }
+        }
+        return route('geography.show', $place->slug);
     }
 }

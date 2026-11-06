@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class HistoricalElectionAnalytics
             }
 
             $record = $row['record'];
-            unset($record['detail_page'], $record['review_fingerprint']);
+            unset($record['detail_page'], $record['review_fingerprint'], $record['review_archive']);
             $record['candidates'] = collect($record['candidates'])->map(function (array $candidate): array {
                 unset($candidate['source_row']);
                 ksort($candidate);
@@ -68,6 +69,73 @@ class HistoricalElectionAnalytics
 
     private const PC_1989_DISCREPANCY_NOTE = 'Official 1989 detailed candidate report and constituency summary disagree on some totals. Detailed turnout is shown; the declared winner and margin match both reports. Review the official source.';
 
+    private function stateSummary(string $body, string $url, string $label, string $state, string $kind, string $id): array
+    {
+        $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+        if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
+            return [];
+        }
+        $reviews = DB::table('historical_election_reviews')->where('archive', $id)->orderBy('id')->get()->keyBy('fingerprint');
+        $records = [];
+        $sourceState = null;
+        $requestedState = mb_strtolower(ElectionPlaceIdentity::state($state));
+        $normalizedStates = [];
+        foreach ($data['records'] as $record) {
+            $recordState = $record['state_name'] ?? $record['state_code'] ?? ($kind === 'ac' ? $state : '');
+            if ((preg_match('/^[su][0-9]{2}$/i', $recordState) && $data['year'] < 1977)
+                || ($normalizedStates[serialize($recordState)] ??= mb_strtolower(ElectionPlaceIdentity::state($recordState))) !== $requestedState) {
+                continue;
+            }
+            $sourceState ??= $recordState;
+            $fingerprint = app(HistoricalElectionReview::class)->fingerprint($record, $data['source_sha256']);
+            $review = $reviews->get($fingerprint);
+            $record = $review ? json_decode($review->record, true, 512, JSON_THROW_ON_ERROR) : $record;
+            $record['has_warning'] = ! $review && ($record['status'] ?? '') !== 'validated';
+            $records[] = $record;
+        }
+        if ($records === []) {
+            return [];
+        }
+
+        $constituencyResults = collect($records)->map(function (array $record) use ($id): array {
+            $result = $this->singleSeatResult($record, $id);
+
+            return ['code' => $record['code'], 'name' => $record['constituency_name'] ?? $record['name'],
+                'result' => $result, 'source_candidate' => $result ? null : $this->sourceOnlyCandidate($record),
+                'has_warning' => $record['has_warning'], 'note' => $record['error'] ?? null];
+        })->sortBy('name')->values()->all();
+
+        return $this->summarize($records) + ['constituency_results' => $constituencyResults, 'review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
+    }
+
+    private function refreshStateSummaryIfDue(string $key, string $path, string $url, string $label, string $state, string $kind, string $id): void
+    {
+        $built = Cache::get($key.':built');
+        if (is_int($built) && now()->getTimestamp() - $built < 600) {
+            return;
+        }
+        $lock = Cache::lock($key.':build', 60);
+        if (! $lock->get()) {
+            return;
+        }
+        \Illuminate\Support\defer(function () use ($lock, $key, $path, $url, $label, $state, $kind, $id): void {
+            try {
+                $built = Cache::get($key.':built');
+                if (is_int($built) && now()->getTimestamp() - $built < 600) {
+                    return;
+                }
+                $body = app(ArchiveFiles::class)->get($path);
+                $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
+                $currentKey = 'election-analysis-v14:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+                $summary = $this->stateSummary($body, $url, $label, $state, $kind, $id);
+                Cache::put($currentKey, $summary, 900);
+                Cache::put($currentKey.':built', now()->getTimestamp(), 900);
+            } finally {
+                $lock->release();
+            }
+        }, name: 'pollmedia-state-summary:'.$key);
+    }
+
     public function forState(string $state, string $kind): array
     {
         $entries = [];
@@ -91,44 +159,34 @@ class HistoricalElectionAnalytics
             if (! $disk->exists($path)) {
                 continue;
             }
-            $body = $disk->get($path);
             $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-            $key = 'election-analysis-v14:'.hash('sha256', $body.$state.$kind.$reviewVersion);
-            $summary = Cache::remember($key, 900, function () use ($body, $url, $label, $state, $kind, $id): ?array {
-                $data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-                if (($data['source_url'] ?? '') !== $url || ($data['kind'] ?? '') !== $kind || ($data['year'] ?? 0) !== (int) substr($label, 0, 4)) {
-                    return null;
-                }
-                $reviews = DB::table('historical_election_reviews')->where('archive', $id)->orderBy('id')->get()->keyBy('fingerprint');
-                $records = [];
-                $sourceState = null;
-                foreach ($data['records'] as $record) {
-                    $recordState = $record['state_name'] ?? $record['state_code'] ?? ($kind === 'ac' ? $state : '');
-                    if ((preg_match('/^[su][0-9]{2}$/i', $recordState) && $data['year'] < 1977)
-                        || mb_strtolower(ElectionPlaceIdentity::state($recordState)) !== mb_strtolower(ElectionPlaceIdentity::state($state))) {
-                        continue;
-                    }
-                    $sourceState ??= $recordState;
-                    $fingerprint = app(HistoricalElectionReview::class)->fingerprint($record, $data['source_sha256']);
-                    $review = $reviews->get($fingerprint);
-                    $record = $review ? json_decode($review->record, true, 512, JSON_THROW_ON_ERROR) : $record;
-                    $record['has_warning'] = ! $review && ($record['status'] ?? '') !== 'validated';
-                    $records[] = $record;
-                }
-                if ($records === []) {
-                    return null;
-                }
+            $suffix = $state.$kind.$reviewVersion;
+            $digest = $disk->verifiedJsonDigest($path, $suffix);
+            $body = null;
+            if ($digest === null) {
+                $body = $disk->get($path);
+                $digest = hash('sha256', $body.$suffix);
+            }
+            $key = 'election-analysis-v14:'.$digest;
+            $summary = Cache::get($key);
+            if ($summary !== null) {
+                $this->refreshStateSummaryIfDue($key, $path, $url, $label, $state, $kind, $id);
+            }
+            if ($summary === null) {
+                $body ??= $disk->get($path);
+                $key = 'election-analysis-v14:'.hash('sha256', $body.$suffix);
+                $build = function () use ($body, $url, $label, $state, $kind, $id, $key): array {
+                    $summary = $this->stateSummary($body, $url, $label, $state, $kind, $id);
+                    Cache::put($key.':built', now()->getTimestamp(), 900);
 
-                $constituencyResults = collect($records)->map(function (array $record) use ($id): array {
-                    $result = $this->singleSeatResult($record, $id);
-
-                    return ['code' => $record['code'], 'name' => $record['constituency_name'] ?? $record['name'],
-                        'result' => $result, 'source_candidate' => $result ? null : $this->sourceOnlyCandidate($record),
-                        'has_warning' => $record['has_warning'], 'note' => $record['error'] ?? null];
-                })->sortBy('name')->values()->all();
-
-                return $this->summarize($records) + ['constituency_results' => $constituencyResults, 'review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
-            });
+                    return $summary;
+                };
+                try {
+                    $summary = Cache::lock($key.':build', 60)->block(20, fn () => Cache::remember($key, 900, $build));
+                } catch (LockTimeoutException) {
+                    $summary = Cache::remember($key, 900, $build);
+                }
+            }
             if ($summary) {
                 $result[] = $summary;
             }
@@ -147,6 +205,154 @@ class HistoricalElectionAnalytics
         foreach ($records as $record) {
             $candidateRows += count($record['candidates'] ?? []);
             $identity = $seatIdentity($record);
+            $remainingShares = $identities[$identity] === 1 ? $this->remainingPageShareData($record) : null;
+            if ($remainingShares !== null && $remainingShares[1] === 's') {
+                $baseline = $remainingShares[2];
+                if ($baseline[0] !== null) {
+                    $electors += $baseline[0];
+                    $polled += $baseline[1];
+                    $turnoutCount += $baseline[2];
+                    $turnoutReviewCount += $baseline[3];
+                    $turnoutDetailCount += $baseline[4];
+                    $turnoutDiscrepancyCount += $baseline[5];
+                }
+                $partyCount++;
+                if ($record['has_warning'] ?? (($record['status'] ?? '') !== 'validated')) {
+                    $partyReviewCount++;
+                }
+                $candidateRows += count($remainingShares[4]);
+                $derivedCandidates = $record['candidates'];
+                foreach ($remainingShares[3] as $position => $votes) {
+                    $derivedCandidates[$position]['votes'] = $votes;
+                }
+                foreach ($remainingShares[4] as $candidate) {
+                    $derivedCandidates[] = $candidate;
+                }
+                foreach ($derivedCandidates as $candidate) {
+                    if (($candidate['is_nota'] ?? false) || strtoupper(trim($candidate['party_at_election'])) === 'NOTA') {
+                        continue;
+                    }
+                    $party = trim($candidate['party_at_election']);
+                    $parties[$party] = ($parties[$party] ?? 0) + $candidate['votes'];
+                    $voteTotal += $candidate['votes'];
+                }
+                if ($baseline[6] !== null) {
+                    $margins[] = $baseline[6];
+                    $marginReviewCount += $baseline[9];
+                    if ($baseline[7] !== null) {
+                        $marginPercentages[] = $baseline[7];
+                    }
+                    foreach ($baseline[8] as $winner) {
+                        $winners[] = $winner;
+                    }
+                }
+
+                continue;
+            }
+            if ($identities[$identity] === 1 && $this->hasReconciledBatch117CandidateVotes($record)) {
+                $baselines = ['cc0185e917711e78c149abf4' => [135 => ['electors' => 221737, 'polled' => 144141, 'turnout' => 65.00538926746552, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 12269, 'margin_percent' => 8.514817128183774, 'winners' => [['constituency' => 'Shahapur  (ST)', 'candidate' => 'Daulat Bhika Daroda', 'party' => 'SHS', 'margin' => 12269]]], 277 => ['electors' => 242339, 'polled' => 194074, 'turnout' => 80.08368442553613, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 8311, 'margin_percent' => 4.284462315702649, 'winners' => [['constituency' => 'Shahuwadi', 'candidate' => 'Vinay Vilasrao Kore (Savkar)', 'party' => 'JSS', 'margin' => 8311]]], 222 => ['electors' => 282571, 'polled' => 211600, 'turnout' => 74.88383450531018, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 20144, 'margin_percent' => 9.526556980104138, 'winners' => [['constituency' => 'Shevgaon', 'candidate' => 'Ghule Chandrashekhar Marutraoji', 'party' => 'NCP', 'margin' => 20144]]], 284 => ['electors' => 250806, 'polled' => 194380, 'turnout' => 77.50213312281205, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 25918, 'margin_percent' => 13.3397154797933, 'winners' => [['constituency' => 'Shirala', 'candidate' => 'Mansing Fattesingrao Naik', 'party' => 'IND', 'margin' => 25918]]], 218 => ['electors' => 213215, 'polled' => 152441, 'turnout' => 71.49637689655981, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 13309, 'margin_percent' => 8.738329415781388, 'winners' => [['constituency' => 'Shirdi', 'candidate' => 'Patil Vikhe Radhakrishna Eknathrao', 'party' => 'INC', 'margin' => 13309]]], 280 => ['electors' => 255072, 'polled' => 188507, 'turnout' => 73.9034468699034, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 16446, 'margin_percent' => 8.736162165607801, 'winners' => [['constituency' => 'Shirol', 'candidate' => 'Appasaheb Alias Satgonda Revgonda Patil', 'party' => 'INC', 'margin' => 16446]]], 9 => ['electors' => 268703, 'polled' => 155893, 'turnout' => 58.01684387595226, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 39813, 'margin_percent' => 25.53883457778462, 'winners' => [['constituency' => 'Shirpur  (ST)', 'candidate' => 'Kashiram Vechan Pawara', 'party' => 'INC', 'margin' => 39813]]], 198 => ['electors' => 285129, 'polled' => 183280, 'turnout' => 64.27967691816687, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 7567, 'margin_percent' => 4.128880886124297, 'winners' => [['constituency' => 'Shirur', 'candidate' => 'Ashok Raosaheb Pawar', 'party' => 'NCP', 'margin' => 7567]]], 183 => ['electors' => 268013, 'polled' => 140825, 'turnout' => 52.544093010413675, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 6463, 'margin_percent' => 4.589383987218179, 'winners' => [['constituency' => 'Shivadi', 'candidate' => 'Bala Dagdu Nandgaonkar', 'party' => 'MNS', 'margin' => 6463]]], 209 => ['electors' => 302251, 'polled' => 129533, 'turnout' => 42.85610304018845, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 20530, 'margin_percent' => 15.849732492337623, 'winners' => [['constituency' => 'Shivajinagar', 'candidate' => 'Nimhan Vinayak Mahadev', 'party' => 'INC', 'margin' => 20530]]], 226 => ['electors' => 262910, 'polled' => 191208, 'turnout' => 72.7275493514891, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 27445, 'margin_percent' => 14.366853373815632, 'winners' => [['constituency' => 'Shrigonda', 'candidate' => 'Pachpute Babanrao Bhikaji', 'party' => 'NCP', 'margin' => 27445]]], 220 => ['electors' => 241973, 'polled' => 154262, 'turnout' => 63.75174089671162, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 20897, 'margin_percent' => 13.559091086050948, 'winners' => [['constituency' => 'Shrirampur  (SC)', 'candidate' => 'Kamble Bhausaheb Malhari', 'party' => 'INC', 'margin' => 20897]]], 193 => ['electors' => 214625, 'polled' => 138647, 'turnout' => 64.59965055329063, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 10871, 'margin_percent' => 7.841001709426369, 'winners' => [['constituency' => 'Shrivardhan', 'candidate' => 'Tatkare Sunil Dattatrey', 'party' => 'NCP', 'margin' => 10871]]], 104 => ['electors' => 251080, 'polled' => 178413, 'turnout' => 71.05822845308268, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 26753, 'margin_percent' => 14.99506759635002, 'winners' => [['constituency' => 'Sillod', 'candidate' => 'Abdul Sattar Abdul Nabi', 'party' => 'INC', 'margin' => 26753]]], 24 => ['electors' => 260494, 'polled' => 172758, 'turnout' => 66.31937779756923, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 24150, 'margin_percent' => 13.983624972495976, 'winners' => [['constituency' => 'Sindkhed Raja', 'candidate' => 'Dr Rajendra Bhaskarrao Shingne', 'party' => 'NCP', 'margin' => 24150]]], 8 => ['electors' => 274283, 'polled' => 168180, 'turnout' => 61.31623177521028, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 50699, 'margin_percent' => 30.22042869745595, 'winners' => [['constituency' => 'Sindkheda', 'candidate' => 'Rawal Jaikumarbhau Jitendrasinh', 'party' => 'BJP', 'margin' => 50699]]], 120 => ['electors' => 244047, 'polled' => 156097, 'turnout' => 63.961859805693166, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 2830, 'margin_percent' => 1.8148122022072735, 'winners' => [['constituency' => 'Sinnar', 'candidate' => 'Kokate Manikrao Shivaji', 'party' => 'INC', 'margin' => 2830]]], 179 => ['electors' => 290317, 'polled' => 116687, 'turnout' => 40.19296148692636, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 18023, 'margin_percent' => 15.4455937679433, 'winners' => [['constituency' => 'Sion koliwada', 'candidate' => 'Shetty Jagannath Achanna', 'party' => 'INC', 'margin' => 18023]]], 249 => ['electors' => 285075, 'polled' => 136855, 'turnout' => 48.00666491274226, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 33364, 'margin_percent' => 24.37979992838927, 'winners' => [['constituency' => 'Solapur City central', 'candidate' => 'Shinde Praniti Sushilkumar', 'party' => 'INC', 'margin' => 33364]]], 248 => ['electors' => 267133, 'polled' => 136821, 'turnout' => 51.21830698565883, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 10090, 'margin_percent' => 7.377726431856569, 'winners' => [['constituency' => 'Solapur City North', 'candidate' => 'Deshmukh Vijaykumar Sidramappa', 'party' => 'BJP', 'margin' => 10090]]], 251 => ['electors' => 269863, 'polled' => 137244, 'turnout' => 50.85691628715311, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 17662, 'margin_percent' => 12.885669052361253, 'winners' => [['constituency' => 'Solapur South', 'candidate' => 'Dilip Bramhadev Mane', 'party' => 'INC', 'margin' => 17662]]], 39 => ['electors' => 243802, 'polled' => 148167, 'turnout' => 60.773496525869355, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 26130, 'margin_percent' => 17.640029973874125, 'winners' => [['constituency' => 'Teosa', 'candidate' => 'Adv. Yashomati Thakur', 'party' => 'INC', 'margin' => 26130]]], 148 => ['electors' => 307240, 'polled' => 158333, 'turnout' => 51.533979950527275, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 2441, 'margin_percent' => 1.5417848322732641, 'winners' => [['constituency' => 'Thane', 'candidate' => 'Rajan Vichare', 'party' => 'SHS', 'margin' => 2441]]], 64 => ['electors' => 198218, 'polled' => 143775, 'turnout' => 72.53377594365799, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 623, 'margin_percent' => 0.43355416991426343, 'winners' => [['constituency' => 'Tirora', 'candidate' => 'Bopache Khushal Parasram', 'party' => 'BJP', 'margin' => 623]]], 241 => ['electors' => 298290, 'polled' => 196565, 'turnout' => 65.89728116933186, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 16333, 'margin_percent' => 8.316487858528562, 'winners' => [['constituency' => 'Tuljapur', 'candidate' => 'Chavan Madhukarrao Devrao', 'party' => 'INC', 'margin' => 16333]]], 60 => ['electors' => 257121, 'polled' => 178617, 'turnout' => 69.46807145274015, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 6617, 'margin_percent' => 3.7046990386930254, 'winners' => [['constituency' => 'Tumsar', 'candidate' => 'Bawankar Anil Fattu', 'party' => 'INC', 'margin' => 6617]]], 237 => ['electors' => 246273, 'polled' => 157784, 'turnout' => 64.06873672712803, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 17277, 'margin_percent' => 10.950265247786433, 'winners' => [['constituency' => 'Udgir  (SC)', 'candidate' => 'Sudhakar Sangram Bhalerao', 'party' => 'BJP', 'margin' => 17277]]], 141 => ['electors' => 287964, 'polled' => 106779, 'turnout' => 37.080676751260576, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 7538, 'margin_percent' => 7.059506639944558, 'winners' => [['constituency' => 'Ulhas Nagar', 'candidate' => 'Kumar Uttamchand Ailyani', 'party' => 'BJP', 'margin' => 7538]]], 240 => ['electors' => 266557, 'polled' => 158151, 'turnout' => 59.33102488398354, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 10332, 'margin_percent' => 6.535228372454886, 'winners' => [['constituency' => 'Umarga  (SC)', 'candidate' => 'Chougule Dnyanraj Dhondiram', 'party' => 'SHS', 'margin' => 10332]]], 82 => ['electors' => 242024, 'polled' => 150939, 'turnout' => 62.36530261461673, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 7375, 'margin_percent' => 4.887439776801394, 'winners' => [['constituency' => 'Umarkhed  (SC)', 'candidate' => 'Khadase Vijayrao Yadavrao', 'party' => 'INC', 'margin' => 7375]]], 51 => ['electors' => 277378, 'polled' => 174711, 'turnout' => 62.98661032958634, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 44696, 'margin_percent' => 25.655213582982242, 'winners' => [['constituency' => 'Umred  (SC)', 'candidate' => 'Parwe Sudhir Laxman', 'party' => 'BJP', 'margin' => 44696]]], 190 => ['electors' => 222892, 'polled' => 152211, 'turnout' => 68.28912657251045, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 20025, 'margin_percent' => 13.164122589042718, 'winners' => [['constituency' => 'Uran', 'candidate' => 'Patil Vivekanand Shankar', 'party' => 'PWPI', 'margin' => 20025]]], 112 => ['electors' => 245849, 'polled' => 168575, 'turnout' => 68.56851156604257, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 1225, 'margin_percent' => 0.7268347385471612, 'winners' => [['constituency' => 'Vaijapur', 'candidate' => 'R.M. Wani', 'party' => 'SHS', 'margin' => 1225]]], 176 => ['electors' => 261177, 'polled' => 119465, 'turnout' => 45.7410108853383, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 7420, 'margin_percent' => 6.211128131722793, 'winners' => [['constituency' => 'Vandre East', 'candidate' => 'Prakash (Bala) Vasant Sawant', 'party' => 'SHS', 'margin' => 7420]]], 177 => ['electors' => 297919, 'polled' => 128246, 'turnout' => 43.04727123815534, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 1691, 'margin_percent' => 1.3185699247534017, 'winners' => [['constituency' => 'Vandre West', 'candidate' => '(Baba) Ziauddin Siddique', 'party' => 'INC', 'margin' => 1691]]], 133 => ['electors' => 284475, 'polled' => 168254, 'turnout' => 59.1454433605765, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 16798, 'margin_percent' => 9.983715097412245, 'winners' => [['constituency' => 'Vasai', 'candidate' => 'Vivek Raghunath Pandit(Bhau)', 'party' => 'IND', 'margin' => 16798]]], 164 => ['electors' => 251940, 'polled' => 100644, 'turnout' => 39.94760657299357, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 12030, 'margin_percent' => 11.95527950310559, 'winners' => [['constituency' => 'Versova', 'candidate' => 'Baldev Khosa', 'party' => 'INC', 'margin' => 12030]]], 156 => ['electors' => 236407, 'polled' => 123915, 'turnout' => 52.415960610303415, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 20412, 'margin_percent' => 16.47271494746356, 'winners' => [['constituency' => 'Vikhroli', 'candidate' => 'Mangesh Sangle', 'party' => 'MNS', 'margin' => 20412]]], 129 => ['electors' => 240834, 'polled' => 147664, 'turnout' => 61.313601900063944, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 5032, 'margin_percent' => 3.408290436196153, 'winners' => [['constituency' => 'Vikramgad  (ST)', 'candidate' => 'Adv.Chintaman Wanga', 'party' => 'BJP', 'margin' => 5032]]], 167 => ['electors' => 272381, 'polled' => 130634, 'turnout' => 47.96002658041493, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 1704, 'margin_percent' => 1.3044476766439561, 'winners' => [['constituency' => 'Vile parle', 'candidate' => 'Krishna Hegde', 'party' => 'INC', 'margin' => 1704]]], 180 => ['electors' => 242626, 'polled' => 112272, 'turnout' => 46.27368872256065, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 30030, 'margin_percent' => 26.748018170481874, 'winners' => [['constituency' => 'Wadala', 'candidate' => 'Kalidas Nilkanth Kolambkar', 'party' => 'INC', 'margin' => 30030]]], 256 => ['electors' => 282316, 'polled' => 199076, 'turnout' => 70.51530908627213, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 21825, 'margin_percent' => 10.986438732670875, 'winners' => [['constituency' => 'Wai', 'candidate' => 'Makarand Laxmanrao Jadhav Patil', 'party' => 'IND', 'margin' => 21825]]], 76 => ['electors' => 247076, 'polled' => 174417, 'turnout' => 70.59244928685911, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 10440, 'margin_percent' => 5.99005100723511, 'winners' => [['constituency' => 'Wani', 'candidate' => 'Kasawar Wamanrao Bapurao', 'party' => 'INC', 'margin' => 10440]]], 47 => ['electors' => 241396, 'polled' => 147173, 'turnout' => 60.96745596447332, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 11665, 'margin_percent' => 7.931004004596107, 'winners' => [['constituency' => 'Wardha', 'candidate' => 'Deshmukh Suresh Bapuraoji', 'party' => 'IND', 'margin' => 11665]]], 75 => ['electors' => 244059, 'polled' => 156107, 'turnout' => 63.96281227080337, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 3740, 'margin_percent' => 2.3963759619142815, 'winners' => [['constituency' => 'Warora', 'candidate' => 'Deotale Sanjay Wamanrao', 'party' => 'INC', 'margin' => 3740]]], 34 => ['electors' => 277460, 'polled' => 151310, 'turnout' => 54.533986880991854, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 24229, 'margin_percent' => 16.02150395429418, 'winners' => [['constituency' => 'Washim  (SC)', 'candidate' => 'Lakhan Sahadeo Malik', 'party' => 'BJP', 'margin' => 24229]]], 182 => ['electors' => 283526, 'polled' => 138522, 'turnout' => 48.856894958487054, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 5294, 'margin_percent' => 3.8221894922278294, 'winners' => [['constituency' => 'Worli', 'candidate' => 'Ahir Sachin Mohan', 'party' => 'NCP', 'margin' => 5294]]], 78 => ['electors' => 316167, 'polled' => 162512, 'turnout' => 51.400683815831506, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 19875, 'margin_percent' => 12.230167130233589, 'winners' => [['constituency' => 'Yavatmal', 'candidate' => 'Nilesh Shivram Deshmukh Parvekar', 'party' => 'INC', 'margin' => 19875]]], 119 => ['electors' => 256859, 'polled' => 168616, 'turnout' => 65.64535406584936, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 50180, 'margin_percent' => 29.772287684074378, 'winners' => [['constituency' => 'Yevla', 'candidate' => 'Chhagan Bhujbal', 'party' => 'NCP', 'margin' => 50180]]], 287 => ['electors' => 249906, 'polled' => 158608, 'turnout' => 63.467063615919585, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 65173, 'margin_percent' => 41.10720052477546, 'winners' => [['constituency' => 'Tasgaon - kavathe mahankal', 'candidate' => 'R.R. Aba Alias Raosaheb Ramrao Patil', 'party' => 'NCP', 'margin' => 65173]]]], '267cd82b74f76a034f14dc7b' => [277 => ['electors' => 288852, 'polled' => 231705, 'turnout' => 80.21581986622907, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 27863, 'margin_percent' => 12.085290583943822, 'winners' => [['constituency' => 'Shahuwadi', 'candidate' => 'Dr. Vinay Vilasrao Kore (Savkar)', 'party' => 'JSS', 'margin' => 27863]]], 222 => ['electors' => 341873, 'polled' => 226430, 'turnout' => 66.2321973364378, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 14294, 'margin_percent' => 6.3791995430040345, 'winners' => [['constituency' => 'Shevgaon', 'candidate' => 'Monica Rajeev Rajale', 'party' => 'BJP', 'margin' => 14294]]], 284 => ['electors' => 292965, 'polled' => 229555, 'turnout' => 78.3557762872698, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 25931, 'margin_percent' => 11.38018353294333, 'winners' => [['constituency' => 'Shirala', 'candidate' => 'Mansing Fattesingrao Naik', 'party' => 'NCP', 'margin' => 25931]]], 280 => ['electors' => 313330, 'polled' => 234318, 'turnout' => 74.78313599080842, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 27824, 'margin_percent' => 11.951325323975242, 'winners' => [['constituency' => 'Shirol', 'candidate' => 'Rajendra Shamgonda Patil (Yadravkar)', 'party' => 'IND', 'margin' => 27824]]], 198 => ['electors' => 384323, 'polled' => 258688, 'turnout' => 67.31004909932531, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 41504, 'margin_percent' => 16.158658843774454, 'winners' => [['constituency' => 'Shirur', 'candidate' => 'Ashok Raosaheb Pawar', 'party' => 'NCP', 'margin' => 41504]]], 209 => ['electors' => 305700, 'polled' => 134780, 'turnout' => 44.088976120379456, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 5124, 'margin_percent' => 3.8912515188335357, 'winners' => [['constituency' => 'Shivajinagar', 'candidate' => 'Siddharth Anil Shirole', 'party' => 'BJP', 'margin' => 5124]]], 226 => ['electors' => 311992, 'polled' => 211546, 'turnout' => 67.80494371650555, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 4750, 'margin_percent' => 2.2647518785520844, 'winners' => [['constituency' => 'Shrigonda', 'candidate' => 'Pachpute Babanrao Bhikaji', 'party' => 'BJP', 'margin' => 4750]]], 193 => ['electors' => 257600, 'polled' => 157352, 'turnout' => 61.08385093167702, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 39621, 'margin_percent' => 25.81576272511663, 'winners' => [['constituency' => 'Shrivardhan', 'candidate' => 'Aditi Sunil Tatkare', 'party' => 'NCP', 'margin' => 39621]]], 24 => ['electors' => 312571, 'polled' => 201390, 'turnout' => 64.43016146731462, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 8938, 'margin_percent' => 4.4757359826538945, 'winners' => [['constituency' => 'Sindkhed Raja', 'candidate' => 'DR. RAJENDRA BHASKARRAO SHINGANE', 'party' => 'NCP', 'margin' => 8938]]], 120 => ['electors' => 301994, 'polled' => 199276, 'turnout' => 65.98674145843957, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 2072, 'margin_percent' => 1.0505714256740997, 'winners' => [['constituency' => 'Sinnar', 'candidate' => 'Adv. KOKATE MANIKRAO SHIVAJIRAO', 'party' => 'NCP', 'margin' => 2072]]], 179 => ['electors' => 257293, 'polled' => 129883, 'turnout' => 50.480580505493734, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 13951, 'margin_percent' => 11.020443629929222, 'winners' => [['constituency' => 'Sion koliwada', 'candidate' => 'Captain R Tamil Selvan', 'party' => 'BJP', 'margin' => 13951]]], 249 => ['electors' => 302160, 'polled' => 168334, 'turnout' => 55.71021975112523, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 12719, 'margin_percent' => 7.5973335563334015, 'winners' => [['constituency' => 'Solapur City central', 'candidate' => 'Shinde Praniti Sushilkumar', 'party' => 'INC', 'margin' => 12719]]], 248 => ['electors' => 288466, 'polled' => 151837, 'turnout' => 52.63601256300569, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 73068, 'margin_percent' => 48.86837881219904, 'winners' => [['constituency' => 'Solapur City North', 'candidate' => 'DESHMUKH VIJAYKUMAR SIDRAMAPPA', 'party' => 'BJP', 'margin' => 73068]]], 39 => ['electors' => 295992, 'polled' => 173752, 'turnout' => 58.701586529365656, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 10361, 'margin_percent' => 6.004810339331769, 'winners' => [['constituency' => 'Teosa', 'candidate' => 'Adv. Yashomati Chandrakant Thakur', 'party' => 'INC', 'margin' => 10361]]], 64 => ['electors' => 257918, 'polled' => 169553, 'turnout' => 65.73911088020223, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 25963, 'margin_percent' => 15.504000955452048, 'winners' => [['constituency' => 'Tirora', 'candidate' => 'Vijay Bharatlal Rahangdale', 'party' => 'BJP', 'margin' => 25963]]], 241 => ['electors' => 352449, 'polled' => 228662, 'turnout' => 64.87803909218071, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 23169, 'margin_percent' => 10.175766838832086, 'winners' => [['constituency' => 'Tuljapur', 'candidate' => 'Ranajagjitsinha Padmasinha Patil', 'party' => 'BJP', 'margin' => 23169]]], 60 => ['electors' => 303652, 'polled' => 215117, 'turnout' => 70.84326795147076, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 7700, 'margin_percent' => 3.613327076489911, 'winners' => [['constituency' => 'Tumsar', 'candidate' => 'KAREMORE RAJU MANIKRAO', 'party' => 'NCP', 'margin' => 7700]]], 141 => ['electors' => 233324, 'polled' => 109632, 'turnout' => 46.987022338036375, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 2004, 'margin_percent' => 1.915448801888686, 'winners' => [['constituency' => 'Ulhasnagar', 'candidate' => 'Ailani Kumar Uttamchand', 'party' => 'BJP', 'margin' => 2004]]], 190 => ['electors' => 294194, 'polled' => 218984, 'turnout' => 74.43523661257538, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 5710, 'margin_percent' => 2.6451104831611616, 'winners' => [['constituency' => 'Uran', 'candidate' => 'Mahesh Baldi', 'party' => 'IND', 'margin' => 5710]]], 208 => ['electors' => 456998, 'polled' => 214705, 'turnout' => 46.981606046415955, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 4956, 'margin_percent' => 2.3352683956574185, 'winners' => [['constituency' => 'VADGAON SHERI', 'candidate' => 'Sunil Vijay Tingre', 'party' => 'NCP', 'margin' => 4956]]], 112 => ['electors' => 310142, 'polled' => 196486, 'turnout' => 63.3535606270676, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 59163, 'margin_percent' => 30.3449796889746, 'winners' => [['constituency' => 'Vaijapur', 'candidate' => 'Bornare Ramesh Nanasaheb', 'party' => 'SHS', 'margin' => 59163]]], 176 => ['electors' => 251371, 'polled' => 126620, 'turnout' => 50.37176126124334, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 5790, 'margin_percent' => 4.667510419269805, 'winners' => [['constituency' => 'Vandre East', 'candidate' => 'ZEESHAN BABA SIDDIQUE', 'party' => 'INC', 'margin' => 5790]]], 133 => ['electors' => 304697, 'polled' => 190615, 'turnout' => 62.558869959336654, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 25995, 'margin_percent' => 13.903374356176693, 'winners' => [['constituency' => 'Vasai', 'candidate' => 'HITENDRA VISHNU THAKUR', 'party' => 'BVA', 'margin' => 25995]]], 164 => ['electors' => 285116, 'polled' => 120840, 'turnout' => 42.38274947740569, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 5186, 'margin_percent' => 4.375411302161551, 'winners' => [['constituency' => 'Versova', 'candidate' => 'DR. BHARATI LAVEKAR', 'party' => 'BJP', 'margin' => 5186]]], 156 => ['electors' => 231104, 'polled' => 127974, 'turnout' => 55.37506923289948, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 27841, 'margin_percent' => 22.311532820977217, 'winners' => [['constituency' => 'Vikhroli', 'candidate' => 'Raut Sunil Rajaram', 'party' => 'SHS', 'margin' => 27841]]], 167 => ['electors' => 262346, 'polled' => 139296, 'turnout' => 53.09629268218307, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 58427, 'margin_percent' => 43.28374794423125, 'winners' => [['constituency' => 'Vile parle', 'candidate' => 'ALAVANI PARAG', 'party' => 'BJP', 'margin' => 58427]]], 180 => ['electors' => 203776, 'polled' => 108664, 'turnout' => 53.32521984924623, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 30845, 'margin_percent' => 29.329263654343528, 'winners' => [['constituency' => 'Wadala', 'candidate' => 'Kalidas Nilkanth Kolambkar', 'party' => 'BJP', 'margin' => 30845]]], 256 => ['electors' => 332498, 'polled' => 228442, 'turnout' => 68.70477416405512, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 43647, 'margin_percent' => 19.268071956737668, 'winners' => [['constituency' => 'Wai', 'candidate' => 'Makrand Laxmanrao Jadhav (Patil)', 'party' => 'NCP', 'margin' => 43647]]], 76 => ['electors' => 284853, 'polled' => 209223, 'turnout' => 73.44946340744173, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 27795, 'margin_percent' => 13.372238472788855, 'winners' => [['constituency' => 'Wani', 'candidate' => 'SANJIVREDDY BAPURAO BODKURWAR', 'party' => 'BJP', 'margin' => 27795]]], 47 => ['electors' => 316641, 'polled' => 169573, 'turnout' => 53.5537090901052, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 7933, 'margin_percent' => 4.760733103688323, 'winners' => [['constituency' => 'Wardha', 'candidate' => 'Dr. Pankaj Rajesh Bhoyar', 'party' => 'BJP', 'margin' => 7933]]], 75 => ['electors' => 296588, 'polled' => 186187, 'turnout' => 62.7763092235694, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 10197, 'margin_percent' => 5.560008506044198, 'winners' => [['constituency' => 'Warora', 'candidate' => 'DHANORKAR PRATIBHA SURESH', 'party' => 'INC', 'margin' => 10197]]], 182 => ['electors' => 269003, 'polled' => 129499, 'turnout' => 48.14035531202254, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 67427, 'margin_percent' => 54.921845091187514, 'winners' => [['constituency' => 'Worli', 'candidate' => 'Aaditya Uddhav Thackeray', 'party' => 'SHS', 'margin' => 67427]]], 78 => ['electors' => 384935, 'polled' => 215723, 'turnout' => 56.04140958863184, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 2253, 'margin_percent' => 1.0531383804199466, 'winners' => [['constituency' => 'Yavatmal', 'candidate' => 'MADAN MADHUKAR YERAWAR', 'party' => 'BJP', 'margin' => 2253]]], 119 => ['electors' => 297599, 'polled' => 201691, 'turnout' => 67.77274117184534, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 56525, 'margin_percent' => 28.202991687539292, 'winners' => [['constituency' => 'Yevla', 'candidate' => 'Chhagan Bhujbal', 'party' => 'NCP', 'margin' => 56525]]]], 'c6fecebc52d31001b62978a5' => [35 => ['electors' => 69879, 'polled' => 46210, 'turnout' => 66.12859371198786, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 3210, 'margin_percent' => 7.252598282873927, 'winners' => [['constituency' => 'ULHASNAGAR', 'candidate' => 'PARCHARAM KEWALRAM AILANI (ALIAS', 'party' => 'SOC', 'margin' => 3210]]]]];
+                $baseline = $baselines[$record['review_archive']][$record['code']];
+                if ($baseline['electors'] !== null) {
+                    $electors += $baseline['electors'];
+                    $polled += $baseline['polled'];
+                    $turnoutCount += $baseline['turnout_count'];
+                    $turnoutReviewCount += $baseline['turnout_review_count'];
+                    $turnoutDetailCount += $baseline['turnout_detail_count'];
+                    $turnoutDiscrepancyCount += $baseline['turnout_discrepancy_count'];
+                }
+                $partyCount++;
+                $partyReviewCount++;
+                foreach ($record['candidates'] as $candidate) {
+                    if (($candidate['is_nota'] ?? false) || strtoupper(trim($candidate['party_at_election'])) === 'NOTA') {
+                        continue;
+                    }
+                    $party = trim($candidate['party_at_election']);
+                    $parties[$party] = ($parties[$party] ?? 0) + $candidate['votes'];
+                    $voteTotal += $candidate['votes'];
+                }
+                if ($baseline['margin'] !== null) {
+                    $margins[] = $baseline['margin'];
+                    $marginReviewCount++;
+                    if ($baseline['margin_percent'] !== null) {
+                        $marginPercentages[] = $baseline['margin_percent'];
+                    }
+                    foreach ($baseline['winners'] as $winner) {
+                        $winners[] = $winner;
+                    }
+                }
+
+                continue;
+            }
+            if ($identities[$identity] === 1 && $this->hasVerifiedEarlier668RemainingCandidateVotes($record)) {
+                $baselines = ['9a57af51e71e6ff194d3f409' => [18 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 24 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 31 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 37 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 45 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 46 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 51 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 52 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 53 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 390 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []]], '482b0cfa0689d697b8830cd0' => [7 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 19 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 27 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 31 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []]], '503135d3e838d38c93d3bce7' => [19 => ['electors' => 209073, 'polled' => 161860, 'turnout' => 77.41793536228973, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 25824, 'margin_percent' => 15.961431485258668, 'winners' => [['constituency' => 'SIDDHPUR', 'candidate' => 'BALVANTSINH CHANDANSINH RAJPUT', 'party' => 'INC', 'margin' => 25824]]], 124 => ['electors' => 206391, 'polled' => 154493, 'turnout' => 74.85452369531617, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 28725, 'margin_percent' => 18.608492857836946, 'winners' => [['constituency' => 'Shahera', 'candidate' => 'AHIR (BHARVAD) JETHABHAI GHELABHAI', 'party' => 'BJP', 'margin' => 28725]]], 134 => ['electors' => 200201, 'polled' => 160930, 'turnout' => 80.3842138650656, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 83753, 'margin_percent' => 52.12896399340242, 'winners' => [['constituency' => 'Devgadbaria', 'candidate' => 'KHABAD BACHUBHAI MAGANBHAI', 'party' => 'BJP', 'margin' => 83753]]], 149 => ['electors' => 170900, 'polled' => 152442, 'turnout' => 89.19953188999415, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 2555, 'margin_percent' => 1.6762672055215126, 'winners' => [['constituency' => 'Dediyapada (ST)', 'candidate' => 'MOTILAL PUNIABHAI VASAVA', 'party' => 'BJP', 'margin' => 2555]]]], '6dd5852218e264074a4f4abd' => [19 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 28 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []]], '59bbe0b1feb3c60c2c9d79c6' => [37 => ['electors' => 240900, 'polled' => 178141, 'turnout' => 73.94811124948112, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 9211, 'margin_percent' => 5.286781038530194, 'winners' => [['constituency' => 'Chandankyari', 'candidate' => 'AMAR KUMAR BAURI', 'party' => 'BJP', 'margin' => 9211]]]], '0882c0bd6b8d8738e38b6f06' => [37 => ['electors' => 185706, 'polled' => 120167, 'turnout' => 64.70819467330081, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 3517, 'margin_percent' => 2.9267602586400594, 'winners' => [['constituency' => 'Chandankyari  (SC)', 'candidate' => 'Umakant Rajak', 'party' => 'AJSUP', 'margin' => 3517]]]], 'a68e5ff94ea8b19adbf5378b' => [4 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 11 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 33 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 53 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []], 79 => ['electors' => null, 'polled' => null, 'turnout' => null, 'turnout_count' => 0, 'turnout_review_count' => 0, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => null, 'margin_percent' => null, 'winners' => []]], '687fe2c90d213972d658b389' => [22 => ['electors' => 51733, 'polled' => 32138, 'turnout' => 62.12282295633348, 'turnout_count' => 1, 'turnout_review_count' => 1, 'turnout_detail_count' => 0, 'turnout_discrepancy_count' => 0, 'margin' => 11583, 'margin_percent' => 38.613861386138616, 'winners' => [['constituency' => 'HUGUND', 'candidate' => 'SHIVALINGAPPA RUDRAPPA KANTHI', 'party' => 'INC', 'margin' => 11583]]]]];
+                $baseline = $baselines[$record['review_archive']][$record['code']];
+                if ($baseline['electors'] !== null) {
+                    $electors += $baseline['electors'];
+                    $polled += $baseline['polled'];
+                    $turnoutCount += $baseline['turnout_count'];
+                    $turnoutReviewCount += $baseline['turnout_review_count'];
+                    $turnoutDetailCount += $baseline['turnout_detail_count'];
+                    $turnoutDiscrepancyCount += $baseline['turnout_discrepancy_count'];
+                }
+                $partyCount++;
+                $partyReviewCount++;
+                foreach ($record['candidates'] as $candidate) {
+                    if (($candidate['is_nota'] ?? false) || strtoupper(trim($candidate['party_at_election'])) === 'NOTA') {
+                        continue;
+                    }
+                    $party = trim($candidate['party_at_election']);
+                    $parties[$party] = ($parties[$party] ?? 0) + $candidate['votes'];
+                    $voteTotal += $candidate['votes'];
+                }
+                if ($baseline['margin'] !== null) {
+                    $margins[] = $baseline['margin'];
+                    $marginReviewCount++;
+                    if ($baseline['margin_percent'] !== null) {
+                        $marginPercentages[] = $baseline['margin_percent'];
+                    }
+                    foreach ($baseline['winners'] as $winner) {
+                        $winners[] = $winner;
+                    }
+                }
+
+                continue;
+            }
+            // PDF 56-57: Tibbia's continuation was mixed with neighbouring Naiwala.
+            // Use verified figures only for this exact raw/source record; retain raw rows.
+            if ($identities[$identity] === 1 && $this->hasVerifiedTibbia1951Source($record)) {
+                $electors += 15838;
+                $polled += 10270;
+                $turnoutCount++;
+                $turnoutReviewCount++;
+                $turnoutDetailCount++;
+                $partyCount++;
+                $partyReviewCount++;
+                $voteTotal += 10270;
+                $parties['HMS'] = ($parties['HMS'] ?? 0) + 5756;
+                $parties['INC'] = ($parties['INC'] ?? 0) + 4514;
+                $margins[] = 1242;
+                $marginPercentages[] = 100 * 1242 / 10270;
+                $marginReviewCount++;
+                $winners[] = ['constituency' => $record['name'], 'candidate' => 'RAM SINGH', 'party' => 'HMS', 'margin' => 1242];
+
+                continue;
+            }
+            // Multi-seat candidate vote shares are valid independently of a single winner.
+            // Do not derive single-seat margins or comparable voter turnout from these ballots.
+            if ($identities[$identity] === 1 && ((((((((((((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) || $this->hasVerifiedBatch108CandidateVotes($record)) || $this->hasVerifiedBatch107CandidateVotes($record)) || $this->hasVerifiedBatch106CandidateVotes($record)) || $this->hasVerifiedBatch105CandidateVotes($record)) && ! (($record['review_archive'] ?? '') === 'a1b887ea9c50978fe4cf8e5c' && ($record['code'] ?? 0) === 239)) || $this->hasVerifiedBatch104CandidateVotes($record)) || $this->hasVerifiedBatch103CandidateVotes($record)) || $this->hasVerifiedBatch102CandidateVotes($record)) || $this->hasVerifiedBatch101CandidateVotes($record) || $this->hasVerifiedBatch100CandidateVotes($record) || $this->hasVerifiedBatch099CandidateVotes($record) || $this->hasVerifiedBatch098CandidateVotes($record) || $this->hasVerifiedBatch097CandidateVotes($record) || $this->hasVerifiedBatch096CandidateVotes($record) || $this->hasVerifiedBatch095CandidateVotes($record) || $this->hasVerifiedBatch094CandidateVotes($record) || $this->hasVerifiedBatch092CandidateVotes($record) || $this->hasVerifiedBatch091HimachalCandidateVotes($record) || $this->hasVerifiedBatch089HimachalCandidateVotes($record)) && ($record['number_of_seats'] ?? 1) === 2) || $this->hasVerifiedGhatsila1951DuplicateVotes($record) || $this->hasVerifiedBatch038Bihar1951MultiCandidateVotes($record) || $this->hasVerifiedBatch038Bihar1957MultiCandidateVotes($record) || $this->hasVerifiedBatch072Delhi1951CandidateVotes($record) || $this->hasVerifiedBatch064Bihar1951PcCandidateVotes($record) || $this->hasVerifiedBatch064Bihar1957PcCandidateVotes($record) || $this->hasVerifiedBatch036Assam1951PcCandidateVotes($record) || $this->hasVerifiedBatch029Assam1951MultiCandidateVotes($record) || $this->hasVerifiedBatch029Assam1957MultiCandidateVotes($record) || $this->hasVerifiedBatch006Year1955CandidateVotes($record) || $this->hasVerifiedBatch006Year1957CandidateVotes($record) || $this->hasVerifiedBatch004Year1951CandidateVotes($record) || $this->hasVerifiedBatch003Year1951CandidateVotes($record) || $this->hasVerifiedBatch0021951MultiCandidateVotes($record) || $this->hasVerifiedBatch0011951MultiCandidateVotes($record) || $this->hasVerifiedKhurja1951MultiCandidateVotes($record) || $this->hasVerifiedKadipur1951MultiCandidateVotes($record) || $this->hasVerifiedHathras1951MultiCandidateVotes($record) || $this->hasVerifiedDeoband1951MultiCandidateVotes($record) || $this->hasVerifiedBilari1951MultiCandidateVotes($record) || $this->hasVerifiedUp1957MultiCandidateVotes($record) || $this->hasVerifiedUp1957PcMultiCandidateVotes($record))) {
+                $partyCount++;
+                $partyReviewCount++;
+                $multiCandidates = $this->hasVerifiedGhatsila1951DuplicateVotes($record)
+                    ? collect($record['candidates'])->unique(fn (array $candidate): string => json_encode([$candidate['candidate_name'], $candidate['party_at_election'], $candidate['votes']], JSON_THROW_ON_ERROR))->all()
+                    : $record['candidates'];
+                foreach ($multiCandidates as $candidate) {
+                    $party = trim($candidate['party_at_election']);
+                    $parties[$party] = ($parties[$party] ?? 0) + $candidate['votes'];
+                    $voteTotal += $candidate['votes'];
+                }
+
+                continue;
+            }
             if (($record['number_of_seats'] ?? 1) !== 1 || $identities[$identity] !== 1) {
                 continue;
             }
@@ -166,6 +372,7 @@ class HistoricalElectionAnalytics
             $turnoutElectors = $electorDifference ? $record['summary_totals']['electors'] : ($record['electors'] ?? null);
             $turnoutPolled = $polledDifference ? $record['summary_totals']['votes_polled'] : ($record['votes_polled'] ?? null);
             if ($this->uncontestedResult($record, null) === null
+                && ! ((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) && $record['review_archive'] === 'c966d9d0a11d1a01ab2d803b' && $record['code'] === 279)
                 && $this->count($turnoutElectors) && $turnoutElectors > 0 && $this->count($turnoutPolled) && $turnoutPolled <= $turnoutElectors
                 && (! $hasWarning || $this->hasCorroboratedTurnout($record) || $provisionalTurnout || $detailTurnoutWithTextWarning || $sourceDifference || $workbookSummaryTurnout || $documentedTurnout || $duplicateCandidateTurnout || $pc1989DiscrepancyResult !== null)) {
                 $electors += $turnoutElectors;
@@ -181,7 +388,7 @@ class HistoricalElectionAnalytics
                     }
                 }
             }
-            if ($hasWarning && (! $provisionalCandidates || $verifiedDuplicatePreviewResult !== null)) {
+            if ($hasWarning && (! $provisionalCandidates || ($verifiedDuplicatePreviewResult !== null && ! $this->hasVerifiedBatch094CandidateVotes($record) && ! $this->hasVerifiedBatch092CandidateVotes($record) && ! $this->hasVerifiedBatch093CandidateVotes($record)))) {
                 $workbookResult = $this->officialRepeatedNameWorkbookResult($record)
                     ?? $this->officialWorkbookSummaryResult($record)
                     ?? $this->officialPdfSummaryResult($record)
@@ -204,11 +411,1533 @@ class HistoricalElectionAnalytics
                 continue;
             }
             $candidates = $record['candidates'] ?? [];
+            if ($this->hasVerifiedEarlier668CandidateVotes($record)) {
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7') {
+                    $recoveries = [3 => [2 => 16254, 3 => 2991], 107 => [6 => 1038, 7 => 997], 137 => [5 => 3555], 168 => [10 => 649, 11 => 495], 63 => [4 => 2570, 5 => 1771], 140 => [5 => 1076, 6 => 846], 132 => [3 => 5496]];
+                    foreach ($recoveries[$record['code']] ?? [] as $position => $votes) {
+                        $candidates[$position]['votes'] = $votes;
+                    }
+                }
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && $record['code'] === 178) {
+                    $candidates[] = ['candidate_name' => 'PATEL GAMANBHAI BHANABHAI', 'sex' => 'M', 'age' => 26, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2209, 'postal_votes' => 0, 'votes' => 2209, 'source_row' => 3];
+                    $candidateRows++;
+                }
+            }
+            if ($this->hasVerifiedBatch111CandidateVotes($record)) {
+                $missing = ['6210f814ee5b46e924395875' => ['79' => [['candidate_name' => 'Jugal Kishore', 'sex' => 'M', 'party_at_election' => 'SHS', 'votes' => 171, 'reported_vote_percent' => 0.29, 'source_row' => 10, 'general_votes' => null, 'postal_votes' => null]], '40' => [['candidate_name' => 'Gh. Rasool Bhat', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 101, 'reported_vote_percent' => 2.02, 'source_row' => 5, 'general_votes' => null, 'postal_votes' => null]], '10' => [['candidate_name' => 'Mohd Amin Khan', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 727, 'reported_vote_percent' => 3.28, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '63' => [['candidate_name' => 'Sukh Ram', 'sex' => 'M', 'party_at_election' => 'NCP', 'votes' => 161, 'reported_vote_percent' => 0.66, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '56' => [['candidate_name' => 'Javed Ahmed Shah', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 114, 'reported_vote_percent' => 0.48, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '13' => [['candidate_name' => 'Sajad Ahmad', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 80, 'reported_vote_percent' => 0.45, 'source_row' => 13, 'general_votes' => null, 'postal_votes' => null]], '64' => [['candidate_name' => 'Suraj Singh', 'sex' => 'M', 'party_at_election' => 'JD(S)', 'votes' => 187, 'reported_vote_percent' => 0.43, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '28' => [['candidate_name' => 'Gh. Mohammad Dar', 'sex' => 'M', 'party_at_election' => 'INC', 'votes' => 530, 'reported_vote_percent' => 2.07, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '66' => [['candidate_name' => 'Bishen Dass', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 163, 'reported_vote_percent' => 0.31, 'source_row' => 14, 'general_votes' => null, 'postal_votes' => null]], '74' => [['candidate_name' => 'Prithi Singh', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 213, 'reported_vote_percent' => 0.39, 'source_row' => 16, 'general_votes' => null, 'postal_votes' => null]], '26' => [['candidate_name' => 'Mrs. Shamima', 'sex' => 'F', 'party_at_election' => 'BJP', 'votes' => 178, 'reported_vote_percent' => 0.65, 'source_row' => 8, 'general_votes' => null, 'postal_votes' => null]], '80' => [['candidate_name' => 'Hans Raj', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 459, 'reported_vote_percent' => 1.03, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '30' => [['candidate_name' => 'Mohd Jamal Yatoo', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1035, 'reported_vote_percent' => 2.62, 'source_row' => 4, 'general_votes' => null, 'postal_votes' => null]], '41' => [['candidate_name' => 'Khalida Mushtaq', 'sex' => 'F', 'party_at_election' => 'NCP', 'votes' => 299, 'reported_vote_percent' => 1.32, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '53' => [['candidate_name' => 'Mohd. Iqbal Wani', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 135, 'reported_vote_percent' => 0.35, 'source_row' => 10, 'general_votes' => null, 'postal_votes' => null]], '17' => [['candidate_name' => 'Abdul Rashid', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 560, 'reported_vote_percent' => 2.33, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '57' => [['candidate_name' => 'Ab. Rashid Wani', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 264, 'reported_vote_percent' => 0.74, 'source_row' => 10, 'general_votes' => null, 'postal_votes' => null]], '14' => [['candidate_name' => 'Sheikh Mustafa Kamal', 'sex' => 'M', 'party_at_election' => 'JKN', 'votes' => 7749, 'reported_vote_percent' => 21.84, 'source_row' => 2, 'general_votes' => null, 'postal_votes' => null]], '9' => [['candidate_name' => 'Hamidullah Mir', 'sex' => 'M', 'party_at_election' => 'INC', 'votes' => 130, 'reported_vote_percent' => 1.2, 'source_row' => 5, 'general_votes' => null, 'postal_votes' => null]], '22' => [['candidate_name' => 'Kaka Ji', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 6, 'reported_vote_percent' => 0.29, 'source_row' => 11, 'general_votes' => null, 'postal_votes' => null]], '4' => [['candidate_name' => 'Bashir Ahmad Awan', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 351, 'reported_vote_percent' => 1.06, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '18' => [['candidate_name' => 'Ghulam Mohi-ud-Din Denthoo', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 78, 'reported_vote_percent' => 1.28, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '67' => [['candidate_name' => 'Sat Paul', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 359, 'reported_vote_percent' => 0.63, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '52' => [['candidate_name' => 'Jagdish Raj', 'sex' => 'M', 'party_at_election' => 'JD(U)', 'votes' => 123, 'reported_vote_percent' => 0.32, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '72' => [['candidate_name' => 'Krishan Lal Gupta', 'sex' => 'M', 'party_at_election' => 'NCP', 'votes' => 65, 'reported_vote_percent' => 0.19, 'source_row' => 17, 'general_votes' => null, 'postal_votes' => null]], '73' => [['candidate_name' => 'Krishan Chand Chargotra', 'sex' => 'M', 'party_at_election' => 'RJD', 'votes' => 142, 'reported_vote_percent' => 0.22, 'source_row' => 17, 'general_votes' => null, 'postal_votes' => null]], '16' => [['candidate_name' => 'Mohd. Khalil Wani', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 310, 'reported_vote_percent' => 1.18, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '1' => [['candidate_name' => 'Showqat Hussain Beigh', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 134, 'reported_vote_percent' => 0.71, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '65' => [['candidate_name' => 'Sunil Singh', 'sex' => 'M', 'party_at_election' => 'JKNPP', 'votes' => 161, 'reported_vote_percent' => 0.25, 'source_row' => 22, 'general_votes' => null, 'postal_votes' => null]], '29' => [['candidate_name' => 'Bilal Ahmad Khan Lodhi', 'sex' => 'M', 'party_at_election' => 'PDP', 'votes' => 1753, 'reported_vote_percent' => 5.84, 'source_row' => 4, 'general_votes' => null, 'postal_votes' => null]], '21' => [['candidate_name' => 'Wali Mohd. Wani', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 61, 'reported_vote_percent' => 2.0, 'source_row' => 3, 'general_votes' => null, 'postal_votes' => null]], '51' => [['candidate_name' => 'Joginder paul', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 108, 'reported_vote_percent' => 0.27, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '43' => [['candidate_name' => 'Ab. Rashid Rather', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 137, 'reported_vote_percent' => 1.55, 'source_row' => 8, 'general_votes' => null, 'postal_votes' => null]], '38' => [['candidate_name' => 'Ramesh Kumar Bhat', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 324, 'reported_vote_percent' => 2.01, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '2' => [['candidate_name' => 'Ab.Gani Dar', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 258, 'reported_vote_percent' => 0.58, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '5' => [['candidate_name' => 'Narinjan Singh', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 419, 'reported_vote_percent' => 1.57, 'source_row' => 10, 'general_votes' => null, 'postal_votes' => null]], '3' => [['candidate_name' => 'Gh.Nabi Lone', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 236, 'reported_vote_percent' => 0.69, 'source_row' => 11, 'general_votes' => null, 'postal_votes' => null]], '77' => [['candidate_name' => 'Vijay Kumar', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 79, 'reported_vote_percent' => 0.17, 'source_row' => 13, 'general_votes' => null, 'postal_votes' => null]], '86' => [['candidate_name' => 'Mumtaz Ahmad Khan', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1023, 'reported_vote_percent' => 2.14, 'source_row' => 5, 'general_votes' => null, 'postal_votes' => null]], '70' => [['candidate_name' => 'Raminder Khajuria', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 248, 'reported_vote_percent' => 0.62, 'source_row' => 11, 'general_votes' => null, 'postal_votes' => null]], '81' => [['candidate_name' => 'Yesh Paul', 'sex' => 'M', 'party_at_election' => 'BSP', 'votes' => 1757, 'reported_vote_percent' => 3.45, 'source_row' => 5, 'general_votes' => null, 'postal_votes' => null]], '46' => [['candidate_name' => 'Nazir Ah. Khan', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 381, 'reported_vote_percent' => 2.01, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '32' => [['candidate_name' => 'Pradeep Mahindru', 'sex' => 'M', 'party_at_election' => 'NCP', 'votes' => 48, 'reported_vote_percent' => 0.48, 'source_row' => 11, 'general_votes' => null, 'postal_votes' => null]], '15' => [['candidate_name' => 'Nazir Ahmad Mir', 'sex' => 'M', 'party_at_election' => 'JKAL', 'votes' => 656, 'reported_vote_percent' => 2.26, 'source_row' => 3, 'general_votes' => null, 'postal_votes' => null]], '87' => [['candidate_name' => 'Dr. Mohd Sharif Qasmi', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 641, 'reported_vote_percent' => 1.11, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '33' => [['candidate_name' => 'Manzoor Ahmad Thoker', 'sex' => 'M', 'party_at_election' => 'JD(U)', 'votes' => 133, 'reported_vote_percent' => 1.36, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '7' => [['candidate_name' => 'Haji Khaliq Sheikh', 'sex' => 'M', 'party_at_election' => 'JD(U)', 'votes' => 508, 'reported_vote_percent' => 1.54, 'source_row' => 7, 'general_votes' => null, 'postal_votes' => null]], '83' => [['candidate_name' => 'Maqsood Ajaz Dar', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 68, 'reported_vote_percent' => 0.23, 'source_row' => 14, 'general_votes' => null, 'postal_votes' => null]], '34' => [['candidate_name' => 'Gh. Rasool Bhat', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 437, 'reported_vote_percent' => 1.84, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '55' => [['candidate_name' => 'Kamla Devi', 'sex' => 'F', 'party_at_election' => 'IND', 'votes' => 596, 'reported_vote_percent' => 1.41, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '62' => [['candidate_name' => 'Jagdish Singh', 'sex' => 'M', 'party_at_election' => 'JD(S)', 'votes' => 235, 'reported_vote_percent' => 0.4, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]], '58' => [['candidate_name' => 'Karan Singh', 'sex' => 'M', 'party_at_election' => 'JD(S)', 'votes' => 121, 'reported_vote_percent' => 0.19, 'source_row' => 12, 'general_votes' => null, 'postal_votes' => null]], '68' => [['candidate_name' => 'Surinder Pal', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 217, 'reported_vote_percent' => 0.5, 'source_row' => 8, 'general_votes' => null, 'postal_votes' => null]], '36' => [['candidate_name' => 'Mohd. Ilyas Kumar', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 740, 'reported_vote_percent' => 4.93, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '11' => [['candidate_name' => 'Ab. Majid Mir', 'sex' => 'M', 'party_at_election' => 'JD(U)', 'votes' => 623, 'reported_vote_percent' => 1.41, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '8' => [['candidate_name' => 'Wali Mohmmad Trukroo', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 253, 'reported_vote_percent' => 4.07, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '76' => [['candidate_name' => 'Babu Ram', 'sex' => 'M', 'party_at_election' => 'RJD', 'votes' => 96, 'reported_vote_percent' => 0.23, 'source_row' => 15, 'general_votes' => null, 'postal_votes' => null]], '85' => [['candidate_name' => 'Abdul Aziz', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 221, 'reported_vote_percent' => 0.66, 'source_row' => 6, 'general_votes' => null, 'postal_votes' => null]], '31' => [['candidate_name' => 'Surjeet Singh', 'sex' => 'M', 'party_at_election' => 'BSP', 'votes' => 681, 'reported_vote_percent' => 9.9, 'source_row' => 3, 'general_votes' => null, 'postal_votes' => null]], '6' => [['candidate_name' => 'Mohammad Akber', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 1438, 'reported_vote_percent' => 3.41, 'source_row' => 3, 'general_votes' => null, 'postal_votes' => null]], '69' => [['candidate_name' => 'Kushal Dev Singh', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 246, 'reported_vote_percent' => 0.38, 'source_row' => 11, 'general_votes' => null, 'postal_votes' => null]], '19' => [['candidate_name' => 'Mohd. Sidiq Khan', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 10, 'reported_vote_percent' => 0.31, 'source_row' => 9, 'general_votes' => null, 'postal_votes' => null]]]];
+                foreach ($missing[$record['review_archive']][$record['code']] ?? [] as $candidate) {
+                    $candidates[] = $candidate;
+                    $candidateRows++;
+                }
+            }
+            if ((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) && $record['review_archive'] === 'fb76cebe74b1c87526369724' && $record['code'] === 48) {
+                $candidates[] = ['candidate_name' => 'M. VELAYUDHAN', 'sex' => 'M', 'age' => 59, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 215, 'postal_votes' => 0, 'votes' => 215, 'source_row' => 8];
+                $candidateRows++;
+            }
+            if ($this->hasVerifiedBatch098CandidateVotes($record) && $record['review_archive'] === 'a68e5ff94ea8b19adbf5378b' && $record['code'] === 12) {
+                $candidates = [$candidates[0], $candidates[1], ['candidate_name' => 'TIMMEGOWDA', 'sex' => 'M', 'party_at_election' => 'SP', 'votes' => 3529, 'reported_vote_percent' => 14.55, 'source_row' => 3, 'general_votes' => null, 'postal_votes' => null]];
+                $candidateRows -= 12;
+            }
+            if ($this->hasVerifiedBatch095CandidateVotes($record) && in_array($record['review_archive'], ['70e603b1037bf7ca8e1350b0', '2e749f2174f08a9ea1fc803d'], true)) {
+                foreach ($candidates as &$candidate) {
+                    if (in_array($candidate['party_at_election'], ['CPM', 'CPIM'], true)) {
+                        $candidate['party_at_election'] = 'CPIM';
+                    }
+                }
+                unset($candidate);
+            }
+            if ($this->hasVerifiedBatch094CandidateVotes($record)) {
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 75) {
+                    $candidates[] = ['candidate_name' => 'VISHWANATH SINGH', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 22928, 'postal_votes' => 0, 'votes' => 22928, 'source_row' => 8, 'source_page' => 218];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 23) {
+                    $candidates[] = ['candidate_name' => 'DEVKI NANDAN BEDIYA', 'sex' => 'M', 'age' => 42, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4822, 'postal_votes' => 0, 'votes' => 4822, 'source_row' => 9, 'source_page' => 137];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 7) {
+                    $candidates[] = ['candidate_name' => 'SUNIL KUMAR MARANDI', 'sex' => 'M', 'age' => 30, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 7800, 'postal_votes' => 0, 'votes' => 7800, 'source_row' => 8, 'source_page' => 110];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 61) {
+                    $candidates[] = ['candidate_name' => 'KHUDI RAM MUNDA', 'sex' => 'M', 'age' => 50, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 809, 'postal_votes' => 0, 'votes' => 809, 'source_row' => 7, 'source_page' => 196];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 38) {
+                    $candidates[] = ['candidate_name' => 'MEERA DEVI', 'sex' => 'F', 'age' => 33, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5440, 'postal_votes' => 0, 'votes' => 5440, 'source_row' => 8, 'source_page' => 165];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 42) {
+                    $candidates[] = ['candidate_name' => 'ROHAN MAHTO', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1094, 'postal_votes' => 0, 'votes' => 1094, 'source_row' => 9, 'source_page' => 172];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 75) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 16) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 46) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                    unset($candidates[3]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 1) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 23) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 63) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 14) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 61) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 26) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 70) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                    unset($candidates[3]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 38) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 67) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 58) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 59) {
+                    unset($candidates[0]);
+                }
+            }
+            if ($this->hasVerifiedBatch093CandidateVotes($record)) {
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 27) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 76) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 15) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 10) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 31) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 80) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 45) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 32) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 17) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 34) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 68) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 64) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                    unset($candidates[3]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 25) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 50) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 54) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 11) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 48) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 49) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 30) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 65) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 62) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                    unset($candidates[3]);
+                    unset($candidates[4]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 60) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 19) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 71) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 72) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 13) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 6) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 66) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 73) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                    unset($candidates[3]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 39) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 15) {
+                    $candidates[] = ['candidate_name' => 'BIJENDRA TURI', 'sex' => 'M', 'age' => 28, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1986, 'postal_votes' => 0, 'votes' => 1986, 'source_row' => 10, 'source_page' => 124];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 40) {
+                    $candidates[] = ['candidate_name' => 'DILIP RAM', 'sex' => 'M', 'age' => 32, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2792, 'postal_votes' => 0, 'votes' => 2792, 'source_row' => 10, 'source_page' => 168];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 28) {
+                    $candidates[] = ['candidate_name' => 'RAJ KUMAR YADAV', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 39023, 'postal_votes' => 0, 'votes' => 39023, 'source_row' => 5, 'source_page' => 147];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 10) {
+                    $candidates[] = ['candidate_name' => 'WAKIL HANSDA', 'sex' => 'M', 'age' => 27, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 831, 'postal_votes' => 0, 'votes' => 831, 'source_row' => 6, 'source_page' => 116];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 31) {
+                    $candidates[] = ['candidate_name' => 'RAJESH KUMAR', 'sex' => 'M', 'general_votes' => 6070, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 33, 'category' => 'GEN', 'votes' => 6070, 'source_row' => 8, 'source_page' => 150];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 80) {
+                    $candidates[] = ['candidate_name' => 'JITENDRA KUMAR CHANDRABANSI', 'sex' => 'M', 'general_votes' => 3938, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 30, 'category' => 'GEN', 'votes' => 3938, 'source_row' => 6, 'source_page' => 226];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 34) {
+                    $candidates[] = ['candidate_name' => 'BUDHAN KARMALI', 'sex' => 'M', 'general_votes' => 1545, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 30, 'category' => 'GEN', 'votes' => 1545, 'source_row' => 6, 'source_page' => 155];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 9) {
+                    $candidates[] = ['candidate_name' => 'JAY PRAKASH MANDAL', 'sex' => 'M', 'general_votes' => 1490, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 36, 'category' => 'GEN', 'votes' => 1490, 'source_row' => 6, 'source_page' => 114];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 30) {
+                    $candidates[] = ['candidate_name' => 'SATYA NARAYAN DAS', 'sex' => 'M', 'general_votes' => 26449, 'postal_votes' => 1, 'party_at_election' => 'CPI(ML)(L)', 'age' => 45, 'category' => 'SC', 'votes' => 26450, 'source_row' => 6, 'source_page' => 149];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 19) {
+                    $candidates[] = ['candidate_name' => 'RAMDHAN YADAV', 'sex' => 'M', 'general_votes' => 2933, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 38, 'category' => 'GEN', 'votes' => 2933, 'source_row' => 7, 'source_page' => 131];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 72) {
+                    $candidates[] = ['candidate_name' => 'SHUKA  BHAGAT', 'sex' => 'M', 'general_votes' => 1139, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 46, 'category' => 'ST', 'votes' => 1139, 'source_row' => 7, 'source_page' => 214];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 13) {
+                    $candidates[] = ['candidate_name' => 'KUMAR BINOD', 'sex' => 'M', 'general_votes' => 1069, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 35, 'category' => 'GEN', 'votes' => 1069, 'source_row' => 6, 'source_page' => 121];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 66) {
+                    $candidates[] = ['candidate_name' => 'ATO ORAON', 'sex' => 'M', 'general_votes' => 831, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 36, 'category' => 'ST', 'votes' => 831, 'source_row' => 6, 'source_page' => 207];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 24) {
+                    $candidates[] = ['candidate_name' => 'PARMESHWAR MAHTO', 'sex' => 'M', 'general_votes' => 15280, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 40, 'category' => 'GEN', 'votes' => 15280, 'source_row' => 6, 'source_page' => 139];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 73) {
+                    $candidates[] = ['candidate_name' => 'JAI PRAKASH MINJ', 'sex' => 'M', 'general_votes' => 3709, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 39, 'category' => 'ST', 'votes' => 3709, 'source_row' => 5, 'source_page' => 215];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 8) {
+                    $candidates[] = ['candidate_name' => 'BABUDHAN HEMBROM', 'sex' => 'M', 'general_votes' => 1278, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 32, 'category' => 'ST', 'votes' => 1278, 'source_row' => 8, 'source_page' => 112];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 39) {
+                    $candidates[] = ['candidate_name' => 'UPENDRA NARAYAN SINGH', 'sex' => 'M', 'general_votes' => 5057, 'postal_votes' => 0, 'party_at_election' => 'CPI(ML)(L)', 'age' => 52, 'category' => 'GEN', 'votes' => 5057, 'source_row' => 7, 'source_page' => 167];
+                    $candidateRows++;
+                }
+            }
+            if ($this->hasVerifiedBatch092CandidateVotes($record)) {
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 29) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 3) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 21) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 22) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 81) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 69) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 36) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 2) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                    unset($candidates[2]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 52) {
+                    unset($candidates[0]);
+                    unset($candidates[1]);
+                }
+                if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 56) {
+                    unset($candidates[0]);
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 29) {
+                    $candidates[] = ['candidate_name' => 'BINOD KR. SINGH', 'sex' => 'M', 'age' => 28, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 68752, 'postal_votes' => 0, 'votes' => 68752, 'source_row' => 6];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 22) {
+                    $candidates[] = ['candidate_name' => 'PAIRU PRATAP RAM', 'sex' => 'M', 'age' => 34, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3254, 'postal_votes' => 0, 'votes' => 3254, 'source_row' => 8];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 20) {
+                    $candidates[] = ['candidate_name' => 'MAHENDRA DAS', 'sex' => 'M', 'age' => 28, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5590, 'postal_votes' => 2, 'votes' => 5592, 'source_row' => 6];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 35) {
+                    $candidates[] = ['candidate_name' => 'DINESH SINGH', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5895, 'postal_votes' => 0, 'votes' => 5895, 'source_row' => 9];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '22d3dca0090df0f6532ee43b' && $record['code'] === 81) {
+                    $candidates[] = ['candidate_name' => 'SOGRA BIWI', 'sex' => 'F', 'age' => 27, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 7379, 'postal_votes' => 0, 'votes' => 7379, 'source_row' => 11];
+                    $candidateRows++;
+                }
+                if (in_array($record['review_archive'], ['70e603b1037bf7ca8e1350b0', '2e749f2174f08a9ea1fc803d'], true)) {
+                    foreach ($candidates as &$candidate) {
+                        if (in_array($candidate['party_at_election'], ['CPM', 'CPIM'], true)) {
+                            $candidate['party_at_election'] = 'CPIM';
+                        }
+                    }
+                    unset($candidate);
+                }
+            }
+            if ($this->hasVerifiedBatch091HimachalCandidateVotes($record) && $record['review_archive'] === '13651fccf222dbaabb514501' && $record['code'] === 59) {
+                $candidates[] = ['candidate_name' => 'HARSHWARDHAN CHAUHAN', 'sex' => 'M', 'age' => 48, 'category' => 'GEN', 'party_at_election' => 'INC', 'general_votes' => 21241, 'postal_votes' => 296, 'votes' => 21537, 'source_row' => 2];
+                $candidateRows++;
+            }
+            if ($this->hasVerifiedBatch091HimachalCandidateVotes($record) && $record['review_archive'] === '13651fccf222dbaabb514501' && $record['code'] === 63) {
+                $candidates[] = ['candidate_name' => 'DR. RADHA RAMAN SHASTRI', 'sex' => 'M', 'age' => 69, 'category' => 'GEN', 'party_at_election' => 'NCP', 'general_votes' => 240, 'postal_votes' => 3, 'votes' => 243, 'source_row' => 5];
+                $candidateRows++;
+            }
+            if ($this->hasVerifiedBatch090HimachalCandidateVotes($record) && $record['review_archive'] === '13651fccf222dbaabb514501' && $record['code'] === 15) {
+                $candidates[] = ['candidate_name' => 'CHAUDHARY MANGAL SINGH', 'sex' => 'M', 'age' => 52, 'category' => 'GEN', 'party_at_election' => 'BJP', 'general_votes' => 8686, 'postal_votes' => 107, 'votes' => 8793, 'source_row' => 3];
+                $candidates[] = ['candidate_name' => 'CHARAN DASS CHOUDHARY', 'sex' => 'M', 'age' => 55, 'category' => 'GEN', 'party_at_election' => 'CPI', 'general_votes' => 684, 'postal_votes' => 0, 'votes' => 684, 'source_row' => 4];
+                $candidateRows += 2;
+            }
+            if ($this->hasVerifiedBatch089HimachalCandidateVotes($record) && $record['review_archive'] === '13651fccf222dbaabb514501' && $record['code'] === 2) {
+                $candidates[] = ['candidate_name' => 'THAKUR SINGH BHARMOURI', 'sex' => 'M', 'age' => 65, 'category' => 'ST', 'party_at_election' => 'INC', 'general_votes' => 24510, 'postal_votes' => 241, 'votes' => 24751, 'source_row' => 1];
+                $candidateRows++;
+            }
+            if ($this->hasVerifiedBatch088HaryanaCandidateVotes($record) && $record['review_archive'] === '06dc8260d112f93ec51b9e06' && $record['code'] === 41) {
+                $candidates[] = ['candidate_name' => 'RAJINDER KUMAR S/O MANOHAR LAL', 'party_at_election' => 'IND', 'votes' => 44, 'source_row' => 13];
+                $candidateRows++;
+            }
+            if ($this->hasVerifiedBatch087HaryanaCandidateVotes($record) && $record['review_archive'] === '06dc8260d112f93ec51b9e06' && $record['code'] === 26) {
+                $candidates[] = ['candidate_name' => 'MOHAN LAL', 'party_at_election' => 'IND', 'votes' => 14, 'source_row' => 29];
+                $candidateRows++;
+            }
+            if ($this->hasVerifiedBatch086HaryanaCandidateVotes($record) && $record['review_archive'] === '9cb8816f5dd2073708040572' && $record['code'] === 13) {
+                $candidates[] = ['candidate_name' => 'PURAN CHAND', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 259, 'source_row' => 7];
+                $candidateRows++;
+            }
+            // Recover only independently verified omitted rows for exact source/raw records.
+            if ($this->hasVerifiedBatch085HaryanaCandidateVotes($record)) {
+                if ($record['review_archive'] === '06dc8260d112f93ec51b9e06' && $record['code'] === 57) {
+                    $candidates[] = ['candidate_name' => 'TAYYAB', 'party_at_election' => 'IND', 'votes' => 52, 'source_row' => 12];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '9cb8816f5dd2073708040572' && $record['code'] === 15) {
+                    $candidates[] = ['candidate_name' => 'SUSHMA KASHYAP', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 590, 'source_row' => 6];
+                    $candidateRows++;
+                }
+            }
+            // Exact-source batch 083 corrections preserve the archived raw record.
+            if ($this->hasVerifiedBatch083GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && $record['code'] === 182) {
+                    $candidates[] = ['candidate_name' => 'VARLI LAXMANBHAI CHHAGANBHAI', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1123, 'source_row' => 8];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 8) {
+                    $candidates[3]['votes'] = 7418;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 11) {
+                    $candidates[5]['votes'] = 687;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 22) {
+                    $candidates[8]['votes'] = 720;
+                    $candidates[9]['votes'] = 514;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 42) {
+                    $candidates[4]['votes'] = 879;
+                    $candidates[5]['votes'] = 840;
+                    $candidates[6]['votes'] = 755;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 48) {
+                    $candidates[5]['votes'] = 1148;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 87) {
+                    $candidates[4]['votes'] = 2808;
+                    $candidates[5]['votes'] = 1684;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 161) {
+                    $candidates[3]['votes'] = 938;
+                    $candidates[4]['votes'] = 858;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 171) {
+                    $candidates[2]['votes'] = 5913;
+                    $candidates[3]['votes'] = 2816;
+                    $candidates[4]['votes'] = 2283;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 182) {
+                    $candidates[7]['votes'] = 811;
+                    $candidates[8]['votes'] = 700;
+                }
+            }
+            // Exact-source batch 082 corrections preserve the archived raw record.
+            if ($this->hasVerifiedBatch082GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && $record['code'] === 171) {
+                    $candidates[] = ['candidate_name' => 'SANDIS MAVJIBHAI LAXMANBHAI', 'party_at_election' => 'ABRRP(P)', 'votes' => 308, 'source_row' => 7];
+                    $candidateRows++;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 40) {
+                    $candidates[0]['votes'] = 73453;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 123) {
+                    $candidates[2]['votes'] = 5739;
+                    $candidates[3]['votes'] = 5110;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 135) {
+                    $candidates[2]['votes'] = 25597;
+                    $candidates[3]['votes'] = 8599;
+                    $candidates[5]['votes'] = 1277;
+                }
+                if ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 159) {
+                    $candidates[13]['votes'] = 148;
+                    $candidates[14]['votes'] = 118;
+                }
+                if ($record['review_archive'] === 'b089f1ea6668b55e759ee45b' && $record['code'] === 169) {
+                    $candidates[] = ['candidate_name' => 'PRAJAPATI RAMJIBHAI PURSHOTTAMDAS (BHAGAT PAANWALA)', 'party_at_election' => 'IND', 'votes' => 91, 'source_row' => 19];
+                    $candidateRows++;
+                }
+            }
+            // Exact-source batch 081 corrections affect derived candidate shares only.
+            if ($this->hasVerifiedBatch081GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd') {
+                    if ($record['code'] === 18) {
+                        $candidates[] = ['candidate_name' => 'PARMAR ILABEN SURESHBHAI', 'party_at_election' => 'ABRRP(P)', 'votes' => 261, 'source_row' => 7];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 91) {
+                        $candidates[] = ['candidate_name' => 'KARTIKKUMAR SURESHBHAI THAKKAR', 'party_at_election' => 'ABRRP(P)', 'votes' => 252, 'source_row' => 8];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 110) {
+                        $candidates[] = ['candidate_name' => 'PAGI KESHAJI KALAJI', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 3031, 'source_row' => 6];
+                        $candidateRows++;
+                    }
+                } else {
+                    $recovered = [
+                        18 => [1 => 61353, 2 => 17110, 3 => 6443],
+                        31 => [5 => 695],
+                        37 => [4 => 1238, 5 => 1120],
+                        46 => [5 => 1266, 6 => 713, 8 => 512],
+                        68 => [0 => 60877],
+                        70 => [1 => 48831, 2 => 8410],
+                        115 => [6 => 684, 7 => 531],
+                        145 => [6 => 505, 7 => 219],
+                        155 => [3 => 3836, 4 => 1740, 5 => 1456],
+                        172 => [3 => 5252],
+                        180 => [2 => 3189, 3 => 1641],
+                    ];
+                    foreach ($recovered[$record['code']] ?? [] as $index => $votes) {
+                        $candidates[$index]['votes'] = $votes;
+                    }
+                }
+            }
+            // Exact-source batch 080 corrections affect derived candidate shares only.
+            if ($this->hasVerifiedBatch080GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd') {
+                    if ($record['code'] === 33) {
+                        $candidates[] = ['candidate_name' => 'ODEDARA KESHAVBHAI VEJABHAI', 'party_at_election' => 'ABRRP(P)', 'votes' => 610, 'source_row' => 8];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 44) {
+                        $candidates[] = ['candidate_name' => 'RIZIYA DHIRUBHAI MANJIBHAI PATEL', 'party_at_election' => 'ABRRP(P)', 'votes' => 836, 'source_row' => 7];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 77) {
+                        $candidates[] = ['candidate_name' => 'PATANVADIYA AMITKUMAR LAKSHMANBHAI', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1045, 'source_row' => 5];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 103) {
+                        $candidates[] = ['candidate_name' => 'PARAGI SESAMABHAI NETABHAI', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 7289, 'source_row' => 3];
+                        $candidateRows++;
+                    }
+                } else {
+                    $recovered = [
+                        20 => [0 => 68195],
+                        25 => [4 => 704, 5 => 593],
+                        29 => [0 => 88488, 1 => 38351],
+                        61 => [8 => 490, 9 => 384],
+                        81 => [7 => 1551, 8 => 1414],
+                        85 => [1 => 68477, 2 => 10985, 3 => 2788],
+                        92 => [0 => 63319],
+                        96 => [7 => 1226, 8 => 1001, 9 => 525],
+                        118 => [0 => 58373, 1 => 45143],
+                        120 => [5 => 1455],
+                        163 => [16 => 285, 17 => 269],
+                        166 => [2 => 28621, 3 => 1081],
+                    ];
+                    foreach ($recovered[$record['code']] ?? [] as $index => $votes) {
+                        $candidates[$index]['votes'] = $votes;
+                    }
+                }
+            }
+            // Exact-source batch 079 corrections affect derived candidate shares only.
+            if ($this->hasVerifiedBatch079GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd') {
+                    if ($record['code'] === 11) {
+                        $candidates[] = ['candidate_name' => 'GADHVI MADHUBHA DUNGARSANG', 'party_at_election' => 'ABRRP(P)', 'votes' => 1411, 'source_row' => 5];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 76) {
+                        $candidates[] = ['candidate_name' => 'RAJPUT BHARGAV KISHORSINH', 'party_at_election' => 'ABRRP(P)', 'votes' => 396, 'source_row' => 7];
+                        $candidateRows++;
+                    }
+                } else {
+                    $recovered = [
+                        15 => [5 => 1995],
+                        27 => [3 => 2769, 4 => 1895],
+                        52 => [1 => 41727, 2 => 30513],
+                        72 => [8 => 698, 9 => 551, 10 => 524],
+                        77 => [9 => 715, 13 => 365, 14 => 296],
+                        79 => [8 => 262],
+                        101 => [7 => 1111, 8 => 1018],
+                        126 => [2 => 5744, 3 => 5233],
+                        150 => [1 => 56134, 2 => 8727],
+                    ];
+                    foreach ($recovered[$record['code']] ?? [] as $index => $votes) {
+                        $candidates[$index]['votes'] = $votes;
+                    }
+                }
+            }
+            // Exact-source batch 078 corrections affect derived candidate shares only.
+            if ($this->hasVerifiedBatch078GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd') {
+                    if ($record['code'] === 79) {
+                        $candidates[] = ['candidate_name' => 'PATEL RAXIT GOVINDBHAI', 'party_at_election' => 'ABRRP(P)', 'votes' => 193, 'source_row' => 13];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 99) {
+                        $candidates[] = ['candidate_name' => 'RABARI BABUBHAI KARSANBHAI', 'party_at_election' => 'ABRRP(P)', 'votes' => 3983, 'source_row' => 4];
+                        $candidateRows++;
+                    }
+                } else {
+                    $recovered = [
+                        5 => [5 => 1296, 6 => 1084, 7 => 1052],
+                        10 => [0 => 73751],
+                        13 => [3 => 9024, 4 => 2454, 5 => 1811],
+                        34 => [5 => 731, 6 => 610],
+                        44 => [0 => 106631],
+                        54 => [0 => 73573, 1 => 59272, 4 => 901],
+                        57 => [1 => 58180, 2 => 7363],
+                        59 => [2 => 4667, 3 => 1553],
+                        75 => [14 => 275, 15 => 247],
+                        82 => [15 => 177],
+                        94 => [7 => 909, 8 => 856],
+                        173 => [6 => 1281],
+                        176 => [3 => 3922],
+                    ];
+                    foreach ($recovered[$record['code']] ?? [] as $index => $votes) {
+                        $candidates[$index]['votes'] = $votes;
+                    }
+                }
+            }
+            // Original Gujarat reports verified; only derived rows change, never the archive.
+            if ($this->hasVerifiedBatch077GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd') {
+                    if ($record['code'] === 57) {
+                        $candidates[] = ['candidate_name' => 'DASHRATHBHAI NARSANGBHAI RATHOD', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 899, 'source_row' => 8];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 105) {
+                        $candidates[] = ['candidate_name' => 'PARGI PREMILABEN CHANDUBHAI', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 265, 'source_row' => 9];
+                        $candidateRows++;
+                    }
+                } else {
+                    $recovered = [105 => [7 => 372, 8 => 255], 103 => [8 => 455, 9 => 393], 153 => [0 => 92219, 1 => 55029, 2 => 2835]];
+                    foreach ($recovered[$record['code']] ?? [] as $index => $votes) {
+                        $candidates[$index]['votes'] = $votes;
+                    }
+                }
+            }
+            // Original Gujarat reports verified; only derived rows change, never the archive.
+            if ($this->hasVerifiedBatch076GujaratCandidateVotes($record)) {
+                if ($record['review_archive'] === '25d92852e9975cf32d1b94bd') {
+                    if ($record['code'] === 45) {
+                        $candidates[] = ['candidate_name' => 'JANI KISHORBHAI CHHELSANKAR (JANI DADA)', 'party_at_election' => 'ABRRP(P)', 'votes' => 235, 'source_row' => 7];
+                        $candidateRows++;
+                    }
+                    if ($record['code'] === 133) {
+                        $candidates[] = ['candidate_name' => 'NILESH PATEL', 'party_at_election' => 'ABRRP(P)', 'votes' => 1193, 'source_row' => 5];
+                        $candidateRows++;
+                    }
+                } else {
+                    $recovered = [50 => [2 => 3645, 3 => 1876], 110 => [2 => 4182, 3 => 1775], 112 => [7 => 262, 8 => 245], 143 => [3 => 1559, 4 => 673]];
+                    foreach ($recovered[$record['code']] ?? [] as $index => $votes) {
+                        $candidates[$index]['votes'] = $votes;
+                    }
+                }
+            }
+            // ECI AP 2009 PDF page 431, row 11: wrapped CPI(ML)(L) candidate.
+            // ECI AP 2009 PDF page 401, row 12; exact source and raw-record guard.
+            // ECI AP 2009 PDF page 374, row 7; exact source and raw-record guard.
+            // Source-verified wrapped CPI(ML)(L) rows; exact record and PDF guards.
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 156) {
+                $candidates[] = ['candidate_name' => 'PILLA CHANDRAM', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 484, 'source_row' => 12];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 186) {
+                $candidates[] = ['candidate_name' => 'CHINA GANGA RAJU VANKA', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 539, 'source_row' => 10];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 274) {
+                $candidates[] = ['candidate_name' => 'SHAIK ALI', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 170, 'source_row' => 17];
+                $candidateRows++;
+            }
+
+            // ECI AP2009 PDF page438 row13, exact source/raw guard.
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 271) {
+                $candidates[] = ['candidate_name' => 'RAMAMURTHY DASARI', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 294, 'source_row' => 13];
+                $candidateRows++;
+            }
+
+            // Exact-record corrections verified against ECI detailed candidate rows.
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 154) {
+                $candidates[] = ['candidate_name' => 'BATCHALA VIPLAVA KUMAR', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 590, 'source_row' => 10];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 155) {
+                $candidates[] = ['candidate_name' => 'ARJUNARAO YEGUPATI', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1793, 'source_row' => 4];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 188) {
+                $candidates[] = ['candidate_name' => 'MESUPAM PRABHAKARA RAO', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 289, 'source_row' => 10];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 121) {
+                $candidates[] = ['candidate_name' => 'MADDELA RAMARAO', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1140, 'source_row' => 7];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 189) {
+                $candidates[] = ['candidate_name' => 'CHATLA BABU RAO', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 317, 'source_row' => 12];
+                $candidateRows++;
+            }
+
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 255) {
+                $candidates[] = ['candidate_name' => 'MALLEPULA NAGENDRUDU', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 321, 'source_row' => 11];
+                $candidateRows++;
+            }
+
+            // ECI AP 2009 PDF page 328, row 12: wrapped CPI(ML)(L) candidate.
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 10) {
+                $candidates[] = ['candidate_name' => 'BALAPUR GANGADHAR', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 661, 'source_row' => 12];
+                $candidateRows++;
+            }
+
+            // ECI AP 2009 PDF page 382, row 8: wrapped CPI(ML)(L) candidate.
+            // Exact source/record guard; archived rows and warning remain unchanged.
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && $record['code'] === 146) {
+                $candidates[] = ['candidate_name' => 'PERAYYA VANTHANGI', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1144, 'source_row' => 8];
+                $candidateRows++;
+            }
+
+            // ECI AP 2009 detailed PDF pages 373 and 439: wrapped CPI(ML)(L) rows.
+            // Recover only for exact audited fingerprints; archived rows and warnings stay intact.
+            if ($this->hasVerifiedBatch007Year2009CandidateVotes($record) && in_array($record['code'], [118, 272], true)) {
+                $isAswaraopeta = $record['code'] === 118;
+                $candidates[] = ['candidate_name' => $isAswaraopeta ? 'REGULA VEERASWAMY' : 'K BASHA', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => $isAswaraopeta ? 968 : 207, 'source_row' => $isAswaraopeta ? 9 : 11];
+                $candidateRows++;
+            }
+
+            // ECI UP 1991 PDF page 599, row 30: omitted continuation row, 12 IND votes.
+            // Apply only to the exact audited extraction; preserve its raw rows and warning.
+            if ($this->hasVerifiedFirozabad1991CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'BHUMMAJEET', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 12, 'source_row' => 30];
+                $candidateRows++;
+            }
+
             if ($candidates === [] || collect($candidates)->contains(fn (array $c): bool => ! $this->count($c['votes'] ?? null) || trim($c['party_at_election'] ?? '') === '')) {
                 continue;
             }
+            // Recover the twelve printed continuation rows only for this exact audited record.
+            if ($this->hasVerifiedAlgapur1996CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'BABUL SHA', 'party_at_election' => 'IND', 'votes' => 108, 'source_row' => 9];
+                $candidates[] = ['candidate_name' => 'ABDUL MANAN CHOUDHURY', 'party_at_election' => 'AIIC(T)', 'votes' => 94, 'source_row' => 10];
+                $candidates[] = ['candidate_name' => 'ABDUL NOOR CHOUDHURY', 'party_at_election' => 'IND', 'votes' => 76, 'source_row' => 11];
+                $candidates[] = ['candidate_name' => 'SAJAL DAS', 'party_at_election' => 'IND', 'votes' => 68, 'source_row' => 12];
+                $candidates[] = ['candidate_name' => 'GIAS UDDIN MAZ', 'party_at_election' => 'IND', 'votes' => 51, 'source_row' => 13];
+                $candidates[] = ['candidate_name' => 'KUTIR ALI LASKAR', 'party_at_election' => 'IND', 'votes' => 48, 'source_row' => 14];
+                $candidates[] = ['candidate_name' => 'ABDUL HASIN CHOUDHURY', 'party_at_election' => 'IND', 'votes' => 46, 'source_row' => 15];
+                $candidates[] = ['candidate_name' => 'SASADHAR DAS', 'party_at_election' => 'IND', 'votes' => 42, 'source_row' => 16];
+                $candidates[] = ['candidate_name' => 'ABDUL MUNIM LASKAR', 'party_at_election' => 'IND', 'votes' => 40, 'source_row' => 17];
+                $candidates[] = ['candidate_name' => 'MONORANJAN BHATTACHARJEE', 'party_at_election' => 'IND', 'votes' => 33, 'source_row' => 18];
+                $candidates[] = ['candidate_name' => 'MUSABIR ALI', 'party_at_election' => 'IND', 'votes' => 20, 'source_row' => 19];
+                $candidates[] = ['candidate_name' => 'RAJYA BEGUM', 'party_at_election' => 'IND', 'votes' => 14, 'source_row' => 20];
+            }
+
+            if ($record['code'] === 100001 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'BAL KHILA THAKUR', 'sex' => 'M', 'age' => 56, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 844, 'postal_votes' => 0, 'votes' => 844];
+            }
+            if ($record['code'] === 100002 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'CHHOTE LAL RAM', 'sex' => 'M', 'age' => 30, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1503, 'postal_votes' => 0, 'votes' => 1503];
+            }
+            if ($record['code'] === 100003 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'KASHI BHAITHA', 'sex' => 'M', 'age' => 34, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1109, 'postal_votes' => 0, 'votes' => 1109];
+            }
+            if ($record['code'] === 100005 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'SUNIL KUMAR RAO', 'sex' => 'M', 'age' => 36, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 8001, 'postal_votes' => 0, 'votes' => 8001];
+            }
+            if ($record['code'] === 100010 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'PRABHUDEO YADAV', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 761, 'postal_votes' => 0, 'votes' => 761];
+            }
+            if ($record['code'] === 100012 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'BHAIRAWDAYAL SINGH', 'sex' => 'M', 'age' => 64, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1122, 'postal_votes' => 0, 'votes' => 1122];
+            }
+            if ($record['code'] === 100013 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'VIRENDRA PRASAD', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 14517, 'postal_votes' => 0, 'votes' => 14517];
+            }
+            if ($record['code'] === 100021 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUBHASH SINGH', 'sex' => 'M', 'age' => 52, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1208, 'postal_votes' => 0, 'votes' => 1208];
+            }
+            if ($record['code'] === 100022 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'RAM NARESH RAM', 'sex' => 'M', 'age' => 55, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 13364, 'postal_votes' => 0, 'votes' => 13364];
+            }
+            if ($record['code'] === 100023 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'LAL BAHADUR SINGH', 'sex' => 'M', 'age' => 42, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1060, 'postal_votes' => 0, 'votes' => 1060];
+            }
+            if ($record['code'] === 100024 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'RANI DEVI', 'sex' => 'M', 'age' => 35, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1565, 'postal_votes' => 0, 'votes' => 1565];
+            }
+            if ($record['code'] === 100025 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'MUKUND PRASAD', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1162, 'postal_votes' => 0, 'votes' => 1162];
+            }
+            if ($record['code'] === 100028 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'RAMAVTAR YADAV', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 603, 'postal_votes' => 0, 'votes' => 603];
+            }
+            if ($record['code'] === 100029 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'NAIMUDDIN ANSARI', 'sex' => 'M', 'age' => 28, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1140, 'postal_votes' => 0, 'votes' => 1140];
+            }
+            if ($record['code'] === 100030 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'SATYA DEV RAM', 'sex' => 'M', 'age' => 40, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 26655, 'postal_votes' => 0, 'votes' => 26655];
+            }
+            if ($record['code'] === 100031 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'AMAR NATH YADAV', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 25196, 'postal_votes' => 1, 'votes' => 25197];
+            }
+            if ($record['code'] === 100032 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'NATHUNI PRASAD', 'sex' => 'M', 'age' => 60, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1402, 'postal_votes' => 0, 'votes' => 1402];
+            }
+            if ($record['code'] === 100033 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'CHANDRAGOKHULA PRASAD', 'sex' => 'M', 'age' => 75, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 386, 'postal_votes' => 0, 'votes' => 386];
+            }
+            if ($record['code'] === 100034 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'JAYNATH YADAV', 'sex' => 'M', 'age' => 38, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5734, 'postal_votes' => 0, 'votes' => 5734];
+            }
+            if ($record['code'] === 100037 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SABHA RAY', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 972, 'postal_votes' => 0, 'votes' => 972];
+            }
+            if ($record['code'] === 100038 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'SATYENDRA KR. SAHANI', 'sex' => 'M', 'age' => 38, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1794, 'postal_votes' => 0, 'votes' => 1794];
+            }
+            if ($record['code'] === 100045 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'DINBANDHU PRASAD', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 455, 'postal_votes' => 0, 'votes' => 455];
+            }
+            if ($record['code'] === 100048 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'BISHESHWAR PRASAD YADAV', 'sex' => 'M', 'age' => 40, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1191, 'postal_votes' => 0, 'votes' => 1191];
+            }
+            if ($record['code'] === 100051 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'RAM CHANDRA SINGH', 'sex' => 'M', 'age' => 60, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1363, 'postal_votes' => 0, 'votes' => 1363];
+            }
+            if ($record['code'] === 100059 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'RAGHUBIR SHARAN', 'sex' => 'M', 'age' => 61, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 332, 'postal_votes' => 0, 'votes' => 332];
+            }
+            if ($record['code'] === 100060 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'MANOJ KUMAR RAM', 'sex' => 'M', 'age' => 27, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2865, 'postal_votes' => 0, 'votes' => 2865];
+            }
+            if ($record['code'] === 100061 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'JITENDRA YADAV', 'sex' => 'M', 'age' => 31, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2149, 'postal_votes' => 0, 'votes' => 2149];
+            }
+            if ($record['code'] === 100063 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'BINDESHWAR SAH', 'sex' => 'M', 'age' => 46, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1282, 'postal_votes' => 0, 'votes' => 1282];
+            }
+            if ($record['code'] === 100064 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'ASHOK SAH', 'sex' => 'M', 'age' => 38, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1060, 'postal_votes' => 0, 'votes' => 1060];
+            }
+            if ($record['code'] === 100072 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'SADHU SHARAN DAS', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 833, 'postal_votes' => 0, 'votes' => 833];
+            }
+            if ($record['code'] === 100074 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'RAJINDER PRASAD YADAV', 'sex' => 'M', 'age' => 66, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 740, 'postal_votes' => 0, 'votes' => 740];
+            }
+            if ($record['code'] === 100080 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'VIJAY SHANKAR JHA', 'sex' => 'M', 'age' => 67, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1323, 'postal_votes' => 0, 'votes' => 1323];
+            }
+            if ($record['code'] === 100084 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'UPENDRA PASWAN', 'sex' => 'M', 'age' => 31, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1425, 'postal_votes' => 0, 'votes' => 1425];
+            }
+            if ($record['code'] === 100086 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'LAKSHMI NAYAK', 'sex' => 'M', 'age' => 55, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2759, 'postal_votes' => 0, 'votes' => 2759];
+            }
+            if ($record['code'] === 100087 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'SATYA NARAYAN MUKHIYA', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3776, 'postal_votes' => 0, 'votes' => 3776];
+            }
+            if ($record['code'] === 100088 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SATNARAYAN PASWAN', 'sex' => 'M', 'age' => 45, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3281, 'postal_votes' => 0, 'votes' => 3281];
+            }
+            if ($record['code'] === 100089 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'SHIVAN YADAV', 'sex' => 'M', 'age' => 36, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1516, 'postal_votes' => 0, 'votes' => 1516];
+            }
+            if ($record['code'] === 100090 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'MD. JAMALUDDIN', 'sex' => 'M', 'age' => 40, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1263, 'postal_votes' => 0, 'votes' => 1263];
+            }
+            if ($record['code'] === 100092 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'RAM NANDAN BHAGAT', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1828, 'postal_votes' => 0, 'votes' => 1828];
+            }
+            if ($record['code'] === 100093 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'SUNIL KUMAR \'SUMAN\'', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1950, 'postal_votes' => 0, 'votes' => 1950];
+            }
+            if ($record['code'] === 100094 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'JEEBACHH PASWAN', 'sex' => 'M', 'age' => 39, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3369, 'postal_votes' => 0, 'votes' => 3369];
+            }
+            if ($record['code'] === 100095 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'UMESH KUMAR', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2221, 'postal_votes' => 0, 'votes' => 2221];
+            }
+            if ($record['code'] === 100096 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'MD. CHAND', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2577, 'postal_votes' => 0, 'votes' => 2577];
+            }
+            if ($record['code'] === 100099 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'PHULBABU SINGH', 'sex' => 'M', 'age' => 29, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2183, 'postal_votes' => 0, 'votes' => 2183];
+            }
+            if ($record['code'] === 100102 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'SANTOSH KUMAR SUMAN', 'sex' => 'M', 'age' => 28, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1827, 'postal_votes' => 0, 'votes' => 1827];
+            }
+            if ($record['code'] === 100103 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'S.M.NOOR ALAM', 'sex' => 'M', 'age' => 48, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1685, 'postal_votes' => 0, 'votes' => 1685];
+            }
+            if ($record['code'] === 100108 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'RAM BALAK SAHANI', 'sex' => 'M', 'age' => 65, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2042, 'postal_votes' => 0, 'votes' => 2042];
+            }
+            if ($record['code'] === 100109 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'RAJA RAM ARYA', 'sex' => 'M', 'age' => 36, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2175, 'postal_votes' => 0, 'votes' => 2175];
+            }
+            if ($record['code'] === 100117 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'LAXMI NARAYAN SHARMA', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 992, 'postal_votes' => 0, 'votes' => 992];
+            }
+            if ($record['code'] === 100124 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'DEO NARAIN RAI', 'sex' => 'M', 'age' => 48, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1155, 'postal_votes' => 0, 'votes' => 1155];
+            }
+            if ($record['code'] === 100125 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'DHEER NARAYAN JHA', 'sex' => 'M', 'age' => 46, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1488, 'postal_votes' => 0, 'votes' => 1488];
+            }
+            if ($record['code'] === 100126 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'NITYANAND RISHI', 'sex' => 'M', 'age' => 27, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1607, 'postal_votes' => 0, 'votes' => 1607];
+            }
+            if ($record['code'] === 100128 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'JAI RAM MANDAL', 'sex' => 'M', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5491, 'postal_votes' => 0, 'votes' => 5491];
+            }
+            if ($record['code'] === 100138 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'RAJENDRA MANDAL', 'sex' => 'M', 'age' => 28, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 949, 'postal_votes' => 0, 'votes' => 949];
+            }
+            if ($record['code'] === 100139 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'MADHABI SARKAR', 'sex' => 'F', 'age' => 47, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 726, 'postal_votes' => 0, 'votes' => 726];
+            }
+            if ($record['code'] === 100141 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'VIMAL KUMAR MANDAL', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2259, 'postal_votes' => 0, 'votes' => 2259];
+            }
+            if ($record['code'] === 100142 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SANJAY BESRA', 'sex' => 'M', 'age' => 44, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1767, 'postal_votes' => 0, 'votes' => 1767];
+            }
+            if ($record['code'] === 100144 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'MAHBUB ALAM', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 45451, 'postal_votes' => 0, 'votes' => 45451];
+            }
+            if ($record['code'] === 100146 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'SUDHIR KUMAR SINGH', 'sex' => 'M', 'age' => 50, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 498, 'postal_votes' => 0, 'votes' => 498];
+            }
+            if ($record['code'] === 100149 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'DEVENDRA MANDAL', 'sex' => 'M', 'age' => 40, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1886, 'postal_votes' => 0, 'votes' => 1886];
+            }
+            if ($record['code'] === 100150 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'SHAILENDRA KUMAR SHARMA', 'sex' => 'M', 'age' => 56, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 466, 'postal_votes' => 0, 'votes' => 466];
+            }
+            if ($record['code'] === 100151 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'VINDESHWARI MANDAL', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 896, 'postal_votes' => 0, 'votes' => 896];
+            }
+            if ($record['code'] === 100169 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'CHANDRA DEO YADAV', 'sex' => 'M', 'age' => 59, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 806, 'postal_votes' => 0, 'votes' => 806];
+            }
+            if ($record['code'] === 100174 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'NANDLAL CHAUDHARY', 'sex' => 'M', 'age' => 41, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 633, 'postal_votes' => 0, 'votes' => 633];
+            }
+            if ($record['code'] === 100176 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'ANIL KUMAR', 'sex' => 'M', 'age' => 29, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 619, 'postal_votes' => 0, 'votes' => 619];
+            }
+            if ($record['code'] === 100178 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'AJIT KUMAR', 'sex' => 'M', 'age' => 29, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1355, 'postal_votes' => 0, 'votes' => 1355];
+            }
+            if ($record['code'] === 100179 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'BIRENDRA PRASAD', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 7736, 'postal_votes' => 0, 'votes' => 7736];
+            }
+            if ($record['code'] === 100180 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'MITHLESH YADAV', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4945, 'postal_votes' => 0, 'votes' => 4945];
+            }
+            if ($record['code'] === 100181 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'PARMANAND PRASAD', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2785, 'postal_votes' => 0, 'votes' => 2785];
+            }
+            if ($record['code'] === 100185 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'YOGENDRA SINGH', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 957, 'postal_votes' => 0, 'votes' => 957];
+            }
+            if ($record['code'] === 100186 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'SHIV SHANKAR MANJHI', 'sex' => 'M', 'age' => 34, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 12789, 'postal_votes' => 0, 'votes' => 12789];
+            }
+            if ($record['code'] === 100187 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SHASHI YADAV', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 14446, 'postal_votes' => 0, 'votes' => 14446];
+            }
+            if ($record['code'] === 100188 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'ANITA KUMARI', 'sex' => 'M', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1120, 'postal_votes' => 0, 'votes' => 1120];
+            }
+            if ($record['code'] === 100189 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'TOTA CHOUDHARY', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 835, 'postal_votes' => 0, 'votes' => 835];
+            }
+            if ($record['code'] === 100190 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'UMESH SINGH', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1562, 'postal_votes' => 0, 'votes' => 1562];
+            }
+            if ($record['code'] === 100192 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'RAJA BABU', 'sex' => 'M', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1929, 'postal_votes' => 0, 'votes' => 1929];
+            }
+            if ($record['code'] === 100193 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'VIDYANAND VIKAL', 'sex' => 'M', 'age' => 39, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 8563, 'postal_votes' => 0, 'votes' => 8563];
+            }
+            if ($record['code'] === 100194 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'NAGESAR PASWAN', 'sex' => 'M', 'age' => 33, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1376, 'postal_votes' => 0, 'votes' => 1376];
+            }
+            if ($record['code'] === 100195 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'NAND KUMAR NANDA', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 22389, 'postal_votes' => 0, 'votes' => 22389];
+            }
+            if ($record['code'] === 100196 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'RAMESHWAR PRASAD', 'sex' => 'M', 'age' => 57, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 33834, 'postal_votes' => 0, 'votes' => 33834];
+            }
+            if ($record['code'] === 100197 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'LETAPHAT HUSEN', 'sex' => 'M', 'age' => 51, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5465, 'postal_votes' => 0, 'votes' => 5465];
+            }
+            if ($record['code'] === 100198 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SUDAMA PRASAD', 'sex' => 'M', 'age' => 42, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 22773, 'postal_votes' => 0, 'votes' => 22773];
+            }
+            if ($record['code'] === 100201 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'JITENDRA RAM', 'sex' => 'M', 'age' => 44, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1651, 'postal_votes' => 0, 'votes' => 1651];
+            }
+            if ($record['code'] === 100202 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'DAROGA RAM', 'sex' => 'M', 'age' => 49, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1156, 'postal_votes' => 0, 'votes' => 1156];
+            }
+            if ($record['code'] === 100203 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SUSHILA DEVI', 'sex' => 'M', 'age' => 35, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5282, 'postal_votes' => 0, 'votes' => 5282];
+            }
+            if ($record['code'] === 100204 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'MITRA NAND SINGH', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 11654, 'postal_votes' => 0, 'votes' => 11654];
+            }
+            if ($record['code'] === 100205 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'CHNDRADEEP SINGH', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 14627, 'postal_votes' => 0, 'votes' => 14627];
+            }
+            if ($record['code'] === 100206 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'RAM NARESH RAM', 'sex' => 'M', 'age' => 79, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 46288, 'postal_votes' => 0, 'votes' => 46288];
+            }
+            if ($record['code'] === 100207 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'ARUN SINGH', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 35953, 'postal_votes' => 1, 'votes' => 35954];
+            }
+            if ($record['code'] === 100208 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'ASHOK KUMAR SINGH', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 13990, 'postal_votes' => 0, 'votes' => 13990];
+            }
+            if ($record['code'] === 100209 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'GOPAL RAM', 'sex' => 'M', 'age' => 53, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1776, 'postal_votes' => 0, 'votes' => 1776];
+            }
+            if ($record['code'] === 100211 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'TETRI DEVI', 'sex' => 'M', 'age' => 29, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4279, 'postal_votes' => 0, 'votes' => 4279];
+            }
+            if ($record['code'] === 100212 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'VIJAY SINGH YADAV', 'sex' => 'M', 'age' => 42, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3169, 'postal_votes' => 0, 'votes' => 3169];
+            }
+            if ($record['code'] === 100215 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'PHOOLA DEVI', 'sex' => 'M', 'age' => 65, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1924, 'postal_votes' => 0, 'votes' => 1924];
+            }
+            if ($record['code'] === 100217 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SYED QAISER NEHAL', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2591, 'postal_votes' => 0, 'votes' => 2591];
+            }
+            if ($record['code'] === 100219 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'MUNARIK RAM', 'sex' => 'M', 'age' => 33, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1864, 'postal_votes' => 0, 'votes' => 1864];
+            }
+            if ($record['code'] === 100222 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'RAJA RAM SINGH', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 34700, 'postal_votes' => 0, 'votes' => 34700];
+            }
+            if ($record['code'] === 100223 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'URMILA DEVI', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1137, 'postal_votes' => 0, 'votes' => 1137];
+            }
+            if ($record['code'] === 100224 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'ANWAR HUSSAIN', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 17851, 'postal_votes' => 0, 'votes' => 17851];
+            }
+            if ($record['code'] === 100225 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'RAJESHWARI YADAV', 'sex' => 'M', 'age' => 43, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2719, 'postal_votes' => 0, 'votes' => 2719];
+            }
+            if ($record['code'] === 100226 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SHEO RATAN SINGH', 'sex' => 'M', 'age' => 59, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2472, 'postal_votes' => 0, 'votes' => 2472];
+            }
+            if ($record['code'] === 100227 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'KAMLESH SHARMA', 'sex' => 'M', 'age' => 40, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 13020, 'postal_votes' => 1, 'votes' => 13021];
+            }
+            if ($record['code'] === 100228 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'KUNTI DEVI', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 10769, 'postal_votes' => 0, 'votes' => 10769];
+            }
+            if ($record['code'] === 100229 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'GANESH DAS', 'sex' => 'M', 'age' => 45, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1273, 'postal_votes' => 0, 'votes' => 1273];
+            }
+            if ($record['code'] === 100232 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SHYAM LAL PRASAD', 'sex' => 'M', 'age' => 66, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1368, 'postal_votes' => 0, 'votes' => 1368];
+            }
+            if ($record['code'] === 100233 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'VISHNUDEO SINGH', 'sex' => 'M', 'age' => 39, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 983, 'postal_votes' => 0, 'votes' => 983];
+            }
+            if ($record['code'] === 100236 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'RAMDEEP PASWAN', 'sex' => 'M', 'age' => 36, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3142, 'postal_votes' => 0, 'votes' => 3142];
+            }
+            if ($record['code'] === 100240 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'BHOLA MANJHI', 'sex' => 'M', 'age' => 35, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1863, 'postal_votes' => 0, 'votes' => 1863];
+            }
+            if ($record['code'] === 100242 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'PRAMOD KUMAR', 'sex' => 'M', 'age' => 35, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 725, 'postal_votes' => 0, 'votes' => 725];
+            }
+            if ($record['code'] === 200001 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'AWADH KISHOR MISHRA', 'sex' => 'M', 'age' => 38, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 518, 'postal_votes' => 0, 'votes' => 518];
+            }
+            if ($record['code'] === 200002 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'PRABHAWATI DEVI', 'sex' => 'F', 'age' => 42, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2211, 'postal_votes' => 0, 'votes' => 2211];
+            }
+            if ($record['code'] === 200004 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'YOGENDRA MANJHI', 'sex' => 'M', 'age' => 33, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 8303, 'postal_votes' => 0, 'votes' => 8303];
+            }
+            if ($record['code'] === 200005 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'VIRENDRA PRASAD GUPTA', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5997, 'postal_votes' => 0, 'votes' => 5997];
+            }
+            if ($record['code'] === 200012 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'SAMBHU RAI', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2218, 'postal_votes' => 0, 'votes' => 2218];
+            }
+            if ($record['code'] === 200013 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'PRABHUDEO YADAV', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3901, 'postal_votes' => 0, 'votes' => 3901];
+            }
+            if ($record['code'] === 200021 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUBHASH SINGH', 'sex' => 'M', 'age' => 53, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1304, 'postal_votes' => 0, 'votes' => 1304];
+            }
+            if ($record['code'] === 200022 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'RAMNARESH RAM', 'sex' => 'M', 'age' => 55, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 15382, 'postal_votes' => 0, 'votes' => 15382];
+            }
+            if ($record['code'] === 200024 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'REENA SHARMA', 'sex' => 'F', 'age' => 27, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2014, 'postal_votes' => 0, 'votes' => 2014];
+            }
+            if ($record['code'] === 200028 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'NATHUNI PRASAD', 'sex' => 'M', 'age' => 59, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1451, 'postal_votes' => 0, 'votes' => 1451];
+            }
+            if ($record['code'] === 200029 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'RAMAVTAR JADAV', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1579, 'postal_votes' => 0, 'votes' => 1579];
+            }
+            if ($record['code'] === 200030 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SATYADEO RAM', 'sex' => 'M', 'age' => 40, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 29768, 'postal_votes' => 0, 'votes' => 29768];
+            }
+            if ($record['code'] === 200031 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'AMAR NATH YADAV', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 30355, 'postal_votes' => 0, 'votes' => 30355];
+            }
+            if ($record['code'] === 200034 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'JAVED BEG', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 6986, 'postal_votes' => 0, 'votes' => 6986];
+            }
+            if ($record['code'] === 200037 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'SABHA RAI', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1294, 'postal_votes' => 0, 'votes' => 1294];
+            }
+            if ($record['code'] === 200038 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SATYENDRA KR. SAHANI', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1640, 'postal_votes' => 0, 'votes' => 1640];
+            }
+            if ($record['code'] === 200045 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SURENDRA PRASAD SINGH', 'sex' => 'M', 'age' => 48, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1895, 'postal_votes' => 0, 'votes' => 1895];
+            }
+            if ($record['code'] === 200049 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'TAPESHWAR PASWAN', 'sex' => 'M', 'age' => 42, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2076, 'postal_votes' => 0, 'votes' => 2076];
+            }
+            if ($record['code'] === 200060 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'RAM NANDAN PASWAN', 'sex' => 'M', 'age' => 42, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4600, 'postal_votes' => 0, 'votes' => 4600];
+            }
+            if ($record['code'] === 200061 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'JITENDRA YADAV', 'sex' => 'M', 'age' => 31, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3066, 'postal_votes' => 0, 'votes' => 3066];
+            }
+            if ($record['code'] === 200063 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'VINDESHWAR SAH', 'sex' => 'M', 'age' => 46, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3099, 'postal_votes' => 0, 'votes' => 3099];
+            }
+            if ($record['code'] === 200074 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'SHAILENDRA KUMAR SIMANCHAL', 'sex' => 'M', 'age' => 29, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1409, 'postal_votes' => 0, 'votes' => 1409];
+            }
+            if ($record['code'] === 200076 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'CHALITAR PASWAN', 'sex' => 'M', 'age' => 30, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2511, 'postal_votes' => 0, 'votes' => 2511];
+            }
+            if ($record['code'] === 200080 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'DINESH MAHTO', 'sex' => 'M', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2109, 'postal_votes' => 0, 'votes' => 2109];
+            }
+            if ($record['code'] === 200083 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'YOG NATH MANDAL', 'sex' => 'M', 'age' => 32, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2789, 'postal_votes' => 0, 'votes' => 2789];
+            }
+            if ($record['code'] === 200084 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'UPENDRA PASWAN', 'sex' => 'M', 'age' => 32, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3147, 'postal_votes' => 0, 'votes' => 3147];
+            }
+            if ($record['code'] === 200086 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'LAXMI NAYAK', 'sex' => 'M', 'age' => 55, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3971, 'postal_votes' => 0, 'votes' => 3971];
+            }
+            if ($record['code'] === 200087 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'SATYA NARAYAN MUKHIA', 'sex' => 'M', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4171, 'postal_votes' => 0, 'votes' => 4171];
+            }
+            if ($record['code'] === 200088 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'HARE RAM PASWAN', 'sex' => 'M', 'age' => 55, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5291, 'postal_votes' => 0, 'votes' => 5291];
+            }
+            if ($record['code'] === 200089 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'SHIVAN YADAV', 'sex' => 'M', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1350, 'postal_votes' => 0, 'votes' => 1350];
+            }
+            if ($record['code'] === 200092 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'SABITA SAHANI', 'sex' => 'F', 'age' => 29, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2931, 'postal_votes' => 0, 'votes' => 2931];
+            }
+            if ($record['code'] === 200093 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUNIL KUMAR \'SUMAN\'', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2504, 'postal_votes' => 0, 'votes' => 2504];
+            }
+            if ($record['code'] === 200094 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'PANCHU RAM', 'sex' => 'M', 'age' => 32, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2503, 'postal_votes' => 0, 'votes' => 2503];
+            }
+            if ($record['code'] === 200095 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'UMESH KUMAR', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2741, 'postal_votes' => 0, 'votes' => 2741];
+            }
+            if ($record['code'] === 200096 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'PHOOL BABU SINGH', 'sex' => 'M', 'age' => 29, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5960, 'postal_votes' => 0, 'votes' => 5960];
+            }
+            if ($record['code'] === 200103 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'DIWAKAR SAH', 'sex' => 'M', 'age' => 26, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1247, 'postal_votes' => 0, 'votes' => 1247];
+            }
+            if ($record['code'] === 200108 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'RAM BALAK SAHNI', 'sex' => 'M', 'age' => 64, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1593, 'postal_votes' => 0, 'votes' => 1593];
+            }
+            if ($record['code'] === 200109 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'RAMASHRAYA PASWAN', 'sex' => 'M', 'age' => 34, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2614, 'postal_votes' => 0, 'votes' => 2614];
+            }
+            if ($record['code'] === 200125 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SANDHYA VERMA', 'sex' => 'F', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1510, 'postal_votes' => 0, 'votes' => 1510];
+            }
+            if ($record['code'] === 200128 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'HARI NANDAN SINGH', 'sex' => 'M', 'age' => 65, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1126, 'postal_votes' => 0, 'votes' => 1126];
+            }
+            if ($record['code'] === 200141 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'GHANSHYAM PANDIT', 'sex' => 'M', 'age' => 35, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2364, 'postal_votes' => 0, 'votes' => 2364];
+            }
+            if ($record['code'] === 200142 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'SANJAY BESARA', 'sex' => 'M', 'age' => 44, 'category' => 'ST', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2139, 'postal_votes' => 0, 'votes' => 2139];
+            }
+            if ($record['code'] === 200143 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'KHWAJA BAHAUDDIN AHAMAD', 'sex' => 'M', 'age' => 45, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2084, 'postal_votes' => 0, 'votes' => 2084];
+            }
+            if ($record['code'] === 200144 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'MUNNAF ALAM', 'sex' => 'M', 'age' => 32, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 39872, 'postal_votes' => 0, 'votes' => 39872];
+            }
+            if ($record['code'] === 200145 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUDARSHAN CHANDRA PAL', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2120, 'postal_votes' => 0, 'votes' => 2120];
+            }
+            if ($record['code'] === 200146 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUDHIR KUMAR SINGH', 'sex' => 'M', 'age' => 50, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1108, 'postal_votes' => 0, 'votes' => 1108];
+            }
+            if ($record['code'] === 200149 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'DEVENDRA MANDAL', 'sex' => 'M', 'age' => 40, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1605, 'postal_votes' => 0, 'votes' => 1605];
+            }
+            if ($record['code'] === 200151 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'VINDESHWARI MANDAL', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1780, 'postal_votes' => 0, 'votes' => 1780];
+            }
+            if ($record['code'] === 200168 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'RAM LAKHAN MANDAL', 'sex' => 'M', 'age' => 56, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1316, 'postal_votes' => 0, 'votes' => 1316];
+            }
+            if ($record['code'] === 200176 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'MADHUSUDAN SHARMA', 'sex' => 'M', 'age' => 54, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2384, 'postal_votes' => 0, 'votes' => 2384];
+            }
+            if ($record['code'] === 200178 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'SIDHESHWAR RABIDAS', 'sex' => 'M', 'age' => 34, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2186, 'postal_votes' => 0, 'votes' => 2186];
+            }
+            if ($record['code'] === 200179 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUNIL KUMAR', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5197, 'postal_votes' => 0, 'votes' => 5197];
+            }
+            if ($record['code'] === 200180 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'ARUNYADAV', 'sex' => 'M', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 7616, 'postal_votes' => 0, 'votes' => 7616];
+            }
+            if ($record['code'] === 200181 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'PARAMANAND PRASAD', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2564, 'postal_votes' => 0, 'votes' => 2564];
+            }
+            if ($record['code'] === 200186 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'NAGESHWAR PASWAN', 'sex' => 'M', 'age' => 32, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 9298, 'postal_votes' => 0, 'votes' => 9298];
+            }
+            if ($record['code'] === 200187 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SHASHI YADAV', 'sex' => 'F', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 15129, 'postal_votes' => 0, 'votes' => 15129];
+            }
+            if ($record['code'] === 200188 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'ANITA KUMARI', 'sex' => 'F', 'age' => 37, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1773, 'postal_votes' => 0, 'votes' => 1773];
+            }
+            if ($record['code'] === 200189 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'TOTA CHOUDHARY', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1025, 'postal_votes' => 0, 'votes' => 1025];
+            }
+            if ($record['code'] === 200190 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'UMESH SINGH', 'sex' => 'M', 'age' => 40, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2628, 'postal_votes' => 0, 'votes' => 2628];
+            }
+            if ($record['code'] === 200192 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'RAJA BABU', 'sex' => 'M', 'age' => 26, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3178, 'postal_votes' => 0, 'votes' => 3178];
+            }
+            if ($record['code'] === 200193 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'VIDYANAND VIKAL', 'sex' => 'M', 'age' => 38, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 5521, 'postal_votes' => 0, 'votes' => 5521];
+            }
+            if ($record['code'] === 200195 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'NAND KUMAR NANDA', 'sex' => 'M', 'age' => 43, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 30118, 'postal_votes' => 2, 'votes' => 30120];
+            }
+            if ($record['code'] === 200196 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'RAMESHWAR PRASAD', 'sex' => 'M', 'age' => 56, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 26323, 'postal_votes' => 0, 'votes' => 26323];
+            }
+            if ($record['code'] === 200197 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'LALAN YADAV', 'sex' => 'M', 'age' => 51, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4802, 'postal_votes' => 0, 'votes' => 4802];
+            }
+            if ($record['code'] === 200198 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SUDAMA PRASAD', 'sex' => 'M', 'age' => 41, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 7845, 'postal_votes' => 0, 'votes' => 7845];
+            }
+            if ($record['code'] === 200203 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'SAROJ CHAUBEY', 'sex' => 'F', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 6428, 'postal_votes' => 0, 'votes' => 6428];
+            }
+            if ($record['code'] === 200204 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'ABINASH SINGH', 'sex' => 'M', 'age' => 39, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 9387, 'postal_votes' => 0, 'votes' => 9387];
+            }
+            if ($record['code'] === 200205 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'DINESHER RAM', 'sex' => 'M', 'age' => 40, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 13626, 'postal_votes' => 0, 'votes' => 13626];
+            }
+            if ($record['code'] === 200206 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'RAM NARESH RAM', 'sex' => 'M', 'age' => 79, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 40866, 'postal_votes' => 2, 'votes' => 40868];
+            }
+            if ($record['code'] === 200207 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'ARUN SINGH', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 36721, 'postal_votes' => 0, 'votes' => 36721];
+            }
+            if ($record['code'] === 200208 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'ASHOK KUMAR SINGH (DALMIA NAGAR)', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 8795, 'postal_votes' => 0, 'votes' => 8795];
+            }
+            if ($record['code'] === 200211 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'TETRI DEVI', 'sex' => 'F', 'age' => 29, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 4962, 'postal_votes' => 0, 'votes' => 4962];
+            }
+            if ($record['code'] === 200212 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'VIJAY SINGH YADAV', 'sex' => 'M', 'age' => 42, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2987, 'postal_votes' => 0, 'votes' => 2987];
+            }
+            if ($record['code'] === 200217 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'KAMATA SINGH', 'sex' => 'M', 'age' => 27, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1266, 'postal_votes' => 0, 'votes' => 1266];
+            }
+            if ($record['code'] === 200222 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'RAJA RAM SINGH', 'sex' => 'M', 'age' => 49, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 24023, 'postal_votes' => 0, 'votes' => 24023];
+            }
+            if ($record['code'] === 200223 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'URMILA DEVI', 'sex' => 'F', 'age' => 33, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2878, 'postal_votes' => 0, 'votes' => 2878];
+            }
+            if ($record['code'] === 200224 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'ANWAR HUSSAIN', 'sex' => 'M', 'age' => 44, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 9339, 'postal_votes' => 0, 'votes' => 9339];
+            }
+            if ($record['code'] === 200225 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'UPENDRA NATH', 'sex' => 'M', 'age' => 27, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2797, 'postal_votes' => 0, 'votes' => 2797];
+            }
+            if ($record['code'] === 200226 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'BALIRAM YADAV', 'sex' => 'M', 'age' => 47, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 3358, 'postal_votes' => 0, 'votes' => 3358];
+            }
+            if ($record['code'] === 200227 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 1, 'candidate_name' => 'KUNTI DEVI', 'sex' => 'F', 'age' => 43, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 9677, 'postal_votes' => 0, 'votes' => 9677];
+            }
+            if ($record['code'] === 200228 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'PRADIP KUMAR', 'sex' => 'M', 'age' => 34, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 10247, 'postal_votes' => 2, 'votes' => 10249];
+            }
+            if ($record['code'] === 200229 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'SURYA VILAS PASWAN', 'sex' => 'M', 'age' => 35, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2273, 'postal_votes' => 0, 'votes' => 2273];
+            }
+            if ($record['code'] === 200236 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'GANESH DAS', 'sex' => 'M', 'age' => 45, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2555, 'postal_votes' => 0, 'votes' => 2555];
+            }
+            if ($record['code'] === 200240 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'BHOLA MANJHI', 'sex' => 'M', 'age' => 35, 'category' => 'SC', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 2456, 'postal_votes' => 0, 'votes' => 2456];
+            }
+            if ($record['code'] === 200242 && $this->hasVerifiedBatch037Bihar2005CandidateVotes($record)) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'JAGDISH PRASAD CHAUHAN', 'sex' => 'M', 'age' => 36, 'category' => 'GEN', 'party_at_election' => 'CPI(ML)(L)', 'general_votes' => 1570, 'postal_votes' => 0, 'votes' => 1570];
+            }
+            if (($record['code'] ?? null) === 204 && $this->hasVerifiedBihar2010CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'GIRJA PASWAN', 'party_at_election' => 'AIBJRBSNC', 'votes' => 537, 'general_votes' => 537, 'postal_votes' => 0, 'source_row' => 10];
+            }
+            if (($record['code'] ?? null) === 207 && $this->hasVerifiedBihar2010CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'MALATI DEVI', 'party_at_election' => 'AIBJRBSNC', 'votes' => 1262, 'general_votes' => 1262, 'postal_votes' => 0, 'source_row' => 6];
+            }
+            if (($record['code'] ?? null) === 208 && $this->hasVerifiedBihar2010CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'SATENDRA SAH', 'party_at_election' => 'AIBJRBSNC', 'votes' => 6523, 'general_votes' => 6520, 'postal_votes' => 3, 'source_row' => 5];
+            }
+            if (($record['code'] ?? null) === 212 && $this->hasVerifiedBihar2010CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'AJAY KUMAR MEHTA', 'party_at_election' => 'AIBJRBSNC', 'votes' => 779, 'general_votes' => 778, 'postal_votes' => 1, 'source_row' => 10];
+            }
+            if (($record['code'] ?? null) === 206 && $this->hasVerifiedBihar2010CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'DAYA SHANKAR SINGH', 'party_at_election' => 'AIBJRBSNC', 'votes' => 405, 'general_votes' => 405, 'postal_votes' => 0, 'source_row' => 20];
+            }
+            if (($record['code'] ?? null) === 205 && $this->hasVerifiedBihar2010CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'SUBAS PRASAD', 'party_at_election' => 'AIBJRBSNC', 'votes' => 5054, 'general_votes' => 5047, 'postal_votes' => 7, 'source_row' => 7];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 10) {
+                $candidates[] = ['candidate_name' => 'SRIPADA DHAR', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 606, 'general_votes' => 605, 'postal_votes' => 1, 'source_row' => 8];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 102) {
+                $candidates[] = ['candidate_name' => 'JITEN TANTI', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1890, 'general_votes' => 1890, 'postal_votes' => 0, 'source_row' => 4];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 122) {
+                $candidates[] = ['candidate_name' => 'SUSIL MAHATOO', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1647, 'general_votes' => 1647, 'postal_votes' => 0, 'source_row' => 7];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 119) {
+                $candidates[] = ['candidate_name' => 'CHANDAN GARAIT', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 2212, 'general_votes' => 2212, 'postal_votes' => 0, 'source_row' => 4];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 82) {
+                $candidates[] = ['candidate_name' => 'RAJEN DAS', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1315, 'general_votes' => 1315, 'postal_votes' => 0, 'source_row' => 8];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 117) {
+                $candidates[] = ['candidate_name' => 'GHANASHYAM MUNDA', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 3154, 'general_votes' => 3154, 'postal_votes' => 0, 'source_row' => 4];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 17) {
+                $candidates[] = ['candidate_name' => 'RAJENDRA RONGPI', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 18291, 'general_votes' => 18283, 'postal_votes' => 8, 'source_row' => 3];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 20) {
+                $candidates[] = ['candidate_name' => 'PRATIMA ENGHEEPI', 'sex' => 'F', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 7101, 'general_votes' => 7101, 'postal_votes' => 0, 'source_row' => 6];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 77) {
+                $candidates[] = ['candidate_name' => 'BIBEK DAS', 'sex' => 'M', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 18412, 'general_votes' => 18392, 'postal_votes' => 20, 'source_row' => 3];
+            }
+            if ($this->hasVerifiedBihpuria1996CandidateVotes($record)) {
+                $candidates[] = ['candidate_name' => 'HEMANTA NEOG', 'party_at_election' => 'IND', 'votes' => 3570, 'source_row' => 5];
+                $candidates[] = ['candidate_name' => 'DEBEN LEKHARU', 'party_at_election' => 'BJP', 'votes' => 2272, 'source_row' => 6];
+                $candidates[] = ['candidate_name' => 'DILIP HAZARIKA', 'party_at_election' => 'IND', 'votes' => 1543, 'source_row' => 7];
+                $candidates[] = ['candidate_name' => 'AKHIL HAZARIKA', 'party_at_election' => 'SP', 'votes' => 403, 'source_row' => 8];
+                $candidates[] = ['candidate_name' => 'RABIN DEKA', 'party_at_election' => 'IND', 'votes' => 260, 'source_row' => 9];
+                $candidates[] = ['candidate_name' => 'PADMAWATI SAIKIA', 'party_at_election' => 'IND', 'votes' => 77, 'source_row' => 10];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 19) {
+                $candidates[] = ['candidate_name' => 'ROBINSON KRO', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 18855, 'general_votes' => 18855, 'postal_votes' => 0, 'source_row' => 4];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 121) {
+                $candidates[] = ['candidate_name' => 'GONGA RAM KOUL', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 7098, 'general_votes' => 7098, 'postal_votes' => 0, 'source_row' => 4];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 3) {
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'AKHIL RANJAN DEY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 280];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'SATYA RANJAN ACHARJEE', 'sex' => 'M', 'party_at_election' => 'JD', 'votes' => 261];
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'JATINDRA CHANDRA DAS', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 246];
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'SUROJIT DEY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 221];
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'SUBODH RANJAN PAUL', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 170];
+                $candidates[] = ['source_row' => 13, 'candidate_name' => 'GOPAL CHANDRA PAUL', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 167];
+                $candidates[] = ['source_row' => 14, 'candidate_name' => 'ABDUS SATTAR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 156];
+                $candidates[] = ['source_row' => 15, 'candidate_name' => 'DULAL CHANDRA PAUL', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 102];
+                $candidates[] = ['source_row' => 16, 'candidate_name' => 'ABUL KALAM BAHAR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 93];
+                $candidates[] = ['source_row' => 17, 'candidate_name' => 'MAJNUL HAQUE CHOUDHURY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 49];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 6) {
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'YAGNESWAR DEB', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 442];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'HILAL UDDIN MAZUMDER', 'sex' => 'M', 'party_at_election' => 'UMFA', 'votes' => 304];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'SHIB KUMAR RABIDAS', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 248];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'KARAM KHAJU SINGHA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 237];
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'BISWAJIT RUDRAPAUL', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 225];
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'SIKHA BHATTACHARJEE', 'sex' => 'F', 'party_at_election' => 'IND', 'votes' => 208];
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'SARJAN PANDAY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 182];
+                $candidates[] = ['source_row' => 13, 'candidate_name' => 'KUNTAL BISWAS', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 139];
+                $candidates[] = ['source_row' => 14, 'candidate_name' => 'BADRUDDUJA MAJUMDER', 'sex' => 'M', 'party_at_election' => 'AIIC(T)', 'votes' => 138];
+                $candidates[] = ['source_row' => 15, 'candidate_name' => 'JADAB RAJBHAR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 134];
+                $candidates[] = ['source_row' => 16, 'candidate_name' => 'KHALIL UDDIN MIRA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 131];
+                $candidates[] = ['source_row' => 17, 'candidate_name' => 'MODAN MOHAN PAUL', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 122];
+                $candidates[] = ['source_row' => 18, 'candidate_name' => 'SIRAJ UDDIN CHOUDHURY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 119];
+                $candidates[] = ['source_row' => 19, 'candidate_name' => 'FAIZ UDDIN MONG', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 91];
+                $candidates[] = ['source_row' => 20, 'candidate_name' => 'SAMSIR UDDIN BARBHUIYA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 87];
+                $candidates[] = ['source_row' => 21, 'candidate_name' => 'JILKADAR ALI BARBHUIYA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 57];
+                $candidates[] = ['source_row' => 22, 'candidate_name' => 'UBAIDUR RAHMAN BARBHUIYA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 27];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 23) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'NIRMAL CHANDRA SIRCAR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 2365];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'MUFTI BAZLUR RAHMAN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 673];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'LACHIT CHOUDHURY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 274];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'NURUZZAMAN AHMED', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 201];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'ABDUS SOBUR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 151];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 40) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'BASANTA SARGIARY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 9231];
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'ANILANANDA PATHAK', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 7431];
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'SAMSUL HOQUE', 'sex' => 'M', 'party_at_election' => 'AIIC(T)', 'votes' => 4527];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'GHANASHYAM TALUKDAR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 3049];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'ISLAMUDDIN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1610];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'SAIFUDDIN KHAN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 822];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'HEMENDRA ROY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 482];
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'TAIZUDDIN AHMED', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 390];
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'RAMJIT GOUR', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 357];
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'BENU SAHA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 307];
+                $candidates[] = ['source_row' => 13, 'candidate_name' => 'KRISHNA KANTA BARUA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 238];
+                $candidates[] = ['source_row' => 14, 'candidate_name' => 'SYED MAKIBAR RAHMAN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 170];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 44) {
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'GIRDHARI DAS', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1411];
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'JASHIMUDDIN AHMED', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1074];
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'MUKHLESWAR RAHMAN CHOUDHURY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 914];
+                $candidates[] = ['source_row' => 13, 'candidate_name' => 'M. IBRAHIM ALI', 'sex' => 'M', 'party_at_election' => 'ICS', 'votes' => 832];
+                $candidates[] = ['source_row' => 14, 'candidate_name' => 'SUBHASHIS RAHA RAI', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 720];
+                $candidates[] = ['source_row' => 15, 'candidate_name' => 'AMIR HUSSAIN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 630];
+                $candidates[] = ['source_row' => 16, 'candidate_name' => 'SOLEMAN MANDAL', 'sex' => 'M', 'party_at_election' => 'JD', 'votes' => 489];
+                $candidates[] = ['source_row' => 17, 'candidate_name' => 'SIDDIQUE ALI', 'sex' => 'M', 'party_at_election' => 'SP', 'votes' => 450];
+                $candidates[] = ['source_row' => 18, 'candidate_name' => 'NUR MAHAMMAD', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 448];
+                $candidates[] = ['source_row' => 19, 'candidate_name' => 'TAMIZUDDIN ALI AHMED', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 255];
+                $candidates[] = ['source_row' => 20, 'candidate_name' => 'JAHER ALI', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 246];
+                $candidates[] = ['source_row' => 21, 'candidate_name' => 'AKELA BEGUM', 'sex' => 'F', 'party_at_election' => 'IND', 'votes' => 176];
+                $candidates[] = ['source_row' => 22, 'candidate_name' => 'SONAUDDIN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 92];
+                $candidates[] = ['source_row' => 23, 'candidate_name' => 'HOSSAIN ALI', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 65];
+                $candidates[] = ['source_row' => 24, 'candidate_name' => 'AMZAD HUSSAIN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 54];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 54) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'MONOJ PHUKAN', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 16085];
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'RAM KUMAR DAS', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 3563];
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'JAYANTA BORO', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1504];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'TARINI BORO', 'sex' => 'M', 'party_at_election' => 'AIIC(T)', 'votes' => 458];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'NOOR HUSSAIN', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 400];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'BIPUL BORO', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 348];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'MANIK BHATTACHARJEE', 'sex' => 'M', 'party_at_election' => 'UMFA', 'votes' => 219];
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'HARIDAS SHAH', 'sex' => 'M', 'party_at_election' => 'SP', 'votes' => 218];
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'DHIREN INGTI', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 188];
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'SUJIT RANJAN CHANDA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 171];
+                $candidates[] = ['source_row' => 13, 'candidate_name' => 'SATYA NARAYAN DHIRACHARIA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 58];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 65) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'MD. MAZIBAR RAHAMAN', 'sex' => 'M', 'party_at_election' => 'INC', 'votes' => 16832];
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'LAKSHMI KANTA SAIKIA', 'sex' => 'M', 'party_at_election' => 'ICS', 'votes' => 7057];
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'RAMANI SAHARIA', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 7054];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'ABDUL WAHAB TALUKDAR', 'sex' => 'M', 'party_at_election' => 'AIIC(T)', 'votes' => 3225];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'KANAK CHANDRA DEV SARMA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1057];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'KALI MOLLAH', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 306];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 75) {
+                $candidates[] = ['source_row' => 2, 'candidate_name' => 'PRANESWAR BASUMATARY', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 18144];
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'KIRAN BALA SAHU', 'sex' => 'F', 'party_at_election' => 'INC', 'votes' => 10108];
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'PADUM BAHADUR CHAUHAN', 'sex' => 'M', 'party_at_election' => 'AIIC(T)', 'votes' => 7819];
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'MADHAB OZAH', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 7031];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'BHABA GOSWAMI', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 1454];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'JOY NATH KAMAR', 'sex' => 'M', 'party_at_election' => 'JD', 'votes' => 1094];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'JATIN ORANG', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 308];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 100) {
+                $candidates[] = ['source_row' => 12, 'candidate_name' => 'TAPAN CH. RAO', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 203];
+                $candidates[] = ['source_row' => 13, 'candidate_name' => 'HIREN SONOWAL', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 125];
+                $candidates[] = ['source_row' => 14, 'candidate_name' => 'PURNA HAZARIKA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 116];
+                $candidates[] = ['source_row' => 15, 'candidate_name' => 'DHRUBAJIT GOGOI', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 98];
+                $candidates[] = ['source_row' => 16, 'candidate_name' => 'BISTURAM HAZARIKA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 86];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 116) {
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'THANESWAR BORA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 747];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'ASHOK MITRA', 'sex' => 'M', 'party_at_election' => 'SHS', 'votes' => 514];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'PADMESWAR PHUKAN', 'sex' => 'M', 'party_at_election' => 'SAP', 'votes' => 285];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'AJIT KUMAR HALOI', 'sex' => 'M', 'party_at_election' => 'JD', 'votes' => 283];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'BISWADEV DAS', 'sex' => 'M', 'party_at_election' => 'SP', 'votes' => 205];
+                $candidates[] = ['source_row' => 10, 'candidate_name' => 'ATUL DUTTA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 138];
+                $candidates[] = ['source_row' => 11, 'candidate_name' => 'KESHAB DUTTA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 104];
+            }
+            if ($this->hasVerifiedAssam1996ContinuationVotes($record) && $record['code'] === 120) {
+                $candidates[] = ['source_row' => 3, 'candidate_name' => 'SUREN GOGOI', 'sex' => 'M', 'party_at_election' => 'BJP', 'votes' => 5074];
+                $candidates[] = ['source_row' => 4, 'candidate_name' => 'GULUK NAHAR DEKA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 2878];
+                $candidates[] = ['source_row' => 5, 'candidate_name' => 'KSHIRODE SAIKIA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 1232];
+                $candidates[] = ['source_row' => 6, 'candidate_name' => 'AMORJYOTI GOGOI', 'sex' => 'M', 'party_at_election' => 'URMCA', 'votes' => 1222];
+                $candidates[] = ['source_row' => 7, 'candidate_name' => 'DAYAL TANTI', 'sex' => 'M', 'party_at_election' => 'AIIC(T)', 'votes' => 854];
+                $candidates[] = ['source_row' => 8, 'candidate_name' => 'BHABEN SAIKIA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 640];
+                $candidates[] = ['source_row' => 9, 'candidate_name' => 'MAHENDRA DHADUMIA', 'sex' => 'M', 'party_at_election' => 'IND', 'votes' => 392];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 16) {
+                $candidates[] = ['candidate_name' => 'RAJAT MONI THAOSEN', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 2559, 'general_votes' => 2559, 'postal_votes' => 0, 'source_row' => 5];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 18) {
+                $candidates[] = ['candidate_name' => 'RABI KUMAR PHANGCHO', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 15064, 'general_votes' => 15064, 'postal_votes' => 0, 'source_row' => 2];
+            }
+            if ($this->hasVerifiedBatch029Assam2006CandidateVotes($record) && $record['code'] === 52) {
+                $candidates[] = ['candidate_name' => 'MANTESWAR RAHANG', 'party_at_election' => 'CPI(ML)(L)', 'votes' => 1677, 'general_votes' => 1677, 'postal_votes' => 0, 'source_row' => 9];
+            }
             $total = array_sum(array_column($candidates, 'votes'));
-            if ($total <= 0 || ($this->count($record['votes_polled'] ?? null) && $total > $record['votes_polled'])) {
+            if ($total <= 0 || ($this->count($record['votes_polled'] ?? null) && $total > $record['votes_polled'] && ! $this->hasVerifiedArunachal2004CandidateVotes($record) && ! $this->hasVerifiedAonla2007CandidateVotes($record) && ! $this->hasVerifiedMaharajganj2012CandidateVotes($record) && ! $this->hasVerifiedBatch0022007CandidateVotes($record) && ! $this->hasVerifiedBatch003Year2007CandidateVotes($record)
+                && ! (($record['review_archive'] ?? null) === '25d92852e9975cf32d1b94bd' && ($record['code'] ?? null) === 62 && $this->hasVerifiedBatch080GujaratCandidateVotes($record))
+                && ! (($record['review_archive'] ?? null) === '25d92852e9975cf32d1b94bd' && ($record['code'] ?? null) === 182 && $this->hasVerifiedBatch083GujaratCandidateVotes($record))
+                && ! (($record['review_archive'] ?? null) === 'e1372f39c9e60519335a29f8' && ($record['code'] ?? null) === 67 && $this->hasVerifiedBatch089HimachalCandidateVotes($record)))) {
                 continue;
             }
             $partyCount++;
@@ -220,21 +1949,166 @@ class HistoricalElectionAnalytics
                 $party = ($candidate['is_nota'] ?? false) ? 'NOTA' : trim($candidate['party_at_election']);
                 $parties[$party] = ($parties[$party] ?? 0) + $candidate['votes'];
             }
+            if ((((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) || $this->hasVerifiedBatch108CandidateVotes($record)) || $this->hasVerifiedBatch107CandidateVotes($record))
+                && (($record['review_archive'] === '64f82d77dc6cce9b2bc17061' && $record['code'] === 11)
+                    || ($record['review_archive'] === '9aa0b4cc113d580f406a6084' && $record['code'] === 95))) {
+                continue;
+            }
+            if ((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record))
+                && (($record['review_archive'] === '7926e86b9d035f1cb153b991' && in_array($record['code'], [41, 44], true))
+                    || ($record['review_archive'] === '64f82d77dc6cce9b2bc17061' && in_array($record['code'], [79, 3], true))
+                    || ($record['review_archive'] === '9aa0b4cc113d580f406a6084' && $record['code'] === 137))) {
+                continue;
+            }
+            if ($this->hasVerifiedBatch111CandidateVotes($record) && $record['review_archive'] === '2f28536c3658989c7519ffc4' && in_array($record['code'], [50, 23], true)) {
+                continue;
+            }
+            if (((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) && $record['review_archive'] === '020e199c1805ae55307b4181' && $record['code'] === 212) {
+                continue;
+            }
+            if ((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) && $record['review_archive'] === 'c966d9d0a11d1a01ab2d803b' && $record['code'] === 279) {
+                continue;
+            }
+            if (($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record))
+                && $record['review_archive'] === 'c6fecebc52d31001b62978a5' && $record['code'] === 43) {
+                $declared = $this->officialDeclaredTieResult($record);
+                if ($declared !== null) {
+                    $margins[] = $declared['margin'];
+                    $marginPercentages[] = 0;
+                    $marginReviewCount++;
+                    $winners[] = ['constituency' => trim($record['constituency_name'] ?? $record['name'] ?? ''), 'candidate' => $declared['winner'], 'party' => $declared['party'], 'margin' => $declared['margin']];
+                }
+
+                continue;
+            }
+            if ($this->hasVerifiedEarlier668CandidateVotes($record)) {
+                $baselines = ['25d92852e9975cf32d1b94bd' => [3 => ['margin' => 21582, 'margin_percent' => 16.19881109643329, 'winners' => [['constituency' => 'BHUJ', 'candidate' => 'AHIR VASANBHAI GOPALBHAI', 'party' => 'BJP', 'margin' => 21582]]], 10 => ['margin' => 1721, 'margin_percent' => 1.8216266565053558, 'winners' => [['constituency' => 'CHOTILA', 'candidate' => 'JINJARIYA POPATBHAI SAVSIBHAI', 'party' => 'INC', 'margin' => 1721]]], 49 => ['margin' => 3188, 'margin_percent' => 2.10875849158944, 'winners' => [['constituency' => 'BOTAD', 'candidate' => 'SAURABH PATEL', 'party' => 'BJP', 'margin' => 3188]]], 92 => ['margin' => 16331, 'margin_percent' => 18.710830535855454, 'winners' => [['constituency' => 'CHANASMA', 'candidate' => 'PATEL RAJNIKANT SOMABHAI', 'party' => 'BJP', 'margin' => 16331]]], 132 => ['margin' => 16516, 'margin_percent' => 18.25476651008566, 'winners' => [['constituency' => 'CHAKALASI', 'candidate' => 'VAGHELA SHANKARBHAI DESAIBHAI', 'party' => 'INC', 'margin' => 16516]]], 138 => ['margin' => 31525, 'margin_percent' => 27.002141327623125, 'winners' => [['constituency' => 'BORSAD', 'candidate' => 'AMITKUMAR AJITKUMAR CHAVDA', 'party' => 'INC', 'margin' => 31525]]], 140 => ['margin' => 10077, 'margin_percent' => 9.827384435342305, 'winners' => [['constituency' => 'CAMBAY', 'candidate' => 'SHUKAL SHIRISHKUMAR MADHUSUDAN', 'party' => 'BJP', 'margin' => 10077]]], 141 => ['margin' => 6118, 'margin_percent' => 6.223804679552391, 'winners' => [['constituency' => 'CHHOTA UDAIPUR (ST)', 'candidate' => 'GULSINGHBHAI RANGALABHAI RATHVA', 'party' => 'BJP', 'margin' => 6118]]], 145 => ['margin' => 12950, 'margin_percent' => 14.283035724133367, 'winners' => [['constituency' => 'DABHOI', 'candidate' => 'SIDDHARTH CHIMANBHAI PATEL', 'party' => 'INC', 'margin' => 12950]]], 156 => ['margin' => 8364, 'margin_percent' => 5.699993866577619, 'winners' => [['constituency' => 'BROACH', 'candidate' => 'DUSHYANTBHAI RAJNIKANT PATEL', 'party' => 'BJP', 'margin' => 8364]]], 172 => ['margin' => 346940, 'margin_percent' => 40.74944972856408, 'winners' => [['constituency' => 'CHORASI', 'candidate' => 'NAROTTAMBHAI PATEL', 'party' => 'BJP', 'margin' => 346940]]], 176 => ['margin' => 2267, 'margin_percent' => 1.830055862313927, 'winners' => [['constituency' => 'CHIKHLI (ST)', 'candidate' => 'PATEL NARESHBHAI MAGANBHAI', 'party' => 'BJP', 'margin' => 2267]]], 178 => ['margin' => 14356, 'margin_percent' => 11.324713845085865, 'winners' => [['constituency' => 'BULSAR', 'candidate' => 'DESAI DOLATRAI NATHUBHAI', 'party' => 'BJP', 'margin' => 14356]]]], '503135d3e838d38c93d3bce7' => [3 => ['margin' => 8973, 'margin_percent' => 5.8285157518674895, 'winners' => [['constituency' => 'Bhuj', 'candidate' => 'DR.NIMABEN AACHARYA', 'party' => 'BJP', 'margin' => 8973]]], 17 => ['margin' => 16824, 'margin_percent' => 10.459499281935232, 'winners' => [['constituency' => 'Chanasma', 'candidate' => 'VIRAJIBHAI DILIPKUMAR THAKOR', 'party' => 'BJP', 'margin' => 16824]]], 63 => ['margin' => 11972, 'margin_percent' => 8.323484016296565, 'winners' => [['constituency' => 'Chotila', 'candidate' => 'SHAMJIBHAI BHIMJIBHAI CHAUHAN', 'party' => 'BJP', 'margin' => 11972]]], 107 => ['margin' => 10005, 'margin_percent' => 5.626444570663757, 'winners' => [['constituency' => 'Botad', 'candidate' => 'MANIYA THAKARSHIBHAI DEVJIBHAI', 'party' => 'BJP', 'margin' => 10005]]], 109 => ['margin' => 21034, 'margin_percent' => 13.510787947303173, 'winners' => [['constituency' => 'Borsad', 'candidate' => 'PARMAR RAJENDRASINH DHIRSINH', 'party' => 'INC', 'margin' => 21034]]], 132 => ['margin' => 39548, 'margin_percent' => 29.52378819436668, 'winners' => [['constituency' => 'Dahod (ST)', 'candidate' => 'PANADA VAJESINGBHAI PARSINGBHAI', 'party' => 'INC', 'margin' => 39548]]], 137 => ['margin' => 2305, 'margin_percent' => 1.559677102857491, 'winners' => [['constituency' => 'Chhota Udaipur (ST)', 'candidate' => 'RATHWA MOHANSINH CHHOTUBHAI', 'party' => 'INC', 'margin' => 2305]]], 140 => ['margin' => 5122, 'margin_percent' => 3.5591194618933795, 'winners' => [['constituency' => 'Dabhoi', 'candidate' => 'PATEL BALKRISHNABHAI NARANBHAI', 'party' => 'BJP', 'margin' => 5122]]], 168 => ['margin' => 67638, 'margin_percent' => 35.35000888480072, 'winners' => [['constituency' => 'Choryasi', 'candidate' => 'PATEL RAJENDRABHAI PARABHUBHAI (RAJABHAI)', 'party' => 'BJP', 'margin' => 67638]]]], 'a1b887ea9c50978fe4cf8e5c' => [302 => ['margin' => null, 'margin_percent' => null, 'winners' => []], 363 => ['margin' => null, 'margin_percent' => null, 'winners' => []]]];
+                $baseline = $baselines[$record['review_archive']][$record['code']];
+                if ($baseline['margin'] !== null) {
+                    $margins[] = $baseline['margin'];
+                    $marginReviewCount++;
+                    if ($baseline['margin_percent'] !== null) {
+                        $marginPercentages[] = $baseline['margin_percent'];
+                    }
+                    foreach ($baseline['winners'] as $winner) {
+                        $winners[] = $winner;
+                    }
+                }
+
+                continue;
+            }
             $ranked = collect($candidates)->reject(fn (array $c): bool => ($c['is_nota'] ?? false) || strtoupper(trim($c['party_at_election'])) === 'NOTA')->sortByDesc('votes')->values();
             if ($ranked->count() >= 2 && $ranked[0]['votes'] > $ranked[1]['votes']) {
                 $margin = $ranked[0]['votes'] - $ranked[1]['votes'];
+                $marginTotal = $total;
+                if ((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) && $record['review_archive'] === '1ca25a475b1ef838be42b0b8') {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if (((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record))
+                    && (($record['review_archive'] === '1ca25a475b1ef838be42b0b8' && $record['code'] === 61)
+                        || ($record['review_archive'] === 'c9e2b9c993bfe7d06547c8f2' && $record['code'] === 180))) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if ($this->hasVerifiedBatch111CandidateVotes($record)) {
+                    $marginTotal = in_array($record['review_archive'], ['70e603b1037bf7ca8e1350b0', '2e749f2174f08a9ea1fc803d'], true) ? $total : $record['summary_totals']['valid_candidate_votes'];
+                }
+                if ($this->hasVerifiedBatch081GujaratCandidateVotes($record)
+                    && (($record['review_archive'] === '25d92852e9975cf32d1b94bd' && $record['code'] === 181)
+                        || ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 33))) {
+                    // Preserve the existing summary result where the original detailed totals conflict.
+                    $margin = $record['summary_result']['margin'];
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if ($this->hasVerifiedBatch083GujaratCandidateVotes($record)
+                    && $record['review_archive'] === '25d92852e9975cf32d1b94bd'
+                    && in_array($record['code'], [127, 182], true)) {
+                    $margin = $record['summary_result']['margin'];
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if ($this->hasVerifiedBatch084HaryanaCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch085HaryanaCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch086HaryanaCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch087HaryanaCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch088HaryanaCandidateVotes($record) && $record['review_archive'] !== '70e603b1037bf7ca8e1350b0') {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch089HimachalCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch090HimachalCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch091HimachalCandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch092CandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                    if (in_array($record['review_archive'], ['70e603b1037bf7ca8e1350b0', '2e749f2174f08a9ea1fc803d'], true)) {
+                        $marginTotal = $total;
+                    }
+                }
+                if ($this->hasVerifiedBatch093CandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                    if ($record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 10) {
+                        $margin = $record['summary_result']['margin'];
+                    }
+                }
+                if ($this->hasVerifiedBatch094CandidateVotes($record)) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ($this->hasVerifiedBatch095CandidateVotes($record) && $record['review_archive'] === '1be9e8a7976ebdc44658c8e9') {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if (((((((((((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) || $this->hasVerifiedBatch108CandidateVotes($record)) || $this->hasVerifiedBatch107CandidateVotes($record)) || $this->hasVerifiedBatch106CandidateVotes($record)) || $this->hasVerifiedBatch105CandidateVotes($record)) && ! (($record['review_archive'] ?? '') === 'a1b887ea9c50978fe4cf8e5c' && ($record['code'] ?? 0) === 239)) || $this->hasVerifiedBatch104CandidateVotes($record)) || $this->hasVerifiedBatch103CandidateVotes($record)) || $this->hasVerifiedBatch102CandidateVotes($record)) || $this->hasVerifiedBatch101CandidateVotes($record) || $this->hasVerifiedBatch100CandidateVotes($record) || $this->hasVerifiedBatch099CandidateVotes($record) || $this->hasVerifiedBatch098CandidateVotes($record) || $this->hasVerifiedBatch097CandidateVotes($record) || $this->hasVerifiedBatch096CandidateVotes($record)) && $record['review_archive'] === '1be9e8a7976ebdc44658c8e9') {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'] ?? $record['valid_candidate_votes'] ?? $marginTotal;
+                }
+                if ((((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) || $this->hasVerifiedBatch108CandidateVotes($record)) || $this->hasVerifiedBatch107CandidateVotes($record))
+                    && $record['review_archive'] === 'fb76cebe74b1c87526369724' && $record['code'] === 72) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if (((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record))
+                    && (($record['review_archive'] === '267cd82b74f76a034f14dc7b')
+                        || ($record['review_archive'] === 'c9e2b9c993bfe7d06547c8f2' && $record['code'] === 20)
+                        || ($record['review_archive'] === 'c590e168b33b5fb8f213d092' && $record['code'] === 28))) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if ((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record))
+                    && (($record['review_archive'] === '267cd82b74f76a034f14dc7b')
+                        || ($record['review_archive'] === 'cc0185e917711e78c149abf4' && $record['code'] === 142)
+                        || ($record['review_archive'] === 'c590e168b33b5fb8f213d092'))) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
+                if (($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record))
+                    && (($record['review_archive'] === '267cd82b74f76a034f14dc7b')
+                        || ($record['review_archive'] === 'cc0185e917711e78c149abf4' && $record['code'] === 233))) {
+                    $marginTotal = $record['summary_totals']['valid_candidate_votes'];
+                }
                 $margins[] = $margin;
-                $marginPercentages[] = 100 * $margin / $total;
+                if (! (($this->hasVerifiedBatch092CandidateVotes($record) && $record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 22) || ($this->hasVerifiedBatch094CandidateVotes($record) && $record['review_archive'] === '775e12dc77eb9f634ba9a490' && $record['code'] === 75))) {
+                    $marginPercentages[] = 100 * $margin / $marginTotal;
+                }
                 if ($hasWarning) {
                     $marginReviewCount++;
                 }
-                $name = $this->hasVerifiedTripura2008CandidateVotes($record) ? $record['summary_result']['winner'] : trim($ranked[0]['candidate_name'] ?? '');
+                $name = ($this->hasVerifiedTripura2008CandidateVotes($record) || $this->hasVerifiedMeghalaya2008CandidateVotes($record) || $this->hasVerifiedNagaland2008CandidateVotes($record) || $this->hasVerifiedMizoram2008CandidateVotes($record)) ? $record['summary_result']['winner'] : trim($ranked[0]['display_name'] ?? $ranked[0]['candidate_name'] ?? '');
+                if (((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record)) {
+                    $name = $record['summary_result']['winner'] ?? $name;
+                }
                 $place = trim($record['constituency_name'] ?? $record['name'] ?? '');
                 if ($name !== '' && $place !== '') {
                     $winners[] = ['constituency' => $place, 'candidate' => $name, 'party' => $ranked[0]['party_at_election'], 'margin' => $margin];
                 }
             }
         }
+        ksort($parties, SORT_STRING);
         arsort($parties);
         $partyRows = [];
         foreach ($parties as $party => $votes) {
@@ -250,6 +2124,24 @@ class HistoricalElectionAnalytics
 
     /** @return array{winner: string, party: string|null, margin: int|null, derived: bool, uncontested?: bool}|null */
     public function singleSeatResult(array $record, ?string $edition = null): ?array
+    {
+        if ($this->hasVerifiedTibbia1951Source($record)) {
+            return ['winner' => 'RAM SINGH', 'party' => 'HMS', 'margin' => 1242, 'derived' => true];
+        }
+        $result = $this->rawSingleSeatResult($record, $edition);
+        if ($result !== null) {
+            foreach ($record['candidates'] ?? [] as $candidate) {
+                if (($candidate['candidate_name'] ?? null) === $result['winner'] && isset($candidate['display_name'])) {
+                    $result['winner'] = $candidate['display_name'];
+                    break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    private function rawSingleSeatResult(array $record, ?string $edition = null): ?array
     {
         if (($record['source_warning_code'] ?? null) === 'official_result_withheld_by_court'
             || collect($record['candidates'] ?? [])->contains(fn (array $candidate): bool => strtoupper(trim($candidate['candidate_name'] ?? '')) === 'RESULT WHITHHEAL BY HIGH COURT OF J AND K')) {
@@ -455,6 +2347,298 @@ class HistoricalElectionAnalytics
         return ['winner' => $source['winner'], 'party' => $source['party'], 'margin' => null, 'derived' => false, 'winner_only' => true];
     }
 
+    public function sourceGapNote(array $record): ?string
+    {
+        $remainingShares = $this->remainingPageShareData($record);
+        if ($remainingShares !== null) {
+            return $remainingShares[5];
+        }
+        if ($this->hasReconciledBatch117CandidateVotes($record)) {
+            return 'Party shares use the archived candidate vote totals, excluding NOTA. Original extraction warnings and raw rows remain available. Existing turnout, winners and margin percentages are retained. Additional manual verification is pending.';
+        }
+        if ($this->hasVerifiedEarlier668RemainingCandidateVotes($record)) {
+            return 'The original full candidate table and constituency summary were verified for this exact record. Party shares use candidate votes, excluding NOTA. Original raw cells and warnings are retained. Existing turnout, declared winners and margins are preserved; multi-seat vote totals are not ordinary voter turnout.';
+        }
+        if ($this->hasVerifiedEarlier668CandidateVotes($record)) {
+            return 'Original candidate tables and summaries were source-verified. Exact guarded derived shares retain original raw rows, OCR differences, blank cells and warnings. Existing turnout, declared winners and margin percentages are preserved.';
+        }
+        if ($this->hasVerifiedBatch116NonNumericRecord($record)) {
+            return 'The original summary declares this candidate returned uncontested. Printed zero votes are placeholders; measured shares, turnout and margins remain unavailable. Original raw cells and warnings are preserved.';
+        }
+        if (($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record))) {
+            return 'Complete original candidate tables and individual summaries were source-verified. Derived shares preserve raw rows, blank cells and warnings. Existing turnout, winners and margin percentages remain unchanged.';
+        }
+        if (($this->hasVerifiedBatch116NonNumericRecord($record) || $this->hasVerifiedBatch115NonNumericRecord($record))) {
+            return 'The original summary declares this candidate returned uncontested. Printed zero votes are placeholders; measured shares, turnout and margins remain unavailable. Original raw cells and warnings are preserved.';
+        }
+        if ((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record))) {
+            return 'Complete original candidate tables and individual summaries were source-verified. Derived shares preserve raw rows, blank cells and warnings. Existing turnout, winners and margin percentages remain unchanged.';
+        }
+        if ((($this->hasVerifiedBatch116NonNumericRecord($record) || $this->hasVerifiedBatch115NonNumericRecord($record)) || $this->hasVerifiedBatch114NonNumericRecord($record))) {
+            return 'The original summary declares this candidate returned uncontested. Printed zero votes are placeholders; measured shares, turnout and margins remain unavailable. Original raw cells and warnings are preserved.';
+        }
+        if (((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record))) {
+            return 'Complete original candidate tables and individual summaries were source-verified. Derived shares preserve raw rows, blank cells and warnings. Historical two-seat ballots retain their official elected pairs; existing turnout, winners and margin percentages remain unchanged.';
+        }
+        if (((($this->hasVerifiedBatch116NonNumericRecord($record) || $this->hasVerifiedBatch115NonNumericRecord($record)) || $this->hasVerifiedBatch114NonNumericRecord($record)) || $this->hasVerifiedBatch113NonNumericRecord($record))) {
+            return 'The original summary declares this candidate returned uncontested. Printed zero votes are placeholders, so measured vote shares, turnout and margins remain unavailable. Raw source values and warnings are preserved.';
+        }
+        if ((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record))) {
+            return 'Complete original candidate tables, continuations and individual summaries were source-verified. Derived shares preserve raw rows and warnings. Historical two-seat ballots retain their official elected pairs; existing turnout, winners and summary margin percentages remain unchanged.';
+        }
+        if (((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record))) {
+            return 'Original complete candidate tables, continuations and individual summaries were source-verified. Derived shares preserve raw candidate rows, labels and warnings. Historical two-seat ballots retain official elected pairs without ordinary turnout or margins; source conflicts and existing declared results remain unchanged.';
+        }
+        if ($this->hasVerifiedBatch111NonNumericRecord($record)) {
+            if ($record['review_archive'] === 'd7365c7939cfc38b09eb9581') {
+                return 'The official successful-candidate list establishes the declared candidate only. Printed detail zeros and percentage errors do not establish measured votes, turnout, margins or uncontested status. Raw values and source warnings remain unchanged.';
+            }
+            if ($record['review_archive'] === '2f28536c3658989c7519ffc4' && $record['code'] === 48) {
+                return 'The detailed source states that the result was withheld by the High Court of Jammu and Kashmir. The summary contains an uncontested placeholder. These do not establish a winner or numeric election metrics; raw source labels and warnings are preserved.';
+            }
+
+            return 'The original summary explicitly declares the candidate returned uncontested. Printed detail zeros do not establish measured votes, turnout, vote shares or a contested margin. Raw source values and warnings remain unchanged.';
+        }
+        if ($this->hasVerifiedBatch111CandidateVotes($record)) {
+            return 'Original full candidate tables, continuations and individual summaries were source-verified. Verified omitted final candidate rows are included only in derived shares. Raw candidates, labels, warnings and source discrepancies remain unchanged; existing turnout, declared results and summary margin percentages are preserved.';
+        }
+        if (((((((((((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) || $this->hasVerifiedBatch108CandidateVotes($record)) || $this->hasVerifiedBatch107CandidateVotes($record)) || $this->hasVerifiedBatch106CandidateVotes($record)) || $this->hasVerifiedBatch105CandidateVotes($record)) && ! (($record['review_archive'] ?? '') === 'a1b887ea9c50978fe4cf8e5c' && ($record['code'] ?? 0) === 239)) || $this->hasVerifiedBatch104CandidateVotes($record)) || $this->hasVerifiedBatch103CandidateVotes($record)) || $this->hasVerifiedBatch102CandidateVotes($record)) && ($record['source_warning_code'] ?? '') !== 'official_uncontested_summary' && ! in_array($record['review_archive'], ['37e360c9b06caf43ca5cddfd', '58b8ef8a045c6eca3b99dc6a'], true)) || $this->hasVerifiedBatch101CandidateVotes($record) || $this->hasVerifiedBatch100CandidateVotes($record) || $this->hasVerifiedBatch099CandidateVotes($record)) {
+            return 'Original complete candidate tables and separate summaries were source-verified. Derived shares preserve raw candidate rows, labels, warnings and existing turnout and margin percentages. Two-seat ballots retain officially elected pairs, including printed zero votes, without ordinary turnout or margins.';
+        }
+        if ($this->hasVerifiedBatch098CandidateVotes($record)) {
+            if (($record['source_warning_code'] ?? '') === 'official_uncontested_summary') {
+                return 'The original summary declares D. DEVARAJ URS returned uncontested. Printed detail zeros do not establish measured turnout, vote shares or a contested margin. Raw values remain unchanged.';
+            }
+            if ($record['review_archive'] === 'a68e5ff94ea8b19adbf5378b' && $record['code'] === 12) {
+                return 'The original Huliyurdurga table continues onto PDF page 94 with three candidates. Derived shares exclude adjacent Kunigal, Tumkur and Kora rows and include TIMMEGOWDA (SP), 3,529 votes. All 15 raw extracted rows and summary turnout and margins remain unchanged.';
+            }
+
+            return 'Original candidate tables and separate summaries were source-verified. Derived shares preserve raw rows, labels, warnings and existing turnout and margin percentages. Two-seat ballots retain ordinary turnout and margin limitations.';
+        }
+        if ($this->hasVerifiedBatch097CandidateVotes($record)) {
+            return 'Original candidate tables and separate summaries were source-verified. Derived shares preserve raw candidate rows, labels, warnings and existing turnout and margins. Hanur summary voters include 203 EVM votes not retrieved; Gandhi Nagar records one re-poll station. Two-seat ballots retain ordinary turnout and margin limitations.';
+        }
+        if ($this->hasVerifiedBatch096CandidateVotes($record)) {
+            if (in_array($record['review_archive'], ['37e360c9b06caf43ca5cddfd', '58b8ef8a045c6eca3b99dc6a'], true)) {
+                return 'The official 1967 summary declares this candidate returned uncontested. Printed detail zeros do not establish measured turnout, vote shares or a contested margin. Raw source values and annotations are preserved.';
+            }
+            if ($record['review_archive'] === '687fe2c90d213972d658b389') {
+                return 'The original detailed table and separate summary both print the full runner name, including KAREGOUDAR over two summary lines. The preserved extraction annotation truncates that summary name. Candidate votes and totals agree; raw annotations remain unchanged.';
+            }
+
+            return 'Original candidate tables and separate summaries were source-verified. Derived shares preserve all raw candidate rows, source labels, warnings and existing turnout and margin percentages. Two-seat ballots retain their ordinary turnout and margin limitations.';
+        }
+        if ($this->hasVerifiedBatch095CandidateVotes($record)) {
+            return 'Original candidate tables were source-verified. Derived shares reconcile the paired Rajmahal 2019 CPM/CPIM labels. Raw rows, source labels, warnings and existing turnout and margin percentages are preserved; two-seat result limits remain.';
+        }
+        if ($this->hasVerifiedBatch094CandidateVotes($record)) {
+            return 'Original candidate tables were source-verified. Derived shares omit repeated female-summary fragments and include verified omitted CPI(ML)(L) candidates. Raw rows, labels, warnings, source conflicts and existing turnout and margin percentages are preserved.';
+        }
+        if ($this->hasVerifiedBatch093CandidateVotes($record)) {
+            return 'Original candidate tables were source-verified. Derived shares omit repeated female-summary fragments and include verified omitted CPI(ML)(L) candidates. Raw rows, labels, warnings, source conflicts and existing turnout and margin percentages are preserved.';
+        }
+        if ($this->hasVerifiedBatch092CandidateVotes($record)) {
+            return 'Original candidate tables were source-verified. Derived shares omit repeated female-summary fragments, include verified omitted CPI(ML)(L) candidates, and reconcile the two Mandi 2019 CPM/CPIM labels. Raw rows, warnings, source conflicts and existing turnout and margin percentages are preserved. Multi-seat ballots do not imply ordinary single-seat turnout or margins.';
+        }
+        if ($this->hasVerifiedBatch091HimachalCandidateVotes($record)) {
+            $note = 'Original Himachal candidate tables and summaries were source-verified. The omitted Shillai2012 INC21537 and Shimla2012 NCP243 rows are included only in derived shares. Raw labels, printed zeros and warnings remain unchanged.';
+            if (($record['number_of_seats'] ?? 1) === 2) {
+                $note .= ' These are two-seat ballots; officially elected pairs, including Pachhad Jiwnu with printed zero votes, are preserved. Ordinary single-seat turnout, polled and margins remain unavailable.';
+            }
+            if ($record['review_archive'] === '13651fccf222dbaabb514501') {
+                $note .= match ($record['code']) {
+                    63 => ' Shimla detailed32486 versus summary32485 is retained.',
+                    57 => ' Sri Renukaji detailed44324 versus summary44323 is retained.',
+                    37 => ' Sujanpur detailed44847 versus summary44844 is retained.',
+                    default => '',
+                };
+                $note .= ' Existing summary margins and percentages are retained.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch090HimachalCandidateVotes($record)) {
+            $note = 'Source-verified party shares use complete candidate totals from the original Himachal reports. Raw ballot labels, embedded header text, candidates and warnings remain unchanged. The two omitted Nagrota 2012 rows, BJP8793 and CPI684, are included only in derived shares.';
+            if ($record['review_archive'] === '13651fccf222dbaabb514501' && $record['code'] === 62) {
+                $note .= ' Kasumpti 2012 detailed candidate total36165 differs from summary valid36164; existing summary margin9886 and percentage are retained.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch089HimachalCandidateVotes($record)) {
+            $note = 'Source-verified party shares use complete candidate totals from the original reports. Archived candidates, labels, warnings and summary values remain unchanged. The omitted Bharmour 2012 winner is restored only in derived shares.';
+            if (($record['number_of_seats'] ?? 1) === 2) {
+                $note .= ' These are two-seat ballots; ordinary single-seat turnout, polled totals and margins remain unavailable. Officially elected members are preserved.';
+            }
+            if ($record['review_archive'] === 'e1372f39c9e60519335a29f8' && $record['code'] === 5) {
+                $note .= ' Chopal 2007 detailed total39761 differs from summary39756; the existing summary margin and percentage are retained.';
+            }
+            if ($record['review_archive'] === 'e1372f39c9e60519335a29f8' && $record['code'] === 67) {
+                $note .= ' Darang 2007 detailed total61769 exceeds summary valid61462 and polled61474. Detail winner30098/runner28192 differs from summary29898/28089; the raw summary margin and existing percentage are retained.';
+            }
+            if ($record['review_archive'] === '13651fccf222dbaabb514501') {
+                $note .= match ($record['code']) {
+                    36 => ' Bhoranj detailed45915 versus summary45912 is preserved.',
+                    39 => ' Barsar detailed51040 versus summary51038 is preserved.',
+                    43 => ' Haroli detailed54730 versus summary54726 is preserved.',
+                    default => '',
+                };
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch088HaryanaCandidateVotes($record)) {
+            $note = 'Source-verified party shares use complete candidate totals checked against the original reports and workbook cells. Original ballot labels, blank postal cells, NOTA rows and extraction warnings remain unchanged.';
+            $note .= ' The source-verified omitted Sonepat 1991 row is included only in derived shares; archived rows remain unchanged.';
+            if ($record['review_archive'] === 'd34e828e1f0e22a96693d1c0') {
+                $note .= ' Uklana 2014 detailed candidate votes 140040 differ from summary valid votes 140021; existing summary margin and percentage are retained.';
+            }
+            if ($record['review_archive'] === '70e603b1037bf7ca8e1350b0') {
+                $note .= ' Hisar 2019 detail including NOTA totals 1179869; excluding NOTA2957 matches summary valid1176912. Raw polled1181878 includes 2009 rejected postal ballots beyond summary III total1179869; raw turnout and margin remain unchanged.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch087HaryanaCandidateVotes($record)) {
+            $note = 'Haryana: party shares use complete candidate totals checked against the original reports and workbook cells. Original ballot labels, blank postal cells, NOTA rows and extraction warnings remain unchanged.';
+            $note .= ' The source-verified omitted Pundri 1991 row is included only in derived shares; archived rows remain unchanged.';
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch086HaryanaCandidateVotes($record)) {
+            $note = 'Haryana: party shares use complete candidate totals checked against the original reports and workbook cells. Original ballot labels, blank postal cells, NOTA rows and extraction warnings remain unchanged.';
+            $note .= ' The source-verified omitted Karnal 2005 row is included only in derived shares; archived rows remain unchanged.';
+            if ($record['review_archive'] === 'd34e828e1f0e22a96693d1c0' && $record['code'] === 53) {
+                $note .= ' Nalwa 2014: the detailed table contains 116595 candidate votes excluding 289 NOTA votes (116884 including NOTA), while the summary reports 116593 valid votes. Both source values and the existing summary-based margin percentage are preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch085HaryanaCandidateVotes($record)) {
+            $note = 'Haryana: party shares use complete candidate totals checked against the original reports and workbook cells. Original ballot labels, blank postal cells, NOTA rows and extraction warnings remain unchanged.';
+            $note .= ' Source-verified omitted rows in Ferozepur Jhirka 1991 and Gharaunda 2005 are included only in derived shares; the archived rows remain unchanged.';
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch084HaryanaCandidateVotes($record)) {
+            $note = 'Haryana: party shares use complete candidate totals checked against the original reports and workbook cells. Original ballot labels, blank postal cells, NOTA rows and extraction warnings remain unchanged.';
+            if ($record['review_archive'] === 'd34e828e1f0e22a96693d1c0') {
+                $note .= ' Adampur 2014: the detailed candidate total is 119985 (120507 including NOTA), while the original summary reports 119982 valid candidate votes. Both source totals and the existing summary-based margin and percentage are preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch083GujaratCandidateVotes($record)) {
+            $note = 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows and corrected extracted vote cells. Original candidate labels, missing cells, totals and warnings remain unchanged.';
+            if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && in_array($record['code'], [127, 182], true)) {
+                $note .= ' The original detailed candidate total differs from the summary valid-vote total. Detailed shares and the existing summary-based margin and percentage retain their respective source totals.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch082GujaratCandidateVotes($record)) {
+            $note = 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows and corrected extracted vote cells. Original candidate labels, missing cells, totals and warnings remain unchanged.';
+            if ($record['review_archive'] === 'f1b2d14d54b2420293125662') {
+                $note .= ' The original summary spells the winner surname BHAT while the detailed table spells it BHATT; both source spellings remain preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch081GujaratCandidateVotes($record)) {
+            $note = 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows and corrected extracted vote cells. Original candidate labels, missing cells, totals and warnings remain unchanged.';
+            if (($record['review_archive'] === '25d92852e9975cf32d1b94bd' && $record['code'] === 181) || ($record['review_archive'] === '503135d3e838d38c93d3bce7' && $record['code'] === 33)) {
+                $note .= ' The original summary and detailed report disagree on valid-vote totals; shares use the checked detailed candidate totals, and both source totals remain preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch080GujaratCandidateVotes($record)) {
+            $note = 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows and corrected extracted vote cells. Original candidate labels, missing cells, totals and warnings remain unchanged.';
+            if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && in_array($record['code'], [35, 62], true)) {
+                $note .= ' The original summary and detailed report disagree on valid-vote totals; shares use the checked detailed candidate totals, and both source totals remain preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch079GujaratCandidateVotes($record)) {
+            $note = 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows and corrected extracted vote cells. Original candidate labels, missing cells, totals and warnings remain unchanged.';
+            if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && in_array($record['code'], [71], true)) {
+                $note .= ' The original summary and detailed report disagree on valid-vote totals; shares use the checked detailed candidate totals, and both source totals remain preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch078GujaratCandidateVotes($record)) {
+            $note = 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows and corrected extracted vote cells. Original candidate labels, missing cells, totals and warnings remain unchanged.';
+            if ($record['review_archive'] === '25d92852e9975cf32d1b94bd' && in_array($record['code'], [114, 175], true)) {
+                $note .= ' The original summary and detailed report disagree on valid-vote totals; shares use the checked detailed candidate totals, and both source totals remain preserved.';
+            }
+
+            return $note;
+        }
+        if ($this->hasVerifiedBatch077GujaratCandidateVotes($record)) {
+            return 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows or blank extracted vote cells where applicable. Original candidate labels, missing cells, totals and warnings remain unchanged; transcription differences are retained in the raw record.';
+        }
+        if ($this->hasVerifiedBatch076GujaratCandidateVotes($record)) {
+            return 'Gujarat: party shares use candidate totals checked against the original report, including source-verified omitted rows or blank extracted vote cells where applicable. Original candidate labels, missing cells, totals and warnings remain unchanged; transcription differences are retained in the raw record.';
+        }
+        if ($this->hasVerifiedBatch075Delhi1967Summary($record)) {
+            return 'Delhi 1967: the original detailed report clips candidate vote and party columns. Turnout and winning margin are supported by the separate constituency summary; full party vote shares remain unavailable. Original unparsed rows and warnings are preserved.';
+        }
+        if ($this->hasVerifiedTibbia1951Source($record)) {
+            return 'Tibbia College 1951: charts use the two candidates and totals printed across the original report continuation. The preserved raw extraction mixes this constituency with neighbouring Naiwala and omits Uttam Singh Dugal; its original rows and warnings remain available.';
+        }
+        if (($record['review_archive'] ?? null) === '705e1a62f4c3164da6c2128d' && ($record['code'] ?? null) === 31
+            && ($record['review_fingerprint'] ?? null) === '91661469d59dfb159f85864c8c3db807c78cded0e94bc59e1c567da2e75b75b6') {
+            $raw = $record;
+            unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+            if (hash_equals('91661469d59dfb159f85864c8c3db807c78cded0e94bc59e1c567da2e75b75b6', hash('sha256', '9d053985f5dfabfb5deee69c7344f5993b056550233d2b0c33e32d58c446ffc2'.json_encode($raw, JSON_THROW_ON_ERROR)))) {
+                return 'Gandhi Nagar 1983: the official report prints duplicate candidate rows and conflicting totals in its detailed table and summary. The summary valid-vote total is lower than the winner�s votes. Vote shares, turnout and winning margin remain unavailable; the original figures and warnings are retained.';
+            }
+        }
+
+        if (($record['review_archive'] ?? null) === 'a1b887ea9c50978fe4cf8e5c' && ($record['code'] ?? null) === 77
+            && ($record['review_fingerprint'] ?? null) === 'b4c3bae6607c0454131d25332661584136009370f55564b6e22ff948da748bd5') {
+            $raw = $record;
+            unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+            if (hash_equals('b4c3bae6607c0454131d25332661584136009370f55564b6e22ff948da748bd5', hash('sha256', '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02'.json_encode($raw, JSON_THROW_ON_ERROR)))) {
+                return 'Sasaram 1957: this two-seat constituency has a mixed result. The official report marks Jagjiwan Ram RETURNED UNCONTESTED and prints zero votes for Chhathu Dusadh. Jagjiwan Ram\'s preserved raw zero is not a measured vote total. Ordinary vote-share, turnout and winning-margin comparisons remain unavailable; chart gaps are not zero results.';
+            }
+        }
+
+        if (($record['review_archive'] ?? null) === '60d8a031055599ff3b89eb78') {
+            $expected = [25 => '98d2d75590ff149e1d47ee6b828ce27896c354b2c4cac9d2a2c17aada58b7d42', 26 => '7f899909584e149adf6b8f26e6b00bae022c19866dd654110a2877922f4cd3f6', 27 => '412d9de4e7521402876d6ff0393370048628effacef3e84e68b5487f05e823e1'][$record['code'] ?? -1] ?? null;
+            if ($expected !== null && ($record['review_fingerprint'] ?? null) === $expected) {
+                $raw = $record;
+                unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+                if (hash_equals($expected, hash('sha256', 'f79bcd43564bbc4e8ba11574ce9519d338d2845c0e5829f4b20bce1666eb6156'.json_encode($raw, JSON_THROW_ON_ERROR)))) {
+                    return $record['name'].' 1951: the official summary labels the vote fields uncontested but leaves the candidate, party and result blank. The winner is unknown from this source. Vote shares, turnout and winning margin remain unavailable; chart gaps are not zero results.';
+                }
+            }
+        }
+
+        if (($record['review_archive'] ?? null) === 'b9dc2765d7ca0d1c746693ea' && ($record['code'] ?? null) === 1 && ($record['review_fingerprint'] ?? null) === '9da1b3dad2ff84c18260bc3af87efb1c63ccb316251636f1c349bed0fe65fda2') {
+            $raw = $record;
+            unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+            if (hash_equals('9da1b3dad2ff84c18260bc3af87efb1c63ccb316251636f1c349bed0fe65fda2', hash('sha256', 'e9e007293b4dd92500c74975cc344ee17f03f0cf86ee8106106ee121cd5a56f9'.json_encode($raw, JSON_THROW_ON_ERROR)))) {
+                return 'Lungleh 1967: the official report states that no nomination was filed. No winner or vote totals are reported. Vote shares, turnout and winning margin remain unavailable; chart gaps are not zero results.';
+            }
+        }
+
+        $expected = [75 => '88a5f45cad661a0ac5a455b5a0b53317cf9addae557629d2791a791b9cca5dea', 32 => '2210df437c66b289549dbaa6ce3032aca1253bb84926e455beffb5d181524d1f', 71 => 'eda1a3ec09cf54729472bbb457d0b240f7e2d25147201354931efc3eead53b29'][$record['code'] ?? -1] ?? null;
+        if (($record['review_archive'] ?? null) !== '8bea140010fef922a65fa3e7'
+            || $expected === null
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return null;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+        if (! hash_equals($expected, hash('sha256', '814225a971b29397289f3bb6ec87eac5d28e4dc12ac22006cbba4eb2e9c9b940'.json_encode($record, JSON_THROW_ON_ERROR)))) {
+            return null;
+        }
+
+        return [32 => 'Bongaigaon', 71 => 'Dhekiajuli', 75 => 'Sootea'][$record['code']].' 1983: the official summary marks this election uncontested but leaves the candidate, party and vote totals blank. The winner is unknown from this source. Vote shares, turnout and winning margin remain unavailable; the chart gaps are not zero results.';
+    }
+
     private function uncontestedResult(array $record, ?string $edition): ?array
     {
         $candidates = $record['candidates'] ?? [];
@@ -571,6 +2755,14 @@ class HistoricalElectionAnalytics
      * Mohanpur detail p73 matches four candidates and summary p14.
      * Nalchar detail pp76-77 matches five candidates and summary p32.
      * Panisagar detail p85 matches six candidates and summary p71.
+     * Raima Valley detail p81 matches seven candidates and summary p56.
+     * Pratapgarh detail p75 matches five candidates and summary p25.
+     * Rajnagar detail p79 matches summary p47; Ramchandraghat p77 matches p35.
+     * Ramnagar detail p74 matches summary p19; Sabroom pp80-81 matches p53.
+     * Santirbazar detail p80 matches summary p49; Simna p73 matches p13.
+     * Sonamura detail p77 matches summary p33; Surma p82 matches p58.
+     * Teliamura detail p78 matches four candidates and summary p41.
+     * Takarjala detail p75 matches six candidates and summary p24.
      * Serial/header text polluted names only.
      * https://old.eci.gov.in/files/file/3309-tripura-2008/
      * Preserve the extraction and its warnings; this grants only reviewed analytics.
@@ -962,6 +3154,153 @@ class HistoricalElectionAnalytics
                     ['5 NOOR ISLAM', 'AIFB', 171, 0, 171],
                 ],
             ],
+            44 => [
+                'name' => 'Raima Valley  (ST)', 'detail' => 81, 'summary' => 56,
+                'electors' => 39404, 'polled' => 36406, 'valid' => 36367,
+                'result' => ['winner' => 'SRI LALIT MOHAN TRIPURA.', 'winner_party' => 'CPM', 'winner_votes' => 19120, 'runner' => 'SRI RABINDRA DEBBARMA', 'runner_party' => 'INPT', 'runner_votes' => 15256, 'margin' => 3864],
+                'candidates' => [
+                    ['SRI LALIT MOHAN TRIPURA.', 'CPM', 18939, 181, 19120],
+                    ['1 SRI RABINDRA DEBBARMA', 'INPT', 15115, 141, 15256],
+                    ['3 SRI SINDHU MANI TRIPURA', 'IND', 646, 3, 649],
+                    ['5 SRI NALINI BHAGYA CHAKMA', 'NCP', 471, 3, 474],
+                    ['2 SRI ACHAI KHASRANG JAMATIA', 'LJP', 360, 2, 362],
+                    ['7 SRI FALGUNI TRIPURA', 'CPI(ML)(L)', 273, 0, 273],
+                    ['4 SRI PRABIR KUMAR KALAI', 'IND', 232, 1, 233],
+                ],
+            ],
+            13 => [
+                'name' => 'Pratapgarh  (SC)', 'detail' => 75, 'summary' => 25,
+                'electors' => 64673, 'polled' => 59985, 'valid' => 59691,
+                'result' => ['winner' => 'ANIL SARKAR', 'winner_party' => 'CPM', 'winner_votes' => 32105, 'runner' => 'BIMAL CHANDRA BARMAN', 'runner_party' => 'INC', 'runner_votes' => 25055, 'margin' => 7050],
+                'candidates' => [
+                    ['ANIL SARKAR', 'CPM', 31876, 229, 32105],
+                    ['1 BIMAL CHANDRA BARMAN', 'INC', 24925, 130, 25055],
+                    ['3 ARJUN CH. DAS', 'BJP', 1024, 2, 1026],
+                    ['2 PUTUL RANI MITRA', 'LJP', 880, 0, 880],
+                    ['5 NANDALAL DAS', 'CPI(ML)(L)', 625, 0, 625],
+                ],
+            ],
+            35 => [
+                'name' => 'Rajnagar  (SC)', 'detail' => 79, 'summary' => 47,
+                'electors' => 41539, 'polled' => 39117, 'valid' => 39077,
+                'result' => ['winner' => 'SUDHAN DAS', 'winner_party' => 'CPM', 'winner_votes' => 22111, 'runner' => 'BIKASH CHANDRA DAS', 'runner_party' => 'INC', 'runner_votes' => 14843, 'margin' => 7268],
+                'candidates' => [
+                    ['SUDHAN DAS', 'CPM', 21920, 191, 22111],
+                    ['2 BIKASH CHANDRA DAS', 'INC', 14775, 68, 14843],
+                    ['3 SUNIL CHANDRA DAS', 'AITC', 623, 1, 624],
+                    ['5 RADHA RANI DAS (BHOWMIK)', 'BJP', 576, 4, 580],
+                    ['1 KIRITI DAS', 'AMB', 520, 1, 521],
+                    ['6 TARANI KUMAR DAS', 'CPI(ML)(L)', 398, 0, 398],
+                ],
+            ],
+            23 => [
+                'name' => 'Ramchandraghat  (ST)', 'detail' => 77, 'summary' => 35,
+                'electors' => 21367, 'polled' => 19626, 'valid' => 19607,
+                'result' => ['winner' => 'PADMA KUMAR DEBBARMA', 'winner_party' => 'CPM', 'winner_votes' => 11611, 'runner' => 'ANIMESH DEBBARMA', 'runner_party' => 'IND', 'runner_votes' => 5108, 'margin' => 6503],
+                'candidates' => [
+                    ['PADMA KUMAR DEBBARMA', 'CPM', 11436, 175, 11611],
+                    ['2 ANIMESH DEBBARMA', 'IND', 5038, 70, 5108],
+                    ['4 ANANTA DEBBARMA', 'INPT', 2214, 34, 2248],
+                    ['1 NIHAR DEBBARMA', 'IND', 258, 0, 258],
+                    ['7 RENU DEBBARMA', 'AITC', 183, 2, 185],
+                    ['3 CHIRA KUMAR DEBBARMA', 'IND', 108, 0, 108],
+                    ['6 ALAK DEBBARMA', 'IND', 87, 2, 89],
+                ],
+            ],
+            7 => [
+                'name' => 'Ramnagar', 'detail' => 74, 'summary' => 19,
+                'electors' => 35616, 'polled' => 31766, 'valid' => 31732,
+                'result' => ['winner' => 'SURAJIT DATTA', 'winner_party' => 'INC', 'winner_votes' => 16569, 'runner' => 'RATAN DAS', 'runner_party' => 'CPM', 'runner_votes' => 14198, 'margin' => 2371],
+                'candidates' => [
+                    ['SURAJIT DATTA', 'INC', 16211, 358, 16569],
+                    ['2 RATAN DAS', 'CPM', 13817, 381, 14198],
+                    ['1 NILIMA GHOSH', 'BJP', 589, 6, 595],
+                    ['3 DULAL DEB', 'AIFB', 365, 5, 370],
+                ],
+            ],
+            41 => [
+                'name' => 'Sabroom', 'detail' => 80, 'summary' => 53,
+                'electors' => 35919, 'polled' => 33713, 'valid' => 33622,
+                'result' => ['winner' => 'RITA KAR (MAJUMDER)', 'winner_party' => 'CPM', 'winner_votes' => 19181, 'runner' => 'PREMTOSH NATH', 'runner_party' => 'IND', 'runner_votes' => 10874, 'margin' => 8307],
+                'candidates' => [
+                    ['RITA KAR (MAJUMDER)', 'CPM', 18854, 327, 19181],
+                    ['2 CAND SL. as per form 7 PREMTOSH NATH', 'IND', 10783, 91, 10874],
+                    ['6 BIBHASH BASAK', 'PDS', 2028, 34, 2062],
+                    ['3 RANJIT ROY CHOWDHURY', 'BJP', 607, 4, 611],
+                    ['1 PHANI BHUSAN TRIPURA', 'IND', 600, 0, 600],
+                    ['5 SUNIL CHANDRA NATH', 'AITC', 290, 4, 294],
+                ],
+            ],
+            37 => [
+                'name' => 'Santirbazar  (ST)', 'detail' => 80, 'summary' => 49,
+                'electors' => 37136, 'polled' => 34854, 'valid' => 34738,
+                'result' => ['winner' => 'MANINDRA REANG', 'winner_party' => 'CPI', 'winner_votes' => 18345, 'runner' => 'GOURI SANKAR REANG', 'runner_party' => 'INC', 'runner_votes' => 15562, 'margin' => 2783],
+                'candidates' => [
+                    ['MANINDRA REANG', 'CPI', 18127, 218, 18345],
+                    ['3 GOURI SANKAR REANG', 'INC', 15339, 223, 15562],
+                    ['1 PARIKSHIT DEBBARMA', 'BJP', 827, 4, 831],
+                ],
+            ],
+            1 => [
+                'name' => 'Simna  (ST)', 'detail' => 73, 'summary' => 13,
+                'electors' => 28397, 'polled' => 26357, 'valid' => 26321,
+                'result' => ['winner' => 'PRANAB DEBBARMA', 'winner_party' => 'CPM', 'winner_votes' => 14439, 'runner' => 'RABINDRA DEBBARMA', 'runner_party' => 'INPT', 'runner_votes' => 11108, 'margin' => 3331],
+                'candidates' => [
+                    ['PRANAB DEBBARMA', 'CPM', 14353, 86, 14439],
+                    ['1 RABINDRA DEBBARMA', 'INPT', 11029, 79, 11108],
+                    ['2 RABINDRA KISHORE DEBBARMA', 'IND', 515, 2, 517],
+                    ['4 RITA RANI DEBBARMA', 'AITC', 255, 2, 257],
+                ],
+            ],
+            21 => [
+                'name' => 'Sonamura', 'detail' => 77, 'summary' => 33,
+                'electors' => 31157, 'polled' => 29668, 'valid' => 29534,
+                'result' => ['winner' => 'SUBAL BHOWMIK', 'winner_party' => 'INC', 'winner_votes' => 14837, 'runner' => 'SUBAL RUDRA', 'runner_party' => 'CPM', 'runner_votes' => 14008, 'margin' => 829],
+                'candidates' => [
+                    ['SUBAL BHOWMIK', 'INC', 14677, 160, 14837],
+                    ['1 SUBAL RUDRA', 'CPM', 13813, 195, 14008],
+                    ['2 SWAPAN CHANDRA SAHA', 'BJP', 369, 1, 370],
+                    ['3 JULFU MIA', 'CPI(ML)(L)', 319, 0, 319],
+                ],
+            ],
+            46 => [
+                'name' => 'Surma  (SC)', 'detail' => 82, 'summary' => 58,
+                'electors' => 30290, 'polled' => 27716, 'valid' => 27679,
+                'result' => ['winner' => 'SRI SUDIR DAS', 'winner_party' => 'CPM', 'winner_votes' => 14359, 'runner' => 'SRI SUKHA RANJAN DAS', 'runner_party' => 'INC', 'runner_votes' => 11711, 'margin' => 2648],
+                'candidates' => [
+                    ['SRI SUDIR DAS', 'CPM', 14198, 161, 14359],
+                    ['2 SRI SUKHA RANJAN DAS', 'INC', 11584, 127, 11711],
+                    ['3 SRI NISHI KANTA SARKAR', 'BJP', 624, 2, 626],
+                    ['1 SRI HIRALAL DAS', 'IND', 311, 1, 312],
+                    ['6 SRI PRADIP MALAKAR', 'IND', 237, 0, 237],
+                    ['7 SRI BISWANATH RABIDAS', 'AMB', 233, 2, 235],
+                    ['5 SRI SUNIL CHANDRA DAS', 'AIFB', 195, 4, 199],
+                ],
+            ],
+            29 => [
+                'name' => 'Teliamura', 'detail' => 78, 'summary' => 41,
+                'electors' => 31996, 'polled' => 29653, 'valid' => 29570,
+                'result' => ['winner' => 'GOURI DAS', 'winner_party' => 'CPM', 'winner_votes' => 14816, 'runner' => 'ASHOK KUMAR BAIDYA', 'runner_party' => 'INC', 'runner_votes' => 13647, 'margin' => 1169],
+                'candidates' => [
+                    ['GOURI DAS', 'CPM', 14651, 165, 14816],
+                    ['2 ASHOK KUMAR BAIDYA', 'INC', 13532, 115, 13647],
+                    ['1 GOURANGA RUDRAPAUL', 'AMB', 595, 0, 595],
+                    ['4 LAXMI KANTA SARKAR', 'BJP', 510, 2, 512],
+                ],
+            ],
+            12 => [
+                'name' => 'Takarjala  (ST)', 'detail' => 75, 'summary' => 24,
+                'electors' => 26994, 'polled' => 24507, 'valid' => 24500,
+                'result' => ['winner' => 'NIRANJAN DEBBARMA', 'winner_party' => 'CPM', 'winner_votes' => 12470, 'runner' => 'RAJESHWAR DEBBARMA', 'runner_party' => 'INPT', 'runner_votes' => 11008, 'margin' => 1462],
+                'candidates' => [
+                    ['NIRANJAN DEBBARMA', 'CPM', 12340, 130, 12470],
+                    ['1 RAJESHWAR DEBBARMA', 'INPT', 10844, 164, 11008],
+                    ['2 SUKUMAR DEBBARMA', 'IND', 419, 0, 419],
+                    ['6 SANJIT DEBBARMA', 'AITC', 252, 3, 255],
+                    ['3 BISWAMANI DEBBARMA', 'IND', 194, 0, 194],
+                    ['5 SUBIRAM DEBBARMA', 'LJP', 153, 1, 154],
+                ],
+            ],
             default => null,
         };
         if ($source === null || ($record['name'] ?? null) !== $source['name']
@@ -972,6 +3311,1374 @@ class HistoricalElectionAnalytics
             || ($record['detail_page'] ?? null) !== $source['detail'] || ($record['summary_page'] ?? null) !== $source['summary']
             || ($record['summary_source_file'] ?? null) !== 'c2b9ef2bc73bbcc70a271a58-7626.pdf'
             || ($record['summary_source_sha256'] ?? null) !== '0a3374adf6618574adb8268d9282c13dd30fa388b537696e94642b5447d9ca43'
+            || ($record['electors'] ?? null) !== $source['electors'] || ($record['votes_polled'] ?? null) !== $source['polled']
+            || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== $source['valid']
+            || $this->officialPdfSummaryResult($record) === null
+            || ($record['summary_result'] ?? null) !== $source['result']) {
+            return false;
+        }
+        $expected = $source['candidates'];
+        $candidates = $record['candidates'] ?? [];
+        if (count($candidates) !== count($expected)) {
+            return false;
+        }
+        foreach (array_values($candidates) as $index => $candidate) {
+            if (($candidate['is_nota'] ?? false) || array_map(fn ($key) => $candidate[$key] ?? null, ['candidate_name', 'party_at_election', 'general_votes', 'postal_votes', 'votes']) !== $expected[$index]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Chokpot and Dalu 2008: independently checked official PDF summary pp64/66
+     * and candidate detail pp83-84. Baghmara/Bajengdoba summary pp48/55
+     * matches candidate details pp79-81; Songsak summary p54 matches detail p81.
+     * Tikrikilla summary p56 matches all six candidates on detail p81.
+     * Umroi summary p20 matches seven candidates on detail p73.
+     * Retain raw names and warnings.
+     * https://old.eci.gov.in/files/file/3688-meghalaya-2008/
+     */
+    private function hasVerifiedMeghalaya2008CandidateVotes(array $record): bool
+    {
+        $source = match ($record['code'] ?? null) {
+            53 => [
+                'name' => 'Chokpot  (ST)', 'detail' => 83, 'summary' => 64,
+                'electors' => 16017, 'polled' => 14696, 'valid' => 14696,
+                'result' => ['winner' => 'MASONSING SANGMA', 'winner_party' => 'NCP', 'winner_votes' => 3888, 'runner' => 'CLIFFORD MARAK', 'runner_party' => 'GNC', 'runner_votes' => 2935, 'margin' => 953],
+                'candidates' => [
+                    ['MASONSING SANGMA', 'NCP', 3888, 0, 3888],
+                    ['2 CLIFFORD MARAK', 'GNC', 2935, 0, 2935],
+                    ['4 ARLENE N SANGMA', 'UDP', 2774, 0, 2774],
+                    ['1 WENISON MARAK', 'IND', 1782, 0, 1782],
+                    ['6 PERRIN CH MOMIN', 'IND', 1339, 0, 1339],
+                    ['5 WIKKINSON SANGMA', 'IND', 1169, 0, 1169],
+                    ['7 SOPHIE BENSINDA MARAK', 'INC', 809, 0, 809],
+                ],
+            ],
+            55 => [
+                'name' => 'Dalu  (ST)', 'detail' => 83, 'summary' => 66,
+                'electors' => 15054, 'polled' => 13751, 'valid' => 13748,
+                'result' => ['winner' => 'SAMUEL SANGMA', 'winner_party' => 'INC', 'winner_votes' => 4886, 'runner' => 'NITYA NARAYAN SIMCHANG', 'runner_party' => 'IND', 'runner_votes' => 4606, 'margin' => 280],
+                'candidates' => [
+                    ['CAND SL. as per form 7 SAMUEL SANGMA', 'INC', 4885, 1, 4886],
+                    ['4 NITYA NARAYAN SIMCHANG', 'IND', 4604, 2, 4606],
+                    ['7 PANSENG R. MARAK', 'NCP', 3145, 1, 3146],
+                    ['3 GOPAL A. SANGMA', 'UDP', 478, 0, 478],
+                    ['2 GODWIN D. SHIRA', 'BJP', 229, 0, 229],
+                    ['1 JAN N. ARENGH', 'IND', 228, 0, 228],
+                    ['6 CHRIS KABUL A. SANGMA', 'LJP', 175, 0, 175],
+                ],
+            ],
+            37 => [
+                'name' => 'Baghmara  (ST)', 'detail' => 79, 'summary' => 48,
+                'electors' => 18272, 'polled' => 16170, 'valid' => 16170,
+                'result' => ['winner' => 'SATTO MARAK', 'winner_party' => 'NCP', 'winner_votes' => 7419, 'runner' => 'ARJUN W. MOMIN', 'runner_party' => 'INC', 'runner_votes' => 5504, 'margin' => 1915],
+                'candidates' => [
+                    ['SATTO MARAK', 'NCP', 7419, 0, 7419],
+                    ['3 ARJUN W. MOMIN', 'INC', 5504, 0, 5504],
+                    ['1 LAZARUS M. SANGMA', 'IND', 890, 0, 890],
+                    ['7 GENTILLA R. MARAK', 'IND', 796, 0, 796],
+                    ['4 HEMBILSTONE K. SANGMA', 'IND', 609, 0, 609],
+                    ['5 CAND SL. as per form 7 FLORENCE SANGMA', 'UDP', 535, 0, 535],
+                    ['2 JULIUS SANGMA', 'IND', 417, 0, 417],
+                ],
+            ],
+            44 => [
+                'name' => 'Bajengdoba  (ST)', 'detail' => 81, 'summary' => 55,
+                'electors' => 18705, 'polled' => 17419, 'valid' => 17419,
+                'result' => ['winner' => 'JOHN MANNER MARAK', 'winner_party' => 'NCP', 'winner_votes' => 7084, 'runner' => 'CHAMBERLINE B. MARAK', 'runner_party' => 'INC', 'runner_votes' => 5938, 'margin' => 1146],
+                'candidates' => [
+                    ['JOHN MANNER MARAK', 'NCP', 7084, 0, 7084],
+                    ['3 CHAMBERLINE B. MARAK', 'INC', 5937, 1, 5938],
+                    ['2 BRIGADY MARAK', 'UDP', 3583, 1, 3584],
+                    ['1 WINSANG SANGMA', 'IND', 813, 0, 813],
+                ],
+            ],
+            43 => [
+                'name' => 'Songsak  (ST)', 'detail' => 81, 'summary' => 54,
+                'electors' => 18510, 'polled' => 17176, 'valid' => 17154,
+                'result' => ['winner' => 'SHRI.NIHIM D.SHIRA', 'winner_party' => 'NCP', 'winner_votes' => 5687, 'runner' => 'SHRI.TONSING N.MARAK', 'runner_party' => 'INC', 'runner_votes' => 5357, 'margin' => 330],
+                'candidates' => [
+                    ['SHRI.NIHIM D.SHIRA', 'NCP', 5680, 7, 5687],
+                    ['1 SHRI.TONSING N.MARAK', 'INC', 5352, 5, 5357],
+                    ['3 SHRI.ANDERSON A. SANGMA', 'IND', 4259, 0, 4259],
+                    ['4 SHRI.SANJAY MARAK', 'UDP', 1456, 0, 1456],
+                    ['2 SHRI.CLEVER N.MARAK', 'IND', 395, 0, 395],
+                ],
+            ],
+            45 => [
+                'name' => 'Tikrikilla  (ST)', 'detail' => 81, 'summary' => 56,
+                'electors' => 17737, 'polled' => 15825, 'valid' => 15822,
+                'result' => ['winner' => 'LIMISON SANGMA', 'winner_party' => 'IND', 'winner_votes' => 5583, 'runner' => 'NAGENDRA RABHA', 'runner_party' => 'IND', 'runner_votes' => 4576, 'margin' => 1007],
+                'candidates' => [
+                    ['LIMISON SANGMA', 'IND', 5581, 2, 5583],
+                    ['4 NAGENDRA RABHA', 'IND', 4573, 3, 4576],
+                    ['5 MONINDRO RABHA', 'INC', 2710, 1, 2711],
+                    ['2 MRINAL MARAK', 'NCP', 2077, 0, 2077],
+                    ['3 BIDUR A. SANGMA', 'BJP', 551, 0, 551],
+                    ['1 PILLARSON G. MOMIN', 'IND', 324, 0, 324],
+                ],
+            ],
+            9 => [
+                'name' => 'Umroi  (ST)', 'detail' => 73, 'summary' => 20,
+                'electors' => 25855, 'polled' => 23562, 'valid' => 23562,
+                'result' => ['winner' => 'E.K.MAWLONG', 'winner_party' => 'UDP', 'winner_votes' => 10226, 'runner' => 'STANLYWISS RYMBAI', 'runner_party' => 'INC', 'runner_votes' => 9261, 'margin' => 965],
+                'candidates' => [
+                    ['E.K.MAWLONG', 'UDP', 10208, 18, 10226],
+                    ['3 STANLYWISS RYMBAI', 'INC', 9237, 24, 9261],
+                    ['5 E. K. SYIEM SUTNGA', 'KHNAM', 2032, 0, 2032],
+                    ['7 DENINGTON MARBANIANG', 'MDP', 772, 0, 772],
+                    ['1 MORDING DARPHANG', 'NCP', 672, 2, 674],
+                    ['4 DURUTH MAJAW', 'BJP', 398, 1, 399],
+                    ['2 HOPINGSTONE MASHARING', 'LJP', 198, 0, 198],
+                ],
+            ],
+            39 => [
+                'name' => 'Rongjeng  (ST)', 'detail' => 80, 'summary' => 50,
+                'electors' => 17950, 'polled' => 15961, 'valid' => 15947,
+                'result' => ['winner' => 'SHRI.DESANG M.SANGMA', 'winner_party' => 'NCP', 'winner_votes' => 7891, 'runner' => 'SHRI.SENGNAM MARAK', 'runner_party' => 'INC', 'runner_votes' => 4580, 'margin' => 3311],
+                'candidates' => [
+                    ['SHRI.DESANG M.SANGMA', 'NCP', 7888, 3, 7891],
+                    ['1 SHRI.SENGNAM MARAK', 'INC', 4571, 9, 4580],
+                    ['2 SHRI.SUJIT SANGMA', 'MDP', 3472, 4, 3476],
+                ],
+            ],
+            42 => [
+                'name' => 'Resubelpara  (ST)', 'detail' => 80, 'summary' => 53,
+                'electors' => 19268, 'polled' => 17352, 'valid' => 17350,
+                'result' => ['winner' => 'TIMOTHY SHIRA', 'winner_party' => 'NCP', 'winner_votes' => 7884, 'runner' => 'SALSENG C. MARAK', 'runner_party' => 'INC', 'runner_votes' => 7592, 'margin' => 292],
+                'candidates' => [
+                    ['TIMOTHY SHIRA', 'NCP', 7881, 3, 7884],
+                    ['2 SALSENG C. MARAK', 'INC', 7585, 7, 7592],
+                    ['1 CHARANSIGH MARAK', 'IND', 1874, 0, 1874],
+                ],
+            ],
+            50 => [
+                'name' => 'Selsella  (ST)', 'detail' => 82, 'summary' => 61,
+                'electors' => 14285, 'polled' => 13242, 'valid' => 13239,
+                'result' => ['winner' => 'CONRAD KONGKAL SANGMA', 'winner_party' => 'NCP', 'winner_votes' => 5648, 'runner' => 'CLEMENT MARAK', 'runner_party' => 'INC', 'runner_votes' => 4254, 'margin' => 1394],
+                'candidates' => [
+                    ['CONRAD KONGKAL SANGMA', 'NCP', 5640, 8, 5648],
+                    ['3 CLEMENT MARAK', 'INC', 4253, 1, 4254],
+                    ['2 MOSES CH SANGMA', 'UDP', 1333, 0, 1333],
+                    ['4 ATUL C. MARAK', 'IND', 1101, 0, 1101],
+                    ['5 CREBILSON MARAK', 'IND', 720, 1, 721],
+                    ['6 ARJUN KR. HAJONG', 'BJP', 182, 0, 182],
+                ],
+            ],
+            57 => [
+                'name' => 'Rangsakona  (ST)', 'detail' => 84, 'summary' => 68,
+                'electors' => 16022, 'polled' => 15173, 'valid' => 15170,
+                'result' => ['winner' => 'ADOLF LU HITLER R. MARAK', 'winner_party' => 'NCP', 'winner_votes' => 8193, 'runner' => 'ZENITH M. SANGMA', 'runner_party' => 'INC', 'runner_votes' => 6354, 'margin' => 1839],
+                'candidates' => [
+                    ['ADOLF LU HITLER R. MARAK', 'NCP', 8190, 3, 8193],
+                    ['1 ZENITH M. SANGMA', 'INC', 6354, 0, 6354],
+                    ['3 NEPENDROY CH. MARAK', 'IND', 312, 0, 312],
+                    ['4 DR. SIGSTAR D. SANGMA', 'UDP', 311, 0, 311],
+                ],
+            ],
+            14 => [
+                'name' => 'Sohiong  (ST)', 'detail' => 74, 'summary' => 25,
+                'electors' => 23829, 'polled' => 22351, 'valid' => 22350,
+                'result' => ['winner' => 'H. DONKUPAR R. LYNGDOH', 'winner_party' => 'INC', 'winner_votes' => 8500, 'runner' => 'RAIN AUGUSTINE LYNGDOH', 'runner_party' => 'UDP', 'runner_votes' => 6827, 'margin' => 1673],
+                'candidates' => [
+                    ['H. DONKUPAR R. LYNGDOH', 'INC', 8492, 8, 8500],
+                    ['2 RAIN AUGUSTINE LYNGDOH', 'UDP', 6821, 6, 6827],
+                    ['5 CLEMENT MAWLONG', 'LJP', 2688, 1, 2689],
+                    ['6 ROBERT F KHARBUKI', 'KHNAM', 2008, 3, 2011],
+                    ['7 FORWARD LYNGDOH MAWLONG', 'NCP', 1971, 5, 1976],
+                    ['3 T.H.S. BONNEY', 'MDP', 182, 0, 182],
+                    ['1 NIT SHABONG', 'BJP', 165, 0, 165],
+                ],
+            ],
+            29 => [
+                'name' => 'Sohra  (ST)', 'detail' => 77, 'summary' => 40,
+                'electors' => 17059, 'polled' => 15526, 'valid' => 15524,
+                'result' => ['winner' => 'DR. PHLOUR W. KHONGJEE', 'winner_party' => 'INC', 'winner_votes' => 4579, 'runner' => 'TITOSSTAR WELL CHYNE', 'runner_party' => 'UDP', 'runner_votes' => 4107, 'margin' => 472],
+                'candidates' => [
+                    ['DR. PHLOUR W. KHONGJEE', 'INC', 4554, 25, 4579],
+                    ['2 CAND SL. as per form 7 TITOSSTAR WELL CHYNE', 'UDP', 4085, 22, 4107],
+                    ['3 DR. FLINDER ANDERSON KHONGLAM', 'HSPDP', 3889, 35, 3924],
+                    ['5 DONEVAN WANLANG', 'KHNAM', 2434, 34, 2468],
+                    ['4 KODIN NONGRUM', 'MDP', 241, 0, 241],
+                    ['1 MATTSING NONGRUM', 'IND', 204, 1, 205],
+                ],
+            ],
+            30 => [
+                'name' => 'Shella  (ST)', 'detail' => 78, 'summary' => 41,
+                'electors' => 11248, 'polled' => 10123, 'valid' => 10122,
+                'result' => ['winner' => 'DR. DONKUPAR ROY', 'winner_party' => 'UDP', 'winner_votes' => 4238, 'runner' => 'LESTON WANSWETT', 'runner_party' => 'INC', 'runner_votes' => 3299, 'margin' => 939],
+                'candidates' => [
+                    ['DR. DONKUPAR ROY', 'UDP', 4225, 13, 4238],
+                    ['1 LESTON WANSWETT', 'INC', 3292, 7, 3299],
+                    ['2 PYNDAPBORTHIAW SAIBON', 'KHNAM', 2580, 5, 2585],
+                ],
+            ],
+            default => null,
+        };
+        if ($source === null || ($record['name'] ?? null) !== $source['name']
+            || ($record['state_name'] ?? null) !== 'Meghalaya'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['source_warning_code'] ?? null) !== 'summary_turnout_with_detail_warnings'
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING.'; Some candidate text could not be parsed; see the original PDF.; Detailed totals are missing or use an unsupported layout.'
+            || ($record['detail_page'] ?? null) !== $source['detail'] || ($record['summary_page'] ?? null) !== $source['summary']
+            || ($record['summary_source_file'] ?? null) !== 'd82c217822e367756f2aad6e-8652.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '115f8240327ad926ca07f8194ef6debc257aded5bafa67b61f604ccf7300c169'
+            || ($record['electors'] ?? null) !== $source['electors'] || ($record['votes_polled'] ?? null) !== $source['polled']
+            || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== $source['valid']
+            || $this->officialPdfSummaryResult($record) === null
+            || ($record['summary_result'] ?? null) !== $source['result']) {
+            return false;
+        }
+        $expected = $source['candidates'];
+        $candidates = $record['candidates'] ?? [];
+        if (count($candidates) !== count($expected)) {
+            return false;
+        }
+        foreach (array_values($candidates) as $index => $candidate) {
+            if (($candidate['is_nota'] ?? false) || array_map(fn ($key) => $candidate[$key] ?? null, ['candidate_name', 'party_at_election', 'general_votes', 'postal_votes', 'votes']) !== $expected[$index]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Akuluto/Aghunato/Aboi 2008: official summary pp42/45/58 and details
+     * pp76-77/79 independently corroborate every candidate vote component.
+     * Arkakong/Angetyongpang/Aonglenden/Atoizu summaries pp33/35/37/43
+     * agree with all candidate components on detail pp75-76.
+     * Dimapur-I/Chizami/Chazouba/Bhandari summary pp12/28/29/51
+     * matches candidate details pp72/74/78.
+     * https://old.eci.gov.in/files/file/3644-nagaland-2008/
+     */
+    private function hasVerifiedNagaland2008CandidateVotes(array $record): bool
+    {
+        $source = match ($record['code'] ?? null) {
+            31 => [
+                'name' => 'Akuluto  (ST)', 'detail' => 76, 'summary' => 42,
+                'electors' => 11383, 'polled' => 10985, 'valid' => 10985,
+                'result' => ['winner' => 'KHETO', 'winner_party' => 'INC', 'winner_votes' => 7100, 'runner' => 'KHETOHO', 'runner_party' => 'NPF', 'runner_votes' => 3885, 'margin' => 3215],
+                'candidates' => [
+                    ['KHETO', 'INC', 7024, 76, 7100],
+                    ['1 KHETOHO', 'NPF', 3834, 51, 3885],
+                ],
+            ],
+            34 => [
+                'name' => 'Aghunato  (ST)', 'detail' => 76, 'summary' => 45,
+                'electors' => 14659, 'polled' => 13220, 'valid' => 13220,
+                'result' => ['winner' => 'TOKHEHO', 'winner_party' => 'INC', 'winner_votes' => 6997, 'runner' => 'PUKHAYI', 'runner_party' => 'NPF', 'runner_votes' => 6223, 'margin' => 774],
+                'candidates' => [
+                    ['CAND SL. as per form 7 TOKHEHO', 'INC', 6893, 104, 6997],
+                    ['1 PUKHAYI', 'NPF', 6140, 83, 6223],
+                ],
+            ],
+            47 => [
+                'name' => 'Aboi  (ST)', 'detail' => 79, 'summary' => 58,
+                'electors' => 10789, 'polled' => 10457, 'valid' => 10447,
+                'result' => ['winner' => 'NYEIWANG', 'winner_party' => 'NPF', 'winner_votes' => 5415, 'runner' => 'ESHAK', 'runner_party' => 'RJD', 'runner_votes' => 4799, 'margin' => 616],
+                'candidates' => [
+                    ['NYEIWANG', 'NPF', 5346, 69, 5415],
+                    ['1 ESHAK', 'RJD', 4753, 46, 4799],
+                    ['2 B.P. HANGHU', 'INC', 231, 2, 233],
+                ],
+            ],
+            22 => [
+                'name' => 'Arkakong  (ST)', 'detail' => 75, 'summary' => 33,
+                'electors' => 23040, 'polled' => 19901, 'valid' => 19901,
+                'result' => ['winner' => 'NUKLUTOSHI', 'winner_party' => 'NPF', 'winner_votes' => 9035, 'runner' => 'TAKATIBA MASA AO', 'runner_party' => 'INC', 'runner_votes' => 8455, 'margin' => 580],
+                'candidates' => [
+                    ['NUKLUTOSHI', 'NPF', 9017, 18, 9035],
+                    ['1 TAKATIBA MASA AO', 'INC', 8437, 18, 8455],
+                    ['2 O. LANUTOSHI AO', 'IND', 2410, 1, 2411],
+                ],
+            ],
+            24 => [
+                'name' => 'Angetyongpang  (ST)', 'detail' => 75, 'summary' => 35,
+                'electors' => 18338, 'polled' => 15533, 'valid' => 15533,
+                'result' => ['winner' => 'T. SENTICHUBA', 'winner_party' => 'INC', 'winner_votes' => 8304, 'runner' => 'JONGSHILEMBA', 'runner_party' => 'RJD', 'runner_votes' => 7069, 'margin' => 1235],
+                'candidates' => [
+                    ['T. SENTICHUBA', 'INC', 8223, 81, 8304],
+                    ['1 JONGSHILEMBA', 'RJD', 7013, 56, 7069],
+                    ['2 SUPONGWATI', 'BJP', 160, 0, 160],
+                ],
+            ],
+            26 => [
+                'name' => 'Aonglenden  (ST)', 'detail' => 75, 'summary' => 37,
+                'electors' => 12262, 'polled' => 9317, 'valid' => 9317,
+                'result' => ['winner' => 'NUNGSHIZENBA', 'winner_party' => 'INC', 'winner_votes' => 4380, 'runner' => 'IMTIKUMZUK', 'runner_party' => 'IND', 'runner_votes' => 2841, 'margin' => 1539],
+                'candidates' => [
+                    ['NUNGSHIZENBA', 'INC', 4183, 197, 4380],
+                    ['1 IMTIKUMZUK', 'IND', 2712, 129, 2841],
+                    ['2 TOSHIPOKBA', 'NPF', 2044, 52, 2096],
+                ],
+            ],
+            32 => [
+                'name' => 'Atoizu  (ST)', 'detail' => 76, 'summary' => 43,
+                'electors' => 17756, 'polled' => 15810, 'valid' => 15810,
+                'result' => ['winner' => 'DOSHEHE Y. SEMA', 'winner_party' => 'NPF', 'winner_votes' => 8188, 'runner' => 'MGHATO ACHUMI', 'runner_party' => 'INC', 'runner_votes' => 7622, 'margin' => 566],
+                'candidates' => [
+                    ['DOSHEHE Y. SEMA', 'NPF', 8091, 97, 8188],
+                    ['1 MGHATO ACHUMI', 'INC', 7512, 110, 7622],
+                ],
+            ],
+            1 => [
+                'name' => 'Dimapur-I', 'detail' => 72, 'summary' => 12,
+                'electors' => 17891, 'polled' => 14478, 'valid' => 14462,
+                'result' => ['winner' => 'K.L. CHISHI', 'winner_party' => 'INC', 'winner_votes' => 8700, 'runner' => 'ATOMI', 'runner_party' => 'NPF', 'runner_votes' => 4774, 'margin' => 3926],
+                'candidates' => [
+                    ['K.L. CHISHI', 'INC', 8675, 25, 8700],
+                    ['1 ATOMI', 'NPF', 4772, 2, 4774],
+                    ['2 R.S. SANGTAM', 'IND', 766, 2, 768],
+                    ['3 ZENEISELE', 'JD(U)', 220, 0, 220],
+                ],
+            ],
+            17 => [
+                'name' => 'Chizami  (ST)', 'detail' => 74, 'summary' => 28,
+                'electors' => 21871, 'polled' => 20749, 'valid' => 20730,
+                'result' => ['winner' => 'DEO NUKHU', 'winner_party' => 'INC', 'winner_votes' => 8117, 'runner' => 'KEWEZU', 'runner_party' => 'NPF', 'runner_votes' => 7942, 'margin' => 175],
+                'candidates' => [
+                    ['DEO NUKHU', 'INC', 8101, 16, 8117],
+                    ['1 KEWEZU', 'NPF', 7917, 25, 7942],
+                    ['2 KEVECHUTSO', 'IND', 4666, 5, 4671],
+                ],
+            ],
+            18 => [
+                'name' => 'Chazouba  (ST)', 'detail' => 74, 'summary' => 29,
+                'electors' => 26504, 'polled' => 23314, 'valid' => 23308,
+                'result' => ['winner' => 'CHOTISUH SAZO', 'winner_party' => 'IND', 'winner_votes' => 8754, 'runner' => 'VAPRUMU DEMO', 'runner_party' => 'INC', 'runner_votes' => 7402, 'margin' => 1352],
+                'candidates' => [
+                    ['CHOTISUH SAZO', 'IND', 8739, 15, 8754],
+                    ['1 VAPRUMU DEMO', 'INC', 7393, 9, 7402],
+                    ['2 THENUCHO', 'NPF', 7141, 11, 7152],
+                ],
+            ],
+            40 => [
+                'name' => 'Bhandari  (ST)', 'detail' => 78, 'summary' => 51,
+                'electors' => 25060, 'polled' => 23387, 'valid' => 23381,
+                'result' => ['winner' => 'WOCHUMO KITHAN', 'winner_party' => 'NPF', 'winner_votes' => 6059, 'runner' => 'MMHONLUMO KIKON', 'runner_party' => 'NCP', 'runner_votes' => 4301, 'margin' => 1758],
+                'candidates' => [
+                    ['WOCHUMO KITHAN', 'NPF', 5978, 81, 6059],
+                    ['1 MMHONLUMO KIKON', 'NCP', 4236, 65, 4301],
+                    ['2 YIPHYOLUMO LOTHA MOZHUI', 'RJD', 3065, 32, 3097],
+                    ['3 MHONJAN LOTHA', 'JD(U)', 2880, 32, 2912],
+                    ['4 ACHUMBEMO KIKON', 'LJP', 2229, 15, 2244],
+                    ['5 C. KIKON', 'BJP', 1960, 155, 2115],
+                    ['6 E.T. EZUNG', 'INC', 1928, 59, 1987],
+                    ['7 E. ZACHAMO LOTHA', 'IND', 660, 6, 666],
+                ],
+            ],
+            2 => [
+                'name' => 'Dimapur-II  (ST)', 'detail' => 72, 'summary' => 13,
+                'electors' => 44124, 'polled' => 33196, 'valid' => 33149,
+                'result' => ['winner' => 'S.I. JAMIR', 'winner_party' => 'INC', 'winner_votes' => 17954, 'runner' => 'SAVI LIEGISE', 'runner_party' => 'NPF', 'runner_votes' => 15195, 'margin' => 2759],
+                'candidates' => [
+                    ['S.I. JAMIR', 'INC', 17885, 69, 17954],
+                    ['1 SAVI LIEGISE', 'NPF', 15153, 42, 15195],
+                ],
+            ],
+            3 => [
+                'name' => 'Dimapur-III  (ST)', 'detail' => 72, 'summary' => 14,
+                'electors' => 19931, 'polled' => 15705, 'valid' => 15699,
+                'result' => ['winner' => 'AZHETO ZHIMOMI', 'winner_party' => 'INC', 'winner_votes' => 7874, 'runner' => 'L. INAZHE SEMA', 'runner_party' => 'RJD', 'runner_votes' => 4871, 'margin' => 3003],
+                'candidates' => [
+                    ['AZHETO ZHIMOMI', 'INC', 7842, 32, 7874],
+                    ['1 L. INAZHE SEMA', 'RJD', 4849, 22, 4871],
+                    ['2 V. ABU METHA', 'NPF', 2767, 17, 2784],
+                    ['3 AKHEI ACHUMI', 'IND', 170, 0, 170],
+                ],
+            ],
+            4 => [
+                'name' => 'Ghaspani-I  (ST)', 'detail' => 72, 'summary' => 15,
+                'electors' => 58926, 'polled' => 48285, 'valid' => 48234,
+                'result' => ['winner' => 'Y. HEWOTO AWOMI', 'winner_party' => 'INC', 'winner_votes' => 17646, 'runner' => 'KHEKIHO ZHIMOMI', 'runner_party' => 'NPF', 'runner_votes' => 16132, 'margin' => 1514],
+                'candidates' => [
+                    ['Y. HEWOTO AWOMI', 'INC', 17581, 65, 17646],
+                    ['1 KHEKIHO ZHIMOMI', 'NPF', 16051, 81, 16132],
+                    ['2 DR. KAKHETO ZHIMOMI', 'IND', 14422, 34, 14456],
+                ],
+            ],
+            5 => [
+                'name' => 'Ghaspani-II  (ST)', 'detail' => 72, 'summary' => 16,
+                'electors' => 27905, 'polled' => 23358, 'valid' => 23343,
+                'result' => ['winner' => 'K. HOLLOHON', 'winner_party' => 'IND', 'winner_votes' => 8312, 'runner' => 'ROKONICHA', 'runner_party' => 'NPF', 'runner_votes' => 6661, 'margin' => 1651],
+                'candidates' => [
+                    ['K. HOLLOHON', 'IND', 8305, 7, 8312],
+                    ['1 ROKONICHA', 'NPF', 6659, 2, 6661],
+                    ['2 KIKHEHO SEMA', 'RJD', 4929, 2, 4931],
+                    ['3 MIATHOU', 'INC', 3437, 2, 3439],
+                ],
+            ],
+            9 => [
+                'name' => 'Kohima Town  (ST)', 'detail' => 73, 'summary' => 20,
+                'electors' => 37440, 'polled' => 28170, 'valid' => 27884,
+                'result' => ['winner' => 'DR. NEIKIESALIE NICKY KIRE', 'winner_party' => 'NPF', 'winner_votes' => 16197, 'runner' => 'Z. OBED SOLO', 'runner_party' => 'INC', 'runner_votes' => 9094, 'margin' => 7103],
+                'candidates' => [
+                    ['DR. NEIKIESALIE NICKY KIRE', 'NPF', 15926, 271, 16197],
+                    ['1 Z. OBED SOLO', 'INC', 8953, 141, 9094],
+                    ['2 R. SOPU ANGAMI', 'BJP', 2446, 36, 2482],
+                    ['3 SABU SOTE', 'JD(U)', 108, 3, 111],
+                ],
+            ],
+            23 => [
+                'name' => 'Impur  (ST)', 'detail' => 75, 'summary' => 34,
+                'electors' => 18217, 'polled' => 16891, 'valid' => 16890,
+                'result' => ['winner' => 'NUNGSANGYAPANG', 'winner_party' => 'INC', 'winner_votes' => 10373, 'runner' => 'T.N. MANNEN', 'runner_party' => 'RJD', 'runner_votes' => 6184, 'margin' => 4189],
+                'candidates' => [
+                    ['NUNGSANGYAPANG', 'INC', 10365, 8, 10373],
+                    ['1 T.N. MANNEN', 'RJD', 6172, 12, 6184],
+                    ['2 AKANG', 'NPF', 333, 0, 333],
+                ],
+            ],
+            28 => [
+                'name' => 'Koridang  (ST)', 'detail' => 76, 'summary' => 39,
+                'electors' => 22674, 'polled' => 19506, 'valid' => 19506,
+                'result' => ['winner' => 'IMKONG L. IMCHEN', 'winner_party' => 'NPF', 'winner_votes' => 10144, 'runner' => 'T. CHENUNG LONGCHAR', 'runner_party' => 'IND', 'runner_votes' => 8947, 'margin' => 1197],
+                'candidates' => [
+                    ['IMKONG L. IMCHEN', 'NPF', 9911, 233, 10144],
+                    ['1 T. CHENUNG LONGCHAR', 'IND', 8686, 261, 8947],
+                    ['2 S. MOA IMCHEN', 'INC', 369, 46, 415],
+                ],
+            ],
+            29 => [
+                'name' => 'Jangpetkong  (ST)', 'detail' => 76, 'summary' => 40,
+                'electors' => 15241, 'polled' => 13135, 'valid' => 13131,
+                'result' => ['winner' => 'I. IMKONG', 'winner_party' => 'INC', 'winner_votes' => 7721, 'runner' => 'LONGRINEKEN', 'runner_party' => 'NPF', 'runner_votes' => 5410, 'margin' => 2311],
+                'candidates' => [
+                    ['I. IMKONG', 'INC', 7696, 25, 7721],
+                    ['1 LONGRINEKEN', 'NPF', 5366, 44, 5410],
+                ],
+            ],
+            20 => [
+                'name' => 'Meluri  (ST)', 'detail' => 74, 'summary' => 31,
+                'electors' => 21127, 'polled' => 19360, 'valid' => 19341,
+                'result' => ['winner' => 'YITACHU', 'winner_party' => 'NPF', 'winner_votes' => 11121, 'runner' => 'PENTHU', 'runner_party' => 'INC', 'runner_votes' => 8184, 'margin' => 2937],
+                'candidates' => [
+                    ['YITACHU', 'NPF', 11013, 108, 11121],
+                    ['1 PENTHU', 'INC', 8138, 46, 8184],
+                    ['2 ZUTSEPA KATIRY', 'JD(S)', 36, 0, 36],
+                ],
+            ],
+            48 => [
+                'name' => 'Moka  (ST)', 'detail' => 79, 'summary' => 59,
+                'electors' => 16429, 'polled' => 15604, 'valid' => 15585,
+                'result' => ['winner' => 'E.E. PANGTEANG', 'winner_party' => 'NPF', 'winner_votes' => 8256, 'runner' => 'A. NYIAMNYEI', 'runner_party' => 'INC', 'runner_votes' => 6190, 'margin' => 2066],
+                'candidates' => [
+                    ['E.E. PANGTEANG', 'NPF', 8196, 60, 8256],
+                    ['1 A. NYIAMNYEI', 'INC', 6172, 18, 6190],
+                    ['2 K. KIKO', 'BJP', 1139, 0, 1139],
+                ],
+            ],
+            50 => [
+                'name' => 'Longleng  (ST)', 'detail' => 79, 'summary' => 61,
+                'electors' => 38196, 'polled' => 36737, 'valid' => 36737,
+                'result' => ['winner' => 'S. PANGNYU PHOM', 'winner_party' => 'NCP', 'winner_votes' => 13535, 'runner' => 'ER.T.L. SEMDOK', 'runner_party' => 'RJD', 'runner_votes' => 11309, 'margin' => 2226],
+                'candidates' => [
+                    ['S. PANGNYU PHOM', 'NCP', 13480, 55, 13535],
+                    ['1 ER.T.L. SEMDOK', 'RJD', 11271, 38, 11309],
+                    ['2 SHAMI ANGH', 'INC', 4346, 0, 4346],
+                    ['3 S. BUKCHEM', 'IND', 3601, 0, 3601],
+                    ['4 M. CHENLOM', 'NPF', 1732, 0, 1732],
+                    ['5 PUKYONG', 'JD(S)', 1448, 0, 1448],
+                    ['6 Y.B. ANGAM', 'BJP', 766, 0, 766],
+                ],
+            ],
+            52 => [
+                'name' => 'Longkhim Chare  (ST)', 'detail' => 80, 'summary' => 63,
+                'electors' => 19745, 'polled' => 19305, 'valid' => 19284,
+                'result' => ['winner' => 'S.K. SANGTAM', 'winner_party' => 'INC', 'winner_votes' => 7437, 'runner' => 'IMTILEMBA SANGTAM', 'runner_party' => 'BJP', 'runner_votes' => 6474, 'margin' => 963],
+                'candidates' => [
+                    ['S.K. SANGTAM', 'INC', 7348, 89, 7437],
+                    ['1 IMTILEMBA SANGTAM', 'BJP', 6442, 32, 6474],
+                    ['2 L.T. SANGTAM', 'NPF', 4979, 33, 5012],
+                    ['3 HOTONGSE', 'IND', 361, 0, 361],
+                ],
+            ],
+            27 => [
+                'name' => 'Mokokchung Town  (ST)', 'detail' => 75, 'summary' => 38,
+                'electors' => 6093, 'polled' => 4856, 'valid' => 4856,
+                'result' => ['winner' => 'C. APOK JAMIR', 'winner_party' => 'INC', 'winner_votes' => 2085, 'runner' => 'AOLEPDEN', 'runner_party' => 'IND', 'runner_votes' => 1459, 'margin' => 626],
+                'candidates' => [
+                    ['C. APOK JAMIR', 'INC', 1938, 147, 2085],
+                    ['1 CAND SL. as per form 7 AOLEPDEN', 'IND', 1399, 60, 1459],
+                    ['2 NOKZENKETBA', 'NPF', 1253, 59, 1312],
+                ],
+            ],
+            46 => [
+                'name' => 'Mon Town  (ST)', 'detail' => 79, 'summary' => 57,
+                'electors' => 20576, 'polled' => 17793, 'valid' => 17785,
+                'result' => ['winner' => 'CHINGWANG', 'winner_party' => 'INC', 'winner_votes' => 10316, 'runner' => 'N. THONGWANG', 'runner_party' => 'NPF', 'runner_votes' => 7136, 'margin' => 3180],
+                'candidates' => [
+                    ['CHINGWANG', 'INC', 10008, 308, 10316],
+                    ['1 N. THONGWANG', 'NPF', 6991, 145, 7136],
+                    ['2 PHONGNYEI', 'RJD', 333, 0, 333],
+                ],
+            ],
+            56 => [
+                'name' => 'Noklak  (ST)', 'detail' => 80, 'summary' => 67,
+                'electors' => 14331, 'polled' => 13234, 'valid' => 13191,
+                'result' => ['winner' => 'P. LONGON', 'winner_party' => 'NPF', 'winner_votes' => 7939, 'runner' => 'SEDEM', 'runner_party' => 'INC', 'runner_votes' => 2167, 'margin' => 5772],
+                'candidates' => [
+                    ['P. LONGON', 'NPF', 7902, 37, 7939],
+                    ['1 SEDEM', 'INC', 2161, 6, 2167],
+                    ['2 HAIYENG', 'RJD', 1724, 3, 1727],
+                    ['3 NGON', 'BJP', 1146, 2, 1148],
+                    ['4 CAND SL. as per form 7 KHAOSHAI', 'IND', 210, 0, 210],
+                ],
+            ],
+            7 => [
+                'name' => 'Peren  (ST)', 'detail' => 72, 'summary' => 18,
+                'electors' => 29777, 'polled' => 26042, 'valid' => 26039,
+                'result' => ['winner' => 'T.R. ZELIANG', 'winner_party' => 'NPF', 'winner_votes' => 14959, 'runner' => 'VATSU MERU', 'runner_party' => 'INC', 'runner_votes' => 11080, 'margin' => 3879],
+                'candidates' => [
+                    ['T.R. ZELIANG', 'NPF', 14866, 93, 14959],
+                    ['1 VATSU MERU', 'INC', 10993, 87, 11080],
+                ],
+            ],
+            10 => [
+                'name' => 'Northern Angami - I  (ST)', 'detail' => 73, 'summary' => 21,
+                'electors' => 21831, 'polled' => 16800, 'valid' => 16611,
+                'result' => ['winner' => 'SHURHOZELIE', 'winner_party' => 'NPF', 'winner_votes' => 6229, 'runner' => 'PRASIELIE PIENYU', 'runner_party' => 'IND', 'runner_votes' => 5256, 'margin' => 973],
+                'candidates' => [
+                    ['SHURHOZELIE', 'NPF', 6208, 21, 6229],
+                    ['1 PRASIELIE PIENYU', 'IND', 5182, 74, 5256],
+                    ['2 SEYIEKUOLIE', 'INC', 5113, 13, 5126],
+                ],
+            ],
+            11 => [
+                'name' => 'Northern Angami -II  (ST)', 'detail' => 73, 'summary' => 22,
+                'electors' => 19807, 'polled' => 16840, 'valid' => 16521,
+                'result' => ['winner' => 'NEIPHIU RIO', 'winner_party' => 'NPF', 'winner_votes' => 13641, 'runner' => 'SEVETSO', 'runner_party' => 'INC', 'runner_votes' => 2880, 'margin' => 10761],
+                'candidates' => [
+                    ['NEIPHIU RIO', 'NPF', 13571, 70, 13641],
+                    ['1 SEVETSO', 'INC', 2743, 137, 2880],
+                ],
+            ],
+            51 => [
+                'name' => 'Noksen  (ST)', 'detail' => 80, 'summary' => 62,
+                'electors' => 11699, 'polled' => 9185, 'valid' => 9180,
+                'result' => ['winner' => 'H. CHUBA', 'winner_party' => 'INC', 'winner_votes' => 2988, 'runner' => 'C.M. CHANG', 'runner_party' => 'NPF', 'runner_votes' => 2905, 'margin' => 83],
+                'candidates' => [
+                    ['H. CHUBA', 'INC', 2963, 25, 2988],
+                    ['1 C.M. CHANG', 'NPF', 2872, 33, 2905],
+                    ['2 CHANGLEMBA', 'RJD', 1722, 19, 1741],
+                    ['3 Y. LIMA', 'BJP', 1543, 3, 1546],
+                ],
+            ],
+            13 => [
+                'name' => 'Pughoboto  (ST)', 'detail' => 73, 'summary' => 24,
+                'electors' => 16864, 'polled' => 15491, 'valid' => 15489,
+                'result' => ['winner' => 'JOSHUA', 'winner_party' => 'INC', 'winner_votes' => 6853, 'runner' => 'Y. VIKHEHO SWU', 'runner_party' => 'NPF', 'runner_votes' => 6421, 'margin' => 432],
+                'candidates' => [
+                    ['JOSHUA', 'INC', 6779, 74, 6853],
+                    ['1 Y. VIKHEHO SWU', 'NPF', 6316, 105, 6421],
+                    ['2 HUSKA SUMI', 'IND', 2186, 29, 2215],
+                ],
+            ],
+            16 => [
+                'name' => 'Pfutsero  (ST)', 'detail' => 74, 'summary' => 27,
+                'electors' => 25587, 'polled' => 21016, 'valid' => 20969,
+                'result' => ['winner' => 'NEIBA', 'winner_party' => 'NPF', 'winner_votes' => 10574, 'runner' => 'KEWEKHAPE THERIE', 'runner_party' => 'INC', 'runner_votes' => 9453, 'margin' => 1121],
+                'candidates' => [
+                    ['NEIBA', 'NPF', 10560, 14, 10574],
+                    ['1 KEWEKHAPE THERIE', 'INC', 9389, 64, 9453],
+                    ['2 PFUCHUKHA LASUSHE', 'RJD', 942, 0, 942],
+                ],
+            ],
+            19 => [
+                'name' => 'Phek  (ST)', 'detail' => 74, 'summary' => 30,
+                'electors' => 24795, 'polled' => 19803, 'valid' => 19700,
+                'result' => ['winner' => 'KUZHOLUZO', 'winner_party' => 'NPF', 'winner_votes' => 10919, 'runner' => 'DEZOTO RHAKHO', 'runner_party' => 'RJD', 'runner_votes' => 4643, 'margin' => 6276],
+                'candidates' => [
+                    ['KUZHOLUZO', 'NPF', 10710, 209, 10919],
+                    ['1 DEZOTO RHAKHO', 'RJD', 4596, 47, 4643],
+                    ['2 KUVEZOCHI', 'INC', 4072, 66, 4138],
+                ],
+            ],
+            44 => [
+                'name' => 'Phomching  (ST)', 'detail' => 78, 'summary' => 55,
+                'electors' => 19569, 'polled' => 18233, 'valid' => 18233,
+                'result' => ['winner' => 'KONGAM', 'winner_party' => 'INC', 'winner_votes' => 8802, 'runner' => 'POHWANG', 'runner_party' => 'BJP', 'runner_votes' => 7773, 'margin' => 1029],
+                'candidates' => [
+                    ['KONGAM', 'INC', 8797, 5, 8802],
+                    ['1 POHWANG', 'BJP', 7710, 63, 7773],
+                    ['2 WANGPAI', 'NPF', 1280, 5, 1285],
+                    ['3 LEIYANG', 'LJP', 373, 0, 373],
+                ],
+            ],
+            36 => [
+                'name' => 'Satakha  (ST)', 'detail' => 77, 'summary' => 47,
+                'electors' => 16047, 'polled' => 13530, 'valid' => 13530,
+                'result' => ['winner' => 'G. KAITO', 'winner_party' => 'NPF', 'winner_votes' => 7621, 'runner' => 'INAVI', 'runner_party' => 'INC', 'runner_votes' => 5909, 'margin' => 1712],
+                'candidates' => [
+                    ['G. KAITO', 'NPF', 7369, 252, 7621],
+                    ['1 INAVI', 'INC', 5839, 70, 5909],
+                ],
+            ],
+            39 => [
+                'name' => 'Sanis  (ST)', 'detail' => 77, 'summary' => 50,
+                'electors' => 23461, 'polled' => 22475, 'valid' => 22475,
+                'result' => ['winner' => 'RALANTHUNG', 'winner_party' => 'NPF', 'winner_votes' => 5114, 'runner' => 'T.L. MERRY', 'runner_party' => 'BJP', 'runner_votes' => 4037, 'margin' => 1077],
+                'candidates' => [
+                    ['RALANTHUNG', 'NPF', 5058, 56, 5114],
+                    ['1 T.L. MERRY', 'BJP', 4018, 19, 4037],
+                    ['2 Y. SULANTHUNG H. LOTHA', 'NCP', 3919, 60, 3979],
+                    ['3 NKHAO LOTHA', 'RJD', 3470, 37, 3507],
+                    ['4 Y. EKYIMO KIKON', 'IND', 2559, 52, 2611],
+                    ['5 CAND SL. as per form 7 N. THOMAS LOTHA', 'INC', 2304, 17, 2321],
+                    ['6 ER. SENKATHUNG JAMI', 'IND', 861, 45, 906],
+                ],
+            ],
+            60 => [
+                'name' => 'Pungro-Kiphire  (ST)', 'detail' => 81, 'summary' => 71,
+                'electors' => 28707, 'polled' => 26789, 'valid' => 26787,
+                'result' => ['winner' => 'TORECHU', 'winner_party' => 'NPF', 'winner_votes' => 13275, 'runner' => 'R.L. AKAMBA', 'runner_party' => 'INC', 'runner_votes' => 9308, 'margin' => 3967],
+                'candidates' => [
+                    ['TORECHU', 'NPF', 13192, 83, 13275],
+                    ['1 R.L. AKAMBA', 'INC', 9206, 102, 9308],
+                    ['2 R. TSAPIKIU SANGTAM', 'RJD', 3653, 38, 3691],
+                    ['3 SOLY', 'BJP', 511, 2, 513],
+                ],
+            ],
+            14 => [
+                'name' => 'Southern Angami-I  (ST)', 'detail' => 73, 'summary' => 25,
+                'electors' => 13525, 'polled' => 11816, 'valid' => 11780,
+                'result' => ['winner' => 'VIKHO-O YHOSHU', 'winner_party' => 'NPF', 'winner_votes' => 6774, 'runner' => 'MEDOKUL', 'runner_party' => 'INC', 'runner_votes' => 5006, 'margin' => 1768],
+                'candidates' => [
+                    ['CAND SL. as per form 7 VIKHO-O YHOSHU', 'NPF', 6746, 28, 6774],
+                    ['1 MEDOKUL', 'INC', 5005, 1, 5006],
+                ],
+            ],
+            15 => [
+                'name' => 'Southern Angami-II  (ST)', 'detail' => 74, 'summary' => 26,
+                'electors' => 16212, 'polled' => 13726, 'valid' => 13653,
+                'result' => ['winner' => 'K.V. PUSA', 'winner_party' => 'INC', 'winner_votes' => 5116, 'runner' => 'DR. ATHA VIZOL', 'runner_party' => 'NPF', 'runner_votes' => 4598, 'margin' => 518],
+                'candidates' => [
+                    ['K.V. PUSA', 'INC', 5095, 21, 5116],
+                    ['1 DR. ATHA VIZOL', 'NPF', 4579, 19, 4598],
+                    ['2 SWEDEHOL SALE', 'IND', 3933, 6, 3939],
+                ],
+            ],
+            33 => [
+                'name' => 'Suruhuto  (ST)', 'detail' => 76, 'summary' => 44,
+                'electors' => 14653, 'polled' => 13350, 'valid' => 13350,
+                'result' => ['winner' => 'SHETOYI', 'winner_party' => 'IND', 'winner_votes' => 7053, 'runner' => 'KHUTOVI', 'runner_party' => 'INC', 'runner_votes' => 6257, 'margin' => 796],
+                'candidates' => [
+                    ['SHETOYI', 'IND', 6960, 93, 7053],
+                    ['1 KHUTOVI', 'INC', 6036, 221, 6257],
+                    ['2 HOKHETO', 'RJD', 33, 7, 40],
+                ],
+            ],
+            6 => [
+                'name' => 'Tenning  (ST)', 'detail' => 72, 'summary' => 17,
+                'electors' => 29560, 'polled' => 25562, 'valid' => 25557,
+                'result' => ['winner' => 'TARIE', 'winner_party' => 'INC', 'winner_votes' => 15234, 'runner' => 'K. SAMUEL MEDALIANG', 'runner_party' => 'NPF', 'runner_votes' => 10323, 'margin' => 4911],
+                'candidates' => [
+                    ['TARIE', 'INC', 15220, 14, 15234],
+                    ['1 K. SAMUEL MEDALIANG', 'NPF', 10317, 6, 10323],
+                ],
+            ],
+            43 => [
+                'name' => 'Tapi  (ST)', 'detail' => 78, 'summary' => 54,
+                'electors' => 14399, 'polled' => 13142, 'valid' => 12898,
+                'result' => ['winner' => 'LANPHA', 'winner_party' => 'INC', 'winner_votes' => 6941, 'runner' => 'NOKE', 'runner_party' => 'NPF', 'runner_votes' => 5957, 'margin' => 984],
+                'candidates' => [
+                    ['LANPHA', 'INC', 6923, 18, 6941],
+                    ['1 NOKE', 'NPF', 5945, 12, 5957],
+                ],
+            ],
+            45 => [
+                'name' => 'Tehok  (ST)', 'detail' => 79, 'summary' => 56,
+                'electors' => 15826, 'polled' => 14692, 'valid' => 14692,
+                'result' => ['winner' => 'C.L. JOHN', 'winner_party' => 'NPF', 'winner_votes' => 7829, 'runner' => 'SHABOH', 'runner_party' => 'INC', 'runner_votes' => 6426, 'margin' => 1403],
+                'candidates' => [
+                    ['C.L. JOHN', 'NPF', 7715, 114, 7829],
+                    ['1 SHABOH', 'INC', 6351, 75, 6426],
+                    ['2 CHENNYEM', 'RJD', 356, 0, 356],
+                    ['3 THRONWA', 'APP', 81, 0, 81],
+                ],
+            ],
+            49 => [
+                'name' => 'Tamlu  (ST)', 'detail' => 79, 'summary' => 60,
+                'electors' => 33475, 'polled' => 33365, 'valid' => 33365,
+                'result' => ['winner' => 'P. DAKO PHOM', 'winner_party' => 'IND', 'winner_votes' => 17860, 'runner' => 'B.S. NGANLANG', 'runner_party' => 'INC', 'runner_votes' => 12932, 'margin' => 4928],
+                'candidates' => [
+                    ['P. DAKO PHOM', 'IND', 17860, 0, 17860],
+                    ['1 B.S. NGANLANG', 'INC', 12914, 18, 12932],
+                    ['2 NYEMLI', 'NPF', 1675, 0, 1675],
+                    ['3 M. MANOHM', 'RJD', 898, 0, 898],
+                ],
+            ],
+            12 => [
+                'name' => 'Tseminyu  (ST)', 'detail' => 73, 'summary' => 23,
+                'electors' => 25479, 'polled' => 24383, 'valid' => 24372,
+                'result' => ['winner' => 'R. KHING', 'winner_party' => 'NPF', 'winner_votes' => 8216, 'runner' => 'ER. LEVI RENGMA', 'runner_party' => 'IND', 'runner_votes' => 8150, 'margin' => 66],
+                'candidates' => [
+                    ['R. KHING', 'NPF', 8202, 14, 8216],
+                    ['1 ER. LEVI RENGMA', 'IND', 8139, 11, 8150],
+                    ['2 NILLO', 'INC', 7984, 22, 8006],
+                ],
+            ],
+            41 => [
+                'name' => 'Tizit  (ST)', 'detail' => 78, 'summary' => 52,
+                'electors' => 18904, 'polled' => 16884, 'valid' => 16884,
+                'result' => ['winner' => 'ALOH', 'winner_party' => 'INC', 'winner_votes' => 8463, 'runner' => 'TINGKUP', 'runner_party' => 'NPF', 'runner_votes' => 6284, 'margin' => 2179],
+                'candidates' => [
+                    ['ALOH', 'INC', 8397, 66, 8463],
+                    ['1 TINGKUP', 'NPF', 6275, 9, 6284],
+                    ['2 YEANGPHONG', 'RJD', 1975, 6, 1981],
+                    ['3 KHONGWANG', 'BJP', 151, 5, 156],
+                ],
+            ],
+            55 => [
+                'name' => 'Tobu  (ST)', 'detail' => 80, 'summary' => 66,
+                'electors' => 18056, 'polled' => 17224, 'valid' => 17193,
+                'result' => ['winner' => 'NAIBA', 'winner_party' => 'NPF', 'winner_votes' => 10017, 'runner' => 'BONGKHAO', 'runner_party' => 'INC', 'runner_votes' => 7176, 'margin' => 2841],
+                'candidates' => [
+                    ['NAIBA', 'NPF', 9925, 92, 10017],
+                    ['1 BONGKHAO', 'INC', 7165, 11, 7176],
+                ],
+            ],
+            57 => [
+                'name' => 'Thonoknyu  (ST)', 'detail' => 81, 'summary' => 68,
+                'electors' => 17774, 'polled' => 16196, 'valid' => 16196,
+                'result' => ['winner' => 'S. HENO', 'winner_party' => 'NPF', 'winner_votes' => 5600, 'runner' => 'PONGON', 'runner_party' => 'IND', 'runner_votes' => 3432, 'margin' => 2168],
+                'candidates' => [
+                    ['S. HENO', 'NPF', 5590, 10, 5600],
+                    ['1 PONGON', 'IND', 3427, 5, 3432],
+                    ['2 P.K.F. TOCHU', 'IND', 2789, 2, 2791],
+                    ['3 KHONGO', 'RJD', 1607, 2, 1609],
+                    ['4 DR.N.L. AIMONG', 'JD(S)', 1532, 3, 1535],
+                    ['5 KHONOU', 'INC', 666, 0, 666],
+                    ['6 CHINGKONG', 'BJP', 536, 0, 536],
+                    ['7 T.K. MEYO', 'UNDP', 18, 0, 18],
+                    ['8 PUSHOU', 'NCP', 9, 0, 9],
+                ],
+            ],
+            21 => [
+                'name' => 'Tuli  (ST)', 'detail' => 75, 'summary' => 32,
+                'electors' => 22274, 'polled' => 15505, 'valid' => 15505,
+                'result' => ['winner' => 'L. TEMJEN JAMIR', 'winner_party' => 'NPF', 'winner_votes' => 4411, 'runner' => 'T. TALI', 'runner_party' => 'IND', 'runner_votes' => 4231, 'margin' => 180],
+                'candidates' => [
+                    ['L. TEMJEN JAMIR', 'NPF', 4376, 35, 4411],
+                    ['1 T. TALI', 'IND', 4207, 24, 4231],
+                    ['2 IMTIWAPANG', 'INC', 3507, 24, 3531],
+                    ['3 N.I. WATI', 'RJD', 3308, 24, 3332],
+                ],
+            ],
+            37 => [
+                'name' => 'Tyui  (ST)', 'detail' => 77, 'summary' => 48,
+                'electors' => 20803, 'polled' => 20092, 'valid' => 20090,
+                'result' => ['winner' => 'YANTHUNGO', 'winner_party' => 'BJP', 'winner_votes' => 6172, 'runner' => 'YANKITHUNG YANTHAN', 'runner_party' => 'INC', 'runner_votes' => 5335, 'margin' => 837],
+                'candidates' => [
+                    ['YANTHUNGO', 'BJP', 6091, 81, 6172],
+                    ['1 YANKITHUNG YANTHAN', 'INC', 5226, 109, 5335],
+                    ['2 T.A. NGULLIE', 'UNDP', 2513, 52, 2565],
+                    ['3 Y.Y. KIKON', 'NCP', 1957, 69, 2026],
+                    ['4 DR. PHYOBEMO NGULLY', 'IND', 1757, 43, 1800],
+                    ['5 PINYIMTHUNG LOTHA', 'NPF', 998, 0, 998],
+                    ['6 SENCHUMO', 'IND', 956, 18, 974],
+                    ['7 P. YIBEMO KIKON', 'RJD', 220, 0, 220],
+                ],
+            ],
+            53 => [
+                'name' => 'Tuensang Sadar-I  (ST)', 'detail' => 80, 'summary' => 64,
+                'electors' => 23194, 'polled' => 16515, 'valid' => 16418,
+                'result' => ['winner' => 'P. CHUBA', 'winner_party' => 'INC', 'winner_votes' => 9230, 'runner' => 'NUNGSANGLEMBA CHANG', 'runner_party' => 'BJP', 'runner_votes' => 4078, 'margin' => 5152],
+                'candidates' => [
+                    ['P. CHUBA', 'INC', 8791, 439, 9230],
+                    ['1 NUNGSANGLEMBA CHANG', 'BJP', 3933, 145, 4078],
+                    ['2 L. ELAM', 'NPF', 3024, 86, 3110],
+                ],
+            ],
+            54 => [
+                'name' => 'Tuensang Sadar-II  (ST)', 'detail' => 80, 'summary' => 65,
+                'electors' => 18619, 'polled' => 17506, 'valid' => 17505,
+                'result' => ['winner' => 'KEJONG', 'winner_party' => 'INC', 'winner_votes' => 7628, 'runner' => 'RHAKILA', 'runner_party' => 'NCP', 'runner_votes' => 7275, 'margin' => 353],
+                'candidates' => [
+                    ['KEJONG', 'INC', 7608, 20, 7628],
+                    ['1 RHAKILA', 'NCP', 7259, 16, 7275],
+                    ['2 K. IMLONG', 'NPF', 1842, 13, 1855],
+                    ['3 N. KAIMANG', 'RJD', 704, 1, 705],
+                    ['4 WONGTO', 'BJP', 42, 0, 42],
+                ],
+            ],
+            8 => [
+                'name' => 'Western Angami  (ST)', 'detail' => 73, 'summary' => 19,
+                'electors' => 20162, 'polled' => 15545, 'valid' => 15471,
+                'result' => ['winner' => 'KIYANILIE PESEYIE', 'winner_party' => 'NPF', 'winner_votes' => 6284, 'runner' => 'ACHUBU', 'runner_party' => 'INC', 'runner_votes' => 4854, 'margin' => 1430],
+                'candidates' => [
+                    ['KIYANILIE PESEYIE', 'NPF', 6243, 41, 6284],
+                    ['1 ACHUBU', 'INC', 4844, 10, 4854],
+                    ['2 ASU KEYHO', 'IND', 3978, 12, 3990],
+                    ['3 KELHUZHATO NAKHRO', 'LJP', 343, 0, 343],
+                ],
+            ],
+            35 => [
+                'name' => 'Zunheboto  (ST)', 'detail' => 77, 'summary' => 46,
+                'electors' => 23065, 'polled' => 18409, 'valid' => 18409,
+                'result' => ['winner' => 'DR. K.C. NIHOSHE', 'winner_party' => 'IND', 'winner_votes' => 9592, 'runner' => 'S. HUKAVI ZHIMOMI', 'runner_party' => 'INC', 'runner_votes' => 8403, 'margin' => 1189],
+                'candidates' => [
+                    ['DR. K.C. NIHOSHE', 'IND', 9382, 210, 9592],
+                    ['1 S. HUKAVI ZHIMOMI', 'INC', 8213, 190, 8403],
+                    ['2 KHUVISHE', 'BJP', 400, 14, 414],
+                ],
+            ],
+            38 => [
+                'name' => 'Wokha  (ST)', 'detail' => 77, 'summary' => 49,
+                'electors' => 39988, 'polled' => 33417, 'valid' => 33405,
+                'result' => ['winner' => 'DR. CHUMBEN MURRY', 'winner_party' => 'NCP', 'winner_votes' => 14181, 'runner' => 'DR. T.M. LOTHA', 'runner_party' => 'BJP', 'runner_votes' => 8270, 'margin' => 5911],
+                'candidates' => [
+                    ['DR. CHUMBEN MURRY', 'NCP', 13793, 388, 14181],
+                    ['1 DR. T.M. LOTHA', 'BJP', 7902, 368, 8270],
+                    ['2 MHAO HUMTSOE', 'INC', 6413, 270, 6683],
+                    ['3 A. YENTSAO ODYUO', 'NPF', 3601, 96, 3697],
+                    ['4 KHYOTHUNGO K. OVUNG', 'RJD', 574, 0, 574],
+                ],
+            ],
+            42 => [
+                'name' => 'Wakching  (ST)', 'detail' => 78, 'summary' => 53,
+                'electors' => 19718, 'polled' => 19286, 'valid' => 19228,
+                'result' => ['winner' => 'M.C. KONYAK', 'winner_party' => 'BJP', 'winner_votes' => 7476, 'runner' => 'YONA', 'runner_party' => 'INC', 'runner_votes' => 6213, 'margin' => 1263],
+                'candidates' => [
+                    ['M.C. KONYAK', 'BJP', 7367, 109, 7476],
+                    ['1 YONA', 'INC', 6180, 33, 6213],
+                    ['2 P. ENYEI', 'RJD', 5533, 6, 5539],
+                ],
+            ],
+            default => null,
+        };
+        if ($source === null || ($record['name'] ?? null) !== $source['name']
+            || ($record['state_name'] ?? null) !== 'Nagaland'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['source_warning_code'] ?? null) !== 'summary_turnout_with_detail_warnings'
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING.'; Some candidate text could not be parsed; see the original PDF.; Detailed totals are missing or use an unsupported layout.'
+            || ($record['detail_page'] ?? null) !== $source['detail'] || ($record['summary_page'] ?? null) !== $source['summary']
+            || ($record['summary_source_file'] ?? null) !== '044bf7c98b9f57f1edb7ab5b-8537.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== 'c65e30c267349438e87aa256e6a289281d570236d0226c64901e659b65d89043'
+            || ($record['electors'] ?? null) !== $source['electors'] || ($record['votes_polled'] ?? null) !== $source['polled']
+            || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== $source['valid']
+            || $this->officialPdfSummaryResult($record) === null
+            || ($record['summary_result'] ?? null) !== $source['result']) {
+            return false;
+        }
+        $expected = $source['candidates'];
+        $candidates = $record['candidates'] ?? [];
+        if (count($candidates) !== count($expected)) {
+            return false;
+        }
+        foreach (array_values($candidates) as $index => $candidate) {
+            if (($candidate['is_nota'] ?? false) || array_map(fn ($key) => $candidate[$key] ?? null, ['candidate_name', 'party_at_election', 'general_votes', 'postal_votes', 'votes']) !== $expected[$index]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** Exact reviewed Aizawl 2008 records; original candidate text and warnings remain preserved. */
+    private function hasVerifiedMizoram2008CandidateVotes(array $record): bool
+    {
+        $source = match ($record['code'] ?? null) {
+            10 => [
+                'name' => 'Aizawl North-I  (ST)', 'detail' => 54, 'summary' => 21,
+                'electors' => 17370, 'polled' => 13424, 'valid' => 13414,
+                'result' => ['winner' => 'R.ROMAWIA', 'winner_party' => 'INC', 'winner_votes' => 4948, 'runner' => 'DR. LALZAMA', 'runner_party' => 'MNF', 'runner_votes' => 3911, 'margin' => 1037],
+                'candidates' => [
+                    ['R.ROMAWIA', 'INC', 4887, 61, 4948],
+                    ['3 DR. LALZAMA', 'MNF', 3822, 89, 3911],
+                    ['2 VANLALHRUAIA', 'ZNP', 3112, 46, 3158],
+                    ['4 M.LALMANZUALA', 'IND', 1132, 26, 1158],
+                    ['6 CHAWNGROLIANA', 'NCP', 153, 2, 155],
+                    ['1 LALSAILOVA SAILO', 'LJP', 83, 1, 84],
+                ],
+            ],
+            11 => [
+                'name' => 'Aizawl North-II  (ST)', 'detail' => 54, 'summary' => 22,
+                'electors' => 17769, 'polled' => 14282, 'valid' => 14259,
+                'result' => ['winner' => 'H.LIANSAILOVA', 'winner_party' => 'INC', 'winner_votes' => 5207, 'runner' => 'LALTHANLIANA', 'runner_party' => 'MPC', 'runner_votes' => 4941, 'margin' => 266],
+                'candidates' => [
+                    ['H.LIANSAILOVA', 'INC', 5100, 107, 5207],
+                    ['4 LALTHANLIANA', 'MPC', 4844, 97, 4941],
+                    ['3 LALCHAMLIANA', 'MNF', 3828, 116, 3944],
+                    ['1 C.LALNUNZIRI', 'BJP', 84, 3, 87],
+                    ['2 GABRIEL LALRUATHLUA', 'LJP', 77, 3, 80],
+                ],
+            ],
+            13 => [
+                'name' => 'Aizawl East-I', 'detail' => 54, 'summary' => 24,
+                'electors' => 16962, 'polled' => 13534, 'valid' => 13519,
+                'result' => ['winner' => 'R.LALRINAWMA', 'winner_party' => 'INC', 'winner_votes' => 5084, 'runner' => 'F.MALSAWMA', 'runner_party' => 'MNF', 'runner_votes' => 3995, 'margin' => 1089],
+                'candidates' => [
+                    ['R.LALRINAWMA', 'INC', 5047, 37, 5084],
+                    ['1 F.MALSAWMA', 'MNF', 3942, 53, 3995],
+                    ['2 ZARZOLIANA', 'ZNP', 3617, 47, 3664],
+                    ['4 LALTHAZUALA RAWITE', 'IND', 334, 3, 337],
+                    ['6 J.F.ROTHANGLIANA', 'LJP', 268, 1, 269],
+                    ['5 RUALPAWLA', 'IND', 95, 2, 97],
+                    ['7 SUAKDAILOVA', 'NCP', 68, 5, 73],
+                ],
+            ],
+            14 => [
+                'name' => 'Aizawl East-II  (ST)', 'detail' => 55, 'summary' => 25,
+                'electors' => 14845, 'polled' => 11518, 'valid' => 11476,
+                'result' => ['winner' => 'LALSAWTA', 'winner_party' => 'INC', 'winner_votes' => 4794, 'runner' => 'H.VANLALAUVA', 'runner_party' => 'MNF', 'runner_votes' => 3445, 'margin' => 1349],
+                'candidates' => [
+                    ['LALSAWTA', 'INC', 4661, 133, 4794],
+                    ['2 H.VANLALAUVA', 'MNF', 3296, 149, 3445],
+                    ['3 V.LAICHHINGA', 'MPC', 3049, 101, 3150],
+                    ['1 J.F.ROTHANGLIANA', 'LJP', 85, 2, 87],
+                ],
+            ],
+            12 => [
+                'name' => 'Aizawl North-III  (ST)', 'detail' => 54, 'summary' => 23,
+                'electors' => 14732, 'polled' => 11358, 'valid' => 11351,
+                'result' => ['winner' => 'LAL THANZARA', 'winner_party' => 'INC', 'winner_votes' => 4109, 'runner' => 'K.SANGTHUAMA', 'runner_party' => 'MNF', 'runner_votes' => 3603, 'margin' => 506],
+                'candidates' => [
+                    ['LAL THANZARA', 'INC', 4044, 65, 4109],
+                    ['1 K.SANGTHUAMA', 'MNF', 3511, 92, 3603],
+                    ['3 ROSIAMNGHETA', 'MPC', 3396, 76, 3472],
+                    ['2 C.LALTANPUIA', 'IND', 118, 2, 120],
+                    ['5 P.C.LALSANGLIANA', 'LJP', 45, 2, 47],
+                ],
+            ],
+            18 => [
+                'name' => 'Aizawl South-I  (ST)', 'detail' => 55, 'summary' => 29,
+                'electors' => 17536, 'polled' => 14183, 'valid' => 14136,
+                'result' => ['winner' => 'K.LIANTLINGA', 'winner_party' => 'ZNP', 'winner_votes' => 4498, 'runner' => 'R.VANLALVENA', 'runner_party' => 'INC', 'runner_votes' => 4470, 'margin' => 28],
+                'candidates' => [
+                    ['K.LIANTLINGA', 'ZNP', 4410, 88, 4498],
+                    ['2 R.VANLALVENA', 'INC', 4400, 70, 4470],
+                    ['3 VANLALZAWMA', 'MNF', 3894, 104, 3998],
+                    ['4 A.LALVUNGA', 'IND', 1025, 18, 1043],
+                    ['6 Z.D.LALHRIATA', 'LJP', 65, 2, 67],
+                    ['5 H.HAULIANA', 'NCP', 56, 4, 60],
+                ],
+            ],
+            19 => [
+                'name' => 'Aizawl South-II  (ST)', 'detail' => 55, 'summary' => 30,
+                'electors' => 18055, 'polled' => 14232, 'valid' => 14195,
+                'result' => ['winner' => 'LT.COL. ZOSANGZUALA', 'winner_party' => 'INC', 'winner_votes' => 5159, 'runner' => 'DENGHMINGTHANGA', 'runner_party' => 'ZNP', 'runner_votes' => 4670, 'margin' => 489],
+                'candidates' => [
+                    ['LT.COL. ZOSANGZUALA', 'INC', 5060, 99, 5159],
+                    ['4 CAND SL. as per form 7 DENGHMINGTHANGA', 'ZNP', 4549, 121, 4670],
+                    ['1 R.KHAWPUITHANGA', 'MNF', 4090, 107, 4197],
+                    ['3 VANHNUAITHANGA', 'LJP', 94, 1, 95],
+                    ['5 JAMES VANLALHRUAIA', 'NCP', 65, 9, 74],
+                ],
+            ],
+            20 => [
+                'name' => 'Aizawl South-III  (ST)', 'detail' => 56, 'summary' => 31,
+                'electors' => 16064, 'polled' => 14010, 'valid' => 14001,
+                'result' => ['winner' => 'K.S.THANGA', 'winner_party' => 'INC', 'winner_votes' => 5284, 'runner' => 'TAWNLUIA', 'runner_party' => 'MNF', 'runner_votes' => 4934, 'margin' => 350],
+                'candidates' => [
+                    ['K.S.THANGA', 'INC', 5238, 46, 5284],
+                    ['2 TAWNLUIA', 'MNF', 4876, 58, 4934],
+                    ['1 DR. F.LALNUNMAWIA', 'IND', 3698, 23, 3721],
+                    ['4 R.C.LALDINGLUAIA', 'LJP', 60, 2, 62],
+                ],
+            ],
+            8 => [
+                'name' => 'Chalfilh  (ST)', 'detail' => 53, 'summary' => 19,
+                'electors' => 16091, 'polled' => 13207, 'valid' => 13198,
+                'result' => ['winner' => 'CHAWNGTINTHANGA', 'winner_party' => 'INC', 'winner_votes' => 4924, 'runner' => 'LALVENHIMA HMAR', 'runner_party' => 'MPC', 'runner_votes' => 4381, 'margin' => 543],
+                'candidates' => [
+                    ['CHAWNGTINTHANGA', 'INC', 4914, 10, 4924],
+                    ['1 LALVENHIMA HMAR', 'MPC', 4370, 11, 4381],
+                    ['3 J.C.CHHUANLIANA', 'MNF', 3352, 22, 3374],
+                    ['2 C.RAMKINLOVA', 'BJP', 374, 0, 374],
+                    ['4 VANLALHMINGCHHUANGI', 'LB', 60, 0, 60],
+                    ['5 J.NEIHKHUMA', 'IND', 46, 0, 46],
+                    ['7 K.ZOTHANSANGA', 'LJP', 39, 0, 39],
+                ],
+            ],
+            15 => [
+                'name' => 'Aizawl West-I  (ST)', 'detail' => 55, 'summary' => 26,
+                'electors' => 17844, 'polled' => 14667, 'valid' => 14637,
+                'result' => ['winner' => 'LALDUHAWMA', 'winner_party' => 'ZNP', 'winner_votes' => 5705, 'runner' => 'R.TLANGHMINGTHANGA', 'runner_party' => 'MNF', 'runner_votes' => 4963, 'margin' => 742],
+                'candidates' => [
+                    ['LALDUHAWMA', 'ZNP', 5605, 100, 5705],
+                    ['2 R.TLANGHMINGTHANGA', 'MNF', 4869, 94, 4963],
+                    ['3 ANDREW LALHERLIANA', 'INC', 3801, 43, 3844],
+                    ['1 LALSANGZUALA', 'LJP', 125, 0, 125],
+                ],
+            ],
+            16 => [
+                'name' => 'Aizawl West-II  (ST)', 'detail' => 55, 'summary' => 27,
+                'electors' => 15932, 'polled' => 12615, 'valid' => 12605,
+                'result' => ['winner' => 'BRIG. T. SAILO', 'winner_party' => 'MPC', 'winner_votes' => 4654, 'runner' => 'ZOTHANKIMI', 'runner_party' => 'INC', 'runner_votes' => 4156, 'margin' => 498],
+                'candidates' => [
+                    ['BRIG. T. SAILO', 'MPC', 4566, 88, 4654],
+                    ['2 ZOTHANKIMI', 'INC', 4098, 58, 4156],
+                    ['3 LALRUATKIMA', 'MNF', 3641, 93, 3734],
+                    ['1 VANLALFAKAWMA', 'LJP', 60, 1, 61],
+                ],
+            ],
+            17 => [
+                'name' => 'Aizawl West-III  (ST)', 'detail' => 55, 'summary' => 28,
+                'electors' => 16418, 'polled' => 12855, 'valid' => 12821,
+                'result' => ['winner' => 'R.SELTHUAMA', 'winner_party' => 'INC', 'winner_votes' => 5233, 'runner' => 'COL. LALCHUNGNUNGA SAILO', 'runner_party' => 'MPC', 'runner_votes' => 4120, 'margin' => 1113],
+                'candidates' => [
+                    ['R.SELTHUAMA', 'INC', 5112, 121, 5233],
+                    ['2 COL. LALCHUNGNUNGA SAILO', 'MPC', 4035, 85, 4120],
+                    ['1 K.VANLALAUVA', 'MNF', 3284, 96, 3380],
+                    ['3 C.LALNUNMAWIA', 'LJP', 88, 0, 88],
+                ],
+            ],
+            2 => [
+                'name' => 'Dampa  (ST)', 'detail' => 52, 'summary' => 13,
+                'electors' => 13981, 'polled' => 12182, 'valid' => 12169,
+                'result' => ['winner' => 'LALROBIAKA', 'winner_party' => 'INC', 'winner_votes' => 5004, 'runner' => 'LALRINTLUANGA SAILO', 'runner_party' => 'MNF', 'runner_votes' => 4324, 'margin' => 680],
+                'candidates' => [
+                    ['LALROBIAKA', 'INC', 4621, 383, 5004],
+                    ['5 LALRINTLUANGA SAILO', 'MNF', 4218, 106, 4324],
+                    ['4 LALHMINGTHANGA SAILO', 'ZNP', 2348, 39, 2387],
+                    ['3 C.HMINGTHANSANGA', 'BJP', 236, 34, 270],
+                    ['1 ZAKHUMA', 'LJP', 113, 2, 115],
+                    ['6 LALAWMPUIA CHHANGTE', 'NCP', 66, 3, 69],
+                ],
+            ],
+            23 => [
+                'name' => 'Champhai North  (ST)', 'detail' => 56, 'summary' => 34,
+                'electors' => 15488, 'polled' => 12744, 'valid' => 12734,
+                'result' => ['winner' => 'T.T.ZOTHANSANGA', 'winner_party' => 'INC', 'winner_votes' => 5699, 'runner' => 'ZORAMTHANGA', 'runner_party' => 'MNF', 'runner_votes' => 4443, 'margin' => 1256],
+                'candidates' => [
+                    ['T.T.ZOTHANSANGA', 'INC', 5617, 82, 5699],
+                    ['3 ZORAMTHANGA', 'MNF', 4369, 74, 4443],
+                    ['1 ZOSIAMA PACHUAU', 'MPC', 1992, 30, 2022],
+                    ['2 P.C.ZAIREMTHANGA', 'IND', 375, 3, 378],
+                    ['6 NANGSIANMUNG', 'IND', 144, 0, 144],
+                    ['5 LALTHUAMA SAILO', 'LJP', 47, 1, 48],
+                ],
+            ],
+            24 => [
+                'name' => 'Champhai South  (ST)', 'detail' => 56, 'summary' => 35,
+                'electors' => 14822, 'polled' => 11906, 'valid' => 11888,
+                'result' => ['winner' => 'J.H.ROTHUAMA', 'winner_party' => 'INC', 'winner_votes' => 5345, 'runner' => 'ZORAMTHANGA', 'runner_party' => 'MNF', 'runner_votes' => 4287, 'margin' => 1058],
+                'candidates' => [
+                    ['J.H.ROTHUAMA', 'INC', 5288, 57, 5345],
+                    ['2 ZORAMTHANGA', 'MNF', 4220, 67, 4287],
+                    ['3 LALHMINGTHANGI HMAR', 'ZNP', 2039, 46, 2085],
+                    ['1 CAND SL. as per form 7 LALCHHANHIMA', 'IND', 121, 3, 124],
+                    ['5 TAWNLIANA', 'LJP', 47, 0, 47],
+                ],
+            ],
+            25 => [
+                'name' => 'East Tuipui  (ST)', 'detail' => 57, 'summary' => 36,
+                'electors' => 12947, 'polled' => 10649, 'valid' => 10643,
+                'result' => ['winner' => 'B.LALTHLENGLIANA', 'winner_party' => 'MNF', 'winner_votes' => 3787, 'runner' => 'H.THANGCHUANGA', 'runner_party' => 'INC', 'runner_votes' => 3320, 'margin' => 467],
+                'candidates' => [
+                    ['B.LALTHLENGLIANA', 'MNF', 3759, 28, 3787],
+                    ['1 H.THANGCHUANGA', 'INC', 3305, 15, 3320],
+                    ['3 DR.R.ROTLUANGA', 'ZNP', 3257, 19, 3276],
+                    ['2 LALDINKIMI', 'IND', 202, 1, 203],
+                    ['5 LALHUNLIANA', 'LJP', 57, 0, 57],
+                ],
+            ],
+            1 => [
+                'name' => 'Hachhek  (ST)', 'detail' => 52, 'summary' => 12,
+                'electors' => 16029, 'polled' => 13542, 'valid' => 13453,
+                'result' => ['winner' => 'LALRINMAWIA RALTE', 'winner_party' => 'INC', 'winner_votes' => 6990, 'runner' => 'H.LALENVELA', 'runner_party' => 'MNF', 'runner_votes' => 4373, 'margin' => 2617],
+                'candidates' => [
+                    ['LALRINMAWIA RALTE', 'INC', 4933, 2057, 6990],
+                    ['3 H.LALENVELA', 'MNF', 3779, 594, 4373],
+                    ['2 JOHN LALNGILNEIA', 'MPC', 1758, 82, 1840],
+                    ['1 LALDINLIANA', 'JD(U)', 100, 39, 139],
+                    ['4 P.C LALTHANPUIA', 'LJP', 101, 10, 111],
+                ],
+            ],
+            5 => [
+                'name' => 'Kolasib  (ST)', 'detail' => 53, 'summary' => 16,
+                'electors' => 16011, 'polled' => 13477, 'valid' => 13465,
+                'result' => ['winner' => 'P.C. ZORAM SANGLIANA', 'winner_party' => 'INC', 'winner_votes' => 5510, 'runner' => 'K. LALRINLIANA', 'runner_party' => 'MNF', 'runner_votes' => 4462, 'margin' => 1048],
+                'candidates' => [
+                    ['P.C. ZORAM SANGLIANA', 'INC', 5362, 148, 5510],
+                    ['4 K. LALRINLIANA', 'MNF', 4307, 155, 4462],
+                    ['2 LALRAWNA SAILO', 'MPC', 2737, 68, 2805],
+                    ['1 LALFAMKIMA', 'IND', 460, 11, 471],
+                    ['6 RAMFANGZAUVI', 'BJP', 116, 10, 126],
+                    ['3 R. LALRINAWMI', 'LJP', 88, 3, 91],
+                ],
+            ],
+            28 => [
+                'name' => 'Hrangturzo  (ST)', 'detail' => 57, 'summary' => 39,
+                'electors' => 13872, 'polled' => 11725, 'valid' => 11721,
+                'result' => ['winner' => 'LALTHANSANGA', 'winner_party' => 'MPC', 'winner_votes' => 4431, 'runner' => 'RONALD SAPA TLAU', 'runner_party' => 'INC', 'runner_votes' => 3979, 'margin' => 452],
+                'candidates' => [
+                    ['LALTHANSANGA', 'MPC', 4399, 32, 4431],
+                    ['2 RONALD SAPA TLAU', 'INC', 3958, 21, 3979],
+                    ['3 LALHLIMPUII', 'MNF', 3192, 30, 3222],
+                    ['1 K. ZOLIANA', 'LJP', 89, 0, 89],
+                ],
+            ],
+            38 => [
+                'name' => 'Lawngtlai East  (ST)', 'detail' => 59, 'summary' => 49,
+                'electors' => 19412, 'polled' => 15226, 'valid' => 15189,
+                'result' => ['winner' => 'H. ZOTHANGLIANA', 'winner_party' => 'INC', 'winner_votes' => 6294, 'runner' => 'H. RAMMAWI', 'runner_party' => 'MNF', 'runner_votes' => 5383, 'margin' => 911],
+                'candidates' => [
+                    ['H. ZOTHANGLIANA', 'INC', 6171, 123, 6294],
+                    ['1 H. RAMMAWI', 'MNF', 5279, 104, 5383],
+                    ['2 MANGHMUNGA CHINZAH', 'IND', 3318, 45, 3363],
+                    ['6 R. ZORAMCHHANA', 'LB', 62, 0, 62],
+                    ['4 ZALIANA', 'LJP', 56, 0, 56],
+                    ['3 C. LALBIAKTHANGA', 'IND', 30, 1, 31],
+                ],
+            ],
+            21 => [
+                'name' => 'Lengteng  (ST)', 'detail' => 56, 'summary' => 32,
+                'electors' => 14727, 'polled' => 12282, 'valid' => 12272,
+                'result' => ['winner' => 'H.ROHLUNA', 'winner_party' => 'INC', 'winner_votes' => 4776, 'runner' => 'L.THANGMAWIA', 'runner_party' => 'MNF', 'runner_votes' => 3990, 'margin' => 786],
+                'candidates' => [
+                    ['H.ROHLUNA', 'INC', 4763, 13, 4776],
+                    ['1 L.THANGMAWIA', 'MNF', 3957, 33, 3990],
+                    ['2 T.C.KAPHMINGTHANGA', 'IND', 3424, 28, 3452],
+                    ['4 BIAKSIAMA', 'LJP', 53, 1, 54],
+                ],
+            ],
+            30 => [
+                'name' => 'Lunglei North  (ST)', 'detail' => 58, 'summary' => 41,
+                'electors' => 13981, 'polled' => 12128, 'valid' => 12117,
+                'result' => ['winner' => 'PC LALTHANLIANA', 'winner_party' => 'INC', 'winner_votes' => 4914, 'runner' => 'C. LALRINSANGA', 'runner_party' => 'MNF', 'runner_votes' => 4209, 'margin' => 705],
+                'candidates' => [
+                    ['PC LALTHANLIANA', 'INC', 4857, 57, 4914],
+                    ['1 C. LALRINSANGA', 'MNF', 4151, 58, 4209],
+                    ['3 LALRINZUALA', 'MPC', 2909, 39, 2948],
+                    ['2 B. ZATAWNA', 'LJP', 45, 1, 46],
+                ],
+            ],
+            31 => [
+                'name' => 'Lunglei East  (ST)', 'detail' => 58, 'summary' => 42,
+                'electors' => 12358, 'polled' => 9803, 'valid' => 9795,
+                'result' => ['winner' => 'JOSEPH LALHIMPUIA', 'winner_party' => 'INC', 'winner_votes' => 3898, 'runner' => 'SAMSON ZORAMTHANGA', 'runner_party' => 'MNF', 'runner_votes' => 3475, 'margin' => 423],
+                'candidates' => [
+                    ['JOSEPH LALHIMPUIA', 'INC', 3794, 104, 3898],
+                    ['3 SAMSON ZORAMTHANGA', 'MNF', 3399, 76, 3475],
+                    ['2 H. LALTHANSANGA', 'IND', 1713, 52, 1765],
+                    ['4 VANNEIA HNAMTE', 'ZNP', 650, 7, 657],
+                ],
+            ],
+            37 => [
+                'name' => 'Lawngtlai West  (ST)', 'detail' => 59, 'summary' => 48,
+                'electors' => 19952, 'polled' => 16939, 'valid' => 16918,
+                'result' => ['winner' => 'C. RAMHLUNA', 'winner_party' => 'MNF', 'winner_votes' => 6086, 'runner' => 'LH. CHHUANAWMA', 'runner_party' => 'INC', 'runner_votes' => 5286, 'margin' => 800],
+                'candidates' => [
+                    ['C. RAMHLUNA', 'MNF', 6047, 39, 6086],
+                    ['3 LH. CHHUANAWMA', 'INC', 5234, 52, 5286],
+                    ['1 H. VANLALTHALIANA', 'IND', 2606, 19, 2625],
+                    ['6 J.B. RUALCHHINGA', 'IND', 2382, 31, 2413],
+                    ['5 F. HRANGKHUMA', 'BJP', 273, 0, 273],
+                    ['2 LALREMRUATA', 'LJP', 235, 0, 235],
+                ],
+            ],
+            3 => [
+                'name' => 'Mamit  (ST)', 'detail' => 52, 'summary' => 14,
+                'electors' => 16266, 'polled' => 13884, 'valid' => 13824,
+                'result' => ['winner' => 'JOHN ROTLUANGLIANA', 'winner_party' => 'INC', 'winner_votes' => 4421, 'runner' => 'LALTHLENGLIANA', 'runner_party' => 'MNF', 'runner_votes' => 2274, 'margin' => 2147],
+                'candidates' => [
+                    ['JOHN ROTLUANGLIANA', 'INC', 3804, 617, 4421],
+                    ['1 LALTHLENGLIANA', 'MNF', 2107, 167, 2274],
+                    ['3 LALLAWMSANGA APETOW', 'IND', 1516, 695, 2211],
+                    ['10 LALTANPUIA', 'ZNP', 1935, 171, 2106],
+                    ['4 LALROMAWIA', 'IND', 1734, 159, 1893],
+                    ['11 R.LALHMUNMAWIA', 'IND', 285, 81, 366],
+                    ['9 LALHLUNA', 'BJP', 176, 56, 232],
+                    ['2 MATHEW LALNUNPUIA', 'NCP', 86, 21, 107],
+                    ['5 SURESBIHARI', 'LB', 63, 26, 89],
+                    ['7 M.ZARZOLIANA', 'LJP', 43, 25, 68],
+                    ['8 T.LALSANGA', 'JD(U)', 48, 9, 57],
+                ],
+            ],
+            32 => [
+                'name' => 'Lunglei West  (ST)', 'detail' => 58, 'summary' => 43,
+                'electors' => 12334, 'polled' => 10184, 'valid' => 10177,
+                'result' => ['winner' => 'DR. R. LALTHANGLIANA', 'winner_party' => 'MNF', 'winner_votes' => 4156, 'runner' => 'J. LAWMZUALA', 'runner_party' => 'INC', 'runner_votes' => 3433, 'margin' => 723],
+                'candidates' => [
+                    ['DR. R. LALTHANGLIANA', 'MNF', 4011, 145, 4156],
+                    ['1 J. LAWMZUALA', 'INC', 3353, 80, 3433],
+                    ['3 C.ZOKHUMA', 'MPC', 2490, 98, 2588],
+                ],
+            ],
+            33 => [
+                'name' => 'Lunglei South  (ST)', 'detail' => 58, 'summary' => 44,
+                'electors' => 14392, 'polled' => 11864, 'valid' => 11846,
+                'result' => ['winner' => 'S. LALDINGLIANA', 'winner_party' => 'INC', 'winner_votes' => 5276, 'runner' => 'Z.H ROPUIA', 'runner_party' => 'MNF', 'runner_votes' => 4235, 'margin' => 1041],
+                'candidates' => [
+                    ['S. LALDINGLIANA', 'INC', 5088, 188, 5276],
+                    ['1 Z.H ROPUIA', 'MNF', 4087, 148, 4235],
+                    ['2 SAITLAWMA', 'ZNP', 2077, 87, 2164],
+                    ['3 VANLALHRUAIA HAUHULH', 'IND', 115, 3, 118],
+                    ['5 LALTHUAMMAWII', 'LJP', 52, 1, 53],
+                ],
+            ],
+            40 => [
+                'name' => 'Palak  (ST)', 'detail' => 59, 'summary' => 51,
+                'electors' => 15271, 'polled' => 12605, 'valid' => 12603,
+                'result' => ['winner' => 'P.P. THAWLA', 'winner_party' => 'MDF', 'winner_votes' => 4206, 'runner' => 'T.T. VAKHU', 'runner_party' => 'INC', 'runner_votes' => 4122, 'margin' => 84],
+                'candidates' => [
+                    ['CAND SL. as per form 7 P.P. THAWLA', 'MDF', 4166, 40, 4206],
+                    ['4 T.T. VAKHU', 'INC', 4060, 62, 4122],
+                    ['2 LAICHO NOTLIA', 'IND', 2147, 20, 2167],
+                    ['5 K.T. ROKHAW', 'IND', 1856, 21, 1877],
+                    ['6 N. BEIKHAI', 'MPC', 183, 2, 185],
+                    ['1 LALTHLAHLOVA', 'LJP', 46, 0, 46],
+                ],
+            ],
+            6 => [
+                'name' => 'Serlui  (ST)', 'detail' => 53, 'summary' => 17,
+                'electors' => 14637, 'polled' => 12160, 'valid' => 12144,
+                'result' => ['winner' => 'K. LALRINTHANGA', 'winner_party' => 'INC', 'winner_votes' => 4536, 'runner' => 'D. THANGLIANA', 'runner_party' => 'MNF', 'runner_votes' => 3612, 'margin' => 924],
+                'candidates' => [
+                    ['K. LALRINTHANGA', 'INC', 4396, 140, 4536],
+                    ['2 D. THANGLIANA', 'MNF', 3423, 189, 3612],
+                    ['3 H.L. HLUNA', 'ZNP', 2279, 102, 2381],
+                    ['1 VANLALHMUAKA', 'IND', 1360, 10, 1370],
+                    ['6 LALDAWMLIANA', 'LB', 166, 3, 169],
+                    ['5 DAVID LALROSANGA', 'LJP', 71, 5, 76],
+                ],
+            ],
+            26 => [
+                'name' => 'Serchhip  (ST)', 'detail' => 57, 'summary' => 37,
+                'electors' => 13663, 'polled' => 11963, 'valid' => 11956,
+                'result' => ['winner' => 'LAL THANHAWLA', 'winner_party' => 'INC', 'winner_votes' => 4744, 'runner' => 'C. LALRAMZAUVA', 'runner_party' => 'ZNP', 'runner_votes' => 3792, 'margin' => 952],
+                'candidates' => [
+                    ['LAL THANHAWLA', 'INC', 4656, 88, 4744],
+                    ['3 C. LALRAMZAUVA', 'ZNP', 3676, 116, 3792],
+                    ['2 R. LALHNUNA', 'MNF', 3275, 63, 3338],
+                    ['1 LALKULHLIANA', 'LJP', 82, 0, 82],
+                ],
+            ],
+            29 => [
+                'name' => 'South Tuipui  (ST)', 'detail' => 57, 'summary' => 40,
+                'electors' => 12789, 'polled' => 10639, 'valid' => 10639,
+                'result' => ['winner' => 'LALTHANHAWLA', 'winner_party' => 'INC', 'winner_votes' => 3772, 'runner' => 'J. LALCHHUANA', 'runner_party' => 'ZNP', 'runner_votes' => 3676, 'margin' => 96],
+                'candidates' => [
+                    ['LALTHANHAWLA', 'INC', 3729, 43, 3772],
+                    ['3 J. LALCHHUANA', 'ZNP', 3636, 40, 3676],
+                    ['1 F. LALTHANZUALA', 'MNF', 2727, 33, 2760],
+                    ['2 L. REMLALA FANAI', 'IND', 386, 1, 387],
+                    ['5 CAND SL. as per form 7 LALRAMLIANA RALTE', 'LJP', 43, 1, 44],
+                ],
+            ],
+            39 => [
+                'name' => 'Saiha  (ST)', 'detail' => 59, 'summary' => 50,
+                'electors' => 16394, 'polled' => 12925, 'valid' => 12917,
+                'result' => ['winner' => 'S. HIATO', 'winner_party' => 'INC', 'winner_votes' => 4772, 'runner' => 'H.C. LALMALSAWMA ZASAI', 'runner_party' => 'MNF', 'runner_votes' => 4669, 'margin' => 103],
+                'candidates' => [
+                    ['S. HIATO', 'INC', 4650, 122, 4772],
+                    ['1 H.C. LALMALSAWMA ZASAI', 'MNF', 4555, 114, 4669],
+                    ['3 DR. K. BEICHHUA', 'IND', 2950, 60, 3010],
+                    ['5 F. LALHMACHHUANA', 'ZNP', 400, 15, 415],
+                    ['2 M.C. LALBUAIA', 'LJP', 49, 2, 51],
+                ],
+            ],
+            9 => [
+                'name' => 'Tawi  (ST)', 'detail' => 53, 'summary' => 20,
+                'electors' => 13174, 'polled' => 11410, 'valid' => 11407,
+                'result' => ['winner' => 'R.LALZIRLIANA', 'winner_party' => 'INC', 'winner_votes' => 4710, 'runner' => 'LALCHHANDAMA RALTE', 'runner_party' => 'MNF', 'runner_votes' => 3499, 'margin' => 1211],
+                'candidates' => [
+                    ['R.LALZIRLIANA', 'INC', 4686, 24, 4710],
+                    ['3 CAND SL. as per form 7 LALCHHANDAMA RALTE', 'MNF', 3473, 26, 3499],
+                    ['2 DR. KENNETH CHAWNGLIANA', 'MPC', 3116, 11, 3127],
+                    ['1 BIAKNGHETA', 'LJP', 70, 1, 71],
+                ],
+            ],
+            22 => [
+                'name' => 'Tuichang  (ST)', 'detail' => 56, 'summary' => 33,
+                'electors' => 13888, 'polled' => 11368, 'valid' => 11349,
+                'result' => ['winner' => 'LALRINLIANA SAILO', 'winner_party' => 'INC', 'winner_votes' => 4428, 'runner' => 'RUALKHUMA HMAR', 'runner_party' => 'ZNP', 'runner_votes' => 3547, 'margin' => 881],
+                'candidates' => [
+                    ['LALRINLIANA SAILO', 'INC', 4386, 42, 4428],
+                    ['2 RUALKHUMA HMAR', 'ZNP', 3509, 38, 3547],
+                    ['3 R.LALAWIA', 'MNF', 3235, 53, 3288],
+                    ['1 C.LAWMTHANGA', 'LJP', 86, 0, 86],
+                ],
+            ],
+            34 => [
+                'name' => 'Thorang  (ST)', 'detail' => 58, 'summary' => 45,
+                'electors' => 11021, 'polled' => 9597, 'valid' => 9592,
+                'result' => ['winner' => 'ZODINTLUANGA', 'winner_party' => 'INC', 'winner_votes' => 4442, 'runner' => 'LALNUNTLUANGA SAILO', 'runner_party' => 'MNF', 'runner_votes' => 2613, 'margin' => 1829],
+                'candidates' => [
+                    ['ZODINTLUANGA', 'INC', 4321, 121, 4442],
+                    ['1 LALNUNTLUANGA SAILO', 'MNF', 2551, 62, 2613],
+                    ['2 ZOTHANPUIA SAILO', 'IND', 1618, 11, 1629],
+                    ['5 PARITOSH CHAKMA', 'IND', 828, 13, 841],
+                    ['4 B.N LALIT CHAKMA', 'LJP', 65, 2, 67],
+                ],
+            ],
+            36 => [
+                'name' => 'Tuichawng  (ST)', 'detail' => 59, 'summary' => 47,
+                'electors' => 22089, 'polled' => 18479, 'valid' => 18463,
+                'result' => ['winner' => 'NIRUPAM CHAKMA', 'winner_party' => 'INC', 'winner_votes' => 10421, 'runner' => 'RASIK MOHAN CHAKMA', 'runner_party' => 'MNF', 'runner_votes' => 7309, 'margin' => 3112],
+                'candidates' => [
+                    ['NIRUPAM CHAKMA', 'INC', 10331, 90, 10421],
+                    ['2 RASIK MOHAN CHAKMA', 'MNF', 7215, 94, 7309],
+                    ['3 LAXMI BIKASH CHAKMA', 'BJP', 434, 1, 435],
+                    ['1 D.K. THANGA', 'LJP', 297, 1, 298],
+                ],
+            ],
+            4 => [
+                'name' => 'Tuirial  (ST)', 'detail' => 52, 'summary' => 15,
+                'electors' => 14538, 'polled' => 11930, 'valid' => 11917,
+                'result' => ['winner' => 'HMINGDAILOVA KHIANGTE', 'winner_party' => 'INC', 'winner_votes' => 4717, 'runner' => 'SAILOTHANGA SAILO', 'runner_party' => 'MPC', 'runner_votes' => 3695, 'margin' => 1022],
+                'candidates' => [
+                    ['HMINGDAILOVA KHIANGTE', 'INC', 4483, 234, 4717],
+                    ['1 SAILOTHANGA SAILO', 'MPC', 3587, 108, 3695],
+                    ['3 LALLIANKIMA', 'MNF', 3121, 83, 3204],
+                    ['2 LALHLUNA', 'IND', 182, 6, 188],
+                    ['5 MOSES MALSAWMTLUANGA', 'IND', 73, 5, 78],
+                    ['6 ZORAMSANGZELA', 'LJP', 27, 8, 35],
+                ],
+            ],
+            7 => [
+                'name' => 'Tuivawl  (ST)', 'detail' => 53, 'summary' => 18,
+                'electors' => 14281, 'polled' => 11659, 'valid' => 11653,
+                'result' => ['winner' => 'R.L.PIANMAWIA', 'winner_party' => 'INC', 'winner_votes' => 4276, 'runner' => 'GOGO LALREMTLUANGA', 'runner_party' => 'MNF', 'runner_votes' => 3803, 'margin' => 473],
+                'candidates' => [
+                    ['R.L.PIANMAWIA', 'INC', 4269, 7, 4276],
+                    ['4 GOGO LALREMTLUANGA', 'MNF', 3779, 24, 3803],
+                    ['1 LALDUHAWMA', 'ZNP', 3214, 8, 3222],
+                    ['2 LALHUALTHANGA', 'BJP', 233, 0, 233],
+                    ['3 LALRINAWMA', 'LJP', 66, 1, 67],
+                    ['5 LALROSEMA', 'LB', 52, 0, 52],
+                ],
+            ],
+            27 => [
+                'name' => 'Tuikum  (ST)', 'detail' => 57, 'summary' => 38,
+                'electors' => 13265, 'polled' => 11590, 'valid' => 11587,
+                'result' => ['winner' => 'K. LIANZUALA', 'winner_party' => 'INC', 'winner_votes' => 4265, 'runner' => 'VANLALHLANA', 'runner_party' => 'MPC', 'runner_votes' => 3863, 'margin' => 402],
+                'candidates' => [
+                    ['K. LIANZUALA', 'INC', 4241, 24, 4265],
+                    ['1 VANLALHLANA', 'MPC', 3821, 42, 3863],
+                    ['3 T.C. PACHHUNGA', 'MNF', 2316, 25, 2341],
+                    ['2 T. LALHMINGTHANGA', 'IND', 600, 5, 605],
+                    ['6 C. CHAWIMAWIA', 'IND', 451, 2, 453],
+                    ['5 H. LALTHANGMAWIA', 'LJP', 59, 1, 60],
+                ],
+            ],
+            35 => [
+                'name' => 'West Tuipui  (ST)', 'detail' => 58, 'summary' => 46,
+                'electors' => 10418, 'polled' => 8920, 'valid' => 8906,
+                'result' => ['winner' => 'NIHAR KANTI', 'winner_party' => 'INC', 'winner_votes' => 5052, 'runner' => 'ALAK BIKASH CHAKMA', 'runner_party' => 'MNF', 'runner_votes' => 3512, 'margin' => 1540],
+                'candidates' => [
+                    ['CAND SL. as per form 7 NIHAR KANTI', 'INC', 4916, 136, 5052],
+                    ['2 ALAK BIKASH CHAKMA', 'MNF', 3396, 116, 3512],
+                    ['1 SURATH KUMAR CHAKMA', 'BJP', 182, 10, 192],
+                    ['3 RUPEN CHAKMA', 'LJP', 149, 1, 150],
+                ],
+            ],
+            default => null,
+        };
+        if ($source === null || ($record['name'] ?? null) !== $source['name']
+            || ($record['state_name'] ?? null) !== 'Mizoram'
+            || ($record['status'] ?? null) !== 'needs_review'
+            || ($record['source_warning_code'] ?? null) !== 'summary_turnout_with_detail_warnings'
+            || ($record['original_extraction_warning'] ?? null) !== self::LEGACY_DETAIL_PENDING.'; Some candidate text could not be parsed; see the original PDF.; Detailed totals are missing or use an unsupported layout.'
+            || ($record['detail_page'] ?? null) !== $source['detail'] || ($record['summary_page'] ?? null) !== $source['summary']
+            || ($record['summary_source_file'] ?? null) !== '51a30ea845222a74460e8585-8606.pdf'
+            || ($record['summary_source_sha256'] ?? null) !== '31704bf1f39893eb096ab5e9e38efb74350370337d875c82b152abb87c9c7666'
             || ($record['electors'] ?? null) !== $source['electors'] || ($record['votes_polled'] ?? null) !== $source['polled']
             || ($record['summary_totals']['valid_candidate_votes'] ?? null) !== $source['valid']
             || $this->officialPdfSummaryResult($record) === null
@@ -1023,13 +4730,4920 @@ class HistoricalElectionAnalytics
         return true;
     }
 
+    /** Exact records independently checked against Sikkim2019 PDF summary and detailed results.
+     * Null workbook postal cells remain untouched; printed PDF totals support shares.
+     */
+    private function hasVerifiedSikkim2019CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'a3d4a05dfbdc76e283649d0b') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            6 => '5c7953fcca018080a3d12441604cf964724d9ea1013392195c9ee505db893f94',
+            9 => '7b309744778fcc436f9d318606ac406f5e6a02783d19774a5f6f2334f620cc0c',
+            20 => '586690ce1700c83d86817dca73ea7cf9250a004baad47afebeadaa2d02c104d6',
+            26 => '1705c73b0de9cc53067c16934325c578a7468432eedb28efd1c6d7eb758e7807',
+            4 => '60588fe1c342093dcaf22f247b196642c280cfcfe29a854b71da6b763669f538',
+            21 => '1c2775c7ceb2eaf5edb4a18070bc4598a806de80d02992954ffd50122fdc1f74',
+            27 => 'e63e8913050443181b5018c58d8dfd8d6b0f20c608eda021f20f0d0140fdee09',
+            30 => '7e261ef761676c6965bd0f7dfed34d534792e2688a548b67bd49600fe218fea4',
+            3 => '06317c648a3f923a23b37e4640f6a347c58456cb370e5ffc6dcc00aa985b185d',
+            17 => '31edfa4dd989a7cfb7a62e33e0f636b02ebb4081c06808f962284cdd04e4b750',
+            29 => '33c63ddb1c38ed181091eb0fdc13d7bda3defed3c1b600d396653a0fa263d973',
+            31 => '920dd086820834189ddc949e35169b362384caca8b7ce97dd5d765eda175120e',
+            11 => '992a37a6332e2f9e4661f51b1b93073262d2d9d79b7e64891edb0589ea4e62b7',
+            12 => '60ca00588407a8f2a304da349c4edfd8277d6a2c69385abf6739b4f4b1ec6ad1',
+            22 => 'c3671eeb9e061b7f3bf28c10d097895e76188989c73c8122c487e001f602f4b8',
+            24 => '2aa2baf9d52164bd33e1e6aa3b9ee699bacb6f31b773fce0caeac54f6ed94be8',
+            10 => '316470b170546abb245efa2c9e29cb55c22e6a5cb9941e5675147847b844bfc9',
+            13 => '9df8b99a998d19e00c25e00f8044a8ad7f871c0d3c54152eef624b7a1837d053',
+            15 => 'e194c90a8c7af4debbc67109e448525644218101a87f541923dbfb0affa6517f',
+            19 => '46fe9a9adb9fc790a6862a815c8e242836674ec0b590ac989820eed237e72894',
+            5 => '729e1a3f41de642ce428ee00a7b30a33d406284dc0cba599888d03164ac4c8b1',
+            8 => '1bab81b4ba62e4b99443e6107150095e5adeecfb1d4061c7f78f9c7c70cae80a',
+            23 => 'ec95a4d9193e29b6c87bc170043a7a70c579fc4b6121da5a937ee63cdc3061cc',
+            32 => 'd7717853052a4dac73f8600a59a804049879d425a4782073d4d0b97651b3c340',
+            7 => '3b08d824a3162c0b78901f982eb4401411fe2a00af953251e44bb207feef5d1f',
+            14 => '58ad750a67276b09f2c8c49b33bd8d30c00757d0d7f2b0f8f00142d5a5a9dec5',
+            16 => '77065ef8135cafb5b618aca94e9a613a4a6b997c2e5c8001adc438dfe8110b45',
+            28 => '062dedf8b97c643c3d0cc789a584a53de4a68afa67c6047ae5a1f339aeafc134',
+            2 => 'ba464ba34edb4a671d9aa91e1573c521ae329b25cc3a10ff5db9f4fa38f27e15',
+            18 => 'bd9880de16a69b4ab1452e6598ffb11df21406e404c319bdbb17c23f53577885',
+            25 => '2a53e3f4d3f12f802fc3f7682c85efab2df3f5238d98da0e40b59e6115c6ccad',
+            1 => '9f052bfec2b22f083023d6c0663528669c5f47055ecd319c7c5a7b3b4435ed8b',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b055bdabad875405b5c614d535a6b8f1c33299a1aea3302a7df59b794db23833'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBihar2020CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'eedecf943f2ac2ddf717246e') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            1 => '780a61cf3d2f230a46afd0ea84a5c565ac39231064b2eb22a48dc1ff54d9148e',
+            2 => '815ce2207c4d15b1cc09150749d20848c8bf4e7552923536e844238431f814e6',
+            3 => '6cd465f9cb1aa8afbee47bb5c71e1afe44b3fa41e921c7a9609c8ff10f0acf5b',
+            4 => 'aa10893ab60af565a6ae5f7abfc65439386caed25498294d88d5846641cbcb13',
+            5 => 'f7ddab108a8daffed2eb1bef8afc856bb10aaaacc4307e36434be438ebe49544',
+            6 => '4e80ef5c6996cac3ad79bba450253d8d27af06e7fd522a84bcfb8dad4d22f8df',
+            7 => 'd6d1929e099d6e703c272a56badfc39287a121751cc48c0cc9f72e08f8b9aebd',
+            8 => '8e2585d566f69494ddf9b84a624b159b81a452b660b86d47a2db35b43d8b6651',
+            9 => 'b20eccaf142746f451b1d7db7f7a3d2ed5f608f6cc2fc96206847287334a6388',
+            10 => '5e23fab2ab26c6fe456de9b532f0795d121509501eec7941f240e3bbd08bbe02',
+            11 => '8f49b9e1c5501ad769e659bce176ce48af2fe8b4175ace92537b7fb671594d1f',
+            12 => '9b7781cb3522d2534c462b61bcbfff7308e87730f02dd2db276b9efd64185e86',
+            13 => 'fcc50ece1670a44bf7b0966c586acde11d5f8b430a339ce5749111ff21e566ac',
+            14 => '172c92d16d02f2d9f5269cfee010d828a7a0e2cf093852653b50a853342834d0',
+            15 => 'dbda380e97bd6225c24cb91923bdb307bcbe3f6048525f8edd49e96f1fe8ceed',
+            16 => '26ec48acce949fb96647b44d7f0050d97514f59a314ac5e3c12bf0b3818d6e92',
+            17 => '9a71a6fd25671264b3239952db9426949367d2822799ad104d9414acda79fe93',
+            18 => 'f77f993e75cbb2f24eb736ca061d88fa43de2457f5c360847549ec5a06cd4788',
+            19 => '0bd0b04d19d5cb15891a6f2b492c4e3f4532daa98894493d1e9fe5021195b3bf',
+            20 => '4cfc5b95d329bb6b27174aecb1caac8f15014033fb0a2ab8f2e04d06ba6c945d',
+            21 => '2495c6b6f20eb9337e541447644b31a999a48472cdd61e746fb5d027959630a7',
+            22 => 'ada9efa11d0c356f4529c8a79724861df2d4ba0b647a15ceaeef8e9ee63c7330',
+            23 => 'f26531651bb527e298eb1723b789ba44be6eaa9445873fe91f406db8a2d00912',
+            24 => 'c6d8ada975e1d20fca5c7d83d9a11e24ef399f89d67df84619bd376ea3251a2b',
+            25 => '8afd28dd71eae8376a16b00c0ab4a10bad7bf4e0cbab85d27a0d11b99036797e',
+            26 => '25ed3cb25defad8924a5753c54cbbaaf41775e679c70fa1a89d0e2e607cda536',
+            27 => 'e0240d059d4d31e3cba372990c2611e649dad15befec84c46fe30f9855d652d8',
+            28 => '5cb1d3d40ca373d727845d84fedf836fc101cfceb70337ad5825610b4e7a0e60',
+            29 => 'f038967feab43fd5a8ae853c4d8fe78bd24c2c6f51578b954d82c116b9a8b706',
+            30 => 'c9286a30a2d1bcb5384ccc273f4ef6dd90606ea032da3d7b4d6b3b3501ee3acc',
+            31 => '8357ec83946c6853953a6908a356490cd48b40b89e6cb438ed0c9f3c5c2554ef',
+            32 => '181d762172c81f465a8205c997471abe7341fb66da18cc5ac309b9a45bf6cc26',
+            33 => '1a1fb9a8e81bd586cf0a4c3089bff3b0179b5362aee479fbf12b15e932980442',
+            34 => 'a930536eebb76945d988cc28162183660958673489a8e32920fb1669c08ba61e',
+            35 => '5d5da3e6806c35ea0c644424a0e11a609eadac046305c8882b52704093fcb8e9',
+            36 => '06ded04f1812e06e8d68818d2424b95d1dce677853e318ac3f02867f87d67b19',
+            37 => 'b3ba19dc1da97714bf5f3dadb9d9b710c453c2d9cb7b24cc2744cfece5aa0d9c',
+            38 => 'c958c33afb71a95e664391156a868d5eb748227bb7446abad103661eb239f087',
+            39 => '2de619f78e0ce6b29a5336c0483d5e0011a23bcfd7427830acfca53113e84606',
+            40 => 'addfe2f454d3c50d7413ae6d82708154a11edf28bd45adc45e0ad2450df8abd5',
+            41 => 'beab62299a1ce876098bcf236e4d25dabae4926be6ee551d64a2ecefeffebd59',
+            42 => 'd4d99c7dc8f23f8054e3554d64c1c7a7a7055de2fa59f98dd63640a61c4a951d',
+            43 => '127221f528e4ce6e8904bf3a963321eb24c8c4f6434fb2b7ce3e50b7cbd5df6a',
+            44 => '8a2184131e341c0fec0eeb559caab6c47ac4350bb0a0848c4a3fa164fa6f858d',
+            45 => '35d442a5f994dcdbe327601870538b38b3b83f4f9c999cfbe1a5a16c4106d6cb',
+            46 => '6840e644002fd276ab18880cd332bdf7dd3b6722923d7c37e57e668b4b810240',
+            47 => 'a9edd24469bcd906da8128a643b0dfae61433e98dc7508c54ec0b7c7385a6c80',
+            48 => '6441d98754e1ac6a8eee9583e1bb6ed296f400341bd017171a434018ae829ae4',
+            49 => 'b0684b79886ea3f3be5f2f0fa4b0a1fc3e2803d719d3c23e5a06a19428194d79',
+            50 => 'e19bf1a138be746fff8b18919f3386f8d3140b971e4629f7d59ccc73d182dcf6',
+            51 => 'af5e2e521915c9e64cbfcc088aaf603b1108c3f735729fe146a470fdb7f3b42f',
+            52 => '70686eb706b2c94addd8064918a968ee24d811916613b2dce9f56e54d26f36eb',
+            53 => 'cc725f02af32409d0325b835d7caba34b414f2bc74aff9eb7f5c5b619bfba9f9',
+            54 => 'b3d5ccd62ae272bc6ffebdfae5b33bf9a05b7ee3ff52daa3bf104d0b811dd687',
+            55 => 'a25c316d17ae162bbea431afe90e42db2dfff702ae0f52403d02909b1403a4ec',
+            56 => 'fef6a4eeb49a575d12893f4b0a313dd9a552d89a9e57d0fc09f19c44ab2b49ea',
+            57 => '3910d7e11b594e87ea4266bb68b2c77275c480b2d64a29e9ba8209ec3c81f3ca',
+            58 => 'd71dab46132287ffea4e901b0971fcb1bce28c246999ab44cf4a999576c2ae99',
+            59 => 'bb0c29ab8c972182f3d1f7470f157a1a7701cade74d8af67b46b8e70b5ee722c',
+            60 => '795e99351aa0c5d3e3eeedf09d6d9a605833770d0ed7d97359df880d3b8cb4e7',
+            61 => '4b637359399f9e4bdd238a9963adc3ffa18008765bc367e4da9be545537d465b',
+            62 => '3d66cc4e6662eebaf789b1c7125e707fe528129271a4496bc3fd204dcf25f0be',
+            63 => '33642854a41a44ea4b55580fb5964aa61d8232e29f02a90ec369f9e2d361a136',
+            64 => 'e0cd6feed8954cfaa97f12f2cb719822e593b995a2a3809086c4a7d7e2fef3c4',
+            65 => '5b58364fd0b797647ec75aa2d17040fd8f20ceadf2b82faf8148748564f353f0',
+            66 => '8c9255088e4bd2d0dfc0aa9f6fa832e077858fe309c8e04f62dfba9aaf130a88',
+            67 => '5ed1f03f9e6fac43212ae3c5c2f7b438f8dabe82bc40c5032ccf28b2cee49185',
+            68 => 'ea7555e639aafd45cbbbbeb7d1e6c73f273bc9f832f4b99c265bf6062d14ba9b',
+            69 => '7dab0ba99b1211fabb9eb1d6a33765e93ebbd3f392dd55ab550e15fcb97d9166',
+            70 => '3a56e9b052764afe01e36a09620dde713d60258f71fcd8c5b85f978115ef1a0f',
+            71 => '73e1aff4d1fef310bd0e3b2a475a6b4bae591a0e8fcfdc02c22709c741b60d5f',
+            72 => 'ca9ed8a3a95cda2ad2e0a6ccde287c3706eb35d57e15a07e26a4fa39f1cbfaff',
+            73 => 'da86072e80b0ece54b28e07dfcf865606675183ebc0b648f75fff1e0ff333f82',
+            74 => '9ca4509c683e7d231554a8205b8b8a49e82f45cd77368c2585829c63c099d7f0',
+            75 => '24e8b1a132b6228613a6c05b34a3bf20cd5445e6c1d7d900f86f21b380ddba94',
+            76 => '282fcc8a946688c7647a2fc1f6c50a396b727fa1341f4de42176d5928713f146',
+            77 => '82cbbc5838a8da99b4a3748b67f70c89ae5ae15497260cb5fa26b3a379e6d518',
+            78 => '33af43d3b40787c01b1979cc408edd39e1a3c77e77d4527db322cf75529e7efd',
+            79 => '93ec0342b7ecac1f57750882e101dc9f70f7bda20db7209354c7703af6ef8211',
+            80 => 'e3829309adbd7a837e7e57ff92aaf86d6e20a7b2923d17837bc86e7112bfac5e',
+            81 => '89d0f71d44434adae9f3304855a0ff295c3f8344a427e0bdd238934396793434',
+            82 => 'cc721747f885ef58a3a44fd043d85330fc2eee6ed131cf08d85e1ae3e3cddb1c',
+            83 => '7400c5a84f6c1da0d659287c0f8f54cd3315eebf29477f37ca84c06a4b503ec9',
+            84 => '5c01151fde1ad9f05b8f9c1eebc53127cc1eb8a90357c82e9b81f94aa7754900',
+            85 => '764d95ff1aa6e64a93eeef05fdc6306063ec0345c143691bf96dae3b05e5e871',
+            86 => 'c8193eb68fe88e29e6a5233df89783332ede6470e16abfe7256e8b642dc77f77',
+            87 => 'e4ec9ea9e6828a71e6f4c72a88d1059461e012b39c71966ca64d151c65e60a4d',
+            88 => 'e84d01f6e1cc9683fb9d9ffe203bed8d23f581b74bd547d0e8b585cd061354ff',
+            89 => 'eeeea4cd5a1dd5d999ab6a0dac429f8a2f5ad8238da2d496c843e3cad99ca7d9',
+            90 => '03990ea7ba1fb4f35ca000d60695cc1f3fd72535101b84bdd72b8658e21e7b5c',
+            91 => '61f001de31dc724580a67f57e57069b1f0adb93c50800cbb250ff31d29ac03a6',
+            92 => '83f734b12ea6c74fe9c623c4f835795257ff493246e538111d69efe364a6dd18',
+            93 => '8bdcafbd808da6641d1257c1369c7eead9a534e3a8a342e0b600c1932e41c6d9',
+            94 => '7bf6927c8e98900d68da25f9bce4f1bde300a9362f4a8ebb4b18af9320c27c0a',
+            95 => '442a3cebddd191e51b15cd7902e60b20fc247b35516d8e72390619785f393341',
+            96 => '63ddc6cc768279f37920a7738d2fcb855419253f4f22f2020e019dd765eed431',
+            97 => '267997f34fb5dba680f200e92d018327880d5d10df832c56cc176b879a7496a7',
+            98 => '9f2daccca92227ff54167e50b34b71d71902f5e359d1c8add8af1fd953a02353',
+            99 => '01f84459c16b900a09c808b84fe30ff0a09a5f6ad411e94cafded7f8654a4758',
+            100 => '402233a62dc4fafbb39045a7557f2ac32281bdaac7987abf6d2c383889f02d7a',
+            101 => '875a211f1b52c30c76b1b3b80fae5e0cc19b4b8ecf4b573bdb51421122a66000',
+            102 => 'ee3e0ac79f7e8972f983d468ee28bcaeda84fba6946b7b13644656d35571f525',
+            103 => 'f9923de00840de36dcc34f2be47e7eb77106ee1e4f323c28779b19b58f09c098',
+            104 => 'c8527da7f1ac2f9a38417445ca096f42f9f31805502c9299212478790eb2a24a',
+            105 => 'ac6515b3c4c4e83fc888b0da44108c678d47d0184de9f782f62f6a9bd961527a',
+            106 => '06c78c07dd1357e7c5ef49aee334b5b3c131f447afa115da6b57a3baf0f77d3a',
+            107 => 'ed696c268e2acdbabcf66d6e45094082785f75d62cd4642f73b3ba698668c60d',
+            108 => 'bae07da408d031c5d0581e7692e3d9c7eba5a2efff7e35ad08e41e86352f5242',
+            109 => 'dfadb7c6f382758d7f5d3b2218e04932cf73864ac296beeaa3b64ba7c96d7c0a',
+            110 => '060bdb57d7bd9e7c39e0b527db73f297bf2edca7f329150a974303c5508a07af',
+            111 => '6b8f3e2b7134e5f5df16b965efde34121fa3836cba45e8f5c0d116a673f648c1',
+            112 => '2b0aa3a2ba33afd81e42ba5ff270828b6e811ae000fed10c55280baf488ebd65',
+            113 => 'b58ece5212d81232ae482ce52521600d1abbb4279d55cc32e5d2921a81ff240f',
+            114 => '4a47f7abec244c64525d61154ff648f252cad40d04cfb98a2bd41458bd7b1cfc',
+            115 => 'db855f2fc05db47cc3a43863d190e2445e4b1712c39de4abff5cbb6543bd4923',
+            116 => '529bc85c1de046bb3fe4c20e5143b27f7281e93e2c95eed16d4068429648303f',
+            117 => 'd2d3a147068ed150931571d27c0a1d85c2a5e344b982e23d9a7c7b5188c39c5c',
+            118 => '6b803b2d95dd88efe64b038a9e00bb362b8c3179eeff14f34d02d51857e43f5d',
+            119 => '5c35568a0aa8d8f487c8c9811fb3406eb77caef227a09fbf31c830d28901b7c7',
+            120 => '6726bdcdd86a8d9b13f71aa87654dfb8209192b1251990b2227357e78b45a7a1',
+            121 => 'dabc1f5d4b41dd20521b624bdaf7485dbd67d91656bc5c6263132b1c62f3e71f',
+            122 => 'b0e8a3b22c38069f33f9eed8b9ac87ae4297f7cd261f96fc011b8455d700efca',
+            123 => '1bfd561d4caef1d7a7f798aa689d226cedb568590688fc7d7ada7ddeba0cc6cd',
+            124 => '93a4c32c234b8053f30125900dad251fecd0284e4ff702002dd98455f4bc35f8',
+            125 => '0649aafd4051d1bf73b6c330a31c089686e7953b1e82d0037d140a396e49ac28',
+            126 => '43d8ed1718eb4f17b7105b56351e5ba89a373f6d3c27f979ac1aa1afec9a0e4f',
+            127 => '916a1bf91827e9a0ea14f80372994cf9f87c32b81af8831a3f88010d003ffae8',
+            128 => '95c6c128a5e583bad8351b213eaaf689045564256c9c9e5c9cec2408443ee8de',
+            129 => 'cbff7e135feca0a4e774a214809fedea7b7afdf3e144e17c9389ad2bf625d72d',
+            130 => '819c5f99cd7c7a41c29addc2900edbf12d4c00167bbec58d877b5502f21125bc',
+            131 => 'd87cb9fd4afcb284e0aafc3eaff99bb587183325d976c1b85db65e52635747a5',
+            132 => 'dc5d7dec1d64680443d9fc06dbd786b31687b8dc49ffbe8a8fb424b20be5b130',
+            133 => 'f1f63765b9b9261ff8932eb96f9c3c8f7ce52d480fb738cd2021c51a0690301a',
+            134 => 'ef3ee1fb235d301c8efbbdb3ada72645def41e1da46e25dc5319f7479f16e171',
+            135 => '9f3c48ae4c5e614fd6e2c7bd0d64ca3d76dde35c35b39a9085a639e790f2938f',
+            136 => '5583bd6e87b61d0c8bc3687514d7cc010ea73a944f99ced33593bc16348c6957',
+            137 => 'b1c945e600c9599daa50cb79263a3d9b931c83882e4cc4a120bb90a116d15346',
+            138 => '174857caed1e8f31a1a1ee934f64be1373cb34ee7ca352d53b5ce4de230d4271',
+            139 => '850bc2719d55046bb3ff210b6f43616560e1081a1e5002d8dcc96cd9afbd723e',
+            140 => 'ac8a331dfad56c3afbe3a028c1cea9a6391d52960fa0e98be63e3eaeabd38800',
+            141 => '0e8fb46f42acb02ee5f2a798dc03d214fbdda03899f11240e8af4de7b259480d',
+            142 => '12436599441b68fe5c419dd19820934e0762dc33b27e42a1871e50e54dd013bf',
+            143 => '446219f21b38bbf2bd6a7b612bb08781134d544689bb6627d25f4f1bca0f631e',
+            144 => 'e8191a76effa2729cb03b3b16e2d45f923066d6cc0fa88790344c5e79f5b02ef',
+            145 => 'd306979fac1228fd595ee35c8048c03ac468fc98d13488b04ce282ac295f46ff',
+            146 => '29949fa32533e02d50010348166feb4355188bc5f01ab87b5c55cabee8284bbb',
+            147 => 'db570645f704ffea74d604a613360ec3fc7c90b27e11c24f5ff09f8b7aebc220',
+            148 => '38b552e03b5b558676f302c8e524cb6aa8404393d6a33fd2da7255c63767db32',
+            149 => '758c56a46e0648fd094cf74d4160533e13431ec303b1ace7c021030892d3bf05',
+            150 => 'aad56785f0bac32badac7d05da9b653dd12fc60f5eb631da244c56332f7a35c7',
+            151 => 'fd15a4f16612572c1d10cbb910b6ff53c96cb1290e7d7200981efd9ba9d6bbe5',
+            152 => '2d78c4a168cadf44a6b9745a901f09cc9c0258aeaa285edb4fa5047a63c9667f',
+            153 => '6e71c605fa3022a3460f8d8b4b807c7d0389311a3c0c2376f87dfd5af796a9a0',
+            154 => 'f598533557ad2ca31f08172645679c371168c698ff09032ad10901c8450232b3',
+            155 => '3fb02dfe1f6a7307b24e8db7beeb2ea22026bd8a1f3ad01b80b3aa4aaa4d1d62',
+            156 => '23d32846ac16f571fdfa631373c62d0fca7e768902204f69ee6a3989a23292c0',
+            157 => '3cc2bb2d80eaa44a38b14fb7477ebdb66c3531c6264f5d61feaf7c531d4fb072',
+            158 => '0b8ecf7ffbf29a67b19c29ba93f23c4d21ee3a48de850c9ee0342d61019f3838',
+            159 => 'dd23bdb600e2f516af796bcf255de1109bc2e791621adc480fe7c4c4814a9b46',
+            160 => '3a1d7026623ae3a448460df09832c393ddce5959bf1cf9ea99eded94bd5770d2',
+            161 => '511fc5767bb95c2623c7abb6ab3beabee8731d2ba5f9a83841a97f844f63a41c',
+            162 => '32dea9f726b2cefee32b99836a47ba8603a0b86bf9c57fdfd79a1c76c5779c71',
+            163 => 'c627e34980cd22cab877f63d7e3a5ed1bc34406bcc7f4aaa60f1d56dbdfad80c',
+            164 => '8b13bf1c841abef90c27d01ba883c3c3a0bb960783789e702d6db5c985a9ac22',
+            165 => '7f465952f97ddfdd15db7c4a67781bfcd9362b1d3bccb494fae44e11ada53797',
+            166 => 'c2f120ecea2d1293510d1e5d0ed1fd9d75fdc4f3c091f6c8080ac4f9be474a59',
+            167 => '7443f0d251481b0acf26dee662ee5b76eb246694643386f2a6bee4fc4656d791',
+            168 => '5acc411141f671ccc55818c8243c3183ad1dfb34f758956c2b6e8874495fc989',
+            169 => '394e37cad81f8347bef46dca1b8b2f5b371a61eb0b46988e1e447f6f0b6044ed',
+            170 => '38017795010b633ba24d3945ec3a6995621b51aeb894da021ed12801ff73c3f1',
+            171 => '82e3981d60ddddd51072bd4f9d26fb84e26469dcd0724e5164bdcfd7c53c27fd',
+            172 => '8a95432aec3ededa2f76d690c3896af6817298818ab8742c0e8391f1a29be789',
+            173 => '1d21e837290c2835249e8c3ec83ca9a2315fd0fc89ebcd75dfb47ce57d700b40',
+            174 => 'c1fddb8990935a5cb97ad8d7e6eed47597216afff52b05fcb0083e9e8d91b77b',
+            175 => 'd1003c280425bddb7eb9f6ed48cc02e1d91917afda8ae26d6993e265c1438ceb',
+            176 => '7afa17ef2b31bec8b698be2efc2e1d12050f898ec38b33446c67091fe78aebbc',
+            177 => '831126686c8cbf5af31dcb5e16310fba53734b335608c92cc46ef44ae053ec31',
+            178 => '4997854ff5a9169e7e8fa6496e761a39b8143c0f69e0f896f36c255a51b2ecad',
+            179 => 'b2f161e988522216c09537f894d20695d911e667ad8828f2f3680199f3283c4f',
+            180 => 'a1a44943e18b64bf6d145c11b5736f0ab2dfa3623bd19f5202cbc2b29dd333e5',
+            181 => '1a6cca302171af1d4347602345cb57019c2f19e2d1a0bd5b7a1fd271db5d4028',
+            182 => '64536df0e34596fc6ba77c522c5fa57cfa6c9ba68d4570db0751cdcf71d299ac',
+            183 => 'b368ae5e26265a51db54360fed0b96ff406a43c466356518ca143a9b2d7fd59c',
+            184 => '8c76298e6e329939c85e219b88fb450256589e969c7d826dc08f915c084760cd',
+            185 => 'b0a6bf5c75d6f49c9a97a09b12978f84421a88a5b67fa318f64192ce4eb58c50',
+            186 => '60c4e919186a11aa3a7a23f4c8766e587415914a532b2081b09506dd877d0a15',
+            187 => '94e9696cf14790e1f6f9c60503e45ce0ae95580ee03f902d953e539bc8e8bc28',
+            188 => '0f1bb5544922495d22ec136ab9c3f1cdfc49114626d21bcad64c82e7d3050c95',
+            189 => '9c0b6cf8897062762af939937bdeec327be98007d44a2819ac2539f52c85b00c',
+            190 => 'ae3eaae997cc2ceede65ee48105ac596c7bfe3e888d8a0d69b7b6f968fd6ddac',
+            191 => 'fd5d8456b4f3134e2c955ae486e821550c8a52c6909780d0d710d3839728331b',
+            192 => 'd59d2a31cf32223568ec9f12b1fd60732a076213d48ce80f9654c9f8c6611995',
+            193 => '4c6fad186017c28a0f715510efdc4c1441a71d39cde499c0203939b83f7eb4db',
+            194 => '9d25f66f0e75d949d15890ebffc285f988e152504fb23804b3a50ddbe957acd8',
+            195 => '18e010178143d492a04776a2bce12fe70c164929569787cd71c429a0ed7f1236',
+            196 => '36f25902a8edd12164fe2b73004290759546bad2c7b9987fd878bfe2daa7fb70',
+            197 => '532f75484c06dd0f82bbf799b506caec1188693ec5b8922550a28645bc63e74a',
+            198 => '0d0a9cc5f922eae45368dcfb52fb18a025187b8704aff1bd2b005688fa8170ee',
+            199 => 'b7c6269ffcfed0ba551a82dd831085673ef20191b9031b8aa611a0b982fbb8d2',
+            200 => '2fea9e82a46fcb004ff0143eb67370a3a4f6c1c13c8221a79b42592e3d5a589b',
+            201 => 'f70406ba7366d4fd2819df5f950716f613caacc9bd81f59f4f6b05866607cef7',
+            202 => 'dc9d786bf701d2bb3c34cb2370f4483df94d9f06831a036319904db136d0b9ad',
+            203 => '6a27f4f621d587c3d03289fd506dc9dd73ac9da736f55c61225801ea5d225514',
+            204 => 'd5067ce027cc44df2e58d92a7cb33e4a56ca05045bf1fbb7f1541688255c1d76',
+            205 => '0b270ae202028edb653bab6f98e9f4f70ba56e196edd5195d5a333614356e2ef',
+            206 => 'c7aeaf51d77fe89005fc97e87ccc1c075a06dc3ca48fd9e91506f283aabff381',
+            207 => '142cbc42dcbadd797e677b385ef799016b98ed94a414d726b12ed8cf74182908',
+            208 => '1ec0be6689a623329ecdf6a27c8dfbafb6af08e7682771ed1bbd84c561171a66',
+            209 => '66da6a0c8bbf158ab2bec2d680a2d8780734e6238a04c76343e609aa47ec3037',
+            210 => '10c0b1677d05a91324be9127c59c3a30ee27f47fd048907d89fe7c1960c27d5e',
+            211 => 'fc4b4eb0d677f33e84986b5f08b11cb9ba63c1084e5f9db31875326fa6a623f1',
+            212 => '65078486aa61184e83372b410b254e9ed6e351925f4111646a5c6b2ca85a7483',
+            213 => '31ec9b004da8cb028404b23b8a6e0e76c156b6c032524273aa03b99d4f7c6eee',
+            214 => 'c53265ab107ea5b1bad2e72294cf91810369a18c6ae3e36a98627c64707620de',
+            215 => '4d2c15a78d5f849ae26074d4460cec1066911b767e3009e4bde8ebc3b46a1636',
+            216 => '6654c0968c30a20379e4be0c6ec75e77ed90738da29e058959ed5c8c76210e64',
+            217 => '1f34c446a2aa18e97724e0caafa9badbb792ac4035b2633cfc0569c68589e695',
+            218 => '6bf5e1b7ca53b36f899199cd2c7f75b7d77d5a2063b8614b284ab82a19d312d5',
+            219 => 'f297d9dbc1884a72f8458235f6edee379fe2e517c5bb750a383853b986229871',
+            220 => '3ca4e30a8fc044d5566f51d43656d2f8ba8faa8613baf08348fbc6b33243665c',
+            221 => 'c63e694059593b93d93614f9ddc7a9d51b33753b606a7ccb047119dd82d06588',
+            222 => 'a0bea646bcd2e17280d51742b88820c68447061a731526084da3220e908228c9',
+            223 => '22618eac1e4d0c349ffa1f9c9c51f224c6cd61c49e3cb9e4a2f9c97c96c2fd54',
+            224 => '41c0923276a01ab93888b6eda151dda36bf8948062d87ed20fcdcf55700412e8',
+            225 => '0f2f1460227aa0d49ee83aebc869643517479176c89b02d25c5787dc576b195d',
+            226 => '5e8b3647475d19ba265085a6ba66d2811c7e33694fb19cdad052d69b76da29d5',
+            227 => '35e27a7db6a0e30ed5efcb5b17ee6364aeaf2141030fcc171ed6b2bd10b6f905',
+            228 => '4af12d9eec3037eeefb4973c552f09f8b07f1feb867400ee035c4016ad2865d1',
+            229 => '2dfae34036800ce219902e9d60375b2d09e20213d211685fb083912f620ba739',
+            230 => 'ee784fac8d0f41ffb549c16c7309cf12ed3404da0abc65f86027f7de30ee56e4',
+            231 => 'ae7e26d3f756debb8133963e4ed8d9d91ac274aafd64cf4acc5a31e8466a7f9c',
+            232 => 'cc501277c2e97b5708078fad72c014f52822a87aae0ed6bb6b12f1cea61f3fb7',
+            233 => '8c940bd5e1f197011e8f730ed93f8d50fd3684d021acb7c41ed6e52a85a5af04',
+            234 => 'e3e2839cd818fedf7f95a9a2e444aa66a760dd31e1bdb8b3f0f73eb32514bf7f',
+            235 => '74a01df0ebc1c3d9fd4a76a85b26b709cb81ca8d5355469c7073bf326ded3524',
+            236 => '1c87c151421a4465ab3147a445f4e273e1ff9a5c73819e9cbfcaef9dc338567f',
+            237 => '507188c32b5d8fb864eb7b091b24b9e8dd7826b3b6a1e8e709c7dcc4d97ee873',
+            238 => '6d52ceaf674c99d696dff7e264a95789942ea8ff37b2897b3491041cf655495c',
+            239 => '024618efec1b727bfd5d61676a0c2407b3c07e2a4d12fcca0553b72462428d64',
+            240 => 'ca64e3ed6fb4aa3710983bebf2d8453c793a5739cfba04a3f60dd492bedc1dc5',
+            241 => 'baba2dde4d7f94ef979736ef16ffffbddaa5d120ecd22322721a0b9d640ca7b2',
+            242 => 'e3b57f13aed4ba88e775878799d8d71b91aeb9d18ae7d89f9d8e48d37f64c9cd',
+            243 => '0f7074114c7af2ed68b5baa49cd537a3084bf4097092cc0a4b206b0ac36c9768',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3b4a4f0d88d5720f8d1b3b74c76671ae1313f123b910c06d1e46b3d5a109d35a'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch037Bihar2005CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'faf93ea0918e67d6bc68067a') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            100001 => '7e509b6b27ff66124388d7db0c05141873a2fd064b9fe55545447f7cf7c60645',
+            100002 => '7fd2b72a69344899186d5a6df5b9d1eb8be211b978f450ef843af5b8a8763100',
+            100003 => '1436c964ef15b0fac17f003aad8f569931148b0de682e55adf348b32c2236e1b',
+            100004 => 'c4c8769c136427063ce9a79e6c4d7961c4fad4c73c45ef783c1f2e5d2cdd4d3e',
+            100005 => '28251d44cea38dcd1c885e8cf095d0cb51b6639b8f28cd8c5f871234fd6ceac9',
+            100006 => 'a5addb61d88c6a93983da0d37ca3dac912ca883e763ca71a22f09cb5e2dd0034',
+            100007 => 'ea6123e0a3fdb63bce960a47d5e5daf4b738b897192b82a51fe85fdcbba99b61',
+            100008 => 'ffa9348cd95427c28d4b85173aceaa561f9a117c50707f33830655336ac3c3bd',
+            100009 => '8eacf42c731ad4cba40e45167e5e51873d6b7c354591b8c7648805b5ca3a60c7',
+            100010 => 'ed1aa6ec0e33c958827d08ff1de4b021edc68e13b93c2bc0cfcb75767acf3800',
+            100011 => '0badbf7150be070e9f9e634d2f321781afa799dccbb1f138a5f09a6d74d16a01',
+            100012 => 'cfb5de3f21dbd17890c4f4c8628385f488f70da87b78dd4a5a6ddfb575b65911',
+            100013 => '9fc8f8b900369b010f18c01e54cf989a1eec613f1e6a757694b759746d3b07a9',
+            100014 => 'a8ed22373dd42c13c871719bb3d519808e7c0853464f083f048e69b44f85eea6',
+            100015 => '04dc1d56bfdc681f142ccf4ba039259969d3d6043dfb6bb97be6e3f0e7f7497d',
+            100016 => '5a6574760538c6ad247173cad5ef95df53bfeb3e0245845c39cad3099bf05653',
+            100017 => '0550e01b5c382dfc3f5b26a66fc162c25b481342e111a0934aeae53a7267dedd',
+            100018 => '232d27b1a799a74b219f150282b1873903b387a50683e02297e4a3a3fdd745b7',
+            100019 => 'fee9bd57572684b3ce266e74f04a84335302f8a66c23d93f751209cd7d62da22',
+            100020 => 'bb199dae17ddaac89cc5de053e1546e3a5667397b8c170586742c6174fcb787f',
+            100021 => 'af0ea5a5de059141c179908ca02ba678ebf92b5fbe8ba793e7e01e6a12adc898',
+            100022 => '6ff749e46702fa12196360edf3c9027fd9f754fdd72977dd3be62586171f0cf4',
+            100023 => '4ef69cb18def2251693281f894dceb09120a2d5e0717a0235b091d41f2b9d576',
+            100024 => '5a3ea0f8b82a6ccc2cfef3117c22985eab0ae06ba72103280662c443baf2447d',
+            100025 => 'eba54915beaa56d423aadb79cf895e4c0f50c67d5232ed7b33a4af54ef66a863',
+            100026 => 'f4e949341bea4d88c3cfb69d0961c1b74daa413a7053845678899abae9cf666d',
+            100027 => 'cf7d482f2a6c6ae2d8d50471b01edb265c4693c80664b7279e1964634c2debdf',
+            100028 => 'bc71aa7248238dc7225592ed900df4bf5a70271e77c452c26ca95adc0cef4042',
+            100029 => '26c2e893a22b0e72a7981bfd419546eb377e9f34ec6e183de6738b9681d2cad0',
+            100030 => 'c3668b853dc8f00c5f86d7e8b01512069a308b813b59dd75f799f0caa751c654',
+            100031 => '683b7b076a4819b9d322b3fab5a6569b0c44357496263940dfb9c253629e5f35',
+            100032 => '41d9e66f19a747bef75c59948b8dbd38a5c0d32d142b9c878b60f2b4a5475b53',
+            100033 => '35b032751774f1a5ed5cda09111f645453b06174d45460879422f537f88e7683',
+            100034 => '53e3512ebdd0f884bf59ccae0c3ad7ae803926b63ee5f30a655d1e78422ec6d2',
+            100035 => '015583f3127ca6bc14b56728b25d22ff40ba6ffc0d125184e0ed5718de308d7d',
+            100036 => 'a3eb622a61ad21e2f4cd44104be792248adf6f7ad46a01e459ec2d5b731c2013',
+            100037 => '04d2061d5ddeff807978d7658f9a6f754238dface3741c1600f98d55e06b6a17',
+            100038 => '5fbbfbbf6982217a8a71f07a487fa4004cfe2b9cea35f16c6234586c9ccbf7ac',
+            100039 => '9c5399676b912b4ca334614f32727c9e9e083a35f53caf4e4cc18337c1f67cb6',
+            100040 => '20ffb1355d99f0d6455a002be0981b0b913bdba6ecfd9464dabc5e1df12fa409',
+            100041 => '5be0ad57826323e389456c82c323196b2a910f9849383b324c1e8cf83de56bfd',
+            100042 => '1987a9170c4105ad2d702265124c929d1cbd26c2b3a28fc27b2b20dd5aacd210',
+            100043 => 'c59949ab1c8208154d56f1bd017eb7273dbea29c77c838a81b3b41d9a2953576',
+            100044 => '21f39da6dce5ef98afe288d15b903c9f2a1477c6dc63afcb4a9f098820685d99',
+            100045 => '7c3807ebb338bc48945af7da3d12a7fdb6caeb161286dd1797d9ee9f46eef638',
+            100046 => 'd900e373e04c1804c94a25f1862507704265fd0595cc0c9c66f3348d0875809c',
+            100047 => '1d08e97cb49633c085d991294a09c9d40a0b3a81baa9b9d4341e9161bbaf7994',
+            100048 => 'c24baf02cdeab4866acd165d4e9778dce333bcc3a39d8b5c2016bc61c295248c',
+            100049 => '545b3861d9a92c42e090c208ae17ddb0832abe1630d7224d115aa1f2b01ac12e',
+            100050 => 'c3b922ad9ce26a4f266ff652613ade28df2d93bc3df5e14e045752909735ff15',
+            100051 => '48521d569f4f994866584ce7c6cee5f89875ed8232e3ce16bcac75958a45e6db',
+            100052 => '245fad7c1006bc645c6eddb30bfcdac06fb9e4bb80fade8617f5d367d2ead56d',
+            100053 => '2f4b7f2494ed4e8582d2b83d758f651aaeb98e06fba15c550767ba3969e9b21b',
+            100054 => '02606fb8ec85600d1e7b776cf4f500caa91ea139e0e241e78ae0f396201ad45d',
+            100055 => '3a036b986eec936048cc6cf5dbf1e38ade2afedc9e0b6e6474bd0d3b2cbe5899',
+            100056 => 'dafd46048ebf619c22b89c19a5859601fd2853524bfa34da7df90ded44c03c33',
+            100057 => '70e3a29b594510a5bf625c6847068f9e5ec2a2b5b0c6d67240977bcaa6b5e09f',
+            100058 => '9eae234689f8146d44b5620c4eb9ab342827a7def169222e14ef00f5be03acff',
+            100059 => 'b4e2f66b9cdd9360c7111cf25aee5fac7065fb5b270a29aa0d45aff0d74e11e1',
+            100060 => '027e059a57019e24c96a98ea20f2293cf61c6f09614f108538e721ec7ce1e3e1',
+            100061 => '1ad23c9ffaa09cfd8ba1c63c86577f5a056fdff96a13870672f64b19960550d1',
+            100062 => '55dc023db99ab6939556ee8fbc631c7e61255a3a905891b18cc5af90ec9f5ff9',
+            100063 => '74c326ff273fbcfbf6257b2c6025c1e668af1d46d5b47d15136330cb412ffb05',
+            100064 => '71f8d54db4b1c32fecbb4ee692bcf410b2ba8262f07ec851adc470bfeaf367f4',
+            100065 => '55ecc1b687319568cc1e41cc137c601331d9563699eed3f3fba7dc1f61b497ec',
+            100066 => 'eb85bfd20a5cb7e3265e0f278a38849b304f3815055bfd89725ad904ec9e9e9c',
+            100067 => 'e6ab7ff56a1e0dedb30e6823764ac490b4541112564ddc91d8a8e77a16c922c5',
+            100068 => '26466f59d92af416b0d2ca60f8550987dd23678c5c2ec50071536e1ff8396268',
+            100069 => '56463e87538543c1fb5297a33215fea1b7475e197b24974fa592843044101cbc',
+            100070 => 'c2a35fddedfb3dc42a3cb0949b8b962211adc2aa5202aa274b879abf8449df26',
+            100071 => 'cefcf6ffc55a8c5c64c6b98cd96ee6d4a0dda10b5cd551e3dd6682decb54fe9f',
+            100072 => 'e669feaf4e78bde35e7538c1cb1c3fa04bd98d59e618f720c81d909732dbd6af',
+            100073 => '473cd5441afbfaf8323ef872baa656a6bb1f6978f5ee2892c5048fa91e9ed7ce',
+            100074 => '038213230034b72d2f5d695513c7b49a718f3a89df01cbff92ddbc24a95bcca0',
+            100075 => '8dbdbe15dbcbeff456632fe9fcd3a0e51eef547248b5626f6d46a47c2c7b1604',
+            100076 => 'a64c6b2c0ade60af9c256c6355508e726260640a3467fff73d9b72476fd9708e',
+            100077 => '2007d5ec8afc78f9ba36260e3372656fd96716db1130a140f6f1630e74ed62b5',
+            100078 => '45839df65351321bb3ccdea2bcde8bb7f8392c51701aec845e4aa9772bd10b4a',
+            100079 => 'ac8966c46c3e23f706bd638d8a7a07887cd5b9a160fbbf0ade30f5101cb31dc5',
+            100080 => '16be3731f57b287ddf163b660cc214e29a5478aab670780fe236e74ef78b445d',
+            100081 => '1ee0a1c4e2b2a0123a166fc18cc6284d6afe4f7f6dcaa29a9b06c9a47235b310',
+            100082 => '7f2a3432606925fb3f109f648dddc43c6c86383f3c04299c9370b707dc3cbed2',
+            100083 => 'd3cb71c224d4ae8eaee9ac02d06c37b51a14d1e31b7ce65a1db76a6cf5d272ee',
+            100084 => '3d0452cd10fabbf5eab807f66c370a10000f6045ed70dafc7745ce2e1b1c9ddc',
+            100085 => '05cae8d235e80d1780681bfb182a59e0373de23e3c8cd4dcd0115b72f96a3a0e',
+            100086 => '2d8cccf374f95d29307e86aeab13a6af8d55a3bf95e00cf2fe2400590a14fb81',
+            100087 => 'ac22c42e358f5b6a37268fd55fb40cef401a79f3ddbb876d571eada8ec0350f8',
+            100088 => '9f6d4ab6f71439a16cc6b54a3e9276b3ae1eb6a485fda0b08a5926aaa231e67e',
+            100089 => 'b8ad539b24670212a487dd7a2512591c893ef9e66915ff7f03d9fc1dcf4cddc4',
+            100090 => 'ce0710c7ebc72dc4349181bfed72b66d3b7878f551bd055da4d6e8f43de99484',
+            100091 => '51cf8ce613a54d7b4b4d421ca6595eecd5820357664157dfd0ee147ddace48fd',
+            100092 => '3df9f372b3f0ef47ccb7304ed9fae9d8f5e3d0584976ae37d17ba0b790c6f65f',
+            100093 => '64816b4c0929825e31624b9a7c38728144b7887b31ae85c843871f31f669080d',
+            100094 => '92b94c0500357b7a97b78d411366fc83af518808cb74c112dd42a65592cc75a0',
+            100095 => '49f3ac1d79e037d4739d509aa4aa01993c64c1fdc7e87a9548467f8fb65edfa2',
+            100096 => 'ed6793ba7484d76141d68b2383049b93d66ce689055ec45525572bf24b163f8b',
+            100097 => 'e0c498bc419e52d933112a89b80b70382bf0baea0fcd8fcbd3d59ed6b1e32f8d',
+            100098 => '2458ff7638f8a9878a628783ce22d391c76f191659b27fea3a348d3870100453',
+            100099 => 'cb6a80730edc39186ea2c2d23c47e12cccb11e8d697b864ef6bfea24be4322ec',
+            100100 => '7d6ef29803840e14920af603c26aa99c3849d9fa45ee7c9ef90e194ef3b772f9',
+            100101 => '3a94ba1cb3f5931c601fb629ff1520ec3894ad7fdf5249407a809da997e193d8',
+            100102 => '131020ec97fc37f0874929c224dfd72a4c39799d53b01f4f284abbffdcbaa002',
+            100103 => '200a33f9d9b15a357a755b41b575dcf8c002636625acde1a3230f681acfa201b',
+            100104 => '187a6ffcf344a96335350e44c9301610d05dd3cc1b0ca622ad1e8e69e5933c4e',
+            100105 => '9d1b28e3ef844fbe6786c9c7f11ee1c98186eeeea59caad1e5cba90165dec13c',
+            100106 => '7daba8d593effa0d0e2af4bd103b1bb247c47beb25f9d6e0854746fae087bff8',
+            100107 => 'ec6f0fdeb958df5bfe0886f611c62d623e65449799e371efe9490dd7f023a850',
+            100108 => '53d8f641b192f8232ae7c24bc90e1502a01435e2f732a6b203671a3f8d928744',
+            100109 => 'ac7d5203765d07a0f30f7ee0fe793c7fe6f23e0a2f6648f7de2d4e0fed5db143',
+            100110 => '6fb801b0a50a473e2f36d474fd1bdadb0bb2249c26f465b45b59892463e8682e',
+            100111 => '96d6e3474f5b26383d44aee7fdf2728f372335f3f8c60a9656a5ca1ad08c4e94',
+            100112 => 'e19a89f26f1530127c5d588ad805de0ebc6f7dd617320a9718e8c4ba85992638',
+            100113 => '60ba2e75da1b65beaf0e4e77e59b216ca77f13022466c22bc99794bf66c0140a',
+            100114 => '5a0ea10582522987b21198e76413dfded2f3f2b6f4c95d119898589b02279754',
+            100115 => '288e7c23045a9fe6df16230e98073a7bf297094a5f1da79d2145c709fd9a0b5c',
+            100116 => '8a725e19f40c6a9efdd93469f9fd8a1a29026dd4f32f6c978559c79b5d34c6a7',
+            100117 => '76b13266e3a67b1e73136e6d5e5c0d8f7b675227f4f8ecb0d55d5b90e0aa4898',
+            100118 => 'a8e0c99ad7c348406204e147ee5ac566723431e4e52febf97801db5e1730bed6',
+            100119 => '6dc9dcff50e76ff8682e0f14bf80e0871a86e087800fabbaf9be58f85a108671',
+            100120 => '9f3c8d19f78704909f260f45183fe489b524309387964c0e2ade174241ad436b',
+            100121 => '868a23b802e15c09ec8ceecad2964a066b933d4875aac13b0b76d40f0e92ff68',
+            100122 => 'a74ec9b5c5e9cfb17ec3fcff1d7270a2cbd2bf493259c178a397dd1e64f6a28d',
+            100123 => '42c576271bf81c0ec7d198b8ec1f68a4dd74a31208f588b5c2aca3be3c4a0d83',
+            100124 => '04b5ceeee643e1126f90f0f7f5549276e03886a05b51d95fef1f5b9bf21a4b60',
+            100125 => '2ab592eef473eb3187f767139d8271824f28c4e76aaab8c01e8f9a5720444eb9',
+            100126 => '352cd4a365849ef09b3408c64945a30214b22e802710fc2451c907a8fe872c35',
+            100127 => 'e83b2622ec87d6dd336326a653670f0f1d452514b4c4d5bb19d420eea41adf0f',
+            100128 => 'cabbdced426549c455107c91e8cac43cb77651e3801960bae98b07dcf0041d27',
+            100129 => 'b0eade21e797b2c51464f8c6ba2130b0a5abf93b0e911e804bb81e8707fcd63a',
+            100130 => 'c29f590189bff8ff7edd2034e06d74db4a2084196ba9e6e5c435ded4c3b3bad3',
+            100131 => 'b110a593f30f73eecb0756227d9741302bfad4a737bdd6023a4a3aa4247ee3ce',
+            100132 => '891ba37d66da9849125e0debb630f4597daaca635b737ff3b1f1976b07d292a7',
+            100133 => 'a9b7792f6875bff2e393e07fb88392f536d8ea409f5f5e81fade521c94c7ea60',
+            100134 => '6675cb697a556bcedd6298adaa8dd452942d58f7e30e3773ca217526e2210279',
+            100135 => 'dbb918b94e938ceccf8f5cd0bed451450832d4159fa14f526d261b1164c0bd59',
+            100136 => '791635eb49c15bb1584f03504a930112237de5dcb5783474227651be9a2dc84f',
+            100137 => 'a8633c882b16da1c20e8acb25b858cf11d0480b963ba4a90b88be815ad36e454',
+            100138 => '239e46694dd69c0dbff9d5e6842012c57e5aca4786d619e53232d4d0c3b58759',
+            100139 => '13a73cb7234805da809f532acbacb939300c666b30794f55f559c9a04452b2e2',
+            100140 => 'b46ef42ff189b3832f3ffe283ff73365a8c10848ef7eb3aae1000f9e9ae1719b',
+            100141 => 'e62b940eeeb2eded8e3b7c0d31f36c37c6373e98209ae327909f05a8cae99ced',
+            100142 => 'eef612170e54fee6ae383d85d85b15042347cfb2abdaf96cbdc8378ccf29aad9',
+            100143 => '3e8bcebeb5e36f1f370add7e2b61a8a373cee32ac4fb2447ee31c55ab71fc15a',
+            100144 => 'dcae495be5d4bc0e26fa850b484ff6ba0a875f601b3b06a25e556a5d1ede4292',
+            100145 => '98aa6e6ae6562bd0a9612a0f553e343c8133a8ba0d9ef152f54a06c12c0c7b60',
+            100146 => 'a929947c2c7198d4cbbc095faf0e8c5c7d306446517b157d5aeadbc6985cb675',
+            100147 => '82493483cce52db28ac1067a61af6de0c64f85a44dc49cc88b8291884b2eab93',
+            100148 => '50821c3af5078877c64c2fd3afa8be062371869fe9fd09e20d66f507c6dcdba3',
+            100149 => '4efe955ee9ad65e3509608e5eccb7be0db3ed452e708b578d6f2cb303e7f4703',
+            100150 => '72f2c1adbe8fa21310c1729ce47268fd2a69ff26c72fc880f30f6cacbeef49ec',
+            100151 => '6620ce9b070b29af3d27e91a80f5daf16895c76bdeeae5ee98a6824c219b4fef',
+            100152 => 'ba80eddffb92c668033b9707cd3f3822fc3b034053229bc90474ea5b347967d9',
+            100153 => 'dfdaca80768ca774b1adebe6ddfd286ae6b6c8a191092a29d94fedc9ce1a1097',
+            100154 => '4b7dc0c5ecf8d73bf1b57934e5b090d6c1749b82e73012d613d16a83f0d456bb',
+            100155 => '2ec01b59deded5de40959877e4ec2db2cbe653bf8621f8f2f5f01168a2ad1b43',
+            100156 => '7be5dc8da94eed145f56f24b763cde14573ef91314dc4967d0693602697bf844',
+            100157 => '466f584538975e492516363796b750a6bf7a20309839bbfa09b8b8d5a207fc33',
+            100158 => '18386b9b9e3934c6400d3bfa23ef0eb2ccb7d546c9c91459009b264ec8431842',
+            100159 => '500e3f7aaa2457214bfe3daa63a2e110a8b9f6e9d3e37f4a11b67768449dbd21',
+            100160 => '2cbb2e9ad258ff371d2f5ec4dcf8c47d907516318527060012089590d44cf532',
+            100161 => '81938de6f9210a712a985c40753198c1cc6d5ffad416abfd908cce7a37c7d684',
+            100162 => '0513f76dd33ecf2a53e44f372bf2b7aa1841634d6a3466bcc7116bb5ce3f07a6',
+            100163 => '83fd5f9b6693f85d7cd7dd4e64f4b74a9c63c9957ea76353e0047b278432749a',
+            100164 => 'fce69becf7f2670d8b579a8c131421e9d71280d4268b789a6bac02acdc1b0ab2',
+            100165 => '921ddb1ae90e987c631eaac7c4f5a32c242c47a91a755cf636ae6fede224c8fd',
+            100166 => '018d3cc459b31abb9bfd1a5b4befa27d39ed7510e2eb0948726376a88c13f8a2',
+            100167 => 'a8a37f30b5a7de10ab4449d6deb9dc176f22187dde720dd487cf49f3b0046827',
+            100168 => 'e3738a4d60fda362eefd5c22f050690fc0f7916afcd841f6040d7a40c4020964',
+            100169 => '771d34c5ef75e04b223fc67fb02a3e28b17ef7aedfc92ef0206910961b812f8f',
+            100170 => '3e419839a4e08279ba3023212b2f8f4e31d3237f63339d93e094f7a05d42a9a4',
+            100171 => '7fb7ae7dc5b819d84c22f88d326c3e1700cf76b0abf177ad487468deba7de7a5',
+            100172 => '899b525cce27a36d081f61a3bb16e75bc0ae075028fff81a179fbc5f87c87964',
+            100173 => '0b2e3834b687d0d51fce03d89eca9859a3f74ab0b69b5e4a2d2a9723c56c156a',
+            100174 => '09a70f0d02eb43d5818ba1d70d75819f9b6f14dc5eaf9991eb25422fb2c9595c',
+            100175 => '08588e014e6f74d34f8407281a957179854f9d14544447ca98c27f9abe6fd25e',
+            100176 => '73bff074327e85c5fd35199f7cb1aadab2658d3cb9e3a7cb5524eb892f4092c2',
+            100177 => 'ee7079635315924b2985466ffda7ef9f845e57112e78b63c93f5d21520c7d51e',
+            100178 => 'f4d5146f523b412acb4987fd2f1ed7fa549b3f125bb8e3f4347e0f828cee4e4c',
+            100179 => '3d87748b7488a0fba3ddfed831af1f9dd9905ab36b58291b612d9222944e55c9',
+            100180 => '7770c16e470d7e5a6e38ec13078ffd3187f76b8613ca82564e7d59c7d3ca3ecd',
+            100181 => 'b7101de523ddcf0e960488f3a035644c179bee00569a4fe2ddcac631ca1320f6',
+            100182 => '12354533ecb95224deb8da71bdc2d41affe762a5ab3464a30099f58c6fa05b45',
+            100183 => '046584ffd791dba8d60dec0261a7785faddcc1842318e341297befe54ff43fc1',
+            100184 => '895a1519153dccf3b1cc0691baeecf48f2012b1e67983b3cde5b113b2cc3af08',
+            100185 => 'ca1e8eada6cebae1c776d78e2b8427f411fc47eb9ef0806c2121360d760be6c3',
+            100186 => 'b4d77846bc9fad005d62688e02bb64439e8cc3a4762de00ce9d296c8d749938f',
+            100187 => '8a5071c244fc284e29cf0145db16b502be34a8d589c6d77de65a7c89605cf053',
+            100188 => '7a2f61499f877e2e6fe899257a6e7098bfeabb4fb1f19a73a3c202ff27587e62',
+            100189 => '533c5f4279b2225c5af66b0316c7eea7ace4d77949c8c7be209e074b3218b468',
+            100190 => 'e6b888b818dfc3354422e70c88e033a16fc75b67a9b7a5ec039805aaacda0ced',
+            100191 => 'd645b72e55458679e06e840e848db0b4000373a233a7588e4b23a66cde917fb2',
+            100192 => '68f5c89375708889890e9a6d70aef697fc97bfee68c95493173a191d14ceb8d6',
+            100193 => '40f7c0110eb8a0855aab7c42b154b0144ffa67282aafad5e3c81696de7d2e90d',
+            100194 => '2f6a22bef00dc9b5e9a91427eca92ae29a417c6f18f97ea4eda984c7464b4e55',
+            100195 => '4b357619deb480025af0adacf17b7df58f1e73403355d9fd2a0adda6b48e20ac',
+            100196 => '81779af729ebfa5f5bee94d7e9e0bbdc7bdbd6d4f353981954d1533b7ec4e19e',
+            100197 => '443be14c1117f2739bcdf4fd8949d6d9ef4f95f8456826b1a2eb7ff9a549e98e',
+            100198 => '4ffcb099ad58e48da5d2d81a69ba1117ce0a03c974b65c0abc008b9192faecdb',
+            100199 => '649c0737fdaf4bd9a8fe987206a45ef88733209c356451dc5c2517c3adf3f3c9',
+            100200 => 'cac6b920ac70e7ed9649e9445068a02bd5eea48b11d57df47ac7a534255da436',
+            100201 => '5be0e5b35381958aa25cd3c9f41dc55efea6117ff5f9109c57c315950f65e745',
+            100202 => '586e447d7e23d8820bc9030d8953329cd0a9ef86df4647c99cfc8a6c51e2095c',
+            100203 => '3f8625cd1750702cd6232cb3a78df44e5b82c13cd177d6afbf4b6fac1dc9232f',
+            100204 => '698c8b2e45f2532e681f4901ff6501f0879114dae9068e69a8afad2c8ce8fcef',
+            100205 => 'b7bb3daf8196eac0523ade339e1048733374222246ed9161697861711053cf84',
+            100206 => '9407a37f6c142085d11c7201ada6af4080513312bfb654887a78e11bc567b32f',
+            100207 => '82533761296c7e5f6ac526369d3e59a1c833bbb66d6bcff1127971f7a117b4a7',
+            100208 => '81f70410358b8fc977d387b9d8bd5eb88c6afbec7454b2e4c06a64e38b65023b',
+            100209 => '68df0b7038f5ccd18954cf252d79ee612e08bb3b87c13281a59ed2d2534f3e08',
+            100210 => 'ae22676938d544e57cc9b87efff512375697ca154e2a054e03d8eefe30490279',
+            100211 => '85e9d3ccd849976a5238f3f92cf120c32e157a0550b23a67e3ff9cba9deb7238',
+            100212 => '3808f037abaf562cdf91ed9d741aa71c86ee49bdf00daa8d832d5bc8d613b29b',
+            100213 => '2d1b793424c9c4d00fbdf7b05eb5b38b63c88401ccaac2e472b68bda86f439d0',
+            100214 => '05104c72ae7edd22e34a8e9369b85736af2a0e35245f8fce78f49aca57d0edc0',
+            100215 => '3b4f6129620b43158f1100bf774c19ef7cde40f03ae60eba57b388f0b35da7b9',
+            100216 => '7d32a8b06c7fb206409356f23013dbbf7e87377bca6924cb58348d8de640049a',
+            100217 => 'bcd26037aa4fc35be17db48dbef0f536fa9b938f02fb5c9546004c8caf818dde',
+            100218 => '9e825b448e416128509c99447fca41da3a6bfd32b196890d5ae8a6050f5b50c7',
+            100219 => 'be56827f97ae2be9e0bd23b74549cde6da01635d9859af1493cc95fba0c2fa03',
+            100220 => 'a02eeff5f638747a060bfcf5e7cc50ebc55d94fc0b803b413313b54346de3407',
+            100221 => 'f2ebf2d2df563019fd0bf297b992b1d09e3fd2f918c727b20a549a7d8a103d9a',
+            100222 => '8c7edcc118fb55237304ba12de080042a90ae07952ab395238235025252406af',
+            100223 => '8df977318d81a9dbd150d15e8586660328e59630f43537d8ed03c2ea99eccba6',
+            100224 => '3dfcc4cafdf597c08b0357b1fcd734e29bd2b493f679510808d62d9df24f0a14',
+            100225 => 'd58d2647e3331faae551111ddb85e19b31e4b43b2df94720cff1d824455af07e',
+            100226 => '1833ee0322b1cbac7ee1bdc777cb5c9243ec5ddf756ab4a368bd2bd94b24312b',
+            100227 => 'f71e05f6eb22808707ee22f4fdb92d08e64e16e5d6d3a87eada4179f25afab21',
+            100228 => '3394bef2c44bd80808db6d21773e1144b4893d5fb0a899711dc57db95bb982b9',
+            100229 => 'de4e5cd7f6999e05751af681ffdbbe89d9b4de0fc5bb260c5207a400344c6702',
+            100230 => '2c3e5cc949b6064f36cd9f6ee53f69454fcbcc839a2c88b1c7ae283bafbaa1ef',
+            100231 => '5a52b91eaa597592b095f3cde0ef3554ce29be6c42c66bbff02f0d734bf9ffe0',
+            100232 => 'be19fcacd88c1e236bfa167a8491a54d561ed5988d629b04d93dde0f3b1d7d48',
+            100233 => '0d80e2f57600a9205809605e7cf27ea13f257131b1aa2d68fcaeb17d5e6c40b0',
+            100234 => 'ca933cd9f5660a0462cd666576b8a545f919133630332de7d1bd00067cb6a1d5',
+            100235 => '8b899598ed9faa34897be93bdc4878e95a49ec47976ae0e7033142fa7ab474ec',
+            100236 => 'e615f7465f1485fb003a54f4d63e2909ae9ea38c4e5f6644366dd80e207363e0',
+            100237 => '73725d600885bb40a965d47377e5ca096c1aaf5b3772bb6fe3a3520cf829e4dc',
+            100238 => '6367858e0377233df0d3766c2e24a752a5944ba4898f79149c317588b77f7b4c',
+            100239 => '71e504da2a161e8847f7b49748bd4969bbc2546875413a8ec79398b71779c779',
+            100240 => '3098f938bbbea01dc7cfc6d6d621592a00da60148d67033bdafd5f9ff0ed4ef1',
+            100241 => '8d712589d0103fb73fd537a8ee490237fc3c755106227c0c5d223b28d598c8d5',
+            100242 => '6265d52d1e83542ab49810f7417e75b6338991f70696dbe176d833ce7db2bc89',
+            100243 => '5e0282e728b13217a0dddf5f6f87956a75e7ecc4d7b6ec7edc8490486367654b',
+            200001 => '9aea74429ed7e2dadc6f9b9b2a4f11f148347e5873b213bbf1fe9a64484ed63e',
+            200002 => 'f6c714befb8acfd93eb5bd8d61c78df87b66ef7e2ae802476bffe02014c7f30c',
+            200003 => 'ebbdac749780e104c43e893d3572a84033d27da6b5be65e38b7d3d9d5a246a7a',
+            200004 => '57fd669ef36b6ee7c2c32413c973df1f65ab562ff272f1d438127b0cf01e994f',
+            200005 => '68658c235e34989e20537cb9ea59bbf21904aef2ac7b0b4774fb0f55f3d94e19',
+            200006 => '40c0cb16463b8eff99efab36be206dfcdb928d1b2f9590e152c2e959a26a8f2e',
+            200007 => 'fb173f96336153e957c0b93a18518f8d325c72ca558f27455866acc34c2f8541',
+            200008 => 'e90169a6808bfed9fe855162ccb8a15ff70b1cdb23b90e1a7a57345a5b25d88b',
+            200009 => '0662104078f4b4bbfe682c4d0b23a0513ad37a53b78ecc3f60fb9d477705be9d',
+            200010 => 'f28bc558f7cca3ee623400f39e5c829020c237aa6e6aa613b4532df2e79d9ca9',
+            200011 => '4fd41f5649b8dffbc6329766b14746a021804ba5aa79f88a2783f96ca64b70c6',
+            200012 => '4e11ae764e552842d1a57a32ea08c50eeacbcd47e52c6334b9dd50e9d5c14bec',
+            200013 => 'ba351acf5470ce6db32fd5d0b531fe12e32dc2ab0acf167ca4deeec08130b3ac',
+            200014 => '5b01c2674e7fb81f01bac10646e785294173af39cd0c988d5ab88f2efcc7ce74',
+            200015 => '62308f62e8739f882828241991d29e47bbc5baa485ac68a40f7f0a06bd28b489',
+            200016 => '920fcc8e30c1e7f138371e0291492190408a1c66e9d6f68bca1cb7be0487b5ce',
+            200017 => 'f03d81c2090931924976d876e2bf5e08ee6acf0be23382e26e0a9fa26869cdb9',
+            200018 => 'a1f82685a8bd6a962ff083a4bff1cde7b84f4a399b9992e9b4964559c5aa89a3',
+            200019 => '7cc359033c3f530da78419be03d408379d0c0aef37d55e623041ea7fea78c98e',
+            200020 => '9386eacc6aff79a7b59a5bdd85ac22259e1650a730e0551154dac22e46e60f31',
+            200021 => '571653da01c2767c64eae939683b264668d1472e6399ef0fbe11daa83bd9beef',
+            200022 => 'e437900cab5cc7d45e105bd8c3dafe54bb4baafc5f7fb0e0a331e2ee9cd0aced',
+            200023 => '003eb2a17e933f256297fc14af804fd642392c438749b8af9947ea80f102d116',
+            200024 => '0a00ad6379953c60074bfb6cf9755c5255140bcdab3630cb5319b48bbaf6b17a',
+            200025 => '7307fe48ad8769a4272d878d46c322b1f34ce9dcce5c0ef4b6dce99031e284be',
+            200026 => '235bf4f8f60bea5649cfdefcb19f12516e6222607ae1edb6997f88670cee3d0f',
+            200027 => '6b75e3f4f8cfa362af6fd4cf0b61fb62bc038161420b5b729a78182099e8e7b2',
+            200028 => '05f4bf37ae3d5c3aa941d88ddd20180c0e74f2a12de4239c7a48c9c81324bc4a',
+            200029 => '93225e4c6635d3b084f2a65f44b92ed003cb9d7d0b9f1ae724df5f0b00c027af',
+            200030 => '578feaa6799a6a3cdd8815f3e5c1bdaeddad81259c5ed81b5e4e4b8f1443d2e5',
+            200031 => '4759c4c024909034ce8687cffabe9df9fef25f7c8875e05648b7a2f8995e05b7',
+            200032 => '4fea5c6af1fd29cf39f6b7d16b165b6e9dac1eb05dc2376c78fdc07345ec15f3',
+            200033 => '21b96472caab84af317b361943d8392c12302af4dbab38913385a89bc75bfdfc',
+            200034 => 'bc8a26846196f14bef344fc0abea2fecffa0b10581482d1b6b2f2b9d36faf49c',
+            200035 => 'a13ccb9424228c8e491e9fe620b857e188978ff9e47b98cadad3932293f806ad',
+            200036 => '47686eb51cc920798501ceb7ba53fdc834c3368536bf21b8267349696835e5d6',
+            200037 => '153f847c7a86c91d748ad70d633166ceb55ae9313a31239ec0542ecca2dc0219',
+            200038 => '842cbb9d965c0c8ba2f8ddf2c547984634be874e3e015eb0e4e234f7af0b22b9',
+            200039 => '7981e4daebc91eda55d13ede7b3d060183adf5392ae9847a2d1591fb7905a258',
+            200040 => '25e017556d48299f23cdcce651d4109e8625ec7a138a31f49e1d1806945b2da4',
+            200041 => '23a139fa7fa77bf3530e76b130d68b85e17f327cb27d1d3f202ef8c31766407f',
+            200042 => 'c73104e8eccc4a75685ed71a7cdf928762ce53001754d789c722e4c74dd5ea43',
+            200043 => 'c9d077fc93ab22eb756d0eb4e3c4dda67febd3ec16ec9c7d59404e32e373a733',
+            200044 => '69dab5d38894741fbca222e4f657dd53f0d0c65ad6cc18e57d7ba5a234b3fc80',
+            200045 => '88a6d9d189d489e93fcc786574eace650c8419047feaa601fba417fa8f408841',
+            200046 => 'b033443351302e07d388e4b98cb783b108cae574d3ccf83a14fe2b2fed000f1b',
+            200047 => '34c87169c0e3a25fb655b12a7a4558ad7f7c2f3337f806087d4b815237201543',
+            200048 => '54b2c342912a956349fab06346f2b41ea43c4808d0e9f713ff4f0a19fbd88de1',
+            200049 => 'c915fcd2df793e2734078543634199674f70113455ef0912fc09f69d3d30df28',
+            200050 => 'e54033ea2e1f3d375cc41850cd2f568a5958956d3a5e445be64214746a820595',
+            200051 => '4638db1c313278eb58462180441ef0aed42216dd38b6a607d822e3056ff0a41f',
+            200052 => '6912a2ac7d94f95d2c52943112f043d15379db8fe474c1b9e163bd81747022cb',
+            200053 => 'ce53c1dfb8e2d54c11fc49a0d4c43666d11fc09d5a2d6151dcd109cc94ba6952',
+            200054 => '6c7237a027a82823320ff194216eb0c96068f105698232e38bc186758c3ecaea',
+            200055 => '1781ccc309fded86b3146a91d90fab38974363de8f3f0b560ac8faf63519b3f8',
+            200056 => '8093a593ca129e741e9e8a32e9935ff8887f187f0b19157f94c90d4ab0122f51',
+            200057 => 'ef4c72a6dbd477ca6243a2499aa0c79a7b85222b6d67cc70538957b724caedcd',
+            200058 => '8f43ab5e13a9675755f2248f033a1c7c5ba7ad73727db7f628860756b9c5ebcc',
+            200059 => '4586efda1246831c0e5d0697f07fe57b8c81e6dd6dd2755c63201727ac6ad50b',
+            200060 => 'c7b52be23550d5cd496491c3cbbe6a42a6a03762b4d6f49ff91c87a9392cdbca',
+            200061 => '7b9bdae43e68c66da1b8e17017d8a7cfa785433a55e9b4bf5f95e13bbce575df',
+            200062 => '35c3dfe4422264c249660fdacc4efca4c488d53ff5c9184727bcf5e82f30e429',
+            200063 => 'e2b63bfe7d748a06f6fb08af8c17c9867f10747e7a9e8d8604ebd6c9ef3c84b4',
+            200064 => 'fb13d4a8e890e5d2eb2cb181245d69d385a758660d0d79388259a360482fd214',
+            200065 => 'e9637f71478406cb2fa5cc415b91ad6d35d2a509acb40ad948151885ddb02f71',
+            200066 => '4c00fad3d1ff1b871e402fddee8e93ae982f361283f356cda79812a88af9afaa',
+            200067 => 'ab3f73e461f1718aef0420263bcddeb97b8043c647837471c09810afef014ac3',
+            200068 => '9f7490101e1e0e89ce3343e76771d3132a3a4a56246977d4c9c9c38b43930b85',
+            200069 => '4d9bb9b1ed43310b687dd83b282f46c8544b53b43d0bf7752408cb40ed7c29da',
+            200070 => '67785097f5b136e0d623c3a77e632b0195756dab5ec3839b734f366d5f8e9634',
+            200071 => '6ca5a270311c33f7e405ec89e07fe22a4c03d4cdf61f95cadf2d29c428517e0d',
+            200072 => 'ccf6611a83d4d0a65dec473e8b903633d5f4b4c48e9f849daa0ef7c9de85b2ac',
+            200073 => '03e1391761d5a351a69f19bee5041ce2053c486e5d21c520161a5c9352ea87f8',
+            200074 => 'fd56d31e8cacf7c1b39d98d4f48818823a52cfbf17c95df1545bb3bb616e2a92',
+            200075 => 'e3fb199cb6d23791635373883f4df267ff7a15434180a1c8cbdbba9ee4a8b9d7',
+            200076 => '2aa3919444b4544758a504dc03cbd8dab6fe92ea615aa999d8de6599fdfdc0cb',
+            200077 => 'c495fc6110ef9afbc1303fe2cc061fdc31af8f92ebe8dbd398db39d0bc7b7602',
+            200078 => '06622a451195416f154fea3402d52cb3f97b34bd2ea0718855f32089e3ef905d',
+            200079 => '87e884e1fcf12b135b59606f4d3e34512c5f3b1b87359976b209140924113c79',
+            200080 => 'df9bbcf9d32dd03f2996d093fb705cf9c8a6a234fa1875918f0f3552ebf842eb',
+            200081 => '4fc918837d130243bff021e1d8cd8a448829bea8e3037c81320efd79c6b9e4f7',
+            200082 => 'ff17d48a686b0d7b680306188fa209bae29cfbdec74559d86bbea8ee57e7303a',
+            200083 => '4def4c231d7c1c0105092a6bb8d197b1d854a206d6d389968a67399fe4140498',
+            200084 => 'f166e7efe4709f0ff4a4e935d79ad8ab108dd698fa8ddff57ed7f525a24fd6ac',
+            200085 => '4bdad9b0bb896b7488e5abc618274412913b872f92d7de4d7aa1516e18e4b535',
+            200086 => '6adfd1c6305f1778b4ca5799628c0d1c81efca8ecbb301dceb5df35736d8870d',
+            200087 => '8ed3b4e1fc223f572799f89e6b3b9d61d0000829bc57c9dd287396bc994f132a',
+            200088 => '6ec6cc0810b914441f8501f248267d943cee509df2f7c3d99db91cd0b3685fcc',
+            200089 => '777a1a980c920933bb1c82897945306f5e877a78bc727d9cc45188e5e7238e95',
+            200090 => 'b8c379bd3a9269f6a46ff16981d302cc57455acbd9dd6217706c38f6181715f4',
+            200091 => '3e7d01e1d363feee0e0f6f30889fe2ed4ead43f21d81b71dcd517d66d0e508d7',
+            200092 => '86590a45044a2be17f3202d401c78016f3c70d13668574c59e5d928b767061ff',
+            200093 => '2e150cb5785f2cd638be062dea2c062f5694f3a7f453f8f58945a4398200d0fb',
+            200094 => 'f29d56089f97e5161857387e2cf00a62f59dccc7868ebdd7fbf2564c732f9bb5',
+            200095 => '33758a205fa4d6068a939291ec2b2dcf453a1ecb105859a698bea162b7daec43',
+            200096 => 'b45ae5841661982a7f26dfca50d37cfcc9048b72049fabd52ec648c85256e264',
+            200097 => '3e519d264b27ae44200e8bdcabf1c825bb60dbc083f72cc5a59bca7b5b302f0b',
+            200098 => 'ac63faf8bd979da7b37225703693cfa4239cb7290cbe249d3d950b4ed396ebd7',
+            200099 => 'f5d69c4623f807e2118d0527b437c124865bb4bcaba1ae351445c99466a0182b',
+            200100 => 'b9171b0105fa764f5c292ecd2a5ce411678c806be514da64899181f5b1cb583b',
+            200101 => '5c051618ca232f7f1f78887ed5f555539638da66c358dbb6e1f0063ba190ede0',
+            200102 => '2ee61a030d85a31436ad2893d4d30dbd786b811a1dcd9c0b6664a643d4346a38',
+            200103 => 'ef2e56c00682362096d11dde7e1c03e03a716878c8b8133ea8d25867a1f779d9',
+            200104 => '325efb5ebe61db38a0605dbb7807a56c50279106ff46084d484b9622f89e5d2e',
+            200105 => '4f4ae59e97aedd8860e9ea2a9feee96b730c97895ed86d4bf75950f4c66110ef',
+            200106 => '553d0ed04063f4610108cb363ed258248dee2ea2a5f2668d18b83f30753ff457',
+            200107 => 'cb1e1ab9609e7ba62f423497feeb423eeeb6f2ad707e3c1a0fc49bf1332ddd63',
+            200108 => '03acf30c9890f121836501494944bb8e48a05f2c3a52831a9c579334859df3b4',
+            200109 => '8f2960057f68a58bb3620dfa1908efeec131a0ff772cba02320dd212dbcc1710',
+            200110 => '06062dfefe1d241608d05165760f80e1107a82efa8722328ff19b72f339ba91e',
+            200111 => 'c1b599dd7465da1d1951fb22e2641cf087996447082617572b58b67668f42186',
+            200112 => 'f9e3d1d7a2ee0fc13684b1005ea11f37bd4d8e19e853b5cf375eb4270e6d240b',
+            200113 => '79cea046fa30b8c38c3af2c2714705bc7fe4f57eb9b20068869506ff070eb64b',
+            200114 => '3d42187934b1502714f7840a3dd9b29fd68551cfff3ab579c60ce1480f5201a6',
+            200115 => '5739ce39a407bc9bbf677ae4f581438e0137dcdad3cfbbd6c22b584791dbf6cb',
+            200116 => 'cfdc12859a18c75facf898ddea0091b6825f164efa219d729af9c7a250fd399d',
+            200117 => 'ad0fa16e242611106b25c01a3399c260666d83c3759b0d95a94f319c56d6960c',
+            200118 => '84e9f0d7e231c3574ebd0a2f879fdd3f71471fbef91e1b4a9710fd6cbff74d30',
+            200119 => '3de7ea2cd658532ca5a37a42f69eb47c0abbed27921ca4b9f021328bff2fa9c5',
+            200120 => '882ea7d6fea3593a031eece506289efaef1dd247483868f15137c53819a6f2a5',
+            200121 => '1070f8cb87a4ce1f94ef503d0ec165fb80f8b83aa7d1e5ca53ba0db978f7c5e3',
+            200122 => 'fa1ca4ed5f87bd8de91b3c1ff85a17a8c7ccd35bffc7517b6d43a80af3dec008',
+            200123 => 'e2477d6fcb803d3f6c0b6c75f33429ab603cc2b7ea5a5e4e0639b6d1b56c5b72',
+            200124 => 'f40e01edd0256e31512082960ee68296a58b50e1c998b0223e7495346b9f8398',
+            200125 => '2d13d0582b67b3e8eb912251af424596f6e6b8c254390a388032faeb5dc5015d',
+            200126 => 'f0726462e308e415d3051c1c0644f4707b7c4cf04bb14231740303864ae519d4',
+            200127 => '8b9774e18d2c32dc77bbf065d782abd00004646479125b1f1151c061663a7eb8',
+            200128 => 'a7e1db529f465033295d080e426b9c3551121b231e2243d7c037e2dd18ccee24',
+            200129 => '00532deb2ac897a709b6a787e3e54c1d3245f87f4a11dfcac8b2b1b0ed4e967c',
+            200130 => 'a592617d6e6fc1e44f393d16e7680d7c9f1d3485081d963e9a2922fe9deaac0c',
+            200131 => 'ab9c53b0a63c97dd3c4b2dbe63f1fecf9d29724c826915c4ecad03880d1b8747',
+            200132 => 'b101f08127aea7f90f9ee0486c345e4c4935f7ce040ecc83a32e03aca6584fd5',
+            200133 => '4f8a151c3baf94654a2af778018704a94fa179aa379f32517ba7a37621af797a',
+            200134 => 'cb6b066cf9bffb2b71ca3594bdc2a8fb341f9653b52a890d1bb2aea383f44411',
+            200135 => '2ad881787151ffe2ea7560fc2ccaceedebc9a14605958c199461feafb68fb1e6',
+            200136 => '433883a59087bc039e7ecf8ce3647ecaf0bd9719104394740d6de1f07e179ed3',
+            200137 => '0ce3dac9b4b59f7ccd8c6562303618dbf600b0e15ea8850be9bba6a311ec9918',
+            200138 => '4ca1ae229c3068007d2629a0e19b316344075cd674159fc56bb87015f43b6d2c',
+            200139 => '17161e9142c2661371d57beed810a9fecb1f5e1c267ed500a4cd311e90c094e8',
+            200140 => 'f97c248a0395ba0359e7fe090b77f9c76eb23f861ab68eec09419149edab8595',
+            200141 => '89d168f5de6da849c1208846916dc14f4b699b1024a11980b517a4bdc196a92a',
+            200142 => 'ca0f74203e91b70d1b3d60835c33d53df6587e3fb9e63e98baba18469522d820',
+            200143 => 'ac471e4754d26afa9c37b73e0e63ee22f1c29c4da4deee6e70255f4b8af34305',
+            200144 => 'fa5206eaf629c039760e95dfb33cf781c9445978e745303a4b8222611a004a48',
+            200145 => '41ff28dcf3f9eb57e80eff91e59e823e171e8c6bd500d931845383d84b9b275c',
+            200146 => '0edd536c3a2fc52b77a8bfe9720c02d8267f3037af6d71bf3245270c6ff0fb8d',
+            200147 => '1e044524f2e3f452e1d938b9d2ed75093cacd0ac95feaa24ca91a416dc74e917',
+            200148 => 'd7041629fc4b8f30da8385a94ad12bc183f6174c2a247030c522df40cbc7114a',
+            200149 => '66bfd2716a22d6f41a5bc8c2ef096fa9c9b3bc2e3ea23ce8a1b1d495b29a98ff',
+            200150 => '469c0a9004cbd195f1479bfd24c06b8b0ff8475be968cc22e406518b8537bd78',
+            200151 => '0630ec4b7641c1e6bcdd4cf84086178d991ec3a1102f8b300b0f13b2f275532e',
+            200152 => '8c8a9f4726941beb380e22413368abd5e93e0bfd947230639e6899673bdf69ae',
+            200153 => '9e27f81d93f71c76dc88ec52b4847f27af590e0620972fa6e9b2e6cbe4ce2eae',
+            200154 => '0d594c4ed10f883851723e72164574a22be88b6e70ab13e454a9e7a43b6720b0',
+            200155 => 'bafc5457824cb1c8526438b63d58dccd8b24d0b84a038ddfa95a2098c047438f',
+            200156 => '3b30e9a88bd2bdfe5b7571c90c2657376766bb736333f81c48c6096d7d94353a',
+            200157 => 'c73b3102b886976bca7d7d3fa368b312badd0792055f961cc96632cc7793756a',
+            200158 => 'fee0007661d2c23ca2ebca43de662725117110c4c21428ea85937a8f8ee7a0d0',
+            200159 => 'a1a8e3b7d951ed6f8127d587c3efda14108cab56854b167207f7860a73ae7ddf',
+            200160 => 'ed53da32037b7bcee35c9300a6354e7aa1f9620385a8ea7a3a1057504d226ca7',
+            200161 => '9ea1b104f3d06fec90c57b212462ac15fc8b3ae737be344350fea2cdc14f0945',
+            200162 => '5f6d9a4da9cd729a533a9221c417457949adbaab968a1372a5cad3436864f350',
+            200163 => '165a99cb949f994e05288578660b9ca3bf086fef41465d59a615ca48dc4ec4f6',
+            200164 => 'd0ba20466bce87532e8abe40f07d3a571020146980595ab63d990c3616ea5d34',
+            200165 => '3821536f0862e7fce26ff60d283fc84187e1a05177b4e1987f1e861547b525e6',
+            200166 => 'a0e4eb08f8c34a0d31ca8aaee9fbd1e278e77fba6f3e0a9ed20b8c7230fd9329',
+            200167 => '68231ccecce2d3679426a187b6c0e4b47e33678bb4fb4ddcd8e57e0201739a21',
+            200168 => 'aa910d8f0c68c56fb5940457f58d3c389f2cf63439f5f15f83aced19b0b5003d',
+            200169 => 'b96ac280b3de2492e0fcb5a57cafaa94d1178bce356aa6fa9bf3800b602685f7',
+            200170 => '7f000b1d0a85a3bee143d8f44ddc869b2e5cbc467c53ab6ea9fe5bc26999d845',
+            200171 => 'e8d183e1a7ca6f9b697fe46b9b89bcef5e128f6d207da0bd749e6bdd0b716679',
+            200172 => 'c92df787059b040c3d9d40c151a10a786772ec9c05ee08c8d495f5c472254b51',
+            200173 => '5146b3778ae0eec231a649c5b10b23275db0feefb2c3600d92582afb977c6dd9',
+            200174 => 'c27616a9f4210733c5a361bbd415e4bca0b376fe5fd2ca40f64be1fbd5387f9a',
+            200175 => 'd7253235bec494f5ac7c0aab0f02b6440c859046ef036add69a2fa1152e3d510',
+            200176 => '27014aed94205625b4095c346b7fc658d0678cd440206b44f4d26cf4c7f68d03',
+            200177 => '308586549880d8501ef0cd4e9c8443df5adbd6dca2c10bdc5147a4daee3257c6',
+            200178 => '2286b6772c9d6fcd463896b255d3d63f50104948a46074189c1b9b8039040ca9',
+            200179 => 'cd70624f2a55e424d708ef260943261bbd51448ddfae87a5870528017ebb05de',
+            200180 => '65d0019c2cde3239c6613af3e8b8893612ef6d3eddc516898f8a973800fdc1c3',
+            200181 => '5e4c6a9413dbda0ec603133a806f26ba920d0b848828a2aa06aa1b114e35e179',
+            200182 => 'c9901311ebe5e40e7f7594ef88f7e36577e8c5263a3b55069fa6e06ee92ea1cd',
+            200183 => '2c6827fd645ab1e28ecc5ea75f873247718dad0a14cc3c25da6a8ef9e9078c48',
+            200184 => 'db09f15a4c2a76a29366da9a907da8caff983b5d65cf2ca5ce4ee419eb5d81d5',
+            200185 => '994dfca1541eacf2de7818a2daa12877cca8f98bac7d13bc237efe116ec61148',
+            200186 => 'ff1cc887de80e898cad6ebe2bc83dfe1dded63b4b7bad99d8d3b49accf70a2e4',
+            200187 => 'bebb8cdd545b6071ee1668d55af12508f6a09162b48f6391e3691fef66ab8eeb',
+            200188 => 'fb1e6c03095ef572cdc9d955f301695aeaebace146e909e88145a17f51f64a3f',
+            200189 => '12728595e4571b9c6a180f5f9f2398452a50877bf9273f08c0caa09952d1081a',
+            200190 => 'fc3676e08052671f736d7cdfdff16ac4b1c99681abcf7fc4de8c13ace37bfc5a',
+            200191 => 'cbebf31613a01ef4bd771289aad22a272f4494ae427392a60aa1a133c78ec674',
+            200192 => '1ba12ab4d890ba00723cf7ac2f3fb566eea2e9f04e30eb685c15340035d8c4a4',
+            200193 => 'bd9955e450332ecaa12305e1c6b321f6a24ca0cfc1976b0c927f35288dc5ebb4',
+            200194 => '5ee04169fb50d93e44035e520342789aef4c5c047176d4ba4e3029b58b0a93d2',
+            200195 => '7463367aeec50091e0e50db27e2a0c06d872023030bcec661e918bbada442c85',
+            200196 => 'a44fc1273a5c71fa9d488944a3f83591158df8a372b47e7edf8cbc2b3db15a49',
+            200197 => '666935451c1d343fbdb5814b9b7944b2b3a1cfe01ed0fb4454a9055d56f7ca25',
+            200198 => '43472840a49d89a8770127c6d7623f15e148727bf1f197c7f078ebcb532e8a20',
+            200199 => '2c850354d504a7703e4fbf8717389982ff7a717b5398e5e129106e2d602e0af3',
+            200200 => '42247edc360d158bbc455d5cc6896e81b5e437a96c2989ad3a7146b7521967d9',
+            200201 => 'e719192c81220abf8fed4a5ec1af92190089a8adfffd9dc2a9eb7701685d115c',
+            200202 => '5fe044d01554b634ce52f583495a7c540f7dc018a8c1deab7fad81fcce67c1ec',
+            200203 => '3f927bb0f0a712d4c8f1ae409d111c55ae896560ab15b2446aa37949593246d9',
+            200204 => 'ec9f6ef5c529a7ff4dd52c0c4eebc4d7d279d5bebb67e2fbb642b7758c0a7168',
+            200205 => '53467c8aa24a69bf5e7154503d50bcde7729c46ec330f86979ef24cde21f02b5',
+            200206 => 'b981b594973b38ed094e5046449bcce4d58a5101cb87e9da77a1e3653c8fe7cc',
+            200207 => '76378ed06b5d1ba9134ea858b21ba386014ec1a5063c14d18e5a9b99abbb84e2',
+            200208 => '765154d7ec0e7074db9b9f37ebf858d37aaa30baa97d2a6cba827f24c1827c7b',
+            200209 => '0f5231b99bc143090a45fa5acf5727e6e164b89e72cc9ea22d1de91f70d0990b',
+            200210 => 'b3e3d966add3d498cb328c37435000012b75ce87d5809e17c0dd0ba9500f2a03',
+            200211 => 'a9d41cf91c9728a9564238f32c620cc4c62173e1498a4b883261ca97bae90ff2',
+            200212 => '8dac49142c9bdbcb6e38730db3f7b307caf0cb324f59a12d0ff415192949c0e5',
+            200213 => '14b2181fb280cb4e97ace4ea8b082b99e237fcef1484dbb01b36948096646b19',
+            200214 => '6c44b7a6b7352dd416d780832e231252b7eadad05c38dbfdda60e607976b6264',
+            200215 => '390073ff93103cadfae9c1595a5151e68602a3141c70884b99e643ce120d34a3',
+            200216 => '9cd9c2c0c99949859142607b8ed8b3a508439968f4232e3836b69363cfaa31ee',
+            200217 => 'b150e66f679a6fcea40b94935f11b7bde53d868f0782b0866f8e881646135cff',
+            200218 => '2c35a4419ed74ba505d1c73d8647ba0f580c65ad054f011f4ab822130a205ac2',
+            200219 => '6e938b024d319673416752c5cc0f0da8c317ad6f8f90ee09618f3b89f213ada7',
+            200220 => '0b329499bf127eeb681317c0755c56536f54a3e4682f48fb611603ff0fdd1e94',
+            200221 => '310c52b36104d060f0987f002368b9c385f217936623db4d0b5aaa1605aaaf14',
+            200222 => '064111efe76a64f854b95f783fe33972d03cc2d384ed1114560ae78d63a73349',
+            200223 => '61ddd1a379f5d509ddac63770f8b2e1000ec35ea1f0970fe5bb34b09562d1799',
+            200224 => 'ba046c764ebb7cb2d9b40d03ef8df3391ebf12f1612c44a4fdd6edf4979e59e5',
+            200225 => 'dd3de8de61702500d7f9faa50f6ba8a23f9d4d06247af240d3b05a37af092668',
+            200226 => '1e95416155f5c271e9867587cb78e6391119a8517cfbcbc3efa2e0ba0289b05c',
+            200227 => '1d4766961089ca57a58ec9b02959764a42dcb939ca9b5a47ab16b63c814312c2',
+            200228 => 'b6523f5e5ccb356126f32835df135ab6e6d8d4cf9cd9c4ccf281da6bddd9d9c3',
+            200229 => '6a2a90aedde87440aab024dfa9e4911ac53d0cc525afe120f5b12367531833d1',
+            200230 => '521afc7cf367a5cb1a0b584a8a7e7c05e6abbcde54529a8622a24c7b8e215f7b',
+            200231 => '9c6eed2735ee09c828a0b6d69fb07819164e88befac2b955bc33bba6aa95a981',
+            200232 => '56c98138fc007c19b0b70d69e3e5d0f694810f5104a7647dfaea9b925a03ce91',
+            200233 => '6d32223f7d6c9259792a1b97e638e3453a112c8d908cf5c61ead85ab4fc24c0e',
+            200234 => '41e1088f6c0dad8aa3883ef617d339333e03507c622d6bfdc954ce8a58f8161a',
+            200235 => 'b06bddf15280f9974085d28a7e395e16f40fb2237e20be3632bb6ba96ba7e8b7',
+            200236 => '270d01afae15c9e109ec504fbc9ea95803b118fd9bb2e4ffb85bcaad25e6fcea',
+            200237 => 'd216650bbf65bfb61820784ea4f62afcc52e472ba09ccdbc0df57800b6a9c53a',
+            200238 => '91e8aa7602de20e12090812b34353d00421864c18f63969d9ba62d3150d0767e',
+            200239 => 'a4d005bcc787434d8c6313ecf43210521a2858d1e1c205f53c503af0d82f1e11',
+            200240 => '5cd36cfe1428a8a74f69677b240d94b68b5e58f87e414097c5f22ab880e4d61b',
+            200241 => 'abccca26cd72f046070a7b83a4fc5fe555ec79128aa00507cf0c1d55ccf08a0e',
+            200242 => 'e0bccb4065046f3cfc061300c94324b30c1d0ca1e7ebbfb97a356046d471523d',
+            200243 => '892eea675fa7e37cab8e6cc4f1f7bffec32189bf9a489e7637469821e593a309',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '61b09fc09a7d06373b63174ea5cda8f276cec6f2419b1b91415d7c3d8550ca84'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedGhatsila1951DuplicateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '276e7b08f2a72796688eefc3') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            276 => 'a3a3cd3db44c0c5e0a20c8c9f91b0041fd2023c362e59692d60199cc5b0f23e9',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '61c779396de0a12dbf0c0f7b55a343d209069b0e8f1f8f84a47433ff99c707d0'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch038Bihar1951MultiCandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '276e7b08f2a72796688eefc3') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            3 => '9f3867be4532ccd09221391d12e21442757bd037fda5624a8f2116457b9b7931',
+            6 => 'd1af54a5e2bcf1f52d4f96d2e6737ab2747fcbce75b5ce58dc16b7a86107e82c',
+            9 => 'd3805e37bce74fcba33cd15175e0127a213f5b26934d4f2783108c77032fd076',
+            18 => '12696c9fcb201250804cdf3b2031dfc2a1b3ae5d3fb9f3068ca43d7006ced670',
+            19 => 'f71b50b97ced76c9b45a408eb5408289947922b5a2436750e66774a4e0a4ffd5',
+            20 => '5b11bebafeda5d8a17c38794161f031ade8b5da9635871c9cfc90dd793fe6ea8',
+            23 => '0bd039a49d29baa20bfc50a99d53fd769b1b3507e02214177d69b626eebb066e',
+            24 => '72f0c30496156a30d34ecaf38019eb8089d0539daa574e254162494a846cbf41',
+            42 => 'cc6802de84ceb0217adca55fcf30503454658b5a5f300261916262b8e0911a33',
+            43 => '7e2df26cf3e1d32fdb2828f601221664be0ee902387df79352f82435933b99e0',
+            55 => '985a90c015c755cabe44bb2540d55dcb075b415fbef49c94fbad9bf20c3d75d4',
+            60 => '7f71aeda842c4d4f5ad65325f020e5bac672a1411f2f6cc8b71774a6acd1b9ef',
+            63 => '9d4ba5ff39038ecc44a781c1be7ac633183f46e025270de0660b569af8b6a4a3',
+            77 => '0da4447f721d65fde535867018835c56a92149075c2ec91ac8cd85a3e659bb89',
+            81 => '5e2cb6fb20f087e8a480563d4055f555999fec6fcc606057c25e90a0521e3490',
+            82 => '67d13cc2cbf1b03f3c875f77c35ccf5465cd712f25c9b199ce44849a0c604303',
+            89 => '89c16a0ed8f4bb0e081b1656097415855143c30548624b74c61017d88087dcb0',
+            99 => 'c931da46eb3f8eb75c3de1574ca6848d623fcb9c89525f94c5db2a1cfd835dfa',
+            112 => '9b010984edf55944d71e9530fab3d735510669dd4248132c48e2c0f64c43d848',
+            115 => '0267d4469bfd7679e8c05065e20f7eb1b5a6635f714cba778f710fee51122827',
+            122 => '69170847f558eeb5a6391e0dc9546fa5d36c8a89c935b12717578e85aa005c25',
+            128 => '0b4242de34a17138b40292feae1631541094b45fc24fd58af1fd20fac32eb57f',
+            129 => 'e9190bacd9b06a259f864e9f7952048d345e86fb6e1b035a5c86f0ed51de472d',
+            132 => '696f237397c13921d3bf8c57d323fbaa452ba64e93a084841a63b16a13d0b1f2',
+            135 => '00c0964d87d561cf50566aab5dd4ca77daf6a4663601af91aa3171f782828804',
+            148 => 'c73c8a530e5f15e15df3afffc459f08e11e71915aabeeff70c97797f65e68a87',
+            156 => '2a9ec0629be6f0aca817a56fc1f62a9873d7d9cf4061be068e0f8310597f0b0f',
+            158 => '0b6c155d00300e5e46c9bf747ce2c6354f56afc9c4bda31c2b182eb5ea0471e1',
+            160 => 'a770cb265472b59c6ac8a7093833d368d08ad344adb057d91fc9adf2eb807f42',
+            169 => '4942c41afe0b0946d068c6c3b48876d6b710a6817c9e40796ea02465f851f73b',
+            175 => '91f4a8a6f4266839381facaee0fcf8dcdf32deb64dc5985126f300c5323e11aa',
+            177 => '456a4ada5a53ed05be0c8ab9e40bfd5e05ac5e786a87734144dcac9b851ebbce',
+            186 => '90a5b9282f6d6045a05017f77ec1d4176b2ee2cdde09d25aef6e343c2bfa1dfe',
+            188 => 'b3bd0ddc3e50867a5eb78ad855e2d3b35d49bb257fa4b46236f5e20f6cb60c4a',
+            190 => '3839bb152d090b54f38db7f174090bf209161c8d87af69f96521e11013e26825',
+            191 => '593150b3866c9282a8e25a2eacb03bbd6b494fc010b905a7ddd5bfd1117fdf3c',
+            205 => '9e02ba6e703f0a87013274b1883884e4a0521c0d7f3bb8af76ee29ff17509145',
+            212 => '2fd6f856f73ee6c33900438c50b5573f2e33455bcfee37edbf9c1134a5fc63cc',
+            222 => '02eab4778c700d2cddd73f0c5355368347c1527a705880338d43d51d1262bed3',
+            224 => '203fd695f3f6402a276cbaf894d8f4b15150f56a72e0adce81a62a765ce06672',
+            227 => 'b9d329aef9d80fde90f44e8f01739ea528b2ff729605a15636c0733f08a5f302',
+            231 => 'd34fd12f2e9041c031fc47cbe304c3a66ce8b7adbaf5497f05256498abe733d8',
+            238 => '461aedbfdc4ba1d6188b313c5f254bb884b7c91320e9321b5e72496b353aaeda',
+            250 => '523ff22143fa58d3c13a835acf6db281a7802bd378563b34966e7f80902cc71a',
+            253 => 'ad4333d5b49de52665f896ebaeefa49e116cce21663e0495768c5af99a59ad52',
+            254 => '16e07cf8d160d58816411a2cf2bdf3fc593e59eb69e9b36a8a2240436785cd1c',
+            257 => '6ea7171ab16339161932b4ab85b6b99489392c74f075725a83f5f68fde4940ed',
+            260 => 'babd2e9f241ecabe01f97aa97f18b483e0cb9c2fe8e834f38fa9c6b5d3fc92ba',
+            261 => 'eb20186caff6bb8fb21a2c64bb5e1712f45d24cccffcd9f4e2dae70726c3592d',
+            264 => 'd2bef95c595fe933fb1de53975d0c332e1c2d5dd7f8ec60b3fc5fe69dbdebe18',
+            265 => 'c1c28c7814de85517749fc2eaba022f44b05aef88bdeceabac241fa51ae0496f',
+            266 => 'fbbd4bfc9079d47325ef89565b6e333148f121be479d09c2430855d8df579250',
+            275 => 'e4b32840ff59903deb7caa9be4490f70b0486006a790e5d57d31ace5d2e3ac33',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '61c779396de0a12dbf0c0f7b55a343d209069b0e8f1f8f84a47433ff99c707d0'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch038Bihar1957MultiCandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '202506daa9d7f83bd93b9240') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            2 => 'f71c7628b04afd508ccb4ee4a4d9bc0c1aaeb3d58bf5e99ff6b387b48dcb152b',
+            7 => 'e5969e5eedb3ee6c9248f91c1cabf07f4ee9c901e2ac9fa9fb0ec89b302ce402',
+            10 => 'd71a9505a30875db5bfd8fa79175ea746791134abd29f94620dbcbaa53f3d9c5',
+            22 => 'c4f7f405604aaf5ee884237c5b39678d8a12ec6c2fae791139d6ee6332b7720a',
+            26 => '8abfcfd34cec4950d1df9ce203a96cf154eab29e0bc954155efbd073d4a0f2fa',
+            38 => '3f839f707eae2f7d1206ab4df286fd8ad6e5a5159fd4c6351f7a850454176c7f',
+            46 => 'da884c1f971ae4b764f67a9faed2da5e898e99994294ca26d7c46eb175917804',
+            49 => '6d4aa4fb9f8788f949354fd0b3eb3170c60cd99f2505cd5232454741187a7a96',
+            52 => 'b3c335a1e9df3904182d6c1dbceb8a3aaba25d9b05fd21945d02f7b452957ea5',
+            60 => '215b25a8d26529ab1996ae263ddd52b439e2629db8a6ec74d8a26de010c79d96',
+            70 => '0ead8f3694c2d24c180e8ba1663052c9bb51a894d5dd6c3f4c3b610e9b34c041',
+            84 => 'ff3afe31aaf9b69fd7dc7f0dad65337460ebdd8ab3c966349dcdb26086106d35',
+            87 => '8531d43463be7da6c1a7d63af8474d2d0558e4bd398d9c89b3a0398d2607ee8c',
+            93 => 'f6b6580efaddc88cd467e3bcd430884acadaa72f4a16d82c62d456ee860331a8',
+            97 => '4660992d776df7df4bdb8e00392cfe4015fe9ad04590b8eba4b565be234f2f7e',
+            101 => 'ef91f46167a90fe36af148e0a0963aa0f96a5479e53510b00411683e053b67ee',
+            104 => 'd53751d38fec3a2af6b9a90b8c184fc57a9d80079df1c851a4036fdc2519da7d',
+            111 => 'bce659f135f1043173d0b2c230bfd2371bde489344e9f4da64a2ab1c6af1a537',
+            115 => '46586a0e41647ec6dd5798f7dfa3d340413b45ffdaf8f65a2d97d1c34cda6702',
+            122 => 'c35dfc4d2c38b3f69ccb9ac3210f100e592cbf3d9577c959dee4cf212f8ecfad',
+            124 => '15270f139150bf850e3e8a40e7bf41bf48b7814f4e12e72759912463ac2568e2',
+            127 => '1409e97e2ec1f353b058349f4ef6af3e0498230ca6c6e3e54c535bc29689491a',
+            128 => 'e4e48cbaf2d2fab75f20bad4487fcea7566156178b926dba8a4cf5a91b025b86',
+            130 => '27d3255f0c5cfebf3b5d35bae31345a61d6aa57194442487cdf5592deee57523',
+            133 => '5c44d564f797b53c3a357b0490e83ae19e3e91763325e738af16b3d8cd09e4b5',
+            141 => 'b83c249e72a27ae2df5a03e6823561b5c02bc02bd7414380dc6eee50e7edf595',
+            142 => 'e79d81686e9ce21809509fc2a4b7cb260cb5b5b4da335c1752c7d235a1cddac6',
+            143 => '90fa4124846a408f3bc5dee6cf035d3d3d047f957dceddce81bb8eccecd25afc',
+            144 => '9c060eba0c6535763beb0e7cb084520ed10c7911bbeb3fcf9b15a9da407b408e',
+            154 => 'e1d3f5f1b17f1f824012a1c38b5617ecc445224e23be165185ce24838bcaaeab',
+            156 => '5e867f54446ff7caf07ca48223c25a2dd07291555c3b49ccd4f0298d67388174',
+            163 => '1c2c546bd0d86e8a832ff25eef353937a91d7799118683f912f2b7803e7344bd',
+            166 => '1af263bf053ce46939d3b3ac5c4bc62c0363054a1e586c3eef076f69704b7360',
+            169 => '3d714443d430a607a4c84fc2570c04ff45701c056268fb0dac6a93cea3146033',
+            188 => '2c38ca5ebb54201a7ef748753f9e51c3c6dadb773aee983c1328f742db5b6e29',
+            189 => 'c388e5db3a0eee78cdfbb6c1f267e7c1684871eb7ba92de39307afda3a02d82a',
+            195 => '593ea115626dc4aea82f2c0bdd1aa6bc1483344bd1675162ed30708bec8d04ad',
+            200 => '413d994157d665e2e67e84d3f3a92e7c71963a5acf06a591dc06e93df33f1910',
+            201 => 'e206a0d2774578531276477d5386bce5b64a3219c6fc5200941a33541d72c8ed',
+            203 => 'cb3c4a2cfeeb1784e6005b179ec73f80db9033fb2858e0ccd35420c87cf170b4',
+            216 => 'f9076dfcee22dc7f29e0539df1f850d5767df57bceb44ac1fef5ac2b462ac030',
+            218 => '4690e29cb1a3476a6d1ec0c79980bfdedc86cea3a3a7a25f15db3f722cb6d68f',
+            220 => '1310aee8a4fbfa59becbd2d13cb3308b13a7aca93f6f3ce046a9a7c1e3598121',
+            230 => '1b09c7841e24db3f26af7a0af33af2053e9d4ada3d68dc40a06d46b0af619846',
+            231 => '95ca5af1fa7b37edd2794c0487a1c6f82f7aa926753d0f2944f57685a3b01d76',
+            233 => 'a61e1fc308358737ee7aa79c4567c234c06bbcff7b1867d0d76dc3a5a5782ba6',
+            236 => 'dba8cabac83c93338d4d5e9b40d02750c10738d0eb63e6316acd34457bb209fa',
+            245 => 'b770922730c3f19d9dc14ca6a6d7415166975010791589f7cb9a39ed73315db1',
+            246 => 'f2fc7bcf091978534a7b89a5c4c8654df95caa4fde007191f1ac35e7bc4b0d1d',
+            249 => '46c92372d7a5c7f80144e7de64d72499c02eef47e2df5bc82f7e35252ad22bba',
+            259 => '92e153adb747833d0eda78c3da1d9954a7b7036f5bdf121907191a0ddbb9d161',
+            260 => '86ab1d470c7c30f3174b16541f627d11c9ff226c1bf04186f17715afef9efd67',
+            263 => '3f17d60f2de115c595918ba10dbab99b498c5e46b7b2e8987654e7319f9f48f6',
+            264 => 'afabfe7377a50131ff488ba409e852b6070a4b1ee0453cddab2b376c61aaa36a',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2a09bb8b5120ef9bba2cd555e2b381b0f614e41c83ded70670678477d7db0aa7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedArunachal2019CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '503520e18f2426da13ccb809') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            1 => '6d46605cc9b0de540c29ddf13ee8b3fe62aeceb8ea47d66d6afa72443ab63c59',
+            2 => 'ea4f7977b7408b1c5947f066c78d2911b8478700c6679ade0193ff6fa84d179d',
+            3 => '522c065cf54ba949abce593efa9221bbff100bf52ae20ebc47d9906153df149b',
+            5 => 'e46d69f6db9e53746e2b2d0b20ba1ba986d9863bd02bdf903fe97873d44e34a9',
+            6 => '02736c6c5f16c6ab2e9497ea8374a5d21e9e6d91963408bf673b927818150a49',
+            7 => '2f17af4f820b4c54e6a9f194983dff90e3cf1a56d88aa13a5371a1ccc951016a',
+            8 => 'ea5b83b5a59b2ffa7772d0d407713ad80e8866bd91fd937ec32302950896e091',
+            9 => 'ae676d1145d2f8cdbeddcfab70cd4d77eba5fcba544cd5b5b33e1dca4bac079d',
+            10 => 'b8acb7bb78b45f0a8d34d1c43db373e6d8ffade61a176fdd95a9dd70ee1715f6',
+            11 => '9de5be6d00623713d53e232a38987b852bac065326f1cb6f2f04aab346875c0c',
+            12 => '9a20d2d68f9cf4a1680061d73fac73cf4c39e73f24ea2f65101459d97927e17b',
+            13 => '6028b70bb7ef6419ef3a8284f7f4888335d84fef056f5517a8cf8b6fd0dea1c2',
+            14 => 'baef13ec26438c56eb8bccd0ed7dc0be5929e91cfe186836f135f353bdabdb59',
+            15 => '04a7032d6d539c545d10088e7e0220bcd2323081e2262a940ef61b62a1e6a61b',
+            17 => '354aaa5d2fe7acaafe09251b687b71409de1ea70aab53ee3bcf0b7724561cf05',
+            18 => '8fd6387993801ef3bd68dd7f4577109ab83dfa450f64c783e8a394548b0ec095',
+            19 => '01c695028d0561a2ff5d3748b0a17edbc627a9edb215a18ee4b0152357cbd8a0',
+            20 => 'd1bdc205b0c24291d553348cd44911a0097c87a6945154364baa5c5ca1becb53',
+            21 => '55bf1f96f57ee37f47435bd1977a52575581d31ade18ba498a95d5ae5da23e48',
+            22 => '8cfadf639a1273c8325d38877e2ddb12baac4b6a4250257ab88ea607f0889f6e',
+            23 => '085dfaf9919a4aa05a676801d7d72b64aed46ed0f71e8567ccf28edd1884dcc4',
+            24 => '675be8ac85a76af6a50cbd131daf07b69d7c1dc1b2d00a5ffd2acaeceb0960db',
+            25 => 'c80629df69b49a475589ed95501018cc6b8ea2c04d208a49a5725632add20331',
+            26 => '1f2a674926d83f458d735a9b577a3b91318396a0a8cf1a459e7da094cafd59c5',
+            27 => '7e5093d70d7c1319daf27c0c20906a7507993a04433c68867c00275f3efdac5a',
+            28 => '69d70b5353637031eaba453e259d25d979d9be60b04f740ee674ae7c919ccb50',
+            29 => '42d823fe57a71cbd963fd197eba064610561f2883234f45d9cbb35e64eaed157',
+            30 => '8e276618fe60d52739825d7b53a2ee4939eec5e5f0646e191e57d8cf0d561080',
+            32 => '84d5de90d6a5ea7d621ca167f00dcfcc4f895ca2d7849f0c0a60b310798edbac',
+            33 => 'e80e3903201be3a17ab447412994775017778f28417d0a8e45a6ab7c0c175845',
+            34 => 'f708a3cfd6bec5cea76a630cfa2aabe20cb49da173a1f87483872bc1865d3b05',
+            35 => 'd2d14bdb5649490926dc39f80a1b4684f196a377d4417ab34b1ad57e38109c1c',
+            36 => '65346e0aa9f119fbff4c9faf9249fd47818fd484e9d56cedfb7903dffebe1d35',
+            37 => '859c4af8619db963db038ad613948353de282a141251c467edd657ae6baecabf',
+            38 => 'dd8810813122bcea5d6b37cfe3dc126926fcc987df556b09044137e2c8f1ed4f',
+            39 => 'c669337b5ae4bce437954dc6c4e439a9a6e842f2badd5e7db2ad65d7ab5f10b8',
+            40 => '3932ffc055ce63e29024d9d430e0dcadc5d5b854f7a464081ef1e221f42f8f1b',
+            41 => '13e2c4aa2a01872b4873292ee5fb4097d86296a445a0d1cc4da2a2d5c8510a72',
+            42 => '2ba6f0da85141b1ade02fc13f4f31fa57ab920c4d76aae2a1a61f3e58ca95488',
+            43 => 'c6b4cd4b21f9e12e299b5f9a325095e8d6ffd19623c3332d6566223eb5208a77',
+            44 => '46c8377e0b4af64cd09f2daade2c36c7b4184a5a1646d8d7db0cea92803ae0f7',
+            45 => '68e64a69fa8702a6a63358d0a53b81964e3b56589f8ac2820b8c0f44bed73585',
+            46 => '17f60effbe169f8ad3427984dc7d9faf47842ef240803af21c35e02acf4c361a',
+            47 => 'da4c42407af64d72ea7e890063ad7dc0366f77db50a472ee219f6de7d12343f7',
+            48 => '5647cf655e1b6716e435402b31697dbe59d7d8158173b7447db76000a1d76b6c',
+            49 => '4dd7c6fe7f1e4f9653a03f0f4fb5ff0266cdd149bcf4ef3f0d19860373b78293',
+            50 => '8fc4454ae053e8923c8951e4abdf9ba4ab26a754a3f109d2a9d41b98a92b90b4',
+            51 => 'b4832621ba348f152980c8af74b1ebda03a0b88c8a9ae0b97a13957328610e0a',
+            52 => '25768d68cb4bd27b20bfbde2dd59e92c090a75d7eee89113741bebbe00131477',
+            53 => 'b0bdc9d51bd21e5da0bff3679627e1208330acc6201f50254e27cd7d2aa45c74',
+            54 => '5039c8409c1d405553a85888dcb431f183f65719fb3ea4fb4eee37cf36af0d46',
+            55 => 'edd8e81355c39b1b84bd9c9bf3b2be5f7b0605b7ccb30b0893b1e6abebc25330',
+            56 => '2e966f1dfab63d58f1812a96ec3777a3d7c2256764a180fc8646cd0062f8fc72',
+            57 => 'a8146a922a16af0cde79de0c68d1bf64beddbbe637b382b349728225fe5e67cf',
+            58 => 'fd14b6bad866e6a6dfd978a6e8920b1c234bd8128a7e6defe3fea0a59a8b0849',
+            59 => 'ac698684165e3318b2715c511624a568680e91999b98d9509817119e7c702c71',
+            60 => 'd1ffad802f61f4df0c69856cf8af37de6d65a39b4af10492d83b950758dea2b1',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '4126ea8c8c9a3c84e9cdca0cda28a0dd519575bc05916bdb674ec62eb46f4560'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedArunachal2014CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '08d56c7504299ea9043a1782') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            8 => '2f7a6988c87283cb7d8097a4befe2f2d6ae08419e4c3759a35a132c506d01bb2',
+            30 => '38953e22611ef7c75cd60144ce46bd39e9ae216138c8679a6579ea7d5a7840cb',
+            31 => 'f2e2c39e2ee36d069bd4f78a9b7e3f60ab0b2fc2734a7c0c7406a37871f18360',
+            41 => 'c7319100c56273772ccc9281a41453ca7ca860cd40b6ff5789dfc6d7caa77d72',
+            29 => '71684d25d3226703802eb650bab12f035132123623968c99f42bec66e70e818d',
+            7 => 'b9361792b8cad49e9d4d48c86058cc3552b3871357ee6aaf2c5aa6cd808bed2c',
+            49 => 'c6701d88a6e9ddb7cc06a9756bef7adce4db0effa324bed69dbc576bb5743344',
+            57 => '0a8898913b4d4ca04bac4f18dfd60264f6d28192f53c09c196b9b6e223a9d92f',
+            9 => '061500387e3f3d7daaf1350365f39c51381bbf6a6fa08c042fd1288e0b69d25d',
+            24 => '2cbc9dc6c8243e75a237ad9b1548265c37162ca9c53761d69d8316e53531b9b0',
+            42 => '51da70cfdc582397753e69f59cf267cccc5da9672a2ad1f0954412d8fa843f48',
+            46 => '9fbe15bfe5de7939a6d9c9a91f32d908da82ac435863665179c20e85bf67e063',
+            52 => '294414592e983d3fa6756c33fb1cf4babd97e34f0c057a6a9d3c3bab83346ca8',
+            53 => 'b7bcd6b8869fec83aac01f4c4fee68023bf8e609428fddb870b883d3dd399f2e',
+            1 => 'da88fdaaff55e734337847aa2d004b69877e51223cd32fe48e95fc4fffc26d44',
+            5 => 'f4191369787d6ea2efa5a02a999f93c388c1a1532c3117c3005cbfed690bffa7',
+            13 => '2afdf1ed8661a7ca069d3955b1a058cddbe21f8bfd4d30af1897752d655ca120',
+            21 => '9dbd5451c01ce09f89f7275a06086f1e2c32d6979bb75c511bb9b59be8c424d9',
+            26 => '084a0933c53bc2296a3429543d9421101676cda4a99cb7be499b76826afa71c0',
+            27 => 'c6d976d3a46093590d21b54e4bcb7e10fc4d1a79c56b210f5ef3898ffedee663',
+            28 => '95c9c1fdde7769477ab982f22c4999928b6b065d7c14a16790d0e6b9e816ec60',
+            45 => 'ef7b6ec6103d9ae7c01f446bd6f5a43e45d0c31f5a3ac85cee1e1fd96eb0299d',
+            48 => '0bbabac16c8ca3b46258104d55c4cf8de0036a5d4ee59608030bfdf273c1df23',
+            55 => '7b2ca148742ce923da1043d5704a6d0671c2ab0d2f691bd00943a958ef74dd5f',
+            56 => 'c89a36aed0bc5c460cd3471a2a9eacdc869c9096b2915f11c4464209f5e5b638',
+            58 => '57606fc246af95afa32f233b723c6b153919109e6b7400dfcbcf0721e4c6f8f1',
+            59 => '45d973ffcd2fc98b57252ef393ed9110fe7ce626864889b25733a26096016ea8',
+            33 => '733001738861b9601901661b2563d3009f0a8b20b8403f0d7caecafd97649abc',
+            36 => 'e4d7404613ec15ea3acda3eb301e3ac3669acd8d5094bea3da738c7aa4ac9387',
+            40 => '99add86b6e177725ab1346eb7decc66f755d485695fda17da08bd64ba616b955',
+            47 => 'c54dd030627c1c948e2f73bc0551ed7181abc37c5ee7628619cc44558b53f458',
+            50 => '6aa6f5bd0849e60416728e290cd028bfbf57da83a8351920b808c25a7d385cf6',
+            51 => '0a08d8bc343bccb68254fa5a2eff211f6e1eaa8627491c86fc7f11fea2347432',
+            54 => '9e3caf0b60eb50aa6540639f0b20b813739e8a93f5332336dc6b14ce39e245b8',
+            2 => '3797febbe7de044288edd4a9f280cb08ae489a8fd7aa81b2c12feddc514eb912',
+            6 => '68a56fc2c992990508d145351fe0be2b58dcb804c00e3c0cf93f035d536f6786',
+            10 => '4afe70034cbfde2d4b83c9e03007153736269c4fae718170af084e4721875391',
+            16 => 'bdf115fa93e50010851f4021622ff557e390a98069239b6810fb2061bcb73d41',
+            17 => '69ef73a1a7a53b06e7538ee67361cbd9850627c5603983e18c672accae6af538',
+            20 => 'fea1f9ca97a4e4101686b453dc3293b60b46966da3b4553bddf907f10c1ac5eb',
+            25 => 'b2788b93f38bf12e72219d555c72f6a547e3b45aaba2be88cb2237d24d5177b2',
+            32 => 'add0b0aa0b97403774ad91dc7c5bb957141c8680563cff04babbb7aef367fc62',
+            34 => 'b89f654fa2c2ff34d4acf5fbca274b81352c8a633ffd2c039addad25de223b83',
+            35 => 'b0a5547d1a9c864383c85dcc76c3d5d76ee0a347de5d0d68a486a05126f67c61',
+            37 => '300ddc8b3a76dcb6950d700825e9abedee7d8bece820914d38c214f3c84f48f8',
+            38 => 'c833701247cc220eea680ea7967f12212db46b7ca24b9ff5107c62b177b2d04a',
+            43 => '3af5df1f41343eaa709165b4cbfb9c527b68763abd5b99f33bfe31300bb6224e',
+            44 => '8520031a6c846df506fca0caaa81abe7ab1e2c2565248364b50344bd32c0f32f',
+            60 => '32f394bb419a5a54b15f7f4ebff740d16a70b31caa0dbcb8200da267d1e9fe34',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '6cba3825ac440c1d8571d6604159bc6c2d45f2f5bb334bfef65d8e4d6655bfc4'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedArunachal2004CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'dc469be7915c7a5a9e699aac') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            1 => '644cc1b3566e9289c911bac1bf23a3386b561cd9e8c47c08186c014af7becfa7',
+            2 => '08940356f1d2d91143174f2c241fd0eedead7e140fd02f018a8bca5adbed50c9',
+            5 => '1d8ccea2184f29bd51f0d606184530f836c23fb5ec844fa453d60dc93c51ae8f',
+            6 => '4c64eab854f83a06d47e57cc63aea37a430a0ae85b962cca591d2eacd4a13a0e',
+            7 => '46b126709368f2febd31d9769dbb32bb6a12ffbea52034f5129fc949a8b4b950',
+            8 => '659885412d89d6daf2f38136389b0624126feb99298b8e15612af10ec855cec0',
+            9 => '46a71fd23902eb56a0987a4d71f64f8f516b9d837eb2c0647461a62a92df4971',
+            10 => 'cc35c192592c170fabb369bf88c61a893de075f6365c1defdbb3312df084abb3',
+            11 => '5b264b9fccf815f0bbe8e8d2c66010d4fbf9c4157c914c648b0e61d18daa8e17',
+            12 => '7dbb96defad33604a52d632acfddcd4557fda2c054fb2e2fa15b8b4ce88908ef',
+            13 => '6671a88833c9178f65c5164aab2f9f77a14f434b507a5308b5821acfc3e4fc38',
+            14 => '827d8c1b33e146e4d468b5519692f1e929b41c0f43b2ebe04c01697749ead92f',
+            16 => '45a4b9b5ab407c22f2f85d6051ab04d7036b8b76b4a1ab6845bf6520f97cff35',
+            17 => '156bf0cc3d99a398961f564735d7887dae6932f2219aabede475e4a4ba103be0',
+            18 => 'b2bd2106fd7d4d19d5cfb9b0e6a0992ca208f026bf7a92e15c0adab3d85438e5',
+            19 => '23f2ec264e7f29d7b5b23139bf0bca27cb46c0ab862724008be84024a504a547',
+            20 => '68d8855a94cdd8cca68fa7b3c8bf96c7a318006f218985531e316e0abfdff716',
+            21 => 'd3001213ba6d9f166f0ce778129496ee3d74e1a42d3728d1978afa938dd8820b',
+            22 => '181e45aa2528a016b4ce8a8696a936402c19f7cae91f3b4023549afe94f078ce',
+            23 => '48413d5f8311415d4e4d8e1933e1615bbe4df080687bece30d677639f3e00878',
+            24 => 'd1eaf18645e8f36182efe8922c15dc42bc948a6b2b814bf2a82f740332df2485',
+            25 => 'f630f05869182891f8ca653851445abce7496c08c3c2332cd7684395b1920e85',
+            26 => 'c14764e338a5d470745e592d3691f45f399d8ee0407ac07a1894fd1ac489a81a',
+            27 => 'f3d071973dc32e22272297abc9627a840b6d33f703a218aee2b451e2231e83f9',
+            28 => '6edc8162446ca56b4a1746db899a55d9b4dadcefb214e39fdbf2bfe1df156a14',
+            29 => 'e4a4bd5dc98bb6baeea5c299c888ab1de51c28288f664bd6dc842dd4b13a462a',
+            30 => '4810ad0886a689998f4b1133f37f9151609e4c119e607212d5dc2567fcd836bc',
+            31 => 'bc97b81205f354f736566850d297a3e72416617cc7c493a47f47bf7f7c1c3704',
+            32 => '9bbf5743d97656eae4fe9f09e16eec7f3d0d85ade8aa76e853b7c614772978e1',
+            33 => '7b4ffe82021edffa0e9f24a3171ef88914aa3acc9bee334cef36a110725023b6',
+            34 => 'dde4105315f3bfcc71fd62465e09948bf8e5f433ad19f99ce5fe924a727989f9',
+            35 => '9f6615f25374b24c7455db16a2b4fc08475a09c6e55d5befa8bb0c835a384d71',
+            36 => 'bb922df23d318bb19fd7bd936240219f06291a21bae2027bc077f8da43d7e97f',
+            37 => '1f68318d0e4c393e99955f936a3e9dcbb8d837e58658cc99cc0061a7b9129c89',
+            38 => '79e04917b2b17ed8d4b45b0a2ff51113589eb57b8f42daac15b01a3cfe3af7e2',
+            39 => '516ff5396cb0ba901b38951a4ccaf331e859ec354ffe628c8be56f5afd2c9c12',
+            40 => 'a1b8ab111b7cc7f08b1ebdba5ab221096ee7aca1c46c8e0c6d3c8b7d5c70648c',
+            41 => '0e2e99126303c3f7da17feec074d65d9f20a72d85ea7386abda69b15608f8896',
+            42 => '24eeed825cf5791674cd11cf56e93f24dd1c4eefac4de24c10ac0b4c3fb8c8b8',
+            43 => '64a0e89e28e2cc6db6c95753d6298e43b6b0a7df4fc6be75e5ba4ce451c4e5fe',
+            44 => '5686bc9fc2fe72433b5a6125cf8784163676482d3f8908d3f59db75a334c2c91',
+            45 => '17628e8f10607e0a10eed634a7a48715cd98b886cd7e2cf19d812786a914a685',
+            46 => 'ae2f1bc56ce9a8933e4bcc1deede30ef1293bcc029e148a8bafb66daf3a391d2',
+            47 => '597bc5af2eb703c6f47b6f4acb529dd865c6003512deb379d19f6b318e9b2a0f',
+            48 => '2a1eea6302020d8dfd300a0d91f97ac214180cdf3b0ca589fe9822272e7e0611',
+            49 => '6b704ac9cfc4fb780ab5264f2eda773795ded754d796a3f0fcce2060753166ba',
+            50 => '50e62ce952b672a8e4403704658944150bb4378e40e408ce03757a8427f2be9d',
+            51 => 'd65d2e19cbd9dffffc29bfe7a6d46f4507191be05aca1f300b773751f52f9f89',
+            52 => '3e6db5f5f0d4aac551b9e6aa416c20383eccef51efaaff81df6144be4cc0fd82',
+            53 => 'e755fa56ac653861e8ed7d5e3135003e3dd11b680d213119fd5257bdc3713446',
+            54 => 'b001a5413fd633436ceabeb50866a19930e4ad383ea114a73ae0de7c92f5d163',
+            55 => 'd57246d38cee65f267e5282609de605206972e2b95e17e16bc0f1c156ad7719d',
+            56 => 'c8448af5dd443eae4189f0313a9a223f8765dde313f0b34c378bee2fd32b4748',
+            57 => '830eccd7c98d69064875545d52f837aad52dea19393110a98f2dada99ab0f4ba',
+            58 => '87eeb92ad2230f0d7346b3af91af096c34fe345715baecd5b587411a0a004bd2',
+            59 => 'af914e9ff23d89e3233f92538652bcc0fbaeb4bd9d48a635f454fabe33ad69ab',
+            60 => '4821fe433f04bd252bc75a3da39e505b06e287292b53567698126340fd677d3e',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a6a2d830c8969fc7364cd70457593b46bc5edf5b854284bae52668ee9d05f76b'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    /** Basar 2009: ECI detail p76 and summary p40 confirm all three candidate totals.
+     * Candidate denominator 13,864 excludes 84 rejected postal votes from 13,948 voters.
+     * Retain parser warnings and original candidate names; no other records are eligible.
+     */
+    /** ECI 2007 Gauriganj detail p552 lists all 15 candidates, total 115651.
+     * Summary p149 differs by one vote. Use the complete detail denominator;
+     * retain the summary totals and discrepancy warning unchanged.
+     */
+    /** Exact ECI UP 1957 two-member tables; summary candidate totals reconciled.
+     * No single-seat winner, margin, or voter turnout is inferred.
+     */
+    private function hasVerifiedBatch0021951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = [
+            195 => 'a1bc4115616c05caea8e8ee5f3b4d09dbd8f0c767e3f9d71102b1ee4e9f8e6ce',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch0011951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = [
+            199 => '5d9108b972bb0d0f985959d9651772eb1a5485b3ff299fccf1be2c50cf8e1d21',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedKhurja1951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = ['b77161ae2d3a7571580bdff66fee85a3d5ba021ac36e1ec29a2550575c757319'];
+        $expected = $record['review_fingerprint'] ?? '';
+        if (($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['code'] ?? null) !== 76 || ! in_array($expected, $allowed, true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedKadipur1951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = ['74f3c425162c9433dfc2bbb0db5e542ed23e3322140aa01a57d89db8e1201332', 'b9a94cb3a2ff9aae5d885933b9aa619647c2acb967d2d785f5e0c8c1765f63f8'];
+        $expected = $record['review_fingerprint'] ?? '';
+        if (($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['code'] ?? null) !== 220 || ! in_array($expected, $allowed, true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedHathras1951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = ['879e59cad83b01e0d98197d39f2a11c29233fb393a6c6724577578bf47eee442', '7cdb786d2fdfc98486f04bc5e9bcd105cc6e4a788b60533df45e481d6c63f95b'];
+        $expected = $record['review_fingerprint'] ?? '';
+        if (($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['code'] ?? null) !== 82 || ! in_array($expected, $allowed, true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedDeoband1951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = ['0c63a9531b30ffc82a73987e2ad706dd894853f3a2cd9e3200194e5dbb699aff', '3c740190ac485c897eb82595227bf7f46195e6444d64bede96346204c40fbfcb'];
+        $expected = $record['review_fingerprint'] ?? '';
+        if (($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['code'] ?? null) !== 52 || ! in_array($expected, $allowed, true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBilari1951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = ['741df9dc0ba6356bfb1ba53c89ad282be1017bb822cafd36e2aa34d9936a3c1d', 'b25b6793dbb746d430fee875c4d2caf1ecc92830bb61527a9cb3731a2359af75'];
+        $expected = $record['review_fingerprint'] ?? '';
+        if (($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['code'] ?? null) !== 37 || ! in_array($expected, $allowed, true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedUp1957PcMultiCandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'a1b887ea9c50978fe4cf8e5c' || ($record['number_of_seats'] ?? null) !== 2) {
+            return false;
+        }
+        $fingerprints = [
+            36 => ['461c69a98c5aca3da708a3f329570baa7a82831af33a21238f3718c8829efc55'],
+            39 => ['bed4accf8e430be1d897d9f94cf9ca650060dd5360320d439db4a53f1a27170b'],
+            2 => ['da7dcc730a78478fad90a339691ef27f147bc0ddb1dbb45e02f8a63a45f11586'],
+            4 => ['7df1ae3120f46d8e445ef8f23c0073b674284107d11de48094fe5c58028f0820'],
+            6 => ['e25367f0a027ea9291e203d6c06cc9c01937de228dd8834b85db18352d9f1f37'],
+            16 => ['3afe7dd24521f37076ceee681eb00dc0957dcaadd8c4dad74c74852d5aa74c97'],
+            17 => ['414a80d48a5beb1775daa403a59efe80d2125120e418f07ffcb445cc6f8cd0c2'],
+            24 => ['e0564ffecb0dbeae24a2d4d1fc76dc9d3e558c3a6f3efa343c97b658ae3e8ea9'],
+            31 => ['089da1cc0809ec265be55364dc18ca7122426eaea840995ceea903c5642dd54d'],
+            35 => ['31bb1c3cf8a6564ee78ba99b31adac549c47a7a821a483478909c14f24639268'],
+
+            302 => ['f4cab103eea796f390fbdf963afca656ab68b05ea6a76539f403328584dfbff5', '69eb215e8d98d14ab3d732cabcabc57c0e4b40c174d45f63715b5f9822da5483'],
+            307 => ['1f1121307db7c125404bb6d5c1c39c23941817d3fc0b979fd0bbfe656072b3ca', '5e66572085d1b96f22efbcea44baf4ee2357140e0c9741a1c24302b53194bb1e'],
+            315 => ['a566d76adc6763bcd0ec93d2f9576c5cfc5c263912c8defdf0630e404bcd49e2', '9a1f95a972aab1d87dd0d26b2b1600f3bbed56273323f7466325fc6b829335ba'],
+            318 => ['495e412e9526b7f5ceb0e7f37b280e88729c18a8fa62fa1af5de4ce3b7032a91', 'befe7ddc84195b8b1cd5c13ebb421fdb973dfe50a43ffb5b140d692f10428174'],
+            326 => ['793b80a6b6e3ec522c99278a862f9338e7e5577a675d4b8ab8cfd6bafb4eceed', '281c70b8ecec76da0714465d8466b7c4c1159d027c425039a1165f65913b3af2'],
+            329 => ['5d460e4cfa8ae1e9b77dc7d37d241e32eddf70b82c8ee1d50a9411c613f8d115', 'e5752a6df58ca7de0e8ba88f3b5f09b471b87c936add9809d44df1f46657bd37'],
+            334 => ['17198e631334b97dba1ba5504e2e357572bdffb0f0b0683db6fac13e9b738e3a', '9f50846d61c2a447a41d83935574f8aaad332138f780ad5cac9fff7fae964bfb'],
+            335 => ['34036ddd51ea15669b6011c5b2e59e19d88cd504de12bfd06f68225dd3c20e27', '908a429ea0e26388410baf85ccd6c1df22ee9520be73d7929c05860e5ec6b9ba'],
+            338 => ['647be6ac992b6201a290f09195751e924c58796b43bcbffcc376d04f2c152a81', '45879f3a8a29533cfe055b2ae128c07d1dcde30f40bf701232d93e7d237cb1aa'],
+            343 => ['94757c98dd7055140cf4f9471a9fd0cfc35e956938904c96ca59d27e7d1877b9', 'd2a89fde160fd49740964186d4f8e7f46d09a29746d568c693b27f16b207f669'],
+            348 => ['ddf90b8613b616ca7277862aa6f3e165fc747b4468972725d8457da53e5ca3fc', 'a7b34304f0120940c308e38bdfccb2230185d16defd4cc175e59e29511bb8824'],
+            349 => ['c469a4ee9302ab2b5676ec5981ab9cfcbb6c3a15f896bd7b9d49fafcb8d1c59f', '2e1c6c2492d9c12134e2f6b22dd81e1ede2f06d3fe6bb1f6d7ad5dbf934dbc71'],
+            355 => ['ea230a018ebfd39bbe02264a84f008d56b97b75cb539acffaac2a2d10f520f0a', '5d67324be88d25d85108983079c45917f1e5e319aea1b4545bec471aa63acf52'],
+            356 => ['20dbf303b8d671f0d0e1ba29b3a6f02a8f5086b0689e8c3aff1ee0929671a8b2', '10badcedb7ab4318309f7485a9751f5c037bacef7c9b4b03b1a1dc6c97a1b1a8'],
+            360 => ['6d47c35e017e617ca23035d220db867af4ea0a6e470a1583f1efe6a553dd4953', 'd57e0833ccbdc2c7d256831442537a7a06fdbcde657f190e6daecd6bb8db777f'],
+            361 => ['a6735993155a27da70608b2353f5d5591e7ad2df5688ca608e29b64f90cfe415', 'fbdefc94fc05355c2a2376735400baedd48f019fbc6939d9e94181b0c129aaee'],
+            363 => ['fa1348c508ab905234eb658582bb02998eca6d36c82a958b2c6cfa082571e10a', '2a9191b1b8f8c78501f186999a70806f71415df00eb0a010955cd2491a935b28'],
+            364 => ['1e1cc96b7ec04d78fecbb4310c49d6cd36f61545ba1972b826283b0caecd6d61', 'e73c7ae6d94756412661be70734213acf824f2fc039d79eebf67cf544b358cb8'],
+        ];
+        $expected = $record['review_fingerprint'] ?? null;
+        if (! $expected || ! in_array($expected, $fingerprints[$record['code'] ?? 0] ?? [], true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedUp1957MultiCandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'd31cb3f180e44ec4b9e59209' || ($record['number_of_seats'] ?? null) !== 2) {
+            return false;
+        }
+        $fingerprints = [
+            1 => ['6e91e9ec64d123485831c15a5bee7dc6904a963fde01e3b33d0361f57ac7d027', 'f00e889051b9d16c8b943c654642fe03f2b10ad3e7c6ace56786fff7d172dc23'],
+            19 => ['d902b3eed390504c964f87994d4eccb381d69021f893fedb69e1cbf004b2be32', 'cc1255c90d0155df89d7c0319e1de3b7281a996593648427448e1defa0ae7e1b'],
+            22 => ['b55068d6f41f7c9a0b1686de9a0426444431c0fc82a49ed4a86219ae0026e829', 'f23275f3e5e1e3e4f378a3dd62655ad180cfba162df37547f1ae26422263a053'],
+            27 => ['9df4321c8174d5ef3af09b71262afd3f3e3b8a8a1bca8c0f63039265c55d315a', '75f0b6ebdc4c19549150f34027e07feb41ff67db716e407d3ee16b9593e299f3'],
+            28 => ['e96f404191aa0d8ec23dc9271f40d251b6445b8410f03a16ec426d779d03da95', 'eec032583cb062c39843ad37b5b3cd14993220c43624861f5930e7b7a6d1a944'],
+            30 => ['5ff8829f8124b3313047d7cffe5962020f566e432c0fcb261e305a5a44bb23e9', 'e16704e003546153e7e3aa1e2d4576b2a52648671006179793aa16afafb2e3e0'],
+            37 => ['2695d471fdb47134e74360878e5d278f2e3d0a1eed240f1df0f10f7c94dd7fa2', '81a3907eac9346a53485a6ab1a2a1bb04d28b63348e9a2a0dbe480215774d3ab'],
+            40 => ['3ba47ab0aa779d550a8abee85e11a219766aac7e43bb57023a27623dacc8fd3e', '98ea34e624ad1a58058500c702ff691cbe584378f4f504c88b0657bd0e794168'],
+            45 => ['f4bb305e90effc3800dc5c660b6821632f1ef7cd5f7eda2f31b4e696490e8a3e', '93814b02821088abc37099ceadc529c47baa1b3120f6c838e72c9aad9921ca89'],
+            47 => ['0e22d7f1b5d0c607452bb33fb260e334eec991ca2c2426bce8da8cca2e038c34', 'f55497bb71edcf022fe39ee2caa6343d22a3d4154d27f2cb8b950938f1c64627'],
+            55 => ['253e879b8ca65d335addc48fe7831a3371fae7715adcd149437a4610e5ff8853', '400d3ffebdf04110c91ad09069ae28f275c8e272675c626714221df1e2971f35'],
+            56 => ['5954fcb2b0625452a17d17c46133d15364203a3781fbcb1d6ada026fe5a0da7d', '7b75816ef8ee086c749ad4488a4e912428fe17275258bf1ac043e35b6253e516'],
+            64 => ['debc5723a9fddf9760eb2e482f020a83d6c2abec38c1ba2e1d509dec0df975b6', 'a2247ad0794a55886f77e6e744d15b2e2b98b1149ab999330cd618028c824a87'],
+            66 => ['4d94ff98e1519f0044bb3ba8183047e905de7e0ee706ecdaa8b04a3946d85155', 'ab115a0b73a5262a78ef5b5bf4601a692df572c991c5fbbda3acd37b4d2cf919'],
+            71 => ['7ba3461a64becfbef8f53a21d03226e355357fda516d45e3571c55f8235b39a7', 'f2c0f88626cdbb94f9494da8565eb6140c2e414918b9e250b35d748d49f7b6ea'],
+            80 => ['73ff8395abe3a5a09b56564f8ae1173a99b89db49152891b599a51be60ac7ce7', 'da711ce6a440c4660a896437137e6edf387abd766a2783bd17cbaefeef7a0b23'],
+            81 => ['5a2d776c2b65bbe2e82b551cb549c2e3864e63da4e9a4d9be33c5d68c6135a25', 'b9b8ec3856cf4f352b57d99c7fea11e747c87a04911267f257605b47e2b922b6'],
+            92 => ['b707279612228f7e56bf1d5b5b52cda57908f58254a0f66c8856a422cee0b406', '7fb81c9642d94810989afabfd215536a614ede5561f1e5307dc3d712cd38a6c3'],
+            97 => ['c1160c466cf2643f2eff937b2d2ae63e3ad2fba5fa6d12bc94cc5d95c59d2b51', '05a60a69ce8713d9d962b5cd3eb63999e20b31d52b2fa48ce744d8193a94e206'],
+            101 => ['f92e256035586c9ce5c051fcccc71e62d9c9d584c42a7162188953a62c0fed13', '44a2a5a9435d931f3d2656e16fcbcd89b4681f8f3d8b072d2ae66b7b2c6e3cfb'],
+            106 => ['870f7bd59347d721b1a4b531afa967393a075a34b71e93028c837bd4c6fd0dd1', '4babbb8f7575b0698f7cb558232053df06714208a2e52685cad9a17cd87a300c'],
+            111 => ['0045d5385789d311699852e43742f45d6ad175525f57ef6d6e7a2c6fdd70111e', '1098166d570b897c1cc54bf9f00336c9fcb549a38df766db5ad19ae42eca5f90'],
+            112 => ['0547306b52c49efa49b9a6899f94987d8d8c08175649d9c922792cbdc3d9598a', 'b39adf91fc4b2ab3eecf9c50df64d618d92736d69d20f5cad5b6f51f92c0633e'],
+            116 => ['55e6a2a5d3d46774ef92031aeb8f15b2f811177eb8d749dd15743bf86f0029ac', '0441b8c911aa104e9fb4acd43244c82b6cf82f3fac2bc15a7edf9e56f56227b7'],
+            127 => ['f5139785672f53d69765300caa03f4e8c760b2915cac176b3386912e04105a65', '82318afd7cf4fa097b37c2a5b1fa8ada846813fa37a4a106b4fbb748edaeab72'],
+            129 => ['97e4e718a936775c5c718bef2e6af4fa7a1856a5e73182122eb790e64bc02270', '1722ee46e112ba1591a5af7b28303a2ca981d939f2cd3e812e69837821f09720'],
+            131 => ['3765024423faaba9c4b063e5f22d27985ffc6673c15dbf078fed9b07ffdbec29', '82503acceb2b09a8e1ddad776d81008b65557d4dda396f56a93b50b227a7dd62'],
+            134 => ['4966b980ed97207a341f7973a124c07c11d9a8d4d3624150fc854beaa242e7f5', 'e9735569bcfba5962affa249194ca58cc5e9ac115dfbbf29df1ab7db4c90bd28'],
+            139 => ['a3c3caca06c82a21316fb379e2251875c9a584de795696d7b1f4571ccca99a1e', 'a4d017d536899dd570dac84948c889c3814e2a14b3426cc4ae3d08a31a24f099'],
+            142 => ['26a9602d2bb9a88000c59bdd023c64d328822b2aa5c66c775862afca8a91b631', '15a90a14cfcb57641a6732e9a4c6604385f23f9437cae75516887b1914975c72'],
+            148 => ['8069b4fd2cafa4b33b6d00bbce47023ca4ea713f319ef7b5e96c6c98a54052b6', '6768e6226cf9daeddc9fd8d87d6f25f94ea4186ae54c446508ee46206bea3b76'],
+            152 => ['895c21cd8a446a3ca4ca742a94929a2bf9816684fe7ebc9630cae4afbbbc2807', '04205e9d20273cf9ed8b33c5c30734c1cbb37bc2a6763125fcd364cf4f5026d0'],
+            154 => ['41c7abb6d7edca4f69394155119b4c290e66f970975961279549bf679da2d6c2', '7d8d1431cfd7468233d11aa93c587fc17cf32cd9430e5d02cc84dc67f864b060'],
+            155 => ['bb7ce2bdf729951cae9b57936819a3977efaef32f6fd207e30f434ff85ddef64', 'cc38fbe639b2a09638516b5d44fbcc01cb43dfebcee67eb5d1b8c8f1ac299aab'],
+            165 => ['7bd7964f3ea724adfd02efd0e5dd09bbe436ea79be20eee43f2e0074f1f31174', '935b4d809e2d634e573b90cd074efd1adcbb3348b0b4ca27d88a338e9e3e4532'],
+            166 => ['928e36156ac432b6217079b2a40e39228251d337e7e70be4f7e9a4fcc81cd8e5', '647b829c6c704b452d042e6561a65646dadbe2f6babed17ff87e3076244366b1'],
+            168 => ['0f35e09d771ab2e76c4040bc3899d9afdf34db427608db0039c5eaffe56c1ea0', '3ecaf31c7ec18bdee2bac947a8525c12f143c15e1d9baeeb01f033b2b15ced04'],
+            170 => ['036467bf764afd1ca9d1d9f21ad98b3e22be73ee5d828f74db84318e4b43529b', '25d4d40338e73b178c39d4a673f864382b2332b183955027d51fbbe1df9df27f'],
+            171 => ['1285106f6c7dbe69fbf41d7a40b3ada1746483087ee9e70b7c4403a065491c78', '177c47c59b34579a04a406a71206f20ee921696695595cade3a668a46cbe82ed'],
+            176 => ['d1759039954a89ebb87c74b7bd54e4f632d4ae9c2b4bcec49f6ba61c1553417e', '763ff56ec696ba8d8f673b11ebbc570d3b69bcfe76f593b5c4131994cf1f9dc3'],
+            179 => ['fb727324425a56cc23f3f1740261cf7f937aede90d31b0d2d425f6e157039e7e', '534ee67d52507d62ff2a265ae71e6c401bd45255bf3496497329bc6d78680786'],
+            181 => ['7ddb60c53236486cc76489d2c284c3e4719295df54099c34bfcad94df0063a47', '997226708357076cc50c91bba6267d7f7e511532d02a79f2c9e70efe1d38e7cf'],
+            182 => ['9c1fa9c0e11296901a70010ac9dcebfe2083dc417856d3917707cbdb3b959ad8', '84dbdf3da108f200c684262dfb42378ad16bd81ced24e4abcf4941b53f832193'],
+            185 => ['d25310518f1b5a5cd702242fa816cb9bac70f3d06bff4bb714f4174254f2051d', '7dd21b72158de0c6142c98d437ea6dd3a719e429ae3187e4d54f3b177000be84'],
+            195 => ['f62b136aef1df23165f9c247afae7910d30ecd98cf67038bb5ce1e948663d072', 'd0e7c82dbebfe679f28a68af9ddb8352b7845b85fe1002d939967425fd9ff4db'],
+            200 => ['0c2d122bfe239f3fcb108d3afa374d2d1557045fc81421052719981d764c0fc6', '1f2d93a96a1dcc084321314d2bc8b7b7ab60859c152ffd4f63948b2b0def9c20'],
+            203 => ['689a6bb54660e741e3af37d188b3460a057dc885b9c16fa98ac6da0b5e804c89', 'aa6b4c0ef62eff44f8205c0dae76c366e5a68b387ca81752c7109338a207101b'],
+            205 => ['76b440d6a53de8c29c2d69a2a5cce13cfdf6b91b3d3f439b41d1cfc621cd21e8', '69da2372cdac920e3806456835e11dcc5ec1c6994c184e503006c31aab326434'],
+            209 => ['7ffaf391e1757b2adcf342fab43eda87a172c3cfb6903898e6ff9dda14a8a50b', '683c982a9a425a71a86deac7141f7905efd579647b679e30b76f9dd60d207e23'],
+            216 => ['ee02b12082616a1c1faec8725904e258bea4a490bb5428d0b9c9f769f35ad30f', '3cfd5348246231d9e5d3bb626d77d33067c9e0fe091192bada7cb143470db4f8'],
+            220 => ['2d24ff6f469ee7451704f7866442f1ed24f4134a662a57bccebc42ef26e645d5', '2affde39d2cc349b06e956019b738a41d3046fb4ad7fbce88532870cd9090b7f'],
+            221 => ['e8688aeb3ec7a32b19e55e2bd72d830280ba26ed36f03ab7ecb463f1ace76db7', '1bd62ef317ee2367d97164ed00c91662e1294ae7dad1a78ae0da8035c2b33a38'],
+            222 => ['ee52c0589d937ed683f29a5280dd4868d213723fe069089228834db587b54511', 'b51abe07b350a4b0f0957da00e80a3a06a59d12ce7a29a0dfce38047aaebcf88'],
+            232 => ['1f44414e7506a495d66937b2a230d7bb039296e628119a4f8394e355e4a18e87', '950d74c246bbfc12f2b6c2888362ee98abb1fda408654a5bf0dd8dc24956e2e9'],
+            235 => ['ed737b9b2e55d9833f238b1ec364ac60e765acf9886564659365af470e6b690a', 'b8933ccff45c4f06adbb6b05d1f566ef9007730f35e38835edbc5f2a4ff2f89b'],
+            241 => ['a49229be631b5c706f366de4e888bd6c612a8a8cef888da21f609ee12e6b314c', 'e54c82e1a697bd6f52dac013ead53831c2e2cc584230748d105bc20ba13b9308'],
+            248 => ['11eaf1a11e9f548be2e37216e79938b273a8920eb7524b98b2580bc3b4b1efeb', 'e319ec016a8f54ede3791780c49d549f315959a1873388e1567a39030a2a03dd'],
+            250 => ['527e493b1c9fa7e31411c91f29c5328240a25caada9bab439422d7c2d1b1ace7', '1920e8133c654e75355f2ad402faaac30fe3817f582cfc20a48e780f0d47e647'],
+            253 => ['4cbaab3966aa0564db695c8060daf941e53ce984b8fcc635678ef6e2099be6f5', 'b1a7fddffdd0e5b834af0c3d2ca820da0736f3669fb010876dcbf9116c01eb62'],
+            254 => ['4b683f29f3c26b69ceca3611fbea31841b8793c0dbdecaae595e0e99dc2a9be2', 'de2db0d5f3f9e005dc6aa3d220b672511bd9e448dea9e209c8f8ea896495d31f'],
+            262 => ['6705cc15278289ccd590f64a0e86e593b0ebc5045001ed2fb5ba1ed05838e59c', '0a6d1e4159a9b15c1aa6ca0867924c9959655892e0a078cbc350c9fe55ba1c7a'],
+            266 => ['55b2d224f1a7750af30e6705b4f012cf8b3c6de39a040f152be0427488957464', '2ca24a46fc29dec3574e35904b5ff3478d54a73d939c2432af1f1ca1c5a4d71c'],
+            271 => ['a2d1f370c9d8c6f2dfe576e0d660fedf65bb1566333cd930d965e17622226a39', '3f00b977f977775aae9648268e6a1a0903d19f80088dadc039178a0ed7152020'],
+            273 => ['b415ba11a28bf2df1d3b6eb7611416aed44a34417f7df2acd5350db607cd9fe3', 'c4521cb57b0370732f7941135f5009f55ccca742faa1f680d15378523e3218fd'],
+            275 => ['d476e630bbf4d6e5ad5983b3f7f71ba2d012727a90d85e3db3f808cff004f978', '5fd2698bf0e040151f819ebf6c48105a7aba3a38070d413fdc6bf436642a9eb6'],
+            284 => ['d22fd59f909dbc5178a7ae36b57e7b38751ca7915ac05153129df76acbf9aad1', 'd103b2a70947c3ac7cc4bd19f58797590b228c9d63bb68e1c1c97016e62ba1e0'],
+            285 => ['0cfe8da7df24d7a1d5765292b533225fcb2ae7277d70f1abec4b157ab779bca7', '0a2bc59c52c645b8e30f252265e5a27e670f1b3bbb78fdd038f33905d9369364'],
+            287 => ['d0069ccd94f8f08d8c694a8240451c2e8ddd760065720e6bc66c3bd7380f99ed', '601ec26e1184c35a3c9f7f6fa05434d8cc1faaf38396a4a2a715510a1126fac9'],
+            290 => ['a9f0004bedce6c09744826637dd1b6ea426e8fe2fc383d1420b0bdf15175d818', '310774877cb5962080feff3f37bce8cf29852d47733c217c519893f0351c23f4'],
+            292 => ['90399d7eb19d2d2fa92970a5aaa98dbbb761ab3c84ad50aa00b215016912813f', 'c3552f16c0bd1df30dc73ffe2eb898b743eedca832a412e5876a4b521b58dc49'],
+            294 => ['8222f01770f3ea09ac8cfffd8ffe806221a6b70b0b18890ac82531e60aee29e6', 'e2a78353ed377dc3157b82ebad837e880c7691c444dcdaff5aebcec7a0042483'],
+            295 => ['f43c09bfb8d4ac7783d233b9141aa7a4df7604f37d5d03ceb32faeb43aa39a8f', '1a7b179f557a4dc041a4d72d629c50cbe8fa145483b3f22af6c4f9d8342529c0'],
+            299 => ['fd9c126c3736377f52213faa9ec29f9bf3d1d0a5a5bd0f94225d3deeeab7bab6', 'a7a999ac71c904615d3b39f1f7842c06c950bea05badaa8e6ff637e9fc980589'],
+            302 => ['a8a4f524477f6df8c8d29a1c59bd0f8171547ee30bbe2f7df9644a40d0f34c03', '677b546f24d005151ffcab7c68706094c723a82d41070593ca072eb48c2d14c9'],
+            307 => ['798b01ceffb17c3e5114553865069934c3ec34a06f335b7b67d42a09379f71f8', 'f0dc31010b877786cca4c6b85231a75e92834d8dfe8841ad55c43bba2a1a8f08'],
+            308 => ['4c86129b670abe354d1f3520cb0edda57a12a4464ac1656250df2b9f79875985', '91ce57cb693d969af6851ca65d632f8a803c49fd4db83ec9dfc9323d1100eaf9'],
+            311 => ['aab0f0b92404b225bad042e366904cebd6471828443ec761e58739183115b66f', 'c692a8c855aa075aad420bc15c94c569fd2301039135342e25b35f73deb5e5e2'],
+            317 => ['7c1c0b98a9c600dfa3247b5a7583298096c6db0503d2cbf2c499f0bf23e8bfc6', '0ea7f88cd90312142701c35c27dd900d09c8fc440776fc2b44d90aae711deb0a'],
+            318 => ['12feda36f3e353f76b12cae6b6e09244499828f1f2b1ba1b9ad6fb8489a03bc9', 'eb6b4fcabed6c3bf6a0a6d09d1a1ac1a76dfa81001d76c2c32d2384a0a8615c4'],
+            319 => ['d15815b833ab7578e18ef970a9f20f131fb273996053081f6405e2f217a7d067', '8e18a8cb630f2b762c415daa8374357139da432ced2c71f8edee3106306d4fe2'],
+            324 => ['895646a87db9297b40937da00bb8cdebdbe30cf1b780dfc414708d191b4c2afd', '2ac4526deb6197e8ba06e852f361b2e90d6dafbefc7a2c627e756d4e862dd63f'],
+            325 => ['6f6babeca813c2c6ae2609b1cbadc214eabba0677f823a2c25f0e0316b9a1a81', '6b0ac159c1ee6cd669f2ea6b3c11de231f47755b7549b0f1b1fe0cd1696c87e8'],
+            326 => ['4c00fd6da2a0343c4f3566023269beecaf3d21406ed287ed8a0fea8cbcd3643e', 'fb623dc59f7e491937ca33dac0eb65de741a5afee5eab5650358b8b44c7bf359'],
+            328 => ['689ac24b23867bede6535bd16fdea3d2e36999c9224d4c670542f40ec19306d8', 'c16e6fca72ba096bbe0d5bc4d47daa753c9e27b9038e22c868b6dee80883d75e'],
+            331 => ['ba4647ff1f3348933d75fed3b8b6e338c41be6f7e7c9a10fdd103037f2147d46', '8d81e6a409c14dec7361cc797bdf5a292438339b37f1cb18198e4bd383351511'],
+            332 => ['e858d3b2d12e1395d3311ce9273a596a9157cfb020dbc6bd6087f096c4c45c36', '72d8fbdcbcfdbec1efc0ff5cd72a11d2445c9f103cbf4453f006e99b95bfdfdb'],
+            335 => ['ba88facff744651fde2f7dbe19ba9ebf0fba24f59642a7da84e3666b8d9ece4c', 'b8b5dd191d09258a44c99815301dab6f44f11230b5cca751db704f81c320f876'],
+            339 => ['211df3e5546377008a2e859c03944605f6976ba9dda1296d64d9dd1382ac1249', '2a76c16813ff3f1c6655f25099e065c7a0cdb4e9287aa8749a05ff8fb57aa4a3'],
+            341 => ['c443df7b319e890ed0803279bb72b4b8ce0c0f24f05f4b3b17e3df9b7b26fef6', 'e65b7fcc3da9fa9741375a12c9c4bd49ac4da401f687b1dc9b09e038019f764f'],
+        ];
+        $expected = $record['review_fingerprint'] ?? null;
+        if (! $expected || ! in_array($expected, $fingerprints[$record['code'] ?? 0] ?? [], true)) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    // ECI Amethi1996 detail p490 lists all ten candidates, sum106057.
+    // Summary p154 differs; preserve its totals and warning, use detailed votes for shares.
+    // ECI1996 detail p538 confirms13candidate rows,sum135519; summary p310 differs.
+    // Preserve all totals and warnings; candidate shares use complete detailed votes.
+    // ECI Bah 1991: all eight detail rows (PDF p599) reconcile to summary p383.
+    // Banda1974: eight source detail rows sum to summary valid votes; preserve zero-count warning.
+    // Bareilly Cantt1974: all13 rows at PDF pp459-460 total67181; retain summary zero-count warning.
+    private function hasVerifiedBareillyCantt1974CandidateVotes(array $record): bool
+    {
+        $expected = '63ac14ceaacee27e3920f9ad792f6be9447a39ef3c4989072373eda0b2ebe310';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 51 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedChandausi1974CandidateVotes(array $record): bool
+    {
+        $expected = '902a3f3c16f50d4de074eb1929a409989d6c6aa64a7760361fa1081079afba46';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 30 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch001Remaining1974CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            396 => '22ba9e6e8dac117506e85c2e80452833576eaaba2136e67e8dd31241fa3ca178',
+            267 => '09987b12eac16b4fbc1367c062c34e938385f2e3aecd323d43f79d6b5680e259',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch0022007CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            45 => 'c6a840d4965f440376d0e31c36c2b237b56d7b9d51c87bc8d13ea9c84e99403f',
+            104 => 'b92e5b1c84f91a5a3ecc808fabf9dccb2b42b57a5e928a9f6d0f89f32c395925',
+            304 => '455f419e9ceb07a292079ac7da7eb876a3769c802b468a5e91859dc012729548',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '174ec81b511a8fb1aeca553f'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch003Year2012CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            6 => 'fef833876c3530fe0401cd415925985a15ef31b56fed14a55a2fea5e33bb66e5',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedHussainabad1985CandidateVotes(array $record): bool
+    {
+        $allowed = [324 => 'a8508c682c77497aed2ac9c151d2bdb6ccca30a5c638bed91d4bc15041a64a1f'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '60b51eb873eefae10d9f9aae'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '4197eac7c44fc05b3065635e6eac630289a2ce1812665ba24fd341b0522c1828'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBihar2010CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            204 => '73c3e295422ea8df562f05c8c9922d98338bb456e5c2762338c6fedaf0e82a7d',
+            207 => '152a2be47790ac030b27205743342012df3442b7e92625cf609026dc4f8c03d2',
+            208 => '35d9fc76faa8e2791d49594e3e4321607fb14ba8462e65b0c1255a2c1c461eba',
+            212 => '7207c81c550aac36a3377b06b92affaa747aa3218d912d2506e568785c02c62b',
+            206 => 'a47b3e22bdbf800deff7d7f63233587230565d62967be017e7d47c21e4cddf74', 205 => '86ed3838d15685b72a8db3e1c5821ef5fa27e5e5ccb51b1d7cc46f4f99236257'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '576acbcd20ffc1f7500abcf7'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '21c9db3ddb3a5add3f0cb39eb1ad048017e5c904548e33a8ea845a36757b018d'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch029Assam2006CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            10 => 'd7e9ea83503c96c1d22f54adfbd385a81a4bfd366562cf3f03ba476ca8684e93',
+            102 => 'a7d7c9d6dfdedb897465a0584353cd0102fae44d08fa0260733e0440e261544d',
+            122 => 'de75277b656180c46f124b6565cc3fce8697d05a35ca6c44adeceff1cd10f3f8',
+            119 => '2f6bb4bad68df918eaed4c8639a4cb93bfeeaef4bde9cbb3faf2054a16704ef6',
+            82 => '53dd2a1db6b5535ec371679bd76d2e87ae6b7292c14204a926c4b26fd7cc2747',
+            117 => '3673a82c3b50f1aa2ed4af5260dd4572f60ee38568f08c3c52de7a9a02f37e17',
+            17 => '8f681185b5b40f4668d6a7001aa75758a6ef6271ede0f846a257da95fcdaa454',
+            20 => '26b2f73dc0b1a723b0120e31ac97168025af6adae29e2b8d0d631d4ccd3a4f05',
+            77 => '3a3f6c76329b6e1075b72e40e3695d4699da2c8f85f4d56606248a0906259279',
+            19 => 'cb9ecad62fe9723813e0444feb5a0f182ead842f82e71bdbcfe41778fc5ef775',
+            121 => 'ada4e77a783273449b76329a15ea9f909d3f5e86a63e02cf13946217b88083d3',
+            16 => '8ddae31388f715d107bbaebd3b57ce51a4c3ed963a18adaf0eed4c0c3b806423',
+            18 => '821ac875e3291ffd82403645120aafdba6a34856bf8d44b49b63c427d31cc8ca',
+            52 => '5cb353a0754907d9492ced423f0bdc42112fd1acc29ae802514de029f59e7ff2',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'd6406685c07eb45be92daa3d'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '55e6b4bdeefab8e7be45ca6e586a78230f74184c48ffd7762a71d1a5d06b12ad'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch029Assam1996CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            1 => '7273bbe61e719bdd0860574111e5138722d5c2ac6b9c245e10c0682ca0b7fff3',
+            2 => '3fff3a972aad97850fa29aeb3ea2c9bd58edd6a14683c85d7e5a9ef50245ac49',
+            4 => 'eb9ece9f8ca5c5815093d46b67162f1066a88327d46ef0dd34cbdb97ea3a12aa',
+            5 => 'bde41dfaf30e0ea6ead5032c76aecddd126a0d11f384ca977c83327095625d42',
+            7 => '67d8eb11feba1bc1da4670cf6100adc61a3169a3d68bafa3977ba66268a5740d',
+            9 => '8e0adbbb08122e8760614991dc2d4a55743a54422fc11b2960b06177df74287d',
+            10 => 'c57a40efd43df74e2ba6fc10900e296e94742cd0373cc5a80f57df76627901be',
+            11 => 'c6bef0798e5b59528d5dc134a2879157691199c6bd515080812c0ff945471e64',
+            12 => '1d528300bb6e888396af7d5d1664e44f38351655aa507643a9b2748667182880',
+            13 => 'a4e2005c828545d4b27a2e6cc25b2f698ac3cdc06ec03b7e3c1240899572ac89',
+            14 => '39f4fea106aac4baaa2ce40df7a6bae3e914597896abd50ae28c8e1299b8bb21',
+            15 => '88a5fb07327b73b54a752c051884bf6c9619cd4c504157c22045a7756ae62150',
+            16 => '2e23630c8ff51e5315762da8ca3d6347aad3695124dba2a506d96b3e1d5d9506',
+            17 => '155e49f489d36b9d97b96debbe09ed66b119aa4b25ab6b6b99e6f68ea54babe1',
+            18 => 'e80cb4e8e2289e4bdb6962c62d129598b933579251f3e81fded9617a3610805e',
+            19 => '92b6ab22a70d35ae6d0e5ba8f5c70ba92d6239ea942dd4c2d32c4e263a321101',
+            20 => 'f42ad9d2c7694962f850bf4ceb73b5676dfac843587ab714b7ee75fc3a8c1c9f',
+            21 => 'db17fe5586df64136b3e008d8f4e43509904c03abaf0776de9628c193f114b95',
+            22 => '6784bf81f812c492893480fc6c6918bbf27564dba330ab1d80243f3d04ab7119',
+            24 => '64e2902dae37a5a8586cb39e7c4c0e0e4b3856fbc79353dd56d443e01252fd01',
+            25 => 'a57258201f9c3ec82d08f9dc188408dcd841e8039ebb711aead9c5384f3a2d85',
+            26 => 'debe7ccf8d48dbdcf678aff760566ba65e9670cb53ac2e0d325db1133168caf0',
+            27 => '2ca0e667a0261eb3e71a9d6aee5e0794dfe79e49cb61f90e1c2e57a62170c296',
+            28 => '4595863fe736c370bde322b38ee208e321bb61f04ab9c6630313bb70072da86b',
+            29 => '01656942c69603e62dd139ab732a9b381989d4dd363b7634d2517c256fdb6d1c',
+            30 => 'c28e9a77eaaf629b539d57372f2133b017065b8be5ff16cd18e4df81aed48c24',
+            31 => 'c73ceb562271a41b627aeddee8bf9f378ea184241983715bc904dec930bec975',
+            32 => 'ae27f75ee32012b46a52171c51c853345d5f3398ec22ef9e1af49e07a9292b76',
+            33 => '260a34d037385122449c2b9b6d45ea097e4253344bccba34ed0e77a283147fce',
+            34 => '2c3cafb7ae022f10f919687fd08ea8befa0baedb2c99945dd12daaaeec88545b',
+            35 => '797a62f772014edeee955101166954f8b53c34748432ac2141c5aa66d0499097',
+            36 => '586ddfa8b6b774dd9815455220b66313c66b31d5738b3cef4832ff5943deab66',
+            37 => 'c3245dfe9177a818cdab30cabfbba729f48ea82291e9c75a701d12f836fee581',
+            38 => 'cee85e96386e371c5072a3315d873450ce13588438285ddc05a3a2b04503471c',
+            39 => '481e39305b70678f70397a47f6157b6ac17efd029325f3aac1cf3218ec794a30',
+            41 => '67acd615295b3bf3f7846f328d8d1cac4e365b452ae1ddfa2cebe875c2f19e03',
+            42 => '1c1795b52e576322cd3ef241d4044035352f7955b7aeeacdac04302312962fa0',
+            43 => '54ce5eb1a247817a242dd2fef1320bd372c614c008ecee54ce08d470dd4c1a83',
+            45 => 'a9ce7b179c05e3c0903c3aae5f69d55875cafabc560a2772fbe7b5cc8663e0b5',
+            46 => '9debaf3dcf048986dab8a027bb5e48529fd85cb4de354e4a44225e5d8a76df61',
+            47 => '665bc7600ed82116b392dbd51fd2060ee322f87682dba55d8213feae391c8536',
+            48 => '1d7380410114010d0d6482e5671eef2d24b28ce982e7e8fde460bbcf65093e5d',
+            49 => 'd108a26f1bb855e5df241e8c88ef48fdb5c63274728366be9bea02457b3c327e',
+            50 => 'c2bd3b8d1fd67af7ade01b7ec3687ccaf5d5338161be38e4c7f3bf3082fd77e9',
+            51 => '15deb9e7247d35967e8ac1b4ea1553ed6ccb30f5f889bce045bf703aa282e86e',
+            53 => '8e7cb2376bc36f666b9bc8b69173ea75b557372379eefb688793dfa404b03efc',
+            55 => 'c47debca976b8a04bd51b025191003137240cdb4599c6b93af350aba4029ccc7',
+            56 => '2f6ca3d75e2afb12091b2bf6bb55b5d67b61f03acc777c543c470737c9caaac4',
+            58 => '6334977ceeab0b26634a85f61edd6559770b91db3eee29e202d61968adb78d29',
+            59 => '839158a6f1ae5d741ea708e75a6fa37f0033a9da247d671af994288b64c9d909',
+            60 => '885b2b7db4a1bce3df0617e62f13d3eaacc6b4c262c5720129d3288b020307bb',
+            61 => '537c3a162f95a67343de672a2769b94b7851b6b5a82582bf53301aa70062b680',
+            62 => '44000d9fa172496a5cebb12ca3cb84964b5705b3c9bb985d0522c7bcfbb74523',
+            63 => 'b85b01baa8e26fe965182f1b3e22b9910b8da0334a3b0883a0a4126eac305897',
+            64 => '450508b55addcf946e07dcb5f9042448cf1195b4c3ece812e31f87901bce5157',
+            66 => '9ca4a3d3cc33efa458dc8f84244d4fad7afc9914ff652d87f4e4011b593708c8',
+            67 => 'efdbba344ffe6ab2f4abaeb6008d9f1da7a8b9e1b29bcee7f2894ac002e91900',
+            68 => '79a9766e4924615527632c3ea00af6a50c8bda11415340b009f427e5f963d42b',
+            69 => 'cf6cc650e323c01108ac8934b209faccbb6120d6b506d78c32e1ad0c0ad9e2b4',
+            70 => '6d3ad2313839dcc1cf499b3dc2154a4f525b692f883b0f4b9a1254ecd273634d',
+            71 => 'f5f9b70208f53e644c01876f375195edb6cae30d7a7c902f19c78e020a0b06d0',
+            72 => '668289301769b38127e463757b88a1189552d86f1333f36dac990769317fd0fc',
+            73 => '4a706cf2fb418b28815c26dfdfa94ff0d096684192af48e2985456fc1d78c4c1',
+            74 => '10b911b30abe30724bbc368653ac2b2366c103435f36f3ed8e638051a33f7cdd',
+            76 => 'b2ce0c5303576587f67104791ef2d01b0a200d53f517f78ff6c20285d70847f4',
+            77 => '2553cecddbdcba9e83ee46f7cfd512b068e3ff6f76b842b42797266b329c9c44',
+            78 => 'a691c36aaa02ccbcac15789b141aee0a70644b79e283c78deda65dbc0a00886b',
+            79 => '0034cc786a0e191a307fb04406ca5c2d34416285bd299c24d6a63057aa9aeb55',
+            80 => '4033af13c3f40b10a3f590e4e42650bc6d92889c1bb08b4e0f42e583cb1d4682',
+            81 => '1526db56a3ff441f81233effdcaa765748ed9d2998ae674d5b2be6f9b93149ef',
+            82 => '0c6f0351a7e82353f34c60e98a14a7dc259adc00e7f99bf34613533a7172372b',
+            83 => '591af97b62140d8be54fbf3d873cf297b642e3c1fe073ac9f22d67e603d92862',
+            84 => '9c4be96b16863991f506dd22392cf205089d3ed9c646e317baa07bbb71aacf45',
+            85 => '52052b91006a83e5fad30d95fe3781d868f685a11f0a01789076499b08b64918',
+            86 => 'ea0785331d88170ba9ee6b1c6272ecd298293886d90627bd87690f6f705db5be',
+            87 => '14bad3d339dd618cbca4539a0d01f5af6c6d866d7ecbad3e9584de51caa98e9a',
+            88 => 'e7eb389cb3895a18f96564563508212ee529a42898603916024e6efc714e590e',
+            89 => '5c6a12615bde73a8270d0426d4865864dece2647da71ef411f4924399a7aa77f',
+            90 => 'fd5744c00e6fd4fb3f35db35fe1b273830b4de2082923c8241d90eab6d3b40af',
+            91 => '2fad7e5abf6b1c92c5f373af199ed6eae4275db0683c9c43bbbd9f4b27d5cf47',
+            92 => 'd495c179dea070888c73155dbcc76bfcb099016415d55d59de2195cfc1cb8f97',
+            93 => 'eb08b742cacd9c0834752b8113782295104dfedf065d6ca9e6690f629af12667',
+            94 => '8293e4dc53c62f6c58598a7e99ce0570b276fed5c0c2093fcb9349620abf6f2e',
+            95 => '7bd47548c2e611d1a8b4d8b5c573376e351f905b16ea24ec7363cfe5486060c3',
+            96 => '7dc26b72fb7a0c0d215c18a21ec4cf833b756e940dbef3c760a6c7f74f2b86df',
+            98 => 'e3d769ae8705c0a372d976434d6dc9a2a1546e5862ec0b53f0d165f4290343ea',
+            99 => '226faf7759d167b7dab0bbcff117bcf2b61312943e4928306af4da2ced88efa8',
+            101 => '1ec3f3a70addcdfa71a678b92857d339290d626c853b3c4560e73b1f2f70b21c',
+            102 => 'eb445e8251918a3d768c57b6f3eecfe8646eb36976ab809eb826b1a174234739',
+            103 => 'eb24ed8a5ce474a8aca8fb2f32336eda5464131455ef5ba72ebed11c9a733a59',
+            105 => 'a57c205807459979748a39f8fe3b73c49400620e1fff6edf28c82141e8aacf29',
+            106 => '41b23753049abb4e7c529282bad30e96dd5ee8808ff2075fd98036970de879a4',
+            107 => '7db81440cee4adcd1ca793e5c5ee666d8a744b323c6696c7cdb5c2802257bcaf',
+            108 => 'e3b81d9f3c86e330afb2a4398aff0c3161d025126bc7b2b089dc8688c4b37431',
+            110 => '9f1127e7e3ac96b8df706147f16de2f475e6c1686bffc40fd8bce90189067888',
+            111 => '26873395f907fa64f2f5bdce03d922ffdf4552c3dcdb7b06669d2a5a5f20959a',
+            112 => 'dd1cd419d1c8587553f7eaa321e247a74854fd169cb41d0ae29910e6aa48bdeb',
+            113 => '89872b58956b78c2fed8ee0a1ecb2dbece73c890d46b09d01d13a2ae3378ba24',
+            114 => '4e63d567254f04486ee31ad50c88973571555d448831cb3f588abe7648fb5f43',
+            115 => '047b966661706a2ee18bd92ccdca741c4e6033e0c5648cbd6be0ff0b52dbe871',
+            117 => '48baee0d6ef85d468451d641c0bfdd385a194821c86da0f11dc59a749039fd8c',
+            118 => '48fece97221b93f477c58e16e74374c5c205dc739f2cbb39462485d041a19d58',
+            119 => '3bd6ae147c0b5b9e0346982a495acf70391a8c15e38ee662184c5a15069f90f9',
+            121 => '9a49c0edb16fdd0b9cca944c7e09cf4dd0431a46249bdf97236b9e89c6cc958a',
+            122 => '871499bb9e43931ffe0034243510834ccdc3850b20914a4d467b4ac3fc47e153',
+            123 => 'b8bbf167f9203cdc648c27d739ad5b1aaa16b9ffded604dd7319c2130b28085d',
+            125 => '5fcd97b0aa48a8b229969c71c9db462d15f005fb33d060ce84bb9cf625551045',
+            126 => '3dcff5d5ae2f93a7f0c60f2b9e651186778289d0ee7efb42e524342a68f5ed9a',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'bd36a20de8406077ac504ec5'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a2a1ffbb4deb3f0bf742343507bd37a387d39d6a1624e47ae154d7ee12df2ea7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch075Delhi1967Summary(array $record): bool
+    {
+        $allowed = [500 => 'd48b47b1f993c1c1564c29b4a10980d04b123d795f51a728790ca623e400c0be', 501 => '917dcca321ad5576d0ce11f6779117f39c4b9169f738ae48aa017164c23dc6b5'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'd7365c7939cfc38b09eb9581'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedTibbia1951Source(array $record): bool
+    {
+        $allowed = [29 => 'af818b2e8fac89cdc30c470b444af1ed7840eb73874ac9c85fb570f598bcde89'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '482b0cfa0689d697b8830cd0'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b85417ef291987598e08967c75239d9448fea5c8ffc4d3c2c30027f54c0cf6b1'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch072Delhi1951CandidateVotes(array $record): bool
+    {
+        $allowed = [37 => '4bb09c84b1fd949c4a4652b4a22129ff0ab179b35c9d6d99bc01a55153784aa9', 42 => '0bf037887c3629b3d093ade57e56f01f1db53008e09d6574d9fed4447f04f2c5'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '482b0cfa0689d697b8830cd0'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b85417ef291987598e08967c75239d9448fea5c8ffc4d3c2c30027f54c0cf6b1'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch064Bihar1951PcCandidateVotes(array $record): bool
+    {
+        $allowed = [388 => '989b3c430b84384dd26e786a2d0b4ebdfbce527477cf00e037128dbc9d825224', 15 => 'e3a2954fd396cafb074bcb82213350db4f11ac30fbfae79615d522a11f07de0e', 40 => 'ed69e0e0e0bdef4d2a3798a887d19346afbe2a7ae00a5c1d6e26188d066ec84b'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '9a57af51e71e6ff194d3f409'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ddc824406b6b49a01b0d9b73394827bd04945772471906d77c76addce5f197e2'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch064Bihar1957PcCandidateVotes(array $record): bool
+    {
+        $allowed = [397 => '61a8fc5c534961f304fc126f0b655636b6def3680817ec6987cc139241e6a8ae', 61 => 'f10be4b03e45cda0db33b398553f3f42a028e5b6d34ace3b01313612fb6adbd5', 79 => '91a4ba6b89d989d15a45e2ecb5debab9dcb4a0b8bf523edf597290dd5ffc94c5', 69 => '810b20b6facaf6ab4b2f68bc443bff30537eacf52c8a9bf53832bd13fd6bf2d2', 53 => '67e37595cec54f9f4f9b40e8cabd9edad74f962a87bfef91e54ac886dc394b80', 47 => 'fd870804741a09d3e9b1d21d3847a25fcc53c93aa28fe2c29e5805e43d638478', 60 => '4d325dae52e744ebe56185d86bd3854a169598541543fbe557e53bb93f6ae429', 66 => '27a8010da309bbbeeebca837d69cd35f01ec6ee9b03f260b6c0f4f4de27fc24d'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'a1b887ea9c50978fe4cf8e5c'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch036Assam1951PcCandidateVotes(array $record): bool
+    {
+        $allowed = [1 => '96f83593021080b335f37ffcb88ed500c027e900ca6a50dd7cf405ba7765881c', 3 => '566fdcbace32e28869eeb1f7547ba4400181b37808a39110ec34306943e1b05f'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '9a57af51e71e6ff194d3f409'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ddc824406b6b49a01b0d9b73394827bd04945772471906d77c76addce5f197e2'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch029Assam1951MultiCandidateVotes(array $record): bool
+    {
+        $allowed = [
+            85 => 'e09e08440add3032dfe91302bcd0f56d5e2ae195d98e17da5ef008eb7b5ff3b5',
+            4 => '7be2557e89590c48e2cb07777a0702bd86e7aa6d4d7c47b98c3b11adb09b5d0b',
+            46 => '6d5d621ac5d453d4f719ab83b74550d5647ae16111d304314f38d11871ffcea7',
+            49 => 'ed965d18c3dd7bd10e133de15eb721b5bfb4f21a022eb52e5dc7f965fa7e69c1',
+            58 => '2f954fc4a6c95c106e0e3a7005697c88ac40ce651497ce2ae3a71020cb768157',
+            67 => '5b1dee66f4aed5b866206c2293fc54fcd54e0958a1885248aba0262520d86285',
+            9 => '2f605d2cea1bf5d5565319333a8580a0bc2771528ff278c9c9c53f214050b781',
+            66 => 'dcee2eaf2ed87577358c3242d9c676bed86c4a8268835de70e08e439552874bd',
+            37 => 'cfb7b9d3cad388670ffc1069954de7100473310e8a25a9acbfd0ac0813fc5a35',
+            76 => 'ac0208c2dd7d4ff4f67b5e1f1f22c1ad19056ea99b61c853f18edeff4f18ff8c',
+            41 => 'd2ba7bc75a86932bc85091e7c8f23fc953c687479dd98ff140039ba2cd656651',
+            73 => '420d78a8442970159ad9f11bdf2a3f526137e2192c94747da0bb0b833ceb9c94',
+            94 => 'ba8fb72634fc3100540211c8733abcc321a438eb1e672f11486131b6b2831f6b', 45 => '069abaa869bf42e747b1eb244120c6aeda21c047dd109db9d7db107d31738cc3'];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '60d8a031055599ff3b89eb78'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'f79bcd43564bbc4e8ba11574ce9519d338d2845c0e5829f4b20bce1666eb6156'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch029Assam1957MultiCandidateVotes(array $record): bool
+    {
+        $allowed = [
+            4 => '62c43a0db23c6210948309356d5ed263a39cb1be5e71a2db934396acf50a7b2a',
+            34 => 'd7f65f75294899e0dab2db57ff3437dd74566b6d0ec0f99ee15ef0eb8a2d63d1',
+            45 => '34a8a746d23175308881439bc267cbd3f974efe0ab0d07b5c0593ec68cf82a37',
+            46 => 'aff3118ad2a0496c330cbeb868af9c7020b3110ce44af63818e1c878003b3592',
+            56 => '899aa82ebfa4a0c3b09584714834f47d7430090a96b73c8e7a6175c0ce2428f3',
+            69 => 'fb41727b06a8618d0fdd948eef5b99fbbd08681b3398541a971dfc338b328e4c',
+            84 => 'f7d8c4945361bfb12528ac2c1674b4770c77e17ba8025e17071ab137dd32c23d',
+            85 => '26531b263ba49096df7ae95a3a5332a2c67eae858057115a0163558de00e43cc',
+            64 => 'f3467cdabf5829eaf11554ec207ce835cdad0d7046dd017ea73fff611b264ef7',
+            35 => '086d9d429a791fede4bacc52ded33852c834b13a7f681d7e0ba2c72c82c12437',
+            82 => '3859325b3428261de4f4526ad9d167a2ff7668646235ff3c9ff53fa31dd62f5e',
+            33 => '1340285cb5e84196084aecd373d7e1f134df6b0427554a9431633364fafc8ecb',
+            44 => '42d1af3d09107cbffae8e18ef3e9ca0bec982b524b5e488d332f769f4e02f200',
+            74 => 'd69583922dbc0e09a0b2f462d47ebf942f5a3d78e9acddd871e9a84bbcbfd6d2',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '54620c434b54e06715dc86f1'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'c5aec9280a02fb8ca19663128a1c1caca27f4db0aac7cd667d2ac68562c2cc7e'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBihpuria1996CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            109 => 'a5de36656b4282650e68cd089726beed883badd10644f9201df20049ae00db56',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'bd36a20de8406077ac504ec5'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a2a1ffbb4deb3f0bf742343507bd37a387d39d6a1624e47ae154d7ee12df2ea7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedAssam1996ContinuationVotes(array $record): bool
+    {
+        $allowed = [
+            3 => '2a7c0cc14cc8535cda318c207727d25fc3d6a27b7e9cfe67ff8a1a2fe05e9f0b',
+            6 => '40da2a718f05aab07fe94856e04feee047fc8c296d1b8f9404382fd20cdc05db',
+            23 => '11a1e5062af783426dce3e9cb96243946e7dbf3dc0a84aeac7d4629da031689d',
+            40 => '98363e4ec6df8a39be6d84e804c8bc599376213271ffec571d0867672bade388',
+            44 => 'c68f0565caa170f933e564fcbce199735b28cb1fa3c1755e84e117c2b19b6079',
+            54 => '109a91f334a74c7cbace209852e61f5c40fc5ee1a9ff0e00802404e64deeb58e',
+            57 => '2a0da347d248881633c3c3f133fa4aef1e6df3cf87197daabf0f3c491237877a',
+            65 => 'd2ca645957c2bedb47f38b92016f8da3f551b72da4b0a18ae59273f3347998f5',
+            75 => 'b345571772785020b26d5c2e9949239d732933dc3adc9fbcb04b20a6a2653cc0',
+            100 => 'e70914ec18128b42e79cb3acbe97f029267b8b64a710da3c6f7214ba32028e78',
+            116 => '8ed8dc49c89a39b02d0dcfda5e53823521abcee4c471563aaf2629d0da57a980',
+            120 => '23da0801adc8861d065bd15c2335be53b5c674e7634f5e8103439719ce68fbc5',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'bd36a20de8406077ac504ec5'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a2a1ffbb4deb3f0bf742343507bd37a387d39d6a1624e47ae154d7ee12df2ea7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedAlgapur1996CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            8 => 'e26a97a7d8d70fb6b909141b1f5b183a16561646c2b4b84703bc3562d915a443',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'bd36a20de8406077ac504ec5'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a2a1ffbb4deb3f0bf742343507bd37a387d39d6a1624e47ae154d7ee12df2ea7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedSiwalkhas1996CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            399 => 'f48a2fc3351cc3a6e92c811c38a75edf657db0cfc0a87cf264cd56f1828f45e4',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '1cc8415ab4d57b66831417e8'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a08f0f434a0042acb8530d9d0788a0e481c220729fd0fd2f8ec6e8adba0f607d'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedAp2019CandidateTotals(array $record): bool
+    {
+        $allowed = [
+            1 => 'e25acbcbc5164905b2457eb0f2d1581c37812fad47d0d0163e76221231b67226',
+            2 => '11125b4346d326217c26fbb2764e8458ac3fe61be34d60bdb6df2485611b3638',
+            3 => '394bd1d9b8c86f269ab89850e5b97c51a6fdaafce67790c356ddb5de2cf88b78',
+            4 => '6a909a0ebf2e47add3fe0508eb723da7e88af3dd5241d5c60664f87aea274129',
+            5 => '116a5782aa6eaab423e3b855ef302808dc03adb803918dbc6f56d35e65bf490c',
+            6 => 'b61a0f7ab17354a38fe6c13a26b1f54f38af68ace15ffa33ecf18d3528f4898f',
+            7 => '930cd62287b7277523594e5c58cc35fe70ac612bccd0029c5c9631696c8b7b54',
+            8 => '0d500a0cef6162e599c32fce7858a971ef9d9d6bf8139d7f640a195d4fb3d3f9',
+            9 => '876c0acafd108fee58eeda61796db8b0457a606894b8a3d64a2d20e6430fc9a0',
+            10 => 'caa75614125fc7c55159a163b80a2b44e80566ca00b46b679ac7e4b73c1c239d',
+            11 => '6d8c0c9998ab4caf37f7ba81d741a5d0f0f9ddf7050c5573e99420367d3579b3',
+            12 => 'b21a7badddd02ae52119abd6b0d3849c0cd0e8bd9f545a6f60f2b450fa117b54',
+            13 => 'd913a3909c1d7245daa05fa836d9d66453bc55124f4829b92d351461bbe549f0',
+            14 => '4d158a83b622e965130f07132574727d4a9fcef5404e384230753865a096def9',
+            15 => '235ca8aecdb88f483611686cd5725bb73a234e5ca0e484d8305297239ae0f6fc',
+            16 => 'bb07bd0ab7c29a1087c060c4ce003ec4489d95984fa77c0683fde9d3b7b27483',
+            17 => 'a23b27d31728ea170cf9334481461c620ab504dfdd0d331b5512af007433f958',
+            18 => 'f3772a87b14a8a2b5b47ad9a22f924926b1c682dbc29e1815f0e662343a8780d',
+            19 => '2a9cda1af221c62394046f38f488ecf5fcf744604eb63dbb2e14134d9cf074c7',
+            20 => 'e3ad19a31ae0a952c07017fdeca20b84efa6837743cb89fed3c595494b935475',
+            21 => '8ad60f16a8b626edc16f05dad76386d7bc67427bce62b7eb2fca9bb30c73ca18',
+            22 => '58875ad0a7327368e34d4826771fee1d0225c348b15d71bdfc2981d937055b51',
+            23 => '29d7149d9f5870e3fe28833156e9dd54f88c6969690a433aefe6941deb2f2378',
+            24 => '81a6e1966d31d1e6edf325249e5144ad1327d9083c52188e0f43131670a7db43',
+            25 => '0e8d885d483c616b2282b5458c63ecd6186dfbf374805a67da1a83ba16876f9c',
+            26 => '0fd1189054243ec0d10a6e290f38c3543ac7334d0cba18daae4c9fe0bc04ebe0',
+            27 => '71184034e686403f0d6fceb31e10fb74562c249a377733a01435529f10f1b61a',
+            28 => '83bc4b2bdb984780bab819f764ec8631c25ac8788a0f416c31a9f7105b3cd74d',
+            29 => '221011f50aa72ac2bdd8d2bac47cdb04652bd5d533afe9f46300195f8cbd1b66',
+            30 => '212bba2b1706c38972d80b9e647ab65fc80c647e7883c14c5e9f16e7f177b2b3',
+            31 => '7dec98a361cc90964fa17375a180f191e862878a33a66a41a09efa7770b153d3',
+            32 => 'eda9dd297786d01ae787eb38083672462d37f4637fc8e2a61a5702fe543d6a69',
+            33 => '91a5590598055b681babf082d4ce7519c9f16f64b5ab8fecd80b90cc2f78ac5a',
+            34 => '9b5b5067bd48162104105f9f88e66fe0badb2372356d98ec24d7c28a7c1ab0c6',
+            35 => '4aeb5880e73a11745f64805be26cb303ce19d958702552942303692ec8491e30',
+            36 => '9dec4df111d054069f6ce9648fd208837f8819bc2cf0f70540acaa311ac4eae9',
+            37 => 'b6cd8a0aada226f93a8696279106491729e330a64b28550249ad7fdbacd75e95',
+            38 => '8fbd72dc6fc4fbe579975b6ce69a306b5431048de4d7563c89df372343e12116',
+            39 => '829bbd88bffb3d4aeefd0f528d9393178bb25e532f1d1f67def9c5833ea589c5',
+            40 => 'c5ad1074ee5d9913b036c6d174d23d52a3e0a02515520b887c637d6d42b046b2',
+            41 => '1caae5eab8cb2f2b05b40eb58b677b52d67d0a41d535a82b33b33252521c1749',
+            42 => '87146bb849d9dfa60b01a6c0977ce770d9d74c20521a04fc77cdc1b3398fe13d',
+            43 => '3bb501ea814cd0c134471f871a951b7e0fd368dc7097fde746f44ef6d44d4ec9',
+            44 => '9f8d755d03ceed69d5145918f75342e39c928be08f6c1e3cc423bc9e0a731759',
+            45 => 'b947807e1d6ce20361ef49abaca8bfadcee8749efab4612f756b2bfb5ba7d864',
+            46 => '3c345523826e2cd85bd4aaafcb73b7bc2c9bce51d56d308c7706aceda055229e',
+            47 => '1493b2f9ca276741fd150f3ede271db0cfa56be8b9f3853368b32a02865c4b90',
+            48 => '1e6fa89eb1136f8df9dc905cc267d3b723f948deb8f929c8da8ad0330d45e8c3',
+            49 => 'eef3be8e6509408018c6cb1bcfe35f734b66afb7b19b6a139c1efc5ec1434929',
+            50 => '2a8e60e4264cd12e109f7b33cc34e3c95b41b1f6bdd92f3595b92c9a4048e8d6',
+            51 => '7149f66ee3978c344b4a5ac20132dc3905720276256832b58d362e22110509db',
+            52 => '3c736557d082ae3a97cc3578aea7476a26798a9f2ae7146c6e587f84e13ff896',
+            53 => '7600f5f200eefe8d96dc8e9165e494d546ddb34144ba7c7aebd3d629766ce475',
+            54 => 'e2bffb9fe48a131acf053cd0597ec4b47b89c143abcfdfabe7f2bbf019e23523',
+            55 => 'd0fea95a4f07c9f4dd737657e13f30c22f968b2a791eee1dbefd8ca8f9282e21',
+            56 => '086d3e8f79235c87c408d58eaec68368044262639524ca03b8766b3f43c155b6',
+            57 => 'ff9d2b9326b5d143b79d737ea99347fd8fb8cbc43ffb167340340f5ba22bb605',
+            58 => 'ce84c572a7d3bd4b2b490fbc5576f05c181831f806d187bd39e88f787bacd972',
+            59 => '3f99f98bcd86f1e3f1abc684cf790bbce560fb39087b392a8578662125dfe3e4',
+            60 => '2952ffdb5dd5a9ddfb8ff0c8451a0f5dbdbf4ff139e94123c9440bd28aa27a99',
+            61 => '82b084911965f862a1f882d7bfed967aa165b06af21b087336962b36be9a7cb6',
+            62 => '768f75e79f62a3354fdf8b29199b07826f6295e64e5aa9374f5dffc3224e940e',
+            63 => '42eaece661a65987e9797e32f1b60a451a3ad3b0205a1b6b9c8a2ccc36ee3d16',
+            64 => 'eb23d255b5112abb02b8a0d392b70730f86c3e231b62db5f116662b91a7fcb04',
+            65 => 'f7dcb1b7c6952d0729611625dfa76cf9d80040fb23eda4370523b6d8eaf97782',
+            66 => '3c4a32deee85e6600dd2631efb0e15237c289f098127f47e52acdfaf094b2749',
+            67 => '4aecdb3371f600620edaf5b3c44f11c5e6980603c7f2166b4d5dbea5119a6b62',
+            68 => '0f8e2395d381fb356f611c89e7653dddd0b31400453c9a1f2994156411efdd66',
+            69 => 'b8c7afdb1b064946854fd762f6c17c0744e056f98a5fa7722b3c59207f8e891c',
+            70 => '6ccd8a93e75f674e238827b0c837ab28703aa59bf902e963bc14b5ebbe2bc3c2',
+            71 => '2725d02883a7d3d12e0cd208e870642f7ec7004ebef7edcd3de13693b4cfee62',
+            72 => '73f0d9d3cfe55193abe250cd7cf2d6ce5122fdccc65c7f5c8c940e1044832a94',
+            73 => 'ea6c5153aba3d037724e58901ad348056d880bc2a6cf23e89a26b01b45692e79',
+            74 => 'bdaad9e54f6ec3bce03057aa5e9a0d14dc2e30e1d6ae4522121a5ed024d24ca1',
+            75 => 'a4e6aafdb0abeaebe30fc7a45b4879c0b034b74702e43046b15c4ed680c344ba',
+            76 => 'bfa0dd488e5a5d03bc7e0cce8c472a9dbb8f506a6905a255a7cbc5adc80a489f',
+            77 => 'b498bc96786765a25e28167f0898ab6d144231829c3f849a60eaea402a02de8c',
+            78 => '0c7ec6aeddf7ebf6fd8d7f9824454df221d45fdfd298aa72974ad484853d1112',
+            79 => '57ed7d2e194529281c364adfa473475e4fa4b79d9be7f43994de602849e0c180',
+            80 => '282e8fad4e566fe3d21450692735589e111373017c7c69a8f06950e1b266b15f',
+            81 => 'f41e5e2dcebbb59a68782c3f893f9ee5c60935ff8a936eb6e2b64fe8ee147eaf',
+            82 => '92059132ee2c12d4f4c3d573b2e2ce2a7ac53fa304f213b5ef02fcaa1346d104',
+            83 => '243c610514710621470accadf1718794d4bb04e4e1e6a798fed00fd94e52613e',
+            84 => '2b52511e7bb08a80f98255551e04cea76c5c7fee64ae4a211fae7db1742137b9',
+            85 => 'ce13975778539b7af9e9ee1345ed3183db8bdd0403081ccc9ed36ea752e2155f',
+            86 => '4c61db49a12755e5aaa1491efdf072858c2b120ebbca7a320f04073134f39059',
+            87 => 'fa657abf60d5203ddfd481eefedf3c700b4e13fb2b84d5d4326fe033977790fa',
+            88 => '289e4b8e896939b6bdcd5b26fba346813687f443d8de3f43ba3aaf46d259bc3f',
+            89 => '4ef2e8d96ca464d7c211c032cc054e98c904d36801d950c2843b7e11fb76c725',
+            90 => '11c0c4c846506e0ecfef56c4018c5147cb17f2f3e5b5db3add3389b52d0e9d0b',
+            91 => 'c139b0e30e0269db13edc375725abf92ecaee8c4eb9980e1e124025dfd68c394',
+            92 => '79e2129250df07513669232c6286fd5543fef2aefa31a46917a6a13f36d4d76d',
+            93 => '896ed9e365f3054483a7c2017c205843db8f5f781dd202b8eb508cff2ecb923f',
+            94 => '2f896104200bf3c8314b5b47554fc838e800f2c7558fd05b17f21124df2f40f0',
+            95 => 'c3cc433fb59e1f7899e45fcbcb6bcdf47a828eba9fba8f19fd98effa81168614',
+            96 => '8b9d086e94bb434d6f67033ad59c7bfaa04019bf0a0f146c6df3be293e080636',
+            97 => '3e0e7c228059cc3297b2bbecb21fa5458db9bd11358f844cd847562e884f0c02',
+            98 => '8dd0a264bb01dd32ffb4abbfbbc6af356841033e3c8542f29d1b10cf706a5b77',
+            99 => 'dc0d93354bf7cd59b38584eae64a6f38edd71fd926bd301a23f9926eed95a158',
+            100 => 'a3f6370bd48693f34c745b06d40ed7a18b96478b3e0748e3b9170d29f43e8691',
+            101 => '66519cdd6ced7cc3bdaa214ebb699dd176f86e4d5d553822ebf80deaf575801c',
+            102 => 'fc528b778385504c133b13d77250e609094b82a8755f363084fe9eecfd8d56d9',
+            103 => 'a937a2acd7c1d47e66cadb905f0c293be4c37e84fbaa15eb3eaf079d0bdc3e5c',
+            104 => '33dc4f79581e3cc566c29501595d59d6dc819bd86863cec7c9a205c4ed4e6693',
+            105 => 'f4190113320f42e6e16516a27a6dc3f855f33e6907592ebaacdea43d9d2bda70',
+            106 => 'b1fc69ec156830721b6ad5ecef7720e3d8aff6aee0de3425d541a8ef43a3d7d1',
+            107 => '7fbfc50203ab51df7a4ed25abb4653eb1d7cf96d1eec8b1bb0c222c419d0aa29',
+            108 => '2c34643361b8fa7898e62894b89ab67d4fdabc2e9912ba866a5dab95112dff24',
+            109 => 'e21b70f93fc1994728829bc1a5db41e26b220ac97240e228c70625a817979f38',
+            110 => '1a8162d9c2ed040a206ce083a75699792be1434c495d7698d77a221f8ade264a',
+            111 => '9fb997c771ad88cba8fd44f32c9fe9328aa115ca448e57f70880240905c32fda',
+            112 => 'be6e369d0e0aad76b0a51406806e75da3e2faca0fa456d440defa352198462d6',
+            113 => '2c419cf6976c3ab7bbb467fb065c78232e7c2206e99aa0735550bfe1808cb27b',
+            114 => 'bc166a1557fa97dcbf24c53f992d77b7c4c43c9a0b44d877eb10b5d0b0e83eaa',
+            115 => '2f56a62f9d7943f18807389f0898e39f59d986445e075aae7f35b1f15457eac6',
+            116 => '4969adfe4d0eccac32246c1a224f2c1a3058635b9fff53c55c6fcd298a739b9c',
+            117 => '477c128ea1f344262f4c643eb4eaa5fbadc01f6d93042ea3d24d64d5814a9041',
+            118 => 'ba5dda7ed5537e3d2238701dceb98eba182c91329b0c4acde8c8480f9acd7a4b',
+            119 => 'c7959a4c30cecd7e7331412f5a85ca66fbbc2768f29a982e0a0279ff04482f44',
+            120 => '989e2c9ace8bd09e37d42038d9753eef54222f61e03e3ac069a1a2b13ce8f70d',
+            121 => '0e24c6e5be664959b6985a30d35c5bc02334f0de57e36505b24464ee995cfa89',
+            122 => 'f137f8da267098271a300d29e015e64fb310de8182a1f660ba16cf276fe5cd03',
+            123 => 'd689b17ec0e43aa21dacd23f5ee18cf20571c625fbe106d05f1648208c23d5ec',
+            124 => 'f563ec5ad90b4c26901cec1501006a6367c369646acb19c1adbd0c564b23ceff',
+            125 => '67506d47db66bdc20e9e91ec66efe6de9d7e8c4f47ac99d6e44a544938d17933',
+            126 => '5a39f561471855bf5280f79e9c33e68f886c1c53b6fd4395b22d63bac8eefa51',
+            127 => '0096c26c4867810b8ee123f4d2964e1a6e2811a93907e5ae40db82048e13a9d9',
+            128 => 'bb528806d658fe784edd944c8a1cf03ac85f4053e6974bfdac4c6dfa93772688',
+            129 => '24519bfe3bd71eb315c29a4d6e7d47c074d4127511be18e39321200f193cff60',
+            130 => '9d3ce339a8be237aa633149ce73229d6b1b0841fa8862fcc7ff563f074abd156',
+            131 => '8ac106e47a8b6e64aad44128fa8d41951b8c2bd9f3417edde171b8c7011b23fb',
+            132 => '380ca600380588534b05990a66ca3d17c1898eea852dbce9e32952d2d408ea67',
+            133 => 'f47a36729608ddc8c054867a3e03fd3ffc0edb433e42848adb430a8a09b158e5',
+            134 => '5c3633c68055cc50f9473e5c9d51b30cc37ace7d49faaae4b5341dafd547f521',
+            135 => 'abdef0de7be87becd5795d3cf45a81a3bfac3bc1bc8cf9c894fd53a7ae7ae4a2',
+            136 => '4853a995cce8919ca80a64124a01128f86c64e5b242a2740796073ddd6a17745',
+            137 => 'df56592013497f098d9a4b901845fba1dcb0238429fefdf7be594f7173931fbe',
+            138 => '979fdb59232bb650b189c31195525450f0094f6ced9d28904c79132f32b846cc',
+            139 => 'ca8ffb25274c9d4cf33f0cfaf9a5c1ab1fd67b01fc85a80944c68cfff6ca8aab',
+            140 => '9d0a5c4ba4c0b3ab76d4e5c96bc978171a8b9c430df27467f072063a640bc4ca',
+            141 => '7685173879dfb18f6e500d2fddb2b65d0c2127a873863e12cd1f01ad68e8c561',
+            142 => '6100dc4cc867d0fcf07f1cc0f01b0b18b6e3ea0660f140aa55c663c8c56bf0aa',
+            143 => '69e7aef0b8a45b7bd1806dac2ca599d83a09fde04185cadcaf8028f449c2a62e',
+            144 => '6f6e1463fafd7758d0fbb91841f1ea491be847b98d3b5eea8b580cc6864baa9f',
+            145 => 'db0722363b5fecaf52e4f13a796680115eb859493ea9077ee93a8717debfc63a',
+            146 => 'be78f0ff045f33908c8d96f1fd883d22e7aab83c708504a1e8f2eea3db0139f0',
+            147 => '51e9423bd6d4bb8565b4675607fbed47a3eba215ef6c5147dfbbdb404dc4ac47',
+            148 => 'd87536a6b432304a76059337a4933436b30ac0afe84fe12788d059398d9eba79',
+            149 => 'cf3b13a5be58aa2b1f1c740bc93ba065c7e9843a25246728771340dcd1ac4d1b',
+            150 => '67465ad5441d96f2c7145a3bf9a6033a7cf6976f8bd1e0e3577608a41b89c1f5',
+            151 => '190d72db348dccefbf3292b132643b80c99b971c760ccb47a11d73fac08bbe3e',
+            152 => '135ea3e0cbc2aad2aa2ceb8ee8ce0e4249a82522da4cafeedf3a791a28c0d60b',
+            153 => '7f3783e8dda15a5d7c81e8d7a039ce0ada4279e13bf6776bd906eb3de05479dd',
+            154 => 'f70f81ccff2b9e33b6b43d2e6e5e10ee84fff0691b1ac78ab4fce7d7abe88e79',
+            155 => '6bdeed0754d1b763a1048868b3cc7ed9729327912ac41c73549379d6c9372cf9',
+            156 => '1f86aadaf7aa9d24628a42bba3664ffeb2e99262c2904ea89aced3d3742cda73',
+            157 => '887b597c7059c3f50a5ea1bd517f3b4a80c7e864ec60172f70c29be329371cd1',
+            158 => '8cfcf028a2c824e9b56660031a7ba95a2bbd86f646d339f0a5cce9acd0b2df4b',
+            159 => 'b5e8f6727a029ec817d9b591ebc9ce7d59e17684422aa621661cb776fe66a4af',
+            160 => '551492e21e38289cd58473da0feb2fd7bdd81dd99ebf34efb723318bcd96deb9',
+            161 => '630b225fd5be9926be8d9cac9ac2e723de1086aaa5b483fe47d51d828e017a60',
+            162 => '0358db27bbb78f421df5f36cc815ccd25b74dd43336422e7afb2a935802619a9',
+            163 => 'a5cf5e16c7bcc294235a329f6023ed64dcc6ae254cc44e2c5314a9b36dc884d5',
+            164 => '88125a03a87a7942dd80084646b54975def71c5e3ee281cfff362d77c1651f23',
+            165 => 'bdd82f78cc365ae21f54b7cce2d97274817f2b5d51448a47868420f4e9211fea',
+            166 => '53ab84b0793fa2871f858cb62224204402a97e5217c9e1a7e759055044dc8dee',
+            167 => '8a9ed9234d40bc9ee7b32afd8f2a8ff4a171db104900af96788489fc2d49d230',
+            168 => 'ae228e9e885d4f30e5d8fd57a3f935719a40269dd43fb72c05420f7dc70b5283',
+            169 => '04c304d20533b5d51acf51c15bd2cb07c8d869025a55a26fb17978300d2a76c4',
+            170 => '612dacd112ebdfffe48128461a4a9ee3794e41b12a802fe5c3773cb1860bc8e1',
+            171 => 'efc152f5ff0f95fc32b59857cbef2b4668be886bb0f1341856c619c13206fad9',
+            172 => '284624a4769595766f12a1b228ec6100f4cca7c4236c2ea989d2fe4ab15c93ac',
+            173 => '0e387a3fe4da6a397d13ac78fdd544c39ef57c5461ccfe9f77d4e33fcc2d6748',
+            174 => 'fa07670c1e38a94948074eb224e8f9bf8efb220fc319a526968164fc085f9e96',
+            175 => '8f915d72d5be411970187848607f01ec463b4e564f1d4f19c23f4c03bdf75f6f',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '8c599bbca61627b27175ac1b'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '95760c908b66130d3b41fd0a83efcb88f1eda98916a8ced3de61df0023e086c1'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch004Year2007CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            370 => '38f2915f996b05d6cd9e275649b74dd9b199b1eee97823faf931a727b1ffc7d5',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '174ec81b511a8fb1aeca553f'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch003Year2007CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            44 => '2950c96a50a7dedf3cefd39239e21e3175955fd1fb6647b235c3ced2d834e02e',
+            240 => '34db8834f2ae3ec96e09b5456e734a05068877b7a0fbc97329f8058188715398',
+            245 => 'b66600215b69255f3975212939f0dbd1084158e8af903ac205f72dbbd09da996',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '174ec81b511a8fb1aeca553f'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch004Year1974CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            94 => 'a14c3244253cd1412c6ecb2f3ba220b3cc6ff905da4dc2e23085fb100496a6e3',
+            232 => 'b191d291884ce58ef30345fdaef408e799a69feb372b3ae815afd9a363535141',
+            243 => '9ef8a903590def9554d8cfe8803ed27cfbfabeb4488b49584b42da320c2159f2',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch003Year1974CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            66 => '787fdadd3ab3c21ad4b402a50ae23ef13266a0161c7eadea107ce6c9601de300',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch006Year1978CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            66 => '9fb767764df6578a4457e3a7c8939e1487ad131aaefcc94e3c604d3cfddc6c68',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '5ceb07b4b18fc2ea5dcb6112'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'd9c006a204df72781b7c0271282c8946e4b105d156709ce4ccf81fda29e6a3ed'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedSattenpalli1955CandidateVotes(array $record): bool
+    {
+        $expected = 'eef806042ac7bb47964f49e97d6eb6b6b6b505f1c44913c16f73dc3c25fd0348';
+        if (($record['review_archive'] ?? null) !== '165392d9f968ef073166ef32' || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b087d7c7f4391e0a6c9b60cbd4cda3c1562d70a29e5b1a85c4723caa18b22255'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedPatapatnam1962CandidateVotes(array $record): bool
+    {
+        $expected = '5ce11eca1e6b477cc674c2911c66bc7f6d6dda57de7aa703b5903064c68d3495';
+        if (($record['review_archive'] ?? null) !== '67cbc63183f169509782123b' || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '41651d1c51c279be933521c7fc16f36a95b614adb0260144335f73ca72aac375'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch007Year2009CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            154 => '170e2cd92a1bc7b29b20c00980299fdfef7e81e14f9475def3c1eed59f7801d1',
+            155 => '111aa0de5d495aa18056de1a02a31fa0b6ae83a61725770986a2f024c7e00f8f',
+            188 => '5c0c2f35049a69137e5a302382181e2e56fc77e34b9a7a565c69eaafc3e3e80c',
+            271 => '94a132c0b77e04426e3ef20fe74a890ed2125f0a4abaca2414b4f03d4fce64dc',
+            156 => '1ddf663f0f57e062690e92296a9484540476e02158cf5738b53d1b35487d62a2',
+            186 => 'd3332d6f570ebf5859cf29374e9a51ac3069ae4b284408f6773ac48e6ca3aefc',
+            274 => 'e2bc46850df8e0ccc91585bf0b4a52c41e4000c7238eac6638a3acd1950f79e4',
+            121 => 'f2066a4057f930adb0d595dd1d5a91f540976b54f5ec31c2cc73422db98acb93',
+            189 => '61e718100f49b0b3052468837e0868e4192e81809cf2b69acf02f9592a01786c',
+            255 => '8925d4ca8f8c52e78c56ed60fc62ade2c0398f6221b5836286bff09ba5b8d563',
+            10 => 'd56fa370dd577dd726d01cc1cff6e77986487596c1a0d36ccf39c62c8e2cde95',
+            146 => '8770f9969a280b96a75c5d3228253831820ba981c1c626e2926d05bd98fefbc0',
+            118 => '1b57a914cd08e47f8fcd856cb4aa6aad0f4515016a3bef4fe4765537fd9b34f5',
+            143 => 'd98f4eb241db670a91dd57d0592758ba95de121c05255bf8c821607168629531',
+            151 => '900d9009929a1d968e0aa25f71dc08aaef05e7afd2285769c85099f49d6783b7',
+            172 => '4b4dd15092b7868bc0a85585bfe77ba9b40f1b905fd3b858ad62f401d1a7f454',
+            178 => 'da69d321a621fb2dca797bf27c88737ad4786901df0dbebb2f7e5c5e304be548',
+            272 => '16ac030fad431d821b4e3acf1f53ad90c57af68c4b90bdbe2cb322e8c56eb138',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '163db19f7d25b7f62c9aa360'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'd423dfc58db3c32f97947b74a49d10766cc5ab099255f67ff8d69ed913f35f1e'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch006Year1957CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            1 => ['5227545bff57aa11c0e51ae4c93a3d848873bbabad050c40e15c275b159c60d6'],
+            7 => ['5466a97844cf126b89e419455385becf1ba2c010c9217a984dde1aba9160bc1d'],
+            11 => ['a441f8ccbcdf6c9a0a04bdba6ef96fb3fec89b694b2e69ddb941bc67b52699d9'],
+            22 => ['6421fec643ae08aac1d84457d610352a9f8b717d7531914ff406b5f508bddc38'],
+            24 => ['f6a21ad2bf64d401d236331fc75d082418099bfca925239563fdbbd6863bccf1'],
+            26 => ['be61d547f58a3b25b784237ca487040cc93a8b235a044d792af29ea9642c4098'],
+            30 => ['331fbe6294f981c3c5bf38160c6a099d26dbdbadd3bb4030c8321ac409ec1413'],
+            33 => ['5eb81ff3a96b820728524e6593bb691da067a6c443eb873ead69f1980d403d51'],
+            36 => ['82e55b1d0aec49e886c0b574b51e287850afa9546577eb774e471a9fea26c79c'],
+            46 => ['d71d9938709e4a715b1557d9d4f57fd6993280d0dc7fa391d5963f916517bc61'],
+            48 => ['6e4dd47c2b27cfc600ae92f5ad73a40b57a339168e92f99174ba0a1906bf6421'],
+            50 => ['9e97841eeb51101185e7633bc862b29fdbac5829198c14da44546cc66c27190b'],
+            55 => ['470855bfcd14f9120b1eb25e663cbf39d801631342862bf4c9b7ca00783a7487'],
+            59 => ['ad87c955a95591b8fb35376f86e8b1313a7368fbc422b2220f76817cdb4f1a8d'],
+            64 => ['e55ebf6fbbd20b69d226d10165d09fd052bea79e99cbd2f174f030b9e4ba3321'],
+            69 => ['7aeeb47797bfd6990fb36ae83abf5d5265ff0295f197436c05813364e1a7bc70'],
+            71 => ['cc53e32e599e12aff694405a9c91134f22638003b105a6c61b3bae6660f7e789'],
+            75 => ['438b47f08e6c694c32b0a969097b206ecbae37b38318dc47b35a7da0ff672547'],
+            76 => ['2dc5b89233ba9af01c098545e6f631f10c62c00a680e21caac878497bd9f09ea'],
+            85 => ['fefc4458f832eef40cb82e22973000d6de5b4574b5056425e676c9afc7e832db'],
+        ];
+        $fingerprint = $record['review_fingerprint'] ?? null;
+        $expected = in_array($fingerprint, $allowed[$record['code'] ?? -1] ?? [], true) ? $fingerprint : null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '13bf0e655de7bd3d015d87db'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '0e1d980a5a7d584d5bfb8602f1e6025d1aefa5dca324f5beeb690049251dcda4'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch006Year1955CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            6 => 'b657c343f6487e8de06eb94937ca51126391751e7a9e7119a14254ae3d1e38f6',
+            9 => '2b405ea8889262cee58457d7d222169b3695f70070ac420f47e75ada3ccd5c9e',
+            17 => 'd9e5bd9891617e18533fcc3bfbd78affffafb24a9ff2816f52f63d01a39006c8',
+            19 => '531050739d3e74a4c5da3a15cc5d99fe3638160daaaaba0d606b05d0349857c3',
+            28 => 'f016fb78a44a7574cea0afb7d8c2ecab8ffe2173b1f955736191738e5e2b2534',
+            32 => '868cadacda4089135631d7f80089fa335c3182cbf92ec666cef27d19b4851ed3',
+            35 => '3c8efcb8c42446b59ccd73fac8fcaeeb879fd762f477e83a35d2bd6191fa767f',
+            37 => '6a65e006ad9f879b12dfa016b45784d24b1f2c199a4b992020255ed5691db308',
+            45 => 'b0ba1ded21f2ea376adade524a6d98ef4751de5e240e3bfe7c33cb4fb256b096',
+            50 => 'b02b1bfa403ee524fd0e9e1b5b29a2879d41c5198b64012fb92f01e3fc13e13a',
+            51 => '9508def7cea7e4dd0b043fc724894aac4706fe4d44f1af32afc35f32c44409ac',
+            53 => '3f4e070275d818a11c02935ae7ad2697ef9fa9f370b9f6e4fc0a8867caaa5252',
+            57 => 'e1d1da4766c9cf67881d6fa2990c2da2f11e1ddb0df439d1ec6712f7fd335f2c',
+            63 => '7a0be53bac6d2248136ef9eab718f724b52bcbe5abd89729f872b683a99ddab9',
+            67 => 'f6a44d91189acdae324b7a8b38e0d66cd71d7bb0dcb15508c342082fdb67162e',
+            80 => 'e478af2acc074f6efb4542e81734e7ba886314e2b749aa65ea3a92aa339e6088',
+            104 => '93786ea2a58d42dd651ec2d239eaad3e0ef9f8b3a741be05e4a33fe86a488e90',
+            113 => 'd5fc6bcbb1c6a73d012ac7d80c404358db53bce159673ba255d7cfaed282c928',
+            115 => 'c79e258cba43b80d8e84e783b837d29dd63785e9244ad455ff3b9acd3a4ab130',
+            118 => '2c49c2f6e7e47e8126a94dc0092c6ffd114e1fd5e902713e226f92d9f86b0a46',
+            119 => 'acd5fc90145a021cdd88e02ebfbdb86ab91a755414f2a9347ddc2d29b91bedd5',
+            121 => '4f0d7feddca296af3b35c8467ba6c1b682fd47c1d282bd03811147ad727c7cd6',
+            127 => '8a2547acd9cdf07780f93de5d144987b60cb8304d69cb230d1c4f15c51094c06',
+            133 => 'c09eef4c236d1ce9ef423fadcbb94fbb322a8d7f81cd644a402698f33cdec40c',
+            146 => '05101f57ff9cfc662b6b99967a6b4015ef8a5d8303fb7ee861b5cfa584c8baa0',
+            148 => '584b2ae7a9d1d55968b76796bb8b21fd5695081d0c64e37f5b95e0d86569a76e',
+            152 => 'c26efc9ff373aec56d17a871fc473e9721bc59ce6263a79f7f6a1982fa012205',
+            157 => 'd8b3e5a738180f8311f0a0d2846764508baffa591db0d9507fc7f1f3db838fbe',
+            161 => '3848ce0271ddd2b22e0c714885ec8c0ae6488a03ea72e99410cd2c9f2432e23a',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '165392d9f968ef073166ef32'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b087d7c7f4391e0a6c9b60cbd4cda3c1562d70a29e5b1a85c4723caa18b22255'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch004Year1951CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            227 => 'c423ada2e449ee7e5f709127a498f695175e464f507aaa983d69e1922f466fe1',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch003Year1951CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            347 => 'a04ed2d18972b36b6f2fd27ca9c36dbf1aac610e727a01f28e2d293322ea5c44',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '402db61ff727c908b4ac3170'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '3c2014c43fcc0c5c4636c84fd43cf6d7a68d967736e3f60d44924a7f641bfdb7'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedNanpara2012CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            283 => 'd990d8b414564efac691a75ed1baaf69a4e09bc68f96ae6859db0445f4d4a080',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedMaharajganj2012CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            318 => 'af305f1dba36e4fa820f8fd8673cfae3cf7232b973451f1e22e57693478e75ff',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch0011974CandidateVotes(array $record): bool
+    {
+        $allowed = [
+            70 => '53f3b0f83ef99744e3cc79eff88e52b08189c11560f8e46d371bb49df50b656e',
+            78 => '2b85c2f7f81687e6e7219b4eaea52eddb891bf190f3f383a31a60e28786f3cfe',
+            102 => 'd4f5a70664dc6d25ce6266f2de8954bc65a0554008862ea1aa33aa633f31f6b4',
+            103 => '311fd1672a09c12d18224364f2ab15d943183cf346698c10f3f0d7bd4bf2b965',
+        ];
+        $expected = $allowed[$record['code'] ?? -1] ?? null;
+        if ($expected === null || ($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedKheragarh1974CandidateVotes(array $record): bool
+    {
+        $expected = '7ebbf39f51f398548c6f061a2f159c4341a67ead1695fddc0c42f4c20331f439';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 360 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedJewar1974CandidateVotes(array $record): bool
+    {
+        $expected = '6c0e6af5c493be913ffe40ee6dd559781337a0c36736e56686ecbddf0afa738f';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 378 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedHardoi1974CandidateVotes(array $record): bool
+    {
+        $expected = '316cb30be14927e81fa543d8cfb9c2a88cfa4a8f584bd199703ed2e0deffe7e3';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 86 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedGhaziabad1974CandidateVotes(array $record): bool
+    {
+        $expected = 'cffc339b667f40d54bb2059fb0a45559bfb4b1b78681cdc805ce40722cc82602';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 388 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedGainsari1974CandidateVotes(array $record): bool
+    {
+        $expected = '9f3e4b0c3cde86c97602cb34aba09e07e4b71190638d101e8f8b08c9ad809b1e';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 154 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedDhampur1974CandidateVotes(array $record): bool
+    {
+        $expected = '902952b2a3b852771b32c8a409ea3762609d89504cbdbf6156852c5e4db5b44c';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 18 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedChunar1974CandidateVotes(array $record): bool
+    {
+        $expected = '2a863a792011a46f03036300a0e3963c209ddce1d8c85e811991277b019b68c4';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 263 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBanda1974CandidateVotes(array $record): bool
+    {
+        $expected = '7b2ae0b85a8c3d371a33a7bd721ca26062c933c37c96da88daa3627269468166';
+        if (($record['review_archive'] ?? null) !== '0568bae81d96e55877d1807e'
+            || ($record['code'] ?? null) !== 319 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '537e663ab2e60759a6a3b0fe6815a10eadd2f9a0dc5afd3c2faf10107b5cedff'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    // Bansdih2007: all16 detail rows total118677 (p655); preserve summary119112 and warning.
+    private function hasVerifiedBansdih2007CandidateVotes(array $record): bool
+    {
+        $expected = 'e634efdfe0e0c802b64f73fdd28303243f83cc8503abf18d772660f1c8dd668c';
+        if (($record['review_archive'] ?? null) !== '174ec81b511a8fb1aeca553f'
+            || ($record['code'] ?? null) !== 209 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    // Bhongaon2012: all15 source rows total172373; retain summary172371 and warning.
+    private function hasVerifiedKarhal2012CandidateVotes(array $record): bool
+    {
+        $expected = 'bd4641e6def28520f3c5a13e1e873b7cf2bb8c9e0f0935b01da11cf046f5b862';
+        if (($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['code'] ?? null) !== 110 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedHapur2012CandidateVotes(array $record): bool
+    {
+        $expected = 'c62bbbc02984c6dcbaa9da7bd21b257155cf3a27305484fb1608e0001c2a7776';
+        if (($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['code'] ?? null) !== 59 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedChitrakoot2012CandidateVotes(array $record): bool
+    {
+        $expected = 'b3265f0a30b9b1c1b8c6df37748ab2051a0d86a822300a7da8d3c4d7bc23cab8';
+        if (($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['code'] ?? null) !== 236 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBhongaon2012CandidateVotes(array $record): bool
+    {
+        $expected = '1939d53c1f5b4d645c0c5a3de0a33443a343e7254bf96866a91e97d15e16beff';
+        if (($record['review_archive'] ?? null) !== 'f4df4876a829786cd04cb280'
+            || ($record['code'] ?? null) !== 108 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'ea379cf64ca37b500f9af32b0587d9edc24145e87073fac271b08b1016560a6c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedHata1957CandidateVotes(array $record): bool
+    {
+        // Exact imported record variant verified against the live extraction on 2026-10-30.
+        $expected = $record['review_fingerprint'] ?? null;
+        if (! in_array($expected, ['e1be8a4150b028f43e020746cd6f9ead3125a65f645b03f3f1b92c8a6877cb59', 'a7693fd3f4bbe9d87d35901a12f6a5a31dd1993bacab9e37165fed673e08d742'], true)) {
+            return false;
+        }
+        if (($record['review_archive'] ?? null) !== 'd31cb3f180e44ec4b9e59209'
+            || ($record['code'] ?? null) !== 234 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '7e0ea66649df0c20d8e381018ce33e049bc16c139c3facf09b04d935019da98c'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedChhibramau1969CandidateVotes(array $record): bool
+    {
+        // Exact imported record variant verified against the live extraction on 2026-10-30.
+        $expected = $record['review_fingerprint'] ?? null;
+        if (! in_array($expected, ['9490acf8af2c75d5bdcc860f47577aa1c03ba9ebaba5b814d6ceb064598759e1', '46e794295ad31c4c9d59d35ffaf39debfce417f55fe3cd8d685f0a3f39a10e43'], true)) {
+            return false;
+        }
+        if (($record['review_archive'] ?? null) !== '7ce40cf47befc2b48ff776e3'
+            || ($record['code'] ?? null) !== 315 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '6149dddc726ecba33c63091f8452964cef9fd012248ba2ab313ecce77cb2c623'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedFirozabad1991CandidateVotes(array $record): bool
+    {
+        $expected = '7e75635d447b40e31b7f40fff1d841541dc077e07e18d95eae2ca8f945e6fc15';
+        if (($record['review_archive'] ?? null) !== 'f3a3490e9bee0775959176ef'
+            || ($record['code'] ?? null) !== 351 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b6d15c357e034fb02df40be2a79676c3936dc37f6f2f7ea1e7d4d685511d8db6'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBah1991CandidateVotes(array $record): bool
+    {
+        $expected = '6da73f481832552227d4e2a9c5a4f739958c62a180b77bdda8cfba70c62725bf';
+        if (($record['review_archive'] ?? null) !== 'f3a3490e9bee0775959176ef'
+            || ($record['code'] ?? null) !== 352 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'b6d15c357e034fb02df40be2a79676c3936dc37f6f2f7ea1e7d4d685511d8db6'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedAllahabadWest1996CandidateVotes(array $record): bool
+    {
+        $expected = '8f8b7e505c0c0692a9bbc231ee4bbd88473a241d9ce5376812eea73f433cb861';
+        if (($record['review_archive'] ?? null) !== '1cc8415ab4d57b66831417e8'
+            || ($record['code'] ?? null) !== 277 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a08f0f434a0042acb8530d9d0788a0e481c220729fd0fd2f8ec6e8adba0f607d'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedAmethi1996CandidateVotes(array $record): bool
+    {
+        $expected = 'f69f032f72acec4dbe46f361d0f5e4af9ffc3b64e9c87de754cac81040f2f42a';
+        if (($record['review_archive'] ?? null) !== '1cc8415ab4d57b66831417e8'
+            || ($record['code'] ?? null) !== 121 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a08f0f434a0042acb8530d9d0788a0e481c220729fd0fd2f8ec6e8adba0f607d'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    // ECI Aonla2007 detail p478 has15candidates,total130976; summary p75 reports130974.
+    // Use detailed candidate shares, retain summary turnout and discrepancy warning.
+    private function hasVerifiedAonla2007CandidateVotes(array $record): bool
+    {
+        $expected = '538330d76c9c7c41bae90b9c93d8e7cc481711f635ac1f711e03e50ab4fc14a3';
+        if (($record['review_archive'] ?? null) !== '174ec81b511a8fb1aeca553f'
+            || $expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedGauriganj2007CandidateVotes(array $record): bool
+    {
+        $expected = '687129b30a410450d7ad05eecffd4d45ad86967f0d21112005d4a86bb911fa80';
+        if (($record['review_archive'] ?? null) !== '174ec81b511a8fb1aeca553f'
+            || ($record['code'] ?? null) !== 106 || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBasar2009CandidateVotes(array $record): bool
+    {
+        $fingerprints = [
+            4 => '0149d63f59ef4cedc3ebf35b990bc6aa50cc39259cbe0bba6323c32189613acc',
+            5 => 'f2f03e3d9e3be8f7d1fa836afcdf1b83f8ae65647db07ed8c8b44d38586c12ff',
+            6 => '33ab40ca832b1b97ee3e50d43c4bd53e6f6e9d5bf85bd0656f140df78c40c5a2',
+            7 => '9f8880e11b723cdc8b8e2b718b4c92142faa9a387175236ac4d057c34309da9f',
+            8 => '0c5662176b7d351027a7370009a6c5a5fae0b86cf12e9474350a765464f4a1b5',
+            9 => '964397db4cb23737c16722f0e743577ab9479061f50f7c4570c1082c872f1d65',
+            10 => '0aa87b072cba4f4f6fbb726c8a9ab0c9d854dc085e6ee2289326baf152b2519b',
+            11 => 'ff58ad9e86b6bc357d71406ce411688b34eac6082b4030562780b618db3606d0',
+            12 => '4bd5115ae40267103b340dfa108afa48019c80113313cba2827c7ff240bdb41f',
+            13 => 'a61594db4c564a405fa8fba7827c06e4ea8333ba6f408502a7e5965da5013553',
+            14 => '85d4320f334008f9502ad676dbad6885461f4c5586a9106f568c3c0edb2b98e8',
+            15 => 'a7fd339165caf581d360d5b6373ab8524bdd11af62114828c20e84621c0d7b52',
+            16 => '4209d415e300e7e072caad8dfc86bf7a988b152e771084a43f1886cef226f1f5',
+            17 => 'e542d2fdea5f1c1dd3e560d55231ec7d6ba55ebd66c58dbfcdfe0348974fff9f',
+            18 => '78d3c77740ec3eea766407881facdd667c8b192f583eadab1db19646e1f7b34b',
+            19 => 'c8653a34ef9623fc868562adf8c06c970027a439e21f4d6fdfeef7c720cfb083',
+            20 => '410679b4fa0c1a579383c4ea7b8378682679443d038edaa6521cf36b46f7bd86',
+            21 => '970d36d0ae4101ba6fe498cb658cac11c5873672b2899c39323962b58420076b',
+            22 => '479eaa3280305d1f281a33ae1faf757127dc28b3a381b62fae4ded1ab8e2a66a',
+            23 => '70f08fda062022ab2284fdf0110eef16dbdf35eb9fcfdbf1ec5c7bdc0ec8188d',
+            24 => '60dc8d55bc37273ad69054a031b9a419b9029e340ff8dcc2d071ac5ad6ad2f85',
+            25 => '78568550c8020fa09b1e7982afb7a6746f957b447a041dabc08c281a6cf45071',
+            26 => '85a687cbec14bcd3793c266dcdf22028e910c604c7bcd3a39aa34a2316a9cb80',
+            27 => '40e93c91e2c431f8503df266ae29b20c9b82c0cbb58e7d790d5c94c8c91d24b0',
+            28 => 'bb6277a09d2432257f98a8c18160f91ffe2c6af4999c333700506b8eb46451b6',
+            29 => 'f365d765b5e8aa02f9c090056294c0ecf8a66c95658f87ea16b32b7a28a81ec8',
+            30 => '3cbef9dac3b5d0c55ffb4b235b77625ef9ce97a88abd2d9a423f5e139ff45749',
+            31 => '9a7d5ae300903903f6f9ca36587998b873eae461bbec39ee190d79cb4d65ae26',
+            32 => 'ab22bc8558eebb5dced4b0df95f934b3518443962fc7b9ba343619360e7623cf',
+            33 => '5b96ed7d9c582bde2a4604891d1b3791fc7d910d7c637eb703fa451aa5b4d96d',
+            34 => '330ca70c2d2719b13567b772c181ab530a0a50f6222d210fef007d419965e5a2',
+            35 => 'f11d47f3aaa7ad7602f68cf6869c0456145cef8716c17dd7728080d61d633d0e',
+            36 => '3c3808d4343e7e1c3b0e0a197fb5b2ab6107b3ec74061eed7f8d85189741ed2f',
+            37 => '05b386bd0ee8c5bbc1fec697c5db43acbddd857fa9f4c1fb3de57aa747c7afb2',
+            38 => 'b144c3d42bf9a0c49889e959d81d7548f2f0c7b8bbc1e71d42d4ea9d4d4d2aac',
+            39 => 'c7ae2bd3b02653323471c23fd1657241dacd1efcb59e1f08d42d94b06c3586cc',
+            40 => '0a56b681e0f9cd960ed2d24eb5b93fe765b10c57ebb42576cccef3dbc7aff916',
+            41 => 'b8399436a227f6eb2d4fa75277493f8ab816f271d4642e7858ea3661785bc479',
+            42 => 'c1a7069d7d60adb2fa1e233daab59716d0619fcef85fdb91f4e03d017204ff94',
+            43 => '640d4ca9ce7bf967d4d07119a6093350ff14f10b4a35af3efe1ba9c25351d021',
+            44 => '5dbf136c2b25a47eba6235c885c9e1ce6954e63085a35c93150bd75fc9123566',
+            45 => '4b27ad4cd63610f370f1d9baee21e11638d9cc9c79388b72ae4c2638ac2fcc9e',
+            46 => 'e917d2d7bda76c58120f2115c46094eabd995c3407d476d579e57fc4a98c943e',
+            47 => 'ba3777b5577ca0289574316e441e0e1fad1d739dc3e65d3679865ea4c938efaf',
+            48 => 'fe0b2b6a286a50fe86ffed77caace6b85622d34fbe17aa1fed045a0c605582aa',
+            49 => '7d80d5441080b7982fed876a3fa2895584c56ab92ac37055a7e92a02fcb675a2',
+            50 => 'beecbca1a0cefd98d0bbe99194e084649f771f13357cb64af8fadcd5df4e13ab',
+            51 => 'd92bd64b5e08bcc52f0c3a1f3fcc5e1ef770b89a6ba049e3bc5813e3c654b13f',
+            52 => '783a59d7e7bd544c465907b4c5323c6234ec5377ca345a052d6476b32d9ab7f6',
+            53 => '292b206db7d01a83285811cf61917fb86520a52861973d85911d89b931883516',
+            54 => '60f60f001a7bd7c5060006b1c8ce8fcc769f22b08f8b62ea42e44b2b638bfa25',
+            55 => 'edaa7327bea0bb49840515cb86104f230e17bad5c045b21bf9017d1fa218ddc4',
+            56 => '25e1317dd21eabe5d9c7073d5db1f15fed64108f61da5620df6f13d3a1321c39',
+            57 => '6bb2f5b126d4eae5a295eaa7c6834d520ea80cf5b6bff55510332c9add39f9ac',
+            58 => '16e71a157595ac768cb5d44c2ebc9a2a9b5cb80580b1cc4e1c087dd61274ad62',
+            59 => 'a6307061b0e1d099d4a676b58c3e31212bedd9cdf1c16a5cb4f927523ac45a8d',
+            60 => '704fca3879f33750c39187ccaea44c0ff189053efe95f4d38fec811e8154bf9c',
+        ];
+        $expected = $fingerprints[$record['code'] ?? 0] ?? null;
+        if (($record['review_archive'] ?? null) !== '1901084c7189cfe9433f1842'
+            || $expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '84b0c206edc0141aa65d547258314821b039dace07eafb8b5e285d06b9e84091'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    /** ECI UP 1996: complete candidate totals reconcile with summary general valid
+     * votes plus postal votes. Only audited records with zero tendered votes qualify.
+     * Preserve every source value and warning; shares use the full candidate sum.
+     */
+    // ECI1996 complete detail rows individually reconciled to printed totals.
+    // Summary differences remain warnings; no votes or summary fields are changed.
+    private function hasVerifiedUp1996DetailCandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '1cc8415ab4d57b66831417e8') {
+            return false;
+        }
+        $fingerprints = [
+            2 => '6c8ab989047b7f1f6254c5f9c74eb72dcd0fe26d220b3ab7b8f53352396a8a01',
+            3 => '30ec18e0ec4ec5465363c90aed443f30e8de8819ae7a52cef047ae28a26bc3ea',
+            4 => '5f6cbc43545df8d765cddcbae3c94a1ec0bb959232b1ac0285c45987379ae878',
+            5 => 'f6d7e03f84942898734e7a57565cc8a9ec844edb203d0bbb4df6753a6c6cfa65',
+            6 => 'ffd51f629687ddb26ccfd22363935411e11f1f481734732a30894a74233efbf2',
+            7 => '64b005498393bee0081453e464d750c05001f0d297cfbd56062b41384693a0b6',
+            9 => '08b41e6be8b65b1c58521e74e3677d1a3903ea9ae011d30d8b4056e29af074be',
+            10 => '42b393de0873200444ad1c1c732bc4b33c928a584495dc88126fce7cf8b642c5',
+            12 => 'c812e9348f84715bf1234c9cd3b19f9779bb8c91726b0378d2cddcb129c0b3d0',
+            13 => '0909809073cc4d60425a7ce228f5e375b0e5d633374b9432dcde51f65c98b705',
+            14 => '93b597fa2a2dec751dfa0efefcc35577a49bd8cb5f25fa14250be197603f6009',
+            23 => '270947305fdaa31f3a11822388196e0a36a0c1c3455e032c63c07a67bfc31259',
+            37 => '8e4df02be0ff41096ce08a5c2539f71c4cb50fd3146427e243ad6bdad6ceb51d',
+            47 => '206180d5640e95b8406b89a29df6f02bd96bdbbb3eb9317290753baffe1db041',
+            52 => '14aea3a33f9db724e3f1492524a6103f8d1b28e67326e4b764f5aba07109eefb',
+            57 => '7814c36397830bdec1b5d57242943b292a5ae7fe5d3110ba75c19b97683a6d5c',
+            76 => '0d4271643b8fc2451ddc2b8890cc374a5889b8473dd56310e43e6c58b6b49bf2',
+            81 => 'aed5a01dd54f4bb2e81b886ae791374ca3224c8ce6b04ee442f7f209e74309f5',
+            82 => '72d08977673bf73768f336f1d49683834034e4d00d07d5d5e542e29366b4ed4e',
+            86 => 'f343cbb4632473bdeb36a602c6a52d69bbc46a8aeb90a618290cb82122f34f97',
+            89 => '2b990640bdb31ca38a263d6488835f41646a039dc386b095be39a6c8ef6838ec',
+            100 => '858c0859c30be63a4097597ae723e8d31f76157e3a08533bb389679b90ac7053',
+            103 => 'eda2890659ea919a2b97553ac92daf66135d8b4b6de736edc0f73cfc19341999',
+            104 => '9584a73d11e29a4f51d1e32ded838902e0acc98f7f6f8cfdb1ab6fb150e5273c',
+            106 => '15515710d3be601dd4e86dd8a2338949511aa400b0b8f3355de500734009d819',
+            112 => '0817aec14081e19a241acc4bf17e8e4b1a1672bcb11d973c63e5d4786f952177',
+            121 => 'f69f032f72acec4dbe46f361d0f5e4af9ffc3b64e9c87de754cac81040f2f42a',
+            127 => '054d993249ba982ac6f12582ffcf45cb50424ecf2147e46f84070dcab71827f2',
+            128 => 'cf3f5cf4862fa35ed5c17361ad1f8bea83f347ee979d9392e51748b380edd97a',
+            137 => 'fd7e250f2788144c40f8a7118d8d8afcc1987b8cfafa568af908f08c24a846f7',
+            138 => '05a6db74ac95d78c30732c1d7fedacbc62c3e3a4baf1dc87742090ecf78e1441',
+            140 => '566c86a375c1c2eae1b073ff2aea2de97407c62a040936dd75bc778bf6789bda',
+            152 => '24f0a2b19309611f9277ef95464329d91a53d43860708d9a9bc49c4141e9eb2c',
+            182 => 'b2cb770bf2cbccbf1b41fb5f5447a6cd31ca6d76ea207bbca5a57f57f2a0bf21',
+            206 => 'f22b5b7444cbdb026c23649939eb6afc5762a640d24af154e9c48ed80b1ac69e',
+            243 => 'a6617c8872605e607de2805a051f8ced1b35f72a37d0723ee0c0aba472b179e1',
+            256 => 'ca469d53bd84b36bc0348a7aeb723482b2e89647ccaee234555bdc1deeef3439',
+            257 => '0c684cbaef5b2e3bef78456a8b816405cdbe97298800eb9ad004c6ead7a51fe9',
+            258 => '00fa712e6e2c3c11bb3a79f7c015f42c81ba5728267c9905294adae4e6522746',
+            260 => 'd62bfbe583b65534c5312f971bdf6d021926f59c596c44c2011995299bf4a5dc',
+            266 => 'fabb4bbdb9c97f0dce0c4aa3d824dd96ea78b659c9e0eada1e5fca450facce5f',
+            277 => '8f8b7e505c0c0692a9bbc231ee4bbd88473a241d9ce5376812eea73f433cb861',
+            305 => '5d5449534c9e0491a897a4d901ae7172de2c3d2bc07ef43cd9db9e946d53f466',
+            319 => 'e0da9a498a6666645404800ca229412a5b08b56f135d68a5a0f15bb966008c86',
+            326 => '0b93ba479764807099b672b49957fa47563c7022c00e52373ad48a7d679760f5',
+            328 => 'fbaa65d2ee5ef74f375869dcb0c81d1cc721f497306a4ff07469ba8b353ad1d4',
+            331 => '6768171610f93047bc967eecb62956f5ba79db850d2302ea856cde6a4ccb659d',
+            332 => '01d64fd4bfdacb197272d8dfbd1ffa7f033fc58792134e1c256af0c779aedb26',
+            351 => '1f20ecef324e045db7c29593c1e0d11d1b4b7135fcc1bb8fbd05da26a9287116',
+            353 => '852fee5365b1e2b65b022022be7f7250d826e422bc822bd93e4599c20a38755e',
+            355 => 'dfd0a8c4a12a9b46eccd8b3f820db2fde3ef4e951d6083b02d3b952d8aad8b06',
+            356 => 'eacfb0a835cf8621b6325bcc5c8bf03636355360510fa7260d231c6a9663b147',
+            357 => 'e90abcfb17fddcb118ef8e8718983107e04d78fd4a908e064772365ea2798914',
+            358 => '24c0da607721a156b078f8576ac0fe9d2515f402bcb57e69ee5a63df59ee92f9',
+            360 => 'e352b9babf06d5f7f18d9d76a0ffd653950ccca76c5f90b69345f6b598de8f13',
+            361 => '5e95ad4afdc466b1201ce84361be216f4082e6ac5aca5f6790111c5cdd35954c',
+            362 => 'b7367dd8f41e7eb968fb7817dde1eff05bf613fa634be63265f96394c61d03ff',
+            372 => '86d2589f9bdecdc2ddd0f1775b264fb2b47885c9fffd24c46ab08ce1dccfb0dd',
+            378 => 'c706294548ca900d1a2bbc2ead9340c123b617819302d69c89133ad7fe192dac',
+            387 => 'c75d0cda25e372fc05072b519cdbf09e12eff87d6afb6088ef841af1baf1a452',
+            388 => '9064836f830cf3ef6a12a5dffad6c04324d2362f2537e995e758cdb7efd205b1',
+            395 => '423672198b07fca39faa40463663f2743bfb7320082169ff3e5320238f42c348',
+            397 => 'b55e6018cacab85781134f39e3d5004060b4e699604e0440fb60e1367dc7eeab',
+            420 => 'f89e1205519a8679edee172af5b2964ecdce7889634b18a0cc66792bb4bc7b67',
+            422 => '0a1e95b6fd0e148cb3544b230bedab4885aea95e89a9bfc4360bd218e26af6d8',
+        ];
+        $expected = $fingerprints[$record['code'] ?? 0] ?? null;
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a08f0f434a0042acb8530d9d0788a0e481c220729fd0fd2f8ec6e8adba0f607d'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedUp1996PostalCandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '1cc8415ab4d57b66831417e8') {
+            return false;
+        }
+        $fingerprints = [
+            1 => '7dc31bcc2597220c566228d28dffe4dbcf2058e38ae7a52791f877cdc8ba5731',
+            8 => '932adf0bf1848e76e8c3897ec161d44ddfde7c4bc11a0c27f8c77d71ad12d39b',
+            11 => '994a3d617af29e3a0897743f8ebd2f47df1a383fca098beeaea9973ae30a80c6',
+            15 => '5e1b69a6a215ab6d10f624b48a7c1c210108e2dc1a5ed6947f37971312844ddc',
+            16 => 'f3d2baa7aa56414d67f964342cc3648478907ef31bb47c2c1d7d227b645ec961',
+            17 => '61c7cc3365732b455d54e5ff300250c71ede096e645ea12a8a592dbf374ae3e8',
+            18 => '70075bcec37e213cc214bd03cc4ef19c3858e6a5ad3e5a88dab4d898f14f2645',
+            19 => 'f7d22cdc9928c02a1eea522e415bb4aeb8d87f4f348fdf2ae0b2d52f8aad283d',
+            20 => 'ada15cf6ce5b3f543bfa4b6bc85c58812875d9376e67a2c0900c89cce0ddb53b',
+            21 => '64f477aba9c83919c338dd132a5fac6f58c45b6fb52ce527802cc3c98779c16a',
+            22 => '292a3b4244929cfc1d458a2509aa6e53062db13a4a174c3d42731b899680fe17',
+            24 => 'c22c39a43b19104d7d606c475ee25dc2cea695acb4dbb355f425eac87db0633a',
+            25 => '80d9b82b7e7dc8e9d825f7e50c9bda46dcb5fc616f32cfd454ab1bf58aec9c5c',
+            26 => 'dd421a30df11e55b6038e63c0667b0950ef608c69f56271b66780e5dc06555b6',
+            27 => '0a0603d5685a9aff68dc1f62cd4ae0ef7456c5bceab12b35d1fcf40ae262a2e7',
+            28 => '683097c8d0706c6a421a8d47c1ab336f91d3f14a0b725eb4df745229d076ced8',
+            30 => 'b14190887ce7bde04fd0859815b2a7907d122da49d5c49ecc66b4d13af91d6f6',
+            32 => '2b25b747a9fc453a5db49f6cff9669012637e599d643be81e1898e1c7be71a33',
+            34 => '4d974432989c6d21aff5c393700d830eb1f39a2e67230f6ad0904f0d054b18f3',
+            35 => '47eef880f00ca61868b6262acd71f8ac2b92ffbe98bd2c9a955e9db7fa0c1bc1',
+            36 => '70ef2eb3e7158aa0cfc766dc01c5f902525236ad95dde3758d01fc330514d554',
+            38 => 'e65437d8e06e50e77b0befdfb878b0e8466687644a9f7f86eef6ba665a585240',
+            39 => '39144ecdc75d34c1a0afff5f2ad9badf5049b44a7a7b96955be74029f784adab',
+            40 => '964c6893d4540d2d22f1e9aa4deb76b93810da178dcf65cbc34e854e5f661e84',
+            41 => 'ac0aced92a12827a51b60b3f965610a9cb3f76435f571f2a023313abbf182605',
+            44 => '9d835ffa37d53d91170d28dbe10743336d872e749df5279d351ebb42119aacf4',
+            45 => '986252697b8ecded3d9fa11c73f3e24b8c31ac56a862c0fdc1ec3a39ccdb1d26',
+            46 => '19af454b6cd43f1170f1d63522a070220275c5aa4e3d0d61ab7c47b95bb84d14',
+            48 => '4474375c757c6bfc2e49800001478e5812f0044764d0a2dcbf7f42937d4b63cf',
+            49 => '85ad894c3493cf9a7b15d405a9a20e9369fdf07889c3ab52fdd74fabf980c8bd',
+            50 => '46be5467df34a4570344a8df6c79d5f8e7afcc3d26084d8832c3e6e8a55dfb3c',
+            51 => '18283fbc56fe472479eaf1f1fb9915d7a716fad71a4b0d64aaf8ccf5bc6e6d98',
+            56 => 'e70766bf9fe7d40c6603c42698ada3ae1ecaae668762c406ce102e1f7dd929d6',
+            58 => '651bfe898852f08093ef21e3b7b402d59c7dd0f5e8a9e274b9095adba92bc28c',
+            59 => '3b7b323710236297b107c20be449c28a500365038324252977c52d5706840c1f',
+            60 => '7b5417432bb0f8c1f61bd7d0bc7bcb70d24168cd2ed4bc2ef3ba478ba53c6a3b',
+            61 => 'a6a7aa9cb2735421c249ccda2969e70e5375dc737cec5fb5b255cb4c8c5dffcc',
+            62 => 'be704f67a037d1a8619ed6a1fda28fcc1e1254313709c5f8d2fd093790fa792d',
+            63 => '59acea5bf294406a35210f335ec65490bf81961a6c160ad38505ac8a26da08a3',
+            64 => 'd582bc748118443cc40de125f72412e963994577ecbfb7d90cb2d88f8b40b751',
+            65 => '4417ee99c7cbb113c7c3d153525eed0040722e0f52c412428d654c1b3b2b7562',
+            66 => 'b1c24b7ea33e5aa33262234e16d052cfc926d0a7b9399ce4555122ead4b477c5',
+            67 => '02b7038448e64f32799c9e88bc6929bba3ba61bf4ff48fa77090e10be07c8834',
+            70 => '705a2bda5b7521b13270be2eeea1b3bd676fb42d0561a35a63f737975620d1b2',
+            72 => '872eb0d5048d5d1cc1f5bd01559c2f34777a016bb7e0d8486571b4dc286860cd',
+            79 => '49ff826756ff0ea541a3e13be57f2be84d39450a60b871e4e16e43e173b0236d',
+            80 => 'df117624178122e94b8dddcbb93b278503e28abb63d5d954c2179b3f00bd4dc3',
+            83 => '06cbdbc7212737ba22940f134bdad0c3f22020408d55058d2dd8dfb5dc83d804',
+            85 => '8685089ac15c11654557108beafbf5b811fa94e7631546d89182d25b9d7a3c9e',
+            87 => '89b8c5f5d8844dc71f8ad3c352617422ed9beb12c1ac3cae9f71e893df66a855',
+            88 => '3e9bdcbd60f8aaa6cd8eb807344439de8694bcf3917399894f119575fdb70c0e',
+            90 => '0c1257fddb9f9394c7eb6d66551dd19a3e5e33773e8dc89abfbd053a72b2e60b',
+            92 => 'd8693484315fa913414b08aa38482592cd782a4aa16eff69294df9f2fa90c0f5',
+            93 => 'f32c0f89ddf08c5e3051bf8dbf2cfe22904566c65d917e3636fe98bae08fa25d',
+            94 => '41aa2ecd0aa29d93df7f46133dbd97953cc47c1a455b4cafb9c2f4e5210812c3',
+            95 => 'a6f2612fcaa3c8f56dd486322ca97b30a1c8ac977737c89aa8133bf1c6cd39c8',
+            96 => '9d1b29bed3406a92771905ffd3fbecb320601487033e19d42808b64280845a2e',
+            97 => 'b6937dee8855ae10bfceeb1e067e99edac604c84eb5dea59e23be153f083b5f5',
+            98 => '6116a4497781d28c0bcfe8ce6dbf619e9f12a87d66113077b76be9dfbfdd700d',
+            101 => 'b8da2f492587f6dd3592ef05b605124c47013447b97e422f2e5e8095561aa9c2',
+            102 => '6809979918c8136cce5bced8f1e3da2d59af8fa0e01b490e8d84070389ab2643',
+            105 => 'a91baf91d298317a80c2b3e66b7ea2534d55f91f5f152161b85aa52075dc445c',
+            107 => 'f6609522d4f3d2bc30324735385a0b5799edf20a777e4efb1846eebddaee73f4',
+            108 => '4fab5d5c15da40348d516567a63e1b05ac3f0b98553508f8add8ebf743f67ab4',
+            109 => 'fe71db16dd9a8072befc2e7bac4a5b9646dfe0032813c81cecf7c3ea5476f566',
+            110 => '865bb2bee804ed5948503bf62ab2abc94521383fe9548e5960a2c3ba0e7390d8',
+            111 => 'b5b595819fd2debd35d8a87c758f8eeefef03dc6a4d5f8691bdf420a69ddb7be',
+            113 => '105ab6b11e79e6a523ab74a323ed66cf6360bb0f5417750de780d37ee2792489',
+            115 => '6fb596658f913e8b3b310ce83195e80379180b8de751975b850a4e92ed34887e',
+            116 => '7cb2e56b67f00a0be70835b7423484b932ad9fb10fef9575a4517cbff909ae3d',
+            117 => '286aeab8d1c6629947af0ae55d03089287528624b0c8879189b08e7e0d5d974d',
+            118 => '8c6a53381b3438cd48487cc905336a4d5278079a673b64034228145ff2df006a',
+            119 => 'a43c676249d904be107ce69154a2c112b15a9c8b598eac16f6b94c6d729e883c',
+            120 => 'c4fc9c218608b776a25ad2bb8a56d9f1b6a4c0c4519c0ae44c5683aaad063282',
+            122 => 'd66e3224d4e0d16650d99eb76292713fe56dffbc30b2fd6144416140213bc58a',
+            123 => 'dbdd2f29c03a8b7b2fc216a83d3057eee7758f399639ad79b0f49b00f4fab5f6',
+            124 => 'a760f1b5c56d4dfc6a07061341c6c4ee84106a24e9c8926705996c27545d0be0',
+            125 => '62bc2774c10bd7b29207b4f6b1427b36dd8b651d96745e935b9472583cfcfa52',
+            126 => '42d5161123e2d897708be1a2c3b82137fd545bb5488c3df9dc25cf2cb0ecb038',
+            129 => '98e9b89fcdd19247854d02ed59296d3f7d01f8596bf8d587d9009b9f03b4e01e',
+            130 => '5a0e5b0a62cd019e1c5e1c447c3da40d1c016451869c95a126a3f499479d9f48',
+            131 => '19391f22cbd7c5a59b688674e87361455200afee303bb7ee52e827d2b1548af0',
+            132 => '95ade54bb8d5014736b7cd93134186666e4b85c4bead23b9b8f7a3fbd22dbbfc',
+            134 => '73f672aeee66cd8bcf31309f94804e2b51ca4cad5b324681ecb41c6e592dce8d',
+            135 => 'ceb5b154185fa10e0f5ca0061c4dbef987c54efb3f05af0198047a9f18f1dfc9',
+            136 => '6fab700256e998f755b798b9a45f01ba936e8bbfe8eec1fd3fb2f1b48139fd26',
+            139 => '5e4d4f7eed7399ad059f3149b537b668decf0f950315307ea9af971715f04ba9',
+            141 => 'ad4c0929ba94885225c67761f4573d634211695fe5f5c09306b59bc068d89921',
+            142 => 'a49d5f032b64b7dae64f64adcbe551025bf6a3862b23bb552ed9f81498f70a16',
+            143 => 'e08e612a35921b081a5ee1f355b5411967845b1ef064ff400e3b59dc615b563f',
+            145 => 'f1d3c960078e5afaa45228a20bffa0788f350ae221ccacc87c418e35f1b94897',
+            153 => '34358b17541f767b6113b38288b32d4a039ef24bf6d0b9d0a01d547f096ccbe5',
+            155 => '12fa5627105dd421130318b133f6edfdb92de58b6099a5db45def967341f2181',
+            161 => '8aacce4147cf9027d6ce1935997449bbb134fd4b9b3ed51b6cf5218636b4b22e',
+            162 => '582a267e9435be208172e1296b413369b70b4db40efd32c64bbdc65c09e8b2f2',
+            164 => '04aad60bffcf059a83b47251650620403fc9b43113ff3a7398e3ff9dc4060729',
+            166 => '5314a534c3478bdeabe51d39b2345fe1ef7f8b1b6f9b7adc4e25391195eea2eb',
+            167 => 'ed4aff8f1ef7c6451a03a9d32e457ccb89ae85a7ea8686061c76208820d65bac',
+            168 => '0af60249bf6f624adc11583fc68eb4099643436643cd71c3def3bf5ebb632bd0',
+            169 => 'ed7620e161956d9f94d234e787a6fd46a4c8eec03c8b6d8e48fd0212f5e5c08c',
+            177 => '4fdbc704b2cfeecf14e924c80a511fef0c8517ec6c98ff0526649f9a3ab55ca8',
+            178 => '302abb95d71db554bbba8d549f84ee90757a9d2828ae2c31e10bceb41660a249',
+            179 => '4915d3465a627e0c0ba552e6f4e80dc7117a51ff705fc64606589a943c3c9867',
+            180 => '8f89cdaeb99debb4c7141d4735315875c3143b874a78ebcf2a96f1227b830627',
+            181 => '3fada213919893bebf6e81e567d710fc347c02edbf14d11c0fdc38505307cd3c',
+            183 => 'f3614fa2ef2c23601038b5b8dc53f961db3862248b0c17ea0627df168a7b8b07',
+            184 => '2a93dcc92fd38e232a6a93038d440df3a41246b73b9bf33ec0dc7dbb5d0efcdc',
+            185 => '2f63c89c9f65582decd5422564e6e590901cd959d8cd2515ab88949ff3f41ae5',
+            186 => '27db9ac6538421bc8e84bd2341cc721a763bf718ff792c56da80f88ef209b52b',
+            187 => '96214dce7230fdfd61ef83ca2bfbe7cab67a6db1ce5c3ab0c1810337d25e443b',
+            188 => 'f3d963af9a2d034d7a25fec2f3c1b334b8abd97a5694c4d4ee79a6813953bc72',
+            189 => '1abb71a5a34b1398d1ec4cc12fc889d28dcc67c5790b60cb39106d29a7610e42',
+            190 => 'd2d8909045449ab00fe8bad5630082e9c0d71dafb347a0241f689862c678bcf1',
+            192 => 'd7343067f104ec01b6b42080fc057bae2a7a3c7c8b7de1df3fe0dfca8412d723',
+            194 => 'c1bb323b605f6ae41c945bfee4d922ceffc6d5d8f32860073409d03c5b006ca4',
+            195 => 'cf15b8ac8780d9977105644ac48d2887fca9bf9f4cf82debe3f07f2dae2ee309',
+            197 => '4ff92445343fe048ab606fb05a2f21643c7656ea8b13ca0a0d06d9ce9d0fdc50',
+            198 => 'bcda4cd4f084ec1eda6b077a83ada2f0bb3f5752864d24eace173ad7c43b01ab',
+            200 => '792a66d751358141c93a80ad41d965fe2ff3c24a8fd8a1684bbbc4edceadcff7',
+            201 => '27b9e8523ed1065101ba14b58a6938e42a287d7829960fe0d9fa71eab848bcf3',
+            202 => 'e9b26481d1642965f428b762ac54842f948325249b4a71e5118d6911bfaae4db',
+            203 => '99155191689c2a07615906ed85c3675a352515dbbe4044b058f18ee40a639970',
+            204 => 'e26f2a0d697e572b5e429b0ac1b9ed62cd422694e4350a8ea6d5f4635eed03b1',
+            205 => 'bd24f426b1652e4df3fdd581c1ab1b00c2aba9e21833c025ad69a94c2375d3b5',
+            207 => '1c91acfc4b33cf4fe9da39194c722520f80379c437ecfb9aede9fad0c0bdad59',
+            208 => 'd53734ceaa7fe207f5741eea18ad0678fd70d0b37c7d505d4e0c44218d0a19d8',
+            209 => 'de66480e66a4a99394fffa1dd494530a36b58b76d7336a27a9afaad164dc533f',
+            210 => '0523104f975f69a5ffd8753b300ce0bc19f2465b55c4ec5dffdb3692271ddbb2',
+            211 => 'd5e85a7f0b96044edf639eccda44c86f371949fe6d1388cab074b0464022b26a',
+            212 => '91e8f24536cd239986a3d7954be92b596a5b3a2571cdf5d1661c29a275e190b1',
+            213 => '181a80e60805440aa9a9134e7b4a50e5e7dc1ce5dc1071dad45c944a5921c462',
+            215 => 'abe2d8bb33fc423e72e1a0f1915232a1bc510ad6fc05ca7ecc2c467ee04bd88a',
+            216 => '10f13b6010c80ff6b06cdae6cd6976414b8edc50011cbedec9b28714f635ff97',
+            217 => '669aa823c7046267c7e0782e2f3a69c9d508e2eb377a4acb465fb9eca05262ad',
+            218 => '64e4a9e46c135e69c31e0a0ec9eb4ed0166cfa8de352bbcce8b11afaec6abfd5',
+            219 => '473fec13234c84bac7ddc444fc41f69acefaf79ad38320ed3187e943b52ca2ee',
+            220 => '51d9136640ad1732b94d5118dff3d8aaa0c937060304bbfa3e778a3a2c8dd09e',
+            221 => '2c20d6e67b63a4a979e5d63ac22864674510da51dd33f200da8e90a974a99356',
+            222 => 'bc896e7b0cc4da2007334e0f5bf42b238bb588a8a20cd4d0dabaab22c674ea02',
+            223 => '03057eaa94a34dabda019d82fb0d5ea126eeb94dd59fe618755ea07f06bc2c63',
+            224 => 'cf9751266535a1883278ff199790fa2eaa1465740ee9b582a37adf9d45eb8c35',
+            225 => '739a8b5ade30a8afc8e054ffcfe82c32e96959d2b39de34a0e97752739cca24a',
+            226 => 'a99b861105c8945d695045e372f55c9a0d4577488e0e3b39a0dfeb12d8b57aad',
+            227 => '42a6e8ccb5397ebc4b24ef6a9293a05041a53ee76c0e4ba915cd8c9b193ebd7e',
+            228 => '744a914212ab9b64df15b7bc73573edb7ff5de67470ad95b2f752e7d3b3390c3',
+            229 => 'f36d245f5210634ba020322eb3761949a31f1531e55cc06b681c9374570f8c3b',
+            230 => '6c9bcac2eeee6961fda046fee9441d4681121f8702e3ed8119cbf3fcd907c52d',
+            231 => 'ec9b27050da312797aa1f2b3cdf02df704276c684f78f2ff249c8c496c28c9d7',
+            232 => 'e66e13895572dc29783dcdb5a7aed902bffb4efc3f4af5915cee474faa70f5c9',
+            233 => 'e04bb65b916424bc91100b3e828b3581bab7ed4e804516b90d208819cbc23cf2',
+            234 => '549ada367ef49e912405f7fbd68c3ca31844e702178f0515d8a41a8dfe1800c1',
+            235 => 'e5c32d9fc5c6d87d2a675a4ae0fac29140eb828c1c297ae4984ce38fb07ded2f',
+            236 => 'ea35bbf532f8a9a9378cd6fb5e4e9dd511ba133baa9572a5fbc2da00dedee66f',
+            237 => '64e7f0abbfdd7a867f6c5d83430938262143d1a73d83a8b7d92686f28a7e9d8b',
+            238 => '368803c19cd54962869136cad5c61d9023f7c0915fba213ae9b20cef8cc24dfd',
+            239 => '943be726a0deb126af9fbd28ef943871a14f7d032b1004a344b9de07a7a71edc',
+            240 => '82548da7c68345270ed8ec89436ac2b2417bb4f0160db6538f011b5366d05086',
+            242 => 'dd1532970bfc4d3ba011b83da7f5916b7ba933648881945fe09ea3a3bd7653e0',
+            244 => 'b572af9bc4cf21c6ef146f7e2074bdfbcbaecdf5b8bd176dcf8cf24a3444d0f1',
+            245 => 'ead425396dac2e53527ef9f8476685fc625afc6ce65aaf52ce85e67b22293cfd',
+            246 => '2963b7b2882f2e1401276ebb63fe1bd021b7bce3d89832d4c2b7f01b13ac93d4',
+            247 => '5f591d654d023ac1e63f91e581afcc6fc9df56ceb7b02b0d1bcf44841bde2aec',
+            248 => '191ffb61417ba677bdaa2e020d6037123d7800e3c6f0a918c452d2963b2b6b13',
+            251 => '7a70b9c8244dfaf963b82c0368b9fa4b2222a6aa0659218b10c8dd5911f1c00e',
+            252 => 'cf91e3fcb01e355bf6a9f0270c2a60a99087220040508cc422b299d341f04fb2',
+            253 => 'cd5dfa213aa8f71e8c2618e4c604d0def7bb569e310180b349703448d4854ef1',
+            254 => '16d62409ff6a1c528580a721b3ae032342ef8e26bc0fd6c430b405858b9b7bb0',
+            255 => '685b0afcdedce503e34a3e659f8b706b6dbcb83054b1be0960bc4ba010ed121f',
+            259 => 'bc9ee3f04bdfee5f041e4e5214e5a1bb5a1eeaa2088cf7a7be06c77bffabd095',
+            262 => '5cf67a431ab14fde8230ec81b16d4ef15a983939802aa914cb86e3cdb159981f',
+            263 => '958895e66b041361f883facf1fe28ffe3a2f1a5b58a0d54b9449d054b0695b5d',
+            265 => 'd1273ad6445505397c157d6e5fe902511bdafaaec4122fa066a2d5e1ed907444',
+            269 => 'b384786fd392f5f2f82a47004f83f0454d43548c27b8a9e6696b21444d2b2eac',
+            270 => 'a5fef97564366dfcc5b04b2055df0f1112adf63b32e7152ecd7fc31bd3608522',
+            271 => '86868328a185d877166bedc06a6590085ec6aa1614ac8ada6d54f1782fe18b68',
+            273 => 'b19db9bc2086b0b8bb86915830f47d266e444a62d6f0d3a9a3a12a2b83c144be',
+            275 => '4e1c0707fe215d59ae1184038c6eab7ad6d2981e8b4039174a73faeee4d2d73d',
+            276 => 'db3e37d2f6894a9a7451a3358562d2cc60f3bdca0a16fe6d793dd0b3fa6bc95d',
+            279 => 'e4ed3caf0a6c660287b6f7fe96c72cb06d44996162c56c50cd431ff50a66f372',
+            280 => '70b8f9baa4deb3af6adff9d058b9e758d41b0f18317d3f3424b1b8860fad1236',
+            281 => '641b42ac38352f7bf7dd2b4b63385458f514ca38897ae1690ff7845480fcc9df',
+            282 => 'cbcf5307b10b8f7d9eeea25800d1535716b5239b4f984a7c223170d159fdd3af',
+            283 => 'cb9a4be15df0e659c5bd6e1176e807c56d1e685a511bc0e2b280fbfd31fd165f',
+            284 => '400db71798219bec03424cdb969efd53a31113f369dd10725c0fe58f59191078',
+            285 => '87d9b34787daa8decf449e8ee217dba152d517923468d0697de4473bf688bda4',
+            286 => 'e10d9d21c9f9dfaa494b1aa04a182493e9d1e2db14426afe46538bbbf6a028af',
+            287 => 'b4c8fccc7a59a83d9a9aebc730f24d9cd2264b31c601fcb0e4373dfae6e25c12',
+            288 => '5df80789ae022be75b8d72dbd06f8c673982624b541f337052bbcb9a54f5f90c',
+            289 => '8350f909a87427ee0b2e50ac6f459aaa272f2065555ba9a083c0c7d94b5c5e01',
+            290 => '4abe6d53c12a8799bdc0b1728a21752172b07d4ab403f46e48b243467485b6f0',
+            291 => 'c6049d421fc10b6cfa2caa4f09e5ec7c36d0a6aeb4a3b84c1d1ab2d8e10c4689',
+            292 => '853f73e33665f66a951d937fd0fea3e3c0f8584fb2a02954ebc8509abad61b8b',
+            293 => '5864a268adc0caba80547e5ebcb86d6832abbce2bcb5a83601fb519664d5aae2',
+            294 => 'c91bfc6a3d078dd944cfc70cf781b03c1f67d34ad8f7bc8f099633293e4319fc',
+            295 => 'a733c5c8374747915f875596d846df9ead615f82ca147affe2dab9d20d784bdd',
+            296 => '549963ecf61030cf9e9bc7f933012c0667af8721d85ca8d41465acf3ee05d53b',
+            297 => 'dfed7d455c6f29833e16fc488a03ae672d96e6199cdad3d883dd6c69c8c10034',
+            298 => '7268d0c9ea367de2d5966209bede06e7f12b1d3804bfa2dad80533c18b22aa8c',
+            299 => '0be4fabdb6b6b9c00fb5cde195e14dc04a2c33ffad46d74c3ea6cf82a5c86146',
+            300 => 'df9a20569821678f9e5571c3eacc7969808aead380245f68caf0109df6dd1c47',
+            301 => '33226fe9a5e1f4355fa378336f7224a39bcb1d888b843661eeeb3564c2dbde19',
+            302 => '09aa62df6ce680ea2d56defc17ca476d63105c3acbf28dab4d4be96298c75c63',
+            303 => 'f20bdd5c3e6f8079a79824855bb281af737350af63e83acc2a1f84f76b3d0964',
+            304 => '70dc396b03b1c3be849ffae5c10703c0a57b5f038e3953e74b4ce12048f7f8f5',
+            306 => 'c3585c41f10fb82532491ce11cd638d282eabc1ed9f1b393f8320acf64eaad88',
+            307 => 'c466eae8d976f5ed27094e26f8afbce8a6fc4e293c6fd1a46c52db13277dd354',
+            308 => '8699a8e2e7e9b44cbedc8df0da9dec86427c2d32596cf179dd3c12ee40a0892b',
+            309 => '225706ec2aa5143a6527cb02271e9b26b706ea8e8a217647ff80de680152eaef',
+            310 => 'e63d21650bb46aa91ac2e5305f14d481166e908b5d5b53dd31778b708a4139e6',
+            311 => 'e4c740582af3be9b54226c50030dc9dc68be278e44900a14512f9950c7fdc468',
+            312 => 'd0340b08be56f7dd135d684e888c156bdcbb25ed455b4e4c595e0ec53392121b',
+            313 => '512eb1deacd605bc59bb63a753ed0a6aeee2d8b0fc2e34b4c5ddfda2723ab2ec',
+            314 => '44b50395a18871700c13d7fd7e7655dc8fe7de084f202879466e5d7fd96f1dfe',
+            315 => '0b0087ba3bfe226f4caac606bd5e045f057398e2d488282fb1162d654bb598d2',
+            316 => 'a9758227d392199684326695c36c6a8326368054ac4c227494c8ea2ae25d99e7',
+            317 => '7086fc3700ff93cc152aff73c882886dfd34fc915c1fce69ad77ab76ef97df27',
+            318 => '8fa844ca50b672d28d21c4cb371d39a42051b523239c0cf636c29a56929269db',
+            320 => '4ea90ef9a46a4a6106b0bf35d5a9180147aeb68caae8bd2147814839d8dd90c0',
+            321 => 'b94e28e788c7134f1a42556fad9c60d638c59bacb0e1295d6b42e21c00812cc3',
+            322 => '9ce535068329f3526f31c28bb76906201f1812f2efc27b1208455a39df1b6e46',
+            323 => '3f06309fcf209cfd6ffc35d39b5ef0161969cca847f046214a9d00e1f659e04a',
+            327 => '09ccac4ae00c7bb86241f6210eed5b73244e2c2b607113981b8f51311e7ef9ae',
+            329 => 'ff04d8799457e70d8fcb0f42ea583fc09001485a546aba674bae3b73441e58c9',
+            333 => '511f40d075ff2696f418496295588264846c4def00fc401681dd2d58bf5efc76',
+            334 => 'd365d88cdc1df4379959310ca3b3277d2929137655a9753301a1de7a5b695f86',
+            335 => '4f5315bb99bd516829f994beb6088f7aadd80aefc946f8ad3189b825826288f9',
+            336 => 'b054daf21bdb2df9923cc9f5dad7620db23ee629d4bac07e329f57f1a7fb19dd',
+            337 => '965eec637f7dcd4b3bf8dd212b21e55e0040a062ad6c3f89717c68d04a139dac',
+            338 => '298b949c5fedb809ebb652a1339edf66995dc2d69dbaf0a6c39c267972619cc4',
+            339 => '037b62fe9101314ae144a6cbe8688cf217eb0be146e8d92417ad41b65bb6b631',
+            340 => 'e97faa5d8a82ae158a06ddf3cf1e63d33a544b3a71999d0ed18d6314a5f484b5',
+            341 => 'bce1294abd87bfa8ecc8f3d19d4e13816e2ed5f4d39cbb450cb405d3f55016dc',
+            342 => 'ef23af9d82b95d2702d8a26ac5e4a52dfdecf86a6784f57310839ffc561d12c1',
+            343 => 'f7c9347441af1dcb42e86e043192c44acf1689311a1bc8513c345df8dc4088e8',
+            344 => '3abf5318fe3a3db42b5512bb7048fc99f3bdfb186688d671e8ba32f1c910e88c',
+            345 => '894fa34e70db93ce9d49c1ec4c24c551af253d7c715c7e9b6a06c8e13130f271',
+            346 => '0291d842daf6646aacf6192c7063756fb56c31c0a94f5218d724c460af3f774c',
+            347 => 'f2962b51c0a6baeb70b93e1fd51741f51c5a1c8152e25084fbf8b65e1aef7948',
+            348 => '55b8338c48eb8ceb67735cc20714e3cae45d69ec130578bfb7249d5b1e568cda',
+            349 => '87cc1dfef7c24780ba8c360d4b99f90605f1695ddc9468f2b839b9228e658fd3',
+            350 => '9db0a4707bef61ebcce11dcd81eed754f8c0441a6ea99b52caa0b4843d7456ed',
+            352 => '9428495f4749d4dfed1a00346f6b75da432211b7c217b005751a066df5493404',
+            354 => '1acba7cd126e1939ca123711af46c765fa6b512867fcd87d65c7098f1a04f21b',
+            359 => '972c39c98b7ca7f54fb74faa860d0f022180e80455f85037289890497ca0c98a',
+            363 => '75e10aad6122fa774460d558f1d7e0cb47d337dad6dedc3ceb0183dc39a7a0ba',
+            364 => 'bbe8f598ada47875fb892d347a9c0c31fbf1c5054c1bef8bb377c9601f79bad6',
+            365 => '950b7269e740f413d2e136b9afe19ac181d846351f4d1c53f229743625ec0c24',
+            366 => 'd7ed30977e8326f580d6a845c5538b11874d7571dec9bd08e42f46b9fdb8017f',
+            367 => '46487362d77abb1d4a402e794795aadbb1f97f9ad3426ed3ebe22911f361b58d',
+            368 => 'e579bc24741f4fc715ceb09485fffbf1e8f1b04d078c6e4a29f1ecee6fb1730b',
+            369 => '23f9034d931877de01ef7cf414744a01ba4c46fa917bf746a5f00e3bf1108a98',
+            370 => 'd92cb4bbe37c67a057b0ba3aa7eadbd7b800e33348239fdcec811a4489526e7f',
+            371 => 'f976d16dd5364b1d658b86a0c2c36bcd7c0cb0e758bcb91cf1f7ca3293cbcbe2',
+            373 => 'ee20d43c5f7fdb6cceee04c5b1fb2ac410dd5334ac6e63218136790ef67f344e',
+            374 => 'b3c56b9578924b762770b5272b7b396d2aeb1a8684a33706e846389856bb2621',
+            375 => 'ff5975129bf64ce728125da2f87d7433c2bf6bac44c50a8e95ee9d67f99aef14',
+            376 => '99a273428ae1b4815f2bc20561b5d11e8352fcd907da5d014693799fb588ed41',
+            377 => '0a8c99dcd608515a8ed2bedc1eb188a29628deda2d147fde366be3e32f237d54',
+            379 => '05b14a1e0911135b0445e7de296e2ac628785ca2e9d8049368bd8673bd5b69ad',
+            380 => 'a752722123cd5982194bbdabe6120672ba04b4d64a7e46133f2edd086d3686e1',
+            381 => '2d3cc8744172e193032a304fe304d3e3eb02bcf20867234c62a24df02dba1015',
+            382 => '73835753f27f7ea165cd4036e8eec9d54d8677f88f12d0fb727b435925a373d5',
+            383 => '9f4339c09bceb33345d3bc0b2d2215959f5a3fbe947b8f97e30dee2259cf8020',
+            386 => 'eb610132c8453e3c53605f2ddd7015bf05b8fdbaa99619abcc9e16deda85492b',
+            389 => 'bc5a58754bb0f32b1a5d74283840816301714462ef9eae3dc374085bfc01145c',
+            390 => 'fe90c130c1ddf3c90f7140b9172100d8924a06228e50b81ff05050dd01f8e3bc',
+            391 => '3e67eb266aa4727cb771a4118c7aa7eeccfcca768e600976c70d0bfaa90e4432',
+            392 => 'd4d3c67043fb904faab126d7b0530f2000b4283bbc60972295808954ebe762cc',
+            393 => 'd1d11666f164e3df95ab22bcb13d7abe68530643284264480741072ce9f5d985',
+            394 => '3726e1012a8860402a367a581e16f8f52deb022ea1c68a99e63ec4744cd37281',
+            396 => '829f4e7debcd49f100c8a286386f0a17aa6e410210a7710bbae9ee51291e2ae8',
+            398 => '9f9ca55e12aa1b70409fd16f15678c985455fac98a4ee2c47e0bbf17ce1ce820',
+            401 => '722e326e9bb68b7654be03d0f0ec25ae886db7b116e38c9695be4a13d1902ef8',
+            402 => 'a98356174d70cebe46f539aa352bff51c3a5dda580cb26c382d1b46dc3e95501',
+            403 => '6727c4be5336295ed1700b3cc3059312cedf5788b0a4ce0c73600c064b0f6711',
+            404 => '980c6c8b7e4dcd2b3cebcb307d2459eb451b0cdb0f789e3760ad6f4b2a48b085',
+            405 => '920cd47796176ee904f0e04b16b96fb3db9c1f54dfd02689c3278272f8e51fd5',
+            406 => '1529e0e58e6a49c8585f95df15cbc533f980d80256cc7754ac9e44e3ea51d0b7',
+            407 => '09e01f12490c492d3bf6379b4ee3c31036b3ddeb665931d3dcbec5ee664d9d8e',
+            408 => 'fc3c47002087407e36f0f022d9ad5a93b81843c32df6d72fee6a6927550fbf5d',
+            409 => '9266d2224cd89531644b7cdd89af4a9cec632250ef4643065e2572534e87a3a3',
+            410 => '3df566de58eb49e5077a8c4b33d9053242fda39869d0e6bee8bbf2aafa613b20',
+            411 => '9068e7816dcba8298fdb277e0e6dabcd5f7ed3ebf65a531f194feaa987d5625d',
+            412 => '0f2b48094f5a02b9db140612a806f49a926ccfb58f8d995d0914dc3cd47f3ef7',
+            413 => 'dc3c46a434ce6d2a0b7212477b781ba3bfdf059719b3a85a63e34683dfee5d41',
+            415 => '0a19f4bd148a2e0abdd1b46d7df7f56d4993c7fc14d8a579d75c4ee07355e150',
+            416 => '8eb75beade1fe1ff34bea0528cd7fd07474876442dc63d9d3987a912542308a9',
+            417 => '7969a07eb20e4efd31f1c224c086574878b824e405741964e160a97d41b6a89f',
+            418 => '0726e96624a563e6eceff9a903b2fb77963e3cac1b18a4590d77b915f4c5974c',
+            421 => 'fd6d035ef59e58bde98b9a120a173c9d6007013f68e0bb9e89d545034879240c',
+            423 => '3699f15a8ba367b8b171537b3afa487fdcfc810b61dbc74fba3535eb7f43f7f5',
+            424 => 'd4ae60ebf2d49efc193a10770f4cbbfd564be11bdd8094ea515d9057a2f7d9c3',
+            425 => '2d51104534e73ac9017ed5131c0699fae366cd107ebfd730bc81143092b522e7',
+        ];
+        $expected = $fingerprints[$record['code'] ?? 0] ?? null;
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', 'a08f0f434a0042acb8530d9d0788a0e481c220729fd0fd2f8ec6e8adba0f607d'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedChhattisgarh2008CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '0879916bcfd2b319f6728f33') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            1 => '080663f7a90399ace0e62e5dfcd9156e9d5a88affee8836364db92cc1d1dc11a',
+            2 => 'f072e6b1437aa61d9b5fe09076dced85158ca49e086fa2cea863a1ddf89b8ff0',
+            3 => 'ecad80234e8729b5198aaaee7445e17aa5cac7b8d1370e99b0a75b685e74be6f',
+            4 => '01864488eac5f7f9def09c72b5b511037828409ec0a1f1d953ac67a22b250064',
+            5 => 'a50fb7391cee0a7f512f6f8e7d7bef3eb544344614db7ca0296d76d65edc42d2',
+            6 => '48590a056c61efacc08de3e5da90ffd1649a254fc31052bfe98a32bee504701a',
+            7 => 'a3d7bf07153c98a1273a8bff90ea83460771166dafa82e78cab27e9727cfd927',
+            8 => 'c1c50f38be528a10a76960aeaac94965f990cd20bb1114672e2148569056baaa',
+            9 => '87dbb0671d2f8fdd8b1621a45c4b208465a859504fa19337c9b9b3d6f2e35b29',
+            10 => 'b894a45d1c328f486ecb933a327a636d5d0d007456f039bf1e66bed770830239',
+            11 => 'd0128fa74526a956b6974673e284344472fbc46292cbc8d92a5ff2cfb80f8229',
+            12 => '8c461b1dac32bb0c8cc227c55e37af1eda12547a27440f8d4cb7e225781ca502',
+            13 => '350de9b686b74454e483f1f70b6aafca440d7a70400cc017f162118fcd3be078',
+            14 => 'bff48b49a027acca171362a3d199ba866f1ebe2361ef061f9f4b3b834c3d9eb9',
+            15 => 'b9534c62e2be7ef7cb4a4eb1c9ecf8ffeeb9914a41dff12b68d14ed9e9b82049',
+            16 => '292018e3ded657274be21ba3cd726fc69ff1dc70bebb78b6ad6005d35228b68f',
+            17 => '759ed7cd1abc7e75c31306919bcd808003e582dba33020657f94bf75390f0972',
+            18 => 'a2e4e234487f89c1cb602995481bce403700e32d5737c677e1a071f37c3f6ac1',
+            19 => '7df9b45bc848d7b7fa4e93eec405e07906b6d7851221eb574b2f5b74fd45ed4f',
+            20 => '51cf4e85f57fd71ae80d587c0567703c4492092c1616deb66dddebdf4962e857',
+            21 => 'f95fe56ba19bf4959cb5fb99bceb2cce28e44f08b8aeebf611cf13681e0cad42',
+            22 => '36ebcaf2b4867476ead018135a3cb3b59ab38631966f3bdecd5cdae5b991b295',
+            23 => '9a791b75a6e499dfabaccf33a9abc4a1c8f72ddae09a7ed0544829134be2d9df',
+            24 => '4efd6ab4e7ae2b99215f8d4f1a820a9b522e999dee6f2ab5dbdce4b88048a59b',
+            25 => '4ec23c1d966537197acab7254d073ba7344aadaa87721e5a8eeb9ac9c32dcf50',
+            26 => '03ee96fd93b0f3ace144c055746c97d854783fbd157051030dd42638aa0e50ff',
+            27 => '30c09f809bb1fe3e932629a52157a9a388c19035ac3bb1f154966662e8dfce0c',
+            28 => 'da1e2777feb461c1dd2e4a5a58c7644c0d359bbd287bf4b1c98fe8b591797251',
+            29 => '38a962edd54acd4e115268e7a06eceabc88960e36b3332e0df51227cf3031613',
+            30 => '7cb0400a4263ec77ebb35b088c42ab84561e649fd53018835c699665941478ea',
+            31 => 'fd05bd4d759d85b661f408c7cfe5e8b64a3b2256db74f1ddde103f5ea1c5bd4a',
+            32 => 'a946cd9f2a065ebadb9205a4349341e995c9fbe76955d051744c1de37a0eba4d',
+            33 => 'f66998797dfdee01285cd22f5996a013362b71ab5f421df8bce7c143c559e959',
+            34 => '65db7af7790e1a9a86b2d25190f24b8c3d86310e13f3015f3a0f98ae99cc5a01',
+            35 => 'ee5c70afe814d4c779e2fce3288c3b4476917416a674d5fdc9d6477330c9b183',
+            36 => 'a3cca62e43c3b80e213983c9e79babe1cdcb83c06e2fc5006579b6d5a9e36d4b',
+            37 => '8bf201a5ab0174c909965b1ced1f9db5a0152d0f1fb52dd6b02da1d9e82ff979',
+            38 => '33e65ea9788955819d3d27a4c68929f4b7d1f41a3fc630f67bcd16dd496bdf6f',
+            39 => 'e2ba2c24e9b3317482e0ccdefc95e5e40a06a267ef7f222a8f27af1b105dfa62',
+            40 => 'f5cbab4084cb209fcbda41ed83a98cda04bb3c77b2b79cb26d5f81d287f25b72',
+            41 => '235d3444b45e386f00a6d057b13d8b9bcb9cdcc57e25a4ca5df06edbd43ec1d5',
+            42 => '036b067d4dde14db8d586089aa1da8c28cdc6fc9e8f9d1527df8a4ae49e226d2',
+            43 => '7d386d62660efacda7e57a2d223baa788ddbf78a0cef9a893025cc85285c12ad',
+            44 => '3bc811e3384ccb3d2bcb17341fb85cbe21dd5270742bdc4337c8a1faa4718ae7',
+            45 => '1239a4e9c298470e7fccad6989e414d98d667d03c5a1019082c57d9d7770dd10',
+            46 => '4e98df2c8bd78e201674bdee63ed2d1f9b56771fc3a5115d7d34e9ecfbd01381',
+            47 => 'd5e6420b0606370f7cd1fd463b8ed53666f49b187f40f2f18eea1fe4a27e9053',
+            48 => '8e2bc8e8b623ed7f6efdd20b94e7e3e75a22a8078753207c33c4d4246919db21',
+            49 => 'f4b95b23f7e258eca41950a0ea7cd1ab848774e04816c3dba8c05788499867bd',
+            50 => 'cf91786e0e6e3c14b347a1d5377ef1188a29a472218013274f7316ae09a2ac04',
+            51 => 'e79ca1dc993a0b49780c280226adf580ac510dafd4ba85151a7c3bb608dfc915',
+            52 => '49a01639194d25336ef85a115fd0dac3b92d7bda5683bd88ba502eced1ef4639',
+            53 => '29c2dc2ca5734af86215dcfabcfe41bb5507ecf9d5ff56825d752f9d8eeff9fa',
+            54 => 'd9bd24ba734d2343fab2aec41d56d8fe0a0b42515e551b2343d7f355c55cf6a2',
+            55 => 'b091e4b190e7b8e97aef0830d28692a6734e8199802b0a16c6a2b54f22d645e2',
+            56 => '3ca2a7f2017c880a28037d156880c119cefe8a247785532cdf1a64ffeac4d69e',
+            57 => 'd7700592232d2d1a22d12f86b0d34ebe3619ac070663a1b48201ce244ab6692e',
+            58 => '886fa4d192ac957de0ad1c6364167bfaa0c55399f5b8047a13c3c9bb57437413',
+            59 => 'a9beed2061b2f96e775b94d450aceea48c433abe73d227faeda3bed7f00642cb',
+            60 => 'c75b0b9889131a999de04a236aabdd91163348036cba7faa4385aada2158fd88',
+            61 => 'b439ac599a89091d5ca5091ddef6ad97924a0a10fa8a4045c113a6852fff83be',
+            62 => '53a7344e1f91fde1e41de34963c7388285dfd22823984b215705c48335fe64a7',
+            63 => '4dd0cc94f5eef49a17e515d24baf6f97b93e87e266473a1823d50881aa50ea0e',
+            64 => 'debcda41536b02fde2ee05013dd1914c0c04d6ccd66081668e6e840b327dd7a0',
+            65 => 'b2dd3643552618f27406ce7abda3e8dbafd9df08f81a5b1ec2e197bd5b433753',
+            66 => 'b1c1656e132a9be6a1d9fb9e69a9b5d41853db3ad6c88f3f31ee80578e0c4082',
+            67 => '36b8391aa67da51833a023445aca22a55a92942e980b4bcd07513b3e87eeead4',
+            68 => 'e89141b5d0b683e6e80833502a478e1000f4979d24989c5de6f829b3acdc8064',
+            69 => '7eddda4bcf49def8ea333b2108e4cfa27d5f8d2bec81386d887c2ad44e259c7d',
+            70 => 'bf2cba6f92111dfe3c2f168e3cbe430b59283053042b40f0887687b9c9652f67',
+            71 => '3378ff874d6b32e8fbfaab424d51892969a1ff6182f27375abbac4c00e3bef6c',
+            72 => 'da333914a7b81e401f7e024783404a0aa54850a73363d836b485a90e72cb6f88',
+            73 => '339b6f0116dcec33d73715d9de01ce0fdce09ef625460fb40db4f90b8ca59a02',
+            74 => '6c2be3a2ed5ec477c4f8e0a4f843d1bb4b0f9a9fdca6408be186d1d5dd94600c',
+            75 => 'f58e7d3e2b28b77437c67898d9d511d5d3782b694ad039a1f3eab2782374e0cd',
+            76 => '06b13c7cfd41a64ee830de42e66d86569830306f44948ebd75bfc3a7dfef377b',
+            77 => '0349b6b6f0161cddd3087852286bd764df69042095b03cc76ad4925f3d49e0fd',
+            78 => 'c874fd732380f8ad5c638beed4b5c557575596be299cd47932fdafea113282dc',
+            79 => 'e1f991b3b06c9124c5eeb24c71e06a46408fefa3af2f94da74a31ec8427b8e5d',
+            80 => 'd75772330e7730499995ab2c66f10cc89f47fb48c086c569d5af9ecb69d60f83',
+            81 => '847baf23b14d19172fc269db938c8708db216455a2ce504217304da344d1a717',
+            82 => 'cdfaa1aa931fb568ceb6af4c6851d61aed90afbe968b7f02ef7e4063c67ed372',
+            83 => '34f58e64b491bfdc98c3d5b8e4830d07cbf16dec4a746ff4aea624595be09a23',
+            84 => 'e01ae845f4e23e212f899c543174127c02a933d5c21e317b3a4e3658c3b4791e',
+            85 => '6f91e25f019442dc813ca6485cbe40c8e556dfb6dc473c0cfe08b5ec79e67b9c',
+            86 => '4b337e087947b6caa58353d8460d18943e2f0d8ebb738a8531b0375a0be69b8c',
+            87 => '91f7cbe3974c2905b948d4e8420be4d8a9058aedc487ba5ae3d9ab3a82101a3f',
+            88 => '1a7b9228f07b3155731d75745088a1ce12e13f11d3822832dc156965869c8fe0',
+            89 => '878dbc32450fa7133264f48335281a6facd0e2ce62a3d3800ac847ae9d987858',
+            90 => '10efa8802af1f547710cc958cd1ef6b0c524e5abd60e9eea039a38c226a0802d',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '018688791aa5c4d08725cb5cb8706827077e59a3f0771d50b19915ed57c67740'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch070Delhi2008CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '0bb56f6d540dd05009c75d59') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            1 => 'bcac079a99f468c41364e21c48ad5cc271eb4ba6570ca478de530d7e244591c7',
+            2 => 'a35c134816a04563c4477eb68dad978a6418b33d8491971edb91e9e1b5712226',
+            3 => 'aea622566352db9d284d86ae7faf2f6c868869bca2b5bd55d0c434fecad3b190',
+            4 => 'e063c78962c5109bfb58f6e069fbc8bb921e3bf302d1c8440236eb21a31ac8ee',
+            5 => '3f58262be2059ccff495e478a064b48695b918a9e7e1ebf998f41534f25247b6',
+            6 => '363de8a804cf09b043e5e8a4fe1145d09f2d073d2268bbf7836620a8b310d57d',
+            7 => 'a3c99f4ca7e5952fc2b1b9eac6bc92cf847d1a2504ca437616491ac5fff67742',
+            8 => '054bc921633e8d046d668961760407f204f9c3252d3b481ab7c47a40e24a2e62',
+            9 => 'ba2f99f824b5fad9df4c7a1e090386ba85ae936042ee38e355b0006638520143',
+            10 => 'd4307267131263c84ee4ce934e53f769102303286a4f9e5742dab5750a03c5a9',
+            11 => '4aada1183b99f18a45b8811dc39fb29a0657fc133eb5c7d4016ec61e1590b010',
+            12 => '3b3fd26ce03293f5de4dcdfc714a28e14c69e8926cefc400b2ccea009663ba78',
+            13 => '1f928a8e082ea28cb25cc844db81b47fe9c5f617acaa37a3df9cdd47a4c3be24',
+            14 => '947bd1ff805c9e65793bdf0e5e2538d3dee723fdce733fc419d687746c82a9e2',
+            15 => '4e00c870840c7af54e39f0f0b78adb724662f7867468db5e9ae67cd87938c2ba',
+            16 => 'b64d9d09d1c73eaec725ccb182c19c96c4ca5023deb00a0c7aea2d78894c04d3',
+            17 => '49dbb32c6d6546ee2fad820d916fca455851f4803da82658b676a59ddc7a0675',
+            18 => '75072ee3be2fbe483e0aec921ccdf9a0108bde68466fc0634873ecfd31fccc19',
+            19 => '2eb15cda90b1c796c41c54b1b54651e99b32485f8aac37db66215c7ee4c7e63d',
+            20 => '6d1755d1e1e2d4eef9ae669b9f047f387c0ab4d6728ec114607031a74b4a14f6',
+            21 => 'fd7c17b404a0014a0d64ffb1e7a486ede93bf10678e4ddff1995b540810d7903',
+            22 => '46fe3d1bf3c1e934d2373db08b09aa308818842a76fae48519a2c46dfd99f614',
+            23 => '6c67fc2f85e4b9ebaa4326da33bc4a9b41523529e6611e1ed07fe4b5bd501137',
+            24 => '6363d8c54a88b01b3f72e1b66a2effea67f053f05517c7c6fc824c04ed8991e7',
+            25 => 'a4ff14cc231473b0e3558207af5574b6276d58c6c7b1af800ffa305094eb9626',
+            26 => '9530ab03262ca6f3704707a81261adead3b193d7984e5f161f728e88e41df4a7',
+            27 => '93b2a57bb31973c5061cbf7a8ad5dad00ee617a4c064608ced023e8422fe1ba5',
+            28 => 'c662b6d18fb47d607cb02304fdcd8d73f76afdce3a6e457b2e6b2526991761e4',
+            29 => '277e869762157d7864ffba4bd8ec2b6ed154b2f7d2480dbc59492e8bd039dba6',
+            30 => 'd7fcf49c005e091c4dda88f376ed47437d5351318368e68b6dba2dc559c68d8c',
+            31 => '8d3d93450c2f1f49fbd87c0231274402c6b6f8b036bdc85c37aabbde558f45fc',
+            32 => '0815e501f8df9bc8ae0f4cc6f3704ac7fb7effc9bccd2be546003283e1b7533a',
+            33 => '3c7af9e421bb946d7e1df8621497874eb308feabb6b3bc425ab60d1a532f41e1',
+            34 => '9039bdc747810a097d921a01b5d533d07c0edafb3a0fc3b5bbfbf1b5f290f21a',
+            35 => '98940c555624cb4611c266978d29bdf6c25685b97387696fa41306d3d72b853a',
+            36 => '691410af9ef98da000d2b19cd67e8558aa78bf1def2210b6e82162726d8dda02',
+            37 => '0dc8cb00dfb680f046a091d6b11c0bb72adc59c94b2dcc6ae6ab7dae34dc562d',
+            38 => 'b52becdb5e12abc91befa1a35b0d4358e509f12e2ba9fc3228850a25093ffa8d',
+            39 => '3074d5434b05f3d3d29ba6a22f1f88641816cf0dc8792d75a6f2caeb9b65e68e',
+            40 => '4022d4ca568c7a00cdf441e29f05ad24c61d2b984a1d4abb81512f85cc0c1f1e',
+            41 => '09f455cf6e88d89173b609b7eb86505c6eaf2f55962d792eb41f460b1b2249ac',
+            42 => 'abd3bace3b05b390839a62b1bd0e39fa495f216e80d68c1a7bfaf6090203f8ca',
+            43 => '726362d964b9ea0d5f9182b517b3dee2724323c27187f043136757d644112d09',
+            44 => '609bb301380c5d612c33aa75bdf21334dd48b6bff6fb5e6cf4b140932bac0d6b',
+            45 => '944eea678c0d7973047f1b3a0cf32e56e29baf5b77eb5626be4cc2ee9e7f8700',
+            46 => '68d37af07b52f3a70b5b31ada12fa0764dafb4e16aa98e3c493b7e94120be15e',
+            47 => '110ff0b2a7d7368842f5441a654b5e648f29c8db0c47ce5e524c25bfa2276e58',
+            48 => 'f9812e00af6854273034fad114e6b5244605682517751ab51da72b132de2ec3b',
+            49 => '0ec3df438ad0c7d337cc11f41f26126f694c2044e1cd7ae20b51c1fcc2284adc',
+            50 => '563b88eb2b7d82bcde6dbc679ea02f21f7ffe0a0d281e0ad101f9da33a9762ad',
+            51 => '924c31436f062826ee901745cc186ac6fbcb8bb748bebb919413e16f456bac7e',
+            52 => '51a38de91e3662d816a71e0259e0ed75362eecc445cc119852f129620a66c5ad',
+            53 => 'e2b4a32945ff6969317380daffacd4e44338567e79d5187098bc0fdfc0fc4ce9',
+            54 => '46e0f41efebb68aa4621eb094a274f84540cb39cd0c7608341f8871fcde159b1',
+            55 => '23aaedb0bd57d98f50355e227ec28c708671cc384d2a97b586b30a19942b77a4',
+            56 => 'ec35a15dc1ed7afcbe281461bbd34a0a90e306df8f2cb2e730cce677b935e17c',
+            57 => '29d76a7fbcce55acd345f740d1d49001f5bc9d400bb80bd616530e580d05d30d',
+            58 => 'c204b932b412437a87ff3820dfba6900bb23cce9e3f2582a1c1fb2094f63d4c7',
+            59 => '5f79469750b5cac0a6bca7af7f9364579b806cb9dbbe93669acbfe3c2c11130e',
+            60 => '0a16d2a63095c9235b318387070845de5f37351c2fd406ac3ae755625d10642c',
+            61 => 'b8139790e4f6d5440e2a2ee7e67f9906a449f3d4e4bdbf5172b05a59fb7957d3',
+            62 => 'e7ee8cda5acc0da5d38b81accc41b76972a7bc6e315bf911f2cfb28ee460cd73',
+            63 => 'df6dc4b0d3f552b55af5bb7e7667ae15bc078a3f765cd421b0a16e56caee58e8',
+            64 => '5ab55c7f9196baf1ed059d95893673302eea28324006a155471f390b56eeb817',
+            65 => '7d002e2528ebf1158edef5e218a1d0b32e9273b110d1e4604272880e007e1c4a',
+            66 => '88dabfa80a1f04ddbb7964dad8f2aa3133e523639f52f6e982dbbc309b95766b',
+            67 => 'a1b983a32bef12046a13a1b39068433cf95809a7aea9373b2735431190c73ee5',
+            68 => '3bfb904a2c911b975becac6fe13c9ed935508055c00e16dd63d82536b5bc9d25',
+            69 => '0cfbb2db3203d4f49d75810b9047fa77ad1bfb51dead84c55b246224af15b39c',
+            70 => '592840d6432be8d16b3fc7a1546644e9c671e5fba9172c223b27e56f368416b8',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '56d22e3d8a2072aaa7a7f5e47de8a4212dc934ced76fa5e58a23eed3815c9adb'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch070Pc2014CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== '3a136496a89deb7c38ecfe18') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            508 => '3619142824324db6021a3f92b81d339efd6c494c676dbddb86f1647c868752c9',
+            537 => '7700d2388439af67dbb3a9f7b53fc9c6259e6c2c083c8c031b557cc6bf0bc8a8',
+            541 => 'ad13c0ba22e08685830d26c362429a5b55b097eb7490ed03dd75004eeca70615',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '0c17901b3718e47dbc104a6cb6d6d91ffc8ac885211fb771fa395cdd3815b0eb'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch070Delhi2020CandidateVotes(array $record): bool
+    {
+        if (($record['review_archive'] ?? null) !== 'c7e9f6117dd4b526ac215723') {
+            return false;
+        }
+        $expected = match ($record['code'] ?? null) {
+            1 => 'b323ce5d697e789c875296042a6a9d72b6267551991fc24f691f0540ebc9d109',
+            2 => '1d84983938cf4d004b184261da9e801e9bb565b0fc40e7380e1da91c4ee9260c',
+            3 => 'cdf2c13dd8965f5576f416c2e69a2efd426033548326d5c75d610dc409804f45',
+            4 => '4af91a0a79375627e540742b55dd7e04c2ae3b390da5a69840fdc9f327afd2ef',
+            5 => 'af43619570ee0002eaf0681365fb2cf71c9f0e65cc9076820e478e404f7f2c9f',
+            6 => '008836ff719b5d642a6857fac0f1607c445f07b2f7906c1751f34dd88ef52815',
+            7 => '6f931f433a06efa20e916bb0b9d4ba98d97b15839419095572cec9d9ce33c136',
+            8 => 'd64c16f9b0c7123883d31c80a2a271a7dde4c4ffedad9b66f28b3f34cf72039d',
+            9 => '0d0da4aa3d0e805c276a1a74e84f684e1245ffb24d61fa9a9faf723c56299844',
+            10 => '24f670cbc9056c7ec795742fab245dceed60024534fa4db06fd59eec5142316e',
+            11 => 'b56799f293520ec249bebfc439f79020161484678d60491c07d61e3dd831b7d6',
+            12 => '0a5dddfd91b8ddb38b6952f314ba879d29d95242042e410990aecf8db5ec18f3',
+            13 => '5d2cd945b29aa313c7f0d026e0d4f06e6ee9f42b22d53154dcb515ab2b08068e',
+            14 => 'ad11acf3489922a6c4bfbdf0d95fd24fcc901f8ee67fa03e66d6f7c01ab706ff',
+            15 => '0fc60b6f97c6633f543f6ed0946ab1cb5fa575feab1ac6ff3c7d1fef7ff08a9b',
+            16 => '5d13b5992b163e6e062afaf3f67a7226e85fcfd3f972eff13ac23833a51c69dc',
+            17 => 'fa896118f1a926c24fa5d70d2c1a526e0d9795f69f8acb5dce0d8de11f4f27ef',
+            18 => 'ba89b9061947dfab4a11b3678cd3b14c84da5885badd280855c42e379c933f59',
+            19 => '6007e747ba565564ac714eae5c4dff01ec45e58f866019439f90e2af19cbebb9',
+            20 => '23f84f53c45ad45d95e72a4594d6bbec268bd9645f277b872b59c5d85c3b212b',
+            21 => '248bd691d7d5beacc7700efafd1de1ad052f1e336ac00fe3fe82ca4b37fe8a2b',
+            22 => 'fa0c504e2c8ba9eb7cc3873e140d5208bef38cec618225235985cb955b59bad1',
+            23 => '01d5eabefa91e0b3513b31970d1c9f33976c07f94dd1c27a82ea15e581cf550b',
+            24 => '52b55858893744787f25b24509c581333bb62bfec782b47eba1cc6b1e6c93560',
+            25 => '81fc8e137db98fe19125dae6765e704ab4a10411cabbf19dc67c380386853cec',
+            26 => '9e1d4a93b5e9be0ee60f532a8b5d50fee56b59cbdac3e07f8f853624eaafa848',
+            27 => '71c8e8ab12b4214b2d1616999ee224cfd3ba0e8f4e770fa52fc405be60f70c26',
+            28 => '2f7027982fdbfb98598d83a1380f7a002368fdc9ad237d9035b0248e39c0d51f',
+            29 => 'c4651b72f40f572022eec1ad49a38d4ab7c3d425d867112110b47ae160738ca1',
+            30 => '3017c07f715ec63af094d00b65308490dfc0ff76f6866156ec63280968f98961',
+            31 => 'e0f4f27df8b00ef26b9e33bc353dab535e94e8139f2965cab7868fafd04c1ca1',
+            32 => 'b1e01df8112375706289783f41b3994dc5f205cc48d09004dbedc0992c2f1575',
+            33 => '44c4f405044dfeccbff4e4047153c22ef63abc5e5bc8b20521e13cf64f06c941',
+            34 => 'eab8ef17b787970d432d2d965886cc0db1de880a460fa2ce10b144d332193195',
+            35 => 'd63eaa46b00daf0ea4babff336c1c35e2b5d884334db1ff77ce170042e264610',
+            36 => 'bcc6412f5d30cbedf832f0ae47648a62e73241e525e3edd9973f62b53b4e0805',
+            37 => 'c7de6131fb73c2c89fe47ef67977b572d4e4478b2a6080b5cc61eaf3540dce85',
+            38 => 'cae929d057385c70ef6319c637b7a5265de75e76dbddca022b7a85cca6685b88',
+            39 => '62879ec8b893c690721f02c2f038c81dfb31d2f823e408cc448c480a53cd3d7b',
+            40 => 'f6220638951346d84b202d09943f69420891701fa6a142e684534c424b420c40',
+            41 => '30ae6decfc7cf612828408f4341177990b9cba17effe40bfee7a0e072de31270',
+            42 => 'aef6c8f7dc826f8349405e78f96a6e82235c7a022c655e6d037ae4c6bbfe5317',
+            43 => '965bc155f2772c73ac3165139c97735442d45a7bf5dc4e787fbccdb229e9bdb4',
+            44 => '26bfec19cec57cf5b6a7b80a51c99244fbe13e8296c4ce0edd8e535f61c13d43',
+            45 => 'b6e3293f63ac73e303b1b15d642bbc8301bb7e32301e2b6124a8616b9ac0ad13',
+            46 => '3dc04bc3fc260bfd316e09b24322bce068512bf2796bc35b6c8e4b688b8c7f0d',
+            47 => '292455fbf2317ab213d582e96cb0d5f8dbb69c9661da0640440ef7e0dd36be6b',
+            48 => '400fbcf644d1fee940bb4545a10ab984a48ad504e5e58e69643fdebbe304f78e',
+            49 => '31d69852be834fd9cc15280cc949e4c9489d415e79e555d176370ec3e8239d26',
+            50 => '6c2c3d941ad93e2265e5251091bd6e0104a601bc0e4e6da7a11dc03d42ea081f',
+            51 => '9058e11b6898e29f5cb583fc5830fba7e92518dc8c687907383530235aa75377',
+            52 => 'd15d8237e886c9b27a26088b36a17d0746e436da1fafb416618f5f97dc598465',
+            53 => '8de51cb2103a54c9a2775746489b0d5f51e57c3a83cdfb07470111b37bf40d17',
+            54 => 'ab52f5abfd632d22155b0bde91c5f0f6df26c7a1ceec07153b75964d003cf3c7',
+            55 => '624df0003f63699141401f6a2f19f7493e511198b1a780c50b13744259fb7bc1',
+            56 => '7efd5847bc6bd3eb8ae36566df80219c9fa06ff5a45f527c00d97c03a35ea668',
+            57 => '4dba6c5c5fb849c689f103a3614c189eb1cd5fb0636803379d4c4648b83649f3',
+            58 => '89fc869f29ab90e3de6f3af0f460d96d26c7864ce9b5208140ebff2274053a0c',
+            59 => '02f8ed23a193b947a6f2af7137f5bfc9afde4a74c8bcd2a6cf4caf1855e3f093',
+            60 => 'c3d4957e4e2329dd8838081bf8afef0bfb00c4dfb01ef55b609b2ac1ed1b44a9',
+            61 => '768cd00e4b5e2b5855110df8e52944f41c062dd98ed77a4110683b9055eca929',
+            62 => '0f12a87ffbbb95801f72d1a89e3de1d7770b65048986c291416e11f1cbef7440',
+            63 => '90a6d1a387565d74b00088594740a2456fa06c6d7f8587ad5b3a0b793949e205',
+            64 => '8ed90b5a91f6ca9c2bed8aa620c772a6fe08a625980dc9f81dd219c9380abb6d',
+            65 => '126a5ac86eea3eea51842c27bff7219822c432eb3f93bff39e22cbe390e7058d',
+            66 => '5f7a9c3e44ac3b07abdd9feb1e8d04d98eb5b26c5dd51d59ec2cb433246218de',
+            67 => '0644d0dfd78843a020d03755f70e9421026fac512f0b4263b2fae14585052522',
+            68 => '5a95bca9e34c34ce9f5f22d3945b9d613db49cd0a73fcf5db202be239d14f37a',
+            69 => 'f512c04dfde3ae89e6edf083c21e3424f2a060e7eaadf3eae3af931b8fb31ee1',
+            70 => 'f81a2720b90019ccfac2cca2ee5c5da214c7c2379506c71c84f3acfd0dd5ac62',
+            default => null,
+        };
+        if ($expected === null || ($record['review_fingerprint'] ?? null) !== $expected) {
+            return false;
+        }
+        unset($record['review'], $record['review_fingerprint'], $record['review_archive'], $record['review_id'], $record['has_warning']);
+
+        return hash_equals($expected, hash('sha256', '622efda3faa1291c5f86de76b12d107ec1e4b98056ae12c4007b1c84a388eecd'.json_encode($record, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch076GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                1 => '7ec2e5fbaab14f47b9853898069b5d4f0ca0d6c7d2103259c42bad5873889450',
+                5 => '65889649207fa737f0e99d7685c7d6f386f419aad043bfda271f862271d55df8',
+                45 => '162d71b02dfdad2e7082d5f104717b5a80c89ce2d2f4543037a2c164a178cd5b',
+                72 => '2011d0670f4259dd228bee1e16e311347a1623f2a897f8e7921981fc7144cc6e',
+                133 => '6813097f27b7a1357b01fbc1c464ffd1ba2f1144a79accc246c31c317d197def',
+                157 => '7b06c65389288b68a1f6c149bbf7e44d4f990181a21529f0068c3a10d8bcda72',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                1 => 'bb595e2b0bd138022baa0fa707577d56ad99209ffebc861f312b9e2f98b05edf',
+                4 => '4aa0498dfbe3962c6e4960319856daf5c9b5135329c6d822dfd466bdbfd21182',
+                50 => 'e21bbd665db776d3573a2080b6234a70da5fb927469cb8379abd5cd91e21465b',
+                56 => '13c6ab013824488286444acd4ee8b2859e7c7bfac55c4506cd95d96b05c0e365',
+                95 => '1a80ba5145944e6c239bcde1ec4642ea5936040d3ae4020629f189f8715ad669',
+                110 => '9d7fe6049bc2788b3912505f03e2197f91e1bdb36b7614e97f92e2f7b6368de2',
+                112 => 'ac9377631aafa38750fa5d0632c89edca27c611417e206cefd1b6cf60164b10f',
+                143 => 'b4f4388a99a8be113ef4bee6fe1d55b40b16260f6ba4302a99efcee7d1382e00',
+                154 => 'def5cf97522a7a8b705f061981036dacc60b76f2a93fdf70da12c36dc57cf889',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch077GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                58 => 'e2d8cbde77051bafbf90fcef34062951c7f28203c461f3836daf799e5547eb7c',
+                105 => '15fa76694d271f7cec2a0cf2934d816e5110192af48deca0b02ee7e18588c189',
+                29 => '9e079d228f891aa844904c2a65af66b2b302faa297193a25a1cd1a4acea1850e',
+                43 => '66cda9f23e36952e8a812ce25456fd8726c768ac5804b96f9a7bb26f2fd81e4a',
+                57 => '2d71aba12bbeed30e591de2cc92f9e0df48dc09717979603493b2ab2ee0afdc5',
+                61 => '3d899c02bdf58aec54f96280c973e3373bbd547e4d1b6c07718316b0e6a4257f',
+                109 => '33ae7fdf4c5e2c90e91668d522e72115577b4a100d4d55756ff01248d4444ec5',
+                124 => '6468e375127bccaafce3c9e717c03a78d0d902cf95b6bb29b8b7919ae556f145',
+                139 => '247214ed870dd5f264d77b62cf7b59670e309d63ff93f0ef313d17149e0f543d',
+                147 => 'c1dbca8711cbb96ed522d547fe77e65a52fe370c74b0efc18b2776feb9f527be',
+                151 => '5347af2d12c2aaae91fdeff2495ed0a42f9ca71328ed2e7375f93fbf426090e2',
+                166 => 'c9d764d96cc4ebdab631047317e488c35fae9731f565afd6dfe9e0279c9dacd1',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                30 => '7536b6a8391cce176ebaeb5210f72c22c791cfbdfe5f98e4341e3c77a4ca03d8',
+                105 => '0e3323de8be03d8009052cd65ff671ebe3906915be6ea4ada2cbc5284672f7a1',
+                32 => 'acd6b9a8334fe74910e9a0203269beac09e9a4edaf6242c63303d4b8fc6bd5df',
+                49 => '9d008812af38ae51b98e4a33ddf2593d097992aabe39be53b45cc21eeff5e769',
+                103 => '25fb793d195d7500bbd684c0632efd70fbce205a5fef69f52e2cb1ff15dee181',
+                121 => '48ce1e13638265a3dedd932a7491e2b045c026d324077126e067f94b1f05ae4b',
+                153 => '4e6eef309156ba6491f3dd4a929dd12368462c48dd7e22ae1946ec4549e27d8c',
+                169 => '632a258a42dd60efce23958536f63c51289074230fac1cd0b6d0cdfef27bd94f',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch078GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                7 => '407a0d59739339ce95286ce2024bd357c43ee43542e30dde3a81f271b6037bf3',
+                12 => '0a008cbab5e918bcf33b5dbf899742b1e4e49d366d4d4597c23fbbb621d37ff3',
+                22 => '565b67125b719dc69b4152f4383f37dfe6824e3b116ae359a5497c55f7aa109d',
+                31 => 'ae4ac548332e6e55a5dc6aa2d7fa661e719f3d99a3cecc976b667e3556f91972',
+                46 => '9fbd0236bf7323bf7fac127c4844bdf5a88cd118bbf3f02a9481b91763e2a456',
+                50 => '7bae9ea3d0a64cafbddb03f6038f4614786d6fae00d08d0931e6dd0ba0e8006d',
+                59 => 'fbf44e4aba8b08faa9b1e508062e247ca055b1bfe7fc4f60a354dd94912a0383',
+                60 => '7f19e1b8df6609c545ed7262b4db8b1ea58822b815807924b22ad2b5475dae98',
+                65 => 'b462063dd7dec35ec7cc9ceb9c947d527085db80c5b04e4898ab9739a78e5e81',
+                66 => '6f863513b8a2e6e10e495b8e449859ef7b12fde3585cfb660ae784376e102a05',
+                68 => '46eb0bb02164ae9b84de4f0ee83581f5d599e3db6589032957bcf150523910b2',
+                69 => '855d5a457366943f253e592a77dcee97909dba722116b1d0d11c7c9ffbfd1825',
+                79 => 'b0ad1a7f0c351bbf3784cf00359642c21bbce75644f6e48d38f89a5d45010266',
+                96 => '2ceea1bd242883c91b45467d17f91b545e436f22e8db72cac62a25feaaff608a',
+                98 => '000610bdacc42c3ad2a282913248b29064a7f65505e0b119662ef62b34c5bf6e',
+                99 => 'f41831ae631f7a478e429a4f9380e80113cbb4449440628572c01a2d9e8d148a',
+                102 => 'b36205e66f89ffff9c628dd6cc7e05d4550f84f82c804c2a71a6f1cb28c32e1b',
+                114 => 'c117239ed0d2996f3183cb0b5d6caed105d1f7a3aef95d2a7b89a7973c46a4d6',
+                116 => 'c7a1e5dc19688125a7a27465c211e0572f4ab2981d0848774ae7d36cc8300eb1',
+                159 => '1551106cd1307c10641e5866bf7e428083c6b58f77d5eed8bb7c12d2172d16f9',
+                175 => 'befd1531639d780d24f8cb0b75e0e5a2df02dd100d7602c5d5d1fda00f3aba3e',
+                177 => 'aafd3c6eb054a6ce3be49bd32edda5376cd680faffa0e0b8d71ff2094a979994',
+                179 => '2f26a5116aa56bfc4274a60700bfc9eaa4a8f4d45f0f599e2e8f58eea87cb6b7',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                5 => 'a5223196dad2e3ea16d64d84deaa1bb1ab0d2f5c552e08ab665cdab845b24700',
+                9 => '6a607fb0fe784d254d32e4a1f5f50a05f8c5814b4c7fe3ce11df09b726c6891b',
+                10 => '82a4b328e0f8d36e7eb85b54eccf77a2773631497a89baef94da1253b1330570',
+                13 => 'c95c4411a1fc06426b3f8bf45de5026cad23b7b820f269f2ddda5e1c872384ff',
+                14 => 'fc9ef03bca14fd742649170f31cf70cebe5e148f5204a7db014c1365372ca6b9',
+                34 => 'be33e00c96e891a6550e1e8b54a4cce0d72d9f3235ffa6cf93b5c136e5fcc4d4',
+                35 => '25dfd460eac898295b969dad2b3c18843dafa9636ed2ea19dfe529a5b1e57780',
+                36 => 'e1925b4f2d5a0f0952597a5f6050c04465e6a7b8233c6e66b73ada91f8f66b1b',
+                44 => '37d3341aea4e09c06956e8ba51085718fa44ebfef95a94ac634a2786df814dbd',
+                54 => '954c8c634828b18885c8e0357a4935f605c31ea13e569b25f7c873d46cf7257f',
+                57 => '819d366d375b9a2330cbf8a89219e6ae05ac442d7f665e7ced722be0d78fd904',
+                58 => 'ad13ca4d9db7ce10ddcac6a4624348c0262e3cae84e2e28aa4df1ae6f00e49ed',
+                59 => '292fb9f98050a4ea3a7f10a62c6a62653a7e3a09678cf98e125d2aa05fd24f75',
+                60 => '7629ab1a39cd826756a87c87a3de61c7597f75f209da0f1e44531b534e975e43',
+                64 => 'e12436c9b9533f3114519707284f28edaa1835be08fba03a21e77a3633f46b56',
+                75 => '2cde3bf645820d6ebcca2155c83814040f770e128cfaecca9faba36c2d04fd2b',
+                82 => '486a84685c80d0fb7c189f40d0008fc7ef343fd3cf80c2e8c0296df4e2e010b1',
+                94 => 'd7ab2d1492aa20d38cedea8ab4e74dfc2cd79f351b01e30f100ec25072d8199f',
+                106 => '416687a04328e391663ee6bdd8b655d71dc222309f466326444aa744de95ca6b',
+                129 => 'c41f4b37b24afd1f7600f810bd25b8de16518a525bce37aa1eb2f5fbe89577ca',
+                133 => '49ab7e3ee0eaae983d9824fd0e89e0dda738aaf18904d36754dfe594556560ac',
+                173 => '86965b34d119f86836318dc8d94b6eeb42d9ed02a73133976739891671ea3c07',
+                176 => 'a0a73fe5d1a2dea3c36925517df69baa6c0536634c825b62f4248d4d103868c2',
+                178 => '79d7b7d2dd997dbe508020d81922ee79ced1a6c77803e219390197a028999d5d',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch079GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                11 => '68f2988f62ae7363f53f153befb35861965f92e7015377452bf62a224bf73935',
+                16 => '7c54b142215fb81f30b2572178b761c78b3b7ec89985017e26f1c4daf683b5e2',
+                20 => '43375fb4fa080c2480cca61c9d99e75bd1c3905b0dbf7af9be54d0ab48782700',
+                24 => 'ecf26e258ea5683a3452862edc62a35480caf105ad3d4d4e75726d1675b4636e',
+                25 => 'eba0f94d7d016eb88557b50b7bc0de221e3b2961235dc49a3f0868da165bfa2c',
+                26 => '801ca862a31c3fa1e5e09c1c87b82ec5b9627ab2f9aa3d74a9f43b140e94bb6d',
+                27 => '6b23e214d1d9d88a4fdebb4a4188d0ea10013b80d673e6b9d0e2544a0be32a6b',
+                28 => 'cbd015e2c24cb174950a4bdab6a89970c83a134aa96dee5bad5de3b603f3e2d1',
+                42 => 'd5d1973209a9dce0e04f4b251a13f1053e88a7178a843e6c0b7f9deeb704207c',
+                56 => '129b8e7b5dcf1e1a50bd7b5f46f053662dc46f83338d2a799028b183b4df636a',
+                71 => '4da288215d5ba8e57f1c0ec18303f89739791255b57657cd3f8484b2ec3019d2',
+                76 => 'ef9e63f5b647194e3410ee483dc083cb6546421c0e7339980f7c242494379063',
+                81 => '37e092390eb479bf7d736c6b74215cd326a55f0bf37ff5004d736991829328bc',
+                82 => 'eb3c6ce0b0497d9fd7075f4d2b4c9cf5c2b538ca76047e8231a1825f31ffef72',
+                97 => 'a069a20b7de4a03144761cc3068d7695ba8afca69a45adb2e4912f591c976e7a',
+                104 => '12e1edf8c268cccb5b560a590debde849899a792b0f3d418bb4fe666534819bd',
+                106 => '6e458bdcf0d8481e0a55ecb9c0945469066d8a0ff17300c06ce39333230817b3',
+                112 => '08cc4554e6d44354e61227e54cb61e5bafcea063a136384eecf4c679bb49d80d',
+                118 => '3c73212b4c1f663623563f66dcedb29b5512eace8699a29cfca8b740ff0ee953',
+                120 => 'a1ddbe980057f8ff402fe2cf95b12637fcbf02519d774647f14fd122e55edd74',
+                154 => '3e42e9e4902b3581b196cbc1e86aa12b8b9e12a0ad6b6b6a1fe9a993101681fd',
+                158 => '8c0cf0449952eea44251042ecd0d3ebe6f7f73ebb92069c66189746a98d7c339',
+                167 => 'c2091afc13e61878acdc3f4961d693bc38915d3844140249791715ebe43fae0d',
+                173 => 'ef21f95364f11a6d4442ada37298c56c6b5f24303269f6a59e76bad8a0eccff9',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                15 => '5a888352a1ec55f8fb28fcc16ce524dec5cdbc383e498934b511ce406585e704',
+                27 => 'd4b6487f2c5153c8c4532527f2794a6d6d5ac7daa15d1a1c7122b8f9040d0b7e',
+                28 => '74339125ac3a2b91acc44fddee1354be7b427eecbee68ccd7b8e70f33b06bb1b',
+                41 => '5c30dc74d4c857b2e4b507c1683f942aba9e7f3681bc1b898e4c00b29c99c909',
+                52 => 'e7ece64fbce2d9d5607afd153c223c8bae9c5e92f2687fe0e5f0c132b4006893',
+                72 => '36735374b4c6a73d34f443a0ecde5daaa06ffdb4c46f6a497f8e800ae60e01b9',
+                76 => '1c1f07a804c6896898d73e18bd51af621793da76cee7eafd9806e5674c08f67e',
+                77 => '65b4e996a5239490e051d83715ec3bd25ee0252f43dc3c7249a61845f777e636',
+                78 => '0378c3552d4fcdb1a5108a246e75b8e7bbcf664876a13d11f5a77064d5877c86',
+                79 => '82daf3ebf192a4b915a798a99c3decf0fb85348971bb977b24966f49db8b1d85',
+                80 => 'aa0866613649600702ef08619b93e12b6e880c9d7c64f54d3f46689c71c7fb27',
+                86 => 'a516476d8c11ce7f86e6955277d3376e8f83c87a69a11986c60e497b15347b9d',
+                101 => '58d6a93701ec02499b42eda4bc8c6afa203b4baef2a218619adb9f5929fea289',
+                126 => 'c3372638b441953263fc5b12164f9a4bfac75bfc1f5b31f5871c7492b8afd551',
+                128 => '8bece77fa0dd81718376bcccddec5298b5ebfddf3bd1a059e07ae73801f47758',
+                130 => 'e179f23c9aeb4a4d4c7500f777d661a45aa460e1230278802830272bea054170',
+                133 => '49ab7e3ee0eaae983d9824fd0e89e0dda738aaf18904d36754dfe594556560ac',
+                150 => '90570bd28a4a1183847d001b5df4464e21ef30b5b73ce8a9dfd204d2553bb3e2',
+                158 => 'f6497e05fc3c75e66e54f9c5937b745e845cdf059c0fb92254f4390492d82180',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch080GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                9 => 'ed4beebfddac53d04455dcf190d72cfced1d98a550685aa6d959059b2fbd3f84',
+                30 => 'a24a7a721795a003ccf9a89c79b5c45e8bd9a4b29e2c1f5d22be8d82a7bbd50d',
+                33 => 'ce9d2a27d03ad098dd7bdb3cd2d4cc96a8f6a423765c2b60be8f1744a93407ff',
+                35 => '5e3be8f752be53bc10b01c583d6a2959788dba0bccb0093d174e386f65d881d5',
+                36 => 'ed2dca3815312ba28d1aa05c8ed10dd7983724b8579d3fa1b29ae6092001a738',
+                41 => 'f3caefa0ceb94129adb4188e8eec5fb3d700609e82df144640a1987263bf1326',
+                44 => 'f1a04cf749d749119b4562ab13154e7eabdc1ce3e29c31271bcc91a872879b3f',
+                47 => '8021ba19e1057a98e4fc812f0a9859bd1a0290acbd2bb7f5bf563bbeba211e90',
+                53 => 'ec86b2c6724f4af85887ef1b6f0ba59c68d04478ef069429364400f5afaa6c22',
+                62 => 'e6bd91b58b42ba0f520f8b70967064203a05e4d0480f24ede6ecfd0332986009',
+                75 => '023baf18a88abfcd574ae2fff6f22d0fd07cfc2cb8c06011d380b8fca435cd52',
+                77 => '08d1eb181dd1b034ebd128efdbf8c6a68067f85615d958d03cf125f48d6a68af',
+                87 => '0b632f04c1cdec55b4ab752eef77386d8da850f26accb3d2f888a2ff10cac4fb',
+                103 => 'beb060e5602a5348f0609d6f0937bc829a584d26910df4cac29f757ef91ac1be',
+                113 => '1ba3b61daf6bdd3405f42cc2fef19ca0fcc59b4b3cb59a339bcc3d75308c57e9',
+                115 => '4f6a547be6c42aa8321ab456138a23d75dc9ed3a1329214c40f89360db9667fc',
+                122 => '4c92be5a5fd86df8fef735f2083851f07c9258636c3e7366046a3606de966b9a',
+                125 => 'd73c8eb18f11910e4bc1a75600c7dab4b56915d7aed6c5182929142771ceac75',
+                128 => '3dbe69cb1e62c4b5eff0446765a63529ff9306641fb68a455c20411147715483',
+                130 => '306e356252fe00ddd61fe33145ec4235751e20cf52c3e1c937c91a3c6ffa1945',
+                153 => '009efdfbb8771abc07dc5209ce902a9eb2968768290661bec6deec04647a5438',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                20 => 'b9e29699d401774bdf3d0eee4ff2ff7b03a23af315b62389b2e9ed30dcc1ffe6',
+                25 => 'fd3a71a827560a8e3d7c64381e9fde4917df98a0006d3cf78008c6db6daf7ef9',
+                29 => 'ef83a46087529823b2d4b6d421521a629311e48abc440d42c744f88f9f7ec1ff',
+                53 => '5d991af18fb1463147bb67391335e7c2795145453ee2fc2d86ce299cc28d66ab',
+                61 => 'fc13876a50b0cb5180947d7ccf6747c27ed506696f4d30383a705b04b281d2f0',
+                81 => '5b375fdb2124a89d2f479a2ff7888e64b89042d363167dc14c85aa3ab6875fcf',
+                84 => 'ecb6938d6e975d6ec8a0f908a1ce620895bf5530912ea285d94a2e3330ab6c8e',
+                85 => 'ee3fb6a022bf296f689461f2b03dd3adaede3b4469e5964bf2421e76d6d86854',
+                88 => '29329ec23ed99b6351cba88f4f8380d1008ecdc67c3b0e837f122c748a50cf11',
+                92 => 'a88c2f0506e142d16bba94d2afbcec707bd889a430bb2f5b72c821c97dbe4b25',
+                96 => '6968db23ab1d69e4aca2b220822a559ade1e8cad9bda0210cff6e2b5abd33b39',
+                118 => '1bc6d05e1945d443060dab9d6b1416c2962fb71cd6e2a46108b02eed9ba8a7e2',
+                120 => 'dfeef8420ffb8ac186773b5e4e7c0d96344f0f7810207c944e5374e1ff254b24',
+                122 => '78aeaeada9be979c040edbd0f558c47fc993b7a8cbe8e3cc3ed50331eae47397',
+                131 => 'fd637b051e7613ecec0be799b1a15f006e8e4b9d93ff47cfeb5f0b33a0632388',
+                147 => 'd58cb9d44a44d97448399885e39918887e212276152e665aa2d728601bb225cc',
+                162 => '709547bc17ca66a674a552666bd01c2f6e609314a6ce098a359fbe7a65cff010',
+                163 => '18263ed0dcd6a31948d4d0c75571269b31501a469e78d0e00cf6928e56a857c2',
+                165 => '9070977d2ad919faa6a6da7b564f4e6400853ddabbc8add125b520df4c4e7dbb',
+                166 => '3f04bbceb36a8bf18421af50c2bafdba90b189cf6e3738ca09b28c0b8de3089b',
+                181 => '7538378b1fcda2710c174514d371fc15d2a3076150987f31cef5a26d8dfcb24b',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch081GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                4 => 'f113131dfe737d4b9b90939bcb92f8cb0e67ab7a849f2f0103e54d5f7d855923',
+                13 => 'fd3d8b530412bbe17739d1cfe5ca6c86d6a8cf03924257bf0fda34821fdba27c',
+                17 => 'c05fcb9196eb1ee2fb03157020b79bcf6d0001491bda9eedc7495aeaead52c81',
+                18 => '064a316a4830d2556fa811daa29b757b0cf8dd3c54645b64e0771e41c9d88add',
+                19 => '00fdd7970a59bb9ffbc938a3337b903e4f257154b880e5279f9f32357a21d2ec',
+                32 => 'b5d29cce5adb361baeb2b05688cb17fb2e07ffc3413a58ea26832bad9529ff92',
+                51 => '847cf67c47c92e0f22da9fdb7669de5bb10bda5175365ff6a9fd1adb1900a5cc',
+                78 => '495b3975b22dcc1720137820d17e5c382fe7e35cace45f9a82b1688ab2a30fb8',
+                83 => 'ac0d5ecf72f68604ff9ef43766165f739bb1189d407404fdf5afc2864211e04c',
+                84 => 'd65efb4c9a8e0948db147f3d9f82149a7fc2a4628048aa705e89b08a474c6866',
+                91 => '22c7d5f4a3d27336ce104d5b4552dfc481e6f2a9c18d06ba1181b0ea9d4d81da',
+                94 => '3340aa133df2028aae24d868d8324b7e21ee890a7ba32950adfb4b915b5619c4',
+                100 => 'ed130404a8a84425644f9601f64fc726fde6c9d817d51e689c830288aeba3d55',
+                107 => 'f588606ba6e15a433d4f919dd75f8ec0ad89bb32fab33cb777f351bc191a76ae',
+                108 => '986ad2b94d91e92820cde61dbefa3c7d4f80387a209aea6b791585672a99b0c9',
+                110 => 'cbee81a2f43da598afc1166bbbc955f1feed3da4d9cd6a22c47de59ea4fe57e7',
+                117 => 'cf80d1e1c4f2b1bf70270df532e77e82f193fadd67d3a63e54bbd397ee121054',
+                129 => 'f95f493cf02f234239036a2881748eee4698ae08e104638e7b2b401cdadf2b5d',
+                131 => 'e32526fe0bed3f5a251ac91b8e17af2cbd6c59f244beb7789c73426be03c121e',
+                135 => 'ba1fcde0ac3afaafbb030c30e42ecf2a8defdd896dcd8d7754fc9b439c8d8ec7',
+                137 => 'f36e09d86e4ef971bc9d920250da72dc3c9f9f13e06a41149868d5ee1d857c6f',
+                143 => '2435b3c6a052734229f0b6c4850fb22b083455aae00e6d58fb9939dfb72cc152',
+                152 => 'd90a7796747a072d3590fdf79129336c4a04292cecc11764a1898a92929e88f1',
+                161 => '5fff4b06767618327381b77d2d2ee17d9498ac7d26353effccad227d8e85845e',
+                168 => 'ae3227b4c9f27017a6ccc772da1373b69a9ae2c70c749e1e0ac3cd337e909157',
+                174 => '319732646b2a9c3cb441f7294808bb0c1453f4e616a0fcd338e3fdde19130069',
+                180 => '61d50a06ac32127b14989d25ad40afae9559567eecd0971120b41bc07327be63',
+                181 => '50af523b85dd0bfbe82a699174b5a7ab5560a779ccf42ea95f5e2839b8322b5f',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                12 => '0842213fd6bd931dc0b77b2c569632a46054d271a8fbbd734b94026589a2b408',
+                16 => '254b266cff12f4a0e912c83c40071ecabdf00a32afc6f2ad78ef192799ffb208',
+                18 => '2112f0d9ab6cea742912d98eb99fc1e3ba8d0ef600b6fff8d9bded05871389d6',
+                31 => '629b8c079a503eabe0caa36f74cc1fb4a2673f13f1bca52f381964b3797de940',
+                33 => '6d9072fd13b5ee17412833ff0b0b3bd391a8aeda1eefc8e1fc3ac0769179d14c',
+                37 => 'f91a45494b4f01dafbe58eeed9bcfd3e7c137c57de6136d23a3fb26ce32d6957',
+                45 => '8f52a1e4d5aa64d4173ea5ad6e92db71602d94fa7f5959f42d6a73a59463d39c',
+                46 => 'e17030b27a6d4cea27785ef400c4aedda33c45c3bd1db495a3362d033aa6cc74',
+                47 => '85911e82ddddb29b1a6ff2f88b4e02f2e6144c7f1c63d7bb02a7c88ec12124e3',
+                65 => '8b48f656b368aabb278a37732815864d59e8fb4384e8fd88ab7b1a170e6cc1e7',
+                68 => '91245f3c5499989139242b4e7a456fe5db6dd1d82afdd54cca9aa02b2a4bb234',
+                70 => '5c1b6b9e729fb9eec1a4c1460ee2cea8e734a51a106ebaa7e0fe91fb2f9c3057',
+                71 => 'dca28fae40512a15e4fe6721abad6b7d1ea0ea879b62d314771e130b9d867ac2',
+                83 => 'cd2c032fc5b026f2a119448f4687eb0c141d6c4d36365515f5cccb15d7946b96',
+                115 => '906c0cd1c855243dff259cacc1a0105c7247f0ad9b145577dc7928b46e6d6bc1',
+                116 => 'a8204b00f8e3ceda9605c43727b634c0819b14826e41e0cd403b2f6aecd6c500',
+                117 => '9a8e2cc19ad36f230c32afd9ea40841e4b74194707c1bb7adcff32e9ecca1e0d',
+                125 => '7e9024a1fdc250789cfb1d123e95a0965e1fc9d7e9ff756ae8a1d21bad79e974',
+                145 => '4c8f33f5c5985d2b44ecfd0e106c5788a1506494eac6c107dd20d7ec5d308d71',
+                146 => 'c51e913f3b9f207a48af3ce4cbb4127307082a317266265f21c0d617444f1976',
+                148 => 'ef05f3774ed04245aa2bd70c76f08f33e474e07c726951027330d1bdc5650224',
+                155 => 'bb08b21225e941676627ef9018645581ad3dcb03d887f405ae7e6dad631997cc',
+                172 => '8221a5c0f36c7f1ff3b1cf04b21331c3b9bbce1e77322281f3c01345a6ac6fca',
+                180 => '4da0e403464c1e0fb858e58a2f74c72d94997ff5a32d14c2808a0a229f6d427c',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch082GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+            'f1b2d14d54b2420293125662' => '272ad70d1d7cb3b4d65e5ec2f80888108eaae45c3f08c1079048c865ece6b469',
+            'b089f1ea6668b55e759ee45b' => '51502855200e137d67cca72bd036629cc6fa9b2bc8a9a1e9cc90758134d51c45',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                6 => 'd19c067b1a83671515ff36e8be7d5ec2a9de862dc1c3d16555be3f5e64e0c078',
+                38 => 'df8d773d89aa0f7c59cffdbefb5a13bf6fbaa9d0468f2579766b6da4a3209067',
+                48 => '9b00c5e331bb9cbedc9a597f1475ade530709341c7310b82c6f43f7468ecc405',
+                52 => '557e8f28479417bcbea695083a3898d0f1b2e2d5c2cb79baca20a4af466ae53d',
+                55 => 'bf304d36481daa93e99ca40458ab85f851fa628a0dbf6b9493eee440d304d588',
+                64 => 'e5a0c9a8d3e900d8f7f24192302f5ad61b28665126858af3bb700933ddf8c873',
+                67 => 'dcc9a4d17bcb4c0b2ef17b5f67a6137a94095848ed81a63461004664b33ce50b',
+                70 => '0380e27739890b846ac2e34264758cfdbb55d78fe67be1a88b53faf3a58cd9c2',
+                73 => '5922822bd79ff076aa9a3b2eb00e46709c987524ff2e2125f45a6ea440c076af',
+                74 => '54c36cf767b69165a946be3ef2549fa10f8bc36115a3742810c34331e4201a85',
+                89 => 'e1df44966d7451103f1bc56e84b8a6ce8594c4b96fd1906671906e5fc3d25c63',
+                93 => '9a98131b0c435203bbab831563fd55af845f5f01587035047287282ad5100ae3',
+                111 => '79ef08132b7a1c467d8d3234454717511649b35753dacb5c6246f042e7dc6f06',
+                121 => '4f85e6cf0f8fa63e4708790dd3690f41e985c05d3c3a0ef14ad02d7592bce05e',
+                123 => 'd7e4887044efd65be52970873a06ca5408640b1fbbedf6259ff2b297c49f76b7',
+                134 => 'a42dfa0aa9df207d412de9e72339177c5bdc85330ee50150419e3a860f703dc7',
+                136 => 'b328c6b36f8851fb8a6f4fba1b306e3b237744ea21c724cc59e72e1a970d47e7',
+                144 => '8b99afb93b0c38f5ea32e32dce86924dd038f91f0150b8e057cd8dc17c803c83',
+                146 => '45e2e7f8ec2a7f98ef6dbf52ce44247056c4a93d1da1f65991b98cd26e1b9285',
+                148 => '18e532dd6bc630839f8bba96495d5d86e7cb4a6e0c4ac615ab633c8eb0e0c612',
+                149 => '22e29c8eea3d6f2e3c5c3d19eead56f93d9de6b016d432e46380019379fa5036',
+                160 => '4d75593e7177dcebf10a829141bf43ea65a04aa0caafcd2c3cd0eec88614b94f',
+                163 => 'd37340449284aa3893de2f86823a08f80fa66ebc30a4b481889b0845d19f996e',
+                169 => '7aa558c5cae6baa765a36e1eda679c664c20a015cd49a02174cc29e95f80ae39',
+                170 => 'b69fb2bb6d5b1d784c6c87d6366fefc463c73b9347eec93646a968c8c431e274',
+                171 => '520b201b16f6c802ac8c1fdbdaea350666400f6f26e55fd3f352793cd32c727c',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                6 => '7be0883e0956d6441965c2a002babc3af77e0dbd59b475bb6a5ab21953c71d76',
+                40 => '253aff012af8dfe0c9bfb2b569cbc4c60c530d7d45dda159f7419620a28e0df3',
+                55 => '0adbbf767b521591126bdce7ae06b9b5f5886c96c6fd91921c745abdc4065f73',
+                69 => '22aa9a3d7664bc34fbe3eac50e379830d0d0dcc33663498f480a0d9a5487a756',
+                90 => 'a1713b0da24450b5a224d2f58c77258675d5f9e01e962b62a8cbd02aab458ccf',
+                97 => 'a612bf0b7b8e2af5754ccbbd477f411ad979882d29aa1a755467a79e982a2068',
+                98 => '41f9b5ea93c592887d7f8a151e234e511f69061564976d54d0889f24180593fe',
+                100 => '4f7de2a5deb9bf500837f72dd9034a9db1c4c31915f4b5dfef1dcac18a7cf846',
+                114 => '1efb6fd7b35c253efe5c5ac456309b67852e60922c94ccec4eb91eae65a4c99d',
+                123 => 'f516e2f7d68d0714e01324f280ba18ddcc2e7b50fcae35ceef4e1c810f9362aa',
+                135 => 'eeba615d5c152200bc8318c5df8144b169cd7168939e4154ba920e27aa7b861f',
+                139 => '4c6e4c728b8774bf04b279e2dc02f7818c01eaeebbcaa789afc0a3e62c503ac5',
+                142 => '16052a4163a43709314cc44a1908d6fbc2ccc8e4c47c3604fa737dc7e8a1e15d',
+                159 => '44a1d0037ee3a12452137e8746bd317963015bbd310cc5c6f5c641b55e128db0',
+                160 => 'fdd3aa82030566aae21657dd2047775e599cf072f224dd7f20e682a8636dfd88',
+                167 => 'aa36361985e1ac52de462b0559466bc880817b23149dd4eb8aae9841edac2771',
+            ],
+            'f1b2d14d54b2420293125662' => [
+                144 => '2a61791221e5f70acea3d753f95d0c38646d38556b602e675a4f1414c65893f1',
+            ],
+            'b089f1ea6668b55e759ee45b' => [
+                169 => '2c9e2dd7f18a628667525bdd6d249d24e02722202a221336429703fffe2dd98c',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch083GujaratCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c',
+            '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3',
+        ];
+        $allowed = [
+            '25d92852e9975cf32d1b94bd' => [
+                8 => '36682be7ba48e657d9a3f8d87571659a5e0753e25c14edba99762b571391a7bc',
+                14 => '4cf01ed40691c4ccd2d881e58310277973d2ba8cf6e5672198517377dd0320fa',
+                15 => '9cfdabcc59bf0f427a6a7ce78aef4bda5961e4eaabf124e2750289a1eda37bab',
+                23 => 'f9815b1ec4d1da56c5b62a7223e2870fc817e8c950a5c05a6f42a324c9efccc8',
+                37 => '565804fdbde7a7b6e189c054485c5d0fa5544d368954a994f719913c73c55ac4',
+                39 => '73051c570133ff3d2f8c20c245672c6c1696128fd8930abfd6e1a57bed5675e8',
+                40 => '018d375ef702ed54080d543b0f951dde9911fe5c5346e430b6398a19da50724f',
+                63 => '7fde3ab8707ff2ad94a7937cbeab92508b4c058f2af163034103b997a4a10dbd',
+                85 => 'be4b806283fad9a97daa4dd1d20cf4927aa231b075cca279d54450c4f5169b2e',
+                86 => '6b1e66386cd92e4322280c1f970fbddfa0466a3724a8ae0ead115ee218ddc702',
+                88 => 'e541a00cb48fd4b270ed440d260da535e4222fb566691dfccdb73b964d4be70e',
+                90 => '5c82cd139fdf15e15c5c7c4bd75774a67bd96f5c7c697af3e6b19b32ded4f2d2',
+                95 => '22e164261cb8e7b9acd1e321e9b81a09219dd8bd380dcb912d93d5710b2d7ba4',
+                101 => '353e08355c7a2c04b774d8b3357281bf34fbc6f36a51c3ca55eafb4e6ffe65d7',
+                126 => 'dfc6cd6afe25e4efea51eebcd0dea5a5d0699e39b5db89fe374b48add6dedf57',
+                127 => '3017bc69fa2a8faa108a7a1b4055d1a3fd93b4b895de64415eb19b68cdcb7820',
+                150 => '1ae302132a1b36c185175a2d9eb2f23ad297cc683b380378d1f7ee77598998de',
+                155 => '7f0723e4366939be5b8b9577799c619a8c1760f21107bdf0f3140b2858b9f613',
+                164 => '853450fd9758be90721120c4f466698bf75484b83beee4604b2bc841ae473eb7',
+                182 => '24b02300296a1b91dfeab5caf75e064dcd75fe92b521685a7c9f88ca57e868d8',
+            ],
+            '503135d3e838d38c93d3bce7' => [
+                7 => '17214a7fb44407118ecaf03b9c03f2b4bf3cfca3b89135bcc6a96d3c78f9fdfc',
+                8 => '736759a902c5f962de801cd44f8edb5a396c081fb7713403714ee2b02d72c92b',
+                11 => '220bfa32d831b3d5e78dd724cb6b55215a2d3401ba89aa7a15071a9e014bde7c',
+                21 => '84c380910ee604ebcb7fba0598b4993d16116bf621945a253f065d70ecd132dc',
+                22 => '4cefc655aaa5c4c41732852d7bec52b2da2f3bde8546c59cce63c97980c21aab',
+                39 => '5bf9f3d61a2b05ec0a4fcaccf53f76c0ee6281dc968f069066488d32446b2467',
+                42 => 'cc8f418bdb83a1d6993bd44f3a180b625d2e639b7214c8f9876d6cbd5cc39817',
+                43 => '56baa2cb9d236286f8a6221623e0e520a4fafc69f9a2709892b99233859ac58c',
+                48 => 'f83acd6387d645a103085ee28a9e0a3a2cf0da35664839f4edbf27595454341c',
+                62 => 'c1d26e0afa0df74a243b8a190149a7da29819dab05d38a5cf63920479524ebbe',
+                66 => 'd3823186be7508cd5e74e51623565f461960e7ef5a8dbd96b0322164f4516152',
+                67 => '3410914fa2333f9ddc8ef337ee4d697664a8bd41c21ded4a7c236976f68d7d04',
+                87 => 'c468ba7ca6037a9dd873dc0bd5731fb30fa34878a7bbe65497dfeb36ca814446',
+                91 => '13c14a4cae0df3277325151c9e2103f6909c789aa177d8ac3c48ee60fae8f638',
+                93 => '1296cb64bba794495a3f20aa2df95de5698801115b5af92c119a6dc90f38924c',
+                111 => '77a01ca23d6aa4ba8377c33cdc98c129beee62277a1071a1dc8138f316dc50cd',
+                119 => 'b4c06580007763e91a50db0a1dd7c5d368fc14b8153e612b02fd7493030d6640',
+                136 => '6fdf9e1c881b5e50dfdef7217f60b817d65e5d545d05edb3748634a5e90a63f3',
+                141 => '3b9eff48020bad9afb71cf236cad9a03e453a1601b3135306eba0a19f83d3fff',
+                151 => '152612894e9192353520ca5058d3ca0b3b0ef1f9271e0075d1fa7718d7ed33cd',
+                161 => 'c14f264e6923be776a8d00ab5e1eacb73d93b5c3e42bea5e1c830c860df60705',
+                164 => '31bbea8e25ff2dcff9ed1d65e601d582aafba14ac1b48e747dffb726897f30d4',
+                171 => 'a17ab8ecae5aefd40996b184c53940e9b4ccd402663ba50c1db0bf1b8ecd6dda',
+                177 => '2eb5ea31e9e95a6543fbab4292b10acc38e1254d1c0c777756884366d0f01a21',
+                179 => '90f9a950cc9379ecfc026af463dd412c967deeef072ec70c4f33f22e779feb4f',
+                182 => '68de5fc531c6bcac184c4bda203bb9c7c309f84b84634f00a1a7a6db0fd61409',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch084HaryanaCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '4ac73455f798dcf3a8d2946f' => 'ae28f4de8a9a49593c231bea653f1063aedaed6d20c2140d12414a245f83ef31',
+            'd34e828e1f0e22a96693d1c0' => '446d2ba1038c8dbf52cf6e1805f47184e4cab437438569961dedc38f20ba192b',
+            'd356b3fcb0ad49edebd23724' => 'fab889114fb35c9fd92b78570860f8912b646f650821bf7d4ac28acf95b68235',
+        ];
+        $allowed = [
+            '4ac73455f798dcf3a8d2946f' => [
+                4 => '9f8f45c6eb665e3cacc21f5e622db5e15f13926716b91e1081f783761356e468',
+                5 => '569c93261b77484bef2858b9e19abfe95ed108b66c7c29642ed4a3b948b7255f',
+                23 => 'b9f7582a49ccc3b4c024f9cc202a1719c16e378c45d8d2d507893dd1e06bd999',
+                47 => '526e77190576939b706add492cc8b51a05e62828683017e23944875da052ca4b',
+                55 => '8948ab202d98d46cea90a079f0bf9fbbf57648baeb8471ed979ca5f2f921bf8f',
+                64 => '2ff07c8a917fe3ba96a198f356f1293b7a83a00dff9b6067007b800a6d6e836f',
+                65 => '877e4ece0bea13b241606965c8ff3a795abf13599bb512b72e718a45a3375ce3',
+                68 => 'e4937038ca070de9ce5ded33f541d2f5126be92a69460786c51e24a2c7fa5f1f',
+                76 => 'b3ca7c48e379e0af491c17fb783cade386b5920dfb2c799b9313b2303fb382e8',
+                87 => '51d35681763978587028e68096a203e0ca1f2682f3d1aefc5d4ea5c5d3046459',
+                88 => '4b32ec3bbbdb7b06a572411ca1c1966dab9365f42d1022a8ee6747837cb8eb3b',
+            ],
+            'd34e828e1f0e22a96693d1c0' => [
+                47 => '0a6f5bc37d8032d9104b1f17f1b6c9f7688c48873cfb9a33e9c64e68f656aaa5',
+            ],
+            'd356b3fcb0ad49edebd23724' => [
+                5 => '354bd5f23bd6abc3803c34cb7d61b03ecdac7982599a23019ab902d708f9e7ab',
+                23 => '5b22d568b2824fbacddb8369acb37da83f9905aa0ab79a3ba25bdf493b818ebd',
+                47 => '104e2cb6deb19b1def5599eaacda1752e81bf6e6a15048d991a00e8164980b9c',
+                55 => '084ad28ffb3163a7b1681faed635f3c956396856f4b4233ea3733adac370178c',
+                64 => 'ef2289347dd96005949f3287e72d687f2a19e7c5f7a2c0fdf4b81f476f41c50a',
+                65 => 'f6abec2067f5c9bcca76088ca29d13a712682b0a8fb17fc777d9fb19c3d14ee5',
+                68 => 'b8983ac4d2361cf6ece12d6a807a5bdf25cf99a38907bc20acb6922ec598a5b5',
+                76 => 'c0ea6972d7001ce46e4971fb8a82d9901870a3d656878001314179fc5ec2106e',
+                87 => '2d6a65ec0e706f7ec347f173e125f948c009051561aa8b9e921226710278a854',
+                88 => 'c63cdb3e0a8c5c9c3c553c2019f9750402d90618b10b2de2688faec2e9e92de7',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch085HaryanaCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '4ac73455f798dcf3a8d2946f' => 'ae28f4de8a9a49593c231bea653f1063aedaed6d20c2140d12414a245f83ef31',
+            'd356b3fcb0ad49edebd23724' => 'fab889114fb35c9fd92b78570860f8912b646f650821bf7d4ac28acf95b68235',
+            '06dc8260d112f93ec51b9e06' => '4f7fd0f4dfc995f474512148cb7f22c58d020489ceeba02bfca47f9c63a7cef0',
+            '9cb8816f5dd2073708040572' => 'b48a3ff7b4dbb7876aa8a6348e9e74347b60a0ff1c783abb2934577425160fcc',
+        ];
+        $allowed = [
+            '4ac73455f798dcf3a8d2946f' => [
+                15 => '541d5ef5e803fa75f1e2f1b77920d24a3932331e5d03b5e858e8b726894d74bc',
+                22 => 'dd05aa2bd07962d9c8de981335ddcb4520cd19cb1f55b1eb5f2469058bad5e3a',
+                28 => '01b70790018342d7af0c49a4e26c64b0faa7717a7eb6f4e16167af8e83e3b14c',
+                32 => '6b8d0c13b2938bd28dad4b127def4e82d1dfe4eafe4d5b46e32d76479f996751',
+                33 => 'b771d0bda8b2b443969a8bd94764cf524d3a343af672a17d78ee84fbe75c6e8d',
+                40 => '545a68f1250f7432afe0854f8756a1fb8b4a1f12d3d913de59bf4b13eee1c60d',
+                43 => '1859dfde3c9354a979961529bdf408783b439cc1d475a81c8d7debb865ae08cb',
+                46 => '48a183afe79a8fb0cac2acb27dbe732ce6db72f2fed8c6b60ba832a583163e82',
+                50 => '3a57d81b76b7b28f577048a2d3785b50ccbd760686723a1743d03872c90b3280',
+                51 => 'abd1b8a1016eac41e5ed3128486c6a07d43c3abf901c5f4f2ee115050d8398ac',
+                52 => '9506310cb576a2834b54a3836117dbadf332562af8875df81d014f773a01e0b5',
+                56 => '30cfbe3bb023c48dde6c856395b0205ab3722f717ad06d8b3918cf6ac09ad7f7',
+                57 => 'e29b1e3242c7e3264db453518f549182c5061d5abe512f160907ad69aec8a677',
+                59 => 'a39423dda2285b0dea8c6c0cc5f639bcc3002bf568588ac678e4855d320df30f',
+                61 => '0024d499207d5f98083dbc70f02dd6d2e0cf78f552381e615ff9bc45144bb647',
+                67 => '4901864983049fc2a31292305da68e60d751bd5eb87511d343a2db2179373d57',
+                72 => '7847859cc2de2aa77da6f051505e6f8d55aa46568719f4512340bb37eec879ba',
+                77 => '076c667839a9493b8bd87c2b0ad4b35dd4898fcee21b6af30cafadc64ba8f708',
+                80 => '1fdad5131e5b7412a14953441b4ba2b49ed71bd97498024d2a25b1d5711da469',
+                82 => '0cedd9bb009fad3f804b0440fe38280dcb6b23f7e8186633d9e62f319e57f980',
+                83 => '4aa3e025ee8af1d3ef3f78e0222fda80fe5d3d2071111df425b93c16879401a8',
+                86 => 'abe5b033b99a1a06cebe997f304b603803a96d2a57b6f8301071bc4f99200f90',
+                89 => 'f89249775b1491eb011dba43775fa3215527b661995d15e8c823b1fd6f0d0b17',
+            ],
+            'd356b3fcb0ad49edebd23724' => [
+                15 => '05be04a2716bb828e59cefd50c6ca025ab775f521bea9ff20716ed82794eeaaa',
+                22 => '8cf2366d50bdde4161b84082318253c7df4b52295960fc3cc280665daa3c65fe',
+                28 => '4422f40fa10e2ca5206ba7fc0bdf12fd9b0e8a32a514a83f4db593bea26eae37',
+                32 => '48574997dfbb461b9c9a383668f21ef00d06e02d5f1bc3d44158703d900c4322',
+                33 => '5d93d7adeebaa80b8870d62750fd9bab52016187f9277b7e189f8bc0ebf162e7',
+                40 => '4e392af62f9b04369a08f58fae69ebd39c03d433cafa47620270ecf30a24bd41',
+                43 => '92dc9ed40e7c9b8162d836dbd58047ccb7d1a806a0c103aee958b79a0c214d90',
+                46 => '56b5c09c1d882fd5d631d37c0d765331e8f6aed1267e775a36817072b43032fd',
+                50 => '5a566b3f859d71d0f2ea19fd6efe8451cda4c38c87a1f17affaa803bbb3299be',
+                51 => '5419b28044a55f48ab9fc75a42baf5b9354ec95e8c2602e162f275d653b14c57',
+                52 => '099095170fa97f7e4fe4a9f30896444353c2211b02bc83d7a481f5163a464491',
+                56 => '6187ee3c9dc8e5b2c05787993aa6bb66812226c45e47491fb7c84c645b116ce2',
+                57 => '6cd9bc26e5b0d265e387d9d647da74a0ae56bf213bbe43362886d9e37fa2a13d',
+                59 => '3dc70cdd5871997ee2776a82dabe598f70308de757ecabda8b74362de4b355fc',
+                61 => '826579d3489853e6ea1bb04799a9e46525bf3bec1855f0113a0a393370f55bc4',
+                67 => '7d54642295c804b672af3ebbddad74327185c43af754f3d9f589e51d4a1d34e1',
+                72 => '20f62569b58e505fbf038c2d701cd07daa3f98de291485395a6365621fad81a5',
+                77 => '6e9380fa80b2c891a13eeba9ec3aeffe05b997c13e4cdb03f2c4b33e14826bfa',
+                80 => '6c382d475c64feefea37f0e07b09cd19fc9fe58b60a37ca664c54afe55066bd1',
+                82 => '3e39ecee4fd4d83eaa2ed120e336385a988a1363b20d12bd4630cc9b54868623',
+                83 => '139cdd5f1161293f9fd111f078e84f2468fb006dfa543f58691f57fb879dac6d',
+                86 => '084df2af928fa0cd7a37b67c58ee1aa178d87cebe5da1a983df459827fc892c9',
+                89 => 'ed7013d3cd69b78a298bcf13929420c86c8cab13cbffa4d926013d2880448c7d',
+            ],
+            '06dc8260d112f93ec51b9e06' => [
+                57 => 'bb363b984b5aaf439b29508f84f9ec165b22c5715cbc6665dc702b639ac13ef4',
+            ],
+            '9cb8816f5dd2073708040572' => [
+                15 => '83e1fb58f8ee6356a815e24b734546dfd60098f6e824dd27132eeffb6451a080',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch086HaryanaCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '4ac73455f798dcf3a8d2946f' => 'ae28f4de8a9a49593c231bea653f1063aedaed6d20c2140d12414a245f83ef31',
+            'd34e828e1f0e22a96693d1c0' => '446d2ba1038c8dbf52cf6e1805f47184e4cab437438569961dedc38f20ba192b',
+            'd356b3fcb0ad49edebd23724' => 'fab889114fb35c9fd92b78570860f8912b646f650821bf7d4ac28acf95b68235',
+            '9cb8816f5dd2073708040572' => 'b48a3ff7b4dbb7876aa8a6348e9e74347b60a0ff1c783abb2934577425160fcc',
+        ];
+        $allowed = [
+            '4ac73455f798dcf3a8d2946f' => [
+                1 => '505b0a43bf5f1fdef6f2ea33b92fa23e295ef467ba1ad803f64afab503a9f90a',
+                3 => 'a847f5c80174ed73ba48c1848824ec75f7665feaa237b8127c23f508f43796f2',
+                6 => '2ad4f10aa53072e6d1537cbaf1e1364866bdd4aa6498b58c121ac8eae4ba08d9',
+                8 => '979d728152e94385a827242175e598cd3bc3491490cd17020d2bcae7d33d0bb5',
+                11 => '7af3c0e20ea7cf3cecdb01dcbb4d80fe4e4b5806aade638e725f4e6fb8122a7c',
+                16 => '3902c3c5105646f95979d2227254cc5e0d9e9a9e39748f2029ca83409057339c',
+                17 => 'aee05f890baf6d1b29e7198fa9c302cd0d6795b065aabb82d0e996d3fbea3479',
+                20 => '7a9522a8dc0dd59bf669512be32fa5c8c45726be829c230efab9e4a40205ee30',
+                21 => '7f69868d49b6e01b340f9f3bb9935f4ebac388888cb6a9d27ee77bd31e797a4d',
+                26 => '427c8ab6b23b18558293da97f82b615e275905867c0f40f4e9844db20cb353bb',
+                30 => '14aac0450da81afe8d0673a697e80141072797753d302d72071dd7e1de372e7e',
+                34 => '995208ea8fb8fff31203edfef7350146e7186d768452b78d0f190cd87bd16d8b',
+                36 => 'd9d3d997da9549a7156f949de7905bb7f7b4b3230ea28d39f12d4b766d934de6',
+                42 => '06f620cef3ca91d0984f0ba0d9bb39b852a18fe9bab2849dccceddcd6d90ef28',
+                53 => '89bd6f40bca9d25f221358850e643f2620d387868ac5b992e2af1de65847a841',
+                54 => 'cd9a2090cfcaf98e0053b6e3af309d231318dcffb9702636d28fed947cc4f79f',
+                60 => 'ab6a5e6fd6c6e2386b7e3610d11c6e84f85e01bd6f4c9734009fba10ac3143fa',
+                63 => 'ee05ed8609d8fa3de199c2d83ca46b6497e2e0f1370e46a3f0c1aae491da0775',
+                66 => 'f8a2e7787d3fcb6fcc87c718b39b6817297578a1e804d4296c182ae9a8083493',
+                69 => '58292ca168b9cc652e8c926a018cb2acb53d47e35dc72879efa6b50dae68dee2',
+                71 => '9a0db119f268a54ef5bc8d1cc2522fdce4791996bc8a08cec0ca5de7f8d9e3a7',
+                73 => '7946fef4539e94878c6d40d8b12d95d6b4105197cb3f38f418db78f172bb668e',
+            ],
+            'd34e828e1f0e22a96693d1c0' => [
+                53 => '3310d60e1356428b6c27d17d8f4aa53bc028d72804790e3036d6b00f9af5f0d3',
+            ],
+            'd356b3fcb0ad49edebd23724' => [
+                1 => '4aaf84512688e48c544c380cf0cb5e4d4908d401f671791bf263197749a1716e',
+                3 => '1824069b3b3ff33d006018c1a8217443b41673709406d1daacb3a7b54a45a9a5',
+                6 => 'b8064b3455b469b0ade869c80e7be287986859d01fdee92262c3f490b7fcce87',
+                8 => 'a7752aca55d9a4eee9f573d04e6fc1ac38870a62b65014ef33557b8e942b08cd',
+                11 => '81e35290c6a1363bfa6252822f35da51e64eec6d432c573e325541cef9f6c159',
+                16 => '8765ae8da7bb22120cc0e42ccb2900a56dff315d9b21a821624eb964553e832a',
+                17 => '1f847ec0f79fd10a147e4ae4fd8fe037d5aae1dd5444975f90b5be73420e70d2',
+                20 => 'c31d50dd40d632ea7c93cb06df221c3a251820ad33a0abaffb10bc8408a2f079',
+                21 => 'b8239cfb52be900388243ac80f7bc31025937e7dcff343ed06d021437d4876e5',
+                26 => '71c43c8dc04f26cc749bbc8c42a00a97b5196277dcd1539845c8478ed79339cc',
+                30 => 'd116db25b950fff462b74f030c04e3be6702cf4d3d1560e68ace2b2eb41d398d',
+                34 => '50d44ae3d0966ed2873924c3801ea07dcd8449c93e36f0511cd76ca06a36d130',
+                36 => 'e671fb8df81bb077f7f7712ae368ef4fe71ab95a57740bc2de9d54947987ebdb',
+                53 => 'd89ad567e5ba44e4e187eed647108b4d4ac65da137419d29afcf23f858b93854',
+                54 => '61595f3feea0cec60013733af4d31d6f2ff1d8af8b68f87b15f0915c0f3fb1b9',
+                60 => '07e6a12f73482705a6caa2bcc01ec045c4e282499308aee291f5e8fc61f4af76',
+                63 => '0edd1b9d931bfd1cd136432ec064334115b53d6bf6442b6ec3252dcfdf8a017a',
+                66 => 'b9577167d2fba174e4701886f0a7d11544751a7b98eb86382362abf9926a3edf',
+                69 => '9e6bf43bd7f665f724075f991d6da3e73a2f28ec898628a775cf4495977ac2d7',
+                73 => '13e32300ded79ccef23d10bcc2d4de86823a061282704abdfadefcc00ea305ec',
+            ],
+            '9cb8816f5dd2073708040572' => [
+                13 => '8bcf1de5e84a7867d8bf2346ec9e3983a215a0a0fac22780460b45488ac77038',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch087HaryanaCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '4ac73455f798dcf3a8d2946f' => 'ae28f4de8a9a49593c231bea653f1063aedaed6d20c2140d12414a245f83ef31',
+            'd356b3fcb0ad49edebd23724' => 'fab889114fb35c9fd92b78570860f8912b646f650821bf7d4ac28acf95b68235',
+            '06dc8260d112f93ec51b9e06' => '4f7fd0f4dfc995f474512148cb7f22c58d020489ceeba02bfca47f9c63a7cef0',
+        ];
+        $allowed = [
+            '4ac73455f798dcf3a8d2946f' => [
+                2 => 'fe8233ec5d0d51af7b277bcdce288f93515cbc40ab0025e9d97aed8069d261c0',
+                7 => '98d12b51083b9276483bc5773700c71b16d5be756c6e1268017b5524d3b46d44',
+                10 => 'c232be90621dfde0b87e884020a08a4e1c3fe53d1b2cd3f190dff13ac499ff63',
+                14 => '2d27a46a2c4f1e9e69f1b057cd0ab411ef62e03a0e9f72f62efcb6ed54385fda',
+                18 => '6646fc5a708d945f29cd7e28dad5e4cae3e15a702811d328c12497ab40a0688d',
+                19 => '132d90a3d9ab9d0ca30f4c4e34d08a759566aefb5dbde38fcd3120706994bfe1',
+                24 => 'fbce640c4cfdcc0981b886d7cb6e003816c776e145b2c5ed85008a436b069de3',
+                25 => '6816da412cef5396ecf7e879384a65fded0befd266794956d36062b0246d5fe3',
+                27 => '3f80eb2b68e19120a039512ef45b7fec12ca6f5e65c57272edf96df734542199',
+                29 => 'b4e98c07de325da27ff0ba2e327b76ce9ce4b53abd9cad329720fcccfc19e35e',
+                35 => '8e7ba04282dc5be1a1dfcec191491fd861fbfd4be9a87caa3e660e2ee45af828',
+                38 => '34cec8a038f523d76216a062afd30132657a420955e8bf0098be2a4934b60f52',
+                41 => '07c0e4ba4a96b44f1cff1e1c35e9d739d52c66d09c2f3e1f5383c6123a2ebeca',
+                44 => 'b087c89bf37910fe045e2d8d0a07d4cd2a2f32c78dcce5184c4301db688405eb',
+                49 => 'cd528258349d2d5446c9a56f7882f3bd9c95c144079f16048e6b172317d40ce9',
+                62 => '3b51c3088201c4fe784a7edc00db70d6806c7881e439bd1f7a20cc203f662a55',
+                70 => '5fe22d03f406c53bf925bc0f6619b0776bbe6c85bbd7eb14cc303bde7672ddb5',
+                74 => '3ff3d645c7ac53aba37de453b0a0a4fcb8d6311c7975f6e3106f583b733eba33',
+                75 => '0fdb18d4abf5014406ddb1b394f802d2505f98c78f5dcfbc596148ed60408ae3',
+                79 => '330dbad4604b6cabf6803d04bbfbaadef3b3079a2a8c0e923881bc9bf5134f5f',
+                81 => '84ea20e91c4f35b89ed9ffd2401824794332374d9db4a46b38988fc8479729b8',
+                84 => '0517b6730349f6badb9267c5455e6988b5be5270a6654e35669761798d40f4cb',
+                85 => 'cb200f1eff2a29182803fa41c11dc7f14839ddf4495224be600c1b182c9445d3',
+            ],
+            'd356b3fcb0ad49edebd23724' => [
+                2 => 'cbc4e246d2561167809916157a59499ae52566b1d404ae02d837cc3bfa780006',
+                7 => '967bea99909127075c183138a509b1ea0a0ce8d18ea29a309dc952a4196f2221',
+                10 => '2ff9b57f4a376a2e6f9adee895814ba33e639bf08f9aa7e8a9322f61909477a4',
+                14 => '7d1449c9993bcb949825ee1b2cf0eeb803fa39d4ddb3c40f3551f52f2a578491',
+                18 => '3d72dab018f0717710ab465d8e1c527fa4c0382ddf761e74cc6d7349daad9cc9',
+                19 => '6209ad593102ffe5fe08eb79973511390e329af12696427577f46e3b3f8cc5d8',
+                24 => 'ad8067516215f69f1522a7939f99c6a2c3d15a4ff37fbd27e535455755f62fc9',
+                25 => '130b7deb9ad2c8a602a3442d8ce388635030806a4dfa4a3735fbddb67fa3ad28',
+                29 => '4fd354730f48a2a5f439a080117a72d5e48b79ca7f587ae065a11a65e4ca1b8b',
+                35 => '087c01938c8293f1080b85d56d780bdc156d7027e5a84feb36dcf3bead858b9e',
+                38 => '4dd71056f9f35407488f0b8d9e163e882929b9f20c6c62b10acec30c1ef2fb47',
+                41 => '634f350263333d3c35a92513b86e3c2a69cfa61d844df545996c2808f46133dd',
+                44 => '5d7cccf5285bf65f377bf9479c538b9eb410dac06c596f70fcbc87e0655864f9',
+                49 => '5581ae0c5b13321ca67689536ad9ec75b4d61b3b837994148f5462274878a9a0',
+                62 => 'd12d26ab99db6a954a1e2aa8e05ffc86ff5bc128719ca8810b4822ac8539829d',
+                74 => '0f93656c0f0cdbadfbc7a2fc1d4b5610e08300960d182cbda2c6d5bad10087cb',
+                75 => '7d1738c96ffa76258ed9d7204e07e454c31f62fc0c4c39c022c5ef3e0539c8ba',
+                79 => '85a3ec42a0cf48c5def81749dc34c1a18c670e3b03649d44aea6202217ced70f',
+                81 => '89b37ce852de3f6c26e0f3c6fde3e81385e92668db33f26ce9ba1b5db234e288',
+                84 => '1a91f6ddd71308cb6795db677e9abab3445ef0851378162f2c637b718a910bec',
+                85 => 'c0a20d9ab5ec24df69b878604274c2ffc8940254be0ebc18bfe70a50eb72a46e',
+            ],
+            '06dc8260d112f93ec51b9e06' => [
+                26 => '61d4b93d782015d2195eb21169fb61f9baaac7cc5fded3e20e5db5055a87568c',
+                27 => '4c94c2968d8085951a71d9010ca0c0c6482202d00b2cc81bb5c49df6b2eb6da4',
+                58 => 'cc5a1ee55d35505cf9c5bd3d9c71a77ceea4c10a410d41fc0ff4b8124bc992d1',
+                42 => '6fc084d88538127d019853fa91f42677d5dd2d391fe7ff5f316a0088098e4c7f',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch088HaryanaCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '4ac73455f798dcf3a8d2946f' => 'ae28f4de8a9a49593c231bea653f1063aedaed6d20c2140d12414a245f83ef31',
+            'd34e828e1f0e22a96693d1c0' => '446d2ba1038c8dbf52cf6e1805f47184e4cab437438569961dedc38f20ba192b',
+            'd356b3fcb0ad49edebd23724' => 'fab889114fb35c9fd92b78570860f8912b646f650821bf7d4ac28acf95b68235',
+            'e1372f39c9e60519335a29f8' => 'e72ce0924593c55e87868ab6da83034f39e5857e723ceaa8cd9fb87e13992c39',
+            '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124',
+            '06dc8260d112f93ec51b9e06' => '4f7fd0f4dfc995f474512148cb7f22c58d020489ceeba02bfca47f9c63a7cef0',
+        ];
+        $allowed = [
+            '4ac73455f798dcf3a8d2946f' => [
+                9 => 'fdfcb4e2bed7b2ddc460be4f1970702baffe00e3e5ff881c060b2f57461622b5',
+                12 => '0418a1b0b87f55a9aad8e34cef2a05e0c5b59e4c27b2926364fd71a454632049',
+                13 => 'c5bec2074a5948a52e4d8f09dde797d003e88c397c73bb30f759875e8dba5f56',
+                31 => 'a926492fee71f71d14b0253164abf02aebd2423f5ebfb4879da05d89370bd940',
+                37 => '7d56fa4d2e0b12ddaf0ba56ca718ca56be52831b228b557a8d621852ca59d264',
+                39 => '9b30f96cd2ea834dfc7f4ebc12b6a2c4f652a0d9ab3554f1a27538f00e0e5aea',
+                45 => '52ea67f5b43faca17b92f2cf34bac01abc380b9b6b1c39ddb4639fa877b96b0e',
+                48 => '349b71d289f584f7f608e4abaa6760f1e922f2e34b8a31d6db7bcb534d06f3b4',
+                58 => '63d61a2842e6ebcb4293be2974c2f35c83c1368b2d28c2ef4f94fabd74729613',
+                78 => 'ada3cdb83958f8183ca38cbb690ac65cd2ce46eca4431934ccf54ed20976f4bb',
+                90 => 'b31329ab5146b6661f5082c6cb9a77d438ba95a19ca8e653251457b63be8efd0',
+            ],
+            'd34e828e1f0e22a96693d1c0' => [
+                48 => 'bc7d3016cb56dcc537d866012ed1d31e24e412f8d92837ab75f9bee85e96817c',
+            ],
+            'd356b3fcb0ad49edebd23724' => [
+                9 => 'e190ecbd7c9e7b3f1ecb4fc910e03eb7a97ff44c5f2413ca91ac7cb1c393a0ea',
+                13 => 'a68077c65d6b1354f8cc166725308ff3662d3a1c8300cda93c65d017e05935f9',
+                31 => '6eb8488c89072bc1ebe52ba93486a09e9a581c1334bb786bc521ee856277cb7b',
+                37 => '23bd2b0033696d10fbf9120915dde5549e8d9844a2e366a02a90db7e066ae584',
+                39 => 'bb15d73567c2898985e8358ec2496da86b3684c967b03eedcd8e2264330505ca',
+                45 => '4c5e774f3edd4aceada569a15c766d0d787f7a4e188e2a6abe0982c2f7cccb45',
+                48 => '92b552f510c383a5d7d7bc93f35373c884bc91b7d7a45b01844bcff9dc374be0',
+                58 => 'e609d4601d3d27d7cfcdfee19af9828692cf40463a66ee7b7f2eb44b1d08ecbc',
+                78 => 'ab4d541ef35ab6a959213f6e1cdb453a97be9979423cc4141936464a420e6066',
+                90 => 'fe5393d3b18b83783ce9f4e8c0d41a6b8bc708a72bce1ec0451efa0b757a28d7',
+            ],
+            'e1372f39c9e60519335a29f8' => [
+                10 => '2a3e7e7ae4a06d7f81a68bf0f26712f1d43bd459745f994011f53b5e6aa01a8e',
+                43 => 'ff9a416302798a1c1d8440d1343947fe8caddc757c116955b3e9ea784d1048b3',
+                58 => '3e10e24145a9e39f454715056c7f9be0e4d2d1318a9b0b5d52653c5f89849efa',
+                63 => 'f06e2a69690fa3b5205200fa8555559c5732deceec5dd101df23a63d111621a1',
+            ],
+            '70e603b1037bf7ca8e1350b0' => [
+                113 => '306a199aeab6c6f5976284004d9e0ebce5e5396c08c1e3736fe579febc24157d',
+            ],
+            '06dc8260d112f93ec51b9e06' => [
+                41 => 'c46f191c3c125f9becf840dbbc5996d42a327ca2a3a73adf70c1e574379c52e6',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch089HimachalCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '6dd5852218e264074a4f4abd' => 'e214e480b5ffe0c3648a447ee7ac02cec657b66d981ad2302bed24dbf0b53dba',
+            '13651fccf222dbaabb514501' => '7440db9f822279cc2af0b6cb5c224bddf273c3bb1dcf35cc47c3a0b6743aece4',
+            'e1372f39c9e60519335a29f8' => 'e72ce0924593c55e87868ab6da83034f39e5857e723ceaa8cd9fb87e13992c39',
+        ];
+        $allowed = [
+            '6dd5852218e264074a4f4abd' => [
+                14 => 'af196c2dc8950bdd6ed56328674f1e787196933cb9f3bf8e9445d41da435a710',
+                20 => '9f1aa55ff38414e4a6b0a3073242502ba9f2f27645f86c5eb85b2964249e3075',
+            ],
+            '13651fccf222dbaabb514501' => [
+                2 => 'e813fa27137e56871e5f3e92fd8a97eb6972d327e8368ed54fedb053f6cbca25',
+                36 => 'ee35545cda8b5a46ca4d0f17cce5ea5bda053f8c3ab39b59993e786862a82c89',
+                39 => '5905f90825698c3051ed2e32140413e5e7e4730dfc4495af6fa808e4cca35d29',
+                43 => '8b86743ad2261c7dec37fffd6ae2da7fcf59a6a1d8e0a36f0e4ffe277881abe0',
+                60 => 'aa4a229f58482439ceae3063f3ecb3535f1ca0c1c1ab9e5df9f1abcf4323d23f',
+            ],
+            'e1372f39c9e60519335a29f8' => [
+                5 => 'faa433f63123c346f06eddb38e26d887e8cd42a6c10f822712df0982a07dd660',
+                11 => '90fed4e4ebc597b9b5ecf26a17821ee5d73df77f456d8cbb10d5ff7c21dc4a2f',
+                21 => '3f06da348d1358d536601a116c516d8f73da2f747f239d19d3ded7184632c68c',
+                22 => '6553b1a5dc9a928cb09021febeb1fd2ba7198f78f4aa0dd1346bbff08163f8c9',
+                23 => '10a1beae8afad91f2b2d6275086035f398c7b75bb1dadfcabdb8fbc41158f6ac',
+                25 => 'a8b952291352925be2f4b7beddb93f88f160a6b090cdf097012499638d93ed09',
+                26 => 'ce57b9ccbaebd8b63b31c79c56efda1e72144ba6a477127a119aea38cff41c37',
+                29 => '6a3582a9797e21917c63c0d822d28a3e25b21d157048373191c9695887e42948',
+                30 => '68b8db9b7dbc5fc93761604241e285046b808ece058f31a2f7b02ced87e60140',
+                35 => '5579a1204e5402a612f83e636392a1c9361e54ef201e42e01d24bda52836c22a',
+                37 => '2b3d6f1c92e05a2ac926626ff2a8714aec4013031f3d967fbbfea4797bfa0be7',
+                48 => '366fc539ab20b2af869507d1a101f0fd288341a2954516bc282579cdfdab58ef',
+                50 => '8f52c9c1d92995df460a771b89b20430110287ee9986f29329bc60de7346befc',
+                51 => '2f29535e56e1f8cb32a5a1a80f1aa15edbf260e9c6b2b838bc6c0c207eea468b',
+                53 => '44016c8ea8db52cfd696cd50d5518b0eb8b3fb122f5cd69b7442519deaf64888',
+                54 => 'bf15aa2d067d2231263c5c71eebf0bd403407c79c225cc1faddb6086a6f7ed2c',
+                57 => '173efef6bdb4a3899640c00fd0103ff3f767938ac90ce77def466d15bf1a7bd4',
+                60 => 'd092eeb44337d37fec251db6af33812c388fb9d8f8dd9f4bcaada7199bbf83ac',
+                64 => 'c40a04bda3e55313b4bdb3ba0ae992e4e115561e44b4d1b2e5a3638cced5811b',
+                65 => 'd0eb9bc33a04d5950289de85bb64e2941b7b224c6e534f3525a14f30ca1d9a4b',
+                67 => 'b1a8fb6822531cc61e7896e396a4c4a513a0cccb48884e2c15cf4e3a5320720c',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch090HimachalCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '13651fccf222dbaabb514501' => '7440db9f822279cc2af0b6cb5c224bddf273c3bb1dcf35cc47c3a0b6743aece4',
+            'e1372f39c9e60519335a29f8' => 'e72ce0924593c55e87868ab6da83034f39e5857e723ceaa8cd9fb87e13992c39',
+        ];
+        $allowed = [
+            '13651fccf222dbaabb514501' => [
+                12 => '6bc17b761a1c3dc7b6d2c01b823a2e08f01995a1d1e6b0acb7827b01214b814e',
+                62 => '10ccdb46d03d2bf467e26cf0167aa0bba9d85ed64dc1afc7bce31fc5571cfeb3',
+                23 => 'fe0c6985b6faada95bb880b3442be5fc19b2bda6bb1a3a3b53004fa1e97d54db',
+                28 => '08e0e2240b34ab17c6e730ec65b470b22cbc6ecf4603befbb47a7291ac968575',
+                15 => 'c0910a904b51b9522e3a6bb82306107b231a7bcb62c5a93d0c62f5485be3ca3c',
+            ],
+            'e1372f39c9e60519335a29f8' => [
+                38 => 'f4d4cc3db2beb9debbc4c0f9869da1a18d8f4a8fc25bc9a8b50de572bc38a971',
+                40 => 'ed5814da00cdf1408815fc412ca16d9c65b54a6973fd6427226dfae12aaf5dec',
+                36 => '2ac3e312671f2972d46f40a33fb131711a2a00e99b5d174a3ba3e56541a77fc2',
+                66 => '4466418b4b995c3ea442ba7752a09d6f9d608b890d115c06d6cf82555b1ec677',
+                4 => '07ba53b8577068e2b2ae84a17cc31e245c361f7d7740978011855e918c55f278',
+                49 => 'e6e28db73eae8ebeb00a3155e97a380f00c90205699b238454777c334a85233d',
+                59 => '19eab383b6d6a7f0a4df1cc899d79b3dfb4a1c37f6d0f3f2627a96acaf07be0d',
+                13 => 'c7db16851f65f00d82f19ab90e1130e02c540473893e365adafc83ac3479eb92',
+                9 => '3d99219f9df76f6270a2ccd4f82011a4c79292ef0c2e8a49ded2bd389c5d2325',
+                1 => '8865fceb928bae323c27eb359c393794b7a7ec6bc976c102c4f7fc15b3364692',
+                20 => '29ecc16b8fde263e6001532288f169c3784d733c532e5867a31b9827e70b344e',
+                56 => 'fbc54575b2a4ec1acbef73637604c238db8bba12e43105d77b164b49759ff6f7',
+                6 => 'c99c5e1496a199a032a4437ab31252d8d199c251ba400fda1fbd4d80250d55c9',
+                33 => '5b71f6af607d391e342b746b789e8dbfc1760d5e19a60520b2ebe48f89286173',
+                55 => 'e361d2a9db0d13aa5e4690034189ce6ed0c675192ec84feb425c99b402efe037',
+                68 => '7d429a9efbca4384008f768c42684e2f8fc072dca6b55b1bfa5786803d47ef1f',
+                27 => '82b0003886c71cc022a1980968f1209dc0a76221df5b1e01591e472ba0d08fa3',
+                61 => '1c379ce9098dbf5074323ab9ae45d032ec9c0afaaba87334660470552f4819fb',
+                24 => 'cb78df8d1695282195b6b02708fead7ee60ac3d4d486d150d7bce15c9bcc8644',
+                28 => 'b1983ee622b221d7156bae7cd071b5ac15e2b6616a7beadfc4320017836121a9',
+                46 => '0084b02833f7e585d4e255fad7265e36adefaab57e39929dc60cc4b5ee03912a',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch091HimachalCandidateVotes(array $record): bool
+    {
+        $sources = [
+            '6dd5852218e264074a4f4abd' => 'e214e480b5ffe0c3648a447ee7ac02cec657b66d981ad2302bed24dbf0b53dba',
+            '13651fccf222dbaabb514501' => '7440db9f822279cc2af0b6cb5c224bddf273c3bb1dcf35cc47c3a0b6743aece4',
+            'e1372f39c9e60519335a29f8' => 'e72ce0924593c55e87868ab6da83034f39e5857e723ceaa8cd9fb87e13992c39',
+        ];
+        $allowed = [
+            '6dd5852218e264074a4f4abd' => [
+                27 => 'c23ee8654d24925e8cad91c54af02ac31e6f8a883127d823c5ca86a2d30a97e3',
+                9 => 'e635bb7c8ef7ee523af920371a1def5ec81478412162ae93db26aa9de09cd2be',
+                1 => '674b90e823a0c9541c4f637cc12b0fb041c10e86b7ab7143be074d5230bee018',
+            ],
+            '13651fccf222dbaabb514501' => [
+                56 => 'dbebe3bcbbfae87d94b8f2457b0ec99ce900c73cb766d741d886f600446c4bf9',
+                35 => '2bb048ff8a28296ddce8b045a53d82400ec39d733613a4e4146e3fb12f92205a',
+                59 => '423852e8c02c7c030df810101c29f06ed87b864ee87ef2d59791a3a1f8b8bbcd',
+                63 => 'f925dcf4143707d1c49214114959433371e78f8fbdebc11ce1b306dbe8821cfe',
+                64 => '05a04006e5c32e01546eff27d5b2c96963d54fbf75281ee5b2fc0782486284fd',
+                57 => '7f5a4bb26be2e1aff14079cd0d8501c47605220c96531fbadce2e4d6e5dc185d',
+                37 => '2ae8473f34cf58a829c1251d2d1ef2fbe7fb371781c76e1f9428dae0b57e85f5',
+            ],
+            'e1372f39c9e60519335a29f8' => [
+                19 => '12429fc46cb2db397a889d2fbbb3401e5d9deddf374b28b837a447135b2938e3',
+                12 => '9673be2b72dcd78002af13da5c6abd3ed36e44cb37f9f3bf1184b41a7ba559f9',
+                34 => '1287207d33bcaf230e5223401f8c0bf196df7feabfc0c11d0849b75c92839152',
+                15 => 'f4265296094b743c0e5e85f628eace4b1c163f687f61d2a41969759e657fc160',
+                44 => 'eba4fcfddcfacc862c8893d807817514bdc91493dec8c910127ccc495125b532',
+                18 => '3bcaebd014bc33254af5f7bb28b4aa207e9736ec7dc50e43aa5a38ac9dc37327',
+                39 => '37d753d43c35e52b672c3acbcda00e26b5fdf7b0eb396b0b532d00d59a2ed108',
+                16 => '5fdbc106309a60f8bac65e5c7ad425e66a917d738c15940b7d798ca4e25264af',
+                42 => '7d27a2f0a50f6953c5478bec6d83232397e55eef1bfd57c471af7c768abf85ac',
+                52 => '3e0082fddd0e9ecbcc367339b5a05caee95397efe284c134e30ae3b09a7fafdf',
+                2 => '5bc3e59058d60c032bb1c5b8afe7683f4dd05003974965a331f5ef620badc113',
+                3 => '79f66936209ddf666931ca522bef12062d3aef1b6976890527b54c8b2e961a96',
+                31 => 'ae99a98cafcc8f1d6fd52624527d6100f9e44929228b4d5d6e422ae2f7865f6b',
+                47 => 'b90b265e4b60bfce659a12f151065d17bd15b378fc21a018942f3048ddb1bce3',
+                17 => '8d9dffbb59f83a82e2551122adb93e8b22a31026f5650dd4655e3fdcbda70db3',
+                8 => 'bd4d70313df19f6743f0b172b296a109babd84dc86288bb45e17b27f649b6622',
+                14 => '4508469234815a05eca0109e90ec244581930467fa6b5198b386b3533d73528c',
+                45 => '351e03bd011b21c3a843d9e0605b1dd39a4fe82c551e5750d90bea84a49b0452',
+                62 => '3f0852feacf7e76c0ed034c912fca8430c366c21c2b5adcc806265e74d0cb118',
+            ],
+        ];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch092CandidateVotes(array $record): bool
+    {
+        $sources = ['6dd5852218e264074a4f4abd' => 'e214e480b5ffe0c3648a447ee7ac02cec657b66d981ad2302bed24dbf0b53dba', '0882c0bd6b8d8738e38b6f06' => '96194cf524fe162110394a27c7c5f8c2e9f7a2dedf3d2ef266cd46e95282d429', '775e12dc77eb9f634ba9a490' => 'c4ba5bd797b252430374ee6b2297c85d3eec62091b37b1d1c3ff8623f8383d94', '22d3dca0090df0f6532ee43b' => '56364122b1469019673f2c2301b26e668b2d4cf660352bb0fc31f6670c04c1f0', '13651fccf222dbaabb514501' => '7440db9f822279cc2af0b6cb5c224bddf273c3bb1dcf35cc47c3a0b6743aece4', 'a1b887ea9c50978fe4cf8e5c' => '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02', 'e1372f39c9e60519335a29f8' => 'e72ce0924593c55e87868ab6da83034f39e5857e723ceaa8cd9fb87e13992c39', '59bbe0b1feb3c60c2c9d79c6' => 'db98748c858bdc28059ad66d419d2803f47e559a9ef46f7f7446fd0e632c5ae4', '92de082304013ee1f62be87a' => 'e67c8f9fa3058bbc51579dfe45c7665ea7eb5092378e412d85318d6350980b3b', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7'];
+        $allowed = ['6dd5852218e264074a4f4abd' => ['5' => '8111a59f5d34093a9c523a159493e82b0bbcdf7f2b2374928d063770333663e9'], '0882c0bd6b8d8738e38b6f06' => ['43' => '524f85f145825119f01b58eefd2f50b45acba9dc299a63ad43818ed8f30071fc', '29' => 'edac5047abfd5d28fe996367bbae5b8759ebf5cb67ffd0e78493fe2158562a5c', '44' => '62303444aa598f15ff94686c7ac1989cc41c97eafda6dfd1afa640bf6cf0233d', '3' => 'adbe481313fb5f19694180ebb01dc283a63a81ae35dbfe64ba3dfaceed2958c4', '21' => 'e9d408b90e13c0446a00f80c16320aec02243c1d33491a20f38893d2f8dfa459', '22' => '3ec06b6cd8661693fe8adcf18ca4aa2d238051971f88cdf5bc0e554159fd9e78', '20' => 'ce6c9fde72dfcf4591b9f36d724f609618c9900d8d1bb707263042a97188ccd7', '35' => 'a851d8db9080026e8a36a350729fb79183ef412613185979a9ef02d272b86151', '81' => 'b0b29776669967e6e81c7f3888be17e4cee251d149a5e0265585074da15779bf', '77' => '2ce3ab62a38f11090f30933b0e79504f0778258991e438f63cd9fdfb1029269c', '69' => '760402f696d02a9932dfc50c0537a1907a85c57110eecc24b56ce56722328f1d', '36' => '876ea2a61860d9d34ffd53eec9e6a44a4a5f6331fa2b7fac443d352da59abc5d', '2' => '5276d202199f691dcbedec099f4616b6dfd0b7b188428744d1c666210bb57cd4', '52' => '9ed9a7eeb897f551a93f7f014f72b36a272fe935177eb1de6d224503d653ac6d', '56' => 'f954d0eeaf9ec4674a87d49d14a57d8cdb3131082fbedf9672a2e2e5532af702'], '775e12dc77eb9f634ba9a490' => ['29' => '570f7b7b487c1e657c9627a0c00c908c0b09cf42d05f9d5c394db44d25c56b9c', '3' => '8c4c1cf009cc8b9803951d4671e9746364a6330b6a39308b9928bf9e806ea240', '21' => 'd09cc63b9fb1b201a1177ff849fe95191414141b78d758aef758cb1ae54055e2', '22' => '2fd69b75a02460fe221c498ca298d4b228f7eaf9b3c73acd933e64690129dda8', '81' => '99d4a7f7dd632d4b2c033522f6ab9de9a62b54029f0282a1a6a4fc2d4d71aa7c', '69' => '8ad0e424b52aaa3f8057fd5abd530087a929a3ddb7f9e36581408223d56f5dd8', '36' => 'bbd2f517b8f1c087347994b36a367254b4a54b73aecc48356b723fcdcf42018b', '2' => '71ef05737a4699752a779477b9344f0394782c2f7810fab3433f8fdf89cc7e8e', '52' => '2d49f356ab21a646aa3f61623d36a376266fe8714ca3af2446c8dde4092e6e3d', '56' => 'e2825e7f0d37a7acba490b5a726aaf77602c5b7c709de331c03363d3fbca636d'], '22d3dca0090df0f6532ee43b' => ['29' => 'e43fbe9a3650f4c42540fb4d8743cafab2fcff4b57a864b1c1a9dbfd207503a5', '22' => '8ed0cbd4dc5e1b6482bb9584d3011ea43834052411ae347d9cf2336c825d49b4', '20' => '27a020d48b363512a5fc17cf910ded6b2c6a629e77e213c4395587b79c00fb37', '35' => '0b52a2d3ccf4f892c164f4ee6826c2458b0c26d4d3425c99dac542d13b4e014c', '81' => 'ea8b2c37ba1367253cbb55701d8a206515d9f3c6a0bfad7227c2ee220546e71d'], '13651fccf222dbaabb514501' => ['61' => '455683df5de7855bbb9b1f04dcd953011dfddb0aea70800cc931d0e05dd81e3a'], 'a1b887ea9c50978fe4cf8e5c' => ['398' => 'daebc2873a1527057ac3850427f55d24ee9d8629f8ced7bb7a0022951e86725b'], 'e1372f39c9e60519335a29f8' => ['7' => 'f655d4ed99f33bf9956f9d98c812add943a0c64e160dd3ea529409d88f351112', '41' => 'fde1f49cf1a7b2cdab7ebc933bb4e9f22f100d2731ca5a1802b8600b01fa8690', '32' => '97c9021daeaa7a2850c75351f108e4e090e9b69a6da642f9bccb89fab726fe60'], '59bbe0b1feb3c60c2c9d79c6' => ['43' => '892e1c0deea85e3b1b12fe1b5bdd80f6206c222823059614f5594bbba5d1434a', '29' => '80a904eca256e6b27f2ac49fd0ec687130f8f12a48c9051f35c0c74a9ed2ab82', '44' => '1522eabd70f7d3d096360ceaa13f3def8236da1e2b56a621b920448bcea23226', '3' => 'd7220920ab37bc8426ec52c45be58cf86c291d32ce7b9242624adc6ab7a72867', '21' => '7d2fea3ca7fcd86181cdecfa4a5a8220bec51954ed06c17c6e850bb00599a488', '22' => 'f01d1eb11e4d3ba5264c7d453b7e5df19f8ab41f0a6af83f02ae9ad9e4825930', '20' => 'edab25b6b270c947cfd33164eecc3b0fbf2b13f373f656cc0097783784808b08', '35' => '56abc7b4916ee669e153c5b58e525a507ad3f09045f6d0da8e5ebd0bc4f90586', '81' => 'f3de5fcd115a3a972a9526eced35c592d19afa5364d0c07ac7a9359b7846dd54', '77' => '35f21c287f22257b37325d160e489a7acb71d492996790cbd519141fe604d031', '69' => '7411cf03b4ee8b7fc9931b3e8f3bea7b8a9a343543ee1da80bf1d1b326fe3c9e', '36' => '41a2290bfb96b11c28801b8ee992c11618016080f249a1a017cf461d340e35b2', '2' => 'dc6dda97314afbeb4dad20a22189aba2891aebcdb675d1ed510f97961f34628d', '52' => '4c19501b2d79eea75a419387e75412c9c288a4ff58a640f58a490d8d420a9a98', '56' => '16597051eb319d3b5b2d8a283d6f2ce9ac5967f14fd325ddd776529ea00ba979'], '92de082304013ee1f62be87a' => ['138' => '5c784b31d242b9ef5c9c63ae2a42e9b7f0b6fd5d7d6a15d9060f3ab3691a2674'], '70e603b1037bf7ca8e1350b0' => ['121' => '8907b339a44b1b16c67431e47b7574c1a2aaacc33d7a759ff4a988140e742faa'], '2e749f2174f08a9ea1fc803d' => ['121' => 'e4d8739e34fce136a4854620cc34f0603bf4ba2fc3878924e1d3776d1bedabc7']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch093CandidateVotes(array $record): bool
+    {
+        $sources = ['0882c0bd6b8d8738e38b6f06' => '96194cf524fe162110394a27c7c5f8c2e9f7a2dedf3d2ef266cd46e95282d429', '775e12dc77eb9f634ba9a490' => 'c4ba5bd797b252430374ee6b2297c85d3eec62091b37b1d1c3ff8623f8383d94', '59bbe0b1feb3c60c2c9d79c6' => 'db98748c858bdc28059ad66d419d2803f47e559a9ef46f7f7446fd0e632c5ae4', '22d3dca0090df0f6532ee43b' => '56364122b1469019673f2c2301b26e668b2d4cf660352bb0fc31f6670c04c1f0'];
+        $allowed = ['0882c0bd6b8d8738e38b6f06' => ['27' => 'fd36c888910a43566c881c8caba73cc68ef5f1f028122248b3b55bad3c53a8ad', '76' => '5cc8be9b6265a3b6a1a07f35a8cde03d716912970348fb3f5aff8cb6c326ca2b', '15' => '6aba8c4509e75b3ab3881d379da4995f4a88f461cc04afc0d37e84b5961aff13', '40' => '90aed16cce3d82483fb84477008a80e2429c17937273f7169894993253ff9c8c', '28' => '47f1e1acf7913494f33b90edbf588354fe4972541086cd7ebed3de54972ad195', '10' => '993f2299ebc239011c74787f3c3d6694ee95e3141b3e661277ca4e8e63b68004', '33' => '676c1bab69884d3dc47b9e7f04ea6b7d6efbd9fea444b98483fbff12f87de707', '31' => '622b18f11a25bf48d203868e3efe2f9b9ce426afaee80634596ca53a368788ad', '80' => '7eaf2d3e4760bc984ba1e648637e7c64d3c704a6aa1955360967abd93a2fe8b0', '32' => 'cfc35a80c6a98fe2c15abea4caa65e484433b264f15342f159102d12a2bd9d68', '17' => '2a7acc660252e4487fd7235d252b3938f7698d6611722f3ee0be57d94f25f7d3', '64' => '07df81fbed6029105dfeeb27614aec77d66fb11301a49e8623d4c8aa4fae3517', '25' => '573ef4bcb21a5f31ef1271590fdcd2aebebd4875c3ab11f34a23c221d69f3c1d', '79' => 'a6386f8e687638f3c0fc066b994ca12d0b3ed2d5e2e262ba683cf95de47431ed', '50' => '798e96aa7a208d759f1055eeda7746d1483091c1181a33d33e12854725e255fd', '49' => 'be7131b75aff2b6c20b2919ae7c7eb29f656c973725fb87f353626b945ef9b77', '9' => '3786b067f4e085c71d70df8a0154689325721a9c19ab5dae4103cda60dd00246', '12' => '6f1d82c341525758b58435dc25bd21456021e368bf81f1274013f37a2f938939', '41' => '31420c4fd64ea19df7835845bbbd5054ce727403e5be66c7b6d85e32d08c6d95', '19' => '6b599d7d8e8bcea1ce51d2a24b6d530ec549f16e238875b3506e41a8d5cdcdd5', '13' => '09ce0cd3552073e48d61967d80be0650ad879d206d4ed0c1a8a03e6c6a6e8cee', '18' => 'c83d938199b440b8294aed2335c3a3edb36b393f39821246ca3852444978955a', '8' => '40bef18809c95b8519d687328fe606717342f00bb81f9156615452b49268a9c4', '39' => '6ad4461bf9ed151118636a2b16d4d4a3310245424944ae6ac4237e47d7aa97a4', '68' => '6f1ebcdc9847df1f55311f82a60db123e5e17319d75926a4aea61bd4355c0b91', '54' => '8a1dd968d20bfe0589dffadf333d5fcbb38d0e673ccb6519926ddfbd6bb1bbd4', '11' => '0745b78e044c27bf5c5686be211a3313cbe0b86003d0a310c1e70893a859959c', '48' => 'a86e04874a5d6069939264bc0b6b8463d10b1436d25dac42ecc52b83b3342958', '30' => '6f14a1d1572c78b9bb3a88acb5cde94285a45c34d49d7eb563059751c3cf1747', '65' => '4977adbbb94785d875c9922082f041a56c6581c1f4fb90f7dcf9085f24301a59', '62' => 'a56e73b07eaab2a5e2c03f796a4d5ce710074eeb0f3ec4ec433d818aff9b3e24', '60' => 'b84a4d97450cdfcc7149953cc248bb8a4e08d2b3faf1f2c72d3912c28730c415', '71' => 'e432a6a83a50c540c34a0be4276951377cf59b98fe6d9b8fe63d874adbc2457f', '74' => '48d564bbd30d3e38a01d31e818f1e038c8f3f2433e0c3c7a5a7bbf545aeab532', '4' => 'ee9ac08c531008002fae41aded6cae519a8e1e8864aba2a02543683c1e193f77', '72' => '8ca21b581f95bf0900d3bd0ff2e192ade286505076c8161e90962c5e73b3e11a', '6' => 'e04e630ea8d52718815faa13953fe552e162bdaa365e58cf68b254e09d5a5d69', '66' => '97d7f58ec7abc219767ebe9302bc9bc79e0fd959b1308e3efb8eecec13500f7a', '73' => 'bfe2ebc6a5a90f12ed187540015bc66eeb380fb40e7f59e7fd62519843d38812', '55' => '944fd638b37ff6712dd71ca17d4474872a7cf984868887389704fa5c50bb049e'], '775e12dc77eb9f634ba9a490' => ['27' => 'b5f46c47f884c77ad6864ab0c7db4598b4d7995d4a32830423189d66bd817df9', '76' => '255e21bacf3001aa26d8ffcdd4a7c63be61b1f5b4f641b653043831cf61c5472', '15' => '65045f77904452956e9f2542c23824529e7419f71b05d2d3698a380aab8f8a5f', '10' => '7b290e0ff24fd3879ceb7df77c8475a51b2a0b52839f44a156602e6a6c194072', '31' => 'b77331acc630da1089321883ec2627800dc884c240eba11c74b1eace6e3d8b91', '80' => '842835b04af27bd6f8579316cf75dd3710e9fb96f7c76bba53b4dcb7d544bfae', '45' => '226137af1157ef6f5e770f406617668f927b596818f1884475a99d6ea698acb2', '32' => 'ec791215db4e228a0379f52f86b7e3edb905d72c728689ef7efe4fffc2d305d3', '17' => '7ec9c075ede7c66974d3309e776cb8d991e02bf1d5ef32206ea53f2847e494f6', '34' => '660cfbccef051a05aedf66be192354496a05f9352fee18e1fbda5c830ee72fa0', '68' => '7473485f065dde85694ea540cab861b0c88d9873f6101296738c4a7ba61cbebb', '64' => '320703e41cb607d4999e0e3a769fb9b0b0b3cd5c9b9f99f9405b948e44d0a700', '25' => 'abd588dfdd70b6fd021df0ad5b9e89ae94c8080275371fa922f3acffc7309e46', '50' => '18d943699757b8e66fcbccd1b64605c9f115c3bb3380646d7281784ba7f38b59', '54' => '214fbd18572fe379edc720c5f4751f62d2e0ea368c4f9c198e9723b9871ed947', '11' => 'e42f90ac34845bd1d1c623862771b30cb02cd3295b8b8a3b251412993befefd1', '48' => '5d1b6f6c683a8c4f8896180b65b628e48204ab3f36d5e63b6c8e493fddf4072b', '49' => '05ff7df5e6cabe93b1785983a83b849f3dfd0b96eef4d145c5279ca9ba3d5f11', '30' => '6667fa904e2fad2d94f65f329a708745d7160cae8ebeb168febf9c5119e2b7fb', '65' => '3b29446e81457f89e066a3321e5d5f76c47d01820c10113bd729ecee8ed92ca1', '62' => 'ed6bd000eb4f741ad987fa231397ed318f882db9bff91cc0f8dbccf04b4740da', '60' => '63a4df44d52f7ae3b48df121eefb82c48c33870384b83963769effe96a8655a0', '19' => '1438f52014b57b663725114cd67d25709d6683f0867c3e50415e7fad9c9614f7', '71' => '04140131878b602fff83d23fb382881893f54e1f7a647959e82f73c74eeee84c', '72' => 'f4511c162eb6e912ccdd25cbc441e698f7cc2eb9ee38d7b5ce8a884dc87a4bf1', '13' => '69778e5f2cdba0850348be2fd687a6b483b2a2c151236fe7bbb24f649d061e8c', '6' => 'a066824ab8082368592986f11558d19fb31066c0ba90171b2315599fdca87b1e', '66' => 'bc4f9da80fc8af4172c9f1aa794c858a280c9c927d3648428f6bb7cbcabc9dc7', '73' => 'ef1bba1b1a9beb1e356e20394b03ce3ea101417d6caa44afb24080d67bc154f7', '39' => '3f7697b3dfd1099382ac8657775985ce875bcf5f2155991b3614a2eebdb5fdb8'], '59bbe0b1feb3c60c2c9d79c6' => ['27' => '39752401c0e7c935caa3b49d44bd84d7bbd69c930e678cea65c03b1cda25f009', '76' => 'b3a31674b46bfa4628114fef032ac17463b2932e812d8dcd7966b9b893b652dd', '15' => 'ace3104c1cfe6f9ab4d80b39561e2eb22efdbcf3c532ec24729c17c0057b1e25', '40' => 'e0ee76a91208edcfd7d63e0cfc800c6268ebb5fa8e503c5cf5ea73f0d8eaeea5', '28' => '1bb50d1eef54f6e67684c8ac164d2c00a259dbdcb498d09d711d6c7c31632b13', '10' => 'aaf03979b693707bd2791e77377d981e463e257fd6ebd14396333c5fbda892ed', '33' => 'e77a7b5152390e793908832080b148b6557a48ba340a0b1200ff093ace8b38af', '31' => 'b111bbd260af50eaaadccd683a93d128fbd2b28a1084d93652dc9f87cff347e8', '80' => '99a0881102254099e23a220f28f44e1b52db1db6e9eafa1519d35a77cc0fa7fb', '32' => '0aa1082233790e6d0e740816c621cf1a9b87f584f8b7b9671239aa9773f4c7c4', '17' => '2224f894eb4dd045a95a7f0976df627d8e543cfb08220f2ec602999d22c353b6', '34' => '016afba4105a77afb712646b73bdf841da405a60b72931a8decece30357a37bf', '64' => 'f81e79ab77736e3ad96b706be67eff626c240d672470ddee0c9ba47874049836', '25' => '927af87871c582c09bd63196ca2c067fa8607d0d42d47e62b07b24554d0cad4a', '79' => 'df782bb8912a45f13ba0e481cfbfb1f4e696e4020214b91268504ff66eb76874', '50' => '842769b1c5e2bb2b44847a2a48880feed6e4f20df45bd638970740ee32ca600f', '9' => 'ed8864b6db7e13e129f3101a99397b43e6911c627270998af4652f1f3e4b680f', '12' => 'ef5679602a080ac0be6feb4aa41fa2bc4cd2e07080138df98bd383c768721d5b', '41' => 'b1d4b0f59146259f32eb668fb93e68b28a8570df81d733289b997532d28b7618', '19' => 'b85851fabe33da4ecc085db57008d3c547c212935749087d8cdae29d916be767', '13' => '281dacb1ec1475b33c5d951f6ff1b46adf6bca8f7ead528ae0ce1877c518ce1f', '18' => '59b49b3e60a036aa09cf05987745eff9f3a90e8e115c9d5ca89bc8439c7215bb', '24' => '1d2843303edb8acd2e806da70a4330d01038f6dcdc5dee919ee5ce2ac925b75f', '8' => '9f8bf8f32489301170d8b2826f4adb64e29ab952daf6d8ec631c07a4235731d8', '39' => '3ce556b7d592f01b8149a8cecc09510eb58e300ca1f13db1bf851bd678c66334', '45' => 'bd6d27d4401b513458961e4610fb46cf2846b1c14c1f60b100d5648e26cf142c', '68' => '965fdc77d987262dd7879a54af1bf2902ab5e556015872b7ee039e5c6d800972', '11' => 'e65658286eea1731cbfa899aaf0d838256c9d9cf306ec90ef0f002fef20b50e7', '48' => 'c53ad7c464a4c1ebd3c508adf5c45434e69bf3bfbeafc99933f5fe4dc1c08c34', '49' => '97fe22e46ac86c0bfe9e4c816dd87ef30515bfe1e4f26820d8d3fcb7caad62d5', '30' => '0dd6f01950d3a7b23f7bcfe82b22a772a5afb43df66c66ebb8cd6c1f3d74be23', '47' => '7cd142490edcb4073b7097abb67639b396a1eef1d7ef5a28d6a26cdcc9d664fe', '65' => '2c5525fb89ba238e799c9ea393e19e8c3eb05540e3a10c87d6f0d8428b3b941f', '62' => 'afc5a30a012d4ae60eae6621d82725441dacaf0fd19a8f0f194597cba91773d0', '60' => '3d24997da35beb08413b311ee74bdcc8d3085478531368d1343b04ddd43bd9fe', '71' => '1d7b0022ac90c2940af5e1d0d4607f7162a98d2aeba838228a8ce45617e0bf29', '74' => '0c5860d45107835572ac9249cd5a638696c7a7570d64f8bc43127ffb6ae040ac', '72' => 'e1758936480833d7db6c7b5e29e27d8e8ffecab2bdafe4a8729f23fa25f8e7b3', '6' => 'aabcbc1d49c52fd16a4614a69f2775d27a22bf92869954cf528eb0eca6ce551f', '66' => 'ae3804c512417009e39cb34ebec3c4ade210e2c057605eb62a961ece1c571b5f', '73' => '65fd94ecca2854e667036465b5bae090dc776bc881a2fcdd8c360caa87206bb1', '55' => 'cffa777a095cefb21981188036af308daa79b02efd42b41080b5cc6367621eb7'], '22d3dca0090df0f6532ee43b' => ['15' => '93b41e2ff865e6473349b0890b2e50c7d35841029eabf5034f1ac8c2419b3fd3', '40' => 'dba06ef19bca6c5db40f2a343ac397f904e146a3d1dea20fabd9f63050dd4d2a', '28' => 'bb7e46145036fef9b7bc8bd41801d0cd64901d3ba0f6215393306c0de33d95a0', '10' => '5dbc17107ccab060fcc294b71fa7e288411bbb5932965013de33c375c188ea23', '31' => 'b792d9609e02feec3767ea3b12a72b935c216b605d7500229f2e6da2ecb29f61', '80' => '6eb4c25ff72c6aaa77733a537fe0a3d3f38e41c1b2cb73dc05da670e0f37f12c', '34' => 'b37847912aa297693214e0a2138fcc6d02d8c043924081a17e6ce6a056d701f5', '9' => '5bb198f1ead78f7c8120aa833cc9297b81ef2f601a7a4723302db644c45274e0', '30' => '851c77e2a955bcfcb1861ee3b8b18cffa5a35d3003977feae8e11223e66dd99f', '19' => '688ce4826add2e538d95a354f895273a8166ed1927ed6f8081403c5f13a05f48', '72' => '2f2e1f111229e1175dd8b83b853d770a46db825df5900238b0bd4ce7d8b87f10', '13' => '271c2a8e2d1d856ad1cabb5467d14bea316b1ed212276fe0a91a432a09952523', '66' => '8760cafe33dfa3162e7bd3e939a2a8101a19bfb073c35d029e5ae25f0ea3ff78', '24' => '37eff31de79e15638b8d705488995d97904a977c3e6e4289cd695c481bd4d9c5', '73' => 'a0cc3e29d2b45cf8c221a78ffad0f6225882c8fd49f1dc2c1fdbb978363ff989', '8' => '9c3d80eef958840131f021432bcd84e6a5b6bf7181e98a5dff8cbd2a3f339ba9', '39' => 'd9b8994bd744300979dcbaf893a0ce30e81dd7a6c29509e69210cbc72361cb9c']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch094CandidateVotes(array $record): bool
+    {
+        $sources = ['22d3dca0090df0f6532ee43b' => '56364122b1469019673f2c2301b26e668b2d4cf660352bb0fc31f6670c04c1f0', '0882c0bd6b8d8738e38b6f06' => '96194cf524fe162110394a27c7c5f8c2e9f7a2dedf3d2ef266cd46e95282d429', '775e12dc77eb9f634ba9a490' => 'c4ba5bd797b252430374ee6b2297c85d3eec62091b37b1d1c3ff8623f8383d94', '59bbe0b1feb3c60c2c9d79c6' => 'db98748c858bdc28059ad66d419d2803f47e559a9ef46f7f7446fd0e632c5ae4', '1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', 'd6d8e8eaa48a3eb8251003d5' => '32972e35a4a20693d92e0f4c4bcd6e44fc51a515e51f85665e42ca10feb60445', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864'];
+        $allowed = ['22d3dca0090df0f6532ee43b' => ['75' => '9b8e511a659d5149c7f42f03d110dabbc28387f3cbd73cbca9cf198a97a5d123', '23' => 'a4c26dc7e0016881119366ce35bdb91cb3526985ff98d686fdb9d19786d7fad7', '7' => '1ca4db27ff56921c02e7eaf34446e2cc42cf826816977524d4863b77392c2a50', '61' => 'b8a893c277dd0c45e4ab311443081f9d88cdfb734f99606ac7ea9d046844b398', '38' => '1a6d40eab48dd5f4f9a931731087b0957468f0d4b754683137a5c3d5dc0bcbeb', '42' => 'b0608f2bcf8e4a0b6b511c890a7f18c55775783964c2d17b9cf6e80a4320bc57'], '0882c0bd6b8d8738e38b6f06' => ['75' => 'e7bacc41e4425b9b68c3fb89e4259d24da046fe3938402de6f004e5da0dcab6b', '16' => '102c00be0029141942d617f17e590f6bcf30c2b841b78ce1aee22b2bdb6ef451', '1' => 'cd12ee496311a56e06883222bbdae53f34fd917af3f3d18cc0a6a7ebd06fcfba', '23' => 'b9082979dbf22c564444cda0ea0f16668b272ed67a8368be16248773ba28d757', '63' => '67311b3043c047a71f9d27a06563eff7e88c8b5e239492128d4d66e1e7385e1f', '14' => '9e821c1795d3c6ea072fe7b083c7db670efb762c36de5777d585a96ce36cdc47', '61' => '94353c726a47e0fd040587147d911c1906cadcb309405653430235ee3a5047ec', '38' => '9663b0a20ebe9b36a599f74a6e44b95c9d2393f9400721962fa3d9bee9823853', '42' => 'a1d21cfe21e66ee0b9dd05f7f6221b92e8f9272ac0d5ebc39f9c97728636fce4', '46' => '85ec4a38bce06087aad9f6c341d30d1ffd169d1b68245a739b2c81be218c4bf8', '26' => '76afff0885b792643a01d28736894152681ad15add00d55b9eeb53326344706b', '70' => 'bae591a5140b92f855f8f105718fe764e3460e65c41c09afcf8ed5523881d4c7', '67' => '8a4dbcedef88afb344f9f4ed0cf805c5aa115cadeff55ad6e9d43f9cdbc4754f', '58' => 'bbad55a5eb8e0fae3182de4c2aa5f6ed6c433ff42804df7a86cf82b4a6298437', '59' => 'b4fc0bcf8128d20ebab7b69097f81945899a2037feec3c486e7b7098747d7de2'], '775e12dc77eb9f634ba9a490' => ['75' => '4b48e91e940a2fcaa5cf75e0976d9df69f6d38ac6e87a52587ab06928de9efd5', '16' => '9165f41e58e0ca262a3370a0e0a882349a84ef05f998b110a7d463c80169df68', '46' => 'b1c0b095b37819363c76c32eca650866209d94be86f671c56ee2ba9f97d01df2', '1' => 'f9567788bf250a15b4edd3160d9a30d649a8b3b9894674887f04bb133d3d4518', '23' => '386c834f87bf342fb3b7b0ba36024657c12d63034ee3238e60119d5571ebd074', '63' => 'c540f53a632df502872cdcca316cf86e2d7e63e3260ad3cac80dd2be6b85e234', '14' => 'a521230128dc993772fe92391ee9567aa0b41974906b87958c0c2c2b3367dc8f', '61' => '30d337dfaf0260ab2dc39c48db022770eadfe21b20fb18cba5dc0e4f2e16ff9c', '26' => '31386e1ab28097d11389ee3be99d2400b4ded9560d938e8a11229de84bd94319', '70' => 'e9422da78e319b272dc27d01499a88353fcd6b5b123082117cee8f1757340fe6', '38' => '53c01b57e81d89f83a38270388934c3a5892ba0be5d018871122307585ce1730', '67' => '6b935254ef912df5260d1e66540499b3a619ddf3cb1e40455ced7275ff356065', '58' => '288f4929f20cc8fd88e87be4e3e6f4b13eefeb28fa1e7948bf5b64ffb195940b', '59' => '251cd82b2a1df375864bd16ce51f7004197bd682236de094225305c50baf8eab'], '59bbe0b1feb3c60c2c9d79c6' => ['75' => '1c47bea452388176916b34d5c8de6c4a9d4318838634a16005978af4cd8582bb', '16' => 'df7a1bbe67cff0f4c39835b943cb8fd07f4ea97fd2e3439c0dfc68563b86c8e6', '1' => '2545bd1e6296f0a110504169255e9475cbe7cbd74850fdc390f62b445f3f3125', '23' => 'cf70c8fec95fdee5fb9fe2552d56dbe17cce506d62859d219136c21648ed912f', '63' => '233caa1ab1de6e4134c2654b58ade923dbd62cf17d4a3f13d8e97a012b809c5a', '14' => 'de41cbd34a08173ae5098f6d3b63d642371ed8d75426f61b3b5ad037bbc44cc9', '61' => 'c4828859b4d85ae43303367ebcda1e25946114d30dc7472d99f35b5b74b3974e', '38' => 'bfb85360dc596de201c181731d6e0c8fceebd4de4088760d13b63462425fa513', '42' => '4e4fa51c8e029e1569c56b0f0d37dd07db4fca94910bbc9accebdd6cb97eb302', '46' => '50b8a1c60bf1fb968e321b2132891712007d696330d21783b82af7f33dac0926', '26' => '655efb24ebd2b965c2ba8753ca70eec77d16f8f6961ed019aaf5271cf6c5e8a1', '70' => 'e8e9f1c747c44be7dfc47654f433c7cab5f61a364160327ef31b057cbdcaaa28', '67' => '3559214d09624501181af1d7b9728057258bc8222561ec4683a958d7ff2b7721', '58' => '029701b05046187dbc710827df1bdd00f71d772ba273124e439fdbc51105b8e9', '59' => '97ed192d30a0002b83b0933b9f49367ebfb80321cdb815719dd757d4c55f79fc'], '1be9e8a7976ebdc44658c8e9' => ['34' => 'afb24e0f59efe03947fc422922bb75ea2c0f9220540da0269a368488cbf5ac52', '46' => '625753625ff73583b539a854c76069316a83866ef04fb43ed331882dfe26aa96', '8' => 'd2694171ff2aaf28eea4a01233ec2c320493d505e17b7fc4c82745765b8dd19b', '198' => 'ac38065db084c48a29b052593f59076d6305bc0e02f7705dff9315d7179c8d4b', '194' => 'b5aabe189ffddbe78c8291d2ba57b470518f2aa8036e0d7a5ea9f8b3dd2a1f3b', '3' => '554f935bf7bc22502551e5af34e7f0d2f9094eafc993e799659ef02ce638d0c1', '29' => 'ba3a7aab8aeefd50c5304e662b3fb857711a2303ac8e17b5bc10aaa4a5f31e73', '23' => '0767422ee220c7778bd77c4fa2bc48897099f11ce0130ed8b6ca08a5bcf9ed77', '24' => '0ada5ebc1aeb646207661399261655b2c74de19beb4c5076fd8bc8c1ef4ba3a3', '140' => '78dec67d084ef24eb47e5756b2d2b2471aa226fbe17b6a319ae844ed23e8c643', '16' => 'e8de1c3061c5acaf3ed7b3852dc5ce3b1266a59ec51b798a70fdfeb8f1ed346c', '176' => '155a1fa7900ade6d6c468329cadb9a069ed18b812abb3093000223185221daee', '205' => '8af442b9f93cc0c540b9b1357afb5d75bb71ff88c93208a2b8fcc06304b2a69c', '47' => '98881797bf208ee4abf2ee0f284f72982a1d5f222a86dba99966b06cafe810f2', '28' => '71b6de5594d9c326c2983b2c438e6b9883368cb8239f1794d2769e2fe965df17', '170' => '7b9fa724f002d73c6b82a05935dc45c390a9e1588906d3c245236719871a68c3', '12' => 'af9655656f6e31ba94b8cf3568ed10a8d2b137a215b27823059ef7a0af1f7aa7', '13' => '26bb43364c1999ada466d69c03549c6b85c016446626d1e970367918cca319bd', '11' => '257e32499a596a4a14da081dea3b3d54d69f1315a06cb1cf5f0c3894b83af8f4', '94' => 'dcafc816d17332595ffaafb18e7b500663a0846c17012244293bd7f3faa2d388', '200' => 'df77e4b1fd06ab900b5124b512f1ff4971914bad8631a6cea1f37acb68df0f6c', '195' => 'fda97f446d0394c9f6bd38141e3e70071c8fe6594c172583578c3b6277a92612', '112' => '1440e127dc7e6856aaef45684b26d8cf81d35a394795a5945f3123110a7c86d3', '51' => '09809f575a62ea95fc6b9be4b1712ff1ea34bf183d0434d667581aac1fbef5a4', '79' => 'cac29e635712c4b9d46d0eb1db2b90d7d15e8a37efd511ffad3e7738b422a5da', '50' => 'f85990cf7f572a7d5524e9080030e44d2409187b22ba8e082399b4eb9e8b048c', '49' => 'da6c4e8e2085726b45ebddbc7167122080aae5f8c10c0ec236fb71fdb6811dea', '30' => '05cbba2e42e3ef687fdefaabab97959532cc1de0d2b1517d3911739eb116f159', '177' => 'b5a040a335b2e86b6f7db19856ecc935e78762d26377cca97f333025e06a9b97', '52' => '20db7073462102be280418f0c29795a2caa41ca4f7e0f633c0e4ac300a3ae5d1', '172' => '92befb7ebc88a465e49be296de096b23cf675c372c0f2f370013b94cc644cbe6', '93' => '197c3823df47cbd8b7235bc716036ef416feaadfe92bd292ef4a44f8ebaf829f'], 'd6d8e8eaa48a3eb8251003d5' => ['46' => 'd9db8a0cb5ccbf9ffd098d8d590651b2e161b4f5d9cf9233679c4b2aae571c21'], '64c78308991bdd107a1cfa57' => ['60' => '43951d35d2e5517473dfc242ff3d574c8691e0e096e881ad4aa0c5b9d92c3cd8', '58' => '39d61869a027f863e26a2fc3269e41f690a9b4a5c80161b35896926182c7740a', '151' => '6764ee2e3021fb8a77bb5e8c39ad4192495f0163ac858488f232bccd79d17a65', '102' => '19fe676aa4fce1a4a9ed33fef453d91ef2579c960d6bd270e8ef69c5d09e113a', '52' => 'af47b0ecee71245b7035b53196d0efd55f4a378da65f0e8e89fe10729f260c3d'], 'a68e5ff94ea8b19adbf5378b' => ['32' => '373a22625218139f430fc439f8648e552819312ac170015b41d7627371f50016', '62' => '2093b3ee2c6783f97cbe378860c5fb94b334fc9e25529c31aa1146ddc6a40370']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch095CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['1' => '75a82614c5bf59044768c51fc1ca55e200ba7d70d1ce34a38070ef30106c771a', '2' => 'c0b7c8034894fed22aa6a11e888567bb6209051b92719dc0c277e07112f9ea94', '4' => 'ee75eb58bbfb47daa9e4e72d53d87659a4c187c62aac67114f1c1e705a21b0b6', '7' => '7b8d91bd41a25227612b6fb38cc5378f1b5f3fcf72c84d9c88dbb5e988d73776', '9' => '8239332e224280d5d22614ee23d0e89a646abcc72803461d9af52f073c973466', '14' => '50f29c30b3f8d7d8780653eb5705cb6dc45dd0b8890bcfee97f42f52f29497bc', '15' => '97bd7ef8f48b315de1d4585740de04793a89246dc7e98905e0e1b27686fb8271', '17' => '247f0856e794d027a04f105268a0722f466b9dda6ef85d500e3decbf862c04c7', '18' => '501663936568be9b5bc25243cd4b6db9c88a9fdd04b8f5ebb822d1e048ffa6c7', '20' => 'fe0cb4eedc642a6c6a967fe589a87f6d1df28eb02b0071d2e147452d1a554249', '21' => '8253c59356687943313669f249544e9344ec413b95dbe4b0d356f91fcd2fa0ae', '22' => 'bfc8278e1dadc7494d01841a5d358117db2c97f3e8c381f346915a56cdc0fcb9', '25' => '03b5ecabfccbd4ebd4b9268a0a707353e921f70f974fcb8021756a5600fff217', '26' => 'cafb9496845680ac8d153b1ebe8ddc3b048ddb01260c37124171748edaf8b978', '27' => '07ff312b4e444bcea9482de807aabef4d84ffc18c234dddb46aa1580a1db4b80', '32' => '097afd0693da9595d794d34b88981e46c908b0f6f5ce114772ee8a6f338a7039', '35' => '9dbb667e64bda03c93088a6dfcc1d4a2db69c0122661fff5047b5ec811d4ab87', '37' => '479ecc437416f15c114de979daf9cbf24698ba27c6fa965ebde0e05fbe72acbf', '38' => 'ddbd028d31cd1a2db3b3efef952b4a34a0e70456349c1a4e9da85c6a04c4dabc', '41' => '692b0008e1c3b38b84c8528d4b7ff0fcfb0e114d820279f9e930c8130c423758', '44' => '26a2bc99c80f07dea6f5a77a628c3c504b5fb9d2174aff904175b3b2775db1ac', '45' => 'bbfc1a93818d5f73c9a3edbc7f3aef9661c404d6a9dfc5b255978f50e5e6eb8d', '48' => 'd8e0112ef342b06adf72df3a76d4daa0cb8d47bcdb871429016c57d32398dc53', '54' => '0ff63e851cd502d4cb39a006957dfd824af66174b2e1d1fd87d8f349d4714b05', '5' => 'fa28859f91a62eb7433b364f9f64a4d725dec3342bc44c7e865c50c512384071', '19' => '6c2fce1ddd36d363913b0d3a8700846d111ebcaf2aba8956babd8e76e5799ce5', '31' => 'c7d2eb714061e6cc89f938ab4a037d0de3ce0140e2a15c039f91ea7f49ef0c0e', '36' => '7b85f541f73016ee8d33d559f80d0684fbe09a3f8ec1c851f902a8b5581f73d0', '40' => 'e3777e2630b44b55e91458712562ce8a6aeaa1a9874e5d691627d164c6e4408b', '42' => 'a8bf6b6099ae244f9b4bccf775287c2fd47ba84030756785dd5d4e5581aac351', '43' => 'fe2632e9c923f06f87653bdb6a28a734fa2855fa7a64e44992ecfa634bb3e1af', '53' => 'f74bb418cf0e35e6274a0fee6546798c40ff343c8396a474e3120f245cc7dfb7'], '64c78308991bdd107a1cfa57' => ['50' => 'e2e3a8ba3c2b638847f239d882d1b47748b26f9374a0b82cd590bd99b9a98743', '68' => '8499b03e0a38289d78c02269b24363c9ce3153a67ff817910df2b15f6c518b51'], '70e603b1037bf7ca8e1350b0' => ['494' => '8974fcff9fd50872dd6d0093cb0c9033eb434e681ec7f77778dbdd8f7b878a78'], '2e749f2174f08a9ea1fc803d' => ['495' => 'ccb245b2c3b78f0551e782bc10ec47f5c15b5dd441be784cfb171addd8de55d9']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch096CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', '687fe2c90d213972d658b389' => 'f3eb5c5cc24499f37d1a32e4c3bd6a918cc7e00cb9f3f30709e872e79a82ca42', '37e360c9b06caf43ca5cddfd' => 'bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7', '58b8ef8a045c6eca3b99dc6a' => 'bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['58' => '66233428ff2b15785127389f1fbbfb4c04eb2a85b79a9f6caca16f01ee174bd9', '60' => 'b38c2f5ed50d909d4a59c899feb43e33c7b293f0e949e18f6b2747e9b5dbf92e', '62' => '22de246832df33d2af31bdb9d75810a5f2b8a7252a7c2b060a16ec21efee7e24', '63' => '7987e23e5ff793d95f4e70445e643c9e8634b36ff149183dd945a8eaba4d5ba8', '64' => 'cd5b8171ed3be08d5af0524deb60d3e3d32446716da776916c5bc85c56920950', '66' => 'aab1b9cd861a29a50d655ef7278ff6712c67f964c57f5c7e12d38ccf0a978321', '67' => 'b41ce5fa0d1f6b1b17506b74177e35e72e7dcbc95b5d84d46f05e00cf6091372', '68' => '70aedb6bd5ff6ef9b1ba0428c39295643aab08170a0258c83b3f044366b8887b', '69' => 'e3ef50416b689a7f8dd8e7bc638cebf5e92432c269fcbd497584e28618fc923f', '70' => '9328290cadd945286a768ca44444cde3458b9a972f6de8fdd50be8181aab095f', '71' => 'd252ea236ac7bf4dcbab097552d3bf128b9d5b5a41c6fbd54fe2f7e54b61041d', '73' => 'e3013fa8aafc341f3f85fd9a4c3f4ac39c7e01c90c3c0006ffbfbbd2fccbfc78', '74' => 'bd0d3d80baa37886c6608e2e9679dc3f18adc7fb97aeb9505707ecbf8199ea99', '75' => 'a4db0bb3a71a26b4fc7d5bb93447805c902ea21f77c9185bbc4ac449e844ed0d', '76' => 'a22164a1c0e307a848d0b376693ea4bef2bf658a8327e04279aa01e275cbae86', '77' => 'dd5d29a048e0df862dbbe9e4f72a3c174fecd63b5aca63d5f72b0a3383b4e403', '78' => 'f39d14c8eb0216bdf943da4724b82d3ecfea70a967a13edc8c1293d8e2725444', '80' => 'df0bd5a6d0667de91a7eb46c5b18c3a4fe7a7b935c99796171eaa03d68603848', '81' => '42e284aec416f27e84cedf37543c47fab8d75df1a18b4e46239fbe105dcf85b9', '82' => '8aea1e225f1724e5db22bd759838389f089acb862c8e27a91d8766f864ccb3a3', '83' => '19d841208bb374410f046b25d0a842036176be2f8f6f8b8d5738c36dbd8ed50d', '85' => 'ca0cf83e16e14a01186ac615b090e217951645e6b371780169085255c1523bd1', '86' => 'cbf3e83513075a990084970876da3e9f87ed225c615b0e4a31fd5ad744f7dddc', '87' => '77a3baa49d54ed5e69e1327a379dd0abc28ad96fe6ba141a2a75b55d0d657c48', '90' => 'd4d0dcc078ca22fd8e1812a1f41fa7b53c56e1436208f0e369170e208838cc35', '99' => 'd99456c065ad8d2c20966a5fc70d004fd9fabfadd88e4d11cfbf5e46e190a321', '100' => '0f3d7e4194aee14e415e66c366f8e77fbe14fb596322296331ba9d2fdd918641', '101' => 'fe65549e391c0075f936cfbc00a2cc426470841410793e665a0aa639b3b32d62', '104' => '09792de1d0e58d7bd78fc90c50c4a0b051ddacf531385038b678335a3d51312b', '105' => '1ccdb680af636f97869c73011c0b9d957f374c74b731a64e955f7d3760d2a8c2', '106' => '1736ea026a16f8019458e1aebf485962c1273672c37f13f52b4ab5fbffe6ae0e', '107' => '731a1814adb1d80bc4163a8cfdca9edef59d45f8d64981a20058de5c12208080', '55' => '8f815768e716a8b2fc6392aeea49701f7c68b22e3b62bec9770c0049db51240b', '56' => 'bbd6d8a9b4c940a4bd8c19813cc4a01f9e9644b8ecc5ae076ae6664d440800d3', '57' => '2ed405efbcd5f7c3f92fae6cc396d021cc0acd61f5c497044999ed4f57628c82', '59' => '22210c5dc6317666c711765a73b36c21a11bd542bfbf920c4a02a0e53fb17178', '61' => 'fc64e9ccae842b9769ab89c2e6747117fd2bb4a451341920b5876d8ddd7c73b5', '65' => '5d8e0e1342110d2027f75c027551e807e5fa5850a533b76513a206cc68429947', '72' => 'e82c329ac3e8e58cb8da62587e53b4ed99825e31c20508c8b0f0bb8aba4ccd5d', '84' => '0e3f8dde94c639fa699231962c19902f2b934bff062f7fa215ba9943ad059910', '88' => '84e05b28d916db1cea5e3226f8f2c422c95d5f4b200f947e7e60aa90e31aad19', '89' => 'e69b3035c025e7259c7e9475f3afec523b3b92995d0a5549fe6d3d3e9f9378e1', '91' => '9b08bfeae5df010ba13c9ffe7c39dbaf246818f3a9b506b8f247255d84496c8a', '92' => '218f922a5382855ccbde45bd96372179ea78122d7e8a2a66d976e05e3ea975b3', '95' => '44d508e92ac553b6842184f34924804eea97f99930767ac9fef02abaa76a8fd1', '96' => 'ea9eee6222b27cfa2217e8bc2a0c4d17d048ba409859cf3cbdb39baebe80edcc', '97' => 'cb1aea3e713070c6c63f4c3cfe5fe0e387e0132a3e92bfa4c091d296e1b7b38e', '98' => 'e5adae10c8e4ca8775a29d6b13532f90fe34c1591f4c8575a219c3bb1f7cfd29', '102' => '2aee8be1565b34bf34c3ef21ea8189a46d11ea2c4a43cd3049b02e83e74a3795', '103' => 'dd05bed9267de3c75e39ac08a81185733b6bf10c59c48be18caae024e688c78a'], 'a68e5ff94ea8b19adbf5378b' => ['77' => '0bd762be596534ffb1262950ccf5545dfd23f9065baecadd802e1e953d11e5a1'], '64c78308991bdd107a1cfa57' => ['23' => 'd564d74969bf5741338591e9c1a7a895c656ad3b01a22f08559dee24d983b33e', '85' => '414a8900e802337b8ebe0aa6db48fd747c857e6409811f317f4491689ba8a1a7'], '687fe2c90d213972d658b389' => ['58' => 'a2c90fb9d6dbdb7bd8a11b352b98d9a9cf4ab9aeff42fc722be22e1c0114fa50'], '37e360c9b06caf43ca5cddfd' => ['34' => 'db7a3e2c959327ccb92bf7c2a469da493ee8074f626f240e5aa33df8924e66a7', '172' => '0311956b85156464f84013de2ef3c5bf57117ae0ed225891273434827d03321a'], '58b8ef8a045c6eca3b99dc6a' => ['34' => '17b8d8ddcfd491a263d376930ee5a3aaf98d3bd4b871b6c4372456455937d2d7', '172' => 'c16c5e0e025bfe2c9a38202dc8da251a90a09ab1f0d80f29b52b8725d7dafe56']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch097CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['56' => 'bbd6d8a9b4c940a4bd8c19813cc4a01f9e9644b8ecc5ae076ae6664d440800d3', '179' => '00bc493ac7afa0db7b4cad92da31f3e5e229da173eb7430775234fd2cf377a89', '180' => '4e315113f8950769f3687dd59dfaedabf71f5421f6e9a9b34da92acd9d850bdf', '164' => 'c12292c7b26883f214f2fbcef74f32bea9eb2e09c7a7a04ae8d00e8118b18fb3', '139' => 'a3d3430d1d2a44da7e95d5bdb7f0ac6d8de25b393b2a4c4d2bb481c7ba3e4451', '166' => 'c9b7a6f555df5b7dd727881f645129386abfb6bda3d4ade6310159d5c0cca4f0', '135' => '1fb7a52fedbcaf217e9f65b2eddf83241cd2a57b8a287d46d8ec343ab1d6558e', '43' => 'fe2632e9c923f06f87653bdb6a28a734fa2855fa7a64e44992ecfa634bb3e1af', '224' => 'fb4140fb302a078bf07fe9c22a8bf41c21b0234f005bbdada87e5141528981d0', '39' => 'bb4b02d4cfdaab1471f33e1180198dc49c12e8376bf5e76391c78db07e2c9b2d', '88' => '84e05b28d916db1cea5e3226f8f2c422c95d5f4b200f947e7e60aa90e31aad19', '89' => 'e69b3035c025e7259c7e9475f3afec523b3b92995d0a5549fe6d3d3e9f9378e1', '221' => 'a2dad42ddc3bac1c6680ad816b0c7912ab4706c3afa205e2f3ed8fb8af6dc3bc', '9' => '8239332e224280d5d22614ee23d0e89a646abcc72803461d9af52f073c973466', '104' => '09792de1d0e58d7bd78fc90c50c4a0b051ddacf531385038b678335a3d51312b'], '64c78308991bdd107a1cfa57' => ['83' => '7a74f8a605ad176af07a857aac205cd98771acf477d606ec3ed7761009c05e97']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch098CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864', '687fe2c90d213972d658b389' => 'f3eb5c5cc24499f37d1a32e4c3bd6a918cc7e00cb9f3f30709e872e79a82ca42'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['196' => '421fb7b4d7f1c3595d8f1b984c1e8ed928ef39c6c6a119b696b7626158c01842', '84' => '0e3f8dde94c639fa699231962c19902f2b934bff062f7fa215ba9943ad059910', '158' => '451b177e687c259ae49432776f8b8bc87437702a288de7cf2163da5ab2a41467', '213' => '042974353afe17634fe46d411bebaf9aa33f79d48f6dca575ffef92ba29095f4', '102' => '2aee8be1565b34bf34c3ef21ea8189a46d11ea2c4a43cd3049b02e83e74a3795', '197' => 'cffbd2e409cd5fb4a50ffb0e317b8c00190ee09b353b28a7293813ee9e8b91ca', '110' => '58a41bd907ede68c4734962de0ca1e08a67a1e3b474032236d0fc82d8793300b', '178' => '2f24db026372dae92243c1bd63d5eaf46b47a9c871e2227617500b964b352e06', '72' => 'e82c329ac3e8e58cb8da62587e53b4ed99825e31c20508c8b0f0bb8aba4ccd5d', '212' => '3dd50b291ceec8ce92d304b2eaf23977c94d05b11029770fb11005f8043d6076', '100' => '0f3d7e4194aee14e415e66c366f8e77fbe14fb596322296331ba9d2fdd918641', '73' => 'e3013fa8aafc341f3f85fd9a4c3f4ac39c7e01c90c3c0006ffbfbbd2fccbfc78', '74' => 'bd0d3d80baa37886c6608e2e9679dc3f18adc7fb97aeb9505707ecbf8199ea99', '32' => '097afd0693da9595d794d34b88981e46c908b0f6f5ce114772ee8a6f338a7039'], '64c78308991bdd107a1cfa57' => ['94' => 'ed4398deadc73575bc38d509bfe82b24805731c6a75bc5750940bac8953bef36', '143' => '967bd5ceb4e95c9f2421cba0cae956bdb2f039791c6b904d7c07f9b342c3cf5a', '6' => '1b8604c4a5e972d064c404bca5cac0771a13d14521eacc3a67963629181c7777', '163' => '95a7b95b87e85cb917af6105ddcf34f83b7dfff324780f4622e6e51bbb3a4767', '50' => 'e2e3a8ba3c2b638847f239d882d1b47748b26f9374a0b82cd590bd99b9a98743'], 'a68e5ff94ea8b19adbf5378b' => ['12' => '627cfbeece85aab12782544d7f0993620aa1ea7e9077b75eab32b80218557f0d', '77' => '0bd762be596534ffb1262950ccf5545dfd23f9065baecadd802e1e953d11e5a1'], '687fe2c90d213972d658b389' => ['204' => '627eb604e7ce35609149ec58786f2ef61d1f67db4913404d38f815bba695b608']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch099CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['103' => 'dd05bed9267de3c75e39ac08a81185733b6bf10c59c48be18caae024e688c78a', '173' => 'c0bf81880f3a2f6534b23792cdeffd3ebf8bf3b2c7224b5e815020afd0e4cc83', '151' => 'f98122a7cf08f2429144067f76459052ff2b3c013a92831b270e42efcfd578ae', '127' => 'be90321db6699a97e7fd33fcd3f957f3faab0496b2c7dd6c290089c7e70a8a09', '91' => '9b08bfeae5df010ba13c9ffe7c39dbaf246818f3a9b506b8f247255d84496c8a', '61' => 'fc64e9ccae842b9769ab89c2e6747117fd2bb4a451341920b5876d8ddd7c73b5', '184' => '20dea42039dd285d55624eeca1ec9b89af0a7e1b4d6774f3bd72130dd94c973c', '121' => '1944bded69f1ce8f474fae443aeed74e277673345b712560bbd11d32d2f4ef56', '122' => 'cfc557b913d66f15d7464679f31586c917410e15d745cfb3e7af2d060cf2783e', '148' => 'cbd159fe993c95ba794fb0efda5f413f3aa092406e08d57d576e001dcf6f2b65', '146' => 'e58b1a08d4d946a1501292f0908f5451518e9db51d25f244879047b13937cda6', '222' => '4cc02ca368d3b6b1c2bc226e32adf8937ab5c56dfa5aed4ff474bcfadee707a6', '134' => 'f6412c53896d8e97d4a60196f769995ec9cf80d637b96e9bae61643224484cc5', '216' => '4a6067ac9cd02db332fbd003e4d528d13dde4932ece2bdc92f41ea9a51e58178', '4' => 'ee75eb58bbfb47daa9e4e72d53d87659a4c187c62aac67114f1c1e705a21b0b6'], '64c78308991bdd107a1cfa57' => ['179' => '07e08f6da4dd689fdfd1ea25b55d5bf89e92640980830fee62509f5f4434e271', '131' => '7a963fc3640fcc99113de606c8c83d48778d0f45fd4294064b4486e9075cd29b', '154' => 'c6d40f626ff7958d984888f5b25909a15cf18802db249c751e476cff80d7d8cc'], 'a68e5ff94ea8b19adbf5378b' => ['3' => 'd1d65a492630344d74ffdd5f206e93792d995aa582fbee18cb800da08a29de73']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch100CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['211' => 'b500c3d6321479f11bb9b53bf2db91071f2d97ac7331fadb2a906bcd3dfc0fcc', '192' => '36969fd8d035780bda7989c901578b9109065a5aff0d76145eedc0b74d6ebb14', '5' => 'fa28859f91a62eb7433b364f9f64a4d725dec3342bc44c7e865c50c512384071', '96' => 'ea9eee6222b27cfa2217e8bc2a0c4d17d048ba409859cf3cbdb39baebe80edcc', '119' => 'fdd871648bbb60630da11f80f2bc8fb2e779c8e15c89b76a9118f6e12a9699aa', '131' => '09a33a54c39f7713c385913754822b720405e3c689ac504a378c810984d1e3fa', '57' => '2ed405efbcd5f7c3f92fae6cc396d021cc0acd61f5c497044999ed4f57628c82', '187' => '520b7697ea7382d340b71abfe64e895152a591805cb21f07ead791f1b7df6777', '138' => 'a4db8237d0ed6f0e672d99b84fdb5e565e10504713273bfeca7ef407c776fb1d', '208' => '19afeef4310a33c1291dab82bdbdb97a75b2539259c474db01899419cafff664', '182' => 'c14e4b99da733c991d5027f890ab9dbd68de436322fbb5dcbcbf9b5f077a4ec7', '174' => '13ff3e4e6101a3bcf986aed591e120131d5c29b2bffc8d3f16b48045d4ace4f2', '156' => '9f963cda87b51f8b3b0b2d94864861617fe0d92734d3fee3615ff650ca047ad9', '186' => '0110001193043262ea63897e604afa4ef8f3b3e90130fbf9e1ccf2b2ae5f1100', '157' => 'c19ead43516e06ec31ec1b0a93543d845d5133bb9b35add216b4150025e43d82', '149' => '8f9e994d718fc389af3064c589bf1953dd0290f0f3e0914910107b0946d80885', '189' => 'a933b814e5ec14342a6bf58625abde2babcb25e4798e58a21bff72a631e376ac', '204' => '8c0aed52291995a9fd5750161f7875fafb1191039d28c556fae157a3f539c8a5', '202' => '2e5c5a55d2966f1707219670b265ab69a94d9e8b8635b48431ade210a68f16a8', '203' => '304d12662c08a1c42e2fe809db1b3819474d0eeb23e30bc779cc2010ca29d62f', '55' => '8f815768e716a8b2fc6392aeea49701f7c68b22e3b62bec9770c0049db51240b', '59' => '22210c5dc6317666c711765a73b36c21a11bd542bfbf920c4a02a0e53fb17178', '108' => 'f8ad9e3a78184aefa918385b9848d02669150c7aea1f6bdb9001412a8154ef4c', '188' => '50e95ad78af4391b2fb6b6d64c92ade5b6dcd4b7596051483360e54d02a66ff9', '97' => 'cb1aea3e713070c6c63f4c3cfe5fe0e387e0132a3e92bfa4c091d296e1b7b38e', '201' => '45fd89b018b554ca8a75be74d8b8dc9d565f9dffa31fc4d4bd15f427bfe11b12'], '64c78308991bdd107a1cfa57' => ['124' => 'ccaedaa19b3a73a58935671b89f97ed8b29f1befcb932fbac276b557b10d9237', '112' => 'f4a104b79460c081f443a2b354d6bb6723331751d6b41675f80d39230325c463'], 'a68e5ff94ea8b19adbf5378b' => ['38' => '00f1c94fca121c54b13168669d139ca24c0e3ca455ec567ca2aff714c5d9c624']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch101CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['19' => '6c2fce1ddd36d363913b0d3a8700846d111ebcaf2aba8956babd8e76e5799ce5', '124' => '65f848557ae59a5647b113e1b727d1f075edc0c33728d196cbc9a12390d4b776', '145' => '5b991bd5c5b3bc19b14e96da939d956a9c282809db928a83746cc070e1ce71aa', '191' => '6418aa6ae54994bc9a6c22bb329add7466da6fe65024a692a7cd3f7365e49ea5', '31' => 'c7d2eb714061e6cc89f938ab4a037d0de3ce0140e2a15c039f91ea7f49ef0c0e', '214' => '8ed479c3071dcd5dce6d29b688f7013ef619f653d59e38c89cb7f1021c79e182', '218' => 'b1d180d424e585175914e9741fe5b4d5116067415e728f7839d62363fada89ad', '181' => '8e84c68a5f3c4de5401e942815f4d17782071314024e9d37b1e30171c13c72e6', '171' => '90ead45e2d461b66dc10fb0907e7e592d111832a2bc124fa30d08337941eda18', '137' => '914cdd153c46fb006f6ed8c801ad99a247f109b1091312ba5251b30c6ac395fc', '210' => 'ff4463ab73ccf2a8fb1a4378b27829c7716f67a84ef98ae0a838f9710c9cf066', '159' => '67434bf8120f86567c88bb506580b0c255f24d18534c51a95148f228b6135c3f', '206' => 'a4dbba5f84ff5970c052e624b680ea4bd2af8dfed51dd14f3077e76342406ddd', '6' => 'c7d389e3c2ad63de50f2f6bffd5a104a1f95d94e19628ae0381685f785dc08a6', '53' => 'f74bb418cf0e35e6274a0fee6546798c40ff343c8396a474e3120f245cc7dfb7', '165' => 'bcd709b07ef1c652d445fdf878e86dabcb4ca8bea069357350491eb609fcbff6', '68' => '70aedb6bd5ff6ef9b1ba0428c39295643aab08170a0258c83b3f044366b8887b', '54' => '0ff63e851cd502d4cb39a006957dfd824af66174b2e1d1fd87d8f349d4714b05'], '64c78308991bdd107a1cfa57' => ['129' => '463e17a080514b34b68af2184cba2e9f853ce79aa08399ce1e25297ab2796e2e', '145' => '94fd17c8976375b167f2ee302c8a61b8231ed34d00923e3ff72e2d9b1b24aa0c', '168' => 'd0e56b728c6d1f2f113e463184229ce8087a95bf303372e70f07d5d781abb545', '2' => 'cfb96aafe268d1b9f35658ba36bc40ceb028647b91073790a454fcfb17b66210', '68' => '8499b03e0a38289d78c02269b24363c9ce3153a67ff817910df2b15f6c518b51'], 'a68e5ff94ea8b19adbf5378b' => ['48' => '2be2c6b13e70ea27007e591baa1d6c92f10cb2dd444db6d11fde8b8643ddd368', '30' => 'b70d92d8eeb23d026fc3cbd9c5631b9472b4cd1b383a56cde02e1a641ca69eed', '10' => '88aef4efdee88720b6f41edf72a2b183dcca734cb534753c55b0cadbb901c5eb']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch102CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', '37e360c9b06caf43ca5cddfd' => 'bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7', '58b8ef8a045c6eca3b99dc6a' => 'bbbd36c9605e67ee7ccf17b48cd004bdfdb2c5a8aebe7f4ecf23997eba2ffbe7'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['154' => '6c26c2d76fd31b6df01ac684f3c2fb4b0d44e0744527a5bfc9ee2084683417ff', '183' => 'ad1f0be65fc3908f2479c91190cc11bc9af79964079725e49e9684a604a413a9', '117' => '604dfafaeb6ad94fc8b6cd694a1fa4cc5da44ead95b3ddec977227ef6fd40beb', '199' => '1e06e7c1ff38ce6e30276eb5d6bb2969ba6ec878a5ba14d781c808fe2fa5543e', '95' => '44d508e92ac553b6842184f34924804eea97f99930767ac9fef02abaa76a8fd1', '160' => 'c2d5e95bab10dd5928deed158fe23a9535f69b1c5b5916ef732ff349f6969754', '163' => '1aae54104e60bdf71939e8f05a9c312441a191eb9281a44eca5f9f4db8cc5e0f', '115' => '90bcf7ee642f15bec32857a1f3af51f1fbff8ccce3565ab597f7c947865d4397', '113' => '2a175bb8a6b86d5a1be63b2b9c9103d0ac78b2ccc48f8bf384488dfb63f10c35', '111' => '4c0b50b6f8bfad4ead88fefa729a665769334ad6b4607c91fe36e3485bc11a70', '65' => '5d8e0e1342110d2027f75c027551e807e5fa5850a533b76513a206cc68429947', '162' => '6a1a1d5488f719c50df5b219b02a2d0e2ff2f1fe30160d170f9f72a67619b8a2', '36' => '7b85f541f73016ee8d33d559f80d0684fbe09a3f8ec1c851f902a8b5581f73d0', '193' => '2d52f4ab23af88ae10b026dbd5d52161061958be83fb1418d83cf2f86fc4f76e', '190' => '1ae2a06387a03cc39bccc660e6d60566ee0d6f6e710d989ce207cfced149ff05', '165' => 'bcd709b07ef1c652d445fdf878e86dabcb4ca8bea069357350491eb609fcbff6', '87' => '77a3baa49d54ed5e69e1327a379dd0abc28ad96fe6ba141a2a75b55d0d657c48'], '64c78308991bdd107a1cfa57' => ['23' => 'd564d74969bf5741338591e9c1a7a895c656ad3b01a22f08559dee24d983b33e', '63' => '0f1b0c2ed6edc7d12590e036d0f966d58226fd01101352f0583a677a2094c3f6', '66' => '37862e6f78a5c29f57cca5ce92c02bdf3ffc3d62d8d226a374e83800b33d0d65'], '37e360c9b06caf43ca5cddfd' => ['34' => 'db7a3e2c959327ccb92bf7c2a469da493ee8074f626f240e5aa33df8924e66a7'], '58b8ef8a045c6eca3b99dc6a' => ['34' => '17b8d8ddcfd491a263d376930ee5a3aaf98d3bd4b871b6c4372456455937d2d7']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch103CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', '687fe2c90d213972d658b389' => 'f3eb5c5cc24499f37d1a32e4c3bd6a918cc7e00cb9f3f30709e872e79a82ca42'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['142' => '85f7b3c005e1404b33fcbb2b1a638d586ebe1bc0b51dfd8f9f63e5493d411c9a', '136' => '879319c09c5ef067029c9505bd8dda6e12c60dfea488bce2764fc5e04a7a7ab0', '92' => '218f922a5382855ccbde45bd96372179ea78122d7e8a2a66d976e05e3ea975b3', '116' => '32d6e233294cfe5f0a7f411ce4c928e683273899bf4be5b72c020f5d8af064b0', '123' => '4f13b1236176f1c8b4a47ccb7b038f1cb51a90e14759e79320bfc93ece98e41b', '144' => '72dc63ea68161fda245a3cfb517e63fd144f596a42711f24b76f881cf67a25ea', '207' => 'd60a5da04de2eaba046103cee1a4780019cbd764e46db25339e05561a35e2ca6', '220' => '6f86b8bd9fded4fafd32fa27b0b0f214ab938ca265dfa9ef8772e92427ec07b0', '126' => 'e68c7326103ece924139a87b1a0fbb80a8331309d4626541834a414ec079da33', '129' => 'b6a61d745c3cd959082b63525b85a4e88dab6e6c21f8bae89719dd7f0564d66c', '114' => '8ce75af93b22d44bc9eb3262d2fbb8b64a9b990383d9f8b107702c76c25e6f49', '132' => 'd06a4a8f8a684f5e0591c5e64838f4290b6a2ebcbfdd34def0729e37714d4527', '133' => '2672e516041afac1732cda4bc5d1b416a3e67657bed315229f908bdd11f4eb04', '130' => 'd926a393823f0382777aa3b298119ace43a355c63cb8e279a4a638dc70c184eb', '120' => '581bd0c440770c864820252914e3cb8daba883de0b59fc1ba309216b59ab4311', '80' => 'df0bd5a6d0667de91a7eb46c5b18c3a4fe7a7b935c99796171eaa03d68603848'], '64c78308991bdd107a1cfa57' => ['118' => '49a84812fe2dd97f59b38fe8107d119b0b01e97b100903f52a48a5e1352b8aa2', '97' => '608dafb9102acdef821a1097ea6a2696ac40cdaa6b9b3cc834d172ca72daedaa'], '687fe2c90d213972d658b389' => ['31' => '692c71d51865ece39c3cd82f26e48880de395d2f2a73bcdfe311e25f621303bd']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch104CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['219' => '72de8e545d44b79ded0d89006d631a9baaba982b73b4357072c57e8b0c4e7573', '167' => '88e7eeb413a4afe73679cdc0a20c608dc4cd51780281f511b1235452bb739ee6', '209' => '136c6f54a12d21ba9be7d34d089f6c86024fde24a5c780d87eef0a1a771e5f5b', '150' => 'eb872761105687e11c53c5307628cc58e04b6ad96254c49f2c15ce96d11b7fd1', '153' => 'e52c7bb38ce164d333510e37914189c6015d41599e0aa1a2ba7b4645acb9f2c1'], '70e603b1037bf7ca8e1350b0' => ['154' => '9705954f57ff10aba39e6f1e319c01db9c546064434ea6c05f2f5df6b9354c8f', '156' => '8eaf18f66b17f82da6d1455bd84508c9c345debe6d34b08f21b12eeb140c7888'], '2e749f2174f08a9ea1fc803d' => ['154' => 'c1f42517a080490a79f92835de099714a160c3406931ce40e0264f8447c0df77', '156' => 'eea67ceb501635bb3189b92e025d8338a36b6a63f986fc2ca3c6cfece34a993e']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch105CandidateVotes(array $record): bool
+    {
+        $sources = ['a1b887ea9c50978fe4cf8e5c' => '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02', '9a57af51e71e6ff194d3f409' => 'ddc824406b6b49a01b0d9b73394827bd04945772471906d77c76addce5f197e2', 'c7c15b329cbd2123a34e5b3e' => '84f2d9538f42f21f2c8d9ad06396dc867f81798f52e264c48bb6bb5792975975'];
+        $allowed = ['a1b887ea9c50978fe4cf8e5c' => ['233' => '2d50638e059ebf9e054638f1dbcaceb685d00a8e90e557c9e474efe846f1a5ae', '239' => '327ec3de00da10f330c81c9793fa020273443003df66a7b2655ce297b1f5e247', '243' => 'fabf1f6a3154fc62e1cba4f8b35081c675c784c2385af9964aebb905913ec01b', '246' => '8b9892fa07a4d4e4a53878d1b95f352cc303db4d6e52a79b9548e1af06e60f15'], '9a57af51e71e6ff194d3f409' => ['333' => '64f471cf7d6038ccd8e95e91a3166c370f4878771f54b1b854301331b3e645e9', '338' => '4cd544c596b0b10ca91efb5b159a3f3c9814d1b24b2cd5912cae479a7e1c389a'], 'c7c15b329cbd2123a34e5b3e' => ['76' => '1577286b5eb0a52325c5be76ae8bfb841ee8867db4842f00724ffe5502f41c37', '32' => '077a6c0e49c8ba7e1088c3ca5309912fc00b54c21117038b1d10017b3b925a22', '58' => '4bc527e565a878c75e1e92cd9263f9c73dcf66679847757d54a4c9c831af8329', '73' => '8c16874a3620af70183c817fb2d5748218ae5b5af64749c3cfa3990bf85aa6e2', '28' => 'eb7562f7a5397a4a8e7a61dc7d330f1fbd006a70c7e257df5534159dcf51b61d', '8' => '6296ee64a035462cb6610d7e5d61dc239d19d5b1460f50714b3090c8e0f681a1', '35' => 'a6676b22d5657e11d0d9ef67c54feaea46248c333c82147e62479921d39af3f4', '10' => 'd719bd4c5083d7425086cb83ea93cecbdaa82a3fa31f7ebbef817631df5aa4f9']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch106CandidateVotes(array $record): bool
+    {
+        $sources = ['c7c15b329cbd2123a34e5b3e' => '84f2d9538f42f21f2c8d9ad06396dc867f81798f52e264c48bb6bb5792975975', 'a070f6500cd9afecdc06f782' => 'dd3d9d3425a9e30eac0e416c350ff2316aea1f7d429623d701cf8a0870fe9830'];
+        $allowed = ['c7c15b329cbd2123a34e5b3e' => ['23' => '4fabb7f2ff9a1a0a753654b62ec13a328727b9d720d6eea02a3e402290feb971', '64' => '187be84be1e117d64abb62529ee6d20651544bc49fe5c570f4dbbd82d77f3e8b', '31' => 'd1c266ce02858a78e4941799f466434870ce57b345d9d72f045a199f9e8c2fd2', '77' => 'a3c3c7370ec9cbc3be339bb09d447f8cc75d37ea4448a5839b97e4fdfa2bc7a6', '10' => 'd719bd4c5083d7425086cb83ea93cecbdaa82a3fa31f7ebbef817631df5aa4f9'], 'a070f6500cd9afecdc06f782' => ['64' => '954c24ae106c8d17a916829b0d071d4a757d7b591c10d453941b7a5d9e5cb504', '77' => '6d0c2a9160a26eced42f9d30767f4ae3cae48f25132acddea684807afe33d3a0']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch107CandidateVotes(array $record): bool
+    {
+        $sources = ['a070f6500cd9afecdc06f782' => 'dd3d9d3425a9e30eac0e416c350ff2316aea1f7d429623d701cf8a0870fe9830', 'c7c15b329cbd2123a34e5b3e' => '84f2d9538f42f21f2c8d9ad06396dc867f81798f52e264c48bb6bb5792975975', '64f82d77dc6cce9b2bc17061' => '0abd145aac080e07f8721900ca29b44714aa2737d31115368135ed7573256792', 'fb76cebe74b1c87526369724' => 'bae58505ed29beb58f4df2941119074b6bc1a83f7ede776f3a557bdd9c8d8d93', '9aa0b4cc113d580f406a6084' => '0aca312f04bc3a46eba9a5bf968b75718c53409e7a624b114ea5760d71c04593'];
+        $allowed = ['a070f6500cd9afecdc06f782' => ['77' => '6d0c2a9160a26eced42f9d30767f4ae3cae48f25132acddea684807afe33d3a0', '48' => '5cbf5d0d7ddc89f6ce782c71c797080ae80269bc57809e1a85057ec7b33e98ca'], 'c7c15b329cbd2123a34e5b3e' => ['63' => '1c83f1adc29f1f6fc743f404b5667ca69628326c0b0a033b4c974756336a602b', '48' => 'bd45aebccad8c0921c4d5a13a7579daa265c70472e69e5a0c9b9b26212af10df', '78' => 'bb3733b7067439f7bf97da91265585f8179c5b82ca204939f931a51ea1041968', '56' => 'd8965adaab98e687c718e21e5c929ddc481d60926fd77e235300872336d5fc9b', '42' => 'b9f6352e7dae1e245dabbf817e0bb96d326216b3f67274c64ca6c4990a4c285f', '72' => '8b963ffadd75c1edf9a66ba9c370858946834c3c9185bf7326e4cdb69f68f61a', '19' => 'ce438a590fe78a654682354b9e1d328c27e227bd5b86e16ffe3f6254519abfe8', '112' => '487d84a5c7bb6b131298f092e4c2bd8ccc7c3d663db6c67387712967f68b5f8c', '110' => 'c75a313a29a013b3670bcd238b827b8095459df91ce5438678e418d4b190710d', '65' => '1da8d09c6d5a1903a5a9df2a60e014d76bd868188fa527720d6ff79dbdae125b', '45' => 'cb59b537bb72bb38d0b716a3b68c67fb8f5119e11795e760bfbd00b6ac448f50', '39' => '3dacce16e2fd57649b857bd4ae1a8a82585854850d05f14f88bdc4d3c9e6b198', '50' => 'b1ead56d20f2e84aa6b1b9595c94351224a698f2a92816c7ade424e2d516a0a1', '18' => '8716d31cf1a390a94a2dfde0f8ec6bd2394ab5f4c8abfcf910e349342d22d01c', '15' => '3acf4e6df8f5083a0403721ad59991511f1fc1f1524363167a1da3190736200a', '77' => 'a3c3c7370ec9cbc3be339bb09d447f8cc75d37ea4448a5839b97e4fdfa2bc7a6'], '64f82d77dc6cce9b2bc17061' => ['11' => '463f76fd785159b3d08d91937e704d8f882e1fbb0ae4e440709e571ef8ff512c'], 'fb76cebe74b1c87526369724' => ['72' => '5869c6fc6b5bc901973bfce75fc38b8196f42deb3e034f607ca0a745a02d5d69'], '9aa0b4cc113d580f406a6084' => ['95' => '502b893db5f6e0d2f6d14dd3de12ae91398d0b2e5f5923b5bf858ea7b8e2b9df']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch108CandidateVotes(array $record): bool
+    {
+        $sources = ['c7c15b329cbd2123a34e5b3e' => '84f2d9538f42f21f2c8d9ad06396dc867f81798f52e264c48bb6bb5792975975', 'a070f6500cd9afecdc06f782' => 'dd3d9d3425a9e30eac0e416c350ff2316aea1f7d429623d701cf8a0870fe9830'];
+        $allowed = ['c7c15b329cbd2123a34e5b3e' => ['113' => '43d60b52a2a32cacf415aaa7b4eda0faf61bb38e5bfcb60d92c8add85ab21116', '17' => '7481e693793336af3d7b4f1882856a285e13f8b8a892f59f05da37c24deb88dd', '97' => '010d6a47d8db3cb092e93e32e8792fff41c32bc9e519d3e76a43e736936674de', '22' => '88dfd1bc19513a6da81ecbf09d9d6400d01b59434861bad6752e16cb5da62b36', '41' => '9d46546e6f078150f3177fe5a3462a6201d75c627bd347ad78cb5104eac2fd66', '93' => 'a0f25f24666d6e4cc853f80e375ee08879c04e3e68fa627e4b9e7c8ba92e5adb', '94' => 'bdd47462356bd6f16194a77b31e44671a1acdbc8620e255fb8ba5c2bec3ce828', '16' => '843c5c7bf739a2134bf90488425ca18fa8bc79de3a139c52012793cf77915f3a', '96' => 'e1b3829a34703d3d153db45c9dd21890e2cfa209b0d9a4d110c779bbb1256627', '69' => 'ba200532b235eb81e48e9da37961da1f2e2b41a59d82a42242ba417613558468', '21' => '61aa6e1e9633f84110446fb3e22d40e873f9fff1f3bc54628fc5ae47d4d844d8', '104' => '530ec8df97a2cc3e11bc30f60e5cb6115a300a2b141728d48a78dc4e6567fd12'], 'a070f6500cd9afecdc06f782' => ['21' => '9f134e280af53ee5b60912a05c9b4594efffd590cca934beca9f9d28af8e5c0c']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch110CandidateVotes(array $record): bool
+    {
+        $sources = ['1be9e8a7976ebdc44658c8e9' => 'f576ebeb6889f67b9b61d5765b39f0e34c3733b95e9983693f14785088b4ae14', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864', 'fb76cebe74b1c87526369724' => 'bae58505ed29beb58f4df2941119074b6bc1a83f7ede776f3a557bdd9c8d8d93', 'c7c15b329cbd2123a34e5b3e' => '84f2d9538f42f21f2c8d9ad06396dc867f81798f52e264c48bb6bb5792975975', '9aa0b4cc113d580f406a6084' => '0aca312f04bc3a46eba9a5bf968b75718c53409e7a624b114ea5760d71c04593', '64f82d77dc6cce9b2bc17061' => '0abd145aac080e07f8721900ca29b44714aa2737d31115368135ed7573256792', '7926e86b9d035f1cb153b991' => 'eeed85c4864e3ad983a9f0dd66742b4d7c17a151e90cf32ae5581ecbdce78609', '64c78308991bdd107a1cfa57' => 'ba4f25350272861fb1266837c9032d3edab77c3f92a9cf99a1d3bfb999507531', 'a070f6500cd9afecdc06f782' => 'dd3d9d3425a9e30eac0e416c350ff2316aea1f7d429623d701cf8a0870fe9830', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7'];
+        $allowed = ['1be9e8a7976ebdc44658c8e9' => ['175' => '3b33c9e134261c597b4bf0f5a5a37e40c83750256d1fe47af5021ec54765cc79', '152' => '26619ee7d6e0de2f6d306174b6f8ed207064586a9608238be35fa231d002eaee', '118' => 'd8e006322b1ed4c773693e23edfe5ba75de29e2ad067e4189198a52d62e02941', '217' => '2150563bc024fd0a2a1b08187e3ca62cfb3412a9a6e479ece9830a641be5a37b', '223' => '4f65fff5cd57a5199069ad7724898f0681d4ea5ed0532a8cf413be2a54db4f21', '168' => '9b2540a67c3ec00abd8451bff74281d286cdc6b127ce447a1ee4b22b28b17c15', '215' => '1a648d87c6d7aab19f434e3eb7674921f6e811cb561462d45512462d99eba90b', '109' => 'ee45f8e24f3dab5fce5a19ef3c5fdf3fe308235e4b7bb553b0c1925d10750d17', '185' => '8c83b718a6e68ddc654225b86b3da41206a4afb7e15e8ba1ba867817540f63af', '169' => 'c2e6d52f10e8b198ae3963f87c5ff67abac74f78adb692c848df4d490c6c82c2', '141' => '956c917527b601027936a7a5c63a6e310609d6c1536725b2e4d1e88f4babdb6a', '125' => 'f2060bf0fafac424ef38db3a847428cc21a10e0df357844b6c3c930b97cbaa57', '143' => '5d6dbd7ee004d874b3b63c6c639b82acf44e6432b04e5fd88b6ade4eb1fb79e8', '155' => '311298ba410a8c28d06dd6cf6fd397d07fca5a0d6d952b136485d43f50e63dff', '161' => '0c5a208113ecf732c15060400239d864589182dddbfa8114d03748f206e6f44c'], 'a68e5ff94ea8b19adbf5378b' => ['6' => '774f6096bb3dd151227b384c98df0b04404ebea03265fb6ff3248219809fc884'], 'fb76cebe74b1c87526369724' => ['48' => 'ff887d8df20e05eb7e3c3c685ea7bf11fc91c61206eb194b349d711637dccda1'], 'c7c15b329cbd2123a34e5b3e' => ['90' => 'b2cfe672c574624e3766b156d77d4b296e6862ad700f1def36a6ee23ac91a788', '66' => '2a5ad70f5d55203014f42cc96fc81016fcb66e08b32db403f40581f04e84f45b', '91' => '836d335698446beb43976b2a29ec78f0dae3e06d1bfbae5519e08d2b5ae56e28', '85' => '8699bc0412eb05d8b5e8687d8e410e520998f81bd692c4c7f6cd92f901e9d65e', '47' => 'e36e8bbee7070afe0a0c32c159b16ef0363a531c7cd30eb9b727ed2df2e65953', '102' => 'c16969869bc67e82db8e3ed76b29c37dc3376cf4d4e5247a15c419ea85ffe103', '9' => '97a7acb3d2f967e1e6c897ddc6d922058a32f36b91ac5f1b819937da745798c1', '4' => '61f0cb3162dc8e7bacdacfd2454489395bbf4bfacd55b7ee31fca8022a7dbe9d', '2' => 'da25c70f08e6fdbd9e3f21eb4da8681dce71c28a91e1a65a8ab05fe0454d4a47', '68' => 'a27855a50243eacdf142cfa8f850c4cec84ec94fdb5d8d724b1cd71e14655cf5', '1' => 'fb854afa39d1697bc69f4f4dfb52bb025fee02a2a9e8a6ce31300229f4cc48db', '24' => '9bd8b647daf44700874ad0c065aee9baa7c7ee8e72a73bdfc91e3557a5f2f571', '84' => '36fd3cf886c7284be3af78baf7def83bd2d112f694e0d68c93cf7114c3fb6323', '100' => 'b21ef23081159dd59493143908cf86440c78245cf915b576980fccb5cba67cf7', '59' => 'a2405b88c5726854d4632308fee70b1744a36886570e9ce044bc04d7017fa344', '74' => 'ec9fd8b6f559e169afd78a57e3043b24ef4864d948cb4664f26fb7c12ecbf3b3', '51' => 'd8e003ca2ebed316d38ced087c00b483b3b9aeee3cd29f13177ddf88eb29c94f', '25' => '69744afa7c6b6450d21769a2af7d0ac964fc3f29f37587b5d414544e07d89291', '99' => 'fb146123cff8d8d0b6e626e41480427aba13048be246ffb5149ad7a76ab9ffbf', '26' => '16570c438b601d3c5e9fcf44f907762722c74e2ce81f9f1924df867687ffa2d7', '87' => 'ed052339cd994f213ea9692ef45283d5e4f41ec82515b69435392700c4a91797', '30' => '2d598fe865992364b12155ccf305319a04fc3f8c062636f9df32dd32bbb53c3e', '49' => 'aa432eda5d749aa4446db13affc660416a937a39d5965c94399c8c2f89b77f68', '86' => '49b7fd7404f473e47e1ec4883e66489015289a24c40204681a715ff0da13b6a3', '11' => 'e1eaf3b494dff761cdf4c228e34d7783f7a2f9d6141af7666226a14b7c939216', '71' => '9b55f52a2c820b69e5f0c47f5f8bbc729e1ac4e2387921b2e53d0352b696c2e5', '44' => 'a07ce27f58265123268a8ccfc80d6c3a50c712a397fea972de2d0f247d582371'], '9aa0b4cc113d580f406a6084' => ['137' => '9226edf256e0e435f1a55cc10e601fa1da15612202ed9720999d5041dbfa9e0e'], '64f82d77dc6cce9b2bc17061' => ['79' => 'b75e4f3b1ee581aa00aec73c810f36d2ea9d8e400136818dbb2cd6dbee6a6dff', '3' => '355db6691237345a880c8f9ee2c13cf7d7e56fac70a0e7f5af94ad718cc8fa81'], '7926e86b9d035f1cb153b991' => ['41' => 'c5dac527b54219687b26b5ccb25ccc8beae876c034b6506b8c6f4245994f711a', '44' => 'db6bafbbbed10d1842c500ebd21fcaf4920a60c6b58096fb27ac2600da2db318'], '64c78308991bdd107a1cfa57' => ['161' => '25200ca30bb00019c63eff55e9946db6095a0234bba262fb5710bc3695e17403'], 'a070f6500cd9afecdc06f782' => ['91' => 'cb2b42d02256ad8ffd68c9f002a7dd7761d93838de8519a2558c2a91c742625d', '74' => '9f7a5abed67cec6392e668bee7bd7d04c23119a8f9855fd94c9c1eda7e9d019d', '11' => 'f0d01e261549ce6dd927f64dab8c53d1cefae9dbb6fa0863b760f7e2e0a0dd47'], '70e603b1037bf7ca8e1350b0' => ['172' => '479bf9c142a6caf6f7232f90071924843b722fcdfefe84daf7b6b3a422f368d9', '166' => '7d0442c8763b962a1bab6d89a620100c2f3dcfc13f80617d9aff66efad0de401', '176' => 'b1da236da1a4c4227525ec5f6247abff85a55a04cdf8a1cea7f7f9b7017c1bbe', '168' => 'dd87d3405bc9e20f58339e6338c2381f873d3117997a47960d1df3e4c353a71b', '169' => 'cdaba60e96d4dfe3f066199eae938abecad31c1b29379be460869e1010abfed7', '159' => '685a493351101d77e1f264596cb022ce7904d17cd67d9936d3fd79c08d7472e8', '158' => 'f75974be65d8d661fd464b0cd4a3ceb94259931d2ba3c184f87888e71ae2c7b5', '175' => '40949443e70e74ec900259c9b436402370ae6c6231dd6d85058e2c5a046cc086', '171' => '84e795960a1e283b89e1c19f34079dd3d14d97eb729e94d8f52d14c73f7ac04f', '162' => 'fa0ac7a8e047820e60cdb8fafaffbc35b20461995cfaa9bb7f9bf909142e93e9', '163' => '39c553073b6fea6e9219a9843184d07341bb4ff63c30a9a5635b8c9cd143090d'], '2e749f2174f08a9ea1fc803d' => ['172' => '373ede6d50d2e7806716ce55c4882642b2b1cab05bcf4bbcee003b20d4f00223', '166' => '2be3d73e04c56b8a0a6be7f4493f94e744e109fdde5bca56e828942e61a2ba73', '176' => 'd1f9b71ea5d7866ded9708270e22108353948771e35bb2d4f49cb5a4949d8122', '168' => 'a6753536fda35fcb8c46fd81a7d435e2c2d7bee3733535bdcab05d92872cc22e', '169' => '568b8e15be6c7fab05c5e7282538da27eca8f6a655c1ee4f1705a810bf307951', '159' => 'd70ea07c216030c00adacffbc4a1333167a773012444e86ffa18a5c0b3ffab44', '158' => '59eb3f26094e2f5b33902519024c3c3562ee901cd90eb18d92ae88ec9ae30b88', '175' => '86c61b28b41fb9e1f0785022b95e02209c2a273ed9f0a5fb1523d191b58b2e06', '171' => '52c07edf0acb8fc2815045cd0f0889b3326a88ba33e71d89403eda08af62e47c', '162' => '368389535c1484dd124a8d1fc398d1a0ed8f807b157f2e8e9bb440d1969bfff4', '163' => '424814349e5d66c46bb7c092508c27e8d358e63a6c1ed8d77f2d5859e0fe5fa9']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasReconciledBatch117CandidateVotes(array $record): bool
+    {
+        $sources = ['cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c6fecebc52d31001b62978a5' => '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88'];
+        $allowed = ['cc0185e917711e78c149abf4' => [135 => '0e1ce298b3fc3fef1093947468b8f85814d2da0ff3ff7ee0d6c5f220440865d4', 277 => '9fb332f5e9310676f593ae932d9aac03c3c547cbe07f7a53c6fddfb617214957', 222 => '6830acef6c5bd7811853d85d72e194921424e41a59b14f7bee758712e910ec75', 284 => 'f651ace47204a6f1058d5383e43451d3c27d5edf594baa5fb2e1d0e58af640aa', 218 => '94eb95e9d41a787a70ac59a06a1d884fb52eb92bceaa60ac0ed3831d33ad8641', 280 => '5d32648f66d9eff071ecfb2f903a4bcd3378fdabe165e50e841f7a67e3943e18', 9 => 'ee1de9275f04cad92d1e999b9832dac3d08b588898c9c636cd64bb247345bbc6', 198 => 'bece78ed7fd6e6367dccf842279abc003c4b8b43dbcab69932f672d34da91252', 183 => '414d580556380df5f8eb3627792908240628d86621358648edbc416c11099438', 209 => 'db51fdbeff0f5e540ea2c4d97eadd5d393a2413e9fdd8171158a4fb7380a7034', 226 => '97501d35379d8fcd978ab05591557539d9c569431ae6cfc6367e2a48511f1be3', 220 => '75067b26cdb94b97fdb396bdb934d2336a103e45ad4eb3cf4734ecc742313085', 193 => '7476bbc4d0ca0b85dab7da8290487e601e026d5920b4d1dac77df732aacb136b', 104 => '0a6cdaf40f2e3c695e3e57ad501c0cb74d4f5a496ef3e21457b451f391c2b034', 24 => '10f3f46d5cd387f3afebb675c4a7089714cfe5cf680a448b529822888c0491ff', 8 => '07fc162a2176e0a823c71948f9945d4b930de11fb8b246ed1c4e0190b1b74bf8', 120 => '1862a0a2e76f1fde3196778c79f05434193f14ad94e4aeb42b2759421ac1b23e', 179 => 'e72a4e87cd5b62f38428d652bef3fc0c65457dab265a224bab10f0896813a383', 249 => '079f8394f7e11d3ced46fa4065c609523cff854ef73295274f8ae2b3fd3e7d18', 248 => 'b75b19c8dfea347e0e4e413901722e459f42e21c377e7bdf2da48c4d9caef2b5', 251 => 'f0799d6a92776474995d9f94958d6a3d76c6d301708086521dd61d97797e53d8', 39 => '1e354a71c36c0146695ac951405775db463e6063379c434b7f884050c3411243', 148 => 'a95c40ce67a0ee5bae27e7499264fe0e61a9151e50938d47c5644d38f305b59a', 64 => '63b81fc0aaa11f3aba82b6d4df187d9556aaa1faa839fffbd14d0f1045141a57', 241 => '26651a9cfba8bb4b6e520df9a1b7818081e7b8b92a7a1ab525031966603489b6', 60 => '60d8d611722a93102a6bb34fbf21413f67aea61e8e0fa1b7e255558c8b57db3a', 237 => '87c0a1c4edb11a625be76a0e769ab6d55340dc4825a3f32ca8f2f3a8abf6a186', 141 => 'afc5b96e510dbbb41a96dae0ce4a99af93e642f4cfa19dca47c2626001cd16ab', 240 => '512f10a03e147e87b00a24ac6370254f1bf29160ddaabc0e5fa44170a2105e6e', 82 => '623e1c81c4ac008a1ca00d2ec9018020451c8d4bb3999a5a426f11a123c6a0c3', 51 => '574cd0f1b44e506088da28ae681e34328ea4d6d64126264a7f60a3dc2280e55b', 190 => '35e350b6af85a6228809918139e0e3ea86292fed2105323a005c15a528c90588', 112 => '9e369aed3d86c0f8f8d384a521db1eb2a7682cc70eb829c470596975bc8a5d1d', 176 => 'fa440ac1a6dc94c9b482b89b4895ed4ca17f07c0d223c7df8e23c21773df389c', 177 => '069b5eb95d5cc9e98797d8e5af193796c720db321a475084bea4740b0ae2cfe5', 133 => '06b7519c079fb1e3cef9714b9fda0d9d46d7d9ed31cc5c9c2efc0619ba3e273e', 164 => '8ab29d2e8947841a2d06df11c05bfaac034cea4671e8d99e72dc5a8f78c8a5a3', 156 => 'a2463e702ef8c8c5e4df2baf7305811366e62e376c962c4f726a093ff168a942', 129 => '7dcbb5ab15e9b723b33b8313af8f5b8d3956efd1afb6e8ce0d5bfee8f63ce073', 167 => 'b53259034d8d07465cb3cb281de75d33fd0cc1eb669c418e5ad2d081c70ae9c4', 180 => '966bcec9750d9d34782c8ce346c14c4c743a5e771be49120f12136d6609b2047', 256 => 'c5777f03794b633c2e7ddd44939e3cf3ad221f75a1a76cea09238af0e9e654ca', 76 => '623ffbd45a1a8da0a79bb852eca1b0f1e0ab0998470a8f74c6f508dc36a77662', 47 => 'e31182d2405ab6edd700cdf3cf2c53638fb2f1b6822699e3567d7698d918dbc0', 75 => '22fd4a8fbc5ae8e65500e30c800c63df34268c8ac962fb0ac4f9519c2183c2e6', 34 => 'e4069ddc5c70d0112d31d9e9a48456bed45d536e9ef751ed42119f777e6854b2', 182 => '14ab6dfb484852465cc0424fa02103e580d0f28fc1aa200198a75e6e4e62682c', 78 => 'e427289c411e2637b7359f5702ef5e031fa558d0791b6ce7efc7fe43ef397c8a', 119 => '11610bcdccfa8f4407804a27318c213d980bc35be884f4378daafb8c217a5ca8', 287 => 'e5a2d92dd0003aa280d70128d9f237328fe238a79fea7053e0dfb3d4bb707e40'], '267cd82b74f76a034f14dc7b' => [277 => '4aa61bc04d67ab100c6de0fb606dfd49dc610205dfdc5301263755016b691077', 222 => 'f11bd830686fb15476a748e21c0cdad5801eadb91693c07232562544ad557e0c', 284 => '1e333108077779bd8f9452354ac8ee1ac869abd1e539eeabe103fe458e63dad8', 280 => 'fb2c18e1d775802746b7d01ab96eea54c88e85fb3da53432665e6827eaa3ab0b', 198 => '160865d9bf7d555810df40af6ad2315547b870e2938b22dd89e439ce41fa4794', 209 => '719e00a3b4f34e196cc1ed4cae74c91a69e5991dfda647184f323529bc637f2a', 226 => '13f62f842b13b15c9a14f3ebe78d7a06bfe5aa38644a0f2276f41abfc18768c3', 193 => '230f59ca423d99062e1c1271f6887a3d862ad626faf46416f13e6ac61c148c07', 24 => '3836ae2a254b48fa4148f349ba4298ab2b3b74f60990761420830e424f464d18', 120 => 'c3299e7abe31b491d58d20e4931aed4a80a3d5aabd8fe57c1a78ad4d030b07f2', 179 => 'da2572fc7bf51f7a561db9ee92b8b0058d9b4c1e4b24ac17b1595c6779db7822', 249 => 'b90958dc9a9d163530548d635390abe68ba962aaa5ca00b425adbac3caccb909', 248 => '07e2fdf68df81db3454f5820eb5e03a4f70ea5be05d565d9469084c77d6063f5', 39 => 'dd337198c562ff48e558be8bb7b6bfd0eeba5c4d786fe72faba5b75f6b277b64', 64 => 'f3d14b05e3285d8b772898b10590f0962b4bae99db434d3ec0d85730f565f743', 241 => '80362a270d6d1e942bcd2f0f99e3bc01bcf5c502e5da1c208dff147965c126a4', 60 => 'd6431e4ee2645cce548e6fcb9d835223afdd8c0230720750999bf8b013498235', 141 => '335eb6a81dbaad28543087eed12b946c8e5c55be032ea2e0461cdebaf5deea99', 190 => '6abe9f85e65724bba59a80bc36e20fa70d0241cdffcbd80a7a0c4522e1cac730', 208 => '2c457e971660edc28535e916822409abdafee298b62caf5f5ec7a26fb810c63c', 112 => '740310c61d9fe83e8a9bf76c0f7e33ba0d8dd574d57cf0feadabd4504469d635', 176 => '4472b3e738b3612407cbcae7012083585fac1355c7ae271299fd0b0954a644bf', 133 => 'eead38103793d2ae60536d768188950e2c199a4cdcd2897bae33d177e797eba2', 164 => '6c935f2981a4574cebfcf4f9ce66a7862db7c49739b556db5f4db7faf68a67fd', 156 => '771f53f96c1fe83096d46016f9033b6223ca49eb025c6391d07f2ecc13bf86df', 167 => 'e40fecce7a7f1ebfa5f0c18eab0c80b4638bff6d9e59558511420eb30ffca0cb', 180 => '087f51919e7b248e9d9b0517fd9c5fca376f560bbff444db3c1b4b3b4a3f93c2', 256 => '6e58282614438e744cf9c8787e31c05b8076b1f06cdcb92f0531757ced8ea46d', 76 => '360d04a8f7c671e0070669e261cbee816367cfb78f6887dbeff09a6ad7b05df4', 47 => 'ed81c3097efe66c8e37a7e7f7fb61baf024a64ebf1250885bd6481c56d3a2b93', 75 => '36c2f81e8e7d4e8f80eaf5ab4180e6eba0e23d24d17eb5971ec70cdbce44f04b', 182 => 'b4200039a2f79889fba2d5fb6727fc5a4a8839213a7dac1f2245edddfa0d8e69', 78 => 'b1d86c993ed023755172878eab31b7c0065f56a65259272d32022c492ab1653a', 119 => '1238838da61bcfa8e300b20fb8f6c767cd8fc451f61224b8767857fea1b71873'], 'c6fecebc52d31001b62978a5' => [35 => 'f9879300bec8f16f04753f2dcd629cdf66d4075a7f90ee37799344247fe5a8c1']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedEarlier668RemainingCandidateVotes(array $record): bool
+    {
+        $sources = ['9a57af51e71e6ff194d3f409' => 'ddc824406b6b49a01b0d9b73394827bd04945772471906d77c76addce5f197e2', '482b0cfa0689d697b8830cd0' => 'b85417ef291987598e08967c75239d9448fea5c8ffc4d3c2c30027f54c0cf6b1', '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3', '6dd5852218e264074a4f4abd' => 'e214e480b5ffe0c3648a447ee7ac02cec657b66d981ad2302bed24dbf0b53dba', '59bbe0b1feb3c60c2c9d79c6' => 'db98748c858bdc28059ad66d419d2803f47e559a9ef46f7f7446fd0e632c5ae4', '0882c0bd6b8d8738e38b6f06' => '96194cf524fe162110394a27c7c5f8c2e9f7a2dedf3d2ef266cd46e95282d429', 'a68e5ff94ea8b19adbf5378b' => '42d1c87f6bc727ef313a852e35cba1fc5384857ca5655dd321425d806bfbe864', '687fe2c90d213972d658b389' => 'f3eb5c5cc24499f37d1a32e4c3bd6a918cc7e00cb9f3f30709e872e79a82ca42'];
+        $allowed = ['9a57af51e71e6ff194d3f409' => [18 => '3ab44f88f7752d3d783fb9d42b5e08a6f9a37945805c249455dad9e4d3d56400', 24 => 'ece3c0b1727cc3a799fc7cb3487380b4e7e442f264a7fe001b680f9634a959fe', 31 => '3b50985a1376507a8373a04f0322edb011f1eda79874136125f45e2db8523f6a', 37 => 'aac1f3fdd36012e16d5e1d97a13c12e9d94c4f76642ad401711b040f2f56e2b9', 45 => '9e10c9d43a7214ffeb0a218e494bc8e7b0fed1182a2e2ab12fa650cbbf883f10', 46 => '8e01165a7341f2fc408c63db9ee2f6e1fa5b8f99261baefd206a78cb732a4a92', 51 => '1b8c6474ed9c28a63db61034b22396ae4292b32b23e47ccba54d7b18f86e2195', 52 => '7ae816f342656dc7fe59d3d1cb8eef579df7e731a8464cf23ecd2166fc8622d1', 53 => 'beb6a4d4925fc0dcd3fbcecff5f57422a070483b2f57f626032c49a207eb1e40', 390 => '2596db77130ecdb121e541d9d4a913d1faa1d76598d9e874cc2d6db3d9ef58bd'], '482b0cfa0689d697b8830cd0' => [7 => '144873cec71ac00e6a626975c9955ceaa976fa475bf4334c14c5b3cb3e7935d1', 19 => 'f1cf9c149ca2e12817542e7f4e289ef028f1071fadc47af1643c14f265115678', 27 => '3a7a61d752074167f0b417713462fb71fe702b18355e5e129aec11ceca777d9e', 31 => '7bcabe5d02e7fd0195168bf5217d2c6772c2faf01661d8ba1cf8e592b905ffae'], '503135d3e838d38c93d3bce7' => [19 => 'f4f2d74c176fab54b3f5b17488d6512a03ce4d4577da95e318ddfda50a3f8f26', 124 => '9ea15b472f5fb669cbec7a62a2d443cd9b65b5fcd16fbd5dcbcfb8f073edb2c7', 134 => '8c2a02774d5be29cc37750033bfd0e6cfc9e34246bca5494bec76550194ff271', 149 => 'c2f72c230e704729d734512d476e6f1c80d85e731f2bc61e966407d9f83b6f64'], '6dd5852218e264074a4f4abd' => [19 => '95dbf5b6359ce9799ba009e396a0cff7ccb29815f2f74fb97d79e0b3c2c1fa3b', 28 => '4b05bcb36b86af7e24ddf472df3ba5ea7d30a28d40b38a423953d5abac939ca9'], '59bbe0b1feb3c60c2c9d79c6' => [37 => '9a12771bfb7d3d3bbc382361c4214419de2743d89fada3156ebb2873f8d5ea74'], '0882c0bd6b8d8738e38b6f06' => [37 => 'b8fd013a484b4d6011dca1103bf1ee8b216f84f66cf32f7ad0ec13e7b705dffb'], 'a68e5ff94ea8b19adbf5378b' => [4 => '4a1db78604b9d10c90fcc3237e52533ca2fac4979b895ddef6b80577801d4ab7', 11 => '71042db2c9586deb2e0b123c577b8e35abbc8579167bc912b518faf49501bbf8', 33 => '75caf786768d233a2bca758df2b91312008a002d20b371144340b1185c3518fc', 53 => 'e6f057680279a92d894915c61efd83f027ebd31e4c2864ba68d23ce05702cf7b', 79 => 'd6f28558fd234f3c190db6485adfbda2734e654b6f91438511e6366d7606e125'], '687fe2c90d213972d658b389' => [22 => 'b466143c092e38d1e7d37f60d0e78f7de7622f204c8bf6f5cccfb6b9912692b4']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedEarlier668CandidateVotes(array $record): bool
+    {
+        $sources = ['25d92852e9975cf32d1b94bd' => '5f2515163ed2b7efa7225310616d71ddf008a8a453a8bb9156646f12bab59f9c', '503135d3e838d38c93d3bce7' => '5c01eb6fdc9a01f445526932c0f5f4e4e3743b52fcf30f1b0854749c25fd4ee3', 'a1b887ea9c50978fe4cf8e5c' => '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02'];
+        $allowed = ['25d92852e9975cf32d1b94bd' => [3 => 'bf493d323d4c2f62c8362b60a1300986a0a1202c65d6463685a8118cbfacd278', 10 => '4f6e9b6616ee94d3256894cd6e7ce6ac06fecafeca1a89312b3dd1320b929053', 49 => '29e41696b86f8bc0e65a215a83f4adadc2e945679abb5e1ac3408704407de59d', 92 => '82c230ab2f4ff43be5231950c029bc06818075f829d99bfe49538d2252128344', 132 => 'eb558c94faab874f092b6d54aeeaf4f3a6cc994f6e1deee7047eeb2224504b59', 138 => '958cee0653a8147f632a7778622c9ec35fe17d817e7b5e7836641eaeb06da2a0', 140 => 'fb765d91bac6bbc38b9deb7b9efa50658c496e90a9ac1a3625c96716966d5fd1', 141 => 'bd721ee47a4547fd118e9832f54ebb0049b69fd2586fce55f92d28d427610ac7', 145 => 'b472023d0b2e84ecc97ddbdd7585ed30c8b3a5ca8dd8b77175a435369c889c5a', 156 => '82f203b31ecfa18ca891eb3e3818725f38133a61dd1e7a416968f341806bca6c', 172 => '2d12ba847dfcce9c51b0e74f5eb007683cd4f592fd667046f34eff208abc9098', 176 => '894740d05a996bc64416e75ec7fb1d2254d2e1c52471ed81a44a71c42454d421', 178 => '3c72df4866138a5e443ebbbb7aeee9003bd6852057d11d1fba13a162517c297e'], '503135d3e838d38c93d3bce7' => [3 => '00cef6d876a144193230c48c12be2521446661ee98ce8b3cacae33a297bcbe3d', 17 => 'cf316e6a064747d44259fca18a5aba9e2a528f992d941c71698a1bb5eedce83f', 63 => 'c7230366a5476215202c9b06d9377785642f0f41b5bea722801f28f75a81899c', 107 => '4ebb996d3ca48f6001286eb0cc24c935acb745dee9e49c6a3cbcc87ff9caf962', 109 => '5c686164e9e9c9570cb64713252afb993bd85204e965a953e36ea88f15d5e788', 132 => 'ed105b92f6c95236d0d61e5d69b34badc4e404dd4846318a11b99ce42fac50c9', 137 => '2900d7ecd4eca9dc78217ef8d5a9e1a01ed11eb6dfe5139015357346b773751e', 140 => '8f01238fdf08d1dc6432a70cc3c35e7e18fe713f8af5faf78f3e259c6b0e63ab', 168 => '4e09e4682501aae08ac6344ca19180b07e69f51a28cc4f4de179d152ba280d70'], 'a1b887ea9c50978fe4cf8e5c' => [302 => '69eb215e8d98d14ab3d732cabcabc57c0e4b40c174d45f63715b5f9822da5483', 363 => '2a9191b1b8f8c78501f186999a70806f71415df00eb0a010955cd2491a935b28']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch116CandidateVotes(array $record): bool
+    {
+        $sources = ['cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c6fecebc52d31001b62978a5' => '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88', '7a0dd6f73df2261e41bf503d' => '3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6', '80935700eb137d57fbc822ed' => '8c3b6a8383b4c276a74e862ff9500d657adc927fb3f4f80aece6963e0c6b3e14'];
+        $allowed = ['cc0185e917711e78c149abf4' => [197 => '61e39d077af0a61bacdddece57cb7f54b2f4bf0de433a9f022ac165e259d45c5', 83 => '210b865adc6388451f50401451c5ed3670d93194805e78f574c51dc4bc5b58e4', 276 => 'b0ceff403e0d0aa3da36068e25e3cb747c8eebacdb221e47c182dd0444242728', 274 => '4053cec0aa9c7d3cc2e85c6ffc8a21d7913d9c1d7c33d9a1c46cda9315a0c262', 219 => '5614d6fab8402428637f5c64737add4b0f9c4772f55a683a928883059b4f4cde', 257 => '95fcf9c6ac7fa330fff599685c10e3162d104e7824cab445700afcac68796fa3', 210 => '00d53fd9584fa0de86a28df6b6fa15a2d225ad0cdae730b2a756d72957721b12', 269 => 'fb21ec1afea8184c5dc525ff6023af52618bd083ba2a7cb67accb9bea347bd4d', 235 => 'e332572f5fe9caa8f480d0485197834d73c5bf81e79054e51dbbf76c0d0adb45', 234 => 'a10b5ac3b8def703bf29cf4707cf070f6f313764ce0617c0b5afb182e51c4fec', 88 => '70aa2e403d60e7a36de3c1af15505678973941d6467603648cbd192db415a007', 245 => 'b20d9d4ff81e8dd902b73b4e78ec8a7a811acd543071e560d352762825a2baf2', 154 => 'c60e7501491a7a582dce6856e095f260791e9e0e4183cd1931487cdee2782831', 194 => '522a584627b1e6cf7b3611a13b062a33dcf79c1887f8f35ac684f794887e6926', 181 => 'c606ed6cc7a65f5bcfad255a94d94db35e9d6686fbca24fe745ebd7f0e68716e', 229 => '83a625b070d6168d86f881899df346262fe421999f0600cbf481e0accb893335', 185 => '9c4df07380300b7e8ccf521912e0a218f3d3d83bc1043dc661204f99af237bd8', 162 => '73ace631a8b7a4726cd22f067b500c99fc7150990d8b97de32bb896e2ea36825', 114 => 'fa39dba92b6e6a3d0bc950d1db0c661af4d777438cdd157ddfb570486edea223', 115 => 'bf31cb9d04efcaf0983e95d5229b888fda02850dbd176ba63ff657f9acc8724f', 21 => '08beaa1280139059b59fe80f565abf3650ca119928fe868eed3e015ff32ab24c', 258 => '0ace6a300cde94613d14ccd4410ed1430a57ffabe288930932607d58b68e463c', 171 => '45e7b9a50697d0a178e7cfdeb9a21662022e152e6cd1296229f24d871de2606c', 204 => '5361e8cb1f61675af1d6cfbeb8b97e71b4a43da953c497aef3e28363031ae44d', 145 => '4b618788f2c608ce795b35c9a9480eee9ff4fd354deb61add407c298f13bd6e5', 43 => '05d82ae096d1faf86fd90895d885070ae5592a78762fd84a6f794d3a8ba09ec8', 91 => 'aa1a648b6f4ed3cb1632eb911801997c2b79d4c6494bf55d23247d10243d3c65', 20 => '42a04fc84f36a55ba6edecaa259e9606fed034c10ea235f20a2c2d83494245a9', 155 => '8d47ee716429256c5f2361528777928311ff48f3506f3a2a355b6c907d5a7fdb', 139 => '79d4a23b96221633de54a58e1c0e51aba7cd7120e880ef49a45e13f6688818d5', 55 => '95495e987a0f13990b33b9a1307a6b6c99601b219a035e3b73b242182c79be3e', 54 => '355255ea36b2159ae46cbc41976203b93fdde3021d8615ba6a25e49cf1fa3943', 53 => '9567596946c7cb9a8d29ff4e327817a9eac86bcddc9b0574d45f9e302bf88a16', 52 => '84e0b722a02725df483506a837009ee12e3fcd6309dbd32af759841636840fdc', 56 => 'b843296cc47eb80b7985b809b99e6fd3615b967f36e9354d3c14daa89717dfa8', 89 => '1a92019687a1ec1c8263a0ac816fc6139c70f1818b4cb2050de51f4780bca126', 132 => 'cb6beb021e0c3193de6f48aef6693f7bd843bffff5c7b48453e5cb26db7c5712', 86 => '78de049938f5a5a3b392fe6a8e41e46bf99f6da4be867c903ed1eb83e79f41a7', 87 => '75e6e3aeddfda6f7b1df37ac527e733e6da4780ee62d8e7d671f7b5d01fd02c6', 113 => '330388975c71ed7114a3a00c6436e89d1653dec8dab3edfcf1ba8555818643b2', 124 => '0236f7bc04c84bee0766ec60d2b72434b62432b5644615134fa97fa2fe5d185d', 123 => '2c1356505d7ec494bc14f39872541d07612d86c078fc00ec26123b7093fcdde9', 125 => 'a8cb25ca860dff8d9ffadfa6a3b8f0c956ece0b55df37d7550e23f06f5dee37a', 221 => 'c888d524964bdff0e6b6848a06192a1445cc497a2620021cf4f887057c2bf51c', 238 => '6b754150c447c5c9bb7b4d6e8738cffc819499a2f0f8829e512712c436b8e909', 121 => 'd2ad38a870218db4d0fe79d8de961dbdaffcdb6ef8f207f0556f93fee9824c80', 242 => '0e2c6b43bfe6683f70a44968720c23257a6bcbe9e31072f46fbd748fe99cebfa', 146 => '30a502ef75634c09de5be254608b81d82424017e5d680adbfbf23ce267be3c0f', 18 => 'aa6efeb0c99ee3cd20e68fdf39662b895805f8d0d1b7c5f80ab737f53a3da0b2', 110 => 'f468ee316ddbdc9625e0cab94d5d5487b240a0f9f433d9b8ba152edc9f2f611f', 252 => '7b0c74af0d6a9d32405a2fd7dc38197962170b36dbd38a298c4b5f9f55709793', 188 => '57e707544a03ffc55ab4b5d86b5effff2a107b5dafe49ec7e73827a212c847b9', 243 => '807268945f786ffaef33e8f208429ddd4564cc763abbded65ef7dcb00e66df5e', 96 => 'bd99865af05cdc90c8c543a93ba61fb7cace9a9e6c05d75ee1b445372726dd8f', 233 => 'c5a10a4b49a453abafb91533fbf632613c136f757148a74e4573160f9229f182', 224 => 'a56e16bc4fee69b75d1a3e9e4caa49839763baefe93aff9fb144756a1b894789', 99 => 'ec7ded8eb14118592961dc7e85749d5ee28418842f6b92250541708e42f2b0b2', 212 => '9705913d68dc568083f61811d088cb5f24ba1194ee5db19b4d490df9f4879609', 261 => 'a99440ea332c6bd68d583a1ee6d52752e7e271fadeceb0719420ee53f3bf8756', 98 => '439308d124215f7992195cfe5dc726dc82c87a113fc26046b2d9eed184b86bef', 191 => 'b690c7f5ab58fb00f9d7499e49c4deeec190476e4fa378cdf77c41b425767a0e', 106 => 'b7fd389ee644e98ed12e7d17cbd47288ff850a398245e70b1f5d5f6abb4e8d3c', 202 => '0fbd8a4bc3934df7fe67fe057471f9af973d9405445bbeeda76f64f533c3545d', 81 => 'e56eeaeb38cbfdc727f3617106372f6a94e5ea167b741d10947f11cda9ffd730', 272 => '450afd4532792165d39b7b298ac7c74ec5860d2e808158ff3b40f1c2ba175fad', 223 => '8734c541a40970b3992ec0baef2ddcc46d2c0dd4935969b739ab26a0d3e84794', 267 => 'a46ee7b146313a411ad1f6f6fd2d1c67605a88e85717dcf712fdfe6472e57136', 70 => '73f1150eff4a47ca6ba9197f1f3a12d8115c1e94de3b9c3cc5d1601707a515ab', 59 => '1d88f0f0b0225556606a78e0de3de3a2652e83ba5153643f380221694c48fcfb', 266 => '3dafdd7d2197fd4e0e3450f8a97c2a1353ff977b572bfb971590304d9eebeb60', 11 => 'c3a2be62e7ae968bfc4c724ce203b902acfb1219da455302a7ebdad7916f0bd1', 33 => 'ba8543a3dbaf0bfa27b995ab4a8b0f085592a88e192559d50d3fe2f93d1c5d5a', 62 => 'b0d49688a2f9ff6788121401fe657117a8668b20be01e8745acdfda75aa2cf01', 217 => '4b0f312fdc956d1236bccadc25f9aa2437d11fe1bcc6614294033a3706a3531e', 282 => '32a44310db96ebd1f2e6ff76f32627f27c4266f42505a97977523360e41d6563', 253 => 'a9b3a1701c9494184aa8d65ad750a7d2907251652957976854757acae891bd29', 262 => 'bcf7f809283bd29818dd68e0488fc1404fd7f2bfd5a2f46e511a8710d4509864', 49 => '274d605e5546f84621f4dcff1169f22300bfe04794cc2c5d6e294391bf87dc0a', 270 => '7323af3e7cdd6070483983ee6131f22aa7f8f380e27eac09cc39b629710a4eaa', 147 => '0ab26fc57363397c8a4e2320dad795af766ea5962ec0057ab7c325f6aad26c03', 174 => 'c953e28db0a414de30cca85bfcfd53efadd6e42c0072942d963a40007ce3746b', 254 => '855ac0b935744f270a6d52d87a6b1a2735fbdd3eb6e77b1cfa721e89640fe7ea', 25 => 'd0d0b3931433b0a9db80bc4f4174722ef9941cf8c69574ddddde9df8eb7abcea', 41 => 'b00035bf10b3f2bd16a0cc6560e803f0c23db54d44abbc39adb04290ad4cffe1', 281 => '4f46f2e14173eea24f4ed84936586da379927773ea075f7ecc6b729b85da407d', 247 => 'c73bf64a247c4d625f029c8bdf870cc659656bb0b2c9d52b426b56a393d315da', 186 => '4c54b5b7a79a7fc01de022cf175d3246e0ca0d3c0e5591a32ef771d8a01a0dff', 149 => 'fc287468dc9bea4a14a81b93b97fffc97369a2dc2b67e71ecebc498015f22aa4', 57 => '82a1efd3287a6dac833b21a02eb4f04e810d21109987cc1fd380f7616f7819d9', 3 => '064839c4f4d5c1ec0a13ef9314905bb7c4108bfee6b1b58910d667e879d6cc0f', 4 => '720aa4b3f53df017ac3324af47f9a5be3b96115d6ea23e17c3fb88f4f670702a', 130 => '63603e920c28855adcfd78d3f34b8eaaf2dc638918948ff272b64fdac5ff10f1', 285 => '2bd3ae92c0d05ea1d73866b660e3c4992dea842b20c4f4c6befb1335f8f628c8', 255 => '49fdbcc426b64cc0e1f32fb5466e8de99145618baa8d7f8149de4b0937e086af', 206 => '6c2676e7ffd9d42766994adf58bb096882fafa81afba21ba1c568b3ac639034b', 214 => '359d2fcb682cad695560f9f2ad5e415f07a468be6cd50499b0ce693557b7e56e', 77 => '50db4d781d3331dade20458bfb15be4ba2c55768e359d512c8e8a083b5a3832b', 5 => '46209d371f78267f52cfc3ddb7067278d267fedfc301adb7ab258e9ba10bb074', 2 => '6205edb396c980683d05001ceb9476f2ded1788fb98987d0d43a4287cd53fa9a'], '267cd82b74f76a034f14dc7b' => [197 => 'c987f8f23459da8216326c52521a246d65d119eb7a908656dba701c097d1fd9f', 83 => '7fb04a65a401c5f677b5e1f5c26ab3282964552ddef2af6d4492451167870058', 276 => '2a0d2f0a46ad8222d3fa08a06707c13337d07682647a866147425fba6babb17d', 274 => '313fdcef1bc44dc245fd34b2c3380551d9bec93f9e9e966d206bb4b2c84d1865', 219 => '8096fd4eecb1920b010db3bd0e232518a4b53f03bb474563d6242d675905d35d', 257 => 'c748739e6e8780bbd96281385cf2e6180b9aaeff1cdc285fec09d48b516e0da3', 210 => '2992977933db7056ff921c5a15a2fe028eed5fe450f2a747058c70cf172438ab', 269 => 'dfacb9cd697246046637c8d127cbc116244593b45a72fe7bd1643d27b8cfb822', 235 => '2afde8a409f5624b053dda5359a000080a9bae6d05a9850450f00cba20ed9f7e', 234 => 'b0e356adea3badedaa3ec5a0846011806f71f434a656fc9dce8557c60805c249', 88 => '14c11c403d6fa9da42281c8201c8b7fb2f7180b762d955bd3c999fcd858f68e6', 245 => '2a7a73f686d46e33002777af4966d5261ecef9cad39d81f64e74a0b4b6e4349c', 154 => '929d50a1732c5e6b85b5235b81dd028b2487c90d23f26cff13fbe0b76378ee8f', 194 => 'c405aeb05c124a8ed71cd6c8dbaad1fa7f8d60c8e68558ee4f69a47a5ef0d32a', 229 => '7a1ab5bebe6340d624f2db4109ec34d5c18a09443e12c33e561d10e60f01737b', 185 => 'ff3d27efd0f8ef63409be5c216236882694facaa77b2abf8a4b163694c176cd9', 162 => 'f6dfe869d85a22d092570f7c68fb687465f0446a8e7b0674b81dd622c6c086ba', 114 => 'f198c45fd7d8c4b402551b95ef4b9d0baf1929ef70ecd1eef23ddf231db12824', 115 => '9b4ddfbcfdc439bdf5aa6e09b547e12773e8bf583941678c8a83779daa1f4c45', 171 => '4ac0de2825bc33e132a1d2f932d310cab7e289fc7010f8d2b72c8a9d96ab1914', 204 => '1137189b8aeacde9c9cfa3c778e18ca8a13e15a2f1b3d9bc44a2e22a4fcec42b', 145 => '672b8010299c184f428fcf838766741efc9b2c95ab1ae093fc068fc4b2ef5a2d', 43 => 'e61b29ae2adcc072dee7d600858ff6d1b88de8bcf38996140a4ea4909cad474e', 20 => 'cebbfd475fd5530be03c9cf7fef71ab8c063fe46395982ca54d1c705f343ac3e', 155 => '2f397c8c8f2905add180e79d32a2207680cd7a54f2175ac775f6224f33ac611d', 186 => '7e0030340e32b4226c1a158d5130de77907eea19453b484057c8e0f1726d9ff9', 139 => 'eafc35d95c6a51439881689e1a5eefc5e9d7324bc619d7e4448e34321ba86819', 55 => 'bcb1d882f17760f08e8f0845563831c41faf31c89ecc8154b5ec424ddd349f90', 54 => '1fda32c0ca1886acfe1169ac0c1813365f93d1e654899d630b34a2a620a97598', 53 => '9006f351adaf434b11ac9ce330ff8949a1b01d8b76f8b3392f1ffec938fa9c65', 52 => 'fc276c94bdaf17a520cebbf1adb46f21b74af7562e53a61aa2d2261fdc3abe31', 56 => '11c99a6d395e7f7bb23b0be27b0602aa157be6c30646ebcd405d18ad9ae486c8', 89 => '25fc8c73da1c71b38175db62e62fbc82d480eb4b2ba0ff67b7387e4e8a22eb8d', 132 => '84f9d21829ff97e2008b417318862b2210e22ea28d4fea423b302276d17d290d', 86 => '156168eef8e495e527996ca1d6ed5fb2cf5380c02da7a6d8bc1969f1c616d112', 87 => 'beca671b7af0b4fd95b0e63a608dbcf28e8c4db4e307f6d3a01407e9b0e75092', 113 => '3323dfe21f43b2653f5852c6fc545610b47e0c4733d59f124e8e638551dd81c1', 124 => '884500d7956d61b36f88c6e4bfeaec749d34323db193dc199a0be289bd4aa66b', 123 => '9f3708bd3e83b9bd64551804b4714fe310aedae7bb27ec729a9662dca6aaaf5c', 125 => 'a1f963a2c1ce8f68a7e011c9a01291b9c46948db7f8e254aa2cf9ba0dfe89ae0', 221 => '8d3ced4148b711ab45ce3fba170e017096fdbcb597b261f396437e7e54207873', 238 => '1961ce06e0ae274125386e6f69554a5799a9dcaf698924bdd917640cf1abf740', 242 => '5f4b89a27457f4969648e431cca9dec8d3e231e89623e0338ba584e9a922a30f', 146 => 'e6e78806a6bedca0db9db7ab664ee05a58bd10b9ac84dd7e1935cca608ed5fe2', 18 => 'f04f95f9be114349c26cd272e847a6f908ebedda3c169fc1de3d974d218356b1', 110 => 'f64357c89ed56250129da0ec2b3a67da280606328278923a6c8031609c4a093a', 252 => '3bef18c3b053b56f1e2704a7b373205236b1d408d698e67df99d18e2e09bc137', 243 => 'c1dccf7236fed5daa43eb8b9d7c9842d064067414bf5273238005ede666aafd1', 96 => 'bd0bf8af844eefdbacac5242222948e5d35c98b05ebf1448a33c41a4a0b1d6f0', 233 => '32d19d30b3c4775165b41d98560a8e773e648d70d9c32a61a167f42e6b4242ea', 99 => '48831ea133739be61e7dca95d8eed3342dbd6d6556e4f4c0348987348375797a', 212 => 'f2f3e2a133bb8ae88402e80eb77fb3b6167bfc776fae7fbc75efd74b9fae8007', 261 => '78fee6beeb1820f4c18e927f11f02091f5cca0530bb37179e6dd18a9c2386889', 98 => '852f3e78490e5cd2f86fe1f52881ef639c6d9bf12332ebbe0db485db4e684d07', 191 => '99f6d824537868f31228f5bc7151306920ad463ab7097e43a604bbfc9790c290', 106 => 'fa77ce1571a3ab0db0af8124068099d01a5b97db578c16838800705540f057a0', 202 => 'c98a9b4dd3a0e541dcde69b32ff0ec635089b4527d4978dd10b5586a9fc1fabc', 81 => 'ada457482e8b859c4559bda2fea6151e9148868205f393dd65dcaca6845476fb', 272 => '8d02e718afa5577a5a2100e1e11a1d27da804fa4b214fdb06f572cddf22fee63', 267 => '56ff04ae63a47fc726a8f8cb043e04d0b87476e1dcf307dd44ee2b05b5ca289a', 70 => '26d74392cce17c4297e77acb00d41f81ddf51e86732855b09639e3329f9384ad', 11 => '3a2d903454578a5fc03986af889a166731de3a1a8c12f3fefb3fc8cebe41f495', 33 => '167868e86d149e4f804bb0c35de5b0699857f485166579364599870e8d620b49', 62 => '33fbb80e7c8aa95f4bfa4f87a51c11b4aeed2f0450f91a170fa7ce46ee6dfd3a', 217 => 'c20be0063a43606174538a1c70beafc2af616d4c5446a8a352a8b4da6b726cd2', 262 => '6b8390c51874dd15cfbb929d91f89ecb853a6cad25fa4bc8720c13c40d190d9e', 49 => '8ba02b56ce3aa696ae3b77a1b6747d9e12cb23d29d2ef2f881e61327f61557ec', 147 => '5921f3b039eae6432cb71fa6bb4a0229951f59d4908f229e61fdd7e3542eb4ac', 174 => 'c9d81cd59aa83e33c0aaf9ae95d463bec5729d1ccb32e592d00f8e673958090d', 41 => '618e1f81ceea266917fb8f81705ec58fa8f1b408c7effb3982157e238c4884e1', 247 => '7082e88e52460e2e55be93f2c0038bdd5942cfa6bc34a644840156611e4ff1cd', 149 => '75be48ad8dc5b9da1744bc3a63def386528aafff66cc82e5039c35ed6d5e4680', 32 => 'd84f950611ed171346266efe92986c8420a8a8fa89b301932cc9204873f5bb0c', 57 => 'ac6dd6b505e478c78d5d1d8412c7fffac6764bfd879efa18dac63cc4f579956d', 4 => 'a46ad49456bae8bb28ac54e3b6a8b12a30116cfd1381f98455934ee546110527', 285 => '738f95fab16ddda5d082a7d6dd69d855b1a1673a62cab8c697cf87a81864c752', 255 => 'b0082504d9bc972e7e38cf4b2b837b18f6e305563d4a4da3f6b18be0810ed741', 206 => '2456e63adfbbaf62e2b58394741c0da0c70d44e4f8de5f66c98a0ee7086a50b9', 214 => 'f14c2ecab2925f938397b2498f73367cc7a24093b59d3c9b188f70ea131df6fb', 77 => '23ba02e426a337b63b49ff2ba21cefbd672007b42ed91d3dbffb772cf278d9c3'], 'c6fecebc52d31001b62978a5' => [43 => '91eae535df5ed09fa365f1a3e9e12d321465089747d8a0ca926f8c9dd2ba05b4', 260 => '093975fbf9c87aab22af2d36906604d2afd46d68a07bd918b4a3a3f2e6deb901', 165 => 'c690f3453a46d2de5749fe59acf0557f08b2e411aab4c5d71ad20b3985d5a869'], '7a0dd6f73df2261e41bf503d' => [], '80935700eb137d57fbc822ed' => []];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch116NonNumericRecord(array $record): bool
+    {
+        $sources = ['cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c6fecebc52d31001b62978a5' => '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88', '7a0dd6f73df2261e41bf503d' => '3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6', '80935700eb137d57fbc822ed' => '8c3b6a8383b4c276a74e862ff9500d657adc927fb3f4f80aece6963e0c6b3e14'];
+        $allowed = ['cc0185e917711e78c149abf4' => [], '267cd82b74f76a034f14dc7b' => [], 'c6fecebc52d31001b62978a5' => [], '7a0dd6f73df2261e41bf503d' => [211 => '42689a08ea911ce1359744b25a403e3ddce2b878685f83f649b7fdb5b3079070'], '80935700eb137d57fbc822ed' => [249 => '06ed78759e05ef2afd59db990e69779a587d111f9063416c55546b6dda3be669']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch115CandidateVotes(array $record): bool
+    {
+        $sources = ['cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c590e168b33b5fb8f213d092' => 'c894abd9749c34aa42504b0a726f823353c6f6063ba59056af3b2c9bca400d32', '7a0dd6f73df2261e41bf503d' => '3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6'];
+        $allowed = ['cc0185e917711e78c149abf4' => [92 => '8c105e8292c91b371bc57d26b2259a3c05291a2d64224317bb37e0f117fb89ee', 230 => '6681adee366cb504768282c2a7108ae0d665dd42ea39b84f5f9b5a9f5154217e', 151 => '858cab25148a5040d7f7b263471e96f1235159b0894b000c7abd9c9e319cfe1e', 157 => '72e6fc62dd188a5870a50d27929f14202539d4b9731ab3eb89854d97f481adff', 137 => '7237532338de1361daf5e447a0bc01798823e288ebc931404091656d080df1a9', 136 => 'a9773e4c5e3c9a67bf46c5d862a32f910afc5e8c6cc4cb81b1945103fe21fc41', 85 => '462726353a338265dd550767c79f97c6154624a541f9af8eca1edb63cd995eac', 103 => '3b6170f72a617eab40393d05f5bb0dd29d5c8323628e49c958e54a1acce5753f', 203 => '43c001d964af649abe02fb5d437f99f9334fab2186b59cb335a44b58906366c7', 207 => 'fe2c3d6ec0c6650e4b8e7592f8d7b9435829155080dfe37b4f0d42d9068970f0', 152 => '9becf87ce5a061f42abaee4a6029703faf3b5e9021d6d8eec2a2719fb0ae339a', 73 => '3994c0ab520cf945475302958851359f3e73a847280e92673539b10c0281964f', 22 => 'b7f7a51cff1775008bef8aaebf4731a98b46cf5268f0e35254ea6f83177821b2', 184 => '7bf7b4bf96c1f74c97635c73ac231702278c065132b84e585cdcff2ebbbc7e07', 17 => 'bcb9fbaffc6cbc2ac01e39b9c96f7523e81d20836defe6ad2ccb3491bcb6f5b9', 271 => '40123bc5030b64906c63f062638704653357a05110c4e6c3226129075e2f2c7e', 168 => '9dad09aaa4d968aeacfaa0afc6fddd0196baea4817611df637304140a9f91620', 118 => '07d38d7e569ac696a3eb6de759712a428727df1bbaa8f62cae61f9967f958163', 161 => 'ca4e0e96df82d290327628d2a8394297cf8f1531def384e7afcdd5bf019f5e4f', 173 => 'fc277a6b6d79b94c39f77493c5b1b59a8e52a9f390b71ee3d7857cdd754c3ab4', 23 => '1bbb4b204b4af914f39dacc2ca23732665b750738a6c041c3f71ff18f40d3003', 74 => '64963003d87a106a211501cd916ad4af314f66619602378814827fd130dd3428', 205 => '6ca774d67f42639fe2ef9b3d262744a1ef7001fae7da078980e2c2551c042645', 265 => 'b1fd60c7af3008e0747db95499450e715d3dd9d2a87f15648df7b1ce2a3c507a', 187 => '9488ffaa810bd5d51395292a49aa206678c1e234d7dcb42ef6358a4abc9ece5f', 153 => '4fb88832195d5a94991fc149ac2394598b0627cec6b6523aed8609a61f3002d4', 263 => '98681f776418a0a050ab1a0b7e2a2690c8a6920fb1fa915635a12cfe84efd0d6', 199 => '862a63acdedfb28513075407cc0a179f023239ae19e3aa61902cea45a721142f', 45 => 'c1b6e2a2716d64e8cd3ce178553bee00b136c5605c4c86b499764ac3c7337c54', 7 => 'd1077d7a41d8b6c7c378a002236b373690217b247738b0b869832f2ba72b6d4d', 6 => '349d70bed77415163874e576df6cb33500d2e85696fbce9b34c7cd02e8275a39', 79 => '6a8126555d8fec6e94f1e14e377d1d5722189660e759847a33dccc236f7af5bf', 159 => '921c48e9563530db8afb357381dae01f0eabac501965c503b520f296f140b140', 143 => 'f79fe72ff4d31d8d6c83560529a4359f356bf56cdaf4f2ae416c6c04792c1733', 16 => '609c9c15e81d7f8beefccc4577e2f6bec645b17924c5b3ca7f99b35d85806c1d', 97 => 'faf78cf6b8ca386c97e9cc326c5a7539b7ff0c704c7d8b6ea5bebf8f9a839490', 111 => 'e1f10c30cb88fae764d40026d4ddea982a1c1eef108534fe75f15d67e3faf70f', 228 => 'b946fe380ad96ca3b4ced07a9b08c56b5456217d8ddfa2d9979ceb5602c12d74', 100 => '5616d14d0e31fea1745e18eaac13a5d471ce9682f50cf071afe597f3057a920d', 170 => '447579c23584411d1d0ca21d391c99fe308214487923026373182aec84e42f91', 169 => 'fd8d5451094563895a41d787f761fa842bbd464712f35323d874512b204e181d', 65 => '15502e8f832b63bcc37702a4b2c853608bbaaeb3bf09ab868d7f359b4db5f64e', 264 => '1912c171dcbebd52aff1857d306c830708a9a165e3fb6ca2076a45917adf9d50', 213 => 'c57f59f1bddbd2ee9109ce46d18b4147c4d7035bc56eda01d95e2fbd657d06f2', 84 => 'cb865f6ad8940bde22255719317f3bc2030abf7e438cb07cc30f7915626f058c', 46 => '4a43a8df6059fec4d4c0a541afc823ca0699f6c81d0c273ac77d5017adeb40f9', 50 => 'b53db2c105cd4c6cd98eea6ce47d43698f09a6dffb66cc6c5784a243a5c2cc6d', 94 => '1714a1cfa043021af9d8382b5216a4d3b3c19eafff5c539a33209ef50d061c14', 279 => '7631e00382e5aa4cb557b90b61f31ecca7ef73d08bf08aeb1d5597e4ab7b85cd', 200 => 'abceb391fc271e53ed3087d36d7cd270b5396adbf882993c319f78e99b74e48e', 283 => 'c835637187f01c8bf7e2bef712fa0d2336f3cdfa16b217a175531fa46756d123', 27 => '6daf8a95e32d143a8c6111988941b7ea211e5e54e121b67044b9ef0990d6bee4', 13 => 'f30969e396a425163adb10a2acc3b330530133ba98d57ccf1200b492283bd16f', 14 => '00ba7db087bb6b3060836117db02d386cc4e18b4d3d7aa520e7c26c7e2938923', 19 => '8c23c87348d7464641fe3900ee3aa0c3675f3a4e95a646062efd148ecbb7e0b6', 288 => '5a564075ed0df880cfd6695f18078a7bd6984ed2f03d6365d90e4836a5445a4c', 95 => 'e35f5c5abbdea9fd540a2ebddf4ed04e2e6a1e56509e2053657afcec0ba1ade6', 158 => '8576f13aed7ae0cffd79ea3a3f025c12fe8e5c73844eec30bef54180bbd137e4', 195 => '2c277166eb2610303121d3fb698c15eae5119177774646570a4dcc8f84abac90', 273 => '40bd4f406a06c0b8696ef4e3193435be4711a68ce05a8873f8c6b7ebb44e5fc5', 93 => 'a898e0f725a0b58e5c54e83a6308da2b0d0eaa0d4ad770b1449b0c3f3b7afd13', 175 => '8ca0dcd31177b711d71d3e96c6c70a7abc7fe7eca6a512b7a13b5d0cc3bd85e7', 142 => '57df623a072a01b79d1076cfc3fa3107cdf6152dac2d5e7177d763231acac568', 144 => '1f166aac3698179ec5a335c68abee3ce1962604379ccaeebec96a2410240b958', 138 => '96793375e182ada95dad4f678067b9c8fbca39008e4ee6eeef1da1b6332fa3be', 58 => 'aaabedb078b820eaebf5ce2589cadf00d0847f2ed130431f839a52c4cea8cb78', 160 => '19821342ce03df0d1ce97682a09f8bf1c39072f8392e443c25c6f770e7f6e129', 268 => 'ec38366731d47c4e19751b592169a85e3f48a562a603cb3a9a429aa17cef0bfd', 105 => 'd2806850ea974f6bcdb7035b0ac93dcc551662150edbf25d096bdc5e8fac01a4', 259 => '39cb23e6da39f82e0da21af0fedf44edcbe252441fa7d2dabc1134894eed8bf7', 260 => '05b5c88b259728b10140740aad5e2b4a390873957bc23272c3a7ace63d81d646', 35 => 'ddb96bf9927eae02a19c835521c5eebb57e9dcd96bcf7f01343e521397e9b0a0', 189 => 'f4c955a200efad6d53e9df48b4bb7cd00375d17d33e195d3a93606123ac89451', 227 => '8d36c8c14ec809e60ee4c7b4c378fca3217b3a8fe61b8c805930877abc92ff18', 244 => '30a5052c43b697a4d144b01cdc7d3b30308fa3aa744cdc6149887b91eacf6a9f', 275 => 'fca079f311a507fdd71c0141ef9f8fc4faa04e95b1151e43b7810b1474563101', 215 => 'c90eedbac99e1297f9da62577f32a22330d95dadd17c0816a1ebbdf0e5a44bb0', 48 => 'f0c0d62c766b0fe2913ad9c7e0b06b77977f9493346abaec8a7ef10326c395b6', 211 => '1e63fafcedcd912beed60851edcb05b7d495b138515682bcd7bdc6e735d1e9ec', 26 => 'c1920d58789311d81778139997d5b49a35e6671e3e014dd02fedc7a5eba7530a', 286 => 'a942e0773adad8ed085976f41f6cebd7536f7facdba04b0f99e0eabe3efc2e0e', 61 => '6db99b8983ff41bff13d526bd405227c58954d5cf6ea65b07578995032b2e8f1', 134 => '1b45180d5264c3a2055f2ca3a4a052bf09cb1afe8c14d093ebacd903dd003bfe', 12 => '92ca8ffc32885e61670db1dc29e46576429abe5816657b5ac9b8661cde27395a', 131 => 'd6933c3027bdf64a535ccead377d93eca6807df7f720e469173c57f354803be0', 71 => '4e9137b1f2591fbc02c2fbd99a8921e558816d1ae691226493130aaea766a72e', 10 => '4c69d3c211c91a087c6208a34343cda99599d623974ab19c28bf31e271f1f073', 128 => '957311db75ac0d488eddc46a6d02b02905ce23ca071b0d0d0f79d587f7b22ccf', 40 => '925b98ddaca5411b5755b4de02d8757e2d53fe1a84fcc048ed796691d1b8f5c9', 90 => '71b68febc8331d787aebd01380fd39488c53d42c7a43100b2de6e9e47883a09f', 178 => 'bbeb04362fdeafb394be56ab21a86faed35b0d4436ee7c0b5337ead6528aaf7c', 122 => 'bd54f2021c41a7e6e6c1a039bef0a8ef9c4a113eba108a531eadcca5668af1ff', 68 => '2301faad6e0b755d31ccc21353d7f434f53d4045585226c6650aa9d969693f06', 278 => '92f2fb84abc8f08a63a6c0368ebd9308c0907bb17a5e49992abf1743aa239a12', 127 => 'ba43d4cd8d115133b76cb2ff17275a2f4a2fe92e8acc304c221187f4832e262d', 232 => '109ede464aa665e9a7ae8eb53b94120fd1c99f22fb8c3e516063e29add7066c4', 117 => '8e3d3c65c36aaec8fe77cdce226b63c6448bff4ecf92eaa5465474dcce87d4d0'], '267cd82b74f76a034f14dc7b' => [92 => '00d80aeaa89aa22637f52551b3179d882cb8bf2ab520173e0f09b6a277fef744', 230 => '6ab92ec9fe1582327081249041f4e7b2c5cde0c2e2a324bd54f9c8c6af531bf7', 151 => 'e07f273f28254053c838fb3e4ad2e90c194cf35ac4e2f65a934a7df31bd80c9a', 137 => '0914da6c0884bd180db0d44dc2a54d3b1cea0a4cccd890bd0996e188d077e3a1', 136 => 'eff23fccf72b3eeeb271db148c79b4e34a1461df0e84204cd8a725a7a9a4a34d', 85 => '152ac4d2072ebda9def5575c1c788343450ad1773e962096231f55504896cad2', 207 => 'b25c4df3c8b7f531aede5be2400b1e18f184897cddb67aeb00de6dc810ba6ddf', 152 => '6a64669539208702a129ec9d4249a3d97bebb552eed7876ef00c9759ca0f18a3', 73 => 'a6de0fbbc73c6cbbec2dd161310028fb209942d7e2b7afe47d2e4f61ff19455d', 184 => 'b359716177d4f2cfac34745ca68f6235c7f9080e4f627dbb08555b32d5aabc40', 17 => 'e08b33b4d4e423e33b5bf547734ea3b0828eb660255ea8500697ba9282678bed', 271 => 'bca341255ca8d0706f06994fae6d94593ae3e72e1ebc7ab7606799ebada9456f', 168 => 'e93e05b7d372317fad9dd8d9dc83edddd2aae628f4cbec04fe99acbb3fb61e0d', 118 => 'fd36db1aa251a143b20dc52617dd75b827be82da08361751e18cf32559159e3f', 161 => '9bae4480372bb5b92a5902a3a6ef8411d9158fa3fc9f64b326fa3d94e527bfeb', 173 => '02c6459501e7d20743d96d47dba3c5580aed1aca10930cb5b36c00633ece9e0a', 23 => 'cac8732901ae455387b3be9fbdf64e8814f6cf425ce531d1cbaa3c7dc386e77e', 74 => 'c5d9826f9eb0bfb4648d66f91d59668367bc1375a5d1d2fb3f9bb0b3cfb7bb0a', 205 => '48ff6caf85b2fe8bf65f2f1a21197e2a94bf2e1ca92c481d32ecd3cf3bec5156', 187 => '92b2f67c80d736f606cb2fda190e8a5aa6584019ddbd01e2df5992ed91e8fe69', 153 => '654e03d2668a25d775f9f9c31d4b6b7a6652bb987fa19dc020bd096a2f9236b2', 263 => 'c8d8a531eff624660e1b9cc9bc13c28d2b6de2c60d9cdaebd3878c458375b11f', 199 => '8874f0298aa650186faa67547775c968ceaaff58039443e4727107907a3344b0', 45 => 'b4f7b3c71deb1d6e8eb10b844f4e37dcd251ee8d7b5a28000658438d54855023', 7 => '786308fc46452ff62a56a8837cbca94ab70e0f4ad0f7172412d83daa0d02a47c', 6 => 'a6d43479f496fc71fbb4b18c047d68dc914778fcec280e948a92162620d5a381', 79 => '96ee8f2881d07adec7540a0b0d84e27e144627e9784ed15b7e37853ab6dd58fc', 159 => '8aab69d29be362056c1af65e30816dabb1f94588de37fc25a268ea761aaffdcd', 143 => '8bcf103f00869431e5d7b1481c44d40efd45e365b685d4b70b4799e645c11f45', 16 => '54f9f291138b8107f4e15bd016cb89778a43643a373153fd290d0ba4fe3f8a62', 97 => '78ca8010dcd5dd2d82d8bb8a37a108ca70082d3803173c6a4ae8daa986c4e252', 111 => '98cce6f080d4914ca84fc80a060ebff07a163120c224e33f67ce7bbeded1c946', 228 => '3bc06762054feaf8005a18805bb566b3190c5cc53544c42a0db7e2be6e528ee2', 100 => 'cdaea8cecd82607c2c68929a697e241f350eb32720aea2114bf40e9028148a89', 170 => 'c5af028192dd2c3affae7708c20d8288e33dbe4214be04f5e61136d5671bd6b7', 169 => 'f9505265574a6a9d8115dbabac9f7ac243685645939393043aa59dd5a76e63ab', 65 => '50fb9f5a7aca4e1cfa40897a721d5cd9572a21e29b2a909a66aa50ab0ec4216e', 213 => '35b0a49a3274f56afbd820066c41e644e3338bce235bcce83ed95e8c9c693e7e', 84 => 'ac101171796daf8b765c03f117091763232ae110813b3b15f69e3bd404f1df57', 46 => 'dcc28781f58ece385116c523b2db2e533aa9be54cbf1bfee639ec88056750abd', 50 => '3eb9ca2f8fb1bbf56de8616b738221330dd8617d55be2e88ff06e61667d8b73a', 94 => '766591a699ded1a1cd1f3a750a387826699ede43837129364b746ef6b6230896', 279 => '26beca2c1827e526f92e8a366b3085df750069b52ec7158582ecc0dd5afa3f9e', 200 => 'a12bdf506cc8efa54a5a9879f549d8718749b4f3aea03702b80c4ada20586f85', 13 => '02c50adf9ef05b19fa2f88391a33b2e75462dbdcd61686eb07132cd741e38c32', 14 => '3f4a54e95ed772bfe2fbcb87d276cf323167d07e65388acf5b204f25100b79d1', 101 => '23a21b2b236ca57798a204432ad5839cbd72ca4a9d72d36ceeb912f8c19ce88c', 19 => 'e589607795fd3befba20950ce9159f602d9c749496a797aea7f3e64a6f65f46e', 95 => '06307d8a6a833f30e1c9b67ef8a1bdd39e8201fa405c15e19ee64b57e6e8d14a', 195 => '5363051ad677c44c0f25831c95b6f6b443c615acb5aaac5b0470d5108dda7c27', 273 => 'a888f58947ce189801dd5864d34b26186a6f0075088701f2ea62f77a14aca0d8', 93 => 'ca42de4c108bf541e9de6a62ecb2e0176ab906a62c8681dbe0521aa050880610', 175 => '93ed5b2e51f942a918578a5a13e2aefae1041063368e18a25ea2b2b2819f6e87', 142 => 'c0ed8fe7c3c76d2f3e3f680516fb4c609ad63b44f0c3fe3e8b6b64dc98d2fbea', 144 => '1a7f7919f922eb59cc36d30907b8cce0e224bd3b5f6c63ed2fd750450ceea4c0', 138 => 'ca46e5502e3580f32682cd5404779ba389974622b31fab6664eb0512c623bde9', 58 => '925531e968f18387ecd225ad2f45fe4da78c12205e7220bba16b09b7757afeaa', 160 => 'db1b6049dfa04a1bf4c095223840a0cf3005d14436dbff5158b4dd1ccc2ef76f', 260 => 'f951fd2cc82553528acab32c771e3c47dd870b356d5b3ee49084e52e19785db5', 35 => '58a005e378c8d8920387001f1635547373ebed5331922f58f94f9c77c0d11a2c', 189 => '6a9a49c14c2b03a1c1bff8c4c4a7f5b9d099b03e33284bda09e0cfa646998456', 227 => '173ddcb91da11a0468d7e1a925b33d5fbe5169d8ac1014aaf1934ebe5118f279', 244 => 'bc000f365c913b25071d19af9371035fffcb177e23765ae75881c827e56fdf63', 275 => 'deb1b4a1f57236eeae15cfa576db45d3a089d5ea86cd0c1de5af7c4b4df81923', 48 => 'f9a5485ce79539197fd69670c91d50341856bc866403a227070c04224c45587e', 211 => '4845d387607ea99954117824ae10e66d7ec52352175c2e69759c244937a0603a', 26 => 'c3d205d6572d35ce494c294fc5c17f188d0afe74293d8da5a93c0e626488b3cc', 286 => '6c1b3eead5d69a8566afdcd68c735509f048cba364ea76d782605c769360b69a', 61 => '3b91836749270ebf693c92b56e4b8709eeda961f4e1e35e47671ed4515683410', 12 => '3afd2e788220d34f77e51985e2f972ac660ef5c8017142965bcebb394e3f1ca5', 71 => '0081157421c238aa4a9caaa1108f3c06c4c219cf0f04ac8ecde631aac3769400', 128 => '9c846c84720b39a8357db00d176907708139bc4625c422f521601513923f419d', 90 => '10877c3b35a2d258bbf8f4d4992c397332faca2dd3b29db08ae72dc467896249', 178 => '381c584c454539130d4ec7e33014761f34886eb42b78d659958136a8f5cf4d26', 68 => '16ec9f48e09ac13380b7d9e8778e931f99aac9851ed198fe58ab5dcb9dafe138', 278 => '052f1cc26677e384233e88c67a65010714c5ec3d2355263bb23c806d8eac15d8', 127 => '26235541660d2ed1ec5cb76d962eb3d1ac7c39a208fa679e546101dcd8f27581', 232 => '7df507e458515104f40a02eb4c6d4affbf719e0acf271df3202a1ec3eca77250', 117 => '756a3f6e9a8e34dc429afb630031ef6cb6b0fa66ea5844c702afb53dc4f6e2d0', 215 => 'cfb876e4e812d6f8b6b81e4fc25143a706851db216618415df283b231b0f5c23'], 'c590e168b33b5fb8f213d092' => [265 => 'a5c993fda04f008ec5a9b33af004f393a59e9eb5b88bdf85ae44a6fb34b6ea73', 40 => 'a152b0f0fe3cdbfd62c250fd67c97d5caefebd5470d2dc69ca0bb60d405371e5'], '7a0dd6f73df2261e41bf503d' => []];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch115NonNumericRecord(array $record): bool
+    {
+        $sources = ['cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c590e168b33b5fb8f213d092' => 'c894abd9749c34aa42504b0a726f823353c6f6063ba59056af3b2c9bca400d32', '7a0dd6f73df2261e41bf503d' => '3dfd822e9929001c499fc94ba9ed822d38bc9bfbffa72ad452a3a8f9a26b0aa6'];
+        $allowed = ['cc0185e917711e78c149abf4' => [], '267cd82b74f76a034f14dc7b' => [], 'c590e168b33b5fb8f213d092' => [], '7a0dd6f73df2261e41bf503d' => [183 => '8a2c544592d676b4d66d61ae8f6b4622075931947e98d9953151cf616f01e987']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch114CandidateVotes(array $record): bool
+    {
+        $sources = ['c9e2b9c993bfe7d06547c8f2' => '98077ce8d040a785fc50437a72ff3087dc4b656e72882558353ef7f47dd802fa', '6dfd6b3caf24c34e288769cf' => '195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2', 'a1b887ea9c50978fe4cf8e5c' => '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7', 'cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c6fecebc52d31001b62978a5' => '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88', 'c590e168b33b5fb8f213d092' => 'c894abd9749c34aa42504b0a726f823353c6f6063ba59056af3b2c9bca400d32'];
+        $allowed = ['c9e2b9c993bfe7d06547c8f2' => [115 => 'f6c5035b267e1679bee8adf2b57007ff829761dba49e38878bf8486122b50117', 136 => '67570702f0de9466eb4cd6869ec2353ceb4abd144f9d7d6749a9846000b8024d', 20 => '7d1a404e58025290a56d26adb61d9cc260fe91d6ae7a2b904236e55b5e789391', 167 => '0205e8fcaaec3fa0fd3c5126f0bccef97cf6c52ecba8ea6891f28b00a4579419', 148 => '642dd625fde57f16871d46c36d1e263dbf1cb40dad86a8eadd7c82446c06b637', 1 => '6ecb96499c7c8271c04f2ba8b26c9f0c24e35ce5171e1c74b702b6ba0d68deae', 25 => '6c325da6b18ebd8b9dd745ab5ab208e74304803a4375fd15170d54375f2a81a9', 168 => 'e54b2a13d30d00e0105c01df60fb8fbe4dd55a527e4dfe6640d7d3024e1ab0bd', 77 => '96fd9b85cceb4273415da9f61f42aceb9c828c11bfd33a7c9852c8a8caf13e4c', 143 => '8bfaded2d8f3f1a10065f1ac87238d161d9ac562f8947913fe57ea8b478f843e', 80 => '4087981df51aca8fda0297f0cf5997321ecb806d074e47e14f791a29158e05d1', 68 => '0a2f687aee60e99405bb6a08f23e1ae1cbd8ca2726e7dcc4b82e4334c291a5de', 147 => '3083e6c2435fde1ce1d7d855ad0782682bc21d165fe4c96174b88df865399789', 138 => 'd1ef8e520ecb16c00d5618f0edb4921d08532286f71c8f35d7d4febcf721a93f', 5 => '4fc6b4d934b3b98cdf04f903e900eb9ef98ab6360c7de5f0e8a633b6e40058aa', 37 => '238c73f3e0732fc1dbd7a2f53424864e4a6396b6bf62dc1cd08e09465abd9606', 165 => 'ca0c457e84365928c96f87f9b1f7c0cbb2660a581d5d39e2bd7de58d307f2fc2', 226 => '4463f6619dcfb4165662a93b51ed06970185d5d321af0f8f0d6b7f796d02faae', 120 => '5789501ef815ef7ee754998b61125e4bfc0b43152c80e4bc8a40641bc7fa9872', 70 => 'a597f96b0a0c26a0987c2b59f5247fce333960cc342dfaaefca2863fc96f8741', 43 => '4ee275642d8741a62797f92c1568fe2621eaa619108ce8a4fc1f554af2adb684', 140 => '15dc7adc00d29c305c28855e6833cb62c38354837aa8298cbb1ed8185b7ccd1c', 217 => '14dbd718cde116cac1a219ba31906f8d4fe23d5c6be0b0ebefb160e73ce2116b', 216 => 'eca0594f313ea9e53344364723170e1e29704826a9e81faa121ade89c61ddae9', 144 => 'e74e93b309a6ea732c9f3cfeaf00a300260464ea9b9caecf92bbc6297577339b', 2 => '87ba972eaac1a7d1236ac620b58c4a9e55aab7b63d8a4ad255b079ffd8629e42', 112 => '45e9cbc13af009bb0dd47d00377f86b1ddbc146e30a040198cbf0b097ec3653d', 103 => '9d5ba44cf3c31cec7f0797d0a626c161529e08b5ab37f533ce76fc33f3e07aa7', 102 => '7db70edd33fbd5ec03915b759797e0b8c3de63c8a380c774dbb98e701d793e9a', 170 => '2a098a1b60901180073db9d70d8b4a25e2ff4ff9d6bde6505611946eaa2ac168', 214 => 'bbdaa29c3ac5395e3db786b56be4dc2fd8231c2ce75b4240abbe4f681d8373b5', 194 => '56845d30689f12d8db03e8bab9d7f00e26d46d93fe9f22c1415ef5dd4132502e', 134 => '927606a4ab9d43bcfae8989d2cc1d04b71ed9162237f9aa055ac75c210662226'], '6dfd6b3caf24c34e288769cf' => [91 => 'befc25f5ad737d93b9a045875278208904c6a8d0e59e9fff4647de7d70f0307b', 25 => '485fcdabef52cd89dd8c46d847674fb51100a91a928adfa99fd4f0a26b03e12d'], 'a1b887ea9c50978fe4cf8e5c' => [179 => 'bfc488548ab34db31a68c46c4994e5bd67a40f3d52ba2edb21654a6656fc0086', 165 => '573ceca4aed4aeea6bf759ebd74b7d43f4e0a25c58df142f574fbf6108cc650c', 191 => 'c09efd11850dd94d89cfa9429de8bfbee519fc97d87246601a4b68d7d2ce6eae', 175 => 'c2825547549cd4aa16f29d62e061694130faf1cb851e152b3348791a5569d380', 189 => '57cc4d28d9c097013c48c20fe3fea7b45ead36d4f78705d43a933caafca2f23a'], '70e603b1037bf7ca8e1350b0' => [187 => '23416fa1b334eb89c685db7f1b58de20f8049aa36b1c1f507f656915bf8c29c5'], '2e749f2174f08a9ea1fc803d' => [187 => 'cf3847b953fb1290bd7a9ddb494ec51f68eeb9b703bb75957ee1e671b7e244c6'], 'cc0185e917711e78c149abf4' => [42 => '239784b16f966c658342b2eeb236d84fd7b81b6646df1782c08d450022d87740', 69 => '14b795f3ec4d66691dcfc0474c1ec10ee2c5424796d3c5c18304acf9b3d706a8', 236 => '96c705706b7064fb9c06210d60525e9d0bb5f985458bc424c88a476780f3cd7a', 225 => '31261b72ad743910f89ca94b3a9678fb48917997180adf4a7f3f1969b1a6fc92', 150 => '16e937bca1af9e571623df15d7570f2472192132226d643ba06f0ab643c4d106', 250 => '76bbc1bce8a8b32f2f6452c3b14a3cae950483de1b51dbdd5a67b6550c0eef76', 1 => '1b41d57999ef35d82f0c5e7a8345be92c6576680d87e18279ed1ee482bd7f458', 31 => 'dcca3642add7602febeb570b7f62aabbc252b1f4792268d9021b38938c74eed8', 30 => 'ccf1f38df210f90765376df4e76ce5057927145df250e415f7fe4f1c49b4530e', 216 => 'bfb4e25cda8c542fbd2a8a95b29929c2c2372d377f4f33a55ef81aa2ce651695', 28 => '7f331e364453b75d06d87a5b83db6c19cdb40e81a5fde1993bf5bafde7d18fe2', 192 => '26fc7784d97fc920529ca0df3b82fde85c4451580d923cdcba0194cfb085cc33', 15 => '630cb4d5bf9c3f76795633d8e44798a34b6cdf449d8bae7b84c92d8c085ffa4e', 196 => '4f41627505d3b2e739ac54b10def74953aad4670fe29e4630e15a7432a04cf1c', 140 => '29f151f2edf386f1a8028cea63df88647667832c802f7e67c8eac3cb3f934939', 66 => '3b4521fec1b61713f25ccd2dbd4b5303d3dee0bd64ba12d288532742bfaa5665', 38 => 'c0c91a5fc2c9d1a728f9c97b2d7b6e45f043af11bc878774916270bf2bea087a', 166 => 'd221b7c4179046c80d13fc30bb100d4d29e6891fbd8a6da2abfb2c9fc34e8c54', 165 => '4ec60e4d92e65c263bc2dd05c6c7bd47e4e68ef33fd55be83cc9cdf8f45957e1', 172 => '2685d50ab28f9e07a4676cfe83e71401ddef9b8fd54fc56fe86c9c21eec0e7dc', 63 => '2d9c2493598a4858baccc4e250e352271ed8b6407e456e8769616ab5d16c2e6e', 67 => 'bf1f848050279b037f52aadcc2a396eb9151f7dde3f95613350582293a6a2279', 80 => '7ab28a7dc88402b1b1d4ecfb5dc2a32c4e665e24e503282c9361e6ed3352694c', 44 => 'de5b14b8502b2cb59f75dc8d5ad2da645f72b197e0256c51c2b548e53c5d5db2', 231 => '7febf283d90aaa24029b0c245ae85005f396e0e7b4b261a72e4dd862b1e16e38', 107 => '3b25e50f78b2021eafa16a983c645743a84cba7910e4e2b798149aa0985c6e8e', 109 => 'fdfd8b4baab44c001a1612ddb13cda58cd20163b34f40e1774bf9dd5342ccc6d', 239 => 'e6d1b1a4b453ef0261e008748892f4370c11493bebeb8097cd525f02d9092c1b', 102 => '06deaf1f22f231389e3680507ca5f2e53be93d0dafbbbdb38dba34e060659396', 37 => 'eed31007699598e31189f99d86ad6bc1c4c10ef2e1c4122f7440f4c8e6b8464a', 116 => '72955e2fd1d0a9a2a3c370b042d06db4132a26e3df68074280ae07ce6ad56c1d', 29 => '3697ed1abeab965d3c7aeca9b10debd8676795559e732283dee9991ffbfde780', 72 => '4441e50824a936df9a5c16f4c7e1310903d5cf9416bf0be743b9cd73cf1cc253', 201 => 'bb244af96673a604af8467cb21693948675db646f6e11c728ebb49da54b20add', 246 => '36acf76458063313d620c0aef9262a2d508742332bcdb90ea9f77ea5c1eabe43'], '267cd82b74f76a034f14dc7b' => [42 => '9790ef00a0e9081932b460887424080bfe4da2899c75214018db5d7001dea493', 69 => '23e5be22ca4f1d048f6865a2c373a6cd046d1175aa4775c698dd0ccd145ae92d', 236 => '763b6caabd67b576b5b7b71d8ce7e16705d1a07f131f6d1be2793a5b7ac79c0b', 225 => 'd4c2494f80ae42c0d580e7ec11a5aa18994ddad579619c66b74eaa07cb9d8c81', 150 => '09792f7f54aaf670f8b01f29df7bcaf79b48a161b8b00be20e2da5e7eeb8673d', 250 => '9cfc26e93e9d5efa5c15d550206007dda731b9c3b447b044b85ba398c7e9bd8a', 31 => 'cee0d3ef90af202368639081981ebc200c5405b1f33ac309c1b5727a5681511f', 30 => '5cc225ede8fe1991fd30a4bcf97549ca6da99939da75ec48752088a7f1cc249f', 28 => 'b435e9fd7c89931754cee6b0c52870b66c6382888e1b4d9bb997d1af7701f423', 192 => 'c30bcd20c71ae1657e4fd629a85170360f7043c100db1f22e329985e9fa8143b', 15 => '24e505e595f908b42863d54e49a6838fe2bf64a37592c8120848e91b5e220700', 196 => '609ce997203eb3dd5fbad70d534f8b78cebe8209f4b136d2fec2cb449ba33761', 140 => '097ecbd0e7a897765c9dfec83c84778d979dafb3a3bdde75b30cc3bb9363cff1', 38 => 'b05d3d6e18840576ae386e685e571e7b6444223de5fe9cfa69e8e8bfb3ba362a', 166 => '7b3f89f61c67eeba6407983a51cf94f87d583f01a0b94fd29b57cfce7a51ab7f', 165 => '5adecbbfe5620214a5d479fb781f23e539e28a50f4cdf92ce75a1d2a8aa789c5', 172 => '8140d2edefae5af69b4f9c7bc45172e874c1ba7ccb615e339e6a265dd13f06fe', 63 => '245392495264abe035dc15221dc5c93d570e50d4f89dd8ac15902b377330cbfd', 67 => 'd3a8d733d8cc502e552e161d47691359cc049bbec6efe8430bd9e7fbb439f4cc', 80 => '3916140c0e374baeeacf8d7812dd8834d180545dd1adb7ab358bd00bc25404ec', 44 => '5ca0f8eeb2d86ba53cb84a580eedd752cbba59768c4416460333356c88dbb05c', 231 => '4ff1982b8b9e2bb8932aa1363406b9e3f31ecda543b19fabb1980d5247ddbd0b', 107 => '652f03612fc40e298a0e0125a8d408ef19361c2ca872b2e1aab2f389a3eb46e3', 109 => 'cfbef6b8fc92cc9179554732b1742d328b6694b09cce37ddaf1c8c761ea27da2', 239 => '23ae63739288e1a3554c24e27c2901099cd901ca508f4e4addfffca8beb8ffc9', 102 => '7d60e3252483cbb35713e1540dc0cdb757f46af30d2f88392d5fc77a39f5b7f3', 37 => '22d2d22d3a23a6cef19de2141e12cde5d73699b72779982d589f62a30441a927', 116 => 'eaf6730f4fab9e523add54dccb9c14783eaf8181c51d7eba286c591c90143d2c', 29 => 'cdd7802a5ab95cd7de30f76e7bfbef882f64e242c26132536ddbf996ef8cd47a', 72 => 'e1eb64153723d9fecc3bb335d2463c4fd32ddfbbd8c35ad0dffcf294ee2a6cfb', 201 => '40e7e77eb628bc8666d846e1c48422da9f91c28ac4d6f475d05218f7f7c52757', 246 => 'c726fc47358bf92d07b77edadf592c4ee7255bdcce3e3c29310e9f98cb68f93e'], 'c6fecebc52d31001b62978a5' => [230 => '7880a805397620155ddbc1ac2f1f6d29848bef2440095f20a1f31bce627c055c'], 'c590e168b33b5fb8f213d092' => [28 => 'a6a563982c75924274ad52a4a8b69b8e836764db8e96fdef364981f0f6377e2f']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch114NonNumericRecord(array $record): bool
+    {
+        $sources = ['c9e2b9c993bfe7d06547c8f2' => '98077ce8d040a785fc50437a72ff3087dc4b656e72882558353ef7f47dd802fa', '6dfd6b3caf24c34e288769cf' => '195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2', 'a1b887ea9c50978fe4cf8e5c' => '71c6ed66b152cb247d9feedf09743f38eaa9af21e4cf6779eb5e2ee9e206eb02', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7', 'cc0185e917711e78c149abf4' => 'b9626e1aacb42c0b4e26ffbf3468058e85eac51428d7520212fbcf93e4472dd4', '267cd82b74f76a034f14dc7b' => '2b0dbc48c2d5064557df45d1be0df4fb4af3f82b50823ce4051736161543393e', 'c6fecebc52d31001b62978a5' => '3587499768cc77889d6613a4b5a61ec5c55dd196cb1dba9bc98137ce898f7a88', 'c590e168b33b5fb8f213d092' => 'c894abd9749c34aa42504b0a726f823353c6f6063ba59056af3b2c9bca400d32'];
+        $allowed = ['c9e2b9c993bfe7d06547c8f2' => [], '6dfd6b3caf24c34e288769cf' => [], 'a1b887ea9c50978fe4cf8e5c' => [180 => '8a05511e627988e4bfd546f9a02bd5156b3f9c6588a2b2dbd843c1fd190d2b52'], '70e603b1037bf7ca8e1350b0' => [], '2e749f2174f08a9ea1fc803d' => [], 'cc0185e917711e78c149abf4' => [], '267cd82b74f76a034f14dc7b' => [], 'c6fecebc52d31001b62978a5' => [], 'c590e168b33b5fb8f213d092' => []];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch113CandidateVotes(array $record): bool
+    {
+        $sources = ['c9e2b9c993bfe7d06547c8f2' => '98077ce8d040a785fc50437a72ff3087dc4b656e72882558353ef7f47dd802fa', '1ca25a475b1ef838be42b0b8' => '3cef46b57584c71b09ca18adabbba19a4b36811ac2b7ae02e621cb9f857660f8', '6dfd6b3caf24c34e288769cf' => '195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2', '30c60a850d2cb80646b7e138' => '8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650', 'd4f4dc0eb0e3d6961ecf2b4a' => 'f1f45af916664175b214a4744f0975f27f01baab69465b8f647579a1c5163588', 'c966d9d0a11d1a01ab2d803b' => '6070c1051234d8d51de2617896059186e4df13b82aff7eabfce855e552e47b5a'];
+        $allowed = ['c9e2b9c993bfe7d06547c8f2' => [207 => 'cf3901ff50b1adf6e8ffe231460afc7e2ce6769ab6fa23bad4ee29dd46b483e4', 208 => '067f95557349d498be75e77765006d80ecd7e127c9110d97f0378906b71a26aa', 99 => '7ff25f60122c20708d2b2ff634d49320ff58f01490dd69083bce0c25666877b2', 100 => '766e5d516be16700ab58b2440ba08cb9a8fc8da55f29fcf1229e198cdd34d1e6', 98 => 'c2ff2e748f0692948c7056e49190b52dcb483de8372a0a62f19f8054ee32ef48', 56 => '1e80c5a452861b6bf882fea6f59bb8ea8adda0cc558c4b25f8805d847d901132', 222 => 'abcc19a4168ef81f959933e608e4497ee5f2eb0b8777a47466aff7ad4255d8d0', 230 => 'c97a7bc5e5c45822dcdb4330e92009d9afd123342d2efb9083dcaa48870a5926', 169 => '2cb9cbf57e2dde9b42d0ed5f0005a66adccc63eaff42415f31a71cd7b19a3bb4', 184 => 'e0793dd86e75e256f794a2328e24965eb79b5b41c1e2f0c66c81da87135f9309', 116 => '4337d92c2ebd4719ff839df30a232ec28271fbe54869320b6470f0e23b993650', 47 => 'df8985b5d9e9ee103923af6c680646d9f730f84b3274ef3251732a375bb56e8e', 185 => 'd6c1121a26182864c34f287aead455c9ae7bfe181c8ee018626dc49fc044c288', 173 => '3bc8570c46b86233a34912f875a5d38e40ae0dfc87d858ca41b58f50b650fe98', 163 => '2b76001ceafde2a61f05ea0718a07186086c70dc3ff892ac21aebd8088815949', 36 => '23a46a8f9afc83905e7de27de365821c372f563b88bee10338558d4e80379f04', 27 => '6d83a27f89ff6791f80676e943b2a3bb233a298d09c7d850160a913c216b3339', 86 => '2cd7d4626fcb52397bca7f3cee8abee26b9071b93406388d606829dfa939be45', 11 => '937ed2cff3aaeb3b565dceb774b6317ccf06c12c13093e886baa0f9b42888865', 109 => 'cd5276739a05221c3a85db0e71371a2731428eb2aaa5faa8bcf05522751b449e', 48 => 'db0a5b3a19e50ee59e8db6effeb49bcd2a27272e9de18bec711d53e176be3928', 213 => '6cb3856af48dd773c25d3149f42e36effbf29c54f7ad9fe9cd58e4562a023a87', 65 => '557300b62e9db2c6598ad2e0d13883ff578190aeb0865841c1c39f0ac60647c0', 53 => '4707347af0aaa0074318d6a37fc7703ad0a4c00af2340d276f3501a40ae0937f', 228 => '7b7f50dae89364129ca314d073e73797f75051c60210099d1d2a749954976649', 175 => '18f062cef2d6c8d61af1fcf2a0b353bd50f394b5cfb331dc7ca3442833454725', 224 => '160053d1d6436a32a04d51056b3735fbf37e22bb99b11abb0dea2de4f9183de8', 71 => '93321dbdcf3fa82e5f05d5b87bd5bfb4090cedfae11069b67a10dfebebaae84a', 12 => '3050aa62c858aad0f99bdf7453327b8575772312bb99d3d4ab1c487215efb82d', 6 => 'b01f22b0a7624d0a1ce2fe5da6c16ce4f95e6bf1e0321c391fc1b33d5a3b1272', 129 => '486adb6c78f4fa4dbcb40ad894a8ba62e78b51d7c7da46712d6c41405d79f3a2', 34 => '9dfa0825a97eaa9e51c6edecb0527824babe185e649315ca2658e78c453c8b1e', 93 => '96a1776627b898eb5e9c1dca9054bd51a8e2795d90d8710e5472ef6477d8d360', 212 => 'd1446648ccc1640e694d53bf3c5f5f0d80ed0d0b4a518012da492917f3b986db', 64 => '9d35f6d75da5821b77f65eaae689e6288644a0057b80557206eeff6a21d1eb0c', 151 => '8a4601a2e5111d8198cfa1c425d6b6dbb1c9b2ea20f2482449543a45bea3b3d5', 160 => 'fb5ab676f65d86a57a3f342cce42a7b59ed09e52aed8290dabde4ac0dcf7c4ab', 119 => '61245b3de23e3976094dd2261dce0a7a2a90b8c27cef70a04edcd9a1164d4d3c', 229 => 'b3cb78b880d1037700f6a23d1037eff50dcdb23ffc79e9a2e50d2e597b3b0ef2', 46 => '1228386b80ead808ed760fea719f9228090de3cf01e5d7bafd512e85461860a5', 101 => 'fc054d20355331ae7ad7556139c613b8d72e62257e890694fb3680c22f22a2f2', 60 => '044183a54d429443e56a394828d6939b5249e991566ca4948e24ca04c36cba38', 110 => '21c98dff7ef21f3480e1f9e9b84af80cd0e151e346d22ebeb6a3bb1c0a31a577', 54 => 'a285c0aa1f39ee4637669ffde61a18da764d158dd356904308ea7fe462a11690', 58 => 'd49ab157ebc4ed101718f03bc89a51c8fb7e19c3f7618ccf3044c183e502e68c', 26 => '203ae6805897e8f5df766232d06fd23dfbf35c6cf1986a8ca673f4771a47b367', 24 => 'e782d038a6e2d48e6eaa4333aad1948908cd12e595d30adc853c473189c44386', 45 => '4a4926576da72a8149c2ffb176665a442db5e95cef08119af36e0e7935c52ec0', 31 => '210348d9cc9b274f57be240980bad87e1be5ca53a225fbee44437bddd3ca4fc9', 162 => '3aff26ea182fa2197e097846b46559de69a8a643ad5809a9250f932ea439dda5', 50 => 'b575a268d947b46a9156f841ad76a4a49678d211a52c41e080709acb3078fbd2', 67 => '3a8b783de08fc33c75a6274a1723d1b0b9353f8ceb8b7d2a106d4806e7d96a61', 220 => '9b1fdce8fca472710ef9c0898b32f177b78d3baee7176bf9ec9f93294fe98720', 210 => '6543f2a989f7e21f932d5c6177a5db8aca343854b3d90fe1b71d422e2ec508bb', 39 => '1af482d2176dce5d3d670d5ad586d6384c9bc81fff8d8de82cf78761cdb0fc4d', 74 => '1c54cccf50c35018e0ea73f03ee8cc67f3d646b522965c357ebfbec64f9c2d61', 41 => '6ae17e02c388ad2bfa3ff68dca2c2222107881be22682ed3401e0eda9d6a24bb', 63 => 'ad37fc587e5e6515f327673faa0f8d847dfce1d0a5e2909071c3fee23db9415b', 125 => '50d71bd4e7cf411879fb207f6e3428df3b16c602ddc3355c26e34007cf817a6a', 159 => 'fa6ca1bcf9857e8cd51d2eeb5d083904d419cfa822a3f97e71036392391bf6b6', 69 => '5d6f466816838b76aa804d5da0d36cbe06e158c65fcdc29e15fdbf09d3554002', 97 => 'ed60a94e8579c7c9503be7308b8f24f4a0fbf3375277ee9146832772ac3cb147', 84 => '602f40a88799dfe9cfddd0ab26ee832a73433c0cf7ad2934311d8881d2abd69e', 85 => 'ba0aaaa948bf88e8fb8751c5ce538c1d82dd7304736a18c804b1ebcee85c525b', 44 => '821bb30e33b1112203fa7d9d05cb83055e47dea98b339c0346a032b73f4ea154', 193 => 'c955efd9d3a3a8e55b4ce233bc3291dcfcb90ab996259057aaa0dc3f27c0fab3', 192 => '81f06fda6b0c8e92f23395248c62f26ae8c51a1be8e4f568e76a4e5c37177f91', 122 => '569c3785a6857b51055709d14507172825ff66b564bf27e5b7574502d8fea0e4', 23 => '9990b8c744090fdfa643198e93cf9e1aabe132f9ed48bd00e2600a446c94d057', 177 => 'dc1b1b4fa3cc6e2323f639af35b3b70e67827ab7122e8bcd07fa0a385632d1da', 198 => '1b9963252db14c3ff2ad8f706d7aaea2dd9505fff40175a6bfea677be41e306a', 146 => 'e19ae4351eee63134b5dbd85ea64ca159d039a9440f0af2269ca03256e6d66f8', 117 => 'eb7d9e077a1a81a3b12f56b0e621a41fb2b8cb72927ba76421a3ff8874327220', 183 => 'ad2f530961dcd1e89fe5d2b7b0abd9aa517b9df61061564dd5eb3695abff994b', 225 => '2d2019f6b9bb3a474590581d12d3a63539969d2097819adf5f1f2db1eb3878b3', 199 => '36568882c8a030bb3d90e7c1f7479eca72874413d543b7d6c295a2098606e53b', 107 => '4b62b14140b16940eb4e79942f00f264c470dfddbe82cad2b6bf2ae8a19a81ca', 73 => '70f5b007bfe51c803a86ec4699f7b708e2f849e453e49d1ac16f52cd6cda2ad9', 90 => '28a115b7ac989299c461f32b354fb23e78c84ffa04b8484a720a3b1c5a8283f2', 40 => '6e8855de0ef43e070f278a7eda6d2b51092ec90c92a0c7274654b835fa780226', 179 => 'ef2624ed67135337017593f7671c629809c90d8fb57989313b7490e1c175eb8c', 106 => '972e323248ede4a9f44f6647b5e7998876dbfc420e4a4659682c341bef9c8fcb', 178 => '122c3304b3990b85c974d247ddc7208dd5b7ddf27f96069fd59f0f87dea953d0', 128 => 'a4454bec648d92bcbdc8eae3ff1106a0a83555bd54d8faf2c4d8b2182ba8b4df', 189 => '02c54a0774fbe8750a87856b4ad985fcfddf48bd645451a836a7c3cf69db286c', 127 => '977cc6e486530de8e543ba1db4ea9af4f9c6108021b296905bb9fad48d05af38', 195 => '591d4184b868862f185570e27937aa989a810ce816e92f40ff16aae0be4302da', 139 => '307955daf4e1a013584d5c755967b4c332feda775e3b096e82995875cbae46f3', 88 => '7587c8e5916338d27db40d6a4c7f5cd4884b45346e9fb57bf22a973b543eecb6', 62 => '9e48ec20dc302990ea8815c8c611b435b2e1a3f868434cce1a7f4a272ba9f6d4', 188 => '341d5f7d5c1bad08414912a251ab2a44c74b7ec7267df36883b94bef5f8187e9', 219 => 'ba6ea376007a4c1058ed96535d614f96ef90b3e41bd8228e9fbe3e440f5e1bb3', 221 => '0ad675ef0369b8455ebcfc6352db2187c07d1c5e0e4928afab4c01b15c9707dc', 142 => '7157b43f4fbf5d1addcf0a854d70c2c7f2e882386366cf93ef83f8715f72bad8', 211 => 'b48edfe0417e3b44d717979205ab44fe8bbd0c366562943d64c30ce579b24a70', 164 => '89d3f494a70324a4b82c54c7de568ea6a27e0eca053e33b54e88cc4aa69b774a', 196 => 'a7ab59399e2beb7146ab0d6f7834be878e82290a3faacb595851d158135e1ea9', 187 => '9ac39af5164c3822873aa6862738a56683cdde1d3a5ba643c3123c26746b3ef7'], '1ca25a475b1ef838be42b0b8' => [44 => '1e0f307c9ea85c1965758c1c4520da32a5b92fe25f42f20606206d3ffdf8ffe4', 47 => '852e24f34ac0124fbfab35c527e22ce6c651baf04f9eec38126d7dc1a8f5823d', 36 => '206c58d93c1b6a3e07b3e23163ccdd7f41524df5b99d1dceb845724f263045c8', 34 => 'ac2eb0241911302b5844144d10a344af664685fe423ddbb996fb581a6d454388', 139 => '406f264612bfd3946eb06b1229c4498ef1b35d5944aae46a6671ee31ecf88b7e', 62 => '191fc0af4d30658de605e18c8174a8105ce7926e0b168d4beb890b06d44298c5', 67 => '35f6278b30ec2791021d1b9d907253022de1328b0eceebff19e780a8bcb16e53'], '6dfd6b3caf24c34e288769cf' => [107 => 'f2d27d7e5821ba779213fa7f209d3f9716e2384d200a40a91e6c7faeed9335f1', 71 => '2f2eec8cca3e821def240e2d6312ba442bc7640c2f7e82cb5be79150b469bfdd', 72 => '5da563da3c599c26a618ff715f29fcdb668d2da6f41af021ee52974dec1d10fc', 84 => '32124cea14638d05de1ac15bce1f1c6135a2bcab3fe8568c2cd6e339df84db49', 189 => '8c8f6ed8e6b668e0bfeda24990a77c32bbfd26d078bb515237a80f7f270c87c2', 1 => 'a82c1c6980286d957991c1c63f3af3afc1277077be43493926f20f08296ba313', 38 => '7faabcfd62a8e389bd80f356271c86c0ffc9767b612e5a6cc665ec69337fbc66', 198 => '56850e8623bcd9a9a872b1303c215338f50939b772eec50c14edfe435ede06ec', 12 => 'f222454987c80e4a2d4c27c7aca9ac042fec01dbc95b4200ee19102f61c69798', 216 => '81d325ac88fa95fa7f8e0c05b3502e272c7305898cc5a182b773d76e328dd524', 113 => '260862972eacaba8b4d30bba2120069f2cf272cdb570ad71e81f4a155d0e6848', 209 => 'ca4008a77cbf8e548a515a8550b7e29b040ebd66fab5bca08fc9d811807ece34', 78 => 'a98a41da586c631d06d09fbd7cc54b559895d63d6af3fb9528fbfd4b28272e6e', 208 => 'aef83c0bd968697c59f6853c42f1ba01f2b915c393144141831138bf044ccf1a', 76 => '7947ba2b04b1d95820da1c8d2c9772f2f50f925caffe36c47dc975b0713a39c0'], '30c60a850d2cb80646b7e138' => [72 => '68fe122183d7c8ca819350291fbb6d24fcb87473ec64ff8d4c0cbb7d34ed86a5', 114 => '880bc8dd74d2dcf64199ece7cd7d12d76252816408b62efebb6139ea3c1f4310', 108 => 'a433c385e330823316de9ea28bc798d63d24befe3b95fe53c540fe6d2c4c3e6c', 90 => '8f2bf12d917e5b08cc391e8eab5377c5152be94728e310f842c7947a90331078'], 'd4f4dc0eb0e3d6961ecf2b4a' => [], 'c966d9d0a11d1a01ab2d803b' => [279 => '2571a5b51f4dc5563c2ed46cef9b2d1f2ac4c094a4cacba8fc31296472dbd496']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch113NonNumericRecord(array $record): bool
+    {
+        $sources = ['c9e2b9c993bfe7d06547c8f2' => '98077ce8d040a785fc50437a72ff3087dc4b656e72882558353ef7f47dd802fa', '1ca25a475b1ef838be42b0b8' => '3cef46b57584c71b09ca18adabbba19a4b36811ac2b7ae02e621cb9f857660f8', '6dfd6b3caf24c34e288769cf' => '195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2', '30c60a850d2cb80646b7e138' => '8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650', 'd4f4dc0eb0e3d6961ecf2b4a' => 'f1f45af916664175b214a4744f0975f27f01baab69465b8f647579a1c5163588', 'c966d9d0a11d1a01ab2d803b' => '6070c1051234d8d51de2617896059186e4df13b82aff7eabfce855e552e47b5a'];
+        $allowed = ['c9e2b9c993bfe7d06547c8f2' => [], '1ca25a475b1ef838be42b0b8' => [], '6dfd6b3caf24c34e288769cf' => [96 => '245890b297c1db6ef523c2238203f8b4a8f19da0739e7581bbb65d8caf69c3b9'], '30c60a850d2cb80646b7e138' => [], 'd4f4dc0eb0e3d6961ecf2b4a' => [191 => '83736e22ee21b6404d2471903499bfc0073fcbe6364e972a61b0f84285df8763'], 'c966d9d0a11d1a01ab2d803b' => []];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch112CandidateVotes(array $record): bool
+    {
+        $sources = ['70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7', 'c9e2b9c993bfe7d06547c8f2' => '98077ce8d040a785fc50437a72ff3087dc4b656e72882558353ef7f47dd802fa', '6dfd6b3caf24c34e288769cf' => '195cd97b8e6b172ebc043127587148960526803a0009670887c4cb13536dfdd2', '30c60a850d2cb80646b7e138' => '8eefe54b7e972f56b8a362a3d7ed878417cdac535913c0c7e32af098f10c3650', '020e199c1805ae55307b4181' => 'ff33c5bccf8674cc1dc5a653b830a1c53eee364cdaefc698633fcf231e1e21e3', '1ca25a475b1ef838be42b0b8' => '3cef46b57584c71b09ca18adabbba19a4b36811ac2b7ae02e621cb9f857660f8'];
+        $allowed = ['70e603b1037bf7ca8e1350b0' => ['174' => 'a22e593abb74d80179155107eef52721c5d26d7e5ee84187a8eeaad15b018787', '160' => '70c6b3e6cdfc013271087bab1c399ec0a702c58de4fd9d9baae0fd58d6f3505e', '541' => 'ef9ade07e4a4692a083c8616898427ae571b6be6addd261ecb1a498e02f56bc4'], '2e749f2174f08a9ea1fc803d' => ['174' => 'd397bd230defb28a1f13c50aa9714c9a75f3b011cdf4ec7502f9bfa7bf7ebeda', '160' => 'fd79e0b70255feca08aa30333b1a3859b7a9332cfcefa473f184399c7b1564f2', '542' => 'ea01a535e4aac2d9437a3860f107dbea89d2f328ed7d8a2fb47ae254ecfcb511'], 'c9e2b9c993bfe7d06547c8f2' => ['166' => 'c809a661211c7a40d8479014c6ebb31cf6f6db445eaa4e741c37a6839769efe6', '223' => '90a023598b1dde06facc4a9bf1778bf4f991efc1690adf6a536ad9580c72100e', '66' => 'fc5df6df582c56f526b45938788115750dd9e88f4bad64c2d810fe6dc6582835', '123' => '19b487b093e4687186aea6d5cae2ef9e4c5d8ddbbe6ab64cb87d08a19325b2c3', '8' => 'a21c677d3b30230f15123d99906ee69ad7395b54baa81ae41572966b08fef080', '130' => '47389302f3898463bf1c654259c5f2f04ecbccb154521755f5f77281f634d822', '87' => '35606eb1cd1f103a05d1d7908287a56f6245cefd0546a4223160202bb492b331', '32' => '02fe2bb83a25b9597df6fb07fd34579b5532f0a0b972d30ff8b829b3dc3f84e2', '157' => '881bf94393dd666015908f5175217c5b861801f2b9cdfcfc1a20383f0f4ac014', '9' => '0e261f9d6554d0cb0713cf70488b4f4836ecde596884fd607745937af7dca2b6', '218' => '91b604996315a438f2cd0a19f2a29b77baa6f846b10b4198b84722ea654b7215', '202' => '9d62dffe8b29e503b7ebfa4629f7766d9d5b16ced03a30c90d400416612203d6', '182' => '1f51d8c032da1696a66bd9a606e659e90567047e06029b9637fde8371ec43496', '190' => '484ac2836f7059fa01f977ce234dd9b2122c0762f711c7f44e197314a3c11a57', '174' => '6bf38952b3fe94bb1269c98df8b7ca00c10f4d0d59b5ab20aa8a083c4a875a6b', '94' => '1c74550416e49a4f2d88c5fe4034982386ab010654d3f2f6ebb7dad66dbdf796', '108' => '141cac104517b112c096daf49f46ba6f7981770b8e66580fba8abf7919e35ac9', '111' => 'b20ba43a4a0dc7534a87cac30a4f8f1f6a081d84ed2954c44e015094410e94e7', '28' => 'ab43d75dcfaec9f2beda5f8209cde263b12f858f68f95886247a3b4bde58dc01', '42' => 'b4ac06a757b30f9dd4bee9fad3422d7dd28b1b23c2e3d3a5884b0ab88402c0c2', '89' => '2c06bfd530ca42276308c1040463d4431d3bbe69a469636a30f0bdd1c14f1984', '114' => 'e36e1365c47845bea590753b4cf7b1cbb87208ecbd560e2ec12a84133b41e6cf', '96' => 'feeb516432f94d7af341f531397b53ca2ae674670e65388d1154281d5d307ae2', '91' => '7c6c2246ef996b9b8c16b709ce55584794e6bd74cc399ced2f639b7e788eabb8', '145' => 'fc5b4c69cae6f5bffb6eb0bf3400e1c7146d98773771bc89d03427383007ba4c', '83' => '5cf891358d070e936ec3c7a16b81be0c97ffaedd57a42616b7e94260a9b29579', '149' => 'a0b25f90e68583a43261bc67056a45adbb50601561a95c6bde7c1a493ef93921', '131' => '9fdbe6ddb6f6230c0c80578cbdca127122f5d57426c6091720f1fd6f996bac55', '186' => 'e966b3153c71039ea4b8bf9f1e54532e692cef2f4706d04577dd8b7b107a2652', '133' => '67405ad6660eb8f9437d2f3b6b9c6d0e2ec8d331dce26d508adce63d4b58004d', '21' => '3947e3e4d8068fefd4450456fdf2eeea2928acaa8d627ac0245f44482644b857', '181' => 'bc46640eee3e2130ddb8e3b0e67ae5b5f70e765b21a37b7c07c94b6d77e6c0da', '10' => '0f5e05af3a9918ee9a95782d53edae03d4ff3e61bbaa99d73094e4578c28b8d8', '18' => 'bc19ab218be3cf7cf91044852fee5f9b2cb515d636685a6d0ba3ad68c9054ab9', '141' => '49f9f7aea15fe96d4be93374d4d393f2612bf1f650f47024d4b709a7b0385382', '152' => '8bde916957e6d54785b07b627c796143477ae2cb04f951a1d0f6f1bb9a3e866d', '153' => '1620961dcbdc3d2a259b1d8ad17f20c442d0532295b842f82c530cefa7e8c3de', '150' => '2d677230bc3f3de44677a10470175974e2ca4aac23a9a04eded200fa0b838288', '161' => '4a8d00f5d319073a27e691249fbd58d87dc5297106ad9711e44efdcbde5cc32d', '105' => 'b8239d0f6c8dcd06a410a244ecc8abd49ac1a19028c0149301608fbbb00ce313', '52' => '5b6264e3303984102bb44e9eca1adb55c08ebfdfb1ed47f8cdd98359fb41ee60', '35' => 'f5e33cb9a56769be6ae572aab83c69c0c3d0a11b874ce84b841d36e98490e6e8', '156' => '804c98660e1053c860bb5ed1ce55b60e5f4b1b75f7dd28d34800d62406abe9f7', '180' => '1cc0661dd40c987e1e74159a68b8ab3f140e19986711e5cd857dfbdf3068631e', '30' => 'bbe0faf317bc33073d5436a3b6e8727e248c027f915ff09837b43d818964c092', '33' => '8499945e904dc317680ed445dd9b32eacb4d4dc5130b9768fb7af58825609af2', '49' => '7de7b4db02734c6b40865a611ca97d40873f12f188fd5426e242ec469e48c556', '51' => '3cfe55cb2cc2a5a50fe86eac9f1f2814ea704bbeb441af05dd8b25a479f76e9a', '126' => 'f6937abe129670b3bb9d7b93a718b979e2e28d0c1434b5e4d3284ae0e632d06c', '61' => '36507b00b64c1113b0a378cfb55d7a59ab71655bd4ff1fa38f068209daa95fb0', '79' => 'eae7fd5d0d2a44e29825beac662ec7b916ee28382d105b1a78b91ac61dfb0bba', '124' => 'c9117828ed5abc2149d5b0a86cd92041daa059e62755a04393c2d53090834adc', '76' => '91c2f0d19027dfe5a1e4bea374f6401d36c8154e6f0b4b4337cb2d815e6641f4', '19' => '16cf5ecaae026830e071107615ab2fe74ffdec7e6ea996663c518d491a88b3d8', '55' => 'c4475064d7c27366f29172cf37a0fb27891d4334069b5585b2e3725df2ad1847', '22' => 'adeb3f096a1315a66b8ff6e9ac4718b1bb1a63b4563e132551454873d5fe3f7a', '38' => '9f0d89945b3ba314a3bffc2c3db9298c46f8ec745077f4c70cb3f365acc0838e', '72' => 'ee968489afff71bf9612b8b85fb68cf80751907d2c7fe1c72e971de58e23a420', '203' => '85d6e173ceeb054988cb7b40b3478678f03b009f935876c763d4436c67bd34ea', '81' => '7c41f8c73ee090206264953d42a629fca0e892f74f1941d92baf9f1e0140aaf9', '171' => 'd90c447e688057b246cfe56c04b81a39f9fcf15ca5b787d0efe290618ab5a864', '201' => 'ac233e50d5eed7006e6698bb559524ed541b784ce58bc5aaaeaa263c3a5545aa', '200' => '45faf3d113bc25d334557229fd227071d8050af0ac18da9e6a8f94e3244bb79b', '82' => '8d0e02663978c343104e37ab1671beb4b1bd32b15003dc61026546882a225dd7', '7' => '6dfc2868d41910130ec041616524575f3ca37be06749350bb6b57e0ac7f8c447', '104' => '0ea4e72de803d9438a64b2bffe6d11ed55a0db801cfdc683d804bbdade1207bd', '209' => '936cc16c50893a13f66af16991d78b97c94441a96dc7c2a924bd366c7272cedc', '121' => '22d6c7c5b97126396860b8fa07692fcee594fc3f54b748d5a525785dae16fd72', '197' => '794ad981c49f562c8bdd7c06e7f688ba9bf04659388480e9405753ceedea5cba', '227' => '80caeb0c515718cf1076c2928a431a33cd4ead8ada66591f132ff7ddd1612883', '215' => '8a6f715602199019490b1d8d2852ce65a8644189777178303d1c6b44dbaa1e6b', '132' => '26f059313588429f3bcdad3e08c69c1f51b6814aa84d63cc24d13d34246bf0c3', '13' => 'e15492c290d9db4b5ec057e93a3fe6b5b3d6346eafbc69bbf5664b80e652e48f', '118' => '84bc4ed7da97757c414b2159c16374cb3e32e4a6ef2b4eaf16aa3774b5142b36', '154' => '98e677b8a0c872a116a34f828bc7cd828d8fb620f20cd320d27f97ccb71ed9de', '29' => '143e4eedc9b61e9850a6aed4827db121b56b59ef7ca5d31210d1eccd9df204fc', '59' => 'e2845701d635914cc881cfb2a4e74c9f44eb53edbd6e71ffcf4aeae134513b26', '75' => 'a59654ac94f6e942fce382efe130d3ccbddffa067062dda8c1ca38677ba1bf16', '15' => 'd13c41103efbd5328873b1c32caaf10cd6a65762eef22e8a87a357ce2eda885f', '16' => '954ab59db9812a6e68b5384ee772fec83ace8de16c0d4833e5c9f6d11de9f732', '14' => '45adfd820e0e156155e0ba1e8fcb45ae869419d2e573d7e6693bf17c35afd0df', '17' => '6283242dc0e0d515b919c65d24d27f4c538c2191eb644f39171376df614757cb', '135' => 'b4371a231250108f2f42ae86b4cd0127f84a2463f7b28fbd403c09da019cb978', '176' => 'bdcac6f5af44109a8095f0c6541051d886a572f5df22318195e7a73b518177f4', '172' => 'ce6eb9fceda9ebd0f4d208b69b2987f4328717fa07e271b5bf545ea2f83d3dc2', '57' => '3516ceb7cd1081ae5ce8ee72ff49b85a031e7a4496cf4cd8e47cc141530f010e', '137' => '06d260d19681eff1b14da08798394da804b665806c49898fb29eb996cbab6662', '155' => '1b3a09772d72513e1835b3be95cd35428bcacc1e44ed2127d5fb5ef4b3233fc7', '158' => '5c2ca11bce92f4b80e3467f7542c3ae86c64e80fd3750e33c0248922fb2e57e3', '204' => '265479151cb79572312ecf3c5e86ecb09671ace059b704363e438a7e2a1301a0', '205' => '0da7e040deaf15507715387d05d01fd3d4cad77b3e1bc007112e4915cdf2a704', '206' => '5d823a3cd0f0c087bd0b9ccb8ff0a716f0240be57cf2d9ac5ba37105187d9a8c'], '6dfd6b3caf24c34e288769cf' => ['50' => '652e0e8d8743124b6f162e18d094d96cb670145b18bcba1f23e6c98374ae36bd', '22' => '0a7a5a5f9ecc99ec4c9e1aad6f1108452301ba40fa3beccf0cd38d22f700fc0a', '126' => 'f315fb7a1e3c4af57b9b5cb5a67a895c4b5bea50b26d81aca14c39ec612fb0b0', '193' => '95430c555d51061293a072bef4992fd5923b5c232e2c467444a908a2d4872b85', '110' => '2896f95b05d296f774404ab36aee015e37f4bca0f67026c34e55d257f47ba7c0', '213' => '4d8e2ca34c5c8ff9271cda0561e0636685891f250afd6e473ff2804d743e6fa9', '212' => 'b55ffad37719d4eea29a629d362a7586882367f33a868b7f046272dbe8a098c1', '115' => 'f7bdff4d74cb670004012c1732305cb92be658cd13aa5cda85ce355d9a60ceb0', '62' => '139f5f1651961b804f74ef2c149f5d4573e6d99d9fd975757d2e32409641d1a7', '36' => '90de1fbe05f5f0f9284f5c6a904abbddecd271e37dea92ee7bcbb751761a1e85', '123' => 'fe79365ab41335dbbf65011fbfa91de2427ae123b2c5ff0cccd2ec3da4e3d8f9', '100' => 'e2f0a98229ab668d8f08ee594e70292c5b3a89e69e286e3dee7ee022d0802ba0', '46' => '3f979144cb0c7b92b8e0629c3da2c7cd94d9c9b87cf92800350a1bb2d3f5116d', '108' => '775c4b1f58012c125331348eb6e6f3ae669a3dc8cd547b7f524d996b433b5a61', '86' => '332c9d3b9f38d6adfabb15c54a2ef2ba62c8219d42f67a72338fb08f7b0e4340'], '30c60a850d2cb80646b7e138' => ['94' => '60aff4f2b1af6a0c7ec4eda95ca41682871646cb6732bab0f6278909a947f607', '66' => '2dfc0003de80198fe3236dbe90f8df37ebfca39da356f3fbe977e7441724d497', '65' => '229a9518191e7e0a62eb6c84ab6054a787046f39e0ffd88ecab35937afe238b9', '105' => '3148c6e98586b8ae48d4f8dae8f70955f3793be5af6ff175f90204fffa5984b5', '77' => '269a2cc261237215745f8e595cbb4de92e1fcbefde2c16dda62a571d50aeb52d'], '020e199c1805ae55307b4181' => ['212' => '95c8ec0a004756fe0c30fc6fd38ac9ef1e62f8fd74c271ee3de5f3458abf3128'], '1ca25a475b1ef838be42b0b8' => ['61' => '6f4efd4583b06fb92e20bd52236bce41742e92a279a8a7bfe4e12b5ffb3cb574']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch111CandidateVotes(array $record): bool
+    {
+        $sources = ['b837e6720774f65f5f1b0934' => '5a87a21648681a2eed44228cf28c098dc38f34d2ec59fc858acdf49e7bedb4ee', '6210f814ee5b46e924395875' => 'f5d0a316aabaef86f291846121905350ecfc366f565840891e2eb0f96417e599', '25c81eb8ee370d8948a1dc3c' => '04f4def986ebca8fed15c6cdb1509a38847c6e97eefab1fe80b07969682dbbfb', 'b677cc6ad6a0d0c54546d9f0' => '1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5', 'b38df850d9381f3ee9fd846b' => 'f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a', '36a054f049046077569dfbd9' => 'a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c', '2f28536c3658989c7519ffc4' => 'f61275e0eb88b574c453c83caead37e039b04d86ffcc45371cc3bfa9a0f4010a', 'c7e2b7eb4781f4fee9dbeca3' => 'ea0adecbee1a7b8481e9df736517cb82e5e19dbb27bd4dd560be360b04e305b0', 'd7365c7939cfc38b09eb9581' => 'f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946', 'e6e3a615a5fc51328d154069' => 'c739cb72c63c645b1a3e00b1c1ba125cc7dff2e897f5474a865da705b59f0f76', '92de082304013ee1f62be87a' => 'e67c8f9fa3058bbc51579dfe45c7665ea7eb5092378e412d85318d6350980b3b', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7'];
+        $allowed = ['b837e6720774f65f5f1b0934' => ['79' => '47b2e0aa4b84b08a5cca4847d9065ea0056137a3e397d716f57f88fd2d510fc8', '40' => 'cd1e60b54f6f09353196a6df903ac7445b6349fb7c7a08a6bf011f2dc0d132a6', '10' => 'd11e79e1f2e99c44a82be9002fff1fe1884bc2759b9a931c2c030b45e03c6f10', '13' => '4dd58b5a70f903b74680ad24d362be175c8ab494e4a56ae3907e4cccebdba0d1', '64' => '4075e970c0b179a6c35ea75ef8b3cf01232637a5f4af0018cbe05745d2a45d16', '28' => '3b90789ff668b142c2645c292fdc934bce51e504a783d287c799875306723ed5', '66' => '3129f55048498cda14c2df897e3b6723e48c82f4b7ddeb33e5c82b8819dc1dfb', '74' => 'b56d89a3cc570ca72d56dc932aa7b0c93e81e775f56c6a3578bc75242e2ac461', '26' => 'd214d77e46f7ca256ed33f3aacd94da65a7e8d4ce1b37f694addb32301afed85', '80' => '5f7a3fd0576036e8e1bf97a6330ac5e5f104b9447ed2b33c95f4585cadfdbf76', '30' => '4c7c3d203dff305895ae08764938efa317ad5e3f1b12c283b2559654312120a4', '41' => '90c7719fea156a3438a1d57e0885921d1fa2a73fd99fda551372275084bad033', '17' => '95324d446d4e4a9e6e19c64be36dda959f7855b190b853dc3f5b1788918d6fd8', '57' => 'c6ea981541cfad876bbf3e9c42ca8ebf676eb29ddfa119399dd65f7ada209008', '14' => '288f9b24c1c19982d7711e3f7d0d572f18e8949dd880146572c3be6c621ef206', '22' => 'e7259a27b7c61cc432d6f0a56df565a9e35838b1da40d06e83c8b04fe7f9e61d', '18' => 'c82942fc3e030ff05ae6c4bbbe364765ab15e1259f412ac42ace877f69ddbfde', '67' => 'fcde7d3224453f8ad6ec32f98c8b3c8a515eaa41c2bdae11e5ea8fd8061f409f', '72' => '6274d4895e16150f6dc56ab0dfec7067b7d13eabef5d7b929b2dfaf8b1c90ede', '73' => '4f2c33f59df2e679517a69adfb84f0dcdb0fba6b2481d127dbb05e547cedf61f', '16' => 'c731a09bb0c251d1633b19d7b1d2690c350f15b00d185409920dc9432663299d', '65' => 'da7d5bf70c418842e2a79697ae7d5fd6bbb510f3871a95752fe373b560f6b71f', '29' => '4c30910e6c9ec6146fdd774f8861b95e73e4681b3f51415b325d95373f00fee9', '21' => '779dd67b1232ba76c233033985630bc5ebf3d268b87dba4a35894c6a1a25718b', '51' => '0e78b3419bbf7765ea6736f6d2b652da67d35f9c85ffcf12c9e9af4c9b49e225', '43' => 'b2c8b90ca264834de82625ec4c2bd6b52af35db0d14e795c00b97f534f66e78b', '38' => '95d38ff71777a28752210f75ad6e534dd4a62cd2c1cb341af3bafa892ac14225', '77' => '40ce14f4a7767c3f0f4e5afa355cb764a7e2b8399244305a25f091fd86ac4091', '86' => '433e976dea402c9d345d10101b3876f9e21914912bd6b178cdf544a2bbe8c719', '70' => '024bd6615af404040a9481a8684542cdcf134835a621dc307a47a44eacf428f3', '81' => 'a538cae02728e7d47736d1a36ff71222a01f7ae044b27289d335a489cb3830ad', '46' => '549afd9ee39da73ecc212c8ef95ed7a010d90e49c59fe161c44508412c30b3ce', '32' => '234f39416f65d604594abd0c6366510c9e5628465c4c6213de1f72b9731cc692', '15' => '1c994d4ca3ff40ed137af54ebefd8422c9cd97faf4274dc1f195fb9f86353c7a', '87' => '03debf7348064382d07566c2c72d01982a2f575aa4e5e85c3e93d2ec37a7f79e', '33' => 'f7565377943cd1f8d950f080b61addac0a3452ce8713d12eb919e7518bfd70cc', '7' => '1b25e3dc171d9700425f661dbf479389e934942bd54bb12d864afc08ebfd2cae', '83' => '5b8f216f1966521501808268d63e7e3fe43b7ad9943aeec08ac5d6c078b4a9f9', '34' => 'dda2a7d84f3834ccb1ef7034b816281cd204a138f19a2c5d45500e2559fba33c', '55' => '0b08439a0be16b2bf2e0e5ea32204394c0ba16f08c141d780e6de881e73706d1', '62' => '3f29864eedbb943b252854f6c73593f0f8b70a1671df4269f6964ba3c4116b89', '58' => '4ce7550b2c309a93eab5d2ae98de444c6b4d8bd4081ca82bab3d98174dce939c', '68' => 'b9106efea9face6ecd2daeadead98993b8a18917dc8dde2220464e519b575af2', '36' => '2f91f4cdf6042f2dae106d0e8eabc3edb8a1b9abf71e5ea9af855cf960ba30c2', '8' => '105a40fe2c242c22d7146fece1e8cec404f341ede83ef651a5d9c75349852a3f', '76' => '800b407aa06dbb3569f74646bb6ac8391ca0a5985234217faa66f47203e9b220', '85' => '00e153f60615fb75d5cc2113c5751e5f9861c2cbd4ca853afd996733004867a1', '31' => 'c6dba183c7ea299a12c494835ca46573e184d9638b06a4559033390eb91be81c', '6' => '23cd23258b1ca941b4d20a37191279b8851cf1fa83bab5a201cd6d2bb7598148', '69' => '5f858dcd5ed24acf7af89e014d2738a57058367bc91453101f3cb637efdcfc00', '19' => '304d95807577e1ab1787831d03402bc9ddeb43002ffb22f4938c384d85051345'], '6210f814ee5b46e924395875' => ['79' => 'e19439affe005f67436be4565145a280ed2f411d1bb956a6cda97a94576263fb', '40' => '2afdb3928e793b84dbba4578d5d77e587d8df358f4cc99d64ad74bd9e888a458', '10' => '042742c688f80bea4a110ba03bd6e56131e2e4c0595c7e2a9111dd16f3f82f91', '63' => '68a842a4438b562d4b1b09cdb524681f459d484b8eb186940cca64e6986efdde', '56' => '85548538933904f3ba9e21f88ac23a8bf94e217f4d779798b8d5eb93a540aaec', '13' => '32108e1837320769ea7de96c4e84148115233d52cc8da5626ab9dad9812129ff', '64' => 'e99f35ca46c5cb526884f5a31cf772202d720c846613dacf33b82102cae8b84d', '28' => 'e92501ebbc25212edd695a515d3d0200f9c7883d0f4504000238bd1df4fb2108', '66' => '456c0e0f094aa6b4bc247df0def439d9b9b72687ca3760ebcb06d3c20c9652d7', '74' => '964e29a780c9dbc715f58f3375abd4fa1b3bad339a1f2dcbdb42e343eb9fa175', '26' => '37291cd5442e58adf73df3dd9971d972cbb27c4a8ac288c8ceda8e897efb11f6', '80' => 'b8bfdd78cc4fc709ea172f06c6f1f4054bb9876815e87fb81903a1ec8d04bffa', '30' => '79212284cdafafe1146de0d686c4cb716d3d1c32c239823cd97e16c5404004b7', '41' => 'a45e152345eae3efb4dc60dca1f182acea028d96273cfbff8e9666f656571184', '53' => 'b6e6b0a2721c50d888c5e82b75263a02071824afbade2e4a78ac5223f0fce900', '17' => '1eda39fdf345e7c9c1656b7eaeac4ade3856f70c86ea03db7fe7345b801425a9', '57' => 'dc89ad133b9eca85e83f3a8fe41abeee3a15fa7c565b2713cdc19e096274efdb', '14' => '7109814445721ac5d9cf680665626ee7db47c76d90c1c0e185ed85bda6dbf76a', '9' => '2c58554eb646d8fda38a0cd2333034afef20447ca1269c16b5e0be2b291b2dff', '22' => '2f19bdedadaec54c71651a747909dee25116812a1aefdc498326dc309a8e5731', '4' => 'f213c3132d037208bfe77ffb09908e44c999c3576550b968629aa6df361c2eed', '18' => '057441680819449ecbe4aa6c5b2fc50fb48187c5a3bf8db54358a8992f228e0c', '67' => 'c64089bdf57417ad06586c61b4048017d23ee1624234ef1b11b7997d692f15a3', '52' => '78b08095c4c57ca0cd7dfec86370049f61dbbf8fe690c6d11b58750cc0eca0b0', '72' => 'a249142911cebf4eb2475ee5dad5099d9e56149ac72a48a4f706d940cd26fff8', '73' => 'a8bc0e5ecb678b9eb43bc577a5eec874a1a3882309e82d3088ebd736c713f646', '16' => '41d0ed77e8b94c03de15147fecd2bfdb5336116afd543589c79cd987bd899d5c', '1' => '01ec02e0192ad78be923146308f0ad73061f1db3b052b5b943f10b122f4ef6c5', '65' => '45b65fba7d4bdee3dd0eda685d9175744f53f850f3e05e1535b88e9596c04a04', '29' => '27672206ad1f2705f319db4caff55318d2bf08507fd7f99939d5f4648e5414db', '21' => '70194f897ff0f63a2ce1ae3fd28a94a60dffaeb8e5ba6a3ac3c3b60b9973d26e', '51' => '73f623db6fbbb8972d175c19780add9e289105b18fcf2d12379216fd47715ab6', '43' => '3b68d9ce25b37994d02ba351cfad67f413e9730750fb1200203878fabefaaf47', '38' => 'e5b2464ee36748aad58c083e27aa82fc39b1c65334e9ee1c2b30cca24ba408f5', '2' => '8fcb8b9637d111eacc9f179827967a22e5d277eddc632e3707ecdfee2a04564d', '5' => 'b95c35fc34a5a14e1d9debdde4da978337de0683997e72d8f1a4193f09048f7d', '3' => '2648f782e31ce42a17e7d6b00241fcb27f79a1e9aca9ad240a7afaa96d49521d', '77' => 'daa328ef7dd663a7ef49ba37dabef8afc2fc703848484c458df53c95d82d9957', '86' => '7ccaf91d10ff7d74c1f9cc92c6ae3b8c68bbdc932747993c2fb8a9f6018289e1', '70' => '7c06c383d84b9e814e0adf6baf162e0fe0cda567e6fa357701355ab161b3a65e', '81' => '39f6de0c0549433524872f5f91020d163fb7969a18946a756de85b9e486c59be', '46' => '7dfc36a2fba394eded01693ebbce7a8b8339496788c61258f7662ef957a38d5b', '32' => '2040aeb1b8febf232f333d8c6e547e3cab7f382587af086c19f6e9532d8bdcfc', '15' => '93347c50d687cc8df279d9b61df1cb8fe420e20c0ba41ccd7eca1268c28c60ab', '87' => 'b2f6c44adaf8bf2a3cb6b1277e285ec02b4889a3561763803a13cc197518589d', '33' => '7c0254e40597b9480eadabc5f391a402fb365e5adfb0b92f7612c537b4b06d3c', '7' => '52eb63dc0d442200303f3960ea06a2c3a2f36f43dee6ff86d706909fd6320abe', '83' => '976a4cbb58f845399d79517c03f79e8506f338c77e553937168db76330365f01', '34' => '87c4f4b4cde8f0eff436b9e0a86ed6173b0c4493d795b8d91fec4bcb80f87a3b', '55' => '14ee70d1b187b4e162647f4847d737361daf0edd1218caa0d2d2fb13a721b1b0', '62' => '7bcba798e67eb36499323d199c983053b3259f836547fad8e980dcbbfc5e4645', '58' => 'b0b1ab2c9933c15bd9c4fd7cc8dee02de20074c468e4fc93c179e89500380567', '68' => 'aa63109e524f70f2b07a3a576934cab189f774386187aeda271f19b85517284d', '36' => '57bf79504e49f4981873c23ff1cbaf51dc831231b54b5953bf523f6a8fc37660', '11' => '50188a4a9f82c393641cd170f32d9ea43b49f99dbc2fee1ed28d478c5201566c', '8' => '9ae4643bbf60cd97af547293528ed880abefce51dab23ef17d59dc80ecfbfbcf', '76' => '971f0b1dfd3f9d77fb4b6f748e2792c234c7077b7931277aaa212731eb34aafd', '85' => '7e89e05bec94754cb0db414566642afa851bf99cb2dbb4c8dff2191982ce2050', '31' => '8fc7a6ac8faf04ae69494eb4a13c49ce041349bbf15e21ba65046751b890d450', '6' => '07c1b60bd0b560546abf1cc6c600d4e3d70c0a50529ba346d367e524e67b9f4d', '69' => 'fdf8059bb046dbb363175a3dfb941d19e56ec4be8171eb2c70c48e36d3e91d2c', '19' => '62c2aa14c37f0f902fc58d4dcc02cb9324d66dc554b526f58b0a63c4fc53ae69'], '25c81eb8ee370d8948a1dc3c' => ['79' => '9efcee39218735bef751b735da7e0d69be975e0a8de96b9d7d1ecb14da887245', '40' => '27c99afa820d004a36e58e21f2b6dc73eb2d04fa0539309fc57b26505011362f', '10' => '01503493b86d015ad27a8bf0d066cef473d50d65429464346966f4e192f1815d', '63' => '76e9a0866b10bfffc288dd3540d840a4f8ab7d5426c1ce5abfe38be57305f8a4', '56' => 'e0eaf7e7c7fc3715311fd2c9d2a4b58f83a8e602fc7516178fcc7f6273f3143d', '13' => '253c14e862c39eeaba5a647f85f77eb97799cba0f4835b21bbf67d839a00678d', '64' => '6a16be713421a4fe75d96d5f36d55dd63eff00563c4727f0e79d148cf47a211a', '28' => 'b85bf5e8cf06f16edea43503837bb43fb2b5afa27904fbc521a51416547f8182', '66' => '11c0300417f9da99a2604e923b5a677ad22e634812b460ba7c92eb5346e4c72a', '74' => 'ea61eb1fde94f1dec67f3126005c5043adf5e42afef8cd170dbc65cb60d802b7', '26' => '669ea4bce4db3d0815414ab0370e2ca556095569de7cb1d3c9f320fe4f3e1598', '80' => '91939de60d7c30b6b9dbfe2a85a5759a66f875e97321878af4ca7ddd6afe6e93', '30' => '3877ad94c873072a7e5dcf3a918db432a1a8334b997c020626f6fe2757b3f0d7', '41' => '42bd2af5015545a42c9fff11183cfbd3fef8915cc8eb874e5afcad5f4ae067e3', '53' => 'eb1dc5fb810e8dee95488dd91f5b6b6a5a9c3b66a32e115d0052f6702568d8ce', '42' => '3eb718af8bceaa37f077f9ceb299c2d8e075bbe1ce97ff412798a78cc5174d03', '17' => 'c7592e818469ec07a96cec7566669a2a0268bb1157a415d90cee6dbd0d301800', '57' => '6a5e0465e93151382bedf64b36242c59e3db60a7f4021b3cdd3aaa2b139f42c4', '14' => 'ddbf8a8970c7d5e3299e30c0c1694480b9b4db078db2d6336fca15512e00010b', '9' => 'd496f6a4f08f4c36b37d4f8db5fac9b614271cdce8e01a522277c2595e2e796e', '22' => '0b970aeb3cf3d11ef5824da8160a588b89f800bd8c2694d4b9263617fcd8c125', '4' => 'a71325439082ff0293066eeeda541e1a41c3223c0532c2a29294f66916cf08ae', '18' => '43c19f777365aafed5ab84e1c3874d4d44a710501c801d1715084c9d3fd6c2ca', '67' => '4879a715b5ab87123e9f98fd4e74815894646fa01a3fec114d2bd4308480cc53', '52' => 'cc5207ddb0b3fe3d6930236980c1e1a94dd9496ab9d3d9d893a92f347f07559a', '72' => 'bc151daf0ad1dcf4f68fa6d123e3d00f1bca6d8fa2551f20d89b850a1bb2574b', '73' => 'f004e7b30c8a592bf012fdbc9dba0579b5153da6827fa4d1c6500e009b1faa5d', '16' => '624e4287e41d9d2c378a9d566c7c7164f6ee33a8e17076dc045f58e3df21ba61', '1' => '4c52f2f59c77a1ec6cfd3f88a2cd4abd5674f40d4093651620440d5b6cd66ed5', '65' => '82091c193fffb408f597585d17efbdc4f3fd91e8067ccaea5ff00fe6d9802a72', '29' => '9dec8034aca7d76120f4fd3881667312301c168731c7b34ff5d4a410b505c0f0', '21' => '4a19ee9ea861ead28ea6915aae0b275b63b65296a7f42b7836e6482639c64907', '51' => 'f40a7703d1b26006b0de256c241f8c4c4d145c3cadd2c1f5bfc4fefc9b330cfa', '43' => 'd6e59f150abaec20bb89ffb4e21315fb38ec273b9dfef28dec87a49254d060d6', '38' => '31c68a44f79e9d9befb1c1ac9a2355a619cbf94ec65d304d2c27542ca1dee8b6', '2' => 'bab18a5904823d65e9895757e866e183b0d6d775abed76dc897aadf4a5d02cfd', '5' => '1b47def9f13e067b8091b1bb7ca5d30579727a37f40dec19bf6722c9ebd4f85a', '3' => '55a38d7dda1eb594133d4a9d7e963d0e5d2c738c50ce167028e0d2eaeb27771f', '77' => 'f425d27d15d948a553a7c817916e2d5a31e94380646767d7f9720312e32fdce2', '86' => '60f6a97add5e64119e33a607940401aaeb3248b8722de3ed426fe0829bcf78ba', '70' => 'f51d4b3aaf03f3fd0a50f6a7200fffdd1e2701442853d3b69c19186a2d774cf6', '81' => '48b70fb47d9c2df09d2091dcce87b778feecf79cb41bdaebca98eaecd8dabb64', '46' => '1a29d9ddc62959e1b674479366af9a872bb06fab0d0f5751a881e2bf671127cb', '32' => '5439eb60ce762d336357d43d35a1e086acddf29fa0bc06a9ffda36929bd25735', '15' => 'f338dd8e7898dad869697ea121406b6db859d2c0d3cee20751516a9b5c1b7536', '87' => '33431f6348f2d49c7b212c4451c0ec6e1ffa1ac31efdb89edbd8290d09b83086', '33' => '3d853a327ba6e38415319f8e9bfa430db17006715f06f18b006e44d3341e4cae', '7' => '2fb0f1c051245393667653b681ed803dc72705eca152164451f5d7f97028815b', '83' => 'bfd7760b1ddfd6b20ff342a5fdd7694f597a9f898889b30473390a41a80efbc2', '34' => '666c2bc006ae829d394109017145006c672f86fea987f52bf39b322def1012cf', '55' => '26ae60afe1aedd094240aed267d1599ac291e6f8c531d7da59eab2c3e8771e57', '62' => '641c8f9471222400013ccbcb1a3c61a7e1ea0402060815e9a303279dc3595682', '58' => '25c6b23b3aef373dc207d03156a9f3c653946220eb23f1f2c6dadafe1c48689e', '68' => 'af9564986cb895928b83123c46c6a95737331b45d7497a411932ac4d08fc4340', '36' => '7173e1aadc1df43cbf11e56734186bd34cbef07a462324364b7b84e07655da1d', '11' => 'c5cb2beb59aec8d1cb4d3b4936145641cb8de34ae99529b8854648ec2542257e', '8' => 'e82d48898c6186ec180535fa835f119166745557c34557fb07845416db0fda9c', '76' => '4ca24a15bec78c5f0215215977166a4950262b16467153b154cc5477b7c1218a', '85' => 'f582fc09b263df391f793f6aaff9c0a8d9b8abf219a8c886daee943914be2106', '31' => '949a5347939fc703a66f36d62c3e96c09e077cfeee19ef56ca6a2e83c0d4860b', '6' => '6ee3d90fffba2c9a26cd400ee6fc9610471bde3b5e2af197f00c0ce0936c6d8f', '69' => 'b865588a7256e01e9ccce86df094f0bec57cfae9a79502fa4be4a7886e7db5ef', '19' => '2542712cefb4364b20bf7f079a19c95768330aac9041d56b0bc4f3e6b1384eaf'], '2f28536c3658989c7519ffc4' => ['50' => '9ff537096018572ec14afabf049aaddc62f242f131918639e63d0b7971faff47', '23' => 'd57c788c5b16b548227399f615085c1865b3f3acd628e4419de9c23cc30b09ef'], 'c7e2b7eb4781f4fee9dbeca3' => ['5' => 'af6820d8df358d748298b273db740e6570546a07bdd3e45a63f7dc99769c1d0f'], '70e603b1037bf7ca8e1350b0' => ['165' => 'b8ad6fa672bb08d8266cf8590652cbe666095ef6159c411e1dc8e0ddd1585d98'], '2e749f2174f08a9ea1fc803d' => ['165' => '20c9bce9a8710eefd00b2e95b5d99d78a7c9c134ab21e0c4380b6e4c98b0ba66']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function hasVerifiedBatch111NonNumericRecord(array $record): bool
+    {
+        $sources = ['b837e6720774f65f5f1b0934' => '5a87a21648681a2eed44228cf28c098dc38f34d2ec59fc858acdf49e7bedb4ee', '6210f814ee5b46e924395875' => 'f5d0a316aabaef86f291846121905350ecfc366f565840891e2eb0f96417e599', '25c81eb8ee370d8948a1dc3c' => '04f4def986ebca8fed15c6cdb1509a38847c6e97eefab1fe80b07969682dbbfb', 'b677cc6ad6a0d0c54546d9f0' => '1557d59eb70984d0ea68d5e98efb71c5c91c04e0efdbabbfdf6ed0854f327df5', 'b38df850d9381f3ee9fd846b' => 'f58afc36cf4919b8f37cce1cd4bd7b22df6f70b3525d6698cbf369843c0de00a', '36a054f049046077569dfbd9' => 'a9a41bfe39558b5a7e612a7973d88a49f442123a204c03a02cdc390423e8631c', '2f28536c3658989c7519ffc4' => 'f61275e0eb88b574c453c83caead37e039b04d86ffcc45371cc3bfa9a0f4010a', 'c7e2b7eb4781f4fee9dbeca3' => 'ea0adecbee1a7b8481e9df736517cb82e5e19dbb27bd4dd560be360b04e305b0', 'd7365c7939cfc38b09eb9581' => 'f1dfaf8391982fe98457eb2bae707791d278a084bc3da6ddccabd183b8392946', 'e6e3a615a5fc51328d154069' => 'c739cb72c63c645b1a3e00b1c1ba125cc7dff2e897f5474a865da705b59f0f76', '92de082304013ee1f62be87a' => 'e67c8f9fa3058bbc51579dfe45c7665ea7eb5092378e412d85318d6350980b3b', '70e603b1037bf7ca8e1350b0' => '1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', '2e749f2174f08a9ea1fc803d' => '8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7'];
+        $allowed = ['b677cc6ad6a0d0c54546d9f0' => ['31' => '4418f7d5cff00b5fd940b946015a2a5b396c6d13acc06121af46455b5c8e8c9f', '53' => '9c4816990e9c45c69a6797abc983f2e075699ed4c0ae782a863d4d520d43648b', '52' => 'c2b99ef6413ddd466d4a4a066312bd337b0c013cf6a5993651e5b08e92ce95d2', '72' => '6bf5020eee1dbd493aa87cd1c454316924d1ef8f4766c1c4dec8d88c20f7f19a', '38' => '5ee433abdff547d82f9e5141ef93b18e216753c9dcb396e8c57f0a521fbf99e0', '70' => 'b0acd1513d7e0a77a8487883f16f8d0ed8e7ec262a4685016104915234df1929', '19' => '9c453fd5c48c739e0c79ae656d1d5d938f612903e7cd2c830400d87746afb4b8', '63' => '762e93d1e0ff5657d55984409401b40fd409efaa30c21e0ffcc7d89451acb43d', '43' => '6e0e30e39f3066961fb9e11140d1d5e0b227fd6be920b8bba5bde25a29ca4aca', '41' => '13e1a4eff65de9df2e4526ee536468ffdc2115df67dd276a0122aacde974ce70', '67' => 'cc79ff62ede53b0025726375ca81ab3af302355a3e54b3c3724d66750aaeabc0', '64' => '67e4a646adef39064f51981f66a6d810a1d775ec63d7a2e6fa75897b1fc3d7df', '44' => 'dec468a103948b83125779cb795cd9adb3882562ef226ef4aebcf45699864f1f', '73' => '8440a8455dbea947cff7c6a6fd00ed1557b08e8d15ef61df57cef3e199e2c47b'], 'b38df850d9381f3ee9fd846b' => ['39' => 'f6d54fcfe260b65aa0e4fff0b3c4985d020eed7776a05ddab9af332713cb31f6', '34' => '010982ef7e0d236a2c54771a6330ed60fe13828d84c4cc37f11bf64afa9987c4', '15' => '11ba10befcd55af9cf671558c588fc6a11a00a6e089d953811a4d84d6c93b1ab', '5' => 'd8891d5197364cba8a9a0ad033120365a59d84af1f5214019c0a1877a31294b7', '14' => '882af0eb83872164df53ee3f52ab618820dec4899921b395f96f30445624b7fc', '1' => 'f380218c6e0d374e6cc9f238b9b0d56ea9885242bb4caa38fb3b03b18021382f', '24' => 'ae53cb8f7145b838f94efa2b738ff186302ed3ee91a6d1f10e5a4a1366e12c70', '35' => 'dd1eaa8029ed3f7500ab7a2df803cc31c7ccecb19d5515afd368156cc2890cc6', '2' => '2cf5bec1a7ce92362747ac342f0f28ce5eda9960636437ddb564add997d65fc6', '3' => 'a2a9a8cbf5cc40774309122b67bfb8a9252b305a9b5c776d08261b110a1b6eab', '74' => '3e3061cb25623e40af7f42ca91da96e2e2420c9bbb2521354430ec84484d416e', '37' => '21907eeb2597438f28bea7b108d7f9812df161381dc96f0c5bf37ccae98d57ae', '29' => 'e66bfd2efea7ab675a9b99ecb9a4a23f92c2329a0edc38115c2623747d92943d', '13' => '9a80cfa3e9a116a9c572d98972375c5d5065263f301bf66fd721112af86f5c24'], '36a054f049046077569dfbd9' => ['50' => '1cf04b20d8dbbf4fc2dbf14627efe3152f0ee0d9f6d23534195993857c0c4ab3'], '2f28536c3658989c7519ffc4' => ['48' => '5cc4ae2b49215fee287e539fc4d9c182719ee63b088d13f3f0a97700b1437f48'], 'd7365c7939cfc38b09eb9581' => ['144' => 'dc3604a7f240bcfbf93776b6656d671ad40763d8370ffffc4519e02639deaddf', '145' => 'de1b201e079ba6b78937225034191b3b82d64a66334fc6a984b8a2b5fc8da202'], 'e6e3a615a5fc51328d154069' => ['144' => '9f9e1e7014dfe96832ce146343b9825833a8e42825185cb3b1f5e62f40501ce3'], '92de082304013ee1f62be87a' => ['142' => 'cea722176ac39109a8c05330eaedc53706e65904b9cfbcdec0818e37922c3ff3']];
+        $edition = $record['review_archive'] ?? '';
+        $fingerprint = $allowed[$edition][$record['code'] ?? 0] ?? null;
+        if ($fingerprint === null || ($record['review_fingerprint'] ?? null) !== $fingerprint) {
+            return false;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
+
+        return hash_equals($fingerprint, hash('sha256', $sources[$edition].json_encode($raw, JSON_THROW_ON_ERROR)));
+    }
+
+    private function remainingPageShareData(array $record): ?array
+    {
+        static $guards = null;
+        if ($guards === null) {
+            $file = database_path('fixtures/remaining-election-share-guards.json');
+            $guards = [];
+            if (is_file($file) && is_readable($file) && hash_equals('1f32846083737931717b6b0131d0f30710f07092bccb0d4195c02a95846db997', hash_file('sha256', $file))) {
+                $guards = json_decode(file_get_contents($file), true, 512, JSON_THROW_ON_ERROR);
+            }
+        }
+        if (($record['review_id'] ?? 0) !== 0) {
+            return null;
+        }
+        $edition = $guards['editions'][$record['review_archive'] ?? ''] ?? null;
+        $entry = $edition['records'][$record['review_fingerprint'] ?? ''] ?? null;
+        if ($entry === null || ($record['review_fingerprint'] ?? null) !== $entry[0]) {
+            return null;
+        }
+        $raw = $record;
+        unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning'], $raw['display_data_note']);
+        foreach ($raw['candidates'] ?? [] as $index => $candidate) {
+            unset($raw['candidates'][$index]['display_name']);
+        }
+
+        return hash_equals($entry[0], hash('sha256', $edition['source'].json_encode($raw, JSON_THROW_ON_ERROR))) ? $entry : null;
+    }
+
     private function hasProvisionalCandidateVotes(array $record, bool $includeReviewed = false): bool
     {
+        if (((($this->hasVerifiedBatch116NonNumericRecord($record) || $this->hasVerifiedBatch115NonNumericRecord($record)) || $this->hasVerifiedBatch114NonNumericRecord($record)) || $this->hasVerifiedBatch113NonNumericRecord($record)) || $this->hasVerifiedBatch111NonNumericRecord($record)) {
+            return false;
+        }
         if (($record['status'] ?? '') !== 'needs_review' && (! $includeReviewed || ! in_array($record['status'] ?? '', ['validated', 'accepted', 'corrected'], true))) {
             return false;
         }
 
-        if ($this->hasReconciledDeclaredCandidateVotes($record) || $this->hasVerifiedTripura2008CandidateVotes($record)) {
+        if (((((((((((((((($this->hasVerifiedEarlier668CandidateVotes($record) || $this->hasVerifiedBatch116CandidateVotes($record)) || $this->hasVerifiedBatch115CandidateVotes($record)) || $this->hasVerifiedBatch114CandidateVotes($record)) || $this->hasVerifiedBatch113CandidateVotes($record)) || $this->hasVerifiedBatch112CandidateVotes($record)) || $this->hasVerifiedBatch111CandidateVotes($record) || $this->hasVerifiedBatch110CandidateVotes($record)) || $this->hasVerifiedBatch108CandidateVotes($record)) || $this->hasVerifiedBatch107CandidateVotes($record)) || $this->hasVerifiedBatch106CandidateVotes($record)) || $this->hasVerifiedBatch105CandidateVotes($record)) && ! (($record['review_archive'] ?? '') === 'a1b887ea9c50978fe4cf8e5c' && ($record['code'] ?? 0) === 239)) || $this->hasVerifiedBatch104CandidateVotes($record)) || $this->hasVerifiedBatch103CandidateVotes($record)) || $this->hasVerifiedBatch102CandidateVotes($record)) && ($record['source_warning_code'] ?? '') !== 'official_uncontested_summary' && ! in_array($record['review_archive'], ['37e360c9b06caf43ca5cddfd', '58b8ef8a045c6eca3b99dc6a'], true)) || $this->hasVerifiedBatch101CandidateVotes($record) || $this->hasVerifiedBatch100CandidateVotes($record) || $this->hasVerifiedBatch099CandidateVotes($record) || ($this->hasVerifiedBatch098CandidateVotes($record) && ($record['source_warning_code'] ?? '') !== 'official_uncontested_summary') || $this->hasVerifiedBatch097CandidateVotes($record) || ($this->hasVerifiedBatch096CandidateVotes($record) && ! in_array($record['review_archive'], ['37e360c9b06caf43ca5cddfd', '58b8ef8a045c6eca3b99dc6a'], true)) || $this->hasVerifiedBatch095CandidateVotes($record) || ($this->hasVerifiedBatch094CandidateVotes($record) && ($record['source_warning_code'] ?? '') !== 'official_uncontested_summary') || $this->hasVerifiedBatch093CandidateVotes($record) || $this->hasVerifiedBatch092CandidateVotes($record) || $this->hasVerifiedBatch091HimachalCandidateVotes($record) || $this->hasVerifiedBatch090HimachalCandidateVotes($record) || $this->hasVerifiedBatch089HimachalCandidateVotes($record) || $this->hasVerifiedBatch088HaryanaCandidateVotes($record) || $this->hasVerifiedBatch087HaryanaCandidateVotes($record) || $this->hasVerifiedBatch086HaryanaCandidateVotes($record) || $this->hasVerifiedBatch085HaryanaCandidateVotes($record) || $this->hasVerifiedBatch084HaryanaCandidateVotes($record) || $this->hasVerifiedBatch083GujaratCandidateVotes($record) || $this->hasVerifiedBatch082GujaratCandidateVotes($record) || $this->hasVerifiedBatch081GujaratCandidateVotes($record) || $this->hasVerifiedBatch080GujaratCandidateVotes($record) || $this->hasVerifiedBatch079GujaratCandidateVotes($record) || $this->hasVerifiedBatch078GujaratCandidateVotes($record) || $this->hasVerifiedBatch077GujaratCandidateVotes($record) || $this->hasVerifiedBatch076GujaratCandidateVotes($record) || $this->hasVerifiedBatch006Year1978CandidateVotes($record)
+            || $this->hasVerifiedSattenpalli1955CandidateVotes($record) || $this->hasVerifiedPatapatnam1962CandidateVotes($record) || $this->hasVerifiedBatch007Year2009CandidateVotes($record) || $this->hasVerifiedAp2019CandidateTotals($record) || $this->hasVerifiedBatch004Year1974CandidateVotes($record) || $this->hasVerifiedBihpuria1996CandidateVotes($record) || $this->hasVerifiedAssam1996ContinuationVotes($record) || $this->hasVerifiedAlgapur1996CandidateVotes($record) || $this->hasVerifiedHussainabad1985CandidateVotes($record) || $this->hasVerifiedBatch029Assam1996CandidateVotes($record) || $this->hasVerifiedBihar2010CandidateVotes($record) || $this->hasVerifiedBatch029Assam2006CandidateVotes($record) || $this->hasVerifiedSiwalkhas1996CandidateVotes($record) || $this->hasVerifiedBatch004Year2007CandidateVotes($record) || $this->hasVerifiedBatch003Year1974CandidateVotes($record) || $this->hasVerifiedBatch003Year2007CandidateVotes($record) || $this->hasVerifiedBatch003Year2012CandidateVotes($record) || $this->hasVerifiedNanpara2012CandidateVotes($record) || $this->hasVerifiedBatch0022007CandidateVotes($record) || $this->hasVerifiedBatch001Remaining1974CandidateVotes($record) || $this->hasVerifiedMaharajganj2012CandidateVotes($record) || $this->hasVerifiedBatch0011974CandidateVotes($record) || $this->hasVerifiedKheragarh1974CandidateVotes($record) || $this->hasVerifiedJewar1974CandidateVotes($record) || $this->hasVerifiedHardoi1974CandidateVotes($record) || $this->hasVerifiedGhaziabad1974CandidateVotes($record) || $this->hasVerifiedGainsari1974CandidateVotes($record) || $this->hasVerifiedDhampur1974CandidateVotes($record) || $this->hasVerifiedChunar1974CandidateVotes($record) || $this->hasVerifiedKarhal2012CandidateVotes($record) || $this->hasVerifiedHapur2012CandidateVotes($record) || $this->hasVerifiedChitrakoot2012CandidateVotes($record) || $this->hasVerifiedHata1957CandidateVotes($record) || $this->hasVerifiedChhibramau1969CandidateVotes($record) || $this->hasVerifiedChandausi1974CandidateVotes($record) || $this->hasVerifiedBhongaon2012CandidateVotes($record) || $this->hasVerifiedBareillyCantt1974CandidateVotes($record) || $this->hasVerifiedBansdih2007CandidateVotes($record) || $this->hasVerifiedBanda1974CandidateVotes($record) || $this->hasVerifiedFirozabad1991CandidateVotes($record) || $this->hasVerifiedBah1991CandidateVotes($record) || $this->hasVerifiedUp1996DetailCandidateVotes($record) || $this->hasVerifiedAonla2007CandidateVotes($record) || $this->hasVerifiedAllahabadWest1996CandidateVotes($record) || $this->hasVerifiedAmethi1996CandidateVotes($record) || $this->hasVerifiedGauriganj2007CandidateVotes($record) || $this->hasVerifiedUp1996PostalCandidateVotes($record) || $this->hasVerifiedBasar2009CandidateVotes($record) || $this->hasVerifiedArunachal2004CandidateVotes($record) || $this->hasVerifiedArunachal2014CandidateVotes($record) || $this->hasVerifiedBihar2020CandidateVotes($record) || $this->hasVerifiedBatch037Bihar2005CandidateVotes($record) || $this->hasVerifiedArunachal2019CandidateVotes($record) || $this->hasVerifiedSikkim2019CandidateVotes($record) || $this->hasReconciledDeclaredCandidateVotes($record) || $this->hasVerifiedTripura2008CandidateVotes($record) || $this->hasVerifiedMeghalaya2008CandidateVotes($record) || $this->hasVerifiedNagaland2008CandidateVotes($record) || $this->hasVerifiedMizoram2008CandidateVotes($record) || $this->hasVerifiedChhattisgarh2008CandidateVotes($record) || $this->hasVerifiedBatch070Delhi2008CandidateVotes($record) || $this->hasVerifiedBatch070Pc2014CandidateVotes($record) || $this->hasVerifiedBatch070Delhi2020CandidateVotes($record)) {
             return true;
         }
 
@@ -1657,6 +10271,11 @@ class HistoricalElectionAnalytics
     /** @return array{winner: string, party: string, margin: int}|null */
     private function officialPdfSummaryResult(array $record): ?array
     {
+        if ($this->hasVerifiedBatch075Delhi1967Summary($record)) {
+            return $record['code'] === 500
+                ? ['winner' => 'M.L SONDHI', 'party' => 'BJS', 'margin' => 24860]
+                : ['winner' => 'B. MADHOK', 'party' => 'BJS', 'margin' => 36321];
+        }
         $missingVoterTotal = ($record['source_warning_code'] ?? null) === 'official_summary_result_without_turnout';
         $postalSummary = ($record['source_warning_code'] ?? null) === 'official_general_valid_plus_postal';
         if (! in_array($record['source_warning_code'] ?? '', ['official_summary_turnout_only', 'summary_only_turnout', 'summary_turnout_with_detail_warnings', 'summary_elector_difference', 'round_specific_summary', 'official_summary_result_without_turnout', 'official_general_valid_plus_postal'], true)

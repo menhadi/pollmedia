@@ -1,0 +1,974 @@
+[
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1901,
+        "source_key": "census-a02-43364-1901",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1901,
+        "source_key": "census-a02-43367-1901",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1901,
+        "source_key": "census-a02-43367-1901",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1901,
+        "source_key": "census-a02-43367-1901",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1901,
+        "source_key": "census-a02-43367-1901",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1901,
+        "source_key": "census-a02-43368-1901",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1901,
+        "source_key": "census-a02-43368-1901",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1901,
+        "source_key": "census-a02-43368-1901",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1911,
+        "source_key": "census-a02-43364-1911",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1911,
+        "source_key": "census-a02-43367-1911",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1911,
+        "source_key": "census-a02-43367-1911",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1911,
+        "source_key": "census-a02-43367-1911",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1911,
+        "source_key": "census-a02-43367-1911",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1911,
+        "source_key": "census-a02-43368-1911",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1911,
+        "source_key": "census-a02-43368-1911",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1911,
+        "source_key": "census-a02-43368-1911",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1921,
+        "source_key": "census-a02-43364-1921",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1921,
+        "source_key": "census-a02-43367-1921",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1921,
+        "source_key": "census-a02-43367-1921",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1921,
+        "source_key": "census-a02-43367-1921",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1921,
+        "source_key": "census-a02-43367-1921",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1921,
+        "source_key": "census-a02-43368-1921",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1921,
+        "source_key": "census-a02-43368-1921",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1921,
+        "source_key": "census-a02-43368-1921",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1931,
+        "source_key": "census-a02-43364-1931",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1931,
+        "source_key": "census-a02-43367-1931",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1931,
+        "source_key": "census-a02-43367-1931",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1931,
+        "source_key": "census-a02-43367-1931",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1931,
+        "source_key": "census-a02-43367-1931",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1931,
+        "source_key": "census-a02-43368-1931",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1931,
+        "source_key": "census-a02-43368-1931",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1931,
+        "source_key": "census-a02-43368-1931",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1941,
+        "source_key": "census-a02-43364-1941",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1941,
+        "source_key": "census-a02-43367-1941",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1941,
+        "source_key": "census-a02-43367-1941",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1941,
+        "source_key": "census-a02-43367-1941",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1941,
+        "source_key": "census-a02-43367-1941",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1941,
+        "source_key": "census-a02-43368-1941",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1941,
+        "source_key": "census-a02-43368-1941",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1941,
+        "source_key": "census-a02-43368-1941",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1951,
+        "source_key": "census-a02-43364-1951",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1951,
+        "source_key": "census-a02-43368-1951",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1951,
+        "source_key": "census-a02-43368-1951",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1951,
+        "source_key": "census-a02-43368-1951",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1961,
+        "source_key": "census-a02-43364-1961",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1961,
+        "source_key": "census-a02-43367-1961",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1961,
+        "source_key": "census-a02-43367-1961",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1961,
+        "source_key": "census-a02-43367-1961",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1961,
+        "source_key": "census-a02-43367-1961",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1961,
+        "source_key": "census-a02-43368-1961",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1961,
+        "source_key": "census-a02-43368-1961",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1961,
+        "source_key": "census-a02-43368-1961",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1971,
+        "source_key": "census-a02-43364-1971",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1971,
+        "source_key": "census-a02-43367-1971",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1971,
+        "source_key": "census-a02-43367-1971",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1971,
+        "source_key": "census-a02-43367-1971",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1971,
+        "source_key": "census-a02-43367-1971",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1971,
+        "source_key": "census-a02-43368-1971",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1971,
+        "source_key": "census-a02-43368-1971",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1971,
+        "source_key": "census-a02-43368-1971",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1981,
+        "source_key": "census-a02-43364-1981",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1981,
+        "source_key": "census-a02-43367-1981",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1981,
+        "source_key": "census-a02-43367-1981",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1981,
+        "source_key": "census-a02-43367-1981",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1981,
+        "source_key": "census-a02-43367-1981",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1981,
+        "source_key": "census-a02-43368-1981",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1981,
+        "source_key": "census-a02-43368-1981",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1981,
+        "source_key": "census-a02-43368-1981",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 1991,
+        "source_key": "census-a02-43364-1991",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 1991,
+        "source_key": "census-a02-43367-1991",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 1991,
+        "source_key": "census-a02-43367-1991",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 1991,
+        "source_key": "census-a02-43367-1991",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 1991,
+        "source_key": "census-a02-43367-1991",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 1991,
+        "source_key": "census-a02-43368-1991",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 1991,
+        "source_key": "census-a02-43368-1991",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 1991,
+        "source_key": "census-a02-43368-1991",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 2001,
+        "source_key": "census-a02-43364-2001",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 2001,
+        "source_key": "census-a02-43367-2001",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 2001,
+        "source_key": "census-a02-43367-2001",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 2001,
+        "source_key": "census-a02-43367-2001",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 2001,
+        "source_key": "census-a02-43367-2001",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 2001,
+        "source_key": "census-a02-43368-2001",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 2001,
+        "source_key": "census-a02-43368-2001",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 2001,
+        "source_key": "census-a02-43368-2001",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "31",
+        "district_code": "587",
+        "name": "Lakshadweep",
+        "year": 2011,
+        "source_key": "census-a02-43364-2011",
+        "sha256": "4fcc6e93ee388eaaaac9bd60cbba69bda2a364ce329f2886fe6e2baea89a3dc5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43364/download/47063/31%20A-2%20Lakshadweep.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 2011,
+        "source_key": "census-a02-43367-2011",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "634",
+        "name": "Yanam",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "635",
+        "name": "Puducherry",
+        "year": 2011,
+        "source_key": "census-a02-43367-2011",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 2011,
+        "source_key": "census-a02-43367-2011",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "636",
+        "name": "Mahe",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 2011,
+        "source_key": "census-a02-43367-2011",
+        "sha256": "cfc9f490383caae682bf42c0694cb2df45600ab672ecd8f59008c09201a0590d",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43367/download/47069/34%20A-2%20PUDUCHERRY.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "34",
+        "district_code": "637",
+        "name": "Karaikal",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "638",
+        "name": "Nicobars",
+        "year": 2011,
+        "source_key": "census-a02-43368-2011",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North  & Middle Andaman",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North & Middle Andaman",
+        "year": 2011,
+        "source_key": "census-a02-43368-2011",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "639",
+        "name": "North  & Middle Andaman",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 2011,
+        "source_key": "india-basic-2011-total",
+        "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 2011,
+        "source_key": "india-pca-2011",
+        "sha256": "7a8f70d46c43b5dd30eefe920f251752f69f6af8589594c21ac06499074646f5",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6191/download/9268/DDW_PCA0000_2011_Indiastatedist.xlsx"
+    },
+    {
+        "state_code": "35",
+        "district_code": "640",
+        "name": "South Andaman",
+        "year": 2011,
+        "source_key": "census-a02-43368-2011",
+        "sha256": "7ee99ff8acfd197932680171c962641d5e33253900e9201c11031602dc137690",
+        "source_url": "https://censusindia.gov.in/nada/index.php/catalog/43368/download/47071/35%20A-2%20Andaman%20%20Nicobar%20Islands.xlsx"
+    }
+]

@@ -1,0 +1,752 @@
+{
+  "state": "Chhattisgarh",
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008; exact notification date pending",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "territorial_reference_date": "2004-02-15",
+  "scope": "All90 dated2008 Table A AC identities and11 PC scopes;16 historical gazette district references retained separately from18 Census and33 SOI districts; later district correspondence pending",
+  "flags": [
+    "Koria gazette/Koriya Census/Korea SOI spellings retained; boundary correspondence unverified",
+    "2008 Table A uses16 district references while2011 Census has18 and SOI33; correspondence pending",
+    "Gazette Kabirdham and Census/SOI Kabeerdham spelling alias does not certify boundary correspondence",
+    "2008 AC84 Narayanpur remains Bastar source district; AC89 Bijapur remains Dakshin Bastar source district. Later Census districts require independent official dated correspondence; no silent reassignment."
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Bharatpur-Sonhat (ST)",
+      "district": "Koria",
+      "context_district": "Koriya",
+      "page": 98
+    },
+    {
+      "code": 2,
+      "name": "Manendragarh",
+      "district": "Koria",
+      "context_district": "Koriya",
+      "page": 98
+    },
+    {
+      "code": 3,
+      "name": "Baikunthpur",
+      "district": "Koria",
+      "context_district": "Koriya",
+      "page": 98
+    },
+    {
+      "code": 4,
+      "name": "Premnagar",
+      "district": "Surguja",
+      "page": 98
+    },
+    {
+      "code": 5,
+      "name": "Bhatgaon",
+      "district": "Surguja",
+      "page": 98
+    },
+    {
+      "code": 6,
+      "name": "Pratappur (ST)",
+      "district": "Surguja",
+      "page": 98
+    },
+    {
+      "code": 7,
+      "name": "Ramanujganj (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 8,
+      "name": "Samri (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 9,
+      "name": "Lundra (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 10,
+      "name": "Ambikapur",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 11,
+      "name": "Sitapur (ST)",
+      "district": "Surguja",
+      "page": 99
+    },
+    {
+      "code": 12,
+      "name": "Jashpur (ST)",
+      "district": "Jashpur",
+      "page": 99
+    },
+    {
+      "code": 13,
+      "name": "Kunkuri (ST)",
+      "district": "Jashpur",
+      "page": 99
+    },
+    {
+      "code": 14,
+      "name": "Pathalgaon (ST)",
+      "district": "Jashpur",
+      "page": 99
+    },
+    {
+      "code": 15,
+      "name": "Lailunga (ST)",
+      "district": "Raigarh",
+      "page": 99
+    },
+    {
+      "code": 16,
+      "name": "Raigarh",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 17,
+      "name": "Sarangarh (SC)",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 18,
+      "name": "Kharsia",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 19,
+      "name": "Dharamjaigarh (ST)",
+      "district": "Raigarh",
+      "page": 100
+    },
+    {
+      "code": 20,
+      "name": "Rampur (ST)",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 21,
+      "name": "Korba",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 22,
+      "name": "Katghora",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 23,
+      "name": "Pali-Tanakhar (ST)",
+      "district": "Korba",
+      "context_district": "Korba",
+      "page": 100
+    },
+    {
+      "code": 24,
+      "name": "Marwahi (ST)",
+      "district": "Bilaspur",
+      "context_district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 25,
+      "name": "Kota",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 26,
+      "name": "Lormi",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 27,
+      "name": "Mungeli (SC)",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 28,
+      "name": "Takhatpur",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 29,
+      "name": "Bilha",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 30,
+      "name": "Bilaspur",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 31,
+      "name": "Beltara",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 32,
+      "name": "Masturi (SC)",
+      "district": "Bilaspur",
+      "page": 101
+    },
+    {
+      "code": 33,
+      "name": "Akaltara",
+      "district": "Janjgir-Champa",
+      "page": 101
+    },
+    {
+      "code": 34,
+      "name": "Janjgir-Champa",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 35,
+      "name": "Sakti",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 36,
+      "name": "Chandrapur",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 37,
+      "name": "Jaijaipur",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 38,
+      "name": "Pamgarh (SC)",
+      "district": "Janjgir-Champa",
+      "page": 102
+    },
+    {
+      "code": 39,
+      "name": "Saraipali (SC)",
+      "district": "Mahasamund",
+      "page": 102
+    },
+    {
+      "code": 40,
+      "name": "Basna",
+      "district": "Mahasamund",
+      "page": 102
+    },
+    {
+      "code": 41,
+      "name": "Khallari",
+      "district": "Mahasamund",
+      "page": 102
+    },
+    {
+      "code": 42,
+      "name": "Mahasamund",
+      "district": "Mahasamund",
+      "page": 103
+    },
+    {
+      "code": 43,
+      "name": "Bilaigarh (SC)",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 44,
+      "name": "Kasdol",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 45,
+      "name": "Baloda Bazar",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 46,
+      "name": "Bhatapara",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 47,
+      "name": "Dharsiwa",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 48,
+      "name": "Raipur Rural",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 49,
+      "name": "Raipur City West",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 50,
+      "name": "Raipur City North",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 51,
+      "name": "Raipur City South",
+      "district": "Raipur",
+      "page": 103
+    },
+    {
+      "code": 52,
+      "name": "Arang (SC)",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 53,
+      "name": "Abhanpur",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 54,
+      "name": "Rajim",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 55,
+      "name": "Bindranawagarh (ST)",
+      "district": "Raipur",
+      "page": 104
+    },
+    {
+      "code": 56,
+      "name": "Sihawa (ST)",
+      "district": "Dhamtari",
+      "context_district": "Dhamtari",
+      "page": 104
+    },
+    {
+      "code": 57,
+      "name": "Kurud",
+      "district": "Dhamtari",
+      "page": 104
+    },
+    {
+      "code": 58,
+      "name": "Dhamtari",
+      "district": "Dhamtari",
+      "page": 104
+    },
+    {
+      "code": 59,
+      "name": "Sanjari Balod",
+      "district": "Durg",
+      "page": 104
+    },
+    {
+      "code": 60,
+      "name": "Dondi Lohara (ST)",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 61,
+      "name": "Gunderdehi",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 62,
+      "name": "Patan",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 63,
+      "name": "Durg-Rural",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 64,
+      "name": "Durg City",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 65,
+      "name": "Bhilai Nagar",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 66,
+      "name": "Vaishali Nagar",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 67,
+      "name": "Ahiwara (SC)",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 68,
+      "name": "Saja",
+      "district": "Durg",
+      "page": 105
+    },
+    {
+      "code": 69,
+      "name": "Bemetara",
+      "district": "Durg",
+      "page": 106
+    },
+    {
+      "code": 70,
+      "name": "Nawagarh (SC)",
+      "district": "Durg",
+      "page": 106
+    },
+    {
+      "code": 71,
+      "name": "Pandariya",
+      "district": "Kabirdham",
+      "context_district": "Kabeerdham",
+      "page": 106
+    },
+    {
+      "code": 72,
+      "name": "Kawardha",
+      "district": "Kabirdham",
+      "context_district": "Kabeerdham",
+      "page": 106
+    },
+    {
+      "code": 73,
+      "name": "Khairagarh",
+      "district": "Rajnandgaon",
+      "context_district": "Rajnandgaon",
+      "page": 106
+    },
+    {
+      "code": 74,
+      "name": "Dongargarh (SC)",
+      "district": "Rajnandgaon",
+      "context_district": "Rajnandgaon",
+      "page": 106
+    },
+    {
+      "code": 75,
+      "name": "Rajnandgaon",
+      "district": "Rajnandgaon",
+      "context_district": "Rajnandgaon",
+      "page": 106
+    },
+    {
+      "code": 76,
+      "name": "Dongargaon",
+      "district": "Rajnandgaon",
+      "context_district": "Rajnandgaon",
+      "page": 107
+    },
+    {
+      "code": 77,
+      "name": "Khujji",
+      "district": "Rajnandgaon",
+      "context_district": "Rajnandgaon",
+      "page": 107
+    },
+    {
+      "code": 78,
+      "name": "Mohla-Manpur (ST)",
+      "district": "Rajnandgaon",
+      "context_district": "Rajnandgaon",
+      "page": 107
+    },
+    {
+      "code": 79,
+      "name": "Antagarh (ST)",
+      "district": "Uttar Bastar (Kanker)",
+      "context_district": "Uttar Bastar Kanker",
+      "page": 107
+    },
+    {
+      "code": 80,
+      "name": "Bhanupratappur (ST)",
+      "district": "Uttar Bastar (Kanker)",
+      "context_district": "Uttar Bastar Kanker",
+      "page": 107
+    },
+    {
+      "code": 81,
+      "name": "Kanker (ST)",
+      "district": "Uttar Bastar (Kanker)",
+      "context_district": "Uttar Bastar Kanker",
+      "page": 107
+    },
+    {
+      "code": 82,
+      "name": "Keshkal (ST)",
+      "district": "Bastar",
+      "context_district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 83,
+      "name": "Kondagaon (ST)",
+      "district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 84,
+      "name": "Narayanpur (ST)",
+      "district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 85,
+      "name": "Bastar (ST)",
+      "district": "Bastar",
+      "page": 107
+    },
+    {
+      "code": 86,
+      "name": "Jagdalpur",
+      "district": "Bastar",
+      "page": 108
+    },
+    {
+      "code": 87,
+      "name": "Chitrakot (ST)",
+      "district": "Bastar",
+      "page": 108
+    },
+    {
+      "code": 88,
+      "name": "Dantewada (ST)",
+      "district": "Dakshin Bastar (Dantewada)",
+      "page": 108
+    },
+    {
+      "code": 89,
+      "name": "Bijapur (ST)",
+      "district": "Dakshin Bastar (Dantewada)",
+      "page": 108
+    },
+    {
+      "code": 90,
+      "name": "Konta (ST)",
+      "district": "Dakshin Bastar (Dantewada)",
+      "page": 108
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Surguja (ST)",
+      "ac_codes": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "page": 109
+    },
+    {
+      "code": 2,
+      "name": "Raigarh (ST)",
+      "ac_codes": [
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "page": 109
+    },
+    {
+      "code": 3,
+      "name": "Janjgir-Champa (SC)",
+      "ac_codes": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        43,
+        44
+      ],
+      "page": 109
+    },
+    {
+      "code": 4,
+      "name": "Korba",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "page": 109
+    },
+    {
+      "code": 5,
+      "name": "Bilaspur",
+      "ac_codes": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "page": 109
+    },
+    {
+      "code": 6,
+      "name": "Rajnandgaon",
+      "ac_codes": [
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78
+      ],
+      "page": 109
+    },
+    {
+      "code": 7,
+      "name": "Durg",
+      "ac_codes": [
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70
+      ],
+      "page": 109
+    },
+    {
+      "code": 8,
+      "name": "Raipur",
+      "ac_codes": [
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ],
+      "page": 109
+    },
+    {
+      "code": 9,
+      "name": "Mahasamund",
+      "ac_codes": [
+        39,
+        40,
+        41,
+        42,
+        54,
+        55,
+        57,
+        58
+      ],
+      "page": 109
+    },
+    {
+      "code": 10,
+      "name": "Bastar (ST)",
+      "ac_codes": [
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90
+      ],
+      "page": 109
+    },
+    {
+      "code": 11,
+      "name": "Kanker (ST)",
+      "ac_codes": [
+        56,
+        59,
+        60,
+        61,
+        79,
+        80,
+        81,
+        82
+      ],
+      "page": 110
+    }
+  ],
+  "district_source_date": "2008; exact notification date pending",
+  "pc_source_date": "2008; exact notification date pending",
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69"
+}

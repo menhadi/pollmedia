@@ -1,0 +1,1997 @@
+{
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008-12-17",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "pc_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "state": "Tamil Nadu",
+  "scope": "All dated Tamil Nadu district/AC and PC rows extracted; current district crosswalk including Tiruppur remains unverified",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Gummidipoondi",
+      "district": "Thiruvallur",
+      "page": 372
+    },
+    {
+      "code": 2,
+      "name": "Ponneri (SC)",
+      "district": "Thiruvallur",
+      "page": 372
+    },
+    {
+      "code": 3,
+      "name": "Tiruttani",
+      "district": "Thiruvallur",
+      "page": 372
+    },
+    {
+      "code": 4,
+      "name": "Thiruvallur",
+      "district": "Thiruvallur",
+      "page": 373
+    },
+    {
+      "code": 5,
+      "name": "Poonamallee (SC)",
+      "district": "Thiruvallur",
+      "page": 373
+    },
+    {
+      "code": 6,
+      "name": "Avadi",
+      "district": "Thiruvallur",
+      "page": 374
+    },
+    {
+      "code": 7,
+      "name": "Maduravoyal",
+      "district": "Thiruvallur",
+      "page": 374
+    },
+    {
+      "code": 8,
+      "name": "Ambattur",
+      "district": "Thiruvallur",
+      "page": 374
+    },
+    {
+      "code": 9,
+      "name": "Madavaram",
+      "district": "Thiruvallur",
+      "page": 374
+    },
+    {
+      "code": 10,
+      "name": "Tiruvottiyur",
+      "district": "Thiruvallur",
+      "page": 375
+    },
+    {
+      "code": 11,
+      "name": "Dr.Radhakrishnan Nagar",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 12,
+      "name": "Perambur",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 13,
+      "name": "Kolathur",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 14,
+      "name": "Villivakkam",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 15,
+      "name": "Thiru-Vi-Ka-Nagar (SC)",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 16,
+      "name": "Egmore (SC)",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 17,
+      "name": "Royapuram",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 18,
+      "name": "Harbour",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 19,
+      "name": "Chepauk-Thiruvallikeni",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 20,
+      "name": "Thousand Lights",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 21,
+      "name": "Anna Nagar",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 22,
+      "name": "Virugampakkam",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 23,
+      "name": "Saidapet",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 24,
+      "name": "Thiyagarayanagar",
+      "district": "Chennai",
+      "page": 375
+    },
+    {
+      "code": 25,
+      "name": "Mylapore",
+      "district": "Chennai",
+      "page": 376
+    },
+    {
+      "code": 26,
+      "name": "Velachery",
+      "district": "Chennai",
+      "page": 376
+    },
+    {
+      "code": 27,
+      "name": "Shozhinganallur",
+      "district": "Kancheepuram",
+      "page": 376
+    },
+    {
+      "code": 28,
+      "name": "Alandur",
+      "district": "Kancheepuram",
+      "page": 376
+    },
+    {
+      "code": 29,
+      "name": "Sriperumbudur (SC)",
+      "district": "Kancheepuram",
+      "page": 376
+    },
+    {
+      "code": 30,
+      "name": "Pallavaram",
+      "district": "Kancheepuram",
+      "page": 377
+    },
+    {
+      "code": 31,
+      "name": "Tambaram",
+      "district": "Kancheepuram",
+      "page": 377
+    },
+    {
+      "code": 32,
+      "name": "Chengalpattu",
+      "district": "Kancheepuram",
+      "page": 377
+    },
+    {
+      "code": 33,
+      "name": "Thiruporur",
+      "district": "Kancheepuram",
+      "page": 378
+    },
+    {
+      "code": 34,
+      "name": "Cheyyur (SC)",
+      "district": "Kancheepuram",
+      "page": 378
+    },
+    {
+      "code": 35,
+      "name": "Madurantakam (SC)",
+      "district": "Kancheepuram",
+      "page": 378
+    },
+    {
+      "code": 36,
+      "name": "Uthiramerur",
+      "district": "Kancheepuram",
+      "page": 378
+    },
+    {
+      "code": 37,
+      "name": "Kancheepuram",
+      "district": "Kancheepuram",
+      "page": 379
+    },
+    {
+      "code": 38,
+      "name": "Arakkonam (SC)",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 39,
+      "name": "Sholingur",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 40,
+      "name": "Katpadi",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 41,
+      "name": "Ranipet",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 42,
+      "name": "Arcot",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 43,
+      "name": "Vellore",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 44,
+      "name": "Anaikattu",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 45,
+      "name": "Kilvaithinankuppam (SC)",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 46,
+      "name": "Gudiyattam (SC)",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 47,
+      "name": "Vaniyambadi",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 48,
+      "name": "Ambur",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 49,
+      "name": "Jolarpet",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 50,
+      "name": "Tiruppattur",
+      "district": "Vellore",
+      "page": null
+    },
+    {
+      "code": 51,
+      "name": "Uthangarai (SC)",
+      "district": "Krishnagiri",
+      "page": 385
+    },
+    {
+      "code": 52,
+      "name": "Bargur",
+      "district": "Krishnagiri",
+      "page": 385
+    },
+    {
+      "code": 53,
+      "name": "Krishnagiri",
+      "district": "Krishnagiri",
+      "page": 385
+    },
+    {
+      "code": 54,
+      "name": "Veppanahalli",
+      "district": "Krishnagiri",
+      "page": 386
+    },
+    {
+      "code": 55,
+      "name": "Hosur",
+      "district": "Krishnagiri",
+      "page": 387
+    },
+    {
+      "code": 56,
+      "name": "Thalli",
+      "district": "Krishnagiri",
+      "page": 387
+    },
+    {
+      "code": 57,
+      "name": "Palacodu",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 58,
+      "name": "Pennagaram",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 59,
+      "name": "Dharmapuri",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 60,
+      "name": "Pappireddippatti",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 61,
+      "name": "Harur (SC)",
+      "district": "Dharmapuri",
+      "page": null
+    },
+    {
+      "code": 62,
+      "name": "Chengam (SC)",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 63,
+      "name": "Tiruvannamalai",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 64,
+      "name": "Kilpennathur",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 65,
+      "name": "Kalasapakkam",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 66,
+      "name": "Polur",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 67,
+      "name": "Arani",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 68,
+      "name": "Cheyyar",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 69,
+      "name": "Vandavasi (SC)",
+      "district": "Tiruvannamalai",
+      "page": null
+    },
+    {
+      "code": 70,
+      "name": "Gingee",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 71,
+      "name": "Mailam",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 72,
+      "name": "Tindivanam (SC)",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 73,
+      "name": "Vanur (SC)",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 74,
+      "name": "Viluppuram",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 75,
+      "name": "Vikravandi",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 76,
+      "name": "Tirukkoyilur",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 77,
+      "name": "Ulundurpettai",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 78,
+      "name": "Rishivandiyam",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 79,
+      "name": "Sankarapuram",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 80,
+      "name": "Kallakurichi (SC)",
+      "district": "Viluppuram",
+      "page": null
+    },
+    {
+      "code": 81,
+      "name": "Gangavalli (SC)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 82,
+      "name": "Attur (SC)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 83,
+      "name": "Yercaud (ST)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 84,
+      "name": "Omalur",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 85,
+      "name": "Mettur",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 86,
+      "name": "Edappadi",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 87,
+      "name": "Sankari",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 88,
+      "name": "Salem (West)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 89,
+      "name": "Salem (North)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 90,
+      "name": "Salem (South)",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 91,
+      "name": "Veerapandi",
+      "district": "Salem",
+      "page": null
+    },
+    {
+      "code": 92,
+      "name": "Rasipuram (SC)",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 93,
+      "name": "Senthamangalam (ST)",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 94,
+      "name": "Namakkal",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 95,
+      "name": "Paramathi-Velur",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 96,
+      "name": "Tiruchengodu",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 97,
+      "name": "Kumarapalayam",
+      "district": "Namakkal",
+      "page": null
+    },
+    {
+      "code": 98,
+      "name": "Erode (East)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 99,
+      "name": "Erode (West)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 100,
+      "name": "Modakkurichi",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 101,
+      "name": "Dharapuram (SC)",
+      "district": "Erode",
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 102,
+      "name": "Kangayam",
+      "district": "Erode",
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 103,
+      "name": "Perundurai",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 104,
+      "name": "Bhavani",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 105,
+      "name": "Anthiyur",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 106,
+      "name": "Gobichettipalayam",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 107,
+      "name": "Bhavanisagar (SC)",
+      "district": "Erode",
+      "page": null
+    },
+    {
+      "code": 108,
+      "name": "Udhagamandalam",
+      "district": "The Nilgiris",
+      "page": null
+    },
+    {
+      "code": 109,
+      "name": "Gudalur (SC)",
+      "district": "The Nilgiris",
+      "page": null
+    },
+    {
+      "code": 110,
+      "name": "Coonoor",
+      "district": "The Nilgiris",
+      "page": null
+    },
+    {
+      "code": 111,
+      "name": "Mettuppalayam",
+      "district": "Coimbatore",
+      "page": null
+    },
+    {
+      "code": 112,
+      "name": "Avanashi (SC)",
+      "district": "Coimbatore",
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 113,
+      "name": "Tiruppur (North)",
+      "district": "Coimbatore",
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 114,
+      "name": "Tiruppur (South)",
+      "district": "Coimbatore",
+      "page": null,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 115,
+      "name": "Palladam",
+      "district": "Coimbatore",
+      "page": 411,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 116,
+      "name": "Sulur",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 117,
+      "name": "Kavundampalayam",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 118,
+      "name": "Coimbatore (North)",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 119,
+      "name": "Thondamuthur",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 120,
+      "name": "Coimbatore (South)",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 121,
+      "name": "Singanallur",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 122,
+      "name": "Kinathukadavu",
+      "district": "Coimbatore",
+      "page": 412
+    },
+    {
+      "code": 123,
+      "name": "Pollachi",
+      "district": "Coimbatore",
+      "page": 413
+    },
+    {
+      "code": 124,
+      "name": "Valparai (SC)",
+      "district": "Coimbatore",
+      "page": 413
+    },
+    {
+      "code": 125,
+      "name": "Udumalaipettai",
+      "district": "Coimbatore",
+      "page": 413,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 126,
+      "name": "Madathukulam",
+      "district": "Coimbatore",
+      "page": 414,
+      "context_district": "Tiruppur",
+      "context_source": "https://tiruppur.nic.in/constituencies-2/"
+    },
+    {
+      "code": 127,
+      "name": "Palani",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 128,
+      "name": "Oddanchatram",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 129,
+      "name": "Athoor",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 130,
+      "name": "Nilakkottai (SC)",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 131,
+      "name": "Natham",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 132,
+      "name": "Dindigul",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 133,
+      "name": "Vedasandur",
+      "district": "Dindigul",
+      "page": null
+    },
+    {
+      "code": 134,
+      "name": "Aravakurichi",
+      "district": "Karur",
+      "page": null
+    },
+    {
+      "code": 135,
+      "name": "Karur",
+      "district": "Karur",
+      "page": null
+    },
+    {
+      "code": 136,
+      "name": "Krishnarayapuram (SC)",
+      "district": "Karur",
+      "page": null
+    },
+    {
+      "code": 137,
+      "name": "Kulithalai",
+      "district": "Karur",
+      "page": null
+    },
+    {
+      "code": 138,
+      "name": "Manapparai",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 139,
+      "name": "Srirangam",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 140,
+      "name": "Tiruchirappalli (West)",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 141,
+      "name": "Tiruchirappalli (East)",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 142,
+      "name": "Thiruverumbur",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 143,
+      "name": "Lalgudi",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 144,
+      "name": "Manachanallur",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 145,
+      "name": "Musiri",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 146,
+      "name": "Thuraiyur (SC)",
+      "district": "Tiruchirappalli",
+      "page": null
+    },
+    {
+      "code": 147,
+      "name": "Perambalur (SC)",
+      "district": "Perambalur",
+      "page": null
+    },
+    {
+      "code": 148,
+      "name": "Kunnam",
+      "district": "Perambalur",
+      "page": 419
+    },
+    {
+      "code": 149,
+      "name": "Ariyalur",
+      "district": "Perambalur",
+      "page": 420,
+      "context_district": "Ariyalur",
+      "context_source": {
+        "url": "https://ariyalur.nic.in/departments/election/",
+        "observed_at": "2026-10-12",
+        "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
+        "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
+        "scope": "District seat references only, not Census boundary certification"
+      }
+    },
+    {
+      "code": 150,
+      "name": "Jayankondam",
+      "district": "Perambalur",
+      "page": 420,
+      "context_district": "Ariyalur",
+      "context_source": {
+        "url": "https://ariyalur.nic.in/departments/election/",
+        "observed_at": "2026-10-12",
+        "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
+        "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
+        "scope": "District seat references only, not Census boundary certification"
+      }
+    },
+    {
+      "code": 151,
+      "name": "Tittakudi (SC)",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 152,
+      "name": "Vriddhachalam",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 153,
+      "name": "Neyveli",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 154,
+      "name": "Panruti",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 155,
+      "name": "Cuddalore",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 156,
+      "name": "Kurinjipadi",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 157,
+      "name": "Bhuvanagiri",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 158,
+      "name": "Chidambaram",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 159,
+      "name": "Kattumannarkoil (SC)",
+      "district": "Cuddalore",
+      "page": null
+    },
+    {
+      "code": 160,
+      "name": "Sirkazhi (SC)",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 161,
+      "name": "Mayiladuthurai",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 162,
+      "name": "Poompuhar",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 163,
+      "name": "Nagapattinam",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 164,
+      "name": "Kilvelur (SC)",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 165,
+      "name": "Vedaranyam",
+      "district": "Nagapattinam",
+      "page": null
+    },
+    {
+      "code": 166,
+      "name": "Thiruthuraipoondi (SC)",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 167,
+      "name": "Mannargudi",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 168,
+      "name": "Thiruvarur",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 169,
+      "name": "Nannilam",
+      "district": "Thiruvarur",
+      "page": null
+    },
+    {
+      "code": 170,
+      "name": "Thiruvidaimarudur (SC)",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 171,
+      "name": "Kumbakonam",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 172,
+      "name": "Papanasam",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 173,
+      "name": "Thiruvaiyaru",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 174,
+      "name": "Thanjavur",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 175,
+      "name": "Orathanadu",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 176,
+      "name": "Pattukkottai",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 177,
+      "name": "Peravurani",
+      "district": "Thanjavur",
+      "page": null
+    },
+    {
+      "code": 178,
+      "name": "Gandarvakottai (SC)",
+      "district": "Pudukkottai",
+      "page": null
+    },
+    {
+      "code": 179,
+      "name": "Viralimalai",
+      "district": "Pudukkottai",
+      "page": null
+    },
+    {
+      "code": 180,
+      "name": "Pudukkottai",
+      "district": "Pudukkottai",
+      "page": null
+    },
+    {
+      "code": 181,
+      "name": "Thirumayam",
+      "district": "Pudukkottai",
+      "page": 432
+    },
+    {
+      "code": 182,
+      "name": "Alangudi",
+      "district": "Pudukkottai",
+      "page": 433
+    },
+    {
+      "code": 183,
+      "name": "Aranthangi",
+      "district": "Pudukkottai",
+      "page": 433
+    },
+    {
+      "code": 184,
+      "name": "Karaikudi",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 185,
+      "name": "Tiruppattur",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 186,
+      "name": "Sivaganga",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 187,
+      "name": "Manamadurai (SC)",
+      "district": "Sivaganga",
+      "page": 434
+    },
+    {
+      "code": 188,
+      "name": "Melur",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 189,
+      "name": "Madurai East",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 190,
+      "name": "Sholavandan (SC)",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 191,
+      "name": "Madurai North",
+      "district": "Madurai",
+      "page": 435
+    },
+    {
+      "code": 192,
+      "name": "Madurai South",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 193,
+      "name": "Madurai Central",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 194,
+      "name": "Madurai West",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 195,
+      "name": "Thiruparankundram",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 196,
+      "name": "Thirumangalam",
+      "district": "Madurai",
+      "page": 436
+    },
+    {
+      "code": 197,
+      "name": "Usilampatti",
+      "district": "Madurai",
+      "page": 437
+    },
+    {
+      "code": 198,
+      "name": "Andipatti",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 199,
+      "name": "Periyakulam (SC)",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 200,
+      "name": "Bodinayakanur",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 201,
+      "name": "Cumbum",
+      "district": "Theni",
+      "page": 437
+    },
+    {
+      "code": 202,
+      "name": "Rajapalayam",
+      "district": "Virudhunagar",
+      "page": 438
+    },
+    {
+      "code": 203,
+      "name": "Srivilliputhur (SC)",
+      "district": "Virudhunagar",
+      "page": 438
+    },
+    {
+      "code": 204,
+      "name": "Sattur",
+      "district": "Virudhunagar",
+      "page": 438
+    },
+    {
+      "code": 205,
+      "name": "Sivakasi",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 206,
+      "name": "Virudhunagar",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 207,
+      "name": "Aruppukkottai",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 208,
+      "name": "Tiruchuli",
+      "district": "Virudhunagar",
+      "page": 439
+    },
+    {
+      "code": 209,
+      "name": "Paramakudi (SC)",
+      "district": "Ramanathapuram",
+      "page": 440
+    },
+    {
+      "code": 210,
+      "name": "Tiruvadanai",
+      "district": "Ramanathapuram",
+      "page": 440
+    },
+    {
+      "code": 211,
+      "name": "Ramanathapuram",
+      "district": "Ramanathapuram",
+      "page": 440
+    },
+    {
+      "code": 212,
+      "name": "Mudhukulathur",
+      "district": "Ramanathapuram",
+      "page": 441
+    },
+    {
+      "code": 213,
+      "name": "Vilathikulam",
+      "district": "Thoothukkudi",
+      "page": 441
+    },
+    {
+      "code": 214,
+      "name": "Thoothukkudi",
+      "district": "Thoothukkudi",
+      "page": 441
+    },
+    {
+      "code": 215,
+      "name": "Tiruchendur",
+      "district": "Thoothukkudi",
+      "page": 441
+    },
+    {
+      "code": 216,
+      "name": "Srivaikuntam",
+      "district": "Thoothukkudi",
+      "page": 442
+    },
+    {
+      "code": 217,
+      "name": "Ottapidaram (SC)",
+      "district": "Thoothukkudi",
+      "page": 442
+    },
+    {
+      "code": 218,
+      "name": "Kovilpatti",
+      "district": "Thoothukkudi",
+      "page": 443
+    },
+    {
+      "code": 219,
+      "name": "Sankarankovil (SC)",
+      "district": "Tirunelveli",
+      "page": 443
+    },
+    {
+      "code": 220,
+      "name": "Vasudevanallur (SC)",
+      "district": "Tirunelveli",
+      "page": 443
+    },
+    {
+      "code": 221,
+      "name": "Kadayanallur",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 222,
+      "name": "Tenkasi",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 223,
+      "name": "Alangulam",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 224,
+      "name": "Tirunelveli",
+      "district": "Tirunelveli",
+      "page": 444
+    },
+    {
+      "code": 225,
+      "name": "Ambasamudram",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 226,
+      "name": "Palayamkottai",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 227,
+      "name": "Nanguneri",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 228,
+      "name": "Radhapuram",
+      "district": "Tirunelveli",
+      "page": 445
+    },
+    {
+      "code": 229,
+      "name": "Kanniyakumari",
+      "district": "Kanniyakumari",
+      "page": 445
+    },
+    {
+      "code": 230,
+      "name": "Nagercoil",
+      "district": "Kanniyakumari",
+      "page": 445
+    },
+    {
+      "code": 231,
+      "name": "Colachel",
+      "district": "Kanniyakumari",
+      "page": 445
+    },
+    {
+      "code": 232,
+      "name": "Padmanabhapuram",
+      "district": "Kanniyakumari",
+      "page": 446
+    },
+    {
+      "code": 233,
+      "name": "Vilavancode",
+      "district": "Kanniyakumari",
+      "page": 446
+    },
+    {
+      "code": 234,
+      "name": "Killiyoor",
+      "district": "Kanniyakumari",
+      "page": 446
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Tiruvallur (SC)",
+      "ac_codes": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        9
+      ],
+      "page": 447
+    },
+    {
+      "code": 2,
+      "name": "Chennai North",
+      "ac_codes": [
+        10,
+        11,
+        12,
+        13,
+        15,
+        17
+      ],
+      "page": 447
+    },
+    {
+      "code": 3,
+      "name": "Chennai South",
+      "ac_codes": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "page": 447
+    },
+    {
+      "code": 4,
+      "name": "Chennai Central",
+      "ac_codes": [
+        14,
+        16,
+        18,
+        19,
+        20,
+        21
+      ],
+      "page": 447
+    },
+    {
+      "code": 5,
+      "name": "Sriperumbudur",
+      "ac_codes": [
+        7,
+        8,
+        28,
+        29,
+        30,
+        31
+      ],
+      "page": 447
+    },
+    {
+      "code": 6,
+      "name": "Kancheepuram (SC)",
+      "ac_codes": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "page": 447
+    },
+    {
+      "code": 7,
+      "name": "Arakkonam",
+      "ac_codes": [
+        3,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "page": 447
+    },
+    {
+      "code": 8,
+      "name": "Vellore",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "page": 447
+    },
+    {
+      "code": 9,
+      "name": "Krishnagiri",
+      "ac_codes": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 447
+    },
+    {
+      "code": 10,
+      "name": "Dharmapuri",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        85
+      ],
+      "page": 447
+    },
+    {
+      "code": 11,
+      "name": "Tiruvannamalai",
+      "ac_codes": [
+        49,
+        50,
+        62,
+        63,
+        64,
+        65
+      ],
+      "page": 447
+    },
+    {
+      "code": 12,
+      "name": "Arani",
+      "ac_codes": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "page": 447
+    },
+    {
+      "code": 13,
+      "name": "Viluppuram (SC)",
+      "ac_codes": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77
+      ],
+      "page": 447
+    },
+    {
+      "code": 14,
+      "name": "Kallakurichi",
+      "ac_codes": [
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "page": 447
+    },
+    {
+      "code": 15,
+      "name": "Salem",
+      "ac_codes": [
+        84,
+        86,
+        88,
+        89,
+        90,
+        91
+      ],
+      "page": 448
+    },
+    {
+      "code": 16,
+      "name": "Namakkal",
+      "ac_codes": [
+        87,
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "page": 448
+    },
+    {
+      "code": 17,
+      "name": "Erode",
+      "ac_codes": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "page": 448
+    },
+    {
+      "code": 18,
+      "name": "Tiruppur",
+      "ac_codes": [
+        103,
+        104,
+        105,
+        106,
+        113,
+        114
+      ],
+      "page": 448
+    },
+    {
+      "code": 19,
+      "name": "Nilgiris (SC)",
+      "ac_codes": [
+        107,
+        108,
+        109,
+        110,
+        111,
+        112
+      ],
+      "page": 448
+    },
+    {
+      "code": 20,
+      "name": "Coimbatore",
+      "ac_codes": [
+        115,
+        116,
+        117,
+        118,
+        120,
+        121
+      ],
+      "page": 448
+    },
+    {
+      "code": 21,
+      "name": "Pollachi",
+      "ac_codes": [
+        119,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "page": 448
+    },
+    {
+      "code": 22,
+      "name": "Dindigul",
+      "ac_codes": [
+        127,
+        128,
+        129,
+        130,
+        131,
+        132
+      ],
+      "page": 449
+    },
+    {
+      "code": 23,
+      "name": "Karur",
+      "ac_codes": [
+        133,
+        134,
+        135,
+        136,
+        138,
+        179
+      ],
+      "page": 449
+    },
+    {
+      "code": 24,
+      "name": "Tiruchirappalli",
+      "ac_codes": [
+        139,
+        140,
+        141,
+        142,
+        178,
+        180
+      ],
+      "page": 449
+    },
+    {
+      "code": 25,
+      "name": "Perambalur",
+      "ac_codes": [
+        137,
+        143,
+        144,
+        145,
+        146,
+        147
+      ],
+      "page": 449
+    },
+    {
+      "code": 26,
+      "name": "Cuddalore",
+      "ac_codes": [
+        151,
+        152,
+        153,
+        154,
+        155,
+        156
+      ],
+      "page": 449
+    },
+    {
+      "code": 27,
+      "name": "Chidambaram (SC)",
+      "ac_codes": [
+        148,
+        149,
+        150,
+        157,
+        158,
+        159
+      ],
+      "page": 448
+    },
+    {
+      "code": 28,
+      "name": "Mayiladuthurai",
+      "ac_codes": [
+        160,
+        161,
+        162,
+        170,
+        171,
+        172
+      ],
+      "page": 448
+    },
+    {
+      "code": 29,
+      "name": "Nagapattinam (SC)",
+      "ac_codes": [
+        163,
+        164,
+        165,
+        166,
+        168,
+        169
+      ],
+      "page": 449
+    },
+    {
+      "code": 30,
+      "name": "Thanjavur",
+      "ac_codes": [
+        167,
+        173,
+        174,
+        175,
+        176,
+        177
+      ],
+      "page": 449
+    },
+    {
+      "code": 31,
+      "name": "Sivaganga",
+      "ac_codes": [
+        181,
+        182,
+        184,
+        185,
+        186,
+        187
+      ],
+      "page": 449
+    },
+    {
+      "code": 32,
+      "name": "Madurai",
+      "ac_codes": [
+        188,
+        189,
+        191,
+        192,
+        193,
+        194
+      ],
+      "page": 449
+    },
+    {
+      "code": 33,
+      "name": "Theni",
+      "ac_codes": [
+        190,
+        197,
+        198,
+        199,
+        200,
+        201
+      ],
+      "page": 449
+    },
+    {
+      "code": 34,
+      "name": "Virudhunagar",
+      "ac_codes": [
+        195,
+        196,
+        204,
+        205,
+        206,
+        207
+      ],
+      "page": 449
+    },
+    {
+      "code": 35,
+      "name": "Ramanathapuram",
+      "ac_codes": [
+        183,
+        208,
+        209,
+        210,
+        211,
+        212
+      ],
+      "page": 449
+    },
+    {
+      "code": 36,
+      "name": "Thoothukkudi",
+      "ac_codes": [
+        213,
+        214,
+        215,
+        216,
+        217,
+        218
+      ],
+      "page": 449
+    },
+    {
+      "code": 37,
+      "name": "Tenkasi (SC)",
+      "ac_codes": [
+        202,
+        203,
+        219,
+        220,
+        221,
+        222
+      ],
+      "page": 449
+    },
+    {
+      "code": 38,
+      "name": "Tirunelveli",
+      "ac_codes": [
+        223,
+        224,
+        225,
+        226,
+        227,
+        228
+      ],
+      "page": 449
+    },
+    {
+      "code": 39,
+      "name": "Kanniyakumari",
+      "ac_codes": [
+        229,
+        230,
+        231,
+        232,
+        233,
+        234
+      ],
+      "page": 449
+    }
+  ],
+  "flags": [
+    "ECI 2008 district extent retained; current district crosswalk unverified",
+    "Table A Thiruvallur versus Table B Tiruvallur spelling retained",
+    "Territorial divisions dated 2004-02-15; municipal wards Census 2001",
+    "SOI boundary edition and accepted Census/LGD joins remain unverified",
+    "Partial state extraction; do not interpret omitted seats as absent",
+    "Table A Virugampakkam/Shozhinganallur versus Table B Virugambakkam/Sholinganallur; runtime alias audit pending",
+    "ECI2008 Erode references for Dharapuram/Kangayam retained; later Tiruppur district correspondence not inferred",
+    "Dindigul AC129 Table A Athoor versus Table B Attur spelling retained; runtime mapping audit pending",
+    "ECI2008 Perambalur includes AC149 Ariyalur and150 Jayankondam; later Ariyalur/Census2011 crosswalk unverified. Dated district references retained, not certified current membership."
+  ],
+  "context_sources": {
+    "Ariyalur": {
+      "url": "https://ariyalur.nic.in/departments/election/",
+      "observed_at": "2026-10-12",
+      "sha256": "326ce3f860c3ce494c7d71a14b1b14d872ec4aa60a552de5f5905888e072188c",
+      "dated_context": "Page lists Special Summary Revision2025 and2026 election materials; constituency table149Ariyalur/150Jayankondam",
+      "scope": "District seat references only, not Census boundary certification"
+    },
+    "Tiruppur": {
+      "url": "https://tiruppur.nic.in/constituencies-2/",
+      "source_date": "2021-11-18",
+      "observed_at": "2026-10-12",
+      "sha256": "df9e781490dd2edd988c3e08194485404a0046cf76b4b1dd3d3532d2e3ebddba",
+      "assembly_codes": [
+        101,
+        102,
+        112,
+        113,
+        114,
+        115,
+        125,
+        126
+      ],
+      "note": "Official district membership; does not establish Census2011/SOI boundary equivalence"
+    }
+  }
+}

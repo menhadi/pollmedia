@@ -5,7 +5,10 @@
 @endphp
 <title>{{ $seoTitle }}</title>
 <meta name="description" content="{{ $seoDescription }}">
-@if($override?->keywords)<meta name="keywords" content="{{ $override->keywords }}">@endif
+<meta name="keywords" content="{{ $override?->keywords ?: trim(preg_replace('/\s*[|·:]\s*/u', ', ', str_replace(' | Pollmedia', '', $seoTitle)), ', ') }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ $seoTitle }}">
+<meta name="twitter:description" content="{{ $seoDescription }}">
 <link rel="canonical" href="{{ $canonical }}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ $seoTitle }}">

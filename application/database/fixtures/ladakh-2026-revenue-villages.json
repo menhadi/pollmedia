@@ -1,0 +1,1050 @@
+{
+  "notification_date": "2026-04-27",
+  "source_url": "https://cdnbbsr.s3waas.gov.in/s395192c98732387165bf8e396c0f2dad2/uploads/2026/04/202604271425803221.pdf",
+  "archive_sha256": "e39c97ffdd759bb41b7d8c58e3791772bfee5f967754296057265606efb66a9b",
+  "note": "Numbered revenue village entries, not deduplicated or matched to Census2011/LGD. Original duplicate names retained. No polygons or population assigned.",
+  "districts": [
+    {
+      "name": "SHAM",
+      "slug": "sham",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Khaltsi"
+        },
+        {
+          "source_number": 2,
+          "name": "Skindiyang"
+        },
+        {
+          "source_number": 3,
+          "name": "Fotoksar"
+        },
+        {
+          "source_number": 4,
+          "name": "Wanla"
+        },
+        {
+          "source_number": 5,
+          "name": "Lamayuru"
+        },
+        {
+          "source_number": 6,
+          "name": "Kanjee"
+        },
+        {
+          "source_number": 7,
+          "name": "Bodhkharboo"
+        },
+        {
+          "source_number": 8,
+          "name": "Haniskote"
+        },
+        {
+          "source_number": 9,
+          "name": "Skurbuchan"
+        },
+        {
+          "source_number": 10,
+          "name": "Lehdo"
+        },
+        {
+          "source_number": 11,
+          "name": "Kukshow"
+        },
+        {
+          "source_number": 12,
+          "name": "Domkhar"
+        },
+        {
+          "source_number": 13,
+          "name": "Takmachik"
+        },
+        {
+          "source_number": 14,
+          "name": "Dha Bema"
+        },
+        {
+          "source_number": 15,
+          "name": "Hanu"
+        },
+        {
+          "source_number": 16,
+          "name": "Garkone"
+        },
+        {
+          "source_number": 17,
+          "name": "Darchiks"
+        },
+        {
+          "source_number": 18,
+          "name": "Likir"
+        },
+        {
+          "source_number": 19,
+          "name": "Saspol"
+        },
+        {
+          "source_number": 20,
+          "name": "Hemisshukpachan"
+        },
+        {
+          "source_number": 21,
+          "name": "Saspochay"
+        },
+        {
+          "source_number": 22,
+          "name": "Alchi"
+        },
+        {
+          "source_number": 23,
+          "name": "Gaira-Magnu"
+        },
+        {
+          "source_number": 24,
+          "name": "Temisgam"
+        },
+        {
+          "source_number": 25,
+          "name": "Tia"
+        },
+        {
+          "source_number": 26,
+          "name": "Nurla"
+        },
+        {
+          "source_number": 27,
+          "name": "Tar Hipti"
+        }
+      ]
+    },
+    {
+      "name": "CHANGTHANG",
+      "slug": "changthang",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Nyoma"
+        },
+        {
+          "source_number": 2,
+          "name": "Mudh"
+        },
+        {
+          "source_number": 3,
+          "name": "Anlay"
+        },
+        {
+          "source_number": 4,
+          "name": "Koyul"
+        },
+        {
+          "source_number": 5,
+          "name": "Damjok"
+        },
+        {
+          "source_number": 6,
+          "name": "Kungaym"
+        },
+        {
+          "source_number": 7,
+          "name": "Kariy"
+        },
+        {
+          "source_number": 8,
+          "name": "Skitmang"
+        },
+        {
+          "source_number": 9,
+          "name": "Chumathang"
+        },
+        {
+          "source_number": 10,
+          "name": "Hemya"
+        },
+        {
+          "source_number": 11,
+          "name": "Teri"
+        },
+        {
+          "source_number": 12,
+          "name": "Tarchit"
+        },
+        {
+          "source_number": 13,
+          "name": "Tukla"
+        },
+        {
+          "source_number": 14,
+          "name": "Liktse"
+        },
+        {
+          "source_number": 15,
+          "name": "Korzok"
+        },
+        {
+          "source_number": 16,
+          "name": "Samadrokchan"
+        },
+        {
+          "source_number": 17,
+          "name": "Kharnak"
+        },
+        {
+          "source_number": 18,
+          "name": "Durbuk"
+        },
+        {
+          "source_number": 19,
+          "name": "Tangtse"
+        },
+        {
+          "source_number": 20,
+          "name": "Shachukul"
+        },
+        {
+          "source_number": 21,
+          "name": "Phulaks"
+        },
+        {
+          "source_number": 22,
+          "name": "Chushul"
+        },
+        {
+          "source_number": 23,
+          "name": "Maan Pangong"
+        },
+        {
+          "source_number": 24,
+          "name": "Kargyam"
+        }
+      ]
+    },
+    {
+      "name": "NUBRA",
+      "slug": "nubra",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Diskit"
+        },
+        {
+          "source_number": 2,
+          "name": "Hunder"
+        },
+        {
+          "source_number": 3,
+          "name": "Skampuk"
+        },
+        {
+          "source_number": 4,
+          "name": "Hunder Dok"
+        },
+        {
+          "source_number": 5,
+          "name": "Partapuk"
+        },
+        {
+          "source_number": 6,
+          "name": "Khardong"
+        },
+        {
+          "source_number": 7,
+          "name": "Khaltsar"
+        },
+        {
+          "source_number": 8,
+          "name": "Tangyar"
+        },
+        {
+          "source_number": 9,
+          "name": "Digger"
+        },
+        {
+          "source_number": 10,
+          "name": "KhamaKhungru"
+        },
+        {
+          "source_number": 11,
+          "name": "Udamru"
+        },
+        {
+          "source_number": 12,
+          "name": "Skuru"
+        },
+        {
+          "source_number": 13,
+          "name": "Tartse"
+        },
+        {
+          "source_number": 14,
+          "name": "Hundri"
+        },
+        {
+          "source_number": 15,
+          "name": "Largyab"
+        },
+        {
+          "source_number": 16,
+          "name": "VarisFastan"
+        },
+        {
+          "source_number": 17,
+          "name": "Bogdang"
+        },
+        {
+          "source_number": 18,
+          "name": "Chulungkha"
+        },
+        {
+          "source_number": 19,
+          "name": "Turtuk Yul"
+        },
+        {
+          "source_number": 20,
+          "name": "Turtuk Farol"
+        },
+        {
+          "source_number": 21,
+          "name": "Tyakshi-A"
+        },
+        {
+          "source_number": 22,
+          "name": "Tyakshi-B"
+        },
+        {
+          "source_number": 23,
+          "name": "Thang"
+        },
+        {
+          "source_number": 24,
+          "name": "Sumoor"
+        },
+        {
+          "source_number": 25,
+          "name": "Tigger"
+        },
+        {
+          "source_number": 26,
+          "name": "Lakjung"
+        },
+        {
+          "source_number": 27,
+          "name": "ChamshaCharasa"
+        },
+        {
+          "source_number": 28,
+          "name": "Panamik"
+        },
+        {
+          "source_number": 29,
+          "name": "Kubed"
+        },
+        {
+          "source_number": 30,
+          "name": "Kheme"
+        }
+      ]
+    },
+    {
+      "name": "LEH",
+      "slug": "leh",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Gompa Gangless"
+        },
+        {
+          "source_number": 2,
+          "name": "Sankar Yourtung"
+        },
+        {
+          "source_number": 3,
+          "name": "Leh Ladakh"
+        },
+        {
+          "source_number": 4,
+          "name": "Skara"
+        },
+        {
+          "source_number": 5,
+          "name": "Choglamsar"
+        },
+        {
+          "source_number": 6,
+          "name": "Saboo"
+        },
+        {
+          "source_number": 7,
+          "name": "Thiksay"
+        },
+        {
+          "source_number": 8,
+          "name": "Nang"
+        },
+        {
+          "source_number": 9,
+          "name": "Rambirpur"
+        },
+        {
+          "source_number": 10,
+          "name": "Shay"
+        },
+        {
+          "source_number": 11,
+          "name": "Phyang"
+        },
+        {
+          "source_number": 12,
+          "name": "Spituk"
+        },
+        {
+          "source_number": 13,
+          "name": "Phay"
+        },
+        {
+          "source_number": 14,
+          "name": "Taru"
+        },
+        {
+          "source_number": 15,
+          "name": "Umla"
+        },
+        {
+          "source_number": 16,
+          "name": "Sku Marka"
+        },
+        {
+          "source_number": 17,
+          "name": "Rumbak"
+        },
+        {
+          "source_number": 18,
+          "name": "Chilling Sumda"
+        },
+        {
+          "source_number": 19,
+          "name": "Lingshed"
+        },
+        {
+          "source_number": 20,
+          "name": "Youlchung"
+        },
+        {
+          "source_number": 21,
+          "name": "Basgo"
+        },
+        {
+          "source_number": 22,
+          "name": "Ney"
+        },
+        {
+          "source_number": 23,
+          "name": "Nimoo"
+        },
+        {
+          "source_number": 24,
+          "name": "Matho"
+        },
+        {
+          "source_number": 25,
+          "name": "Stanka"
+        },
+        {
+          "source_number": 26,
+          "name": "Chushhot Yokma"
+        },
+        {
+          "source_number": 27,
+          "name": "Stok"
+        },
+        {
+          "source_number": 28,
+          "name": "Chushot Gongma"
+        },
+        {
+          "source_number": 29,
+          "name": "Chushot Shamma"
+        },
+        {
+          "source_number": 30,
+          "name": "Igoo"
+        },
+        {
+          "source_number": 31,
+          "name": "Langkor"
+        },
+        {
+          "source_number": 32,
+          "name": "Shara"
+        },
+        {
+          "source_number": 33,
+          "name": "Sharnos"
+        },
+        {
+          "source_number": 34,
+          "name": "Phuktsay"
+        },
+        {
+          "source_number": 35,
+          "name": "Sakti"
+        },
+        {
+          "source_number": 36,
+          "name": "Kharu"
+        },
+        {
+          "source_number": 37,
+          "name": "Chemday"
+        },
+        {
+          "source_number": 38,
+          "name": "Martselang"
+        },
+        {
+          "source_number": 39,
+          "name": "Hemis"
+        },
+        {
+          "source_number": 40,
+          "name": "Shang"
+        },
+        {
+          "source_number": 41,
+          "name": "Changa"
+        },
+        {
+          "source_number": 42,
+          "name": "Upshi"
+        },
+        {
+          "source_number": 43,
+          "name": "Meru"
+        },
+        {
+          "source_number": 44,
+          "name": "Gia"
+        }
+      ]
+    },
+    {
+      "name": "ZANSKAR",
+      "slug": "zanskar",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Padum"
+        },
+        {
+          "source_number": 2,
+          "name": "Sani"
+        },
+        {
+          "source_number": 3,
+          "name": "Uptipipiting"
+        },
+        {
+          "source_number": 4,
+          "name": "Ruk-Ruk"
+        },
+        {
+          "source_number": 5,
+          "name": "Salapi Gyapak"
+        },
+        {
+          "source_number": 6,
+          "name": "Karsha"
+        },
+        {
+          "source_number": 7,
+          "name": "Techakhasar"
+        },
+        {
+          "source_number": 8,
+          "name": "Langmi Riging"
+        },
+        {
+          "source_number": 9,
+          "name": "Phay"
+        },
+        {
+          "source_number": 10,
+          "name": "Ramilskyagam"
+        },
+        {
+          "source_number": 11,
+          "name": "Hemiling"
+        },
+        {
+          "source_number": 12,
+          "name": "Rantaksha"
+        },
+        {
+          "source_number": 13,
+          "name": "Tungri"
+        },
+        {
+          "source_number": 14,
+          "name": "Ating"
+        },
+        {
+          "source_number": 15,
+          "name": "Abran"
+        },
+        {
+          "source_number": 16,
+          "name": "Aksho"
+        },
+        {
+          "source_number": 17,
+          "name": "Rangdom"
+        },
+        {
+          "source_number": 18,
+          "name": "Zangla"
+        },
+        {
+          "source_number": 19,
+          "name": "Thungday Khumi"
+        },
+        {
+          "source_number": 20,
+          "name": "Chah"
+        },
+        {
+          "source_number": 21,
+          "name": "Testa"
+        },
+        {
+          "source_number": 22,
+          "name": "Kargyak"
+        },
+        {
+          "source_number": 23,
+          "name": "Shunshday"
+        },
+        {
+          "source_number": 24,
+          "name": "Icher"
+        },
+        {
+          "source_number": 25,
+          "name": "Pipcha"
+        },
+        {
+          "source_number": 26,
+          "name": "Rarumoney"
+        }
+      ]
+    },
+    {
+      "name": "DRASS",
+      "slug": "drass",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Drass"
+        },
+        {
+          "source_number": 2,
+          "name": "Trongion"
+        },
+        {
+          "source_number": 3,
+          "name": "Haripora (Uninhabited)"
+        },
+        {
+          "source_number": 4,
+          "name": "Goshan"
+        },
+        {
+          "source_number": 5,
+          "name": "Muradbagh"
+        },
+        {
+          "source_number": 6,
+          "name": "Youlboo"
+        },
+        {
+          "source_number": 7,
+          "name": "Gindiyal"
+        },
+        {
+          "source_number": 8,
+          "name": "Bhimbat"
+        },
+        {
+          "source_number": 9,
+          "name": "Throungos"
+        },
+        {
+          "source_number": 10,
+          "name": "Chowkiyal"
+        },
+        {
+          "source_number": 11,
+          "name": "Batokol (Uninhabited)"
+        },
+        {
+          "source_number": 12,
+          "name": "Holiyal"
+        },
+        {
+          "source_number": 13,
+          "name": "Mushkoo"
+        },
+        {
+          "source_number": 14,
+          "name": "Matayeen"
+        },
+        {
+          "source_number": 15,
+          "name": "Pandrass"
+        },
+        {
+          "source_number": 16,
+          "name": "Thasgam"
+        },
+        {
+          "source_number": 17,
+          "name": "Jasgound"
+        },
+        {
+          "source_number": 18,
+          "name": "Kharboo"
+        },
+        {
+          "source_number": 19,
+          "name": "Shimsha"
+        }
+      ]
+    },
+    {
+      "name": "KARGIL",
+      "slug": "kargil",
+      "revenue_villages": [
+        {
+          "source_number": 1,
+          "name": "Kaksar"
+        },
+        {
+          "source_number": 2,
+          "name": "Karkit"
+        },
+        {
+          "source_number": 3,
+          "name": "Drelong (Latoo)"
+        },
+        {
+          "source_number": 4,
+          "name": "Chuliskamboo"
+        },
+        {
+          "source_number": 5,
+          "name": "Hardass"
+        },
+        {
+          "source_number": 6,
+          "name": "Shilikchey"
+        },
+        {
+          "source_number": 7,
+          "name": "Poyen"
+        },
+        {
+          "source_number": 8,
+          "name": "Bagh Khumani"
+        },
+        {
+          "source_number": 9,
+          "name": "Kargil"
+        },
+        {
+          "source_number": 10,
+          "name": "Baroo"
+        },
+        {
+          "source_number": 11,
+          "name": "Minjee"
+        },
+        {
+          "source_number": 12,
+          "name": "Choskore"
+        },
+        {
+          "source_number": 13,
+          "name": "Safi"
+        },
+        {
+          "source_number": 14,
+          "name": "Batambis"
+        },
+        {
+          "source_number": 15,
+          "name": "Yourbaltak"
+        },
+        {
+          "source_number": 16,
+          "name": "Akchamal"
+        },
+        {
+          "source_number": 17,
+          "name": "Apatee"
+        },
+        {
+          "source_number": 18,
+          "name": "Tumail"
+        },
+        {
+          "source_number": 19,
+          "name": "Barchey"
+        },
+        {
+          "source_number": 20,
+          "name": "Silmoo"
+        },
+        {
+          "source_number": 21,
+          "name": "Lalung"
+        },
+        {
+          "source_number": 22,
+          "name": "Chulichan"
+        },
+        {
+          "source_number": 23,
+          "name": "Pashkum"
+        },
+        {
+          "source_number": 24,
+          "name": "Lochum"
+        },
+        {
+          "source_number": 25,
+          "name": "Darket"
+        },
+        {
+          "source_number": 26,
+          "name": "Tacha"
+        },
+        {
+          "source_number": 27,
+          "name": "Karit"
+        },
+        {
+          "source_number": 28,
+          "name": "Numunchey"
+        },
+        {
+          "source_number": 29,
+          "name": "Kukstay"
+        },
+        {
+          "source_number": 30,
+          "name": "Skamboo"
+        },
+        {
+          "source_number": 31,
+          "name": "Shergole"
+        },
+        {
+          "source_number": 32,
+          "name": "Khachey"
+        },
+        {
+          "source_number": 33,
+          "name": "Karamba"
+        },
+        {
+          "source_number": 34,
+          "name": "Phoo"
+        },
+        {
+          "source_number": 35,
+          "name": "Tingdoo"
+        },
+        {
+          "source_number": 36,
+          "name": "Wakha"
+        },
+        {
+          "source_number": 37,
+          "name": "Mulbekh"
+        },
+        {
+          "source_number": 38,
+          "name": "Stakchey"
+        },
+        {
+          "source_number": 39,
+          "name": "Samrah"
+        },
+        {
+          "source_number": 40,
+          "name": "Chiktan"
+        },
+        {
+          "source_number": 41,
+          "name": "Hagnis"
+        },
+        {
+          "source_number": 42,
+          "name": "Sanjak"
+        },
+        {
+          "source_number": 43,
+          "name": "Shakar"
+        },
+        {
+          "source_number": 44,
+          "name": "Lamsoo Sandoo"
+        },
+        {
+          "source_number": 45,
+          "name": "Youkma Kharboo"
+        },
+        {
+          "source_number": 46,
+          "name": "Trespone"
+        },
+        {
+          "source_number": 47,
+          "name": "Kanoor"
+        },
+        {
+          "source_number": 48,
+          "name": "Saliskote"
+        },
+        {
+          "source_number": 49,
+          "name": "Gound Mangal Pore"
+        },
+        {
+          "source_number": 50,
+          "name": "Tambis"
+        },
+        {
+          "source_number": 51,
+          "name": "Faroona"
+        },
+        {
+          "source_number": 52,
+          "name": "Lankarchey"
+        },
+        {
+          "source_number": 53,
+          "name": "Stakpa"
+        },
+        {
+          "source_number": 54,
+          "name": "Umba"
+        },
+        {
+          "source_number": 55,
+          "name": "Thangdumbur"
+        },
+        {
+          "source_number": 56,
+          "name": "Nagmakusar"
+        },
+        {
+          "source_number": 57,
+          "name": "Sangrah"
+        },
+        {
+          "source_number": 58,
+          "name": "Karpokhar"
+        },
+        {
+          "source_number": 59,
+          "name": "Barsoo"
+        },
+        {
+          "source_number": 60,
+          "name": "Khandi"
+        },
+        {
+          "source_number": 61,
+          "name": "Bartoo"
+        },
+        {
+          "source_number": 62,
+          "name": "Shargandi"
+        },
+        {
+          "source_number": 63,
+          "name": "Itcho"
+        },
+        {
+          "source_number": 64,
+          "name": "Thasgam Thuina"
+        },
+        {
+          "source_number": 65,
+          "name": "Karchey Khar"
+        },
+        {
+          "source_number": 66,
+          "name": "Gailing"
+        },
+        {
+          "source_number": 67,
+          "name": "Purtikchey"
+        },
+        {
+          "source_number": 68,
+          "name": "Youljuk"
+        },
+        {
+          "source_number": 69,
+          "name": "Kargee"
+        },
+        {
+          "source_number": 70,
+          "name": "Panikhar"
+        },
+        {
+          "source_number": 71,
+          "name": "Printee"
+        },
+        {
+          "source_number": 72,
+          "name": "Choskore"
+        },
+        {
+          "source_number": 73,
+          "name": "Taisuru"
+        },
+        {
+          "source_number": 74,
+          "name": "Khawos"
+        },
+        {
+          "source_number": 75,
+          "name": "Namsuru"
+        },
+        {
+          "source_number": 76,
+          "name": "Thulus Pursa"
+        },
+        {
+          "source_number": 77,
+          "name": "Khochik"
+        },
+        {
+          "source_number": 78,
+          "name": "Parkachik"
+        },
+        {
+          "source_number": 79,
+          "name": "Tangole"
+        },
+        {
+          "source_number": 80,
+          "name": "Achambore"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1144 @@
+{
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008-12-17",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "pc_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "state": "Kerala",
+  "scope": "All140 dated Kerala AC rows and20 PCs extracted; current/Census/SOI boundary correspondence unverified",
+  "flags": [
+    "ECI2008 district references retained; current/Census/SOI boundary correspondence unverified",
+    "Partial state extraction; omitted seats are pending, not absent",
+    "AC81 Table A Thripunithura versus Table B Tripunithura source spelling retained; runtime alias review pending",
+    "AC132 TableA Kazhakoottam versus TableB Kazhakkoottam retained; runtime source/name review pending"
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Manjeshwar",
+      "district": "Kasaragod",
+      "page": 209
+    },
+    {
+      "code": 2,
+      "name": "Kasaragod",
+      "district": "Kasaragod",
+      "page": 209
+    },
+    {
+      "code": 3,
+      "name": "Udma",
+      "district": "Kasaragod",
+      "page": 209
+    },
+    {
+      "code": 4,
+      "name": "Kanhangad",
+      "district": "Kasaragod",
+      "page": 209
+    },
+    {
+      "code": 5,
+      "name": "Trikaripur",
+      "district": "Kasaragod",
+      "page": 209
+    },
+    {
+      "code": 6,
+      "name": "Payyannur",
+      "district": "Kannur",
+      "page": 209
+    },
+    {
+      "code": 7,
+      "name": "Kalliasseri",
+      "district": "Kannur",
+      "page": 209
+    },
+    {
+      "code": 8,
+      "name": "Taliparamba",
+      "district": "Kannur",
+      "page": 209
+    },
+    {
+      "code": 9,
+      "name": "Irikkur",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 10,
+      "name": "Azhikode",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 11,
+      "name": "Kannur",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 12,
+      "name": "Dharmadam",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 13,
+      "name": "Thalassery",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 14,
+      "name": "Kuthuparamba",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 15,
+      "name": "Mattannur",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 16,
+      "name": "Peravoor",
+      "district": "Kannur",
+      "page": 210
+    },
+    {
+      "code": 17,
+      "name": "Mananthavady (ST)",
+      "district": "Wayanad",
+      "page": 210
+    },
+    {
+      "code": 18,
+      "name": "Sulthanbathery (ST)",
+      "district": "Wayanad",
+      "page": 210
+    },
+    {
+      "code": 19,
+      "name": "Kalpetta",
+      "district": "Wayanad",
+      "page": 210
+    },
+    {
+      "code": 20,
+      "name": "Vadakara",
+      "district": "Kozhikode",
+      "page": 210
+    },
+    {
+      "code": 21,
+      "name": "Kuttiadi",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 22,
+      "name": "Nadapuram",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 23,
+      "name": "Quilandy",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 24,
+      "name": "Perambra",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 25,
+      "name": "Balusseri (SC)",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 26,
+      "name": "Elathur",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 27,
+      "name": "Kozhikode North",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 28,
+      "name": "Kozhikode South",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 29,
+      "name": "Beypore",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 30,
+      "name": "Kunnamangalam",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 31,
+      "name": "Koduvally",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 32,
+      "name": "Thiruvambadi",
+      "district": "Kozhikode",
+      "page": 211
+    },
+    {
+      "code": 33,
+      "name": "Kondotty",
+      "district": "Malappuram",
+      "page": 211
+    },
+    {
+      "code": 34,
+      "name": "Ernad",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 35,
+      "name": "Nilambur",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 36,
+      "name": "Wandoor (SC)",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 37,
+      "name": "Manjeri",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 38,
+      "name": "Perinthalmanna",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 39,
+      "name": "Mankada",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 40,
+      "name": "Malappuram",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 41,
+      "name": "Vengara",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 42,
+      "name": "Vallikunnu",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 43,
+      "name": "Tirurangadi",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 44,
+      "name": "Tanur",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 45,
+      "name": "Tirur",
+      "district": "Malappuram",
+      "page": 212
+    },
+    {
+      "code": 46,
+      "name": "Kottakkal",
+      "district": "Malappuram",
+      "page": 213
+    },
+    {
+      "code": 47,
+      "name": "Thavanur",
+      "district": "Malappuram",
+      "page": 213
+    },
+    {
+      "code": 48,
+      "name": "Ponnani",
+      "district": "Malappuram",
+      "page": 213
+    },
+    {
+      "code": 49,
+      "name": "Thrithala",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 50,
+      "name": "Pattambi",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 51,
+      "name": "Shornur",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 52,
+      "name": "Ottappalam",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 53,
+      "name": "Kongad (SC)",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 54,
+      "name": "Mannarkkad",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 55,
+      "name": "Malampuzha",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 56,
+      "name": "Palakkad",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 57,
+      "name": "Tarur (SC)",
+      "district": "Palakkad",
+      "page": 213
+    },
+    {
+      "code": 58,
+      "name": "Chittur",
+      "district": "Palakkad",
+      "page": 214
+    },
+    {
+      "code": 59,
+      "name": "Nemmara",
+      "district": "Palakkad",
+      "page": 214
+    },
+    {
+      "code": 60,
+      "name": "Alathur",
+      "district": "Palakkad",
+      "page": 214
+    },
+    {
+      "code": 61,
+      "name": "Chelakkara (SC)",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 62,
+      "name": "Kunnamkulam",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 63,
+      "name": "Guruvayoor",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 64,
+      "name": "Manalur",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 65,
+      "name": "Wadakkanchery",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 66,
+      "name": "Ollur",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 67,
+      "name": "Thrissur",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 68,
+      "name": "Nattika (SC)",
+      "district": "Thrissur",
+      "page": 214
+    },
+    {
+      "code": 69,
+      "name": "Kaipamangalam",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 70,
+      "name": "Irinjalakuda",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 71,
+      "name": "Pudukkad",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 72,
+      "name": "Chalakudy",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 73,
+      "name": "Kodungallur",
+      "district": "Thrissur",
+      "page": 215
+    },
+    {
+      "code": 74,
+      "name": "Perumbavoor",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 75,
+      "name": "Angamaly",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 76,
+      "name": "Aluva",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 77,
+      "name": "Kalamassery",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 78,
+      "name": "Paravur",
+      "district": "Ernakulam",
+      "page": 215
+    },
+    {
+      "code": 79,
+      "name": "Vypeen",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 80,
+      "name": "Kochi",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 81,
+      "name": "Thripunithura",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 82,
+      "name": "Ernakulam",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 83,
+      "name": "Thrikkakara",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 84,
+      "name": "Kunnathunad (SC)",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 85,
+      "name": "Piravom",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 86,
+      "name": "Muvattupuzha",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 87,
+      "name": "Kothamangalam",
+      "district": "Ernakulam",
+      "page": 216
+    },
+    {
+      "code": 88,
+      "name": "Devikulam (SC)",
+      "district": "Idukki",
+      "page": 216
+    },
+    {
+      "code": 89,
+      "name": "Udumbanchola",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 90,
+      "name": "Thodupuzha",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 91,
+      "name": "Idukki",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 92,
+      "name": "Peerumade",
+      "district": "Idukki",
+      "page": 217
+    },
+    {
+      "code": 93,
+      "name": "Pala",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 94,
+      "name": "Kaduthuruthy",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 95,
+      "name": "Vaikom (SC)",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 96,
+      "name": "Ettumanoor",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 97,
+      "name": "Kottayam",
+      "district": "Kottayam",
+      "page": 217
+    },
+    {
+      "code": 98,
+      "name": "Puthuppally",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 99,
+      "name": "Changanassery",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 100,
+      "name": "Kanjirappally",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 101,
+      "name": "Poonjar",
+      "district": "Kottayam",
+      "page": 218
+    },
+    {
+      "code": 102,
+      "name": "Aroor",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 103,
+      "name": "Cherthala",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 104,
+      "name": "Alappuzha",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 105,
+      "name": "Ambalappuzha",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 106,
+      "name": "Kuttanad",
+      "district": "Alappuzha",
+      "page": 218
+    },
+    {
+      "code": 107,
+      "name": "Haripad",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 108,
+      "name": "Kayamkulam",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 109,
+      "name": "Mavelikkara (SC)",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 110,
+      "name": "Chengannur",
+      "district": "Alappuzha",
+      "page": 219
+    },
+    {
+      "code": 111,
+      "name": "Thiruvalla",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 112,
+      "name": "Ranni",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 113,
+      "name": "Aranmula",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 114,
+      "name": "Konni",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 115,
+      "name": "Adoor (SC)",
+      "district": "Pathanamthitta",
+      "page": 219
+    },
+    {
+      "code": 116,
+      "name": "Karunagappally",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 117,
+      "name": "Chavara",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 118,
+      "name": "Kunnathur (SC)",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 119,
+      "name": "Kottarakkara",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 120,
+      "name": "Pathanapuram",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 121,
+      "name": "Punalur",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 122,
+      "name": "Chadayamangalam",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 123,
+      "name": "Kundara",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 124,
+      "name": "Kollam",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 125,
+      "name": "Eravipuram",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 126,
+      "name": "Chathannoor",
+      "district": "Kollam",
+      "page": 220
+    },
+    {
+      "code": 127,
+      "name": "Varkala",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 128,
+      "name": "Attingal (SC)",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 129,
+      "name": "Chirayinkeezhu (SC)",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 130,
+      "name": "Nedumangad",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 131,
+      "name": "Vamanapuram",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 132,
+      "name": "Kazhakoottam",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 133,
+      "name": "Vattiyoorkavu",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 134,
+      "name": "Thiruvananthapuram",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 135,
+      "name": "Nemom",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 136,
+      "name": "Aruvikkara",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 137,
+      "name": "Parassala",
+      "district": "Thiruvananthapuram",
+      "page": 221
+    },
+    {
+      "code": 138,
+      "name": "Kattakkada",
+      "district": "Thiruvananthapuram",
+      "page": 222
+    },
+    {
+      "code": 139,
+      "name": "Kovalam",
+      "district": "Thiruvananthapuram",
+      "page": 222
+    },
+    {
+      "code": 140,
+      "name": "Neyyattinkara",
+      "district": "Thiruvananthapuram",
+      "page": 222
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Kasaragod",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "page": 223
+    },
+    {
+      "code": 2,
+      "name": "Kannur",
+      "ac_codes": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16
+      ],
+      "page": 223
+    },
+    {
+      "code": 3,
+      "name": "Vadakara",
+      "ac_codes": [
+        13,
+        14,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "page": 223
+    },
+    {
+      "code": 4,
+      "name": "Wayanad",
+      "ac_codes": [
+        17,
+        18,
+        19,
+        32,
+        34,
+        35,
+        36
+      ],
+      "page": 223
+    },
+    {
+      "code": 5,
+      "name": "Kozhikode",
+      "ac_codes": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "page": 223
+    },
+    {
+      "code": 6,
+      "name": "Malappuram",
+      "ac_codes": [
+        33,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "page": 223
+    },
+    {
+      "code": 7,
+      "name": "Ponnani",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "page": 223
+    },
+    {
+      "code": 8,
+      "name": "Palakkad",
+      "ac_codes": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 223
+    },
+    {
+      "code": 9,
+      "name": "Alathur (SC)",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        65
+      ],
+      "page": 223
+    },
+    {
+      "code": 10,
+      "name": "Thrissur",
+      "ac_codes": [
+        63,
+        64,
+        66,
+        67,
+        68,
+        70,
+        71
+      ],
+      "page": 223
+    },
+    {
+      "code": 11,
+      "name": "Chalakudy",
+      "ac_codes": [
+        69,
+        72,
+        73,
+        74,
+        75,
+        76,
+        84
+      ],
+      "page": 223
+    },
+    {
+      "code": 12,
+      "name": "Ernakulam",
+      "ac_codes": [
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "page": 223
+    },
+    {
+      "code": 13,
+      "name": "Idukki",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92
+      ],
+      "page": 224
+    },
+    {
+      "code": 14,
+      "name": "Kottayam",
+      "ac_codes": [
+        85,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "page": 224
+    },
+    {
+      "code": 15,
+      "name": "Alappuzha",
+      "ac_codes": [
+        102,
+        103,
+        104,
+        105,
+        107,
+        108,
+        116
+      ],
+      "page": 224
+    },
+    {
+      "code": 16,
+      "name": "Mavelikkara (SC)",
+      "ac_codes": [
+        99,
+        106,
+        109,
+        110,
+        118,
+        119,
+        120
+      ],
+      "page": 224
+    },
+    {
+      "code": 17,
+      "name": "Pathanamthitta",
+      "ac_codes": [
+        100,
+        101,
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "page": 224
+    },
+    {
+      "code": 18,
+      "name": "Kollam",
+      "ac_codes": [
+        117,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "page": 224
+    },
+    {
+      "code": 19,
+      "name": "Attingal",
+      "ac_codes": [
+        127,
+        128,
+        129,
+        130,
+        131,
+        136,
+        138
+      ],
+      "page": 224
+    },
+    {
+      "code": 20,
+      "name": "Thiruvananthapuram",
+      "ac_codes": [
+        132,
+        133,
+        134,
+        135,
+        137,
+        139,
+        140
+      ],
+      "page": 224
+    }
+  ],
+  "territorial_reference_date": "2005-05-16"
+}

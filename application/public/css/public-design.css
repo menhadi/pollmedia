@@ -1,0 +1,153 @@
+/* Shared public design: navigation and actions share one civic palette.
+   Chart series, party colors and map layers retain their data meaning. */
+body:has(.public-header){--site-primary:#185c6c;--site-background:#f4f7f8;--site-surface:#fff;--site-text:#183444;--site-muted:#526775;--site-border:#d3e0e7;--site-accent:#c99a42;--site-header_background:#123b45;--site-header_text:#fff;--ink:#183444;--muted:#526775;--paper:#f4f7f8;--line:#d3e0e7;--green:#185c6c;--gold:#c99a42;background:#f4f7f8;color:#183444;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+body:has(.public-header) :is(button,input,select,textarea,.button,.btn,.place-button,.panel,.card,.metric,.table-scroll,.home-hero,.home-finder,.home-chart,.home-stat-grid article,.home-state-card,.home-census-section,.community-tabs button,.community-report,.seat-tabs a,.tabs a,.place-list a,.footer-socials a,.footer-report){border-radius:0!important}
+body:has(.public-header) :is(.panel,.card,.home-finder,.home-chart,.home-stat-grid article){border-color:#d3e0e7;box-shadow:none}
+body:has(.public-header) :is(.home-hero,.place-page-heading){background:linear-gradient(110deg,#123447,#1d5361);color:#fff;border-left:5px solid #c99a42;padding:28px 30px;margin:0 0 24px;box-sizing:border-box}
+body:has(.public-header) :is(.home-hero,.place-page-heading) :is(h1,h2,p,.place-type,.home-eyebrow){color:inherit}
+body:has(.public-header) .place-breadcrumbs{color:#dce8ed}
+body:has(.public-header) :is(.home-topics,.seat-tabs,.tabs,.public-page-actions){display:flex;align-items:stretch;flex-wrap:wrap;gap:10px;margin:18px 0 24px}
+body:has(.public-header) :is(.home-topics a,.seat-tabs a,.tabs a,.public-page-actions a,.community-report,.home-text-link){display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;min-height:46px;padding:11px 16px;border:1px solid #b6cbd6;background:#fff;color:#18566a;font-weight:700;font-size:.9rem;line-height:1.4;text-decoration:none;border-radius:0}
+body:has(.public-header) :is(.home-topics a,.seat-tabs a,.tabs a,.public-page-actions a,.community-report,.home-text-link):hover{background:#e9f2f6;border-color:#267e83;color:#123d50}
+body:has(.public-header) :is(.seat-tabs a,.tabs a)[aria-current],body:has(.public-header) .community-tabs button[aria-selected=true]{background:#185c6c;color:#fff;border-color:#185c6c}
+body:has(.public-header) :is(button[type=submit],.home-finder button,.filters button,.button,.btn){background:#185c6c;color:#fff;border:1px solid #185c6c;min-height:46px;padding:11px 16px;font-weight:700}
+body:has(.public-header) :is(button,input,select,textarea,a):focus-visible{outline:3px solid #c99a42;outline-offset:3px}
+body:has(.public-header) :is(.metric,.home-stat-grid article){background:#fff;border:1px solid #d3e0e7;border-top:3px solid #267e83}
+body:has(.public-header) table thead th{background:#183f52;color:#fff;border-color:#345969}
+body:has(.public-header) table thead button{color:inherit;background:transparent}
+body:has(.public-header) table tbody tr:nth-child(even){background:#f1f6f8}
+body:has(.public-header) .home-state-card{border:1px solid #d3e0e7;background:#fff;border-left:3px solid #267e83}
+body:has(.public-header) .home-state-card:hover{background:#eaf3f6;border-color:#267e83}
+body:has(.public-header) .home-census-section{border:1px solid #d3e0e7;background:#edf4f7}
+body:has(.public-header) .published-issues-page{max-width:1100px;margin:24px auto}
+@media(max-width:700px){body:has(.public-header) :is(.home-hero,.place-page-heading){padding:22px 18px}body:has(.public-header) :is(.home-topics,.seat-tabs,.tabs){gap:8px}body:has(.public-header) :is(.home-topics a,.seat-tabs a,.tabs a){flex:1 1 auto;font-size:.85rem;padding:10px 12px}}
+
+body:has(.public-header) .published-issues-page>.place-page-heading{display:block}
+
+/* Map finders and district dashboards use the same public navigation treatment. */
+body:has(.public-header) :is(.explorer,.path-tabs,.history-line,.district-polygons,.authority-directory,.authority-card,.place-facts,.place-facts-topic,.place-primary-nav a,.district-title,.election-map){border-radius:0!important}
+body:has(.public-header) :is(.explorer,.district-polygons,.authority-directory,.place-facts){border-color:#d3e0e7}
+body:has(.public-header) .district-title{background:linear-gradient(110deg,#123447,#1d5361);border-left:5px solid #c99a42;padding:28px 30px;color:#fff;margin-bottom:24px}
+body:has(.public-header) .district-title :is(h1,p){color:inherit}
+body:has(.public-header) .place-primary-nav{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 24px}
+body:has(.public-header) .place-primary-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:11px 16px;border:1px solid #b6cbd6;background:#fff;color:#18566a;font-weight:700;line-height:1.4;text-decoration:none;box-sizing:border-box}
+body:has(.public-header) .place-primary-nav a:hover{background:#e9f2f6;border-color:#267e83}
+body:has(.public-header) :is(.path-tabs button,.finder nav button){min-height:46px;border:1px solid #b6cbd6;background:#fff;color:#18566a;padding:10px 16px;font-weight:700;box-shadow:none}
+body:has(.public-header) :is(.path-tabs button,.finder nav button)[aria-pressed=true],body:has(.public-header) .place-primary-nav a[aria-current]{background:#185c6c;color:#fff;border-color:#185c6c}
+@media(max-width:700px){body:has(.public-header) .district-title{padding:22px 18px}body:has(.public-header) .place-primary-nav a{flex:1 1 auto;font-size:.85rem;padding:10px 12px}}
+
+body:has(.public-header) :is(a,nav,section,article){border-radius:0!important}
+body:has(.public-header) .place-page-heading .place-breadcrumbs :is(a,span,li){color:#e2edf1!important}
+body:has(.public-header) .place-edit-button{background:#185c6c;border-color:#185c6c;color:#fff}
+body:has(.public-header) .constituency-dashboard-switcher{border-color:#d3e0e7;background:#fff}
+
+/* Explicit action states prevent inherited hero colors from hiding labels. */
+body:has(.public-header) :is(.home-hero .home-topics a,.district-title .section-nav a,.area-section-links a,.place-primary-nav a,.seat-tabs a,.public-page-actions a){background:#fff!important;color:#18566a!important;border:1px solid #b6cbd6!important;text-decoration:none}
+body:has(.public-header) :is(.home-hero .home-topics a,.district-title .section-nav a,.area-section-links a,.place-primary-nav a,.seat-tabs a,.public-page-actions a):is(:hover,:active,:focus-visible){background:#123d50!important;color:#fff!important;border-color:#123d50!important}
+body:has(.public-header) :is(.section-nav a,.area-section-links a,.place-primary-nav a,.seat-tabs a)[aria-current]:not([aria-current=false]){background:#185c6c!important;color:#fff!important;border-color:#185c6c!important}
+body:has(.public-header) :is(.section-nav a,.area-section-links a){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 14px;box-sizing:border-box;font-weight:700;line-height:1.4}
+body:has(.public-header) :is(.home-hero,.district-title,.area-intro) details>summary{color:#e2edf1!important;min-height:44px;cursor:pointer;font-weight:700}
+body:has(.public-header) :is(.place-table-toggle,.place-finder-toggle,.mobile-map-filter-toggle,.mobile-map-apply,.authority-action,.place-edit-button,.home-finder button:not(:disabled),.community-report,.publish-report){background:#185c6c!important;color:#fff!important;border:1px solid #185c6c!important;min-height:44px;padding:10px 16px;box-sizing:border-box}
+body:has(.public-header) :is(.place-table-toggle,.place-finder-toggle,.mobile-map-filter-toggle,.mobile-map-apply,.authority-action,.place-edit-button,.home-finder button:not(:disabled),.community-report,.publish-report):is(:hover,:active,:focus-visible){background:#123d50!important;color:#fff!important;border-color:#123d50!important}
+body:has(.public-header) :is(.place-filter-fold>summary,.place-methodology>summary,.authority-source>summary,.place-facts summary,.local-map-panel summary){color:#185c6c}
+body:has(.public-header) .authority-directory{background:#f1f6f8!important;border-color:#d3e0e7!important;color:#183444}
+body:has(.public-header) .authority-card{background:#fff;border-color:#d3e0e7!important;box-shadow:none!important}
+body:has(.public-header) .authority-card h3{color:#183444!important}
+body:has(.public-header) :is(.authority-category,.authority-count){background:#eaf2f6!important;color:#185c6c!important;border-radius:0}
+body:has(.public-header) :is(.authority-description,.authority-person,.authority-footnote,.authority-directory-note){color:#526775!important}
+body:has(.public-header) :is(.authority-person a,.authority-email,.authority-source a,.place-facts a,.place-table-scroll a,.constituency-dashboard-switcher a){color:#185c6c!important;text-decoration:underline;text-underline-offset:3px}
+body:has(.public-header) .issue-post{color:#183444;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;border-color:#d3e0e7}
+body:has(.public-header) .issue-post .post-avatar{background:#185c6c!important;color:#fff!important}
+body:has(.public-header) .issue-post :is(.post-places a,h3 a){color:#185c6c!important}
+body:has(.public-header) .issue-post :is(.post-author strong,.post-description){color:#183444!important}
+body:has(.public-header) .issue-post :is(.post-author-date,.post-author p,.post-footnote,.post-disclaimer){color:#526775!important}
+body:has(.public-header) .issue-post .post-actions :is(button,a){background:transparent;color:#185c6c!important;border:1px solid transparent}
+body:has(.public-header) .issue-post .post-actions :is(button,a):is(:hover,:active,:focus-visible),body:has(.public-header) .issue-post .post-actions button[aria-pressed=true]{background:#e5f0f5!important;color:#123d50!important;border-color:#b6cbd6}
+body:has(.public-header) :is(.place-facts,.place-table-scroll){color:#183444!important;border-color:#d3e0e7!important}
+body:has(.public-header) :is(.place-facts,.place-table-scroll) thead th{background:#183f52!important;color:#fff!important}
+body:has(.public-header) :is(.place-facts,.place-table-scroll) tbody tr:nth-child(odd)>:is(th,td){background:#fff!important;color:#183444}
+body:has(.public-header) :is(.place-facts,.place-table-scroll) tbody tr:nth-child(even)>:is(th,td){background:#f1f6f8!important;color:#183444}
+body:has(.public-header) :is(.place-facts,.place-table-scroll) tbody tr:hover>:is(th,td){background:#e5f0f5!important}
+body:has(.public-header) .place-facts :is(td strong,.place-facts-place,.place-facts-eyebrow){color:#185c6c!important}
+body:has(.public-header) :is(.maplibregl-ctrl-group,.mapboxgl-ctrl-group) button{color:#183444!important}
+body:has(.public-header) .home-finder button:disabled{background:#e4ebef!important;color:#526775!important;border-color:#c5d3db!important;opacity:1;cursor:not-allowed}
+
+body:has(.public-header) main details:not(.hub-compose):not(.hub-form)>summary{color:#185c6c}
+body:has(.public-header) .issue-compose-page button:not(:disabled){background:#185c6c!important;color:#fff!important;border-color:#185c6c!important}
+body:has(.public-header) .issue-compose-page button:not(:disabled):is(:hover,:active,:focus-visible){background:#123d50!important;color:#fff!important}
+
+/* Clear chart disclosures, compact location pages and recognisable place links. */
+body:has(.public-header) .chart-values>summary{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:10px 16px;background:#185c6c!important;color:#fff!important;border:1px solid #185c6c;border-radius:0!important;cursor:pointer;list-style:none}
+body:has(.public-header) .chart-values>summary :is(span,svg){color:inherit!important}
+body:has(.public-header) .chart-values>summary:is(:hover,:focus-visible){background:#123d50!important;color:#fff!important}
+body:has(main[data-local-dashboard]) main[data-local-dashboard]{width:100%;max-width:1240px;margin:0 auto;padding:24px;box-sizing:border-box}
+body:has(main[data-local-dashboard]) .village-title{padding:22px 26px;margin:0 0 20px}
+body:has(main[data-local-dashboard]) .village-title h1{font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.3;margin:12px 0 0}
+body:has(.public-header) .location-breadcrumbs ol{display:flex;flex-wrap:wrap;gap:8px;align-items:center;list-style:none;padding:0;margin:0;font-size:.88rem;line-height:1.6}
+body:has(.public-header) .location-breadcrumbs li{display:inline-flex;align-items:center;gap:8px}
+body:has(.public-header) .location-breadcrumbs li+li:before{content:'›';opacity:.7}
+body:has(.public-header) .location-breadcrumbs a{color:#185c6c;text-decoration:underline;text-underline-offset:4px;font-weight:650}
+body:has(.public-header) .place-page-heading .location-breadcrumbs :is(a,span,li){color:#e2edf1!important}
+body:has(.public-header) .post-places a{display:inline-flex;align-items:center;padding:3px 7px;background:#e8f2f6;border-bottom:1px solid #a7c6d4;text-decoration:underline!important;text-underline-offset:3px;color:#13566f!important;font-weight:600}
+body:has(.public-header) .issue-post h3>a{text-decoration:underline!important;text-underline-offset:4px;font-weight:650;color:#13566f!important}
+body:has(.public-header) .issue-page{--issue-muted:#526775;max-width:1240px;margin:0 auto;color:#183444;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+body:has(.public-header) .issue-intro h1{font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.35;margin:14px 0}
+body:has(.public-header) .issue-intro :is(.issue-eyebrow,.issue-muted){color:#e2edf1}
+body:has(.public-header) .issue-layout .card{padding:24px;border:1px solid #d3e0e7;background:#fff;border-radius:0;box-shadow:none}
+body:has(.public-header) .issue-empty{background:#f1f6f8;border-color:#d3e0e7;border-radius:0}
+body:has(.public-header) .issue-primary-actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+body:has(.public-header) .issue-page .issue-button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:11px 16px;background:#185c6c!important;color:#fff!important;border:1px solid #185c6c;border-radius:0;font-size:.9rem;font-weight:700;line-height:1.4;text-decoration:none}
+body:has(.public-header) .issue-page .issue-button.secondary{background:#fff!important;color:#18566a!important;border-color:#b6cbd6}
+body:has(.public-header) .issue-page .issue-button:is(:hover,:focus-visible){background:#123d50!important;color:#fff!important}
+body:has(.public-header) .issue-page :is(.issue-area-links a,.issue-back){color:#185c6c;text-decoration:underline;text-underline-offset:4px}
+body:has(.public-header) .path-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;background:#eaf2f6;align-items:stretch}
+body:has(.public-header) .path-tabs button{font-size:.84rem;line-height:1.35;padding:10px 8px;min-width:0;white-space:normal}
+@media(max-width:600px){body:has(main[data-local-dashboard]) main[data-local-dashboard]{padding:18px 12px}body:has(main[data-local-dashboard]) .village-title{padding:18px}body:has(.public-header) .issue-primary-actions .issue-button{flex:1 1 160px}body:has(.public-header) .location-breadcrumbs ol{font-size:.82rem}}
+
+body:has(.public-header) .issue-page .post-actions :is(a,button){color:#185c6c;background:transparent;border-color:transparent}body:has(.public-header) .issue-page .post-actions :is(a,button):hover{background:#e5f0f5;color:#123d50}
+
+body:has(main[data-local-dashboard]) .village-breadcrumb-bar{padding:20px 26px 0;background:#163f50;border-left:5px solid #c99a42;color:#e2edf1}
+body:has(main[data-local-dashboard]) .village-breadcrumb-bar .location-breadcrumbs :is(a,span,li){color:#e2edf1!important}
+body:has(main[data-local-dashboard]) main[data-local-dashboard]>h1.village-heading{padding:12px 26px 24px;margin:0 0 20px;background:#163f50;border-left:5px solid #c99a42;color:#fff;font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.3}
+@media(max-width:600px){body:has(main[data-local-dashboard]) .village-breadcrumb-bar{padding:18px 18px 0}body:has(main[data-local-dashboard]) main[data-local-dashboard]>h1.village-heading{padding:12px 18px 20px}}
+
+/* State dashboards share the My Place outer width; metadata stays optional. */
+body.census-area-ui:has(.public-header) main.area-dashboard:not([data-local-dashboard]){width:100%;max-width:1320px;margin:0 auto;padding:32px 20px;box-sizing:border-box}
+#my-place-dynamic .service-actions a{background:#185c6c;color:#fff;border-color:#185c6c;border-radius:0}
+#my-place-dynamic .service-actions a:is(:hover,:focus-visible){background:#123d50;color:#fff}
+#my-place-dynamic .service-source{margin-top:14px;padding-top:10px;border-top:1px solid #d3e0e7;color:#526775;font-size:.8rem}
+#my-place-dynamic .service-source summary{color:#185c6c;cursor:pointer;font-weight:650;min-height:36px;align-content:center}
+#my-place-dynamic .service-source p{font-size:.8rem;line-height:1.6}
+#my-place-dynamic .market-disclaimer{margin-top:20px;border-top:1px solid #d3e0e7;padding-top:12px;font-size:.85rem;color:#526775}
+#my-place-dynamic .market-disclaimer>summary{cursor:pointer;color:#185c6c;font-weight:650;min-height:44px;align-content:center}
+#my-place-dynamic [data-market-status][hidden]{display:none!important}
+@media(max-width:600px){body.census-area-ui:has(.public-header) main.area-dashboard:not([data-local-dashboard]){padding:20px 12px}}
+
+body:has(.public-header) .issue-page .issue-problem .post-author{display:flex;align-items:center;gap:12px;padding:0;min-height:46px}
+body:has(.public-header) .issue-page .issue-problem .post-avatar{position:static;flex:0 0 46px;width:46px;height:46px}
+
+/* Uniform public data cards and accessible rectangular table headings. */
+body:has(.public-header) .metrics article{border-radius:0!important;background:#fff!important;border:1px solid #d3e0e7!important;border-top:3px solid #267e83!important}
+body:has(.public-header) .metrics article strong{color:#185c6c!important}
+body:has(.public-header) .metrics article :is(span,small){color:#526775!important}
+body:has(.public-header) table,body:has(.public-header) table :is(thead,thead tr,thead th){border-radius:0!important}
+body:has(.public-header) table thead th{background:#183f52!important;color:#fff!important;border-color:#345969!important;padding:0!important}
+body:has(.public-header) table thead .table-sort{display:flex!important;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:48px;padding:12px 14px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#fff!important;font:inherit;font-weight:700;text-align:left;cursor:pointer}
+body:has(.public-header) table thead .table-sort:hover{background:#24586d!important}
+body:has(.public-header) .table-sort-indicator{display:flex;flex-direction:column;flex:0 0 auto;font-size:8px;line-height:1.15;opacity:.65}
+body:has(.public-header) [aria-sort="ascending"] .table-sort-indicator,body:has(.public-header) [aria-sort="descending"] .table-sort-indicator{opacity:1;color:#f2cf80}
+body:has(.public-header) [aria-sort="ascending"] .table-sort-indicator span:last-child,body:has(.public-header) [aria-sort="descending"] .table-sort-indicator span:first-child{opacity:.2}
+
+body:has(.public-header) :is(.place-facts-scroll,.place-table-scroll,.table-scroll,.scroll,.gp-table-scroll){border-radius:0!important}
+
+/* Market lists and water indicators share the public card palette. */
+body:has(.public-header) :is(.market-table,.market-monthly table) tbody tr{background:#fff!important}
+body:has(.public-header) :is(.market-table,.market-monthly table) tbody tr:nth-child(even){background:#f1f6f8!important}
+body:has(.public-header) :is(.market-table,.market-monthly table) :is(td,th){border-color:#d3e0e7!important}
+body:has(.public-header) :is(.market-controls,.market-table,.market-history) button:not(.table-sort){background:#fff!important;color:#185c6c!important;border:1px solid #b6cbd6!important;border-radius:0!important;min-height:44px;font-weight:700}
+body:has(.public-header) :is(.market-controls,.market-table,.market-history) button:not(.table-sort):hover{background:#e9f2f6!important;border-color:#185c6c!important}
+body:has(.public-header) :is(.market-history,.market-comparison article,.market-chart-value){border-radius:0!important;background:#f1f6f8!important;border-color:#d3e0e7!important;color:#183444!important}
+body:has(.public-header) .market-table td::before{color:#183444!important}
+body:has(.public-header) :is(.jjm-water,.jjm-section,.water-dashboard) .stat{border-radius:0!important;background:#fff!important;border:1px solid #d3e0e7!important;border-top:3px solid #267e83!important}
+body:has(.public-header) :is(.jjm-water,.jjm-section,.water-dashboard) .stat strong{color:#185c6c!important}
+body:has(.public-header) :is(.jjm-water,.jjm-section,.water-dashboard) .stat span{color:#526775!important}

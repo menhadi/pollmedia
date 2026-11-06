@@ -1,0 +1,49 @@
+@if($state==='Tripura') @include('tripura-constituency-switcher') @endif
+@if($state==='Nagaland') @include('nagaland-constituency-switcher') @endif
+@if($state==='Mizoram') @include('mizoram-constituency-switcher') @endif
+@if($state==='Meghalaya') @include('meghalaya-constituency-switcher') @endif
+@if($state==='Manipur') @include('manipur-constituency-switcher') @endif
+@if($state==='Arunachal Pradesh') @include('arunachal-pradesh-constituency-switcher') @endif
+@if($state==='Sikkim') @include('sikkim-constituency-switcher') @endif
+@if($state==='Jharkhand') @include('jharkhand-constituency-switcher') @endif
+@if($state==='Haryana') @include('haryana-constituency-switcher') @endif
+@if($state==='Chhattisgarh') @include('chhattisgarh-constituency-switcher') @endif
+@if($state==='Telangana') @include('telangana-constituency-switcher') @endif
+@if($state==='Rajasthan') @include('rajasthan-constituency-switcher') @endif
+@if($state==='Andhra Pradesh') @include('andhra-pradesh-constituency-switcher') @endif
+@if($state==='Kerala') @include('kerala-constituency-switcher') @endif
+@if($state==='Madhya Pradesh') @include('madhya-pradesh-constituency-switcher') @endif
+@if($state==='Gujarat') @include('gujarat-constituency-switcher') @endif
+@if($state==='Tamil Nadu') @include('tamil-nadu-constituency-switcher') @endif
+@if($state==='Maharashtra') @include('maharashtra-constituency-switcher') @endif
+@if($state==='Karnataka') @include('karnataka-constituency-switcher') @endif
+@if($state==='Uttar Pradesh' && !$exactSeatOnly)
+@php
+$switchFixture=json_decode(file_get_contents(database_path('fixtures/up-electoral-geography.json')),true,512,JSON_THROW_ON_ERROR);
+$switchNormalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$value)));
+$switchSeats=collect($kind==='pc'?$switchFixture['pcs']:$switchFixture['district_rows'])->filter(fn(array $seat):bool=>$switchNormalize($seat['name'])===$switchNormalize($name));
+$switchSeat=$switchSeats->count()===1?$switchSeats->first():null;
+$switchSegments=$switchSeat?($kind==='pc'?collect($switchFixture['district_rows'])->whereIn('code',$switchSeat['ac_codes']):collect([$switchSeat])):collect();
+$switchSeen=[];
+$switchDistricts=$switchSegments->pluck('district')->unique()->filter(fn(string $district):bool=>in_array($district,['Agra','Rampur','Pilibhit','Aligarh','Prayagraj','Ambedkar Nagar','Auraiya','Azamgarh','Baghpat','Bahraich','Ballia','Balrampur','Banda','Barabanki','Bareilly','Basti','Bijnor','Badaun','Bulandshahar','Chandauli','Chitrakoot','Deoria','Etah','Etawah','Ayodhya','Farrukhabad','Fatehpur','Firozabad','Ghaziabad','Ghazipur','Gonda','Gorakhpur','Hamirpur','Hardoi','Hathras','Jalaun','Jaunpur','Jhansi','Kannauj','Kanpur Dehat','Kanpur Nagar','Kasganj','Kaushambi','Kheri','Kushi Nagar','Lalitpur','Lucknow','Maharajganj','Mahoba','Mainpuri','Mathura','Mau','Meerut','Mirzapur','Moradabad','Muzaffarnagar','Pratapgarh','Rae Bareli','Saharanpur','Sant Kabir Nagar','Bhadohi','Shahjahanpur','Shrawasti','Siddharthnagar','Sitapur','Sonbhadra','Sultanpur','Unnao','Varanasi','Gautam Buddha Nagar','Amroha','Amethi','Hapur','Sambhal','Shamli'],true));
+@endphp
+@if($switchDistricts->isNotEmpty())
+<link rel="stylesheet" href="{{ asset('css/constituency-dashboard-switcher.css') }}">
+<nav class="constituency-dashboard-switcher" aria-label="District and constituency dashboards"><a href="{{ route('district-dashboard-directory') }}">Change district →</a><label>Change constituency<select data-constituency-switcher><option value="" selected>{{ strtoupper($kind) }} · {{ $name }}</option>
+@foreach($switchDistricts as $switchDistrict)
+@php($switchLinks=app(\App\Services\DistrictConstituencyLinks::class)->forDistrict($switchDistrict))
+@foreach(['parliamentary'=>'PC','assembly'=>'AC'] as $switchKey=>$switchLabel)
+<optgroup label="{{ $switchDistrict }} · {{ $switchLabel }}">
+@foreach($switchLinks[$switchKey] as $switchOption)
+@php($switchIdentity=$switchKey.':'.$switchOption['code'])
+@continue(isset($switchSeen[$switchIdentity]))
+@php($switchSeen[$switchIdentity]=true)
+<option value="{{ \App\Services\ConstituencyUrls::url(['kind'=>$switchKey==='assembly'?'ac':'pc','state'=>$state,'name'=>trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$switchOption['name']))],false) }}">{{ $switchLabel }} {{ $switchOption['code'] }} · {{ $switchOption['name'] }}</option>
+@endforeach
+</optgroup>
+@endforeach
+@endforeach
+</select></label><a href="#census-context">Census context</a><a href="#history">Historical graphs & results</a></nav>
+<script src="{{ asset('js/constituency-dashboard-switcher.js') }}" defer></script>
+@endif
+@endif

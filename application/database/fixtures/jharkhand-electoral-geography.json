@@ -1,0 +1,769 @@
+{
+  "state": "Jharkhand",
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008; exact notification date pending",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "scope": "Partial dated district fixture including historical Hazaribagh; complete shared PC1,2,3,4,5,6,7,9,12,13,14 scopes. Other seats pending.",
+  "flags": [
+    "2008 source district PALAMAU retained with spelling alias Palamu; historical boundary correspondence unverified",
+    "Bihar Re-organization Act2000 continuation noted by official schedule; no modern district reassignment",
+    "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
+    "2008 PALAMAU includes Manika/Latehar AC73/74. Their modern Census Latehar district correspondence is not silently reassigned; historical electoral source reference is retained, with Census context only.",
+    "SOI KODERMA and Census/gazette Kodarma spellings retained; name correspondence does not verify boundary editions.",
+    "2008 Dumka source district references for Nala/Jamtara retained. Modern Jamtara district correspondence is pending; not silently reassigned. PC2 printed Skiaripara spelling retained in source PDF; AC7 identity uses Part A Sikaripara.",
+    "Sahebganj/Sahibganj and Pakaur/Pakur spellings preserved; aliases do not verify historical boundaries. PC1 prints Boiro while Part A gives Borio; raw PDF retained for review.",
+    "PC12 prints Lohardagga for AC72 while Part A uses Lohardaga. Original source retained; Part A identity used. Name does not certify boundary correspondence.",
+    "2008 Hazaribagh district reference includes Ramgarh/Barkagaon/Mandu source scopes; modern Ramgarh district correspondence pending. No silent reassignment to Census2011 geography."
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Rajmahal",
+      "district": "Sahebganj",
+      "context_district": "Sahibganj",
+      "page": 167
+    },
+    {
+      "code": 2,
+      "name": "Borio (ST)",
+      "district": "Sahebganj",
+      "context_district": "Sahibganj",
+      "page": 167
+    },
+    {
+      "code": 3,
+      "name": "Barhait (ST)",
+      "district": "Sahebganj",
+      "context_district": "Sahibganj",
+      "page": 167
+    },
+    {
+      "code": 4,
+      "name": "Litipara (ST)",
+      "district": "Pakaur",
+      "context_district": "Pakur",
+      "page": 167
+    },
+    {
+      "code": 5,
+      "name": "Pakaur",
+      "district": "Pakaur",
+      "context_district": "Pakur",
+      "page": 167
+    },
+    {
+      "code": 6,
+      "name": "Maheshpur (ST)",
+      "district": "Pakaur",
+      "context_district": "Pakur",
+      "page": 167
+    },
+    {
+      "code": 7,
+      "name": "Sikaripara (ST)",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 8,
+      "name": "Nala",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 9,
+      "name": "Jamtara",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 10,
+      "name": "Dumka (ST)",
+      "district": "Dumka",
+      "page": 167
+    },
+    {
+      "code": 11,
+      "name": "Jama (ST)",
+      "district": "Dumka",
+      "page": 168
+    },
+    {
+      "code": 12,
+      "name": "Jarmundi",
+      "district": "Dumka",
+      "page": 168
+    },
+    {
+      "code": 13,
+      "name": "Madhupur",
+      "district": "Deoghar",
+      "page": 168
+    },
+    {
+      "code": 14,
+      "name": "Sarath",
+      "district": "Deoghar",
+      "page": 168
+    },
+    {
+      "code": 15,
+      "name": "Deoghar (SC)",
+      "district": "Deoghar",
+      "page": 168
+    },
+    {
+      "code": 16,
+      "name": "Poreyahat",
+      "district": "Godda",
+      "page": 168
+    },
+    {
+      "code": 17,
+      "name": "Godda",
+      "district": "Godda",
+      "page": 168
+    },
+    {
+      "code": 18,
+      "name": "Mahagama",
+      "district": "Godda",
+      "page": 168
+    },
+    {
+      "code": 19,
+      "name": "Kodarma",
+      "district": "Kodarma",
+      "page": 168
+    },
+    {
+      "code": 20,
+      "name": "Barkatha",
+      "district": "Hazaribagh",
+      "page": 168
+    },
+    {
+      "code": 21,
+      "name": "Barhi",
+      "district": "Hazaribagh",
+      "page": 168
+    },
+    {
+      "code": 22,
+      "name": "Barkagaon",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 23,
+      "name": "Ramgarh",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 24,
+      "name": "Mandu",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 25,
+      "name": "Hazaribagh",
+      "district": "Hazaribagh",
+      "page": 169
+    },
+    {
+      "code": 26,
+      "name": "Simaria (SC)",
+      "district": "Chatra",
+      "context_district": "Chatra",
+      "page": 169
+    },
+    {
+      "code": 27,
+      "name": "Chatra (SC)",
+      "district": "Chatra",
+      "context_district": "Chatra",
+      "page": 169
+    },
+    {
+      "code": 28,
+      "name": "Dhanwar",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 29,
+      "name": "Bagodar",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 30,
+      "name": "Jamua (SC)",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 31,
+      "name": "Gandey",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 32,
+      "name": "Giridih",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 33,
+      "name": "Dumri",
+      "district": "Giridih",
+      "page": 169
+    },
+    {
+      "code": 34,
+      "name": "Gomia",
+      "district": "Bokaro",
+      "page": 169
+    },
+    {
+      "code": 35,
+      "name": "Bermo",
+      "district": "Bokaro",
+      "page": 170
+    },
+    {
+      "code": 36,
+      "name": "Bokaro",
+      "district": "Bokaro",
+      "page": 170
+    },
+    {
+      "code": 37,
+      "name": "Chandankiyari (SC)",
+      "district": "Bokaro",
+      "page": 170
+    },
+    {
+      "code": 38,
+      "name": "Sindri",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 39,
+      "name": "Nirsa",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 40,
+      "name": "Dhanbad",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 41,
+      "name": "Jharia",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 42,
+      "name": "Tundi",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 43,
+      "name": "Baghmara",
+      "district": "Dhanbad",
+      "page": 170
+    },
+    {
+      "code": 44,
+      "name": "Baharagora",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 170
+    },
+    {
+      "code": 45,
+      "name": "Ghatsila (ST)",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 170
+    },
+    {
+      "code": 46,
+      "name": "Potka (ST)",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 170
+    },
+    {
+      "code": 47,
+      "name": "Jugsalai (SC)",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 48,
+      "name": "Jamshedpur East",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 49,
+      "name": "Jamshedpur West",
+      "district": "(East) Singhbhum",
+      "context_district": "Purbi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 50,
+      "name": "Ichagarh",
+      "district": "(West) Singhbhum",
+      "page": 171,
+      "context_district": "Pashchimi Singhbhum"
+    },
+    {
+      "code": 51,
+      "name": "Seraikella (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 52,
+      "name": "Chaibasa (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 53,
+      "name": "Majhgaon (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 54,
+      "name": "Jaganathpur (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 55,
+      "name": "Manoharpur (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 56,
+      "name": "Chakradharpur (ST)",
+      "district": "(West) Singhbhum",
+      "context_district": "Pashchimi Singhbhum",
+      "page": 171
+    },
+    {
+      "code": 57,
+      "name": "Kharsawan (ST)",
+      "district": "(West) Singhbhum",
+      "page": 172,
+      "context_district": "Pashchimi Singhbhum"
+    },
+    {
+      "code": 58,
+      "name": "Tamar (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 59,
+      "name": "Torpa (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 60,
+      "name": "Khunti (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 61,
+      "name": "Silli",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 62,
+      "name": "Khijri (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 63,
+      "name": "Ranchi",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 64,
+      "name": "Hatia",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 65,
+      "name": "Kanke (SC)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 66,
+      "name": "Mandar (ST)",
+      "district": "Ranchi",
+      "page": 172
+    },
+    {
+      "code": 67,
+      "name": "Sisai (ST)",
+      "district": "Gumla",
+      "page": 172
+    },
+    {
+      "code": 68,
+      "name": "Gumla (ST)",
+      "district": "Gumla",
+      "page": 173
+    },
+    {
+      "code": 69,
+      "name": "Bishunpur (ST)",
+      "district": "Gumla",
+      "page": 173
+    },
+    {
+      "code": 70,
+      "name": "Simdega (ST)",
+      "district": "Gumla",
+      "page": 173
+    },
+    {
+      "code": 71,
+      "name": "Kolebira (ST)",
+      "district": "Gumla",
+      "page": 173
+    },
+    {
+      "code": 72,
+      "name": "Lohardaga (ST)",
+      "district": "Lohardaga",
+      "page": 173
+    },
+    {
+      "code": 73,
+      "name": "Manika (ST)",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 74,
+      "name": "Latehar (SC)",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 75,
+      "name": "Panki",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 76,
+      "name": "Daltonganj",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 77,
+      "name": "Bishrampur",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 78,
+      "name": "Chhatarpur (SC)",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 79,
+      "name": "Hussainabad",
+      "district": "Palamau",
+      "context_district": "Palamu",
+      "page": 173
+    },
+    {
+      "code": 80,
+      "name": "Garhwa",
+      "district": "Garhwa",
+      "context_district": "Garhwa",
+      "page": 174
+    },
+    {
+      "code": 81,
+      "name": "Bhawanathpur",
+      "district": "Garhwa",
+      "context_district": "Garhwa",
+      "page": 174
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Rajmahal (ST)",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "page": 175
+    },
+    {
+      "code": 2,
+      "name": "Dumka (ST)",
+      "ac_codes": [
+        7,
+        8,
+        9,
+        14,
+        10,
+        11
+      ],
+      "page": 175
+    },
+    {
+      "code": 3,
+      "name": "Godda",
+      "ac_codes": [
+        13,
+        15,
+        12,
+        16,
+        17,
+        18
+      ],
+      "page": 175
+    },
+    {
+      "code": 4,
+      "name": "Chatra",
+      "ac_codes": [
+        27,
+        26,
+        74,
+        75,
+        73
+      ],
+      "page": 175
+    },
+    {
+      "code": 5,
+      "name": "Kodarma",
+      "ac_codes": [
+        19,
+        20,
+        28,
+        29,
+        30,
+        31
+      ],
+      "page": 175
+    },
+    {
+      "code": 6,
+      "name": "Giridih",
+      "ac_codes": [
+        32,
+        33,
+        34,
+        35,
+        42,
+        43
+      ],
+      "page": 175
+    },
+    {
+      "code": 7,
+      "name": "Dhanbad",
+      "ac_codes": [
+        36,
+        38,
+        39,
+        40,
+        41,
+        37
+      ],
+      "page": 175
+    },
+    {
+      "code": 8,
+      "name": "Ranchi",
+      "ac_codes": [
+        50,
+        61,
+        62,
+        63,
+        64,
+        65
+      ],
+      "page": 175
+    },
+    {
+      "code": 9,
+      "name": "Jamshedpur",
+      "ac_codes": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "raw_ac_codes": [
+        41,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "page": 175,
+      "source_code_note": "The2008 PC9 table prints41 Bahragora, while PartA uses44 Baharagora and41 Jharia. Runtime identity44 follows PartA and the official district2019 election list; raw printed41 is retained. Formal source discrepancy review pending."
+    },
+    {
+      "code": 10,
+      "name": "Singhbhum (ST)",
+      "ac_codes": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 175
+    },
+    {
+      "code": 11,
+      "name": "Khunti (ST)",
+      "ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        71,
+        70
+      ],
+      "page": 175
+    },
+    {
+      "code": 12,
+      "name": "Lohardaga (ST)",
+      "ac_codes": [
+        66,
+        67,
+        68,
+        69,
+        72
+      ],
+      "page": 175
+    },
+    {
+      "code": 13,
+      "name": "Palamu (SC)",
+      "ac_codes": [
+        76,
+        80,
+        81,
+        77,
+        78,
+        79
+      ],
+      "page": 175
+    },
+    {
+      "code": 14,
+      "name": "Hazaribagh",
+      "ac_codes": [
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "page": 175
+    }
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_source_date": "2008; exact notification date pending",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_source_date": "2008; exact notification date pending",
+  "supplementary_pc_source": {
+    "url": "https://jamshedpur.nic.in/parliamentary-election-2019/",
+    "reference_year": 2019,
+    "publication_date": "unverified",
+    "sha256": "9fd08d7d7121b45718a88a240b8476c71e73e10a3afd7a746878254b0761a121"
+  },
+  "latehar_2019_source": {
+    "sha256": "2b46c4a374aaf22028c98f6943e974be518475dd57fbdb5188ade0c3b6086b15",
+    "url": "https://latehar.nic.in/lok-sabha-election-2019/",
+    "reference_year": 2019,
+    "publication_date": "unverified"
+  },
+  "ramgarh_2019_source": {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1594813&lang=2&reg=3",
+    "sha256": "8831c0abc9c82e78f781cd57daf6cfab48a6554da26676c2365fce0fbd37afd9",
+    "publication_date": "2019-12-04",
+    "preserved_path": "pilot/raw/jharkhand-soi/ramgarh-pib-2019.html"
+  },
+  "jamtara_2019_source": {
+    "url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1595842&lang=2&reg=48",
+    "sha256": "2c034372faaf0e61951c93ebba265ded48ae5101d014b3c0f3542b3cfa671219",
+    "publication_date": "2019-12-11",
+    "preserved_path": "pilot/raw/jharkhand-soi/jamtara-pib-2019.html"
+  },
+  "khunti_2019_source": {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1593525&lang=2&reg=48",
+    "sha256": "5bbe74d02fed913b89488f1e12b536c05e6273bb12818e55284b91ce07b73f1c",
+    "publication_date": "2019-11-26",
+    "preserved_path": "pilot/raw/jharkhand-soi/khunti-pib-2019.html"
+  },
+  "simdega_2019_source": {
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1593525&lang=2&reg=48",
+    "sha256": "5bbe74d02fed913b89488f1e12b536c05e6273bb12818e55284b91ce07b73f1c",
+    "publication_date": "2019-11-26",
+    "preserved_path": "pilot/raw/jharkhand-soi/khunti-pib-2019.html"
+  }
+}

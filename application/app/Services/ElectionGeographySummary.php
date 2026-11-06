@@ -49,6 +49,18 @@ class ElectionGeographySummary
         'west-bengal' => 'West Bengal',
     ];
 
+    public static function currentStateName(string $name): ?string
+    {
+        $key = mb_strtolower(trim($name));
+        foreach (self::CURRENT_STATES_AND_UTS as $label) {
+            if (mb_strtolower($label) === $key) {
+                return $label;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return Collection<int, array{slug: string, name: string, kind: string, archive_editions: int, archive_years: Collection<int, int>, places: int}>
      */
@@ -66,7 +78,7 @@ class ElectionGeographySummary
                 'kind' => in_array($slug, ['andaman-and-nicobar-islands', 'chandigarh', 'dadra-and-nagar-haveli-and-daman-and-diu', 'delhi', 'jammu-and-kashmir', 'ladakh', 'lakshadweep', 'puducherry'], true) ? 'Union Territory' : 'State',
                 'archive_editions' => $entries->count(),
                 'archive_years' => $entries->pluck('year')->unique()->sortDesc()->values(),
-                'places' => $slug === 'uttar-pradesh' ? Cache::remember('elections.navigation.place-count.v1', 300, fn (): int => DB::table('places')->whereIn('type', ['district', 'pc', 'ac'])->count()) : 0,
+                'places' => $slug === 'uttar-pradesh' ? Cache::remember('elections.navigation.place-count.v1', 300, fn (): int => RequestSchema::hasTable('places') ? DB::table('places')->whereIn('type', ['district', 'pc', 'ac'])->count() : 0) : 0,
             ];
         })->values();
     }

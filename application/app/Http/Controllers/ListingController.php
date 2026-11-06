@@ -55,9 +55,9 @@ class ListingController extends Controller
                     }
                     $record = app(HistoricalElectionReview::class)->apply($entry->edition_id, $original, $data['source_sha256']);
                     $version = $record['review_id'];
-                    unset($record['review'], $record['review_id'], $record['review_fingerprint'], $record['has_warning']);
+                    unset($record['review'], $record['review_id'], $record['review_fingerprint'], $record['review_archive'], $record['has_warning']);
                     $record = $this->electionFields($record);
-                    $documents->push($this->document('historical_constituency_index', $entry->id, $entry->constituency_name.' · '.$entry->year, $record, hash('sha256', json_encode([$data['source_sha256'], $original, $version])), $data['source_url'], route('constituency.overview', ['kind' => $entry->kind, 'state' => ElectionPlaceIdentity::state($entry->state_label), 'name' => $entry->constituency_name, 'edition' => $entry->edition_id, 'code' => $entry->record_code]), ['code', 'status', 'winner', 'margin', 'admin_listing_correction'], $entry->edition_id));
+                    $documents->push($this->document('historical_constituency_index', $entry->id, $entry->constituency_name.' · '.$entry->year, $record, hash('sha256', json_encode([$data['source_sha256'], $original, $version])), $data['source_url'], \App\Services\ConstituencyUrls::url(['kind' => $entry->kind, 'state' => ElectionPlaceIdentity::state($entry->state_label), 'name' => $entry->constituency_name, 'edition' => $entry->edition_id, 'code' => $entry->record_code]), ['code', 'status', 'winner', 'margin', 'admin_listing_correction'], $entry->edition_id));
                 }
             }
         } elseif ($section === 'census') {
@@ -107,7 +107,7 @@ class ListingController extends Controller
                 $reviews = app(HistoricalElectionReview::class);
                 $current = $reviews->apply($entry->edition_id, $original, $data['source_sha256']);
                 abort_unless(hash_equals($input['expected'], hash('sha256', json_encode([$data['source_sha256'], $original, $current['review_id']]))), 409, 'This listing changed. Reload before saving.');
-                unset($current['review'], $current['review_id'], $current['review_fingerprint'], $current['has_warning']);
+                unset($current['review'], $current['review_id'], $current['review_fingerprint'], $current['review_archive'], $current['has_warning']);
                 $current = $this->electionFields($current);
                 $this->validateFields($current, $fields, ['code', 'status', 'winner', 'margin', 'admin_listing_correction']);
                 $candidates = collect($fields['candidates'] ?? [])->reject(fn ($row) => ($row['is_nota'] ?? false) || strtoupper($row['party_at_election'] ?? '') === 'NOTA')->sortByDesc('votes')->values();

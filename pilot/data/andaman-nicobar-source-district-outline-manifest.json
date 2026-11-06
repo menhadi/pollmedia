@@ -1,0 +1,43 @@
+{
+  "region": "andaman-nicobar",
+  "label": "Andaman & Nicobar Islands",
+  "districts": [
+    {
+      "source_name": "NORTH AND MIDDLE ANDAMAN",
+      "slug": "north-and-middle-andaman",
+      "file": "maps/andaman-nicobar-source-districts/north-and-middle-andaman.geojson",
+      "source_geometry_valid": true,
+      "bytes": 11059660,
+      "sha256": "da4b88d3935d3324b004dff02f25f3bfd1d79275eb82626c7b2f6bd1a926a458"
+    },
+    {
+      "source_name": "SOUTH ANDAMANS",
+      "slug": "south-andamans",
+      "file": "maps/andaman-nicobar-source-districts/south-andamans.geojson",
+      "source_geometry_valid": true,
+      "bytes": 3624014,
+      "sha256": "95842ba8d7d08c6b07f7240ad5af5aa47400a3c99afcc2f5beb4fdbefb13ea7e"
+    },
+    {
+      "source_name": "NICOBARS",
+      "slug": "nicobars",
+      "file": "maps/andaman-nicobar-source-districts/nicobars.geojson",
+      "source_geometry_valid": true,
+      "bytes": 2317171,
+      "sha256": "5b284e16cb85e37417438952dda30c4a7004e124c1f3c230f0ba634fc1f162c4"
+    }
+  ],
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "simplification_metres": 0,
+    "census_lgd_join": "unverified"
+  }
+}

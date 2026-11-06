@@ -1,0 +1,3 @@
+<link rel="stylesheet" href="{{ asset('vendor/maplibre/maplibre-gl.css') }}"><link rel="stylesheet" href="{{ asset('css/india-village-map.css').'?v='.substr(hash_file('sha256',public_path('css/india-village-map.css')),0,12) }}">
+@include('map-mobile-assets')
+<script src="{{ asset('vendor/maplibre/maplibre-gl.js') }}" defer></script><script type="module" src="{{ asset('js/india-village-map-20261018-refresh.js').'?v='.substr(hash_file('sha256',public_path('js/india-village-map-20261018-refresh.js')),0,12) }}"></script>

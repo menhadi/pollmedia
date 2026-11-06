@@ -1,5 +1,5 @@
 @php
-$colors=['var(--palette-315d91)','var(--site-accent)','var(--site-primary)'];
+$colors=['#4285f4','#ea4335','#fbbc05','#34a853'];
 $chartValues=$plotRows->flatMap(fn($point)=>array_map(fn($series)=>$point[$series['key']],array_values(array_filter($plot['series'],fn($series)=>($series['axis']??null)!=='right'))))->filter(fn($value)=>$value!==null);
 $scale=$plot['unit']==='%'?100:max(1,($chartValues->max()??1)*1.08);
 $tickValues=collect(range(0,4))->map(fn($tick)=>$scale*$tick/4);
@@ -20,7 +20,7 @@ $x=fn($year)=>$firstYear===$lastYear?410:70+($year-$firstYear)/($lastYear-$first
 $y=fn($value)=>240-$value/$scale*220;
 @endphp
 @if($chartValues->isNotEmpty())
-<div class="report-legend">@foreach($plot['series'] as $series)<span><i style="background:{{ $series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index] }}"></i>{{ $series['label'] }}</span>@endforeach</div>
+<div class="report-legend">@foreach($plot['series'] as $series)<span><i style="background:{{ $colors[$loop->index % count($colors)] }}"></i>{{ $series['label'] }}</span>@endforeach</div>
 <svg class="report-plot" viewBox="0 0 {{ $rightValues->isNotEmpty()?840:800 }} 280" role="img" aria-label="{{ $plot['title'] }}; exact values in the following table">
 @foreach($tickValues as $value)
 <line x1="70" x2="760" y1="{{ $y($value) }}" y2="{{ $y($value) }}" stroke="var(--site-border)"/>
@@ -32,7 +32,7 @@ $y=fn($value)=>240-$value/$scale*220;
 @endforeach
 @foreach($plot['series'] as $series)
 @php
-$color=$series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index]; $path='';$area='';$previous=null;$start=null;
+$color=$colors[$loop->index % count($colors)]; $path='';$area='';$previous=null;$start=null;
 foreach($plotRows as $point){
     $value=$point[$series['key']];
     if($value===null){if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}$previous=null;continue;}

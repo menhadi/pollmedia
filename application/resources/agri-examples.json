@@ -1,0 +1,699 @@
+{
+  "version": 1,
+  "reports": {
+    "crop-condition": {
+      "documents": {
+        "en": {
+          "title": "Rice crop condition and harvest-readiness review",
+          "notice": "Illustrative case study. Field inputs are examples, not verified farm measurements. Stored Jatipur village context and dated government advice are identified separately. No real field photograph, GPS or authenticated laboratory report was supplied.",
+          "profile": {
+            "crop": "Rice",
+            "stage": "Grain filling to maturity",
+            "age": "About 110 days after transplanting (illustrative farmer statement)",
+            "concern": "Some lower leaves are yellowing; review harvest readiness",
+            "irrigation": "Borewell; availability reported, actual capacity and water quality unmeasured",
+            "field_state": "Standing crop; scattered yellow lower leaves, no reported storm damage",
+            "area": "2 acres",
+            "answers": "Illustrative case, not a real farmer submission. No photograph or laboratory report was supplied. No pest, disease, soil chemistry or yield has been confirmed."
+          },
+          "sections": [
+            {
+              "title": "Observations from your description",
+              "items": [
+                "Your rice crop is around 110 days after transplanting, in grain filling to maturity, on about 2 acres, with borewell irrigation reported as available.",
+                "You report scattered yellowing of lower leaves, but no photograph or laboratory report was supplied; no pest, disease, soil chemistry or yield has been confirmed.",
+                "This is an illustrative case, not a real farmer submission; field-specific measurements are missing."
+              ]
+            },
+            {
+              "title": "Possible explanations (not confirmed)",
+              "items": [
+                "Lower-leaf yellowing near maturity can be a normal ageing process as the crop senesces.",
+                "Yellowing could also reflect nutrient deficiency, water stress, root problems or pest/disease; none of these is confirmed here.",
+                "Village Soil Health Card sample categories (low nitrogen, low phosphorus, low potassium, low organic carbon in many tested samples, and some deficiencies in iron and zinc) describe tested samples in the village, NOT this field; they are background only."
+              ]
+            },
+            {
+              "title": "What to inspect before deciding on harvest",
+              "items": [
+                "Check the distribution of yellow leaves: if yellowing is mostly on older lower leaves while upper leaves and grain are green and filling, it may be normal senescence; if yellowing is spreading or upper leaves are affected, note it.",
+                "Inspect the grain: sample a few panicles from different parts of the field and note whether grains are hard and straw-coloured (ready) or still green/milky.",
+                "Look for lodging (fallen plants), waterlogging, pest damage or disease lesions on leaves and stems; record findings without assuming a cause."
+              ]
+            },
+            {
+              "title": "Conditional next steps (only if inspection supports them)",
+              "items": [
+                "If most grains are hard and straw-coloured and lower-leaf yellowing is confined to older leaves, harvest timing can be discussed with a local agricultural expert.",
+                "If yellowing is spreading rapidly, affecting upper leaves, or accompanied by wilting or lesions, consult a local agricultural expert or extension officer for field diagnosis before any treatment.",
+                "If you notice poor grain filling or widespread yellowing, consider arranging a soil test for this field if one is not already available; refer to local experts for interpretation."
+              ]
+            },
+            {
+              "title": "Missing evidence and follow-up",
+              "items": [
+                "Missing: field photograph, GPS location of this field, authenticated field-specific laboratory report, measured soil chemistry (pH, N, P, K, organic carbon), soil texture, actual borewell capacity and water quality, and current weather data for this field.",
+                "The state composite agromet bulletin (issued 2026-10-23, validity ended 2026-10-27T08:30) is reference-only, dated historical context for general crop planning; it is not current weather, sowing timing or time-sensitive advice. Check the latest bulletin before acting.",
+                "Follow up with your local agricultural extension officer or Krishi Vigyan Kendra for field inspection, and with a soil testing laboratory for field-specific soil analysis; bring any records or photos you can collect."
+              ]
+            }
+          ],
+          "government": {
+            "title": "State-level government advisory",
+            "coverage": "State-level coverage: Uttar Pradesh. The district bulletin for Pilibhit is unavailable. Advice comes from the state composite bulletin and its shared advisory group explicitly listing this district. It is not an independent district forecast or a field measurement. Latest published reference: its stated validity ended 2026-10-27T08:30:00+05:30. General crop-planning context only; not current weather or time-sensitive advice. Check the latest bulletin before acting.",
+            "items": [
+              "Harvest paddy and make proper storage arrangements.",
+              "Field sanitization is advised before sowing of rabi crop.",
+              "Bunds, channels, uncultivated fields and field roads should be cleaned by removing weeds also use fully decomposed FYM or compost before sowing of crops and vegetable as it improves the physical and biological properties of soil and thus increases the water retention capacity as well as nutrient status of the soil."
+            ]
+          },
+          "soil_note": "Stored village Soil Health Card sample-category counts, not this field's soil chemistry.",
+          "satellite_note": "Historical village vegetation index (NDVI). These are dated village-polygon statistics, not current field moisture, disease, crop stage or yield.",
+          "rainfall_note": "Rainfall is unavailable for this field because no precise field coordinates were supplied. A nearby grid cell has not been assigned from the village name.",
+          "methods": "AI-assisted report reviewed for readability and unsupported precision. This is an example, not a field diagnosis or an input-dose prescription. Confirm decisions with a local agricultural expert."
+        },
+        "hi": {
+          "title": "धान की फसल की स्थिति और कटाई-तैयारी की समीक्षा",
+          "notice": "उदाहरणात्मक केस स्टडी। खेत के इनपुट उदाहरण हैं, सत्यापित खेत माप नहीं। संग्रहित जतिपुर गाँव संदर्भ और दिनांकित सरकारी सलाह अलग से पहचाने गए हैं। कोई वास्तविक खेत की तस्वीर, GPS या प्रमाणित प्रयोगशाला रिपोर्ट प्रदान नहीं की गई है।",
+          "profile": {
+            "crop": "धान",
+            "stage": "दाना भरने से पकने तक",
+            "age": "रोपाई के लगभग 110 दिन बाद (उदाहरणात्मक किसान कथन)",
+            "concern": "नीचे की कुछ पत्तियाँ पीली पड़ रही हैं; कटाई की तैयारी की समीक्षा करें",
+            "irrigation": "बोरवेल; उपलब्धता बताई गई है, वास्तविक क्षमता और जल गुणवत्ता मापी नहीं गई",
+            "field_state": "खड़ी फसल; नीचे की पत्तियों में बिखरा पीलापन, तूफान से कोई नुकसान नहीं बताया गया",
+            "area": "2 एकड़",
+            "answers": "उदाहरणात्मक केस, वास्तविक किसान सबमिशन नहीं। कोई तस्वीर या प्रयोगशाला रिपोर्ट प्रदान नहीं की गई। कीट, रोग, मिट्टी की रसायन-संरचना या उपज की पुष्टि नहीं हुई है।"
+          },
+          "sections": [
+            {
+              "title": "आपके विवरण से अवलोकन",
+              "items": [
+                "आपकी धान की फसल रोपाई के लगभग 110 दिन बाद, दाना भरने से पकने की अवस्था में, लगभग 2 एकड़ में है, और बोरवेल सिंचाई उपलब्ध बताई गई है।",
+                "आपने नीचे की पत्तियों में बिखरे पीलापन की सूचना दी है, लेकिन कोई तस्वीर या प्रयोगशाला रिपोर्ट प्रदान नहीं की गई; कीट, रोग, मिट्टी की रसायन-संरचना या उपज की पुष्टि नहीं हुई है।",
+                "यह एक उदाहरणात्मक केस है, वास्तविक किसान सबमिशन नहीं; खेत-विशिष्ट माप अनुपस्थित हैं।"
+              ]
+            },
+            {
+              "title": "संभावित व्याख्याएँ (पुष्ट नहीं)",
+              "items": [
+                "पकने के निकट नीचे की पत्तियों का पीलापन सामान्य वृद्धावस्था प्रक्रिया हो सकता है क्योंकि फसल जीर्ण होती है।",
+                "पीलापन पोषक तत्वों की कमी, जल तनाव, जड़ की समस्याओं या कीट/रोग को भी दर्शा सकता है; इनमें से कोई भी यहाँ पुष्ट नहीं है।",
+                "गाँव के मृदा स्वास्थ्य कार्ड नमूना श्रेणियाँ (कई परीक्षित नमूनों में कम नाइट्रोजन, कम फॉस्फोरस, कम पोटैशियम, कम जैविक कार्बन, और लोहा व जिंक में कुछ कमियाँ) गाँव के परीक्षित नमूनों का वर्णन करती हैं, इस खेत का नहीं; ये केवल पृष्ठभूमि हैं।"
+              ]
+            },
+            {
+              "title": "कटाई पर निर्णय लेने से पहले क्या निरीक्षण करें",
+              "items": [
+                "पीली पत्तियों के वितरण की जाँच करें: यदि पीलापन मुख्यतः पुरानी नीचे की पत्तियों पर है जबकि ऊपरी पत्तियाँ और दाना हरे और भरने की अवस्था में हैं, तो यह सामान्य जीर्णता हो सकती है; यदि पीलापन फैल रहा है या ऊपरी पत्तियाँ प्रभावित हैं, तो इसे दर्ज करें।",
+                "दाने का निरीक्षण करें: खेत के विभिन्न भागों से कुछ बालियों के नमूने लें और देखें कि दाने कठोर और भूसे के रंग के (तैयार) हैं या अभी भी हरे/दूधिया हैं।",
+                "गिरना (गिरी हुई पौधें), जलभराव, कीट क्षति या पत्तियों और तनों पर रोग के घाव खोजें; कारण माने बिना निष्कर्ष दर्ज करें।"
+              ]
+            },
+            {
+              "title": "सशर्त अगले कदम (केवल यदि निरीक्षण उन्हें समर्थन देता है)",
+              "items": [
+                "यदि अधिकांश दाने कठोर और भूसे के रंग के हैं और नीचे की पत्तियों का पीलापन पुरानी पत्तियों तक सीमित है, तो कटाई का समय स्थानीय कृषि विशेषज्ञ से चर्चा किया जा सकता है।",
+                "यदि पीलापन तेजी से फैल रहा है, ऊपरी पत्तियों को प्रभावित कर रहा है, या मुरझाने या घावों के साथ है, तो किसी भी उपचार से पहले क्षेत्र निदान के लिए स्थानीय कृषि विशेषज्ञ या विस्तार अधिकारी से परामर्श करें।",
+                "यदि आप खराब दाना भरना या व्यापक पीलापन देखते हैं, तो इस खेत के लिए मिट्टी परीक्षण की व्यवस्था करने पर विचार करें यदि पहले से उपलब्ध नहीं है; व्याख्या के लिए स्थानीय विशेषज्ञों से परामर्श करें।"
+              ]
+            },
+            {
+              "title": "अनुपस्थित साक्ष्य और अनुवर्ती कार्रवाई",
+              "items": [
+                "अनुपस्थित: खेत की तस्वीर, इस खेत की GPS स्थिति, प्रमाणित खेत-विशिष्ट प्रयोगशाला रिपोर्ट, मापी गई मिट्टी की रसायन-संरचना (pH, N, P, K, जैविक कार्बन), मिट्टी की बनावट, वास्तविक बोरवेल क्षमता और जल गुणवत्ता, और इस खेत के लिए वर्तमान मौसम डेटा।",
+                "राज्य समग्र कृषि-मौसम बुलेटिन (जारी 2026-10-23, वैधता समाप्त 2026-10-27T08:30) केवल संदर्भ है, सामान्य फसल योजना के लिए दिनांकित ऐतिहासिक संदर्भ; यह वर्तमान मौसम, बुवाई का समय या समय-संवेदनशील सलाह नहीं है। कार्रवाई से पहले नवीनतम बुलेटिन जाँचें।",
+                "खेत निरीक्षण के लिए अपने स्थानीय कृषि विस्तार अधिकारी या कृषि विज्ञान केंद्र से अनुवर्ती संपर्क करें, और खेत-विशिष्ट मिट्टी विश्लेषण के लिए मिट्टी परीक्षण प्रयोगशाला से; जो भी रिकॉर्ड या तस्वीरें आप एकत्र कर सकें, साथ लाएँ।"
+              ]
+            }
+          ],
+          "government": {
+            "title": "राज्य-स्तरीय सरकारी सलाह",
+            "coverage": "राज्य-स्तरीय कवरेज: उत्तर प्रदेश। पीलीभीत के लिए जिला बुलेटिन उपलब्ध नहीं है। सलाह राज्य समग्र बुलेटिन और उसके साझा सलाहकार समूह से आती है जो इस जिले को स्पष्ट रूप से सूचीबद्ध करता है। यह स्वतंत्र जिला पूर्वानुमान या खेत माप नहीं है। नवीनतम प्रकाशित संदर्भ: इसकी बताई गई वैधता 2026-10-27T08:30:00+05:30 पर समाप्त हुई। केवल सामान्य फसल-योजना संदर्भ; वर्तमान मौसम या समय-संवेदनशील सलाह नहीं। कार्रवाई से पहले नवीनतम बुलेटिन जाँचें।",
+            "items": [
+              "धान की कटाई करें और उचित भंडारण व्यवस्था करें।",
+              "रबी फसल की बुवाई से पहले खेत की स्वच्छता की सलाह दी जाती है।",
+              "मेड़, नहरें, बिना जोती गई खेत और खेत की सड़कों को खरपतवार हटाकर साफ किया जाना चाहिए, साथ ही फसलों और सब्जियों की बुवाई से पहले पूरी तरह सड़ी हुई FYM या खाद का उपयोग करें क्योंकि यह मिट्टी के भौतिक और जैविक गुणों में सुधार करता है और इस प्रकार मिट्टी की जल धारण क्षमता के साथ-साथ पोषक स्थिति बढ़ाता है।"
+            ]
+          },
+          "soil_note": "संग्रहित गाँव मृदा स्वास्थ्य कार्ड नमूना-श्रेणी गणनाएँ, इस खेत की मिट्टी की रसायन-संरचना नहीं।",
+          "satellite_note": "ऐतिहासिक गाँव वनस्पति सूचकांक (NDVI)। ये दिनांकित गाँव-बहुभुज आँकड़े हैं, वर्तमान खेत की नमी, रोग, फसल अवस्था या उपज नहीं।",
+          "rainfall_note": "इस खेत के लिए वर्षा उपलब्ध नहीं है क्योंकि कोई सटीक खेत निर्देशांक प्रदान नहीं किए गए। गाँव के नाम से निकटवर्ती ग्रिड सेल निर्दिष्ट नहीं किया गया है।",
+          "methods": "पठनीयता और असमर्थित परिशुद्धता के लिए समीक्षित AI-सहायित रिपोर्ट। यह एक उदाहरण है, खेत निदान या इनपुट-खुराक नुस्खा नहीं। निर्णय स्थानीय कृषि विशेषज्ञ से पुष्ट करें।"
+        }
+      },
+      "shared": {
+        "created_date": "2026-10-27",
+        "government": {
+          "issued_at": "2026-10-23",
+          "valid_until": "2026-10-27T08:30:00+05:30",
+          "source_url": "https://mausam.imd.gov.in/lucknow/mcdata/agromet.pdf",
+          "coverage_level": "state",
+          "state": "Uttar Pradesh",
+          "district": "Pilibhit",
+          "reference_only": true
+        },
+        "soil": {
+          "kind": "soil",
+          "status": "available",
+          "scope": "Village tested-sample categories, not this farmer’s field",
+          "cycle": "2025-26",
+          "retrieved_at": "2026-10-14T09:50:16.089539+00:00",
+          "counts": {
+            "N_High": 0,
+            "N_Low": 100,
+            "N_Medium": 0,
+            "P_High": 3,
+            "P_Low": 48,
+            "P_Medium": 49,
+            "K_High": 0,
+            "K_Low": 98,
+            "K_Medium": 2,
+            "S_Sufficient": 100,
+            "S_Deficient": 0,
+            "OC_High": 0,
+            "OC_Low": 84,
+            "OC_Medium": 16,
+            "P H_Alkaline": 0,
+            "P H_Acidic": 0,
+            "P H_Neutral": 100,
+            "EC_Saline": 0,
+            "EC_Non Saline": 100,
+            "Fe_Sufficient": 37,
+            "Fe_Deficient": 63,
+            "Zn_Sufficient": 6,
+            "Zn_Deficient": 94,
+            "Cu_Sufficient": 99,
+            "Cu_Deficient": 1,
+            "B_Sufficient": 100,
+            "B_Deficient": 0,
+            "Mn_Sufficient": 74,
+            "Mn_Deficient": 26
+          },
+          "source_url": "https://soilhealth.dac.gov.in/nutrient-dashboard",
+          "note": "Reported sample category counts; not laboratory measurements for this field."
+        },
+        "satellite": {
+          "kind": "satellite",
+          "status": "available",
+          "scope": "Dated source village polygon, not the farmer’s field or current crop",
+          "dates": [
+            "2023-11-22",
+            "2024-11-26"
+          ],
+          "before_ndvi": 0.4698,
+          "after_ndvi": 0.2381,
+          "ndvi_change": -0.2317,
+          "paired_coverage_pct": 100,
+          "retrieved_at": "2026-10-14T12:26:37.415863+00:00",
+          "source_url": "https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-2",
+          "note": "Comparison uses the same clear pixels. Missing statistics are withheld; greenness does not establish cause, disease or yield."
+        }
+      },
+      "pdfs": {
+        "en": {
+          "file": "Jatipur-01-crop-condition.pdf",
+          "sha256": "cadee91e2f614578ecf5b176a3bd42fbe73cc672aa37f3b0fcc25621384e71fd"
+        },
+        "hi": {
+          "file": "Jatipur-01-crop-condition-hi.pdf",
+          "sha256": "35b86cff73260474803733708b3b6e6140c4a054ce8f604bf0c5569eca5d4ce7"
+        }
+      }
+    },
+    "field-planning": {
+      "documents": {
+        "en": {
+          "title": "Bare-field preparation for a planned wheat crop",
+          "notice": "Illustrative case study. Field inputs are examples, not verified farm measurements. Stored Jatipur village context and dated government advice are identified separately. No real field photograph, GPS or authenticated laboratory report was supplied.",
+          "profile": {
+            "crop": "Wheat (planned)",
+            "stage": "Pre-sowing / seedbed preparation",
+            "age": "Not yet sown; proposed first half of November, subject to current local guidance",
+            "concern": "Moisture conservation and preparation after rice harvest",
+            "irrigation": "Borewell; capacity and water quality not verified",
+            "field_state": "Bare field after rice harvest; residue retained",
+            "area": "2 acres",
+            "answers": "Illustrative inputs: soil report values pH 6.8, organic carbon 0.50%, N 180 kg/ha, P 20 kg/ha, K 150 kg/ha and EC 0.4 dS/m. These are example inputs, not real laboratory measurements. Do not prescribe input doses."
+          },
+          "sections": [
+            {
+              "title": "Field status and what is confirmed",
+              "items": [
+                "This is an illustrative planning case, not a verified field record. The 2-acre area, pH 6.8, OC 0.50%, N 180, P 20, K 150 kg/ha and EC 0.4 dS/m are example inputs from the farmer-not authenticated laboratory results.",
+                "Surface dryness is noted from the field note only; no image or sensor analysis was done. Wheat is a stated plan (target first half of November), not yet sown.",
+                "Irrigation source is a borewell whose capacity and water quality are unverified. Household taps are not a substitute for irrigation planning."
+              ]
+            },
+            {
+              "title": "Observations on residues and seedbed",
+              "items": [
+                "Rice residue is retained on the surface. Retained residue can slow seedbed drying and interfere with uniform sowing depth if not managed before tillage.",
+                "Borewell water quality (salinity/sodicity) is unknown; the example EC 0.4 dS/m is not a measured value.",
+                "Village Soil Health Card (SHC) sample categories from 2025-26 describe tested samples, not this field. Example values suggest adequate N, low P, adequate K and near-neutral pH, but these are illustrative."
+              ]
+            },
+            {
+              "title": "Possible explanations (not confirmed)",
+              "items": [
+                "Surface dryness may reflect post-rice infiltration and evaporative loss, but this cannot be confirmed without a soil-moisture check or actual measurement.",
+                "Retained residue could be acting as a mulch; this may help preserve moisture but can also complicate seed placement-both possibilities need field inspection.",
+                "Annual NDVI (source village polygon, 2023 and 2024) and annual rainfall are background context, not current field monitoring or moisture measurements."
+              ]
+            },
+            {
+              "title": "Conditional next steps (do not act without local verification)",
+              "items": [
+                "If the seedbed is too dry for uniform germination, plan light pre-sowing irrigation based on actual soil-moisture checks; do not assume a fixed water quantity.",
+                "If residue interferes with sowing, consider residue spreading or partial removal after checking with a local expert and machinery available. Do not burn residues.",
+                "If borewell output or quality is uncertain, arrange a pump test and water quality check before relying on it for irrigation scheduling."
+              ]
+            },
+            {
+              "title": "Missing evidence and limitations",
+              "items": [
+                "No single, authoritative bulletin for Pilibhit is available; the last state advisory validity ended 2026-10-27T08:30+05:30. Use the next bulletin for current sowing timing and weather.",
+                "No field-specific Soil Health Card or laboratory report exists for this field this cycle; village SHC categories are reference only.",
+                "No confirmed coordinates, field rainfall or current field images were supplied; do not infer exact field size, yield, pH, NPK or disease from photos or coordinates."
+              ]
+            },
+            {
+              "title": "Follow-up and referral",
+              "items": [
+                "Request a field-specific soil test (laboratory analysis) covering pH, EC, organic carbon and available N, P, K before any fertiliser decisions.",
+                "Contact your local agricultural expert or Krishi Vigyan Kendra for crop choice, residue management options and irrigation scheduling suited to your field.",
+                "Inspect field for actual moisture depth, residue distribution, and any weed growth before the next step; report back with observations and current local guidance."
+              ]
+            }
+          ],
+          "government": {
+            "title": "State-level government advisory",
+            "coverage": "State-level coverage: Uttar Pradesh. The district bulletin for Pilibhit is unavailable. Advice comes from the state composite bulletin and its shared advisory group explicitly listing this district. It is not an independent district forecast or a field measurement. Latest published reference: its stated validity ended 2026-10-27T08:30:00+05:30. General crop-planning context only; not current weather or time-sensitive advice. Check the latest bulletin before acting.",
+            "items": [
+              "In present weather condition, field preparation should be started for rabi crops.",
+              "Ploughing should be done properly to conserve the moisture in the soil.",
+              "Field sanitization is advised before sowing of rabi crop.",
+              "Bunds, channels, uncultivated fields and field roads should be cleaned by removing weeds also use fully decomposed FYM or compost before sowing of crops and vegetable as it improves the physical and biological properties of soil and thus increases the water retention capacity as well as nutrient status of the soil."
+            ]
+          },
+          "soil_note": "Stored village Soil Health Card sample-category counts, not this field's soil chemistry.",
+          "satellite_note": "Historical village vegetation index (NDVI). These are dated village-polygon statistics, not current field moisture, disease, crop stage or yield.",
+          "rainfall_note": "Rainfall is unavailable for this field because no precise field coordinates were supplied. A nearby grid cell has not been assigned from the village name.",
+          "methods": "AI-assisted report reviewed for readability and unsupported precision. This is an example, not a field diagnosis or an input-dose prescription. Confirm decisions with a local agricultural expert."
+        },
+        "hi": {
+          "title": "नियोजित गेहूँ फसल के लिए खाली खेत की तैयारी",
+          "notice": "उदाहरणात्मक केस स्टडी। खेत के इनपुट उदाहरण हैं, सत्यापित कृषि माप नहीं। संग्रहीत जतिपुर गाँव संदर्भ और दिनांकित सरकारी सलाह अलग से पहचाने गए हैं। कोई वास्तविक खेत फोटो, GPS या प्रमाणित प्रयोगशाला रिपोर्ट प्रदान नहीं की गई।",
+          "profile": {
+            "crop": "गेहूँ (नियोजित)",
+            "stage": "बुवाई-पूर्व / बीज भूमि की तैयारी",
+            "age": "अभी बोया नहीं गया; नवंबर के पहले आधे हिस्से में प्रस्तावित, वर्तमान स्थानीय सलाह के अधीन",
+            "concern": "धान कटाई के बाद नमी संरक्षण और तैयारी",
+            "irrigation": "बोरवेल; क्षमता और जल गुणवत्ता सत्यापित नहीं",
+            "field_state": "धान कटाई के बाद खाली खेत; अवशेष रखे गए",
+            "area": "2 एकड़",
+            "answers": "उदाहरणात्मक इनपुट: मृदा रिपोर्ट मान pH 6.8, कार्बनिक कार्बन 0.50%, N 180 किग्रा/हेक्टेयर, P 20 किग्रा/हेक्टेयर, K 150 किग्रा/हेक्टेयर और EC 0.4 dS/m। ये उदाहरण इनपुट हैं, वास्तविक प्रयोगशाला माप नहीं। इनपुट खुराक निर्धारित न करें।"
+          },
+          "sections": [
+            {
+              "title": "खेत की स्थिति और क्या पुष्ट है",
+              "items": [
+                "यह एक उदाहरणात्मक नियोजन केस है, सत्यापित खेत रिकॉर्ड नहीं। 2 एकड़ क्षेत्र, pH 6.8, OC 0.50%, N 180, P 20, K 150 किग्रा/हेक्टेयर और EC 0.4 dS/m किसान से मिले उदाहरण इनपुट हैं, प्रमाणित प्रयोगशाला परिणाम नहीं।",
+                "सतही सूखापन केवल खेत नोट से दर्ज है; कोई छवि या सेंसर विश्लेषण नहीं किया गया। गेहूँ एक घोषित योजना है (लक्ष्य नवंबर का पहला आधा), अभी बोया नहीं गया।",
+                "सिंचाई स्रोत बोरवेल है जिसकी क्षमता और जल गुणवत्ता असत्यापित हैं। घरेलू नल सिंचाई नियोजन का विकल्प नहीं हैं।"
+              ]
+            },
+            {
+              "title": "अवशेष और बीज भूमि पर अवलोकन",
+              "items": [
+                "धान अवशेष सतह पर रखे गए हैं। रखे गए अवशेष बीज भूमि सुखाने को धीमा कर सकते हैं और यदि जुताई से पहले प्रबंधित न किए जाएँ तो समान बुवाई गहराई में बाधा डाल सकते हैं।",
+                "बोरवेल जल गुणवत्ता (लवणता/सोडिकता) अज्ञात है; उदाहरण EC 0.4 dS/m मापा गया मान नहीं है।",
+                "2025-26 के गाँव मृदा स्वास्थ्य कार्ड (SHC) नमूना श्रेणियाँ परीक्षित नमूनों का वर्णन करती हैं, इस खेत का नहीं। उदाहरण मान पर्याप्त N, कम P, पर्याप्त K और लगभग उदासीन pH की ओर संकेत करते हैं, पर ये उदाहरणात्मक हैं।"
+              ]
+            },
+            {
+              "title": "संभावित व्याख्याएँ (पुष्ट नहीं)",
+              "items": [
+                "सतही सूखापन धान कटाई के बाद अंतःस्थलन और वाष्पीकरणीय हानि को दर्शा सकता है, पर मृदा-नमी जाँच या वास्तविक मापन के बिना इसकी पुष्टि नहीं हो सकती।",
+                "रखे गए अवशेष मल्च की तरह काम कर सकते हैं; यह नमी संरक्षित करने में मदद कर सकता है पर बीज स्थापन को जटिल भी बना सकता है-दोनों संभावनाओं के लिए खेत निरीक्षण आवश्यक है।",
+                "वार्षिक NDVI (स्रोत गाँव बहुभुज, 2023 और 2024) और वार्षिक वर्षा पृष्ठभूमि संदर्भ हैं, वर्तमान खेत निगरानी या नमी माप नहीं।"
+              ]
+            },
+            {
+              "title": "सशर्त अगले कदम (स्थानीय सत्यापन के बिना कार्य न करें)",
+              "items": [
+                "यदि बीज भूमि समान अंकुरण के लिए बहुत सूखी है, तो वास्तविक मृदा-नमी जाँच के आधार पर हल्की बुवाई-पूर्व सिंचाई की योजना बनाएँ; निश्चित जल मात्रा न मानें।",
+                "यदि अवशेष बुवाई में बाधा डालते हैं, तो स्थानीय विशेषज्ञ और उपलब्ध मशीनरी से जाँच के बाद अवशेष फैलाने या आंशिक हटाने पर विचार करें। अवशेष न जलाएँ।",
+                "यदि बोरवेल उत्पादन या गुणवत्ता अनिश्चित है, तो सिंचाई निर्धारण के लिए उस पर निर्भर होने से पहले पंप परीक्षण और जल गुणवत्ता जाँच की व्यवस्था करें।"
+              ]
+            },
+            {
+              "title": "अनुपलब्ध प्रमाण और सीमाएँ",
+              "items": [
+                "पीलीभीत के लिए कोई एकल, आधिकारिक बुलेटिन उपलब्ध नहीं है; अंतिम राज्य सलाह की वैधता 2026-10-27T08:30+05:30 पर समाप्त हुई। वर्तमान बुवाई समय और मौसम के लिए अगला बुलेटिन देखें।",
+                "इस चक्र में इस खेत के लिए कोई खेत-विशिष्ट मृदा स्वास्थ्य कार्ड या प्रयोगशाला रिपोर्ट नहीं है; गाँव SHC श्रेणियाँ केवल संदर्भ हैं।",
+                "कोई पुष्ट निर्देशांक, खेत वर्षा या वर्तमान खेत छवियाँ प्रदान नहीं की गईं; फोटो या निर्देशांक से सटीक खेत आकार, उपज, pH, NPK या रोग का अनुमान न लगाएँ।"
+              ]
+            },
+            {
+              "title": "अनुवर्ती कार्रवाई और रेफरल",
+              "items": [
+                "किसी भी उर्वरक निर्णय से पहले pH, EC, कार्बनिक कार्बन और उपलब्ध N, P, K सहित खेत-विशिष्ट मृदा परीक्षण (प्रयोगशाला विश्लेषण) का अनुरोध करें।",
+                "फसल चयन, अवशेष प्रबंधन विकल्पों और अपने खेत के अनुकूल सिंचाई निर्धारण के लिए अपने स्थानीय कृषि विशेषज्ञ या कृषि विज्ञान केंद्र से संपर्क करें।",
+                "अगले कदम से पहले वास्तविक नमी गहराई, अवशेष वितरण और किसी भी खरपतवार वृद्धि के लिए खेत का निरीक्षण करें; अवलोकन और वर्तमान स्थानीय सलाह के साथ वापस रिपोर्ट करें।"
+              ]
+            }
+          ],
+          "government": {
+            "title": "राज्य-स्तरीय सरकारी सलाह",
+            "coverage": "राज्य-स्तरीय कवरेज: उत्तर प्रदेश। पीलीभीत के लिए जिला बुलेटिन उपलब्ध नहीं है। सलाह राज्य समग्र बुलेटिन और उसके साझा सलाह समूह से आती है जिसमें इस जिले को स्पष्ट रूप से सूचीबद्ध किया गया है। यह स्वतंत्र जिला पूर्वानुमान या खेत माप नहीं है। नवीनतम प्रकाशित संदर्भ: इसकी घोषित वैधता 2026-10-27T08:30:00+05:30 पर समाप्त हुई। केवल सामान्य फसल-नियोजन संदर्भ; वर्तमान मौसम या समय-संवेदनशील सलाह नहीं। कार्य करने से पहले नवीनतम बुलेटिन देखें।",
+            "items": [
+              "वर्तमान मौसम स्थिति में रबी फसलों के लिए खेत की तैयारी शुरू की जानी चाहिए।",
+              "मृदा में नमी संरक्षित करने के लिए जुताई ठीक से की जानी चाहिए।",
+              "रबी फसल की बुवाई से पहले खेत की स्वच्छता की सलाह दी जाती है।",
+              "मेड़, नालियाँ, अपरिपक्व खेत और खेत की सड़कें खरपतवार हटाकर साफ की जानी चाहिए तथा फसल और सब्जी की बुवाई से पहले पूरी तरह सड़ी FYM या कंपोस्ट का उपयोग करें क्योंकि यह मृदा के भौतिक और जैविक गुणों को सुधारता है और इस प्रकार मृदा की जल धारण क्षमता तथा पोषक स्थिति बढ़ाता है।"
+            ]
+          },
+          "soil_note": "संग्रहीत गाँव मृदा स्वास्थ्य कार्ड नमूना-श्रेणी गणनाएँ, इस खेत की मृदा रसायन नहीं।",
+          "satellite_note": "ऐतिहासिक गाँव वनस्पति सूचकांक (NDVI)। ये दिनांकित गाँव-बहुभुज आँकड़े हैं, वर्तमान खेत नमी, रोग, फसल अवस्था या उपज नहीं।",
+          "rainfall_note": "इस खेत के लिए वर्षा उपलब्ध नहीं है क्योंकि कोई सटीक खेत निर्देशांक प्रदान नहीं किए गए। गाँव के नाम से निकटवर्ती ग्रिड सेल निर्दिष्ट नहीं किया गया है।",
+          "methods": "पठनीयता और असमर्थित परिशुद्धता के लिए समीक्षित AI-सहायित रिपोर्ट। यह एक उदाहरण है, खेत निदान या इनपुट-खुराक नुस्खा नहीं। निर्णय स्थानीय कृषि विशेषज्ञ से पुष्ट करें।"
+        }
+      },
+      "shared": {
+        "created_date": "2026-10-27",
+        "government": {
+          "issued_at": "2026-10-23",
+          "valid_until": "2026-10-27T08:30:00+05:30",
+          "source_url": "https://mausam.imd.gov.in/lucknow/mcdata/agromet.pdf",
+          "coverage_level": "state",
+          "state": "Uttar Pradesh",
+          "district": "Pilibhit",
+          "reference_only": true
+        },
+        "soil": {
+          "kind": "soil",
+          "status": "available",
+          "scope": "Village tested-sample categories, not this farmer’s field",
+          "cycle": "2025-26",
+          "retrieved_at": "2026-10-14T09:50:16.089539+00:00",
+          "counts": {
+            "N_High": 0,
+            "N_Low": 100,
+            "N_Medium": 0,
+            "P_High": 3,
+            "P_Low": 48,
+            "P_Medium": 49,
+            "K_High": 0,
+            "K_Low": 98,
+            "K_Medium": 2,
+            "S_Sufficient": 100,
+            "S_Deficient": 0,
+            "OC_High": 0,
+            "OC_Low": 84,
+            "OC_Medium": 16,
+            "P H_Alkaline": 0,
+            "P H_Acidic": 0,
+            "P H_Neutral": 100,
+            "EC_Saline": 0,
+            "EC_Non Saline": 100,
+            "Fe_Sufficient": 37,
+            "Fe_Deficient": 63,
+            "Zn_Sufficient": 6,
+            "Zn_Deficient": 94,
+            "Cu_Sufficient": 99,
+            "Cu_Deficient": 1,
+            "B_Sufficient": 100,
+            "B_Deficient": 0,
+            "Mn_Sufficient": 74,
+            "Mn_Deficient": 26
+          },
+          "source_url": "https://soilhealth.dac.gov.in/nutrient-dashboard",
+          "note": "Reported sample category counts; not laboratory measurements for this field."
+        },
+        "satellite": {
+          "kind": "satellite",
+          "status": "available",
+          "scope": "Dated source village polygon, not the farmer’s field or current crop",
+          "dates": [
+            "2023-11-22",
+            "2024-11-26"
+          ],
+          "before_ndvi": 0.4698,
+          "after_ndvi": 0.2381,
+          "ndvi_change": -0.2317,
+          "paired_coverage_pct": 100,
+          "retrieved_at": "2026-10-14T12:26:37.415863+00:00",
+          "source_url": "https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-2",
+          "note": "Comparison uses the same clear pixels. Missing statistics are withheld; greenness does not establish cause, disease or yield."
+        }
+      },
+      "pdfs": {
+        "en": {
+          "file": "Jatipur-02-field-planning.pdf",
+          "sha256": "19061f0c0b9d18ecb38650311fe00787ffd30540c8f1005cf31090d195886a27"
+        },
+        "hi": {
+          "file": "Jatipur-02-field-planning-hi.pdf",
+          "sha256": "77e57ff10711d65d07e5028076945c03c655720c96894b500863bc22fba05868"
+        }
+      }
+    },
+    "crop-options": {
+      "documents": {
+        "en": {
+          "title": "Conditional crop options for a field with limited irrigation",
+          "notice": "Illustrative case study. Field inputs are examples, not verified farm measurements. Stored Jatipur village context and dated government advice are identified separately. No real field photograph, GPS or authenticated laboratory report was supplied.",
+          "profile": {
+            "crop": "Not selected; discuss suitable options after checking constraints",
+            "stage": "Crop selection before sowing",
+            "age": "No crop currently planted",
+            "concern": "Choose a feasible winter crop without assuming reliable irrigation",
+            "irrigation": "Rainfall-dependent with possible shared borewell access; supply unconfirmed",
+            "field_state": "Fallow field with previous rice residue",
+            "area": "1.5 acres",
+            "answers": "Illustrative case. No field-specific soil test, measured soil moisture, reliable irrigation capacity, budget or market access information is available. Crop options must remain conditional, not ranked as a proven best crop."
+          },
+          "sections": [
+            {
+              "title": "What we know and what is still missing",
+              "items": [
+                "The field is 1.5 acres, fallow with previous rice residue, and the farmer is deciding on a winter (rabi) crop. The crop is not yet selected.",
+                "Irrigation is described as rainfall-dependent with possible shared borewell access, but supply is unconfirmed. Household taps are not irrigation.",
+                "No field-specific soil test, measured soil moisture, reliable irrigation capacity, budget or market access information is available. These gaps must be filled before choosing a crop."
+              ]
+            },
+            {
+              "title": "Background information (not about this field)",
+              "items": [
+                "Village soil health card categories from 2025-26 (tested samples only, not this field): most samples low in nitrogen, low to medium in phosphorus, low in potassium, low organic carbon, and deficient in iron and zinc. These are village-level categories and do not describe this field.",
+                "Satellite greenness (NDVI) for the village area fell from 0.4698 to 0.2381 between 22 Nov 2023 and 26 Nov 2024. This is historical background, not current field monitoring or a forecast.",
+                "A state-level agricultural bulletin issued 23 Oct 2026 (validity ended 27 Oct 2026) is available only as dated historical context for general rabi planning. It is not current weather or sowing advice for this field. No district-specific forecast or rainfall data was available."
+              ]
+            },
+            {
+              "title": "Conditional crop options to discuss with a local expert",
+              "items": [
+                "Wheat: discuss only after confirming a crop-appropriate irrigation plan and adequate soil moisture. Do not assume that shared borewell access provides reliable water. Ask a local agricultural expert to assess feasibility before selection.",
+                "Chickpea (gram): A lower-water rabi option that may fit if soil moisture at sowing is adequate and supplemental irrigation can be arranged where locally recommended. Confirm local variety and disease history with the expert.",
+                "Mustard: Another relatively low-water rabi option, but yields are sensitive to moisture stress at flowering and pod fill. Feasible only if some irrigation can be assured at critical stages. Discuss suitability with the local expert."
+              ]
+            },
+            {
+              "title": "What would make each option feasible",
+              "items": [
+                "Wheat: confirmed reliable irrigation capacity (number of irrigations possible), field levelled and bunded to hold water, and a plan for timely sowing. Without these, wheat is high-risk.",
+                "Chickpea: adequate stored soil moisture at sowing (check by digging a small pit), no history of severe wilt in the field, and access to quality seed of a locally recommended variety.",
+                "Mustard: a confirmed plan for water availability at critical stages if rainfall fails, and a market or home-use plan for the produce. Confirm with the local expert whether mustard is commonly grown in the area."
+              ]
+            },
+            {
+              "title": "Missing evidence and follow-up steps",
+              "items": [
+                "Get a field-specific soil test (including pH, organic carbon, N, P, K, and micronutrients) before deciding on any fertiliser or crop. The village soil health card categories are not a substitute.",
+                "Check actual soil moisture in the field by hand (dig a small pit and squeeze soil) and confirm the number of irrigations the shared borewell can reliably supply and at what cost.",
+                "Discuss the shortlist with a local agricultural expert (KVK, block agriculture officer or agronomist), who can consider local weather, market access, budget and labour. Do not finalise the crop until these are clarified."
+              ]
+            },
+            {
+              "title": "General field preparation and inspection (not chemical advice)",
+              "items": [
+                "Inspect the field for residual rice straw and stubble. Remove or incorporate residue only as advised locally; excessive surface residue can interfere with sowing and moisture conservation.",
+                "If using farmyard manure or compost, ensure it is fully decomposed. This can improve soil water-holding capacity and biological properties, but is not a substitute for a soil test.",
+                "Check field bunds, channels and drainage paths for damage or weeds before sowing. Good field levelling and bunding help conserve moisture and make limited irrigation more effective."
+              ]
+            }
+          ],
+          "government": {
+            "title": "State-level government advisory",
+            "coverage": "State-level coverage: Uttar Pradesh. The district bulletin for Pilibhit is unavailable. Advice comes from the state composite bulletin and its shared advisory group explicitly listing this district. It is not an independent district forecast or a field measurement. Latest published reference: its stated validity ended 2026-10-27T08:30:00+05:30. General crop-planning context only; not current weather or time-sensitive advice. Check the latest bulletin before acting.",
+            "items": [
+              "Ploughing should be done properly to conserve the moisture in the soil.",
+              "Field sanitization is advised before sowing of rabi crop.",
+              "Bunds, channels, uncultivated fields and field roads should be cleaned by removing weeds also use fully decomposed FYM or compost before sowing of crops and vegetable as it improves the physical and biological properties of soil and thus increases the water retention capacity as well as nutrient status of the soil."
+            ]
+          },
+          "soil_note": "Stored village Soil Health Card sample-category counts, not this field's soil chemistry.",
+          "satellite_note": "Historical village vegetation index (NDVI). These are dated village-polygon statistics, not current field moisture, disease, crop stage or yield.",
+          "rainfall_note": "Rainfall is unavailable for this field because no precise field coordinates were supplied. A nearby grid cell has not been assigned from the village name.",
+          "methods": "AI-assisted report reviewed for readability and unsupported precision. This is an example, not a field diagnosis or an input-dose prescription. Confirm decisions with a local agricultural expert."
+        },
+        "hi": {
+          "title": "सीमित सिंचाई वाले खेत के लिए सशर्त फसल विकल्प",
+          "notice": "उदाहरणात्मक केस अध्ययन। खेत के इनपुट उदाहरण हैं, सत्यापित खेत माप नहीं। संग्रहित जटीपुर गाँव संदर्भ और तिथि-युक्त सरकारी सलाह अलग से पहचाने गए हैं। कोई वास्तविक खेत तस्वीर, GPS या प्रमाणित प्रयोगशाला रिपोर्ट उपलब्ध नहीं कराई गई थी।",
+          "profile": {
+            "crop": "चयनित नहीं; बाधाओं की जाँच के बाद उपयुक्त विकल्पों पर चर्चा करें",
+            "stage": "बुवाई से पहले फसल चयन",
+            "age": "वर्तमान में कोई फसल लगी नहीं है",
+            "concern": "विश्वसनीय सिंचाई माने बिना एक व्यवहार्य रबी फसल चुनें",
+            "irrigation": "वर्षा-आधारित, संभावित साझा बोरवेल पहुँच के साथ; आपूर्ति अपुष्ट",
+            "field_state": "पिछले धान के अवशेष वाला परती खेत",
+            "area": "1.5 एकड़",
+            "answers": "उदाहरणात्मक केस। खेत-विशिष्ट मृदा परीक्षण, मापी गई मृदा नमी, विश्वसनीय सिंचाई क्षमता, बजट या बाज़ार पहुँच की जानकारी उपलब्ध नहीं है। फसल विकल्प सशर्त रहने चाहिए, सिद्ध सर्वोत्तम फसल के रूप में क्रमबद्ध नहीं।"
+          },
+          "sections": [
+            {
+              "title": "हम क्या जानते हैं और क्या अभी भी अनुपलब्ध है",
+              "items": [
+                "खेत 1.5 एकड़ है, पिछले धान के अवशेष के साथ परती है, और किसान रबी फसल पर निर्णय ले रहा है। फसल अभी चयनित नहीं है।",
+                "सिंचाई को वर्षा-आधारित बताया गया है, संभावित साझा बोरवेल पहुँच के साथ, लेकिन आपूर्ति अपुष्ट है। घरेलू नल सिंचाई नहीं हैं।",
+                "खेत-विशिष्ट मृदा परीक्षण, मापी गई मृदा नमी, विश्वसनीय सिंचाई क्षमता, बजट या बाज़ार पहुँच की जानकारी उपलब्ध नहीं है। फसल चुनने से पहले इन अंतरालों को भरना होगा।"
+              ]
+            },
+            {
+              "title": "पृष्ठभूमि जानकारी (इस खेत के बारे में नहीं)",
+              "items": [
+                "2025-26 के गाँव मृदा स्वास्थ्य कार्ड श्रेणियाँ (केवल परीक्षित नमूने, यह खेत नहीं): अधिकांश नमूने नाइट्रोजन में निम्न, फॉस्फोरस में निम्न से मध्यम, पोटेशियम में निम्न, जैविक कार्बन में निम्न, और लोहा व ज़िंक में कमी वाले। ये गाँव-स्तरीय श्रेणियाँ हैं और इस खेत का वर्णन नहीं करतीं।",
+                "गाँव क्षेत्र के लिए उपग्रह हरियाली (NDVI) 22 नव 2023 से 26 नव 2024 के बीच 0.4698 से घटकर 0.2381 हो गई। यह ऐतिहासिक पृष्ठभूमि है, वर्तमान खेत निगरानी या पूर्वानुमान नहीं।",
+                "23 अक्टू 2026 को जारी राज्य-स्तरीय कृषि बुलेटिन (वैधता 27 अक्टू 2026 को समाप्त) केवल सामान्य रबी योजना के लिए तिथि-युक्त ऐतिहासिक संदर्भ के रूप में उपलब्ध है। यह इस खेत के लिए वर्तमान मौसम या बुवाई सलाह नहीं है। कोई ज़िला-विशिष्ट पूर्वानुमान या वर्षा डेटा उपलब्ध नहीं था।"
+              ]
+            },
+            {
+              "title": "स्थानीय विशेषज्ञ से चर्चा हेतु सशर्त फसल विकल्प",
+              "items": [
+                "गेहूँ: फसल-उपयुक्त सिंचाई योजना और पर्याप्त मृदा नमी की पुष्टि के बाद ही चर्चा करें। यह न मानें कि साझा बोरवेल पहुँच विश्वसनीय पानी देती है। चयन से पहले स्थानीय कृषि विशेषज्ञ से व्यवहार्यता आँकने को कहें।",
+                "चना (ग्राम): कम पानी वाला रबी विकल्प जो तब फिट हो सकता है जब बुवाई के समय मृदा नमी पर्याप्त हो और जहाँ स्थानीय रूप से सुझाया जाए वहाँ पूरक सिंचाई की व्यवस्था हो सके। स्थानीय किस्म और रोग इतिहास विशेषज्ञ से पुष्टि करें।",
+                "सरसों: एक अन्य अपेक्षाकृत कम पानी वाला रबी विकल्प, लेकिन उपज फूल और फली भरने के समय नमी तनाव के प्रति संवेदनशील है। केवल तब व्यवहार्य जब महत्वपूर्ण अवस्थाओं पर कुछ सिंचाई सुनिश्चित की जा सके। स्थानीय विशेषज्ञ से उपयुक्तता पर चर्चा करें।"
+              ]
+            },
+            {
+              "title": "प्रत्येक विकल्प को व्यवहार्य क्या बनाएगा",
+              "items": [
+                "गेहूँ: पुष्ट विश्वसनीय सिंचाई क्षमता (संभव सिंचाइयों की संख्या), पानी रोकने के लिए समतल और मेड़बंद खेत, और समय पर बुवाई की योजना। इनके बिना गेहूँ उच्च-जोखिम है।",
+                "चना: बुवाई के समय पर्याप्त संचित मृदा नमी (छोटा गड्ढा खोदकर जाँचें), खेत में गंभीर उकठा का इतिहास न होना, और स्थानीय रूप से सुझाई गई किस्म का गुणवत्ता बीज उपलब्ध होना।",
+                "सरसों: यदि वर्षा विफल हो तो महत्वपूर्ण अवस्थाओं पर जल उपलब्धता की पुष्ट योजना, और उपज के लिए बाज़ार या घरेलू उपयोग की योजना। स्थानीय विशेषज्ञ से पुष्टि करें कि क्षेत्र में सरसों सामान्यतः उगाई जाती है या नहीं।"
+              ]
+            },
+            {
+              "title": "अनुपलब्ध प्रमाण और अनुवर्ती कदम",
+              "items": [
+                "किसी भी उर्वरक या फसल पर निर्णय से पहले खेत-विशिष्ट मृदा परीक्षण (pH, जैविक कार्बन, N, P, K और सूक्ष्म पोषक तत्वों सहित) कराएँ। गाँव मृदा स्वास्थ्य कार्ड श्रेणियाँ इसका विकल्प नहीं हैं।",
+                "खेत में वास्तविक मृदा नमी हाथ से जाँचें (छोटा गड्ढा खोदकर मिट्टी दबाएँ) और पुष्टि करें कि साझा बोरवेल कितनी सिंचाइयाँ विश्वसनीय रूप से और किस लागत पर दे सकता है।",
+                "संक्षिप्त सूची पर स्थानीय कृषि विशेषज्ञ (KVK, ब्लॉक कृषि अधिकारी या कृषि विज्ञानी) से चर्चा करें, जो स्थानीय मौसम, बाज़ार पहुँच, बजट और श्रम पर विचार कर सकें। इनके स्पष्ट होने तक फसल अंतिम रूप न दें।"
+              ]
+            },
+            {
+              "title": "सामान्य खेत तैयारी और निरीक्षण (रासायनिक सलाह नहीं)",
+              "items": [
+                "खेत में बचे धान के भूसे और ठूँठ का निरीक्षण करें। अवशेष को केवल स्थानीय सलाह के अनुसार हटाएँ या मिलाएँ; अत्यधिक सतही अवशेष बुवाई और नमी संरक्षण में बाधा डाल सकता है।",
+                "यदि गोबर की खाद या कंपोस्ट उपयोग करें, तो सुनिश्चित करें कि वह पूरी तरह विघटित हो। यह मृदा की जल-धारण क्षमता और जैविक गुणों को सुधार सकता है, लेकिन मृदा परीक्षण का विकल्प नहीं है।",
+                "बुवाई से पहले खेत की मेड़ों, नालियों और जल निकास मार्गों की क्षति या खरपतवार के लिए जाँच करें। अच्छा खेत समतलीकरण और मेड़बंदी नमी संरक्षित करने और सीमित सिंचाई को अधिक प्रभावी बनाने में मदद करते हैं।"
+              ]
+            }
+          ],
+          "government": {
+            "title": "राज्य-स्तरीय सरकारी सलाह",
+            "coverage": "राज्य-स्तरीय कवरेज: उत्तर प्रदेश। पीलीभीत के लिए ज़िला बुलेटिन उपलब्ध नहीं है। सलाह राज्य समग्र बुलेटिन और उसके साझा सलाहकार समूह से है जिसमें इस ज़िले का स्पष्ट उल्लेख है। यह स्वतंत्र ज़िला पूर्वानुमान या खेत माप नहीं है। नवीनतम प्रकाशित संदर्भ: इसकी घोषित वैधता 2026-10-27T08:30:00+05:30 पर समाप्त हुई। केवल सामान्य फसल-योजना संदर्भ; वर्तमान मौसम या समय-संवेदनशील सलाह नहीं। कार्य करने से पहले नवीनतम बुलेटिन जाँचें।",
+            "items": [
+              "मृदा में नमी संरक्षित करने के लिए जुताई ठीक से की जानी चाहिए।",
+              "रबी फसल की बुवाई से पहले खेत की सफाई की सलाह दी जाती है।",
+              "मेड़ें, नालियाँ, बिना बोई खेत और खेत की सड़कें खरपतवार हटाकर साफ की जानी चाहिए; साथ ही फसल और सब्जी की बुवाई से पहले पूरी तरह विघटित FYM या कंपोस्ट का उपयोग करें क्योंकि यह मृदा के भौतिक और जैविक गुणों को सुधारता है और इस प्रकार मृदा की जल धारण क्षमता तथा पोषक स्थिति बढ़ाता है।"
+            ]
+          },
+          "soil_note": "संग्रहित गाँव मृदा स्वास्थ्य कार्ड नमूना-श्रेणी गणनाएँ, इस खेत की मृदा रसायन नहीं।",
+          "satellite_note": "ऐतिहासिक गाँव वनस्पति सूचकांक (NDVI)। ये तिथि-युक्त गाँव-बहुभुज आँकड़े हैं, वर्तमान खेत नमी, रोग, फसल अवस्था या उपज नहीं।",
+          "rainfall_note": "इस खेत के लिए वर्षा उपलब्ध नहीं है क्योंकि कोई सटीक खेत निर्देशांक नहीं दिए गए थे। गाँव के नाम से निकटवर्ती ग्रिड सेल निर्दिष्ट नहीं किया गया है।",
+          "methods": "AI-सहायित रिपोर्ट की पठनीयता और असमर्थित परिशुद्धता के लिए समीक्षा की गई। यह एक उदाहरण है, खेत निदान या इनपुट-मात्रा नुस्खा नहीं। निर्णयों की पुष्टि स्थानीय कृषि विशेषज्ञ से करें।"
+        }
+      },
+      "shared": {
+        "created_date": "2026-10-27",
+        "government": {
+          "issued_at": "2026-10-23",
+          "valid_until": "2026-10-27T08:30:00+05:30",
+          "source_url": "https://mausam.imd.gov.in/lucknow/mcdata/agromet.pdf",
+          "coverage_level": "state",
+          "state": "Uttar Pradesh",
+          "district": "Pilibhit",
+          "reference_only": true
+        },
+        "soil": {
+          "kind": "soil",
+          "status": "available",
+          "scope": "Village tested-sample categories, not this farmer’s field",
+          "cycle": "2025-26",
+          "retrieved_at": "2026-10-14T09:50:16.089539+00:00",
+          "counts": {
+            "N_High": 0,
+            "N_Low": 100,
+            "N_Medium": 0,
+            "P_High": 3,
+            "P_Low": 48,
+            "P_Medium": 49,
+            "K_High": 0,
+            "K_Low": 98,
+            "K_Medium": 2,
+            "S_Sufficient": 100,
+            "S_Deficient": 0,
+            "OC_High": 0,
+            "OC_Low": 84,
+            "OC_Medium": 16,
+            "P H_Alkaline": 0,
+            "P H_Acidic": 0,
+            "P H_Neutral": 100,
+            "EC_Saline": 0,
+            "EC_Non Saline": 100,
+            "Fe_Sufficient": 37,
+            "Fe_Deficient": 63,
+            "Zn_Sufficient": 6,
+            "Zn_Deficient": 94,
+            "Cu_Sufficient": 99,
+            "Cu_Deficient": 1,
+            "B_Sufficient": 100,
+            "B_Deficient": 0,
+            "Mn_Sufficient": 74,
+            "Mn_Deficient": 26
+          },
+          "source_url": "https://soilhealth.dac.gov.in/nutrient-dashboard",
+          "note": "Reported sample category counts; not laboratory measurements for this field."
+        },
+        "satellite": {
+          "kind": "satellite",
+          "status": "available",
+          "scope": "Dated source village polygon, not the farmer’s field or current crop",
+          "dates": [
+            "2023-11-22",
+            "2024-11-26"
+          ],
+          "before_ndvi": 0.4698,
+          "after_ndvi": 0.2381,
+          "ndvi_change": -0.2317,
+          "paired_coverage_pct": 100,
+          "retrieved_at": "2026-10-14T12:26:37.415863+00:00",
+          "source_url": "https://dataspace.copernicus.eu/explore-data/data-collections/sentinel-data/sentinel-2",
+          "note": "Comparison uses the same clear pixels. Missing statistics are withheld; greenness does not establish cause, disease or yield."
+        }
+      },
+      "pdfs": {
+        "en": {
+          "file": "Jatipur-03-crop-options.pdf",
+          "sha256": "a93449cfde91febb6358423d896c721dafc0af8253fb481099dd1f55bb893436"
+        },
+        "hi": {
+          "file": "Jatipur-03-crop-options-hi.pdf",
+          "sha256": "9d4d70276f4697bc46fbefb3fd62fcd2f85546a4e986d5d583cf229faa666df6"
+        }
+      }
+    }
+  }
+}

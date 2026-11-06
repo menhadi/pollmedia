@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {nativeSummary,nativeOverviewValue,nativeSummaryText,nativeBreaks} from '../public/js/census-native-overview.js';
+import {censusValues,rawCensusValue,datedRecords} from '../public/js/census-map-year.js';
+test('counts use numeric records, retain zero and do not invent missing values',()=>{assert.equal(nativeOverviewValue([10,4,3,0,{},0],'sum'),0);assert.equal(nativeOverviewValue([10,0,0,0,{},0],'sum'),null);assert.equal(nativeOverviewValue([10,4,3,12,{},0],'mean'),4);});
+test('code summaries show reported coverage, never sum water codes',()=>{const s=[10,8,8,15,{'0':2,'1':1,'2':5},0];assert.equal(nativeOverviewValue(s,'category'),80);assert.match(nativeSummaryText(s,{kind:'category'}),/not facility availability/);assert.match(nativeSummaryText(s,{kind:'category'}),/2: 5 records/);});
+test('ambiguous district parent is not assigned',()=>{const d={groups:{'9:173:':[1,1,1,450,{},0]}};assert.equal(nativeSummary({lgd_districts:[{state:'9',district:'173'},{state:'9',district:'176'}]},d),null);assert.equal(nativeSummary({lgd_districts:[{state:'9',district:'173'}]},d)[3],450);});
+test('village raw text, zero and negative originals survive while missing remains missing',()=>{const r={directory:{values:{EDU_FAC:'A',TAP:0,AREA:-2,X:null}},pca:{values:{P_06:450}}};const v=censusValues(r);assert.equal(v.vd_EDU_FAC,'A');assert.equal(rawCensusValue(r,'vd_EDU_FAC'),'A');assert.equal(v.vd_TAP,0);assert.equal(v.vd_AREA,-2);assert.equal(v.vd_X,null);assert.equal(v.pca_P_06,450);assert.deepEqual(datedRecords([{values:{population:99}}],{},'2011')[0].values,{population:99});});
+test('colour thresholds are finite and strictly increasing',()=>{const b=nativeBreaks([0,0,1,4,9,15,null]);assert.ok(b.every((v,i)=>Number.isFinite(v)&&(!i||v>b[i-1])));});

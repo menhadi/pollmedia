@@ -1,0 +1,55 @@
+{
+  "source_url": "https://shgsewb.gov.in/ssp_portal_doc/WBSSP%3DCode%20List%3DDistrict-Code-List.pdf",
+  "source_title": "Districts Of West Bengal [As per LGD]",
+  "checked_on": "2026-10-13",
+  "districts": [
+    {
+      "state": "19",
+      "code": "315",
+      "name": "Kolkata",
+      "census_state": "19",
+      "census_district": "342"
+    },
+    {
+      "state": "33",
+      "code": "568",
+      "name": "Chennai",
+      "census_state": "33",
+      "census_district": "603",
+      "source_url": "https://dilrmp.gov.in/dilrmpold/dashboard/district-list-dashboard"
+    },
+    {
+      "state": "36",
+      "code": "507",
+      "name": "Hyderabad",
+      "census_state": "28",
+      "census_district": "536",
+      "source_url": "https://dilrmp.gov.in/dilrmpold/dashboard/district-list-dashboard"
+    },
+    {
+      "state": "27",
+      "code": "482",
+      "name": "Mumbai",
+      "census_state": "27",
+      "census_district": "519",
+      "source_url": "https://dilrmp.gov.in/dilrmpold/dashboard/district-list-dashboard"
+    },
+    {
+      "state": "27",
+      "code": "483",
+      "name": "Mumbai Suburban",
+      "census_state": "27",
+      "census_district": "518",
+      "source_url": "https://dilrmp.gov.in/dilrmpold/dashboard/district-list-dashboard"
+    },
+    {
+      "state": "4",
+      "code": "44",
+      "name": "Chandigarh",
+      "census_state": "04",
+      "census_district": "055",
+      "source_url": "https://dilrmp.gov.in/dilrmpold/dashboard/district-list-dashboard"
+    }
+  ],
+  "scope": "Additive official urban-only district navigation identities. Census codes remain separately dated; no municipal or ward ID inferred."
+}

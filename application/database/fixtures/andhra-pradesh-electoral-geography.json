@@ -1,0 +1,1440 @@
+{
+  "state": "Andhra Pradesh",
+  "source_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "source_date": "2014-03-01",
+  "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "territorial_reference_date": "2004-02-15",
+  "scope": "All175 dated 2014 Andhra Pradesh AC rows and25 PCs; historical district references retained; current/Census/SOI boundary correspondence unverified; PC7 original conflict retained",
+  "flags": [
+    "Historical district references retained; current/Census/SOI boundary correspondence unverified",
+    "AC53 Table A Rampachodavaram versus Table B Rampachodavaram/Rampachodovaram spelling review deferred",
+    "Partial extraction; runtime integration and public/rendered checks pending",
+    "AC20 Table A Bhimili versus Table B Bhimli spelling retained; runtime alias review deferred",
+    "PC7 source conflict: Table B prints47-Mandapeta while Table A gives48; displayed linkage uses Table A code48 with original retained; formal correction review pending",
+    "AC46 Gannavaram(SC) and AC71 Gannavaram share normalized name; name-only routing must retain ambiguous identity and pending context rather than assign district totals",
+    "AC36 Prathipadu and AC93 Prathipadu(SC) share normalized name; name-only district context remains ambiguous",
+    "AC98 Table A Sattenapalle versus Table B Sattenapalli spelling retained for later review",
+    "Dated schedule uses Kadapa; Census and preserved SOI label use Y.S.R.; contextual association does not certify boundary editions",
+    "SOI uses later Ananthapuramu coverage; historical Census/electoral Anantapur scope includes areas outside that source label; boundary correspondence pending"
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Ichchapuram",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 2,
+      "name": "Palasa",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 3,
+      "name": "Tekkali",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 4,
+      "name": "Pathapatnam",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 5,
+      "name": "Srikakulam",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 6,
+      "name": "Amadalavalasa",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 7,
+      "name": "Etcherla",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 8,
+      "name": "Narasannapeta",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 9,
+      "name": "Rajam (SC)",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 10,
+      "name": "Palakonda (ST)",
+      "district": "Srikakulam",
+      "page": 30
+    },
+    {
+      "code": 11,
+      "name": "Kurupam (ST)",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 12,
+      "name": "Parvathipuram (SC)",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 13,
+      "name": "Salur (ST)",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 14,
+      "name": "Bobbili",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 15,
+      "name": "Cheepurupalli",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 16,
+      "name": "Gajapathinagaram",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 17,
+      "name": "Nellimarla",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 18,
+      "name": "Vizianagaram",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 19,
+      "name": "Srungavarapukota",
+      "district": "Vizianagaram",
+      "page": 30
+    },
+    {
+      "code": 20,
+      "name": "Bhimili",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 21,
+      "name": "Visakhapatnam East",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 22,
+      "name": "Visakhapatnam South",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 23,
+      "name": "Visakhapatnam North",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 24,
+      "name": "Visakhapatnam West",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 25,
+      "name": "Gajuwaka",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 26,
+      "name": "Chodavaram",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 27,
+      "name": "Madugula",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 28,
+      "name": "Araku Valley (ST)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 29,
+      "name": "Paderu (ST)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 30,
+      "name": "Anakapalle",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 31,
+      "name": "Pendurthi",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 32,
+      "name": "Yelamanchili",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 33,
+      "name": "Payakaraopet (SC)",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 34,
+      "name": "Narsipatnam",
+      "district": "Visakhapatnam",
+      "page": 31
+    },
+    {
+      "code": 35,
+      "name": "Tuni",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 36,
+      "name": "Prathipadu",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 37,
+      "name": "Pithapuram",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 38,
+      "name": "Kakinada Rural",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 39,
+      "name": "Peddapuram",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 40,
+      "name": "Anaparthy",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 41,
+      "name": "Kakinada City",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 42,
+      "name": "Ramachandrapuram",
+      "district": "East Godavari",
+      "page": 31
+    },
+    {
+      "code": 43,
+      "name": "Mummidivaram",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 44,
+      "name": "Amalapuram (SC)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 45,
+      "name": "Razole (SC)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 46,
+      "name": "Gannavaram (SC)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 47,
+      "name": "Kothapeta",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 48,
+      "name": "Mandapeta",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 49,
+      "name": "Rajanagaram",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 50,
+      "name": "Rajahmundry City",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 51,
+      "name": "Rajahmundry Rural",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 52,
+      "name": "Jaggampeta",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 53,
+      "name": "Rampachodavaram (ST)",
+      "district": "East Godavari",
+      "page": 32
+    },
+    {
+      "code": 54,
+      "name": "Kovvur (SC)",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 55,
+      "name": "Nidadavole",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 56,
+      "name": "Achanta",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 57,
+      "name": "Palacole",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 58,
+      "name": "Narasapuram",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 59,
+      "name": "Bhimavaram",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 60,
+      "name": "Undi",
+      "district": "West Godavari",
+      "page": 32
+    },
+    {
+      "code": 61,
+      "name": "Tanuku",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 62,
+      "name": "Tadepalligudem",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 63,
+      "name": "Unguturu",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 64,
+      "name": "Denduluru",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 65,
+      "name": "Eluru",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 66,
+      "name": "Gopalapuram (SC)",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 67,
+      "name": "Polavaram (ST)",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 68,
+      "name": "Chintalapudi (SC)",
+      "district": "West Godavari",
+      "page": 33
+    },
+    {
+      "code": 69,
+      "name": "Tiruvuru (SC)",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 70,
+      "name": "Nuzvid",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 71,
+      "name": "Gannavaram",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 72,
+      "name": "Gudivada",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 73,
+      "name": "Kaikalur",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 74,
+      "name": "Pedana",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 75,
+      "name": "Machilipatnam",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 76,
+      "name": "Avanigadda",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 77,
+      "name": "Pamarru (SC)",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 78,
+      "name": "Penamaluru",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 79,
+      "name": "Vijayawada West",
+      "district": "Krishna",
+      "page": 33
+    },
+    {
+      "code": 80,
+      "name": "Vijayawada Central",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 81,
+      "name": "Vijayawada East",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 82,
+      "name": "Mylavaram",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 83,
+      "name": "Nandigama (SC)",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 84,
+      "name": "Jaggayyapeta",
+      "district": "Krishna",
+      "page": 34
+    },
+    {
+      "code": 85,
+      "name": "Pedakurapadu",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 86,
+      "name": "Tadikonda (SC)",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 87,
+      "name": "Mangalagiri",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 88,
+      "name": "Ponnuru",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 89,
+      "name": "Vemuru (SC)",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 90,
+      "name": "Repalle",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 91,
+      "name": "Tenali",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 92,
+      "name": "Bapatla",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 93,
+      "name": "Prathipadu (SC)",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 94,
+      "name": "Guntur West",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 95,
+      "name": "Guntur East",
+      "district": "Guntur",
+      "page": 34
+    },
+    {
+      "code": 96,
+      "name": "Chilakaluripet",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 97,
+      "name": "Narasaraopet",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 98,
+      "name": "Sattenapalle",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 99,
+      "name": "Vinukonda",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 100,
+      "name": "Gurajala",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 101,
+      "name": "Macherla",
+      "district": "Guntur",
+      "page": 35
+    },
+    {
+      "code": 102,
+      "name": "Yerragondapalem (SC)",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 103,
+      "name": "Darsi",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 104,
+      "name": "Parchur",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 105,
+      "name": "Addanki",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 106,
+      "name": "Chirala",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 107,
+      "name": "Santhanuthalapadu (SC)",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 108,
+      "name": "Ongole",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 109,
+      "name": "Kandukur",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 110,
+      "name": "Kondapi (SC)",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 111,
+      "name": "Markapuram",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 112,
+      "name": "Giddalur",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 113,
+      "name": "Kanigiri",
+      "district": "Prakasam",
+      "page": 35
+    },
+    {
+      "code": 114,
+      "name": "Kavali",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 115,
+      "name": "Atmakur",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 116,
+      "name": "Kovur",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 117,
+      "name": "Nellore City",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 118,
+      "name": "Nellore Rural",
+      "district": "Nellore",
+      "page": 35
+    },
+    {
+      "code": 119,
+      "name": "Sarvepalli",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 120,
+      "name": "Gudur (SC)",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 121,
+      "name": "Sullurpeta (SC)",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 122,
+      "name": "Venkatagiri",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 123,
+      "name": "Udayagiri",
+      "district": "Nellore",
+      "page": 36
+    },
+    {
+      "code": 124,
+      "name": "Badvel (SC)",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 125,
+      "name": "Rajampet",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 126,
+      "name": "Kadapa",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 127,
+      "name": "Kodur (SC)",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 128,
+      "name": "Rayachoti",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 129,
+      "name": "Pulivendla",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 130,
+      "name": "Kamalapuram",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 131,
+      "name": "Jammalamadugu",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 132,
+      "name": "Proddatur",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 133,
+      "name": "Mydukur",
+      "district": "Kadapa",
+      "page": 36
+    },
+    {
+      "code": 134,
+      "name": "Allagadda",
+      "district": "Kurnool",
+      "page": 36
+    },
+    {
+      "code": 135,
+      "name": "Srisailam",
+      "district": "Kurnool",
+      "page": 36
+    },
+    {
+      "code": 136,
+      "name": "Nandikotkur (SC)",
+      "district": "Kurnool",
+      "page": 36
+    },
+    {
+      "code": 137,
+      "name": "Kurnool",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 138,
+      "name": "Panyam",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 139,
+      "name": "Nandyal",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 140,
+      "name": "Banaganapalle",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 141,
+      "name": "Dhone",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 142,
+      "name": "Pattikonda",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 143,
+      "name": "Kodumur (SC)",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 144,
+      "name": "Yemmiganur",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 145,
+      "name": "Mantralayam",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 146,
+      "name": "Adoni",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 147,
+      "name": "Alur",
+      "district": "Kurnool",
+      "page": 37
+    },
+    {
+      "code": 148,
+      "name": "Rayadurg",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 149,
+      "name": "Uravakonda",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 150,
+      "name": "Guntakal",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 151,
+      "name": "Tadpatri",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 152,
+      "name": "Singanamala (SC)",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 153,
+      "name": "Anantapur Urban",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 154,
+      "name": "Kalyandurg",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 155,
+      "name": "Raptadu",
+      "district": "Anantapur",
+      "page": 37
+    },
+    {
+      "code": 156,
+      "name": "Madakasira (SC)",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 157,
+      "name": "Hindupur",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 158,
+      "name": "Penukonda",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 159,
+      "name": "Puttaparthi",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 160,
+      "name": "Dharmavaram",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 161,
+      "name": "Kadiri",
+      "district": "Anantapur",
+      "page": 38
+    },
+    {
+      "code": 162,
+      "name": "Thamballapalle",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 163,
+      "name": "Pileru",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 164,
+      "name": "Madanapalle",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 165,
+      "name": "Punganur",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 166,
+      "name": "Chandragiri",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 167,
+      "name": "Tirupati",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 168,
+      "name": "Srikalahasti",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 169,
+      "name": "Satyavedu (SC)",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 170,
+      "name": "Nagari",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 171,
+      "name": "Gangadhara Nellore (SC)",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 172,
+      "name": "Chittoor",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 173,
+      "name": "Puthalapattu (SC)",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 174,
+      "name": "Palamaner",
+      "district": "Chittoor",
+      "page": 38
+    },
+    {
+      "code": 175,
+      "name": "Kuppam",
+      "district": "Chittoor",
+      "page": 38
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Araku (ST)",
+      "ac_codes": [
+        10,
+        11,
+        12,
+        13,
+        28,
+        29,
+        53
+      ],
+      "page": 39
+    },
+    {
+      "code": 2,
+      "name": "Srikakulam",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "page": 39
+    },
+    {
+      "code": 3,
+      "name": "Vizianagaram",
+      "ac_codes": [
+        7,
+        9,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "page": 39
+    },
+    {
+      "code": 4,
+      "name": "Visakhapatnam",
+      "ac_codes": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "page": 39
+    },
+    {
+      "code": 5,
+      "name": "Anakapalle",
+      "ac_codes": [
+        26,
+        27,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "page": 39
+    },
+    {
+      "code": 6,
+      "name": "Kakinada",
+      "ac_codes": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        41,
+        52
+      ],
+      "page": 39
+    },
+    {
+      "code": 7,
+      "name": "Amalapuram (SC)",
+      "ac_codes": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ],
+      "raw_ac_codes": [
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        47
+      ],
+      "page": 39,
+      "code_conflict": "Table B explicitly names Mandapeta but prints47; Table A gives48. Runtime uses Table A seat identity; conflicting original retained. Formal correction review pending."
+    },
+    {
+      "code": 8,
+      "name": "Rajahmundry",
+      "ac_codes": [
+        40,
+        49,
+        50,
+        51,
+        54,
+        55,
+        66
+      ],
+      "page": 39
+    },
+    {
+      "code": 9,
+      "name": "Narsapuram",
+      "ac_codes": [
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62
+      ],
+      "page": 39
+    },
+    {
+      "code": 10,
+      "name": "Eluru",
+      "ac_codes": [
+        63,
+        64,
+        65,
+        67,
+        68,
+        70,
+        73
+      ],
+      "page": 39
+    },
+    {
+      "code": 11,
+      "name": "Machilipatnam",
+      "ac_codes": [
+        71,
+        72,
+        74,
+        75,
+        76,
+        77,
+        78
+      ],
+      "page": 39
+    },
+    {
+      "code": 12,
+      "name": "Vijayawada",
+      "ac_codes": [
+        69,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84
+      ],
+      "page": 39
+    },
+    {
+      "code": 13,
+      "name": "Guntur",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        91,
+        93,
+        94,
+        95
+      ],
+      "page": 39
+    },
+    {
+      "code": 14,
+      "name": "Narasaraopet",
+      "ac_codes": [
+        85,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101
+      ],
+      "page": 39
+    },
+    {
+      "code": 15,
+      "name": "Bapatla (SC)",
+      "ac_codes": [
+        89,
+        90,
+        92,
+        104,
+        105,
+        106,
+        107
+      ],
+      "page": 39
+    },
+    {
+      "code": 16,
+      "name": "Ongole",
+      "ac_codes": [
+        102,
+        103,
+        108,
+        110,
+        111,
+        112,
+        113
+      ],
+      "page": 39
+    },
+    {
+      "code": 17,
+      "name": "Nandyal",
+      "ac_codes": [
+        134,
+        135,
+        136,
+        138,
+        139,
+        140,
+        141
+      ],
+      "page": 39
+    },
+    {
+      "code": 18,
+      "name": "Kurnool",
+      "ac_codes": [
+        137,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147
+      ],
+      "page": 39
+    },
+    {
+      "code": 19,
+      "name": "Anantapur",
+      "ac_codes": [
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154
+      ],
+      "page": 39
+    },
+    {
+      "code": 20,
+      "name": "Hindupur",
+      "ac_codes": [
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161
+      ],
+      "page": 40
+    },
+    {
+      "code": 21,
+      "name": "Kadapa",
+      "ac_codes": [
+        124,
+        126,
+        129,
+        130,
+        131,
+        132,
+        133
+      ],
+      "page": 40
+    },
+    {
+      "code": 22,
+      "name": "Nellore",
+      "ac_codes": [
+        109,
+        114,
+        115,
+        116,
+        117,
+        118,
+        123
+      ],
+      "page": 40
+    },
+    {
+      "code": 23,
+      "name": "Tirupati (SC)",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        122,
+        167,
+        168,
+        169
+      ],
+      "page": 40
+    },
+    {
+      "code": 24,
+      "name": "Rajampet",
+      "ac_codes": [
+        125,
+        127,
+        128,
+        162,
+        163,
+        164,
+        165
+      ],
+      "page": 40
+    },
+    {
+      "code": 25,
+      "name": "Chittoor (SC)",
+      "ac_codes": [
+        166,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175
+      ],
+      "page": 40
+    }
+  ],
+  "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "pc_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "district_source_date": "2014-03-01",
+  "pc_source_date": "2014-03-01",
+  "district_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "pc_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa"
+}

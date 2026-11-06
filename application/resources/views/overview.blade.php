@@ -6,8 +6,13 @@
 <link rel="stylesheet" href="{{ asset('css/home-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/home-dashboard.css')),0,12) }}">
 <script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script>
 <script src="{{ asset('js/home-dashboard.js') }}?v={{ substr(hash_file('sha256',public_path('js/home-dashboard.js')),0,12) }}" defer></script>
+@if(isset($catalogue)) @include('india-map-assets') @endif
 </head><body class="election-ui home-dashboard">@include('public-header')
+@php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('india','India'); @endphp
+@include('community-area-issues')
+
 <main class="home-main">
+@if(isset($catalogue))<section class="india-explorer" aria-label="Explore India on the map">@include('india-map-explorer')</section>@endif
 <section class="home-hero"><div><p class="home-eyebrow">India, across the years</p><h1>See how India votes.<br>Explore the places behind the numbers.</h1><p>Election trends, constituency results and the story of your place.</p><nav class="home-topics" aria-label="Explore topics"><a href="#lok-sabha">Lok Sabha elections ↓</a><a href="#assembly">Assembly elections ↓</a><a href="#census-places">Census & places ↓</a></nav></div><div class="home-hero-mark" aria-hidden="true"><span>Votes.</span><span>People.</span><span>Places.</span></div></section>
 <section class="home-finder" aria-labelledby="finder-title"><div><p class="home-eyebrow">Go straight to your constituency</p><h2 id="finder-title">Find election results</h2></div><form data-home-finder data-endpoint="{{ route('home') }}"><label>Election<select name="kind"><option value="pc">Lok Sabha</option><option value="ac">State Assembly</option></select></label><label>State / Union Territory<select name="state"><option value="">Choose a state</option>@foreach($states as $item)<option value="{{ $item['name'] }}">{{ $item['name'] }}</option>@endforeach</select></label><label>Constituency<select name="seat" disabled><option value="">Choose a state first</option></select></label><button disabled>View results →</button><p class="home-finder-status" role="status"></p></form></section>
 @foreach(['pc'=>['lok-sabha','Lok Sabha elections','India’s parliamentary election history'], 'ac'=>['assembly','Assembly elections','How the states have voted']] as $kind=>[$anchor,$label,$description])

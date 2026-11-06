@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "district": {
+    "state_lgd": "9",
+    "district_lgd": "173",
+    "name": "Pilibhit"
+  },
+  "checked_on": "2026-10-27",
+  "sources": {
+    "hospitals": {
+      "url": "https://pilibhit.nic.in/public-utility-category/hospitals/",
+      "directory_updated": "2026-10-22",
+      "checked_on": "2026-10-27",
+      "sha256": "1863eb08845dcfab12140e2e3f6dc1e5b9f5f2df2857d9f4ec59a3ac72354f30",
+      "status": 200
+    },
+    "education": {
+      "url": "https://pilibhit.nic.in/phone-education-department/",
+      "directory_updated": "2018-02-23",
+      "checked_on": "2026-10-27",
+      "sha256": "a9cc8b5de17491ba1317eb6db6524fc0267acc8d640564457d5889786e3938f4",
+      "status": 200
+    },
+    "agriculture": {
+      "url": "https://pilibhit.nic.in/phone-agricultural-department/",
+      "directory_updated": "2026-09-18",
+      "checked_on": "2026-10-27",
+      "sha256": "108c3c8896153f69395503ea5920a1e901a23480e5e9dddef3283ec71f43fc56",
+      "status": 200
+    },
+    "utilities": {
+      "url": "https://pilibhit.nic.in/phone-executive-engineers/",
+      "directory_updated": "2024-06-21",
+      "checked_on": "2026-10-27",
+      "sha256": "c6d20aca189f683608d3a70196457ce6635e50a8919ecf18f6ef6d43c248d6aa",
+      "status": 200
+    },
+    "schools": {
+      "url": "https://kys.udiseplus.gov.in/home/",
+      "directory_updated": null,
+      "checked_on": "2026-10-27",
+      "sha256": "6bf3cefebfd5676a3747c96a277629dd94e3870a401c44f30a5ef93dc2b3f62e",
+      "status": 200
+    }
+  },
+  "services": [
+    {
+      "id": "district-hospital",
+      "category": "health",
+      "name": {
+        "en": "District Hospital",
+        "hi": "जिला अस्पताल"
+      },
+      "address": {
+        "en": "Ekta Nagar, Pilibhit, Uttar Pradesh 262001",
+        "hi": "एकता नगर, पीलीभीत, उत्तर प्रदेश 262001"
+      },
+      "phone": null,
+      "source": "hospitals",
+      "kind": "facility"
+    },
+    {
+      "id": "chc-amaria",
+      "category": "health",
+      "name": {
+        "en": "CHC Amaria",
+        "hi": "सामुदायिक स्वास्थ्य केंद्र, अमरिया"
+      },
+      "address": {
+        "en": "C.H.C. Amaria, Distt. Pilibhit-262121",
+        "hi": "अमरिया, जनपद पीलीभीत 262121"
+      },
+      "phone": null,
+      "source": "hospitals",
+      "kind": "facility"
+    },
+    {
+      "id": "chc-bisalpur",
+      "category": "health",
+      "name": {
+        "en": "CHC Bisalpur",
+        "hi": "सामुदायिक स्वास्थ्य केंद्र, बीसलपुर"
+      },
+      "address": {
+        "en": "C.H.C. Bisalpur, Distt. Pilibhit-262001",
+        "hi": "बीसलपुर, जनपद पीलीभीत 262001"
+      },
+      "phone": null,
+      "source": "hospitals",
+      "kind": "facility"
+    },
+    {
+      "id": "chc-puranpur",
+      "category": "health",
+      "name": {
+        "en": "CHC Puranpur",
+        "hi": "सामुदायिक स्वास्थ्य केंद्र, पूरनपुर"
+      },
+      "address": {
+        "en": "C.H.C. Puranpur, Distt. Pilibhit-262001",
+        "hi": "पूरनपुर, जनपद पीलीभीत 262001"
+      },
+      "phone": null,
+      "source": "hospitals",
+      "kind": "facility"
+    },
+    {
+      "id": "chc-bilsanda",
+      "category": "health",
+      "name": {
+        "en": "CHC Bilsanda",
+        "hi": "सामुदायिक स्वास्थ्य केंद्र, बिलसंडा"
+      },
+      "address": {
+        "en": "C.H.C. Bilsanda, Distt. Pilibhit-262001",
+        "hi": "बिलसंडा, जनपद पीलीभीत 262001"
+      },
+      "phone": null,
+      "source": "hospitals",
+      "kind": "facility"
+    },
+    {
+      "id": "basic-education",
+      "category": "education",
+      "name": {
+        "en": "District Basic Education Officer",
+        "hi": "जिला बेसिक शिक्षा अधिकारी"
+      },
+      "address": null,
+      "phone": "9453004113",
+      "source": "education",
+      "kind": "office",
+      "reused_fixture": "issue-directory-contacts.json"
+    },
+    {
+      "id": "school-inspector",
+      "category": "education",
+      "name": {
+        "en": "District Inspector of School",
+        "hi": "जिला विद्यालय निरीक्षक"
+      },
+      "address": null,
+      "phone": "9454457301",
+      "source": "education",
+      "kind": "office",
+      "reused_fixture": "issue-directory-contacts.json"
+    },
+    {
+      "id": "water-office",
+      "category": "utilities",
+      "name": {
+        "en": "Executive Engineer, Jal Nigam",
+        "hi": "अधिशासी अभियंता, जल निगम"
+      },
+      "address": null,
+      "phone": "9473942569",
+      "source": "utilities",
+      "kind": "office",
+      "reused_fixture": "issue-directory-contacts.json"
+    },
+    {
+      "id": "electricity-office",
+      "category": "utilities",
+      "name": {
+        "en": "Executive Engineer, Electricity, Pilibhit",
+        "hi": "अधिशासी अभियंता, विद्युत, पीलीभीत"
+      },
+      "address": null,
+      "phone": "9415901754",
+      "source": "utilities",
+      "kind": "office",
+      "reused_fixture": "issue-directory-contacts.json"
+    },
+    {
+      "id": "agriculture-office",
+      "category": "farming",
+      "name": {
+        "en": "District Agriculture Officer",
+        "hi": "जिला कृषि अधिकारी"
+      },
+      "address": null,
+      "phone": "7839882618",
+      "source": "agriculture",
+      "kind": "office"
+    },
+    {
+      "id": "soil-conservation",
+      "category": "farming",
+      "name": {
+        "en": "Soil Conservation Officer",
+        "hi": "भूमि संरक्षण अधिकारी"
+      },
+      "address": null,
+      "phone": "9456243754",
+      "source": "agriculture",
+      "kind": "office"
+    },
+    {
+      "id": "school-finder",
+      "category": "education",
+      "name": {
+        "en": "Find a school · UDISE+",
+        "hi": "विद्यालय खोजें · UDISE+"
+      },
+      "address": null,
+      "phone": null,
+      "source": "schools",
+      "kind": "online"
+    }
+  ]
+}

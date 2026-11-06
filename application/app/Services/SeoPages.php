@@ -32,7 +32,7 @@ class SeoPages
                     $label .= ' · '.$entry->year;
                 }
 
-                return ['path' => route('constituency.overview', $parameters, false), 'label' => $label,
+                return ['path' => ConstituencyUrls::url($parameters, false), 'label' => $label,
                     'title' => mb_substr($label.' | Pollmedia', 0, 180),
                     'description' => 'Explore '.$label.': election results, candidate votes, party shares, turnout, winners and official source reports. Historical election records with available coverage.'];
             })->unique('path')->keyBy('path');
@@ -41,8 +41,8 @@ class SeoPages
             return collect([['path' => '/india/sir', 'label' => 'SIR electoral roll listings', 'title' => 'SIR electoral roll source data | Pollmedia', 'description' => 'Explore published SIR enumeration data, constituency coverage and official source documents.']])->keyBy('path');
         }
         if ($type === 'census') {
-            return DB::table('census_catalogue_rows as r')->join('census_editions as e', 'e.id', '=', 'r.edition_id')->where('e.status', 'published')->when($year !== '', fn ($query) => $query->where('e.year', (int) $year))->when($search !== '', fn ($query) => $query->where('r.name', 'like', '%'.$search.'%'))->orderBy('r.id')->select('r.id', 'r.name', 'e.year')->get()->map(function (object $row): array {
-                return ['path' => route('civic.place', ['record' => $row->id], false), 'label' => $row->name.' Census '.$row->year, 'title' => $row->name.' Census '.$row->year.' | Pollmedia', 'description' => 'Explore '.$row->name.' Census '.$row->year.': published population measures and official source records. Historical figures, not current estimates.'];
+            return DB::table('census_catalogue_rows as r')->join('census_editions as e', 'e.id', '=', 'r.edition_id')->where('e.status', 'published')->when($year !== '', fn ($query) => $query->where('e.year', (int) $year))->when($search !== '', fn ($query) => $query->where('r.name', 'like', '%'.$search.'%'))->orderBy('r.id')->select('r.id', 'r.name', 'r.level', 'e.year')->get()->map(function (object $row): array {
+                return ['path' => $row->level === 'STATE' ? route('civic.state', ['state' => PlaceFactTables::stateSlug($row->name), 'census' => (int) $row->year === 2011 ? null : $row->year], false) : route('civic.place', ['record' => $row->id], false), 'label' => $row->name.' Census '.$row->year, 'title' => $row->name.' Census '.$row->year.': Population & Literacy | Pollmedia', 'description' => 'Explore '.$row->name.' Census '.$row->year.' population, literacy, households, maps, graphs and available place comparisons. View dated records and source coverage.'];
             })->keyBy('path');
         }
         if ($type === 'village') {
@@ -53,7 +53,7 @@ class SeoPages
             $dataset = app(PlaceController::class)->payload('census-pilibhit-villages-'.$year);
 
             return collect($dataset['villages'])->filter(fn (array $village): bool => $search === '' || str_contains(mb_strtolower($village['name']), mb_strtolower($search)))->map(function (array $village) use ($year): array {
-                $path = route('villages.show', ['code' => $village['code'], 'slug' => Str::slug($village['name'])] + ($year === '2001' ? ['year' => $year] : []), false);
+                $path = route('villages.named', ['state' => 'uttar-pradesh', 'district' => 'pilibhit', 'code' => $village['code'], 'slug' => Str::slug($village['name'])] + ($year === '2001' ? ['year' => $year] : []), false);
 
                 return ['path' => $path, 'label' => $village['name'].' - Census '.$year.' ('.$village['code'].')',
                     'title' => $village['name'].' village - Census '.$year.' | Pollmedia',
@@ -90,9 +90,42 @@ class SeoPages
     public function current(string $canonical): ?object
     {
         $path = parse_url($canonical, PHP_URL_PATH) ?: '/';
-        $query = parse_url($canonical, PHP_URL_QUERY);
+        parse_str(parse_url($canonical, PHP_URL_QUERY) ?? '', $parameters);
+        $parameters = array_diff_key($parameters, array_flip(['lang', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']));
+        $queries = [http_build_query($parameters, '', '&', PHP_QUERY_RFC3986), http_build_query($parameters)];
+        ksort($parameters);
+        $queries[] = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+        $queries[] = http_build_query($parameters);
+        $paths = array_map(fn (string $query): string => $path.($query !== '' ? '?'.$query : ''), array_unique($queries));
+        $paths[] = $path;
+        $legacyPaths = [];
+        $legacyBasePaths = [];
+        if (preg_match('~^/india/constituencies/(pc|ac)/([a-z0-9-]+)/([a-z0-9-]+)$~', $path, $identity)) {
+            $legacyPaths = ConstituencyUrls::legacyPaths($identity[1], $identity[2], $identity[3], $parameters);
+            $legacyBasePaths = ConstituencyUrls::legacyPaths($identity[1], $identity[2], $identity[3]);
+        }
+        if (preg_match('~^/india/census/(?:subdistricts|villages|towns)/[^/]+/[^/]+/[^/]+-([0-9]+)$~', $path, $match)) {
+            $legacyBasePaths[] = '/india/census/places/'.$match[1];
+        }
+        if (preg_match('~^/india/villages/[^/]+/[^/]+/[^/]+-([0-9]+)$~', $path, $match)) {
+            $legacyBasePaths[] = '/india/elections/village-map/villages/'.$match[1];
+        }
+        $metadataByPath = DB::table('seo_metadata')->whereIn('path', array_unique([...$paths, ...$legacyPaths, ...$legacyBasePaths]))->get()->keyBy('path');
 
-        return DB::table('seo_metadata')->where('path', $path.($query ? '?'.$query : ''))->first();
+        foreach ($paths as $candidate) {
+            if ($metadataByPath->has($candidate)) {
+                return $metadataByPath->get($candidate);
+            }
+        }
+
+        foreach ([$legacyPaths, $legacyBasePaths] as $aliases) {
+            $metadata = $metadataByPath->only($aliases)->sortBy([['revision_id', 'desc'], ['updated_at', 'desc']])->first();
+            if ($metadata !== null) {
+                return $metadata;
+            }
+        }
+
+        return null;
     }
 
     public function apply(string $path, ?string $title, ?string $description, int $expected, string $action, ?string $keywords = null): void
