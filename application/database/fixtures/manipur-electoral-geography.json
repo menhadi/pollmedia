@@ -1,0 +1,395 @@
+{
+  "state": "Manipur",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Khundrakpam",
+      "district": "Imphal East"
+    },
+    {
+      "code": 2,
+      "name": "Heingang",
+      "district": "Imphal East"
+    },
+    {
+      "code": 3,
+      "name": "Khurai",
+      "district": "Imphal East"
+    },
+    {
+      "code": 4,
+      "name": "Khetrigao",
+      "district": "Imphal East"
+    },
+    {
+      "code": 5,
+      "name": "Thongju",
+      "district": "Imphal East"
+    },
+    {
+      "code": 6,
+      "name": "Keirao",
+      "district": "Imphal East"
+    },
+    {
+      "code": 7,
+      "name": "Andro",
+      "district": "Imphal East"
+    },
+    {
+      "code": 8,
+      "name": "Lamlai",
+      "district": "Imphal East"
+    },
+    {
+      "code": 9,
+      "name": "Thangmeiband",
+      "district": "Imphal West"
+    },
+    {
+      "code": 10,
+      "name": "Uripok",
+      "district": "Imphal West"
+    },
+    {
+      "code": 11,
+      "name": "Sagolband",
+      "district": "Imphal West"
+    },
+    {
+      "code": 12,
+      "name": "Keisamthong",
+      "district": "Imphal West"
+    },
+    {
+      "code": 13,
+      "name": "Singjamei",
+      "district": "Imphal West"
+    },
+    {
+      "code": 14,
+      "name": "Yaiskul",
+      "district": "Imphal East"
+    },
+    {
+      "code": 15,
+      "name": "Wangkhei",
+      "district": "Imphal East"
+    },
+    {
+      "code": 16,
+      "name": "Sekmai",
+      "district": "Imphal West"
+    },
+    {
+      "code": 17,
+      "name": "Lamsang",
+      "district": "Imphal West"
+    },
+    {
+      "code": 18,
+      "name": "Konthoujam",
+      "district": "Imphal West"
+    },
+    {
+      "code": 19,
+      "name": "Patsoi",
+      "district": "Imphal West"
+    },
+    {
+      "code": 20,
+      "name": "Langthabal",
+      "district": "Imphal West"
+    },
+    {
+      "code": 21,
+      "name": "Naoria Pakhanglakpa",
+      "district": "Imphal West"
+    },
+    {
+      "code": 22,
+      "name": "Wangoi",
+      "district": "Imphal West"
+    },
+    {
+      "code": 23,
+      "name": "Mayang Imphal",
+      "district": "Imphal West"
+    },
+    {
+      "code": 24,
+      "name": "Nambol",
+      "district": "Bishnupur"
+    },
+    {
+      "code": 25,
+      "name": "Oinam",
+      "district": "Bishnupur"
+    },
+    {
+      "code": 26,
+      "name": "Bishenpur",
+      "district": "Bishnupur"
+    },
+    {
+      "code": 27,
+      "name": "Moirang",
+      "district": "Bishnupur"
+    },
+    {
+      "code": 28,
+      "name": "Thanga",
+      "district": "Bishnupur"
+    },
+    {
+      "code": 29,
+      "name": "Kumbi",
+      "district": "Bishnupur"
+    },
+    {
+      "code": 30,
+      "name": "Lilong",
+      "district": "Thoubal"
+    },
+    {
+      "code": 31,
+      "name": "Thoubal",
+      "district": "Thoubal"
+    },
+    {
+      "code": 32,
+      "name": "Wangkhem",
+      "district": "Thoubal"
+    },
+    {
+      "code": 33,
+      "name": "Heirok",
+      "district": "Thoubal"
+    },
+    {
+      "code": 34,
+      "name": "Wangjing Tentha",
+      "district": "Thoubal"
+    },
+    {
+      "code": 35,
+      "name": "Khangabok",
+      "district": "Thoubal"
+    },
+    {
+      "code": 36,
+      "name": "Wabgai",
+      "district": "Kakching"
+    },
+    {
+      "code": 37,
+      "name": "Kakching",
+      "district": "Kakching"
+    },
+    {
+      "code": 38,
+      "name": "Hiyanglam",
+      "district": "Kakching"
+    },
+    {
+      "code": 39,
+      "name": "Sugnu",
+      "district": "Kakching"
+    },
+    {
+      "code": 40,
+      "name": "Jiribam",
+      "district": "Jiribam"
+    },
+    {
+      "code": 41,
+      "name": "Chandel",
+      "district": "Chandel"
+    },
+    {
+      "code": 42,
+      "name": "Tengnoupal",
+      "district": "Tengnoupal"
+    },
+    {
+      "code": 43,
+      "name": "Phungyar",
+      "district": "Kamjong"
+    },
+    {
+      "code": 44,
+      "name": "Ukhrul",
+      "district": "Ukhrul"
+    },
+    {
+      "code": 45,
+      "name": "Chingai",
+      "district": "Ukhrul"
+    },
+    {
+      "code": 46,
+      "name": "Saikul",
+      "district": "Kangpokpi"
+    },
+    {
+      "code": 47,
+      "name": "Karong",
+      "district": "Senapati"
+    },
+    {
+      "code": 48,
+      "name": "Mao",
+      "district": "Senapati"
+    },
+    {
+      "code": 49,
+      "name": "Tadubi",
+      "district": "Senapati"
+    },
+    {
+      "code": 50,
+      "name": "Kangpokpi",
+      "district": "Kangpokpi"
+    },
+    {
+      "code": 51,
+      "name": "Saitu",
+      "district": "Kangpokpi"
+    },
+    {
+      "code": 52,
+      "name": "Tamei",
+      "district": "Tamenglong"
+    },
+    {
+      "code": 53,
+      "name": "Tamenglong",
+      "district": "Tamenglong"
+    },
+    {
+      "code": 54,
+      "name": "Nungba",
+      "district": "Noney"
+    },
+    {
+      "code": 55,
+      "name": "Tipaimukh",
+      "district": "Pherzawl"
+    },
+    {
+      "code": 56,
+      "name": "Thanlon",
+      "district": "Pherzawl"
+    },
+    {
+      "code": 57,
+      "name": "Henglep",
+      "district": "Churachandpur"
+    },
+    {
+      "code": 58,
+      "name": "Churachandpur",
+      "district": "Churachandpur"
+    },
+    {
+      "code": 59,
+      "name": "Saikot",
+      "district": "Churachandpur"
+    },
+    {
+      "code": 60,
+      "name": "Singhat",
+      "district": "Churachandpur"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Inner Manipur",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "page": 294
+    },
+    {
+      "code": 2,
+      "name": "Outer Manipur (ST)",
+      "ac_codes": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "page": 294
+    }
+  ],
+  "district_url": "https://ceomanipur.nic.in/sir",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "SIR 2026 page; territorial effective date unverified",
+  "pc_source_date": "2008 Schedule XVIII reproduces 1976 order; territorial reference 1975-08-01",
+  "district_sha256": "4f8fffc86a7669f297f43594e576944172cc82d6a3525f0ba3e5f0544d621919",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_source_label": "Official CEO SIR 2026 district\u2013AC enumeration table; elector counts omitted",
+  "flags": [
+    "Modern electoral district table does not certify Census2011 boundary correspondence",
+    "Kamjong map legend says 45-Chingai; CEO SIR table explicitly associates 43-Phungyar with Kamjong; conflict retained",
+    "Kangpokpi district map title says Ukhrul; table association used",
+    "AC spelling and reservation suffix reconciliation pending; PC identities and full segment sets from historical order retained",
+    "All geometry and demographic joins remain pending"
+  ]
+}

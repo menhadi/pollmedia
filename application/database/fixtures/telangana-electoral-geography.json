@@ -1,0 +1,1095 @@
+{
+  "state": "Telangana",
+  "source_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "source_date": "2014-03-01",
+  "sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "territorial_reference_date": "2004-02-15",
+  "scope": "All119 Table A AC identities across10 historical district references and17 associated PC segment scopes; original source-code conflicts retained, boundary correspondence and formal source reviews pending",
+  "flags": [
+    "Historical Census state28/532 and later SOI ADILABAD source coverage are not matching boundary editions",
+    "Table A Bellampalli versus Table B Bellampalle spelling retained for review",
+    "Other2014 PC source code conflicts pending extraction; no silent recoding",
+    "PC4 original printed1-7 conflicts with Table A; named segment identities reconciled using official CEO list, original retained; source date of CEO list unverified",
+    "PC6 raw2014 codes8-14 retained; reconciled named segments supported by Table A and undated official CEO list; formal review pending",
+    "PC7 and PC9 printed source codes retained alongside named identity reconciliation; undated CEO list publication and formal source review pending",
+    "PC10 original29-35 codes preserved alongside named identity reconciliation; undated official CEO list and formal review pending",
+    "PC11 printed36-42 source codes preserved alongside named identity reconciliation; undated CEO list and formal source review pending",
+    "PC13 original printed43-49 retained alongside named identity reconciliation; undated CEO list and formal source review pending",
+    "PC15 printed50-56 retained alongside named identity reconciliation; Waradhanapet Table A/Wardhannapet Table B spelling conflict retained for review",
+    "PC17 original printed57-63 retained alongside named identity reconciliation; undated CEO list and formal source review pending"
+  ],
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Sirpur",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 2,
+      "name": "Chennur (SC)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 3,
+      "name": "Bellampalli (SC)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 4,
+      "name": "Mancherial",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 5,
+      "name": "Asifabad (ST)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 6,
+      "name": "Khanapur (ST)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 7,
+      "name": "Adilabad",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 8,
+      "name": "Boath (ST)",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 9,
+      "name": "Nirmal",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 10,
+      "name": "Mudhole",
+      "district": "Adilabad",
+      "page": 40
+    },
+    {
+      "code": 11,
+      "name": "Armur",
+      "district": "Nizamabad",
+      "page": 40
+    },
+    {
+      "code": 12,
+      "name": "Bodhan",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 13,
+      "name": "Jukkal (SC)",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 14,
+      "name": "Banswada",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 15,
+      "name": "Yellareddy",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 16,
+      "name": "Kamareddy",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 17,
+      "name": "Nizamabad (Urban)",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 18,
+      "name": "Nizamabad (Rural)",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 19,
+      "name": "Balkonda",
+      "district": "Nizamabad",
+      "page": 41
+    },
+    {
+      "code": 20,
+      "name": "Koratla",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 21,
+      "name": "Jagtial",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 22,
+      "name": "Dharmapuri (SC)",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 23,
+      "name": "Ramagundam",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 24,
+      "name": "Manthani",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 25,
+      "name": "Peddapalle",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 26,
+      "name": "Karimnagar",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 27,
+      "name": "Choppadandi (SC)",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 28,
+      "name": "Vemulawada",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 29,
+      "name": "Sircilla",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 30,
+      "name": "Manakondur (SC)",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 31,
+      "name": "Huzurabad",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 32,
+      "name": "Husnabad",
+      "district": "Karimnagar",
+      "page": 41
+    },
+    {
+      "code": 33,
+      "name": "Siddipet",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 34,
+      "name": "Medak",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 35,
+      "name": "Narayankhed",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 36,
+      "name": "Andole (SC)",
+      "district": "Medak",
+      "page": 41
+    },
+    {
+      "code": 37,
+      "name": "Narsapur",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 38,
+      "name": "Zahirabad (SC)",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 39,
+      "name": "Sangareddy",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 40,
+      "name": "Patancheru",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 41,
+      "name": "Dubbak",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 42,
+      "name": "Gajwel",
+      "district": "Medak",
+      "page": 42
+    },
+    {
+      "code": 43,
+      "name": "Medchal",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 44,
+      "name": "Malkajgiri",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 45,
+      "name": "Quthbullapur",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 46,
+      "name": "Kukatpalle",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 47,
+      "name": "Uppal",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 48,
+      "name": "Ibrahimpatnam",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 49,
+      "name": "Lal Bahadur Nagar",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 50,
+      "name": "Maheswaram",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 51,
+      "name": "Rajendranagar",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 52,
+      "name": "Serilingampally",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 53,
+      "name": "Chevella (SC)",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 54,
+      "name": "Pargi",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 42
+    },
+    {
+      "code": 55,
+      "name": "Vicarabad (SC)",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 43
+    },
+    {
+      "code": 56,
+      "name": "Tandur",
+      "district": "Rangareddi",
+      "context_district": "Rangareddy",
+      "page": 43
+    },
+    {
+      "code": 57,
+      "name": "Musheerabad",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 58,
+      "name": "Malakpet",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 59,
+      "name": "Amberpet",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 60,
+      "name": "Khairatabad",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 61,
+      "name": "Jubilee Hills",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 62,
+      "name": "Sanathnagar",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 63,
+      "name": "Nampally",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 64,
+      "name": "Karwan",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 65,
+      "name": "Goshamahal",
+      "district": "Hyderabad",
+      "page": 43
+    },
+    {
+      "code": 66,
+      "name": "Charminar",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 67,
+      "name": "Chandrayangutta",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 68,
+      "name": "Yakutpura",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 69,
+      "name": "Bahadurpura",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 70,
+      "name": "Secunderabad",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 71,
+      "name": "Secunderabad Cantt. (SC)",
+      "district": "Hyderabad",
+      "page": 44
+    },
+    {
+      "code": 72,
+      "name": "Kodangal",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 73,
+      "name": "Narayanpet",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 74,
+      "name": "Mahbubnagar",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 75,
+      "name": "Jadcherla",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 76,
+      "name": "Devarkadra",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 77,
+      "name": "Makthal",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 78,
+      "name": "Wanaparthy",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 79,
+      "name": "Gadwal",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 80,
+      "name": "Alampur (SC)",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 81,
+      "name": "Nagarkurnool",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 82,
+      "name": "Achampet (SC)",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 83,
+      "name": "Kalwakurthy",
+      "district": "Mahbubnagar",
+      "page": 44
+    },
+    {
+      "code": 84,
+      "name": "Shadnagar",
+      "district": "Mahbubnagar",
+      "page": 45
+    },
+    {
+      "code": 85,
+      "name": "Kollapur",
+      "district": "Mahbubnagar",
+      "page": 45
+    },
+    {
+      "code": 86,
+      "name": "Devarakonda (ST)",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 87,
+      "name": "Nagarjuna Sagar",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 88,
+      "name": "Miryalaguda",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 89,
+      "name": "Huzurnagar",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 90,
+      "name": "Kodad",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 91,
+      "name": "Suryapet",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 92,
+      "name": "Nalgonda",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 93,
+      "name": "Munugode",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 94,
+      "name": "Bhongir",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 95,
+      "name": "Nakrekal (SC)",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 96,
+      "name": "Thungathurthi (SC)",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 97,
+      "name": "Alair",
+      "district": "Nalgonda",
+      "page": 45
+    },
+    {
+      "code": 98,
+      "name": "Jangaon",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 99,
+      "name": "Ghanpur (Station) (SC)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 100,
+      "name": "Palakurthi",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 101,
+      "name": "Dornakal (ST)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 102,
+      "name": "Mahabubabad (ST)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 103,
+      "name": "Narsampet",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 104,
+      "name": "Parkal",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 105,
+      "name": "Warangal West",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 106,
+      "name": "Warangal East",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 107,
+      "name": "Waradhanapet (SC)",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 108,
+      "name": "Bhupalpalle",
+      "district": "Warangal",
+      "page": 45
+    },
+    {
+      "code": 109,
+      "name": "Mulug (ST)",
+      "district": "Warangal",
+      "page": 46
+    },
+    {
+      "code": 110,
+      "name": "Pinapaka (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 111,
+      "name": "Yellandu (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 112,
+      "name": "Khammam",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 113,
+      "name": "Palair",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 114,
+      "name": "Madhira (SC)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 115,
+      "name": "Wyra (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 116,
+      "name": "Sathupalle (SC)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 117,
+      "name": "Kothagudem",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 118,
+      "name": "Aswaraopeta (ST)",
+      "district": "Khammam",
+      "page": 46
+    },
+    {
+      "code": 119,
+      "name": "Bhadrachalam (ST)",
+      "district": "Khammam",
+      "page": 46
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Adilabad (ST)",
+      "ac_codes": [
+        1,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "page": 46
+    },
+    {
+      "code": 2,
+      "name": "Peddapalle (SC)",
+      "ac_codes": [
+        2,
+        3,
+        4,
+        22,
+        23,
+        24,
+        25
+      ],
+      "page": 46
+    },
+    {
+      "code": 3,
+      "name": "Karimnagar",
+      "ac_codes": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "page": 46
+    },
+    {
+      "code": 4,
+      "name": "Nizamabad",
+      "ac_codes": [
+        11,
+        12,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "raw_ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B repeats1-7 for named segments; Table A identities and preserved official CEO PC list support11,12,17,18,19,20,21. Original retained; formal correction review pending."
+    },
+    {
+      "code": 5,
+      "name": "Zahirabad",
+      "ac_codes": [
+        13,
+        14,
+        15,
+        16,
+        35,
+        36,
+        38
+      ],
+      "page": 46
+    },
+    {
+      "code": 6,
+      "name": "Medak",
+      "ac_codes": [
+        33,
+        34,
+        37,
+        39,
+        40,
+        41,
+        42
+      ],
+      "raw_ac_codes": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed8-14 conflicts with Table A identities. Table A names and preserved official CEO list support33,34,37,39,40,41,42. Original retained; formal source review pending."
+    },
+    {
+      "code": 7,
+      "name": "Malkajgiri",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        49,
+        71
+      ],
+      "raw_ac_codes": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed15-21 conflicts with Table A identities; Table A names and official CEO list support43,44,45,46,47,49,71. Original retained; formal review pending."
+    },
+    {
+      "code": 8,
+      "name": "Secunderabad",
+      "ac_codes": [
+        57,
+        59,
+        60,
+        61,
+        62,
+        63,
+        70
+      ],
+      "page": 46
+    },
+    {
+      "code": 9,
+      "name": "Hyderabad",
+      "ac_codes": [
+        58,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ],
+      "raw_ac_codes": [
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed22-28 conflicts with Table A identities; Table A names and official CEO list support58,64,65,66,67,68,69. Original retained; formal review pending."
+    },
+    {
+      "code": 10,
+      "name": "Chevella",
+      "ac_codes": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "raw_ac_codes": [
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "page": 46,
+      "source_code_note": "2014 Table B printed29-35 conflicts with Table A identities. Named Table A segments and official CEO list support50-56. Original codes retained; formal review pending."
+    },
+    {
+      "code": 11,
+      "name": "Mahbubnagar",
+      "ac_codes": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        84
+      ],
+      "raw_ac_codes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed36-42 conflicts with Table A identities. Named Table A segments and official CEO list support72,73,74,75,76,77,84. Original codes retained; formal review pending."
+    },
+    {
+      "code": 12,
+      "name": "Nagarkurnool (SC)",
+      "ac_codes": [
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        85
+      ],
+      "page": 47
+    },
+    {
+      "code": 13,
+      "name": "Nalgonda",
+      "ac_codes": [
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92
+      ],
+      "raw_ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed43-49 conflicts with Table A identities. Named Table A segments and official CEO list support86-92. Original codes retained; formal review pending."
+    },
+    {
+      "code": 14,
+      "name": "Bhongir",
+      "ac_codes": [
+        48,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "page": 47
+    },
+    {
+      "code": 15,
+      "name": "Warangal (SC)",
+      "ac_codes": [
+        99,
+        100,
+        104,
+        105,
+        106,
+        107,
+        108
+      ],
+      "raw_ac_codes": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed50-56 conflicts with Table A identities. Named Table A segments and official CEO list support99,100,104,105,106,107,108. Original codes retained; formal review pending."
+    },
+    {
+      "code": 16,
+      "name": "Mahabubabad (ST)",
+      "ac_codes": [
+        101,
+        102,
+        103,
+        109,
+        110,
+        111,
+        119
+      ],
+      "page": 47
+    },
+    {
+      "code": 17,
+      "name": "Khammam",
+      "ac_codes": [
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118
+      ],
+      "raw_ac_codes": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "page": 47,
+      "source_code_note": "2014 Table B printed57-63 conflicts with Table A identities. Named Table A segments and official CEO list support112-118. Original codes retained; formal review pending."
+    }
+  ],
+  "district_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "district_source_date": "2014-03-01",
+  "district_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "pc_url": "https://apseeds.ap.gov.in/PDF/apreorg/APRegACT2014.pdf",
+  "pc_source_date": "2014-03-01",
+  "pc_sha256": "84cd566b917f9a3f600c47f6540520c950166b424a964ad37d64dc3c968114aa",
+  "supplementary_pc_source": {
+    "url": "https://ceotelangana.nic.in/General_Information/pclist.pdf",
+    "sha256": "677094082ff76a23a2346f897f9b7a8f50c857bc1ccb0be477b9ffb758965c75",
+    "preserved_path": "pilot\\raw\\telangana-soi\\ceo-pc-list.pdf",
+    "source_date": "undated; publication date unverified",
+    "observed_at": "2026-10-12",
+    "status": "extracted; source-code comparison pending"
+  }
+}

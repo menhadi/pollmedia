@@ -42,6 +42,6 @@ class ElectionPlaceIdentity
             }
         }
 
-        return app(ElectionGeographySummary::class)->states()->first(fn ($row) => mb_strtolower($row['name']) === $key)['name'] ?? trim($state);
+        return ElectionGeographySummary::currentStateName($state) ?? trim($state);
     }
 }

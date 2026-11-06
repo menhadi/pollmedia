@@ -30,8 +30,9 @@ class CensusProfileSummary
                     continue;
                 }
                 $row = $rows->first();
+                $sourceRecordId = $row->id;
                 $values = json_decode($row->values, true);
-                $points[$referenceYear] = ['year' => (int) $referenceYear, 'population' => $values['TOT_P'] ?? null, 'male' => $values['TOT_M'] ?? null, 'female' => $values['TOT_F'] ?? null, 'growth' => $points[$referenceYear]['growth'] ?? null, 'households' => null, 'literates' => null, 'ratio' => ($values['TOT_M'] ?? 0) > 0 && isset($values['TOT_F']) ? 1000 * $values['TOT_F'] / $values['TOT_M'] : null, 'notes' => json_decode($row->flags, true) ?? [], 'source_url' => $row->source_url];
+                $points[$referenceYear] = ['record_id' => $sourceRecordId, 'year' => (int) $referenceYear, 'population' => $values['TOT_P'] ?? null, 'male' => $values['TOT_M'] ?? null, 'female' => $values['TOT_F'] ?? null, 'growth' => $points[$referenceYear]['growth'] ?? null, 'households' => null, 'literates' => null, 'ratio' => ($values['TOT_M'] ?? 0) > 0 && isset($values['TOT_F']) ? 1000 * $values['TOT_F'] / $values['TOT_M'] : null, 'notes' => json_decode($row->flags, true) ?? [], 'source_url' => $row->source_url];
                 $historySource = ['boundary_basis' => json_decode($row->geography, true)['boundary_basis'], 'url' => $row->source_url];
             }
         }
@@ -41,6 +42,7 @@ class CensusProfileSummary
             foreach (['population' => 'TOT_P', 'male' => 'TOT_M', 'female' => 'TOT_F', 'households' => 'No_HH', 'literates' => 'P_LIT'] as $key => $field) {
                 $point[$key] = $values[$field] ?? $point[$key] ?? null;
             }
+            $point['record_id'] = $records[0]->id ?? null;
             $point['ratio'] = ($point['male'] ?? 0) > 0 && ($point['female'] ?? null) !== null ? 1000 * $point['female'] / $point['male'] : null;
             $point['notes'] = array_unique(array_merge($point['notes'], json_decode($records[0]->flags, true) ?? []));
             $points[$year] = $point;

@@ -1,0 +1,2508 @@
+{
+  "state": "Bihar",
+  "coverage": "All forty Bihar PCs and243 AC membership codes recorded from preserved CEO2019 administrative list;boundary edition and code-to-dashboard mapping exceptions remain flagged",
+  "district_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+  "district_source_date": "2019 election list; boundary effective date unverified",
+  "district_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+  "pc_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+  "pc_source_date": "2019 election list; boundary effective date unverified",
+  "pc_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+  "district_source_label": "Official CEO 2019 constituency and district list",
+  "pc_source_label": "Official CEO 2019 constituency and district list",
+  "district_rows": [
+    {
+      "code": 46,
+      "name": "Narpatganj",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 47,
+      "name": "Raniganj (SC)",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 48,
+      "name": "Forbesganj",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 49,
+      "name": "Araria",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 50,
+      "name": "Jokihat",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 51,
+      "name": "Sikti",
+      "district": "Araria",
+      "page": 1
+    },
+    {
+      "code": 214,
+      "name": "Arwal",
+      "district": "Arwal",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 215,
+      "name": "Kurtha",
+      "district": "Arwal",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 216,
+      "name": "Jahanabad",
+      "district": "Jehanabad",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 217,
+      "name": "Ghosi",
+      "district": "Jehanabad",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 218,
+      "name": "Makhdumapur (SC)",
+      "district": "Jehanabad",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 233,
+      "name": "Atri",
+      "district": "Gaya",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 211,
+      "name": "Nokha",
+      "district": "Rohtas",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "10 of 10"
+    },
+    {
+      "code": 212,
+      "name": "Dehri",
+      "district": "Rohtas",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "10 of 10"
+    },
+    {
+      "code": 213,
+      "name": "Karakat",
+      "district": "Rohtas",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "10 of 10"
+    },
+    {
+      "code": 219,
+      "name": "Goh",
+      "district": "Aurangabad",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "10 of 10"
+    },
+    {
+      "code": 220,
+      "name": "Obra",
+      "district": "Aurangabad",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "10 of 10"
+    },
+    {
+      "code": 221,
+      "name": "Nabinagar",
+      "district": "Aurangabad",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "10 of 10"
+    },
+    {
+      "code": 222,
+      "name": "Kutumba (SC)",
+      "district": "Aurangabad",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "1 of 10"
+    },
+    {
+      "code": 223,
+      "name": "Aurangabad",
+      "district": "Aurangabad",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "1 of 10"
+    },
+    {
+      "code": 224,
+      "name": "Rafiganj",
+      "district": "Aurangabad",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "1 of 10"
+    },
+    {
+      "code": 225,
+      "name": "Gurua",
+      "district": "Gaya",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "1 of 10"
+    },
+    {
+      "code": 227,
+      "name": "Imamganj (SC)",
+      "district": "Gaya",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "1 of 10"
+    },
+    {
+      "code": 231,
+      "name": "Tikari",
+      "district": "Gaya",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_page_label": "1 of 10"
+    },
+    {
+      "code": 157,
+      "name": "Sultanganj",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 159,
+      "name": "Amarpur",
+      "district": "Banka",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 160,
+      "name": "Dhauraiya (SC)",
+      "district": "Banka",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 161,
+      "name": "Banka",
+      "district": "Banka",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 162,
+      "name": "Katoria (ST)",
+      "district": "Banka",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 163,
+      "name": "Belhar",
+      "district": "Banka",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 141,
+      "name": "Cheria Bariarpur",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 142,
+      "name": "Bachhwara",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 143,
+      "name": "Teghra",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 144,
+      "name": "Matihani",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 145,
+      "name": "Sahebpur Kamal",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 146,
+      "name": "Begusarai",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 147,
+      "name": "Bakhri (SC)",
+      "district": "Begusarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 192,
+      "name": "Sandesh",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 193,
+      "name": "Barhara",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 194,
+      "name": "Arrah",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 195,
+      "name": "Agiaon (SC)",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 196,
+      "name": "Tarari",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 197,
+      "name": "Jagdishpur",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 198,
+      "name": "Shahpur",
+      "district": "Bhojpur",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 152,
+      "name": "Bihpur",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 153,
+      "name": "Gopalpur",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 154,
+      "name": "Pirpainti (SC)",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 155,
+      "name": "Kahalgaon",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 156,
+      "name": "Bhagalpur",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 158,
+      "name": "Nathnagar",
+      "district": "Bhagalpur",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 199,
+      "name": "Brahampur",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 200,
+      "name": "Buxar",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 201,
+      "name": "Dumraon",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 202,
+      "name": "Rajpur (SC)",
+      "district": "Buxar",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 203,
+      "name": "Ramgarh",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 210,
+      "name": "Dinara",
+      "district": "Rohtas",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 226,
+      "name": "Sherghati",
+      "district": "Gaya",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 228,
+      "name": "Barachatti (SC)",
+      "district": "Gaya",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 229,
+      "name": "Bodh Gaya (SC)",
+      "district": "Gaya",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 230,
+      "name": "Gaya Town",
+      "district": "Gaya",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 232,
+      "name": "Belaganj",
+      "district": "Gaya",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 234,
+      "name": "Wazirganj",
+      "district": "Gaya",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 78,
+      "name": "Kusheshwar Asthan (SC)",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 79,
+      "name": "Gaura Bauram",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 80,
+      "name": "Benipur",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 81,
+      "name": "Alinagar",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 82,
+      "name": "Darbhanga Rural",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 83,
+      "name": "Darbhanga",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 84,
+      "name": "Hayaghat",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 85,
+      "name": "Bahadurpur",
+      "district": "Darbhanga",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 86,
+      "name": "Keoti",
+      "district": "Darbhanga",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 87,
+      "name": "Jale",
+      "district": "Darbhanga",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 31,
+      "name": "Harlakhi",
+      "district": "Madhubani",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 32,
+      "name": "Benipatti",
+      "district": "Madhubani",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 35,
+      "name": "Bisfi",
+      "district": "Madhubani",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 36,
+      "name": "Madhubani",
+      "district": "Madhubani",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 131,
+      "name": "Kalyanpur (SC)",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 132,
+      "name": "Warisnagar",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 133,
+      "name": "Samastipur",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 139,
+      "name": "Rosera (SC)",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 99,
+      "name": "Baikunthpur",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 100,
+      "name": "Barauli",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 101,
+      "name": "Gopalganj",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 102,
+      "name": "Kuchaikote",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 103,
+      "name": "Bhorey (SC)",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 104,
+      "name": "Hathua",
+      "district": "Gopalganj",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 164,
+      "name": "Tarapur",
+      "district": "Munger",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 169,
+      "name": "Sheikhpura",
+      "district": "Sheikhpura",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 240,
+      "name": "Sikandra (SC)",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 241,
+      "name": "Jamui",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 242,
+      "name": "Jhajha",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 243,
+      "name": "Chakai",
+      "district": "Jamui",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 204,
+      "name": "Mohania (SC)",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 205,
+      "name": "Bhabua",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 206,
+      "name": "Chainpur",
+      "district": "Kaimur (Bhabua)",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 207,
+      "name": "Chenari (SC)",
+      "district": "Rohtas",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 208,
+      "name": "Sasaram",
+      "district": "Rohtas",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 209,
+      "name": "Kargahar",
+      "district": "Rohtas",
+      "source_page_label": "10 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 63,
+      "name": "Katihar",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 64,
+      "name": "Kadwa",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 65,
+      "name": "Balrampur",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 66,
+      "name": "Pranpur",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 67,
+      "name": "Manihari (ST)",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 68,
+      "name": "Barari",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 69,
+      "name": "Korha (SC)",
+      "district": "Katihar",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 58,
+      "name": "Kasba",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 59,
+      "name": "Banmankhi (SC)",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 60,
+      "name": "Rupauli",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 61,
+      "name": "Dhamdaha",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 62,
+      "name": "Purnia",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 52,
+      "name": "Bahadurganj",
+      "district": "Kishanganj",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 53,
+      "name": "Thakurganj",
+      "district": "Kishanganj",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 54,
+      "name": "Kishanganj",
+      "district": "Kishanganj",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 55,
+      "name": "Kochadhaman",
+      "district": "Kishanganj",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 56,
+      "name": "Amour",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 57,
+      "name": "Baisi",
+      "district": "Purnia",
+      "source_page_label": "2 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 165,
+      "name": "Munger",
+      "district": "Munger",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 166,
+      "name": "Jamalpur",
+      "district": "Munger",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 167,
+      "name": "Suryagarha",
+      "district": "Lakhisarai",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 168,
+      "name": "Lakhisarai",
+      "district": "Lakhisarai",
+      "source_page_label": "5 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 178,
+      "name": "Mokama",
+      "district": "Patna",
+      "source_page_label": "5 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 179,
+      "name": "Barh",
+      "district": "Patna",
+      "source_page_label": "5 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 76,
+      "name": "Simri Bakhtiarpur",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 140,
+      "name": "Hasanpur",
+      "district": "Samastipur",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 148,
+      "name": "Alauli (SC)",
+      "district": "Khagaria",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 149,
+      "name": "Khagaria",
+      "district": "Khagaria",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 150,
+      "name": "Beldaur",
+      "district": "Khagaria",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 151,
+      "name": "Parbatta",
+      "district": "Khagaria",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 70,
+      "name": "Alamnagar",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 71,
+      "name": "Bihariganj",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 72,
+      "name": "Singheshwar (SC)",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 73,
+      "name": "Madhepura",
+      "district": "Madhepura",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 74,
+      "name": "Sonbarsha (SC)",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 75,
+      "name": "Saharsa",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 77,
+      "name": "Mahishi",
+      "district": "Saharsa",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 41,
+      "name": "Nirmali",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 42,
+      "name": "Pipra",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 43,
+      "name": "Supaul",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 44,
+      "name": "Triveniganj (SC)",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 45,
+      "name": "Chhatapur",
+      "district": "Supaul",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 33,
+      "name": "Khajauli",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 34,
+      "name": "Babubarhi",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 37,
+      "name": "Rajnagar (SC)",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 38,
+      "name": "Jhanjharpur",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 39,
+      "name": "Phulparas",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 40,
+      "name": "Laukaha",
+      "district": "Madhubani",
+      "source_page_label": "3 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 88,
+      "name": "Gaighat",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 89,
+      "name": "Aurai",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 90,
+      "name": "Minapur",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 91,
+      "name": "Bochaha (SC)",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 92,
+      "name": "Sakra (SC)",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 93,
+      "name": "Kurhani",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 94,
+      "name": "Muzaffarpur",
+      "district": "Muzaffarpur",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 95,
+      "name": "Kanti",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 96,
+      "name": "Baruraj",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 97,
+      "name": "Paroo",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 98,
+      "name": "Sahebganj",
+      "district": "Muzaffarpur",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 125,
+      "name": "Vaishali",
+      "district": "Vaishali",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 171,
+      "name": "Asthawan",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 172,
+      "name": "Biharsharif",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 173,
+      "name": "Rajgir (SC)",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 174,
+      "name": "Islampur",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 175,
+      "name": "Hilsa",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 176,
+      "name": "Nalanda",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 177,
+      "name": "Harnaut",
+      "district": "Nalanda",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 1,
+      "name": "Valmiki Nagar",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 2,
+      "name": "Ramnagar (SC)",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 3,
+      "name": "Narkatiaganj",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 4,
+      "name": "Bagaha",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 5,
+      "name": "Lauriya",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 6,
+      "name": "Nautan",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 7,
+      "name": "Chanpatia",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 8,
+      "name": "Bettiah",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 9,
+      "name": "Sikta",
+      "district": "Pashchim Champaran",
+      "source_district_name": "Paschim Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 10,
+      "name": "Raxaul",
+      "district": "Purba Champaran",
+      "source_district_name": "Purvi Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 11,
+      "name": "Sugauli",
+      "district": "Purba Champaran",
+      "source_district_name": "Purvi Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 12,
+      "name": "Narkatia",
+      "district": "Purba Champaran",
+      "source_district_name": "Purvi Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 170,
+      "name": "Barbigha",
+      "district": "Sheikhpura",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 235,
+      "name": "Rajauli (SC)",
+      "district": "Nawada",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 236,
+      "name": "Hisua",
+      "district": "Nawada",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 237,
+      "name": "Nawada",
+      "district": "Nawada",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 238,
+      "name": "Gobindpur",
+      "district": "Nawada",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "aliases": [
+        "Govindpur"
+      ],
+      "alias_source_url": "https://nawada.nic.in/public-representatives/",
+      "alias_note": "District page corroborates identical AC code; CEO spelling preserved"
+    },
+    {
+      "code": 239,
+      "name": "Warsaliganj",
+      "district": "Nawada",
+      "source_page_label": "1 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "aliases": [
+        "Warisaliganj"
+      ],
+      "alias_source_url": "https://nawada.nic.in/public-representatives/",
+      "alias_note": "District page corroborates identical AC code; CEO spelling preserved"
+    },
+    {
+      "code": 180,
+      "name": "Bakhtiarpur",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 181,
+      "name": "Digha",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 182,
+      "name": "Bankipur",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 183,
+      "name": "Kumhrar",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 184,
+      "name": "Patna Sahib",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 185,
+      "name": "Fatuha",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 186,
+      "name": "Danapur",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 187,
+      "name": "Maner",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 188,
+      "name": "Phulwari (SC)",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 189,
+      "name": "Masaurhi (SC)",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 190,
+      "name": "Paliganj",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 191,
+      "name": "Bikram",
+      "district": "Patna",
+      "source_page_label": "9 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 13,
+      "name": "Harsidhi (SC)",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 14,
+      "name": "Govindganj",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 15,
+      "name": "Kesaria",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 16,
+      "name": "Kalyanpur",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 17,
+      "name": "Pipra",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 18,
+      "name": "Madhuban",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 19,
+      "name": "Motihari",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 20,
+      "name": "Chiraia",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 21,
+      "name": "Dhaka",
+      "district": "Purba Champaran",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_district_name": "Purvi Champaran",
+      "name_correspondence_note": "CEO spelling retained separately from Census district label; boundary correspondence unverified"
+    },
+    {
+      "code": 22,
+      "name": "Sheohar",
+      "district": "Sheohar",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 23,
+      "name": "Riga",
+      "district": "Sitamarhi",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 30,
+      "name": "Belsand",
+      "district": "Sitamarhi",
+      "source_page_label": "7 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 130,
+      "name": "Patepur (SC)",
+      "district": "Vaishali",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 134,
+      "name": "Ujiarpur",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 135,
+      "name": "Morwa",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 136,
+      "name": "Sarairanjan",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 137,
+      "name": "Mohiuddinnagar",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 138,
+      "name": "Bibhutipur",
+      "district": "Samastipur",
+      "source_page_label": "4 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 111,
+      "name": "Goriakothi",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 112,
+      "name": "Maharajganj",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 113,
+      "name": "Ekma",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 114,
+      "name": "Manjhi",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 115,
+      "name": "Baniapur",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 116,
+      "name": "Taraiya",
+      "district": "Saran",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 117,
+      "name": "Marhaura",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 118,
+      "name": "Chapra",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 119,
+      "name": "Garkha (SC)",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 120,
+      "name": "Amnour",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 121,
+      "name": "Parsa",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 122,
+      "name": "Sonepur",
+      "district": "Saran",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 24,
+      "name": "Bathnaha (SC)",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 25,
+      "name": "Parihar",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 26,
+      "name": "Sursand",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 27,
+      "name": "Bajpatti",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 28,
+      "name": "Sitamarhi",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 29,
+      "name": "Runnisaidpur",
+      "district": "Sitamarhi",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 105,
+      "name": "Siwan",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 106,
+      "name": "Ziradei",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 107,
+      "name": "Darauli (SC)",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 108,
+      "name": "Raghunathpur",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 109,
+      "name": "Daraundha",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 110,
+      "name": "Barharia",
+      "district": "Siwan",
+      "source_page_label": "8 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 123,
+      "name": "Hajipur",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 124,
+      "name": "Lalganj",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 126,
+      "name": "Mahua",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 127,
+      "name": "Raja Pakar (SC)",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 128,
+      "name": "Raghopur",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    },
+    {
+      "code": 129,
+      "name": "Mahnar",
+      "district": "Vaishali",
+      "source_page_label": "6 of 10",
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 9,
+      "name": "Araria",
+      "ac_codes": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "code_source": "https://ceoelection.bihar.gov.in/Form20/Loksabha_include/AC046.pdf"
+    },
+    {
+      "code": 36,
+      "name": "Jahanabad",
+      "ac_codes": [
+        214,
+        215,
+        216,
+        217,
+        218,
+        233
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list",
+      "cross_district_scope": [
+        "Arwal",
+        "Jehanabad",
+        "Gaya"
+      ]
+    },
+    {
+      "code": 35,
+      "name": "Karakat",
+      "ac_codes": [
+        211,
+        212,
+        213,
+        219,
+        220,
+        221
+      ],
+      "cross_district_scope": [
+        "Rohtas",
+        "Aurangabad"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 37,
+      "name": "Aurangabad",
+      "ac_codes": [
+        222,
+        223,
+        224,
+        225,
+        227,
+        231
+      ],
+      "cross_district_scope": [
+        "Aurangabad",
+        "Gaya"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 27,
+      "name": "Banka",
+      "ac_codes": [
+        157,
+        159,
+        160,
+        161,
+        162,
+        163
+      ],
+      "cross_district_scope": [
+        "Bhagalpur",
+        "Banka"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 24,
+      "name": "Begusarai",
+      "ac_codes": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147
+      ],
+      "cross_district_scope": [
+        "Begusarai"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 32,
+      "name": "Arrah",
+      "ac_codes": [
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198
+      ],
+      "cross_district_scope": [
+        "Bhojpur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 26,
+      "name": "Bhagalpur",
+      "ac_codes": [
+        152,
+        153,
+        154,
+        155,
+        156,
+        158
+      ],
+      "cross_district_scope": [
+        "Bhagalpur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 33,
+      "name": "Buxar",
+      "ac_codes": [
+        199,
+        200,
+        201,
+        202,
+        203,
+        210
+      ],
+      "cross_district_scope": [
+        "Buxar",
+        "Kaimur (Bhabua)",
+        "Rohtas"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 38,
+      "name": "Gaya (SC)",
+      "ac_codes": [
+        226,
+        228,
+        229,
+        230,
+        232,
+        234
+      ],
+      "cross_district_scope": [
+        "Gaya"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 14,
+      "name": "Darbhanga",
+      "ac_codes": [
+        79,
+        80,
+        81,
+        82,
+        83,
+        85
+      ],
+      "cross_district_scope": [
+        "Darbhanga"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 6,
+      "name": "Madhubani",
+      "ac_codes": [
+        31,
+        32,
+        35,
+        36,
+        86,
+        87
+      ],
+      "cross_district_scope": [
+        "Madhubani",
+        "Darbhanga"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 23,
+      "name": "Samastipur (SC)",
+      "ac_codes": [
+        78,
+        84,
+        131,
+        132,
+        133,
+        139
+      ],
+      "cross_district_scope": [
+        "Darbhanga",
+        "Samastipur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 17,
+      "name": "Gopalganj (SC)",
+      "ac_codes": [
+        99,
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "cross_district_scope": [
+        "Gopalganj"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 40,
+      "name": "Jamui (SC)",
+      "ac_codes": [
+        164,
+        169,
+        240,
+        241,
+        242,
+        243
+      ],
+      "cross_district_scope": [
+        "Munger",
+        "Sheikhpura",
+        "Jamui"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 34,
+      "name": "Sasaram (SC)",
+      "ac_codes": [
+        204,
+        205,
+        206,
+        207,
+        208,
+        209
+      ],
+      "cross_district_scope": [
+        "Kaimur (Bhabua)",
+        "Rohtas"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 11,
+      "name": "Katihar",
+      "ac_codes": [
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ],
+      "cross_district_scope": [
+        "Katihar"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 12,
+      "name": "Purnia",
+      "ac_codes": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        69
+      ],
+      "cross_district_scope": [
+        "Purnia",
+        "Katihar"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 10,
+      "name": "Kishanganj",
+      "ac_codes": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "cross_district_scope": [
+        "Kishanganj",
+        "Purnia"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 28,
+      "name": "Munger",
+      "ac_codes": [
+        165,
+        166,
+        167,
+        168,
+        178,
+        179
+      ],
+      "cross_district_scope": [
+        "Munger",
+        "Lakhisarai",
+        "Patna"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 25,
+      "name": "Khagaria",
+      "ac_codes": [
+        76,
+        140,
+        148,
+        149,
+        150,
+        151
+      ],
+      "cross_district_scope": [
+        "Saharsa",
+        "Samastipur",
+        "Khagaria"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 13,
+      "name": "Madhepura",
+      "ac_codes": [
+        70,
+        71,
+        73,
+        74,
+        75,
+        77
+      ],
+      "cross_district_scope": [
+        "Madhepura",
+        "Saharsa"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 8,
+      "name": "Supaul",
+      "ac_codes": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        72
+      ],
+      "cross_district_scope": [
+        "Supaul",
+        "Madhepura"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 7,
+      "name": "Jhanjharpur",
+      "ac_codes": [
+        33,
+        34,
+        37,
+        38,
+        39,
+        40
+      ],
+      "cross_district_scope": [
+        "Madhubani"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 15,
+      "name": "Muzaffarpur",
+      "ac_codes": [
+        88,
+        89,
+        91,
+        92,
+        93,
+        94
+      ],
+      "cross_district_scope": [
+        "Muzaffarpur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 16,
+      "name": "Vaishali",
+      "ac_codes": [
+        90,
+        95,
+        96,
+        97,
+        98,
+        125
+      ],
+      "cross_district_scope": [
+        "Muzaffarpur",
+        "Vaishali"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 29,
+      "name": "Nalanda",
+      "ac_codes": [
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177
+      ],
+      "cross_district_scope": [
+        "Nalanda"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 1,
+      "name": "Valmiki Nagar",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        9
+      ],
+      "cross_district_scope": [
+        "Pashchim Champaran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 2,
+      "name": "Paschim Champaran",
+      "ac_codes": [
+        6,
+        7,
+        8,
+        10,
+        11,
+        12
+      ],
+      "cross_district_scope": [
+        "Pashchim Champaran",
+        "Purba Champaran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 39,
+      "name": "Nawada",
+      "ac_codes": [
+        170,
+        235,
+        236,
+        237,
+        238,
+        239
+      ],
+      "cross_district_scope": [
+        "Sheikhpura",
+        "Nawada"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 30,
+      "name": "Patna Sahib",
+      "ac_codes": [
+        180,
+        181,
+        182,
+        183,
+        184,
+        185
+      ],
+      "cross_district_scope": [
+        "Patna"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 31,
+      "name": "Pataliputra",
+      "ac_codes": [
+        186,
+        187,
+        188,
+        189,
+        190,
+        191
+      ],
+      "cross_district_scope": [
+        "Patna"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 3,
+      "name": "Purvi Champaran",
+      "ac_codes": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        19
+      ],
+      "cross_district_scope": [
+        "Purba Champaran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 4,
+      "name": "Sheohar",
+      "ac_codes": [
+        18,
+        20,
+        21,
+        22,
+        23,
+        30
+      ],
+      "cross_district_scope": [
+        "Purba Champaran",
+        "Sheohar",
+        "Sitamarhi"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 22,
+      "name": "Ujiarpur",
+      "ac_codes": [
+        130,
+        134,
+        135,
+        136,
+        137,
+        138
+      ],
+      "cross_district_scope": [
+        "Vaishali",
+        "Samastipur"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 19,
+      "name": "Maharajganj",
+      "ac_codes": [
+        111,
+        112,
+        113,
+        114,
+        115,
+        116
+      ],
+      "cross_district_scope": [
+        "Siwan",
+        "Saran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 20,
+      "name": "Saran",
+      "ac_codes": [
+        117,
+        118,
+        119,
+        120,
+        121,
+        122
+      ],
+      "cross_district_scope": [
+        "Saran"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 5,
+      "name": "Sitamarhi",
+      "ac_codes": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "cross_district_scope": [
+        "Sitamarhi"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 18,
+      "name": "Siwan",
+      "ac_codes": [
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "cross_district_scope": [
+        "Siwan"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    },
+    {
+      "code": 21,
+      "name": "Hajipur (SC)",
+      "ac_codes": [
+        123,
+        124,
+        126,
+        127,
+        128,
+        129
+      ],
+      "cross_district_scope": [
+        "Vaishali"
+      ],
+      "source_url": "https://ceoelection.bihar.gov.in/pdf/2549.pdf",
+      "source_sha256": "f7295688da2e08d9d1018a1f6ffcb9b3f50ace7b791e92e6b749fcf76152bb30",
+      "source_period": "2019 election administrative list"
+    }
+  ]
+}

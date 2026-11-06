@@ -1,0 +1,12 @@
+<section class="card"><h2>Add a bucket</h2><form method="post" action="{{ route('pdf-storage.save') }}">@csrf
+<div class="field"><label for="name">Profile name</label><input id="name" name="name" required maxlength="100" value="{{ old('name') }}"></div>
+<div class="filters"><div><label for="provider">Provider</label><select id="provider" name="provider"><option value="r2">Cloudflare R2</option><option value="s3" @selected(old('provider')==='s3')>Amazon S3</option></select></div><div><label for="bucket">Bucket</label><input id="bucket" name="bucket" required value="{{ old('bucket') }}"></div><div><label for="region">Region</label><input id="region" name="region" required value="{{ old('region', 'auto') }}"><small>R2: auto. S3: your bucket region.</small></div></div>
+<div class="field"><label for="endpoint">R2 S3 API endpoint</label><input id="endpoint" name="endpoint" type="url" placeholder="https://ACCOUNT_ID.r2.cloudflarestorage.com" value="{{ old('endpoint') }}"><small>Leave empty for Amazon S3.</small></div>
+<div class="field"><label for="prefix">Folder prefix</label><input id="prefix" name="prefix" value="{{ old('prefix', 'pollmedia') }}" required></div>
+<div class="field"><label for="access-key">Access key ID</label><input id="access-key" name="access_key" type="password" autocomplete="new-password" required></div>
+<div class="field"><label for="secret-key">Secret access key</label><input id="secret-key" name="secret_key" type="password" autocomplete="new-password" required></div><button>Save bucket profile</button></form></section>
+@foreach($profiles as $profile)
+<section class="card"><h2>{{ $profile->name }}</h2><p>{{ strtoupper($profile->provider) }} / {{ $profile->bucket }} / {{ $profile->prefix }}</p><p>{{ $profile->tested_at ? 'Connection tested: '.$profile->tested_at : 'Connection not yet verified' }}</p>
+<form method="post" action="{{ route('pdf-storage.test', $profile->id) }}">@csrf<button>Test read, write and delete</button></form>
+<details><summary>Replace credentials</summary><p>Bucket and folder are fixed for this profile. Add a new profile to change destinations; existing files keep their original profile.</p><form method="post" action="{{ route('pdf-storage.credentials', $profile->id) }}">@csrf<label>New access key ID<input name="access_key" type="password" autocomplete="new-password" required></label><label>New secret key<input name="secret_key" type="password" autocomplete="new-password" required></label><button>Replace credentials</button></form></details></section>
+@endforeach

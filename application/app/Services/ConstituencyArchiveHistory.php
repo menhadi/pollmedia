@@ -89,6 +89,105 @@ class ConstituencyArchiveHistory
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        // ECI schedules (2014 p59, 2024 p112) name AC1 Yoksam-Tashiding BL;
+        // the 2024 result uses Yuksom. The 2019 schedule p101 confirms that exact-year BL label too.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'sikkim'
+            && mb_strtolower(trim($name)) === 'yuksom-tashiding (bl)') {
+            return [
+                ['names' => ['yoksam-tashiding'], 'code' => 1, 'edition' => 'cdaa9ffba759d8ab2a2173cf'],
+                ['names' => ['yoksam-tashiding (bl)'], 'code' => 1, 'edition' => 'a3d4a05dfbdc76e283649d0b'],
+            ];
+        }
+        // ECI's 2014 schedule names AC7 Soreng-Chakung; that year's results
+        // use Soreong-Chakung. Earlier editions require their own identity proof.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'sikkim'
+            && self::generalCategoryNames($name)[0] === 'soreng-chakung') {
+            return [
+                ['names' => ['soreong-chakung'], 'code' => 7, 'edition' => 'cdaa9ffba759d8ab2a2173cf'],
+            ];
+        }
+        // The 2004 report labels AC32 Sangha in its highlights (PDF p6)
+        // and Sangha (Sangha) in its summary/detail (pp43/47).
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'sikkim'
+            && mb_strtolower(trim($name)) === 'sangha') {
+            return [['names' => ['sangha (sangha)'], 'code' => 32, 'edition' => '9013d463bb4e332a159e41a1']];
+        }
+        // ECI's 5 March 2014 schedule, Statement G (PDF p59), lists these
+        // same-numbered seats as BL. The 2014 result report omits that suffix.
+        // Keep the bare names confined to that edition; do not rewrite categories.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'sikkim') {
+            $seat = match (mb_strtolower(trim($name))) {
+                'barfung (bl)' => ['barfung', 9],
+                'daramdin (bl)' => ['daramdin', 6],
+                'djongu (bl)' => ['djongu', 30],
+                'gangtok (bl)' => ['gangtok', 27],
+                'gnathang-machong (bl)' => ['gnathang-machong', 21],
+                'kabi lungchuk (bl)' => ['kabi lungchuk', 29],
+                'lachen mangan (bl)' => ['lachen mangan', 31],
+                'martam-rumtek (bl)' => ['martam-rumtek', 24],
+                'rinchenpong (bl)' => ['rinchenpong', 5],
+                'shyari (bl)' => ['shyari', 23],
+                'tumen-lingi (bl)' => ['tumen-lingi', 16],
+                default => null,
+            };
+            if ($seat !== null) {
+                return [['names' => [$seat[0]], 'code' => $seat[1], 'edition' => 'cdaa9ffba759d8ab2a2173cf']];
+            }
+        }
+        // The official 2023 map (PDF p47) labels 8 Town Bordowali, while
+        // its workbook uses Town Bardowali. Earlier Agartala Town seats are distinct.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(self::generalCategoryNames($name)[0], ['town bardowali', 'town bordowali'], true)) {
+            return [
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'f3146efb9111d25969c412f0'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'b0beb6c7b4e5f328cc4a5e39'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'bf27a1304f1e81e15b143c29'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => '8e7c85215854fcd5d5daab04'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => '2ac3d758410f3c59fe94dbdc'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'e956df9b147477572e6a99f1'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'c2b9ef2bc73bbcc70a271a58'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'ae51f7f9665bc5aca6facf61'],
+                ['names' => self::generalCategoryNames('town bordowali'), 'code' => 8, 'edition' => 'd070812d58833a38f814391b'],
+                ['names' => self::generalCategoryNames('town bardowali'), 'code' => 8, 'edition' => 'd74eaa9eba74f0984b16c588'],
+            ];
+        }
+        // The official 2023 map (PDF p47) labels 31 Radhakishorepur, while
+        // its workbook uses Radhakishorpur. Preserve edition-specific seat codes.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(self::generalCategoryNames($name)[0], ['radhakishorpur', 'radhakishorepur'], true)) {
+            return [
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 14, 'edition' => '9cedf416aa4afcee8948ef91'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 27, 'edition' => 'a09382fa323d9af5f7af7d59'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => 'f3146efb9111d25969c412f0'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => 'b0beb6c7b4e5f328cc4a5e39'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => 'bf27a1304f1e81e15b143c29'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => '8e7c85215854fcd5d5daab04'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => '2ac3d758410f3c59fe94dbdc'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => 'e956df9b147477572e6a99f1'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 32, 'edition' => 'c2b9ef2bc73bbcc70a271a58'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 31, 'edition' => 'ae51f7f9665bc5aca6facf61'],
+                ['names' => self::generalCategoryNames('radhakishorepur'), 'code' => 31, 'edition' => 'd070812d58833a38f814391b'],
+                ['names' => self::generalCategoryNames('radhakishorpur'), 'code' => 31, 'edition' => 'd74eaa9eba74f0984b16c588'],
+            ];
+        }
+        // The official 2023 map (PDF p47) labels 59 Pencharthal (ST), while
+        // its workbook uses Pecharthal (ST). The 2018 summary PDF p59 retains ST.
+        // Link only inspected editions, preserving historical codes and raw labels.
+        if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'tripura'
+            && in_array(mb_strtolower(trim($name)), ['pecharthal (st)', 'pencharthal (st)', 'pencharthal  (st)', 'pencharthal'], true)) {
+            return [
+                ['names' => ['pencharthal (st)'], 'code' => 58, 'edition' => 'f3146efb9111d25969c412f0'],
+                ['names' => ['pencharthal (st)'], 'code' => 58, 'edition' => 'b0beb6c7b4e5f328cc4a5e39'],
+                ['names' => ['pencharthal (st)'], 'code' => 58, 'edition' => 'bf27a1304f1e81e15b143c29'],
+                ['names' => ['pencharthal (st)'], 'code' => 58, 'edition' => '8e7c85215854fcd5d5daab04'],
+                ['names' => ['pencharthal (st)'], 'code' => 58, 'edition' => '2ac3d758410f3c59fe94dbdc'],
+                ['names' => ['pencharthal (st)'], 'code' => 58, 'edition' => 'e956df9b147477572e6a99f1'],
+                ['names' => ['pencharthal  (st)', 'pencharthal (st)'], 'code' => 58, 'edition' => 'c2b9ef2bc73bbcc70a271a58'],
+                ['names' => ['pencharthal  (st)', 'pencharthal (st)'], 'code' => 59, 'edition' => 'ae51f7f9665bc5aca6facf61'],
+                ['names' => ['pencharthal'], 'code' => 59, 'edition' => 'd070812d58833a38f814391b'],
+                ['names' => ['pecharthal (st)'], 'code' => 59, 'edition' => 'd74eaa9eba74f0984b16c588'],
+            ];
+        }
         // The 2023 official map calls AC 50 Pabiachhara (SC), while its workbook
         // calls it Pabiachara (SC). The 2018 summary PDF p50 retains SC omitted
         // by that workbook. Do not join the 1972 Pabiachherra (ST) record.
@@ -222,10 +321,13 @@ class ConstituencyArchiveHistory
             }
             $id = $match[1];
             $edition = $editions[$id] ?? null;
+            if ($edition && $state !== null && isset($edition['state']) && $this->stateName($edition['state']) !== $this->stateName($state)) {
+                continue;
+            }
             if (! $edition || ($name !== null && in_array($id, $known, true))) {
                 continue;
             }
-            $key = 'constituency-source-history-v18:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
+            $key = 'constituency-source-history-v30:'.hash('sha256', json_encode([$file->sha256, $kind, $state, $name]));
             $rows = Cache::remember($key, 900, function () use ($file, $kind, $state, $name, $id, $edition): array {
                 $disk = app(ArchiveFiles::class);
                 $body = $disk->get($file->path);

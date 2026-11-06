@@ -1,0 +1,1890 @@
+{
+  "state": "Karnataka",
+  "source_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "source_date": "2008-12-17",
+  "sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Nippani",
+      "district": "Belgaum",
+      "page": 176
+    },
+    {
+      "code": 2,
+      "name": "Chikkodi-Sadalga",
+      "district": "Belgaum",
+      "page": 176
+    },
+    {
+      "code": 3,
+      "name": "Athani",
+      "district": "Belgaum",
+      "page": 176
+    },
+    {
+      "code": 4,
+      "name": "Kagwad",
+      "district": "Belgaum",
+      "page": 176
+    },
+    {
+      "code": 5,
+      "name": "Kudachi (SC)",
+      "district": "Belgaum",
+      "page": 177
+    },
+    {
+      "code": 6,
+      "name": "Raybag (SC)",
+      "district": "Belgaum",
+      "page": 177
+    },
+    {
+      "code": 7,
+      "name": "Hukkeri",
+      "district": "Belgaum",
+      "page": 177
+    },
+    {
+      "code": 8,
+      "name": "Arabhavi",
+      "district": "Belgaum",
+      "page": 177
+    },
+    {
+      "code": 9,
+      "name": "Gokak",
+      "district": "Belgaum",
+      "page": 177
+    },
+    {
+      "code": 10,
+      "name": "Yemkanmardi (ST)",
+      "district": "Belgaum",
+      "page": 178
+    },
+    {
+      "code": 11,
+      "name": "Belgaum Uttar",
+      "district": "Belgaum",
+      "page": 178
+    },
+    {
+      "code": 12,
+      "name": "Belgaum Dakshin",
+      "district": "Belgaum",
+      "page": 178
+    },
+    {
+      "code": 13,
+      "name": "Belgaum Rural",
+      "district": "Belgaum",
+      "page": 178
+    },
+    {
+      "code": 14,
+      "name": "Khanapur",
+      "district": "Belgaum",
+      "page": 178
+    },
+    {
+      "code": 15,
+      "name": "Kittur",
+      "district": "Belgaum",
+      "page": 178
+    },
+    {
+      "code": 16,
+      "name": "Bailhongal",
+      "district": "Belgaum",
+      "page": 179
+    },
+    {
+      "code": 17,
+      "name": "Saundatti Yellamma",
+      "district": "Belgaum",
+      "page": 179
+    },
+    {
+      "code": 18,
+      "name": "Ramdurg",
+      "district": "Belgaum",
+      "page": 179
+    },
+    {
+      "code": 76,
+      "name": "Haliyal",
+      "district": "Uttara Kannada",
+      "page": 188
+    },
+    {
+      "code": 77,
+      "name": "Karwar",
+      "district": "Uttara Kannada",
+      "page": 188
+    },
+    {
+      "code": 78,
+      "name": "Kumta",
+      "district": "Uttara Kannada",
+      "page": 188
+    },
+    {
+      "code": 79,
+      "name": "Bhatkal",
+      "district": "Uttara Kannada",
+      "page": 188
+    },
+    {
+      "code": 80,
+      "name": "Sirsi",
+      "district": "Uttara Kannada",
+      "page": 188
+    },
+    {
+      "code": 81,
+      "name": "Yellapur",
+      "district": "Uttara Kannada",
+      "page": 188
+    },
+    {
+      "code": 19,
+      "name": "Mudhol (SC)",
+      "district": "Bagalkot",
+      "page": 179
+    },
+    {
+      "code": 20,
+      "name": "Terdal",
+      "district": "Bagalkot",
+      "page": 179
+    },
+    {
+      "code": 21,
+      "name": "Jamkhandi",
+      "district": "Bagalkot",
+      "page": 179
+    },
+    {
+      "code": 22,
+      "name": "Bilgi",
+      "district": "Bagalkot",
+      "page": 180
+    },
+    {
+      "code": 23,
+      "name": "Badami",
+      "district": "Bagalkot",
+      "page": 180
+    },
+    {
+      "code": 24,
+      "name": "Bagalkot",
+      "district": "Bagalkot",
+      "page": 180
+    },
+    {
+      "code": 25,
+      "name": "Hungund",
+      "district": "Bagalkot",
+      "page": 180
+    },
+    {
+      "code": 68,
+      "name": "Nargund",
+      "district": "Gadag",
+      "page": 187
+    },
+    {
+      "code": 26,
+      "name": "Muddebihal",
+      "district": "Bijapur",
+      "page": 180
+    },
+    {
+      "code": 27,
+      "name": "Devar Hippargi",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 28,
+      "name": "Basavana Bagevadi",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 29,
+      "name": "Babaleshwar",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 30,
+      "name": "Bijapur City",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 31,
+      "name": "Nagthan (SC)",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 32,
+      "name": "Indi",
+      "district": "Bijapur",
+      "page": 181
+    },
+    {
+      "code": 33,
+      "name": "Sindgi",
+      "district": "Bijapur",
+      "page": 182
+    },
+    {
+      "code": 47,
+      "name": "Basavakalyan",
+      "district": "Bidar",
+      "page": 183
+    },
+    {
+      "code": 48,
+      "name": "Homnabad",
+      "district": "Bidar",
+      "page": 183
+    },
+    {
+      "code": 49,
+      "name": "Bidar South",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 50,
+      "name": "Bidar",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 51,
+      "name": "Bhalki",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 52,
+      "name": "Aurad (SC)",
+      "district": "Bidar",
+      "page": 184
+    },
+    {
+      "code": 42,
+      "name": "Chincholi (SC)",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 46,
+      "name": "Aland",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 53,
+      "name": "Raichur Rural (ST)",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 54,
+      "name": "Raichur",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 55,
+      "name": "Manvi (ST)",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 56,
+      "name": "Devadurga (ST)",
+      "district": "Raichur",
+      "page": 184
+    },
+    {
+      "code": 57,
+      "name": "Lingsugur (SC)",
+      "district": "Raichur",
+      "page": 185
+    },
+    {
+      "code": 58,
+      "name": "Sindhanur",
+      "district": "Raichur",
+      "page": 185
+    },
+    {
+      "code": 59,
+      "name": "Maski (ST)",
+      "district": "Raichur",
+      "page": 185
+    },
+    {
+      "code": 36,
+      "name": "Shorapur (ST)",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 37,
+      "name": "Shahapur",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 38,
+      "name": "Yadgir",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 60,
+      "name": "Kushtagi",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 61,
+      "name": "Kanakagiri (SC)",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 62,
+      "name": "Gangawati",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 63,
+      "name": "Yelburga",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 64,
+      "name": "Koppal",
+      "district": "Koppal",
+      "page": 185
+    },
+    {
+      "code": 92,
+      "name": "Siruguppa (ST)",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 65,
+      "name": "Shirahatti (SC)",
+      "district": "Gadag",
+      "page": 186
+    },
+    {
+      "code": 66,
+      "name": "Gadag",
+      "district": "Gadag",
+      "page": 186
+    },
+    {
+      "code": 67,
+      "name": "Ron",
+      "district": "Gadag",
+      "page": 186
+    },
+    {
+      "code": 82,
+      "name": "Hangal",
+      "district": "Haveri",
+      "page": 188
+    },
+    {
+      "code": 84,
+      "name": "Haveri (SC)",
+      "district": "Haveri",
+      "page": 188
+    },
+    {
+      "code": 85,
+      "name": "Byadgi",
+      "district": "Haveri",
+      "page": 188
+    },
+    {
+      "code": 86,
+      "name": "Hirekerur",
+      "district": "Haveri",
+      "page": 189
+    },
+    {
+      "code": 87,
+      "name": "Ranibennur",
+      "district": "Haveri",
+      "page": 189
+    },
+    {
+      "code": 69,
+      "name": "Navalgund",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 70,
+      "name": "Kundgol",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 71,
+      "name": "Dharwad",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 72,
+      "name": "Hubli-Dharwad-East (SC)",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 73,
+      "name": "Hubli-Dharwad-Central",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 74,
+      "name": "Hubli-Dharwad-West",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 75,
+      "name": "Kalghatgi",
+      "district": "Dharwad",
+      "page": 187
+    },
+    {
+      "code": 83,
+      "name": "Shiggaon",
+      "district": "Haveri",
+      "page": 188
+    },
+    {
+      "code": 88,
+      "name": "Hadagalli (SC)",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 89,
+      "name": "Hagaribommanahalli (SC)",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 90,
+      "name": "Vijayanagara",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 91,
+      "name": "Kampli (ST)",
+      "district": "Bellary",
+      "page": 189
+    },
+    {
+      "code": 93,
+      "name": "Bellary (ST)",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 94,
+      "name": "Bellary City",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 95,
+      "name": "Sandur (ST)",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 96,
+      "name": "Kudligi (ST)",
+      "district": "Bellary",
+      "page": 190
+    },
+    {
+      "code": 97,
+      "name": "Molakalmuru (ST)",
+      "district": "Chitradurga",
+      "page": 190
+    },
+    {
+      "code": 98,
+      "name": "Challakere (ST)",
+      "district": "Chitradurga",
+      "page": 190
+    },
+    {
+      "code": 99,
+      "name": "Chitradurga",
+      "district": "Chitradurga",
+      "page": 190
+    },
+    {
+      "code": 100,
+      "name": "Hiriyur",
+      "district": "Chitradurga",
+      "page": 191
+    },
+    {
+      "code": 101,
+      "name": "Hosadurga",
+      "district": "Chitradurga",
+      "page": 191
+    },
+    {
+      "code": 102,
+      "name": "Holalkere (SC)",
+      "district": "Chitradurga",
+      "page": 191
+    },
+    {
+      "code": 136,
+      "name": "Sira",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 137,
+      "name": "Pavagada (SC)",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 103,
+      "name": "Jagalur (ST)",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 104,
+      "name": "Harapanahalli",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 105,
+      "name": "Harihar",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 106,
+      "name": "Davanagere North",
+      "district": "Davanagere",
+      "page": 191
+    },
+    {
+      "code": 107,
+      "name": "Davanagere South",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 108,
+      "name": "Mayakonda (SC)",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 109,
+      "name": "Channagiri",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 110,
+      "name": "Honnali",
+      "district": "Davanagere",
+      "page": 192
+    },
+    {
+      "code": 111,
+      "name": "Shimoga Rural (SC)",
+      "district": "Shimoga",
+      "page": 192
+    },
+    {
+      "code": 112,
+      "name": "Bhadravati",
+      "district": "Shimoga",
+      "page": 192
+    },
+    {
+      "code": 113,
+      "name": "Shimoga",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 114,
+      "name": "Tirthahalli",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 115,
+      "name": "Shikaripura",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 116,
+      "name": "Sorab",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 117,
+      "name": "Sagar",
+      "district": "Shimoga",
+      "page": 193
+    },
+    {
+      "code": 118,
+      "name": "Byndoor",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 119,
+      "name": "Kundapura",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 120,
+      "name": "Udupi",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 121,
+      "name": "Kapu",
+      "district": "Udupi",
+      "page": 193
+    },
+    {
+      "code": 122,
+      "name": "Karkal",
+      "district": "Udupi",
+      "page": 194
+    },
+    {
+      "code": 123,
+      "name": "Sringeri",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 124,
+      "name": "Mudigere (SC)",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 125,
+      "name": "Chikmagalur",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 126,
+      "name": "Tarikere",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 127,
+      "name": "Kadur",
+      "district": "Chikmagalur",
+      "page": 194
+    },
+    {
+      "code": 193,
+      "name": "Shravanabelagola",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 194,
+      "name": "Arsikere",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 195,
+      "name": "Belur",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 196,
+      "name": "Hassan",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 197,
+      "name": "Holenarasipur",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 198,
+      "name": "Arkalgud",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 199,
+      "name": "Sakleshpur (SC)",
+      "district": "Hassan",
+      "page": 202
+    },
+    {
+      "code": 128,
+      "name": "Chikkanayakanahalli",
+      "district": "Tumkur",
+      "page": 194
+    },
+    {
+      "code": 129,
+      "name": "Tiptur",
+      "district": "Tumkur",
+      "page": 194
+    },
+    {
+      "code": 130,
+      "name": "Turuvekere",
+      "district": "Tumkur",
+      "page": 194
+    },
+    {
+      "code": 131,
+      "name": "Kunigal",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 132,
+      "name": "Tumkur City",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 133,
+      "name": "Tumkur Rural",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 134,
+      "name": "Koratagere (SC)",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 135,
+      "name": "Gubbi",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 138,
+      "name": "Madhugiri",
+      "district": "Tumkur",
+      "page": 195
+    },
+    {
+      "code": 154,
+      "name": "Rajarajeshwarinagar",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 176,
+      "name": "Bangalore South",
+      "district": "Bangalore",
+      "page": 200
+    },
+    {
+      "code": 177,
+      "name": "Anekal (SC)",
+      "district": "Bangalore",
+      "page": 200
+    },
+    {
+      "code": 182,
+      "name": "Magadi",
+      "district": "Bangalore Rural",
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 183,
+      "name": "Ramanagaram",
+      "district": "Bangalore Rural",
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 184,
+      "name": "Kanakapura",
+      "district": "Bangalore Rural",
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 185,
+      "name": "Channapatna",
+      "district": "Bangalore Rural",
+      "page": 201,
+      "context_district": "Ramanagara",
+      "context_source_url": "https://ramanagara.nic.in/en/election11/ssl-2025/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 150,
+      "name": "Yelahanka",
+      "district": "Bangalore",
+      "page": 197
+    },
+    {
+      "code": 151,
+      "name": "K.R.Pura",
+      "district": "Bangalore",
+      "page": 197
+    },
+    {
+      "code": 152,
+      "name": "Byatarayanapura",
+      "district": "Bangalore",
+      "page": 197
+    },
+    {
+      "code": 153,
+      "name": "Yeshvanthapura",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 155,
+      "name": "Dasarahalli",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 156,
+      "name": "Mahalakshmi Layout",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 157,
+      "name": "Malleshwaram",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 158,
+      "name": "Hebbal",
+      "district": "Bangalore",
+      "page": 198
+    },
+    {
+      "code": 159,
+      "name": "Pulakeshinagar (SC)",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 160,
+      "name": "Sarvagnanagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 161,
+      "name": "C.V. Raman Nagar (SC)",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 162,
+      "name": "Shivajinagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 163,
+      "name": "Shanti Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 164,
+      "name": "Gandhi Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 165,
+      "name": "Rajaji Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 166,
+      "name": "Govindraj Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 167,
+      "name": "Vijay Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 168,
+      "name": "Chamrajpet",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 169,
+      "name": "Chickpet",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 170,
+      "name": "Basavanagudi",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 171,
+      "name": "Padmanaba Nagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 172,
+      "name": "B.T.M Layout",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 173,
+      "name": "Jayanagar",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 174,
+      "name": "Mahadevapura (SC)",
+      "district": "Bangalore",
+      "page": 199
+    },
+    {
+      "code": 175,
+      "name": "Bommanahalli",
+      "district": "Bangalore",
+      "page": 200
+    },
+    {
+      "code": 139,
+      "name": "Gauribidanur",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 140,
+      "name": "Bagepalli",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 141,
+      "name": "Chikkaballapur",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 178,
+      "name": "Hosakote",
+      "district": "Bangalore Rural",
+      "page": 200,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 179,
+      "name": "Devanahalli (SC)",
+      "district": "Bangalore Rural",
+      "page": 200,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 180,
+      "name": "Doddaballapur",
+      "district": "Bangalore Rural",
+      "page": 200,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 181,
+      "name": "Nelamangala (SC)",
+      "district": "Bangalore Rural",
+      "page": 201,
+      "context_district": "Bangalore Rural",
+      "context_source_url": "https://bangalorerural.nic.in/en/site-map/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 186,
+      "name": "Malavalli (SC)",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 187,
+      "name": "Maddur",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 188,
+      "name": "Melukote",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 189,
+      "name": "Mandya",
+      "district": "Mandya",
+      "page": 201
+    },
+    {
+      "code": 190,
+      "name": "Srirangapatna",
+      "district": "Mandya",
+      "page": 202
+    },
+    {
+      "code": 191,
+      "name": "Nagamangala",
+      "district": "Mandya",
+      "page": 202
+    },
+    {
+      "code": 192,
+      "name": "Krishnarajpet",
+      "district": "Mandya",
+      "page": 202
+    },
+    {
+      "code": 211,
+      "name": "Krishnarajanagara",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 200,
+      "name": "Belthangady",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 201,
+      "name": "Moodabidri",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 202,
+      "name": "Mangalore City North",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 203,
+      "name": "Mangalore City South",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 204,
+      "name": "Mangalore",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 205,
+      "name": "Bantval",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 206,
+      "name": "Puttur",
+      "district": "Dakshina Kannada",
+      "page": 203
+    },
+    {
+      "code": 207,
+      "name": "Sullia (SC)",
+      "district": "Dakshina Kannada",
+      "page": 204
+    },
+    {
+      "code": 208,
+      "name": "Madikeri",
+      "district": "Kodagu",
+      "page": 204
+    },
+    {
+      "code": 209,
+      "name": "Virajpet",
+      "district": "Kodagu",
+      "page": 204
+    },
+    {
+      "code": 210,
+      "name": "Piriyapatna",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 212,
+      "name": "Hunsur",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 215,
+      "name": "Chamundeshwari",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 216,
+      "name": "Krishnaraja",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 217,
+      "name": "Chamaraja",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 218,
+      "name": "Narasimharaja",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 213,
+      "name": "Heggadadevankote (ST)",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 214,
+      "name": "Nanjangud (SC)",
+      "district": "Mysore",
+      "page": 204
+    },
+    {
+      "code": 219,
+      "name": "Varuna",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 220,
+      "name": "T.Narasipur (SC)",
+      "district": "Mysore",
+      "page": 205
+    },
+    {
+      "code": 221,
+      "name": "Hanur",
+      "district": "Chamarajanagar",
+      "page": 205
+    },
+    {
+      "code": 222,
+      "name": "Kollegal (SC)",
+      "district": "Chamarajanagar",
+      "page": 205
+    },
+    {
+      "code": 223,
+      "name": "Chamarajanagar",
+      "district": "Chamarajanagar",
+      "page": 205
+    },
+    {
+      "code": 224,
+      "name": "Gundlupet",
+      "district": "Chamarajanagar",
+      "page": 206
+    },
+    {
+      "code": 34,
+      "name": "Afzalpur",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 35,
+      "name": "Jewargi",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 39,
+      "name": "Gurmitkal",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Yadgir",
+      "context_source_url": "https://yadgir.nic.in/en/general-assembly-election-2023/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 40,
+      "name": "Chittapur (SC)",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 41,
+      "name": "Sedam",
+      "district": "Gulbarga",
+      "page": 182,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 43,
+      "name": "Gulbarga Rural (SC)",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 44,
+      "name": "Gulbarga Dakshin",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 45,
+      "name": "Gulbarga Uttar",
+      "district": "Gulbarga",
+      "page": 183,
+      "context_district": "Gulbarga",
+      "context_source_url": "https://kalaburagi.nic.in/en/political-scenario/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 142,
+      "name": "Sidlaghatta",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 143,
+      "name": "Chintamani",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Chikkaballapura",
+      "context_source_url": "https://chikkaballapur.nic.in/en/election/final-electoral-roll/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 144,
+      "name": "Srinivaspur",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 145,
+      "name": "Mulbagal (SC)",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 146,
+      "name": "Kolar Gold Field (SC)",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 147,
+      "name": "Bangarapet (SC)",
+      "district": "Kolar",
+      "page": 196,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 148,
+      "name": "Kolar",
+      "district": "Kolar",
+      "page": 197,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    },
+    {
+      "code": 149,
+      "name": "Malur",
+      "district": "Kolar",
+      "page": 197,
+      "context_district": "Kolar",
+      "context_source_url": "https://kolar.nic.in/en/election/",
+      "context_observed_date": "2026-10-11"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Chikkodi",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        10
+      ],
+      "page": 207
+    },
+    {
+      "code": 2,
+      "name": "Belgaum",
+      "ac_codes": [
+        8,
+        9,
+        11,
+        12,
+        13,
+        16,
+        17,
+        18
+      ],
+      "page": 207
+    },
+    {
+      "code": 12,
+      "name": "Uttara Kannada",
+      "ac_codes": [
+        14,
+        15,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81
+      ],
+      "page": 208
+    },
+    {
+      "code": 3,
+      "name": "Bagalkot",
+      "ac_codes": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        68
+      ],
+      "page": 207
+    },
+    {
+      "code": 4,
+      "name": "Bijapur (SC)",
+      "ac_codes": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "page": 207
+    },
+    {
+      "code": 7,
+      "name": "Bidar",
+      "ac_codes": [
+        42,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "page": 207
+    },
+    {
+      "code": 6,
+      "name": "Raichur (ST)",
+      "ac_codes": [
+        36,
+        37,
+        38,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "page": 207
+    },
+    {
+      "code": 8,
+      "name": "Koppal",
+      "ac_codes": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        92
+      ],
+      "page": 207
+    },
+    {
+      "code": 10,
+      "name": "Haveri",
+      "ac_codes": [
+        65,
+        66,
+        67,
+        82,
+        84,
+        85,
+        86,
+        87
+      ],
+      "page": 207
+    },
+    {
+      "code": 11,
+      "name": "Dharwad",
+      "ac_codes": [
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        83
+      ],
+      "page": 207
+    },
+    {
+      "code": 9,
+      "name": "Bellary (ST)",
+      "ac_codes": [
+        88,
+        89,
+        90,
+        91,
+        93,
+        94,
+        95,
+        96
+      ],
+      "page": 207
+    },
+    {
+      "code": 18,
+      "name": "Chitradurga (SC)",
+      "ac_codes": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        136,
+        137
+      ],
+      "page": 208
+    },
+    {
+      "code": 13,
+      "name": "Davanagere",
+      "ac_codes": [
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110
+      ],
+      "page": 208
+    },
+    {
+      "code": 14,
+      "name": "Shimoga",
+      "ac_codes": [
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118
+      ],
+      "page": 208
+    },
+    {
+      "code": 15,
+      "name": "Udupi Chikmagalur",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126
+      ],
+      "page": 208
+    },
+    {
+      "code": 16,
+      "name": "Hassan",
+      "ac_codes": [
+        127,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199
+      ],
+      "page": 208
+    },
+    {
+      "code": 19,
+      "name": "Tumkur",
+      "ac_codes": [
+        128,
+        129,
+        130,
+        132,
+        133,
+        134,
+        135,
+        138
+      ],
+      "page": 208
+    },
+    {
+      "code": 23,
+      "name": "Bangalore Rural",
+      "ac_codes": [
+        131,
+        154,
+        176,
+        177,
+        182,
+        183,
+        184,
+        185
+      ],
+      "page": 208
+    },
+    {
+      "code": 24,
+      "name": "Bangalore North",
+      "ac_codes": [
+        151,
+        152,
+        153,
+        155,
+        156,
+        157,
+        158,
+        159
+      ],
+      "page": 208
+    },
+    {
+      "code": 25,
+      "name": "Bangalore Central",
+      "ac_codes": [
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        168,
+        174
+      ],
+      "page": 209
+    },
+    {
+      "code": 26,
+      "name": "Bangalore South",
+      "ac_codes": [
+        166,
+        167,
+        169,
+        170,
+        171,
+        172,
+        173,
+        175
+      ],
+      "page": 209
+    },
+    {
+      "code": 27,
+      "name": "Chikkballapur",
+      "ac_codes": [
+        139,
+        140,
+        141,
+        150,
+        178,
+        179,
+        180,
+        181
+      ],
+      "page": 209
+    },
+    {
+      "code": 20,
+      "name": "Mandya",
+      "ac_codes": [
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        211
+      ],
+      "page": 208
+    },
+    {
+      "code": 17,
+      "name": "Dakshina Kannada",
+      "ac_codes": [
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207
+      ],
+      "page": 208
+    },
+    {
+      "code": 21,
+      "name": "Mysore",
+      "ac_codes": [
+        208,
+        209,
+        210,
+        212,
+        215,
+        216,
+        217,
+        218
+      ],
+      "page": 208
+    },
+    {
+      "code": 22,
+      "name": "Chamarajanagar (SC)",
+      "ac_codes": [
+        213,
+        214,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224
+      ],
+      "page": 208
+    },
+    {
+      "code": 5,
+      "name": "Gulbarga (SC)",
+      "ac_codes": [
+        34,
+        35,
+        39,
+        40,
+        41,
+        43,
+        44,
+        45
+      ],
+      "page": 207
+    },
+    {
+      "code": 28,
+      "name": "Kolar (SC)",
+      "ac_codes": [
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149
+      ],
+      "page": 209
+    }
+  ],
+  "flags": [
+    "Partial audited fixture: Belgaum, Bagalkot, Bijapur, Bidar and associated PC segments only",
+    "Table A Kagwad/Hukkeri/Athani vs Table B Kagawad/Hukeri/Athni spelling variants retained; runtime alias audit pending",
+    "2008 membership does not certify SOI boundary edition",
+    "Bidar Table A Homnabad versus Table B Humnabad spelling; runtime alias audit pending",
+    "Raichur PC Table A Gulbarga district references are dated 2008; correspondence to later Yadgir district requires official evidence",
+    "Dharwad Table A Hubli-Dharwad spellings retained; runtime aliases require review",
+    "Shimoga Table A Shikaripura versus Table B Shikaripur spelling retained; runtime alias audit pending",
+    "ECI Karkal and Chikmagalur spellings retained; runtime aliases require source review",
+    "PC23 Bangalore/Bangalore Rural district scope retained from2008 order; later Ramanagaram/Census2011 correspondence requires evidence",
+    "PC27 Chikkballapur versus AC Chikkaballapur and later Census district spelling/date correspondence unverified",
+    "ECI territorial divisions dated2004-02-15 and municipal wards Census2001; no SOI boundary equivalence",
+    "Bangalore Assembly spelling variants retained; runtime alias audit pending"
+  ],
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "pc_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69"
+}

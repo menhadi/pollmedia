@@ -1,0 +1,855 @@
+{
+  "schema": 1,
+  "publication_enabled": true,
+  "records": [
+    {
+      "panchayat_code": "274038",
+      "name": "Bhahai",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "16,28,770.00",
+      "payment_total_decimal": "1628770.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1389-source.json",
+      "source_sha256": "7100fe4a57c65b20f1b616400d90e55a2a344efd5cd0797d2a5d1943ebb4a3a7",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T09:34:57.450Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "Azizpur",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "38,74,305.00",
+      "payment_total_decimal": "3874305.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1390-source.json",
+      "source_sha256": "2e4d7bc04681878ee67e632c57b427f5bd6b61608abdb690c89a34924981d771",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T09:34:58.624Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "Bhilawali",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "18,76,433.00",
+      "payment_total_decimal": "1876433.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1397-source.json",
+      "source_sha256": "2ca76ecc4862a9a17722a67bd451751762bf446a78f0b9af97ea1dcc34929190",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T09:35:59.651Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "Chachiha",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "31,19,200.00",
+      "payment_total_decimal": "3119200.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1398-source.json",
+      "source_sha256": "1cae89a5ebb76b54dd866e66fff0d010cdd35aef09a6cbadbd153567b5aee907",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T09:36:00.571Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274038",
+      "name": "BHAHAI",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "38,87,699.00",
+      "payment_total_decimal": "3887699.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1389-source.json",
+      "source_sha256": "2a154f92017bd5641b3a061b188da197a5b0bd85477dd51fe39163cb87c73f1f",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T10:00:46.766Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "AZIZPUR",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "91,69,769.00",
+      "payment_total_decimal": "9169769.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1390-source.json",
+      "source_sha256": "51ba6c1a9ef4361a46eb3e26857d0eb64314777a5a15a7e2b34abda706344f33",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T10:00:47.644Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "BHILAWALI",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "30,75,947.00",
+      "payment_total_decimal": "3075947.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1397-source.json",
+      "source_sha256": "02bff717437a5dcc1738b18fe77d2c0e9f3df04a175537646f928319ebbe7b54",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T10:01:04.781Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "CHACHIHA",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "29,95,903.00",
+      "payment_total_decimal": "2995903.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1398-source.json",
+      "source_sha256": "5b41b4b306c5c96477ef726b9576baebd65cd5fe13134a239b52fabc43bf4b06",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T10:01:06.382Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274038",
+      "name": "Bhahai",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "28,62,704.00",
+      "payment_total_decimal": "2862704.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1389-source.json",
+      "source_sha256": "f297e702290612893c375b49d4c809f801461640cd0b37de71638ec713176f1b",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T09:59:46.064Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "Azizpur",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "71,15,097.18",
+      "payment_total_decimal": "7115097.18",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1390-source.json",
+      "source_sha256": "aa9f591a39bcfdad6f222bfda8126ca9fe3941c0c6a99f1ffd2c74bf72a5c381",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T09:59:46.719Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "Bhilawali",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "24,72,689.00",
+      "payment_total_decimal": "2472689.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1397-source.json",
+      "source_sha256": "b25c67511fa2e19a9ecbd454ea4f8e99a495ec79ec3deac6930adf8f21a15334",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T09:59:53.488Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "Chachiha",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "20,91,484.00",
+      "payment_total_decimal": "2091484.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1398-source.json",
+      "source_sha256": "11491b174b466940c9c5f18798b49149fbde1dd9c2199390d1e141b518a06f17",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T09:59:54.326Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274038",
+      "name": "Bhahai",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "34,70,509.00",
+      "payment_total_decimal": "3470509.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1389-source.json",
+      "source_sha256": "ec469ee2d60ca0922a9053d415359100ef21e089823cab8be8f0c4cb1505e58d",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T09:59:21.277Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "Azizpur",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "92,28,907.00",
+      "payment_total_decimal": "9228907.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1390-source.json",
+      "source_sha256": "73ce864750791e12dcbaa7f15b173897ce4b0b90e048279e3b055677a9ebfb3f",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T09:59:22.231Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "Bhilawali",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "22,57,074.00",
+      "payment_total_decimal": "2257074.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1397-source.json",
+      "source_sha256": "403cb96429013e57a364aaa4da1e5090cd1594b2879857fd4915db3ce9c6319c",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T09:59:29.898Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "Chachiha",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "16,92,915.00",
+      "payment_total_decimal": "1692915.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1398-source.json",
+      "source_sha256": "01ddf7c2d7a79b6cf018bd445360a9642f86f65da4bb437ed1d9f9e11dd884af",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T09:59:30.813Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274038",
+      "name": "Bhahai",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "20,37,954.00",
+      "payment_total_decimal": "2037954.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1389-source.json",
+      "source_sha256": "fb79083012754b9c28c61114f904aabd7b7b47ffea47cb1a28f49f2e6e3522d1",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T09:58:47.418Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "Azizpur",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "78,53,041.00",
+      "payment_total_decimal": "7853041.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1390-source.json",
+      "source_sha256": "f46874f89614fc0cc75e60f9524b004fde94bb3a543ff4cd8e81cad40c0374bc",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T09:58:48.415Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "Bhilawali",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "29,54,694.00",
+      "payment_total_decimal": "2954694.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1397-source.json",
+      "source_sha256": "e4b5ffb48e93838e00d8f5614bc00209a30ebd8e840afac0ba27161806a62557",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T09:58:55.311Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "Chachiha",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "23,25,570.00",
+      "payment_total_decimal": "2325570.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1398-source.json",
+      "source_sha256": "ce61ac61910411afa60cc7a7adc63b2edaf96533b911a97a3a25e1d62121a7ee",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T09:58:55.928Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274038",
+      "name": "Bhahai",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "52,23,793.00",
+      "payment_total_decimal": "5223793.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1389-source.json",
+      "source_sha256": "d21290785e9d4099d4426406c0dbc2c7399a5d79de87e9e9db6f4238ac92773c",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T09:57:40.738Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "Azizpur",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "1,30,96,704.00",
+      "payment_total_decimal": "13096704.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1390-source.json",
+      "source_sha256": "763e66354c9a5601186a6ee959c24564b93fd2bfed8384c48f3343aa31615c6c",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T09:57:41.473Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "Bhilawali",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "50,37,555.00",
+      "payment_total_decimal": "5037555.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1397-source.json",
+      "source_sha256": "0e6dcd2597bb63393e8a46087a8ba14687c58cac7d438b5ee6f85f80b11f1869",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T09:57:47.704Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "Chachiha",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "41,17,300.00",
+      "payment_total_decimal": "4117300.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1398-source.json",
+      "source_sha256": "ae39e96cd64dafd7503f3bb23547134e848fffa4eda30bedefdb0bd5c9a518b3",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T09:57:49.938Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274038",
+      "name": "Bhahai",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1389",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124622",
+        "124623"
+      ],
+      "payment_total_source_text": "40,72,854.00",
+      "payment_total_decimal": "4072854.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1389-source.json",
+      "source_sha256": "455faaf0d47809c6345f5d91cef02ca178d2b293655503391ab5053f5c147641",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=274038.html",
+      "capture_batch_date": "2026-10-29T09:56:52.933Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274049",
+      "name": "Azizpur",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1390",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124697"
+      ],
+      "payment_total_source_text": "1,11,83,858.00",
+      "payment_total_decimal": "11183858.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1390-source.json",
+      "source_sha256": "6b943d2a349fb1f3dbf309f99ceb57a18b4e3e230d45a13777239e6aa8065682",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=274049.html",
+      "capture_batch_date": "2026-10-29T09:56:53.544Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274051",
+      "name": "Bhilawali",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1397",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124951"
+      ],
+      "payment_total_source_text": "29,94,265.00",
+      "payment_total_decimal": "2994265.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1397-source.json",
+      "source_sha256": "e1f8834bc528f3659a0913f92036759c4482aea1dc1c347fae2a8978572e7a73",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=274051.html",
+      "capture_batch_date": "2026-10-29T09:57:12.024Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "274052",
+      "name": "Chachiha",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1398",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "125235"
+      ],
+      "payment_total_source_text": "32,39,180.00",
+      "payment_total_decimal": "3239180.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1398-source.json",
+      "source_sha256": "cdd813657c06360022eeab5ac28eee8e29686c14cef19684dd66b7b1e9508017",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=274052.html",
+      "capture_batch_date": "2026-10-29T09:57:12.728Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    }
+  ],
+  "sources": {
+    "up-agra-2020-block-1389-source.json": {
+      "sha256": "2a154f92017bd5641b3a061b188da197a5b0bd85477dd51fe39163cb87c73f1f",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2020-block-1390-source.json": {
+      "sha256": "51ba6c1a9ef4361a46eb3e26857d0eb64314777a5a15a7e2b34abda706344f33",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2020-block-1397-source.json": {
+      "sha256": "02bff717437a5dcc1738b18fe77d2c0e9f3df04a175537646f928319ebbe7b54",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2020-block-1398-source.json": {
+      "sha256": "5b41b4b306c5c96477ef726b9576baebd65cd5fe13134a239b52fabc43bf4b06",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2021-block-1389-source.json": {
+      "sha256": "f297e702290612893c375b49d4c809f801461640cd0b37de71638ec713176f1b",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2021-block-1390-source.json": {
+      "sha256": "aa9f591a39bcfdad6f222bfda8126ca9fe3941c0c6a99f1ffd2c74bf72a5c381",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2021-block-1397-source.json": {
+      "sha256": "b25c67511fa2e19a9ecbd454ea4f8e99a495ec79ec3deac6930adf8f21a15334",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2021-block-1398-source.json": {
+      "sha256": "11491b174b466940c9c5f18798b49149fbde1dd9c2199390d1e141b518a06f17",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1389-source.json": {
+      "sha256": "ec469ee2d60ca0922a9053d415359100ef21e089823cab8be8f0c4cb1505e58d",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1390-source.json": {
+      "sha256": "73ce864750791e12dcbaa7f15b173897ce4b0b90e048279e3b055677a9ebfb3f",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1397-source.json": {
+      "sha256": "403cb96429013e57a364aaa4da1e5090cd1594b2879857fd4915db3ce9c6319c",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1398-source.json": {
+      "sha256": "01ddf7c2d7a79b6cf018bd445360a9642f86f65da4bb437ed1d9f9e11dd884af",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2023-block-1389-source.json": {
+      "sha256": "fb79083012754b9c28c61114f904aabd7b7b47ffea47cb1a28f49f2e6e3522d1",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2023-block-1390-source.json": {
+      "sha256": "f46874f89614fc0cc75e60f9524b004fde94bb3a543ff4cd8e81cad40c0374bc",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2023-block-1397-source.json": {
+      "sha256": "e4b5ffb48e93838e00d8f5614bc00209a30ebd8e840afac0ba27161806a62557",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2023-block-1398-source.json": {
+      "sha256": "ce61ac61910411afa60cc7a7adc63b2edaf96533b911a97a3a25e1d62121a7ee",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2024-block-1389-source.json": {
+      "sha256": "d21290785e9d4099d4426406c0dbc2c7399a5d79de87e9e9db6f4238ac92773c",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2024-block-1390-source.json": {
+      "sha256": "763e66354c9a5601186a6ee959c24564b93fd2bfed8384c48f3343aa31615c6c",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2024-block-1397-source.json": {
+      "sha256": "0e6dcd2597bb63393e8a46087a8ba14687c58cac7d438b5ee6f85f80b11f1869",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2024-block-1398-source.json": {
+      "sha256": "ae39e96cd64dafd7503f3bb23547134e848fffa4eda30bedefdb0bd5c9a518b3",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1389-source.json": {
+      "sha256": "455faaf0d47809c6345f5d91cef02ca178d2b293655503391ab5053f5c147641",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1390-source.json": {
+      "sha256": "6b943d2a349fb1f3dbf309f99ceb57a18b4e3e230d45a13777239e6aa8065682",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1397-source.json": {
+      "sha256": "e1f8834bc528f3659a0913f92036759c4482aea1dc1c347fae2a8978572e7a73",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1398-source.json": {
+      "sha256": "cdd813657c06360022eeab5ac28eee8e29686c14cef19684dd66b7b1e9508017",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1389-source.json": {
+      "sha256": "7100fe4a57c65b20f1b616400d90e55a2a344efd5cd0797d2a5d1943ebb4a3a7",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1389.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1390-source.json": {
+      "sha256": "2e4d7bc04681878ee67e632c57b427f5bd6b61608abdb690c89a34924981d771",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1390.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1397-source.json": {
+      "sha256": "2ca76ecc4862a9a17722a67bd451751762bf446a78f0b9af97ea1dcc34929190",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1397.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1398-source.json": {
+      "sha256": "1cae89a5ebb76b54dd866e66fff0d010cdd35aef09a6cbadbd153567b5aee907",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1398.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    }
+  }
+}

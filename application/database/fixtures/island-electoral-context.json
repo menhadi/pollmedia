@@ -1,0 +1,371 @@
+{
+  "pcs": [
+    {
+      "region": "lakshadweep",
+      "number": 1,
+      "name": "Lakshadweep",
+      "archive_name": "Lakshadweep",
+      "state": "Lakshadweep",
+      "edition": "349e04305ee4652986f79497",
+      "code": 535,
+      "year": 2024
+    },
+    {
+      "region": "puducherry",
+      "number": 1,
+      "name": "PUDUCHERRY",
+      "archive_name": "PUDUCHERRY",
+      "state": "Puducherry",
+      "edition": "349e04305ee4652986f79497",
+      "code": 536,
+      "year": 2024
+    },
+    {
+      "region": "andaman-nicobar",
+      "number": 1,
+      "name": "Andaman & Nicobar Islands",
+      "archive_name": "Andaman & Nicobar Islands",
+      "state": "Andaman & Nicobar Islands",
+      "edition": "349e04305ee4652986f79497",
+      "code": 524,
+      "year": 2024
+    }
+  ],
+  "acs": [
+    {
+      "region": "puducherry",
+      "number": 1,
+      "name": "MANNADIPET",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 1,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 2,
+      "name": "THIRUBHUVANAI (SC)",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 2,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 3,
+      "name": "OUSSUDU (SC)",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 3,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 4,
+      "name": "MANGALAM",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 4,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 5,
+      "name": "VILLIANUR",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 5,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 6,
+      "name": "OZHUKARAI",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 6,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 7,
+      "name": "KADIRGAMAM",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 7,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 8,
+      "name": "INDIRA NAGAR",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 8,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 9,
+      "name": "THATTANCHAVADY",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 9,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 10,
+      "name": "KAMARAJ NAGAR",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 10,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 11,
+      "name": "LAWSPET",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 11,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 12,
+      "name": "KALAPET",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 12,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 13,
+      "name": "MUTHIALPET",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 13,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 14,
+      "name": "RAJ BHAVAN",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 14,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 15,
+      "name": "OUPALAM",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 15,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 16,
+      "name": "ORLEAMPETH",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 16,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 17,
+      "name": "NELLITHOPE",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 17,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 18,
+      "name": "MUDALIARPET",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 18,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 19,
+      "name": "ARIANKUPPAM",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 19,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 20,
+      "name": "MANAVELY",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 20,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 21,
+      "name": "EMBALAM (SC)",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 21,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 22,
+      "name": "NETTAPAKKAM (SC)",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 22,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 23,
+      "name": "BAHOUR",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 23,
+      "year": 2026,
+      "group": "pondicherry",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 24,
+      "name": "NEDUNGADU (SC)",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 24,
+      "year": 2026,
+      "group": "karaikal",
+      "outline": "karaikal"
+    },
+    {
+      "region": "puducherry",
+      "number": 25,
+      "name": "THIRUNALLAR",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 25,
+      "year": 2026,
+      "group": "karaikal",
+      "outline": "karaikal"
+    },
+    {
+      "region": "puducherry",
+      "number": 26,
+      "name": "KARAIKAL NORTH",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 26,
+      "year": 2026,
+      "group": "karaikal",
+      "outline": "karaikal"
+    },
+    {
+      "region": "puducherry",
+      "number": 27,
+      "name": "KARAIKAL SOUTH",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 27,
+      "year": 2026,
+      "group": "karaikal",
+      "outline": "karaikal"
+    },
+    {
+      "region": "puducherry",
+      "number": 28,
+      "name": "NERAVY-T.R.PATTINAM",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 28,
+      "year": 2026,
+      "group": "karaikal",
+      "outline": "karaikal"
+    },
+    {
+      "region": "puducherry",
+      "number": 29,
+      "name": "MAHE",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 29,
+      "year": 2026,
+      "group": "mahe",
+      "outline": "puducherry"
+    },
+    {
+      "region": "puducherry",
+      "number": 30,
+      "name": "YANAM",
+      "state": "Puducherry",
+      "edition": "94052506d05ad5aa7b952f7d",
+      "code": 30,
+      "year": 2026,
+      "group": "yanam",
+      "outline": "puducherry"
+    }
+  ],
+  "source_ac": "https://ceopuducherry.py.gov.in/ac_wise_electrol.php",
+  "source_ac_date": "2026-09-16",
+  "source_regions": "https://ceopuducherry.py.gov.in/maps.php",
+  "source_pc": "https://elections24.eci.gov.in/docs/press-note-no-23.pdf",
+  "source_institutions": "https://www.mha.gov.in/web/sites/default/files/MHAARE_22042022%5B1%5D.pdf"
+}

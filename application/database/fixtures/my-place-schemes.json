@@ -1,0 +1,497 @@
+{
+  "version": 1,
+  "checked_on": "2026-10-28",
+  "questions": {
+    "citizen": {
+      "en": "Are you an Indian citizen?",
+      "hi": "क्या आप भारतीय नागरिक हैं?"
+    },
+    "bank": {
+      "en": "Do you have a participating bank or post-office savings account?",
+      "hi": "क्या आपका सहभागी बैंक या डाकघर में बचत खाता है?"
+    },
+    "autodebit": {
+      "en": "Would you consent to the annual insurance premium being auto-debited?",
+      "hi": "क्या आप सालाना बीमा प्रीमियम खाते से अपने-आप काटने की सहमति देंगे?"
+    },
+    "land": {
+      "en": "Does your farmer family own cultivable land recorded in government land records?",
+      "hi": "क्या आपके किसान परिवार के पास सरकारी भू-अभिलेख में दर्ज खेती योग्य भूमि है?"
+    },
+    "kisan_exclusion": {
+      "en": "Does any PM-KISAN exclusion apply to your family?",
+      "hi": "क्या आपके परिवार पर PM-KISAN का कोई अपात्रता नियम लागू है?"
+    },
+    "residence_type": {
+      "en": "Is your residence rural or urban?",
+      "hi": "आपका निवास ग्रामीण है या शहरी?"
+    },
+    "family_income": {
+      "en": "Annual family income, from all sources (₹)",
+      "hi": "सभी स्रोतों से परिवार की सालाना आय (₹)"
+    },
+    "other_pension": {
+      "en": "Do you receive another pension?",
+      "hi": "क्या आपको कोई दूसरी पेंशन मिलती है?"
+    },
+    "occupation": {
+      "en": "What is your main occupation?",
+      "hi": "आपका मुख्य काम क्या है?"
+    },
+    "education": {
+      "en": "Highest completed education",
+      "hi": "पूरी की गई सबसे ऊँची शिक्षा"
+    },
+    "student": {
+      "en": "Are you currently studying?",
+      "hi": "क्या आप अभी पढ़ाई कर रहे हैं?"
+    }
+  },
+  "schemes": [
+    {
+      "id": "pmjjby",
+      "name": {
+        "en": "PMJJBY · life insurance",
+        "hi": "PMJJBY · जीवन बीमा"
+      },
+      "category": "insurance",
+      "scope": "IN",
+      "benefit": {
+        "en": "Renewable life insurance. Premium and enrolment conditions apply.",
+        "hi": "नवीकरणीय जीवन बीमा। प्रीमियम और नामांकन की शर्तें लागू हैं।"
+      },
+      "rules": [
+        {
+          "field": "citizen",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "age",
+          "op": "gte",
+          "value": 18
+        },
+        {
+          "field": "age",
+          "op": "lte",
+          "value": 50
+        },
+        {
+          "field": "bank",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "autodebit",
+          "op": "eq",
+          "value": "yes"
+        }
+      ],
+      "source": "https://eshram.gov.in/Schemes",
+      "apply": "https://eshram.gov.in/Schemes",
+      "documents": {
+        "en": "Age/identity proof, savings account and enrolment consent; confirm the bank’s current checklist.",
+        "hi": "आयु/पहचान प्रमाण, बचत खाता और नामांकन सहमति; बैंक से मौजूदा दस्तावेज़ सूची की पुष्टि करें।"
+      },
+      "application_note": {
+        "en": "Enrol through a participating bank or post office. Confirm the current premium, documents and enrolment terms there. This link opens government guidance.",
+        "hi": "सहभागी बैंक या डाकघर से नामांकन करें। वहीं मौजूदा प्रीमियम, दस्तावेज़ और नामांकन की शर्तें जाँचें। यह लिंक सरकारी जानकारी खोलता है।"
+      },
+      "source_system": "reviewed_local",
+      "status": "listed",
+      "checked_on": "2026-10-28",
+      "source_updated_at": null,
+      "valid_from": null,
+      "valid_until": null,
+      "scope_name": {
+        "en": "India",
+        "hi": "भारत"
+      }
+    },
+    {
+      "id": "pmsby",
+      "name": {
+        "en": "PMSBY · accident insurance",
+        "hi": "PMSBY · दुर्घटना बीमा"
+      },
+      "category": "insurance",
+      "scope": "IN",
+      "benefit": {
+        "en": "Renewable accident insurance. Premium and enrolment conditions apply.",
+        "hi": "नवीकरणीय दुर्घटना बीमा। प्रीमियम और नामांकन की शर्तें लागू हैं।"
+      },
+      "rules": [
+        {
+          "field": "citizen",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "age",
+          "op": "gte",
+          "value": 18
+        },
+        {
+          "field": "age",
+          "op": "lte",
+          "value": 70
+        },
+        {
+          "field": "bank",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "autodebit",
+          "op": "eq",
+          "value": "yes"
+        }
+      ],
+      "source": "https://eshram.gov.in/Schemes",
+      "apply": "https://eshram.gov.in/Schemes",
+      "documents": {
+        "en": "Age/identity proof, savings account and enrolment consent; confirm the bank’s current checklist.",
+        "hi": "आयु/पहचान प्रमाण, बचत खाता और नामांकन सहमति; बैंक से मौजूदा दस्तावेज़ सूची की पुष्टि करें।"
+      },
+      "application_note": {
+        "en": "Enrol through a participating bank or post office. Confirm the current premium, documents and enrolment terms there. This link opens government guidance.",
+        "hi": "सहभागी बैंक या डाकघर से नामांकन करें। वहीं मौजूदा प्रीमियम, दस्तावेज़ और नामांकन की शर्तें जाँचें। यह लिंक सरकारी जानकारी खोलता है।"
+      },
+      "source_system": "reviewed_local",
+      "status": "listed",
+      "checked_on": "2026-10-28",
+      "source_updated_at": null,
+      "valid_from": null,
+      "valid_until": null,
+      "scope_name": {
+        "en": "India",
+        "hi": "भारत"
+      }
+    },
+    {
+      "id": "pm-kisan",
+      "name": {
+        "en": "PM-KISAN · farmer income support",
+        "hi": "PM-KISAN · किसान आय सहायता"
+      },
+      "category": "farming",
+      "scope": "IN",
+      "benefit": {
+        "en": "Income support for eligible landholding farmer families. Land records and exclusions must be verified.",
+        "hi": "पात्र भू-स्वामी किसान परिवारों के लिए आय सहायता। भूमि अभिलेख और अपात्रता नियमों की जाँच आवश्यक है।"
+      },
+      "rules": [
+        {
+          "field": "citizen",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "land",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "kisan_exclusion",
+          "op": "eq",
+          "value": "no"
+        }
+      ],
+      "source": "https://ghaziabad.nic.in/en/scheme/pradhan-mantri-kisan-samman-nidhi-yojana/",
+      "apply": "https://pmkisan.gov.in/",
+      "documents": {
+        "en": "Land records, identity and bank details; official e-KYC and family/exclusion verification are required.",
+        "hi": "भूमि अभिलेख, पहचान और बैंक विवरण; आधिकारिक e-KYC तथा परिवार/अपात्रता नियमों की जाँच आवश्यक है।"
+      },
+      "source_system": "reviewed_local",
+      "status": "listed",
+      "checked_on": "2026-10-28",
+      "source_updated_at": null,
+      "valid_from": null,
+      "valid_until": null,
+      "scope_name": {
+        "en": "India",
+        "hi": "भारत"
+      }
+    },
+    {
+      "id": "up-old-age",
+      "name": {
+        "en": "Uttar Pradesh · old-age pension",
+        "hi": "उत्तर प्रदेश · वृद्धावस्था पेंशन"
+      },
+      "category": "pension",
+      "scope": "9",
+      "benefit": {
+        "en": "State old-age pension, subject to income, residence and departmental verification.",
+        "hi": "आय, निवास और विभागीय जाँच के अधीन राज्य वृद्धावस्था पेंशन।"
+      },
+      "rules": [
+        {
+          "field": "citizen",
+          "op": "eq",
+          "value": "yes"
+        },
+        {
+          "field": "state",
+          "op": "eq",
+          "value": "9"
+        },
+        {
+          "field": "age",
+          "op": "gte",
+          "value": 60
+        },
+        {
+          "field": "other_pension",
+          "op": "eq",
+          "value": "no"
+        },
+        {
+          "field": "family_income",
+          "op": "income_limit",
+          "value": {
+            "rural": 46080,
+            "urban": 56460
+          }
+        }
+      ],
+      "source": "https://mau.nic.in/en/scheme/national-old-age-pension-scheme/",
+      "apply": "https://mau.nic.in/en/scheme/national-old-age-pension-scheme/",
+      "additional_source": "https://ghaziabad.nic.in/en/scheme/national-old-age-pension-scheme/",
+      "documents": {
+        "en": "Age proof, income certificate, residence/family records, photo, identity and bank passbook. Confirm the current official checklist.",
+        "hi": "आयु प्रमाण, आय प्रमाण पत्र, निवास/परिवार अभिलेख, फोटो, पहचान और बैंक पासबुक। मौजूदा आधिकारिक सूची की पुष्टि करें।"
+      },
+      "application_note": {
+        "en": "Use the official guidance and its application link, or ask a Jan Seva Kendra for help with the current application process.",
+        "hi": "आधिकारिक जानकारी और उसमें दिए आवेदन लिंक का उपयोग करें, या मौजूदा आवेदन प्रक्रिया के लिए जन सेवा केंद्र से मदद लें।"
+      },
+      "source_system": "reviewed_local",
+      "status": "listed",
+      "checked_on": "2026-10-28",
+      "source_updated_at": null,
+      "valid_from": null,
+      "valid_until": null,
+      "scope_name": {
+        "en": "Uttar Pradesh",
+        "hi": "उत्तर प्रदेश"
+      }
+    }
+  ],
+  "exclusion_help": {
+    "en": "Check the official exclusions: institutional landholders; specified public-office holders, government/public-sector employees (with listed exceptions), certain pensioners receiving ₹10,000 or more monthly, income-tax payers and specified registered professionals. Do not guess from the photo.",
+    "hi": "आधिकारिक अपात्रता नियम देखें: संस्थागत भू-स्वामी; निर्धारित सार्वजनिक पदधारी, सरकारी/सार्वजनिक क्षेत्र कर्मचारी (सूचीबद्ध अपवादों सहित), ₹10,000 या अधिक मासिक पेंशन वाले कुछ पेंशनर, आयकरदाता और निर्धारित पंजीकृत पेशेवर। फोटो से अनुमान न लगाएँ।"
+  },
+  "question_fields": {
+    "citizen": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    },
+    "bank": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    },
+    "autodebit": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    },
+    "land": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    },
+    "kisan_exclusion": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    },
+    "other_pension": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    },
+    "family_income": {
+      "type": "number",
+      "min": 0,
+      "max": 1000000000
+    },
+    "residence_type": {
+      "type": "choice",
+      "options": {
+        "rural": {
+          "en": "Rural",
+          "hi": "ग्रामीण"
+        },
+        "urban": {
+          "en": "Urban",
+          "hi": "शहरी"
+        }
+      }
+    },
+    "occupation": {
+      "type": "choice",
+      "options": {
+        "farmer": {
+          "en": "Farmer",
+          "hi": "किसान"
+        },
+        "employed": {
+          "en": "Employed",
+          "hi": "नौकरी"
+        },
+        "self_employed": {
+          "en": "Self-employed",
+          "hi": "स्वरोज़गार"
+        },
+        "student": {
+          "en": "Student",
+          "hi": "विद्यार्थी"
+        },
+        "unemployed": {
+          "en": "Looking for work",
+          "hi": "काम की तलाश"
+        },
+        "retired": {
+          "en": "Retired",
+          "hi": "सेवानिवृत्त"
+        },
+        "other": {
+          "en": "Other",
+          "hi": "अन्य"
+        }
+      }
+    },
+    "education": {
+      "type": "choice",
+      "options": {
+        "none": {
+          "en": "No formal schooling",
+          "hi": "औपचारिक शिक्षा नहीं"
+        },
+        "primary": {
+          "en": "Primary",
+          "hi": "प्राथमिक"
+        },
+        "secondary": {
+          "en": "Secondary",
+          "hi": "माध्यमिक"
+        },
+        "higher_secondary": {
+          "en": "Higher secondary",
+          "hi": "उच्च माध्यमिक"
+        },
+        "diploma": {
+          "en": "Diploma / vocational",
+          "hi": "डिप्लोमा / व्यावसायिक"
+        },
+        "graduate": {
+          "en": "Graduate",
+          "hi": "स्नातक"
+        },
+        "postgraduate": {
+          "en": "Postgraduate or higher",
+          "hi": "स्नातकोत्तर या अधिक"
+        }
+      }
+    },
+    "student": {
+      "type": "choice",
+      "options": {
+        "yes": {
+          "en": "Yes",
+          "hi": "हाँ"
+        },
+        "no": {
+          "en": "No",
+          "hi": "नहीं"
+        }
+      }
+    }
+  },
+  "category_labels": {
+    "insurance": {
+      "en": "Insurance",
+      "hi": "बीमा"
+    },
+    "farming": {
+      "en": "Farming",
+      "hi": "खेती"
+    },
+    "pension": {
+      "en": "Pension",
+      "hi": "पेंशन"
+    },
+    "education": {
+      "en": "Education",
+      "hi": "शिक्षा"
+    },
+    "employment": {
+      "en": "Employment",
+      "hi": "रोज़गार"
+    },
+    "health": {
+      "en": "Health",
+      "hi": "स्वास्थ्य"
+    },
+    "housing": {
+      "en": "Housing",
+      "hi": "आवास"
+    },
+    "business": {
+      "en": "Business",
+      "hi": "व्यवसाय"
+    }
+  }
+}

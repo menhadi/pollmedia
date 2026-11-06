@@ -1,0 +1,82 @@
+@if($state==='Punjab') @include('punjab-constituency-context') @endif
+@if($state==='Tripura') @include('tripura-constituency-context') @endif
+@if($state==='Nagaland') @include('nagaland-constituency-context') @endif
+@if($state==='Mizoram') @include('mizoram-constituency-context') @endif
+@if($state==='Meghalaya') @include('meghalaya-constituency-context') @endif
+@if($state==='Manipur') @include('manipur-constituency-context') @endif
+@if($state==='Arunachal Pradesh') @include('arunachal-pradesh-constituency-context') @endif
+@if($state==='Sikkim') @include('sikkim-constituency-context') @endif
+@if($state==='Jharkhand') @include('jharkhand-constituency-context') @endif
+@if($state==='Haryana') @include('haryana-constituency-context') @endif
+@if($state==='Chhattisgarh') @include('chhattisgarh-constituency-context') @endif
+@if($state==='Telangana') @include('telangana-constituency-context') @endif
+@if($state==='Rajasthan') @include('rajasthan-constituency-context') @endif
+@if($state==='Andhra Pradesh') @include('andhra-pradesh-constituency-context') @endif
+@if($state==='Kerala') @include('kerala-constituency-context') @endif
+@if($state==='West Bengal') @include('west-bengal-constituency-context') @endif
+@if($state==='Madhya Pradesh') @include('madhya-pradesh-constituency-context') @endif
+@if($state==='Gujarat') @include('gujarat-constituency-context') @endif
+@if($state==='Tamil Nadu') @include('tamil-nadu-constituency-context') @endif
+@if($state==='Maharashtra') @include('maharashtra-constituency-context') @endif
+@if($state==='Bihar') @include('bihar-constituency-context') @endif
+@if($state==='Karnataka') @include('karnataka-constituency-context') @endif
+@if($state==='Uttar Pradesh' && !$exactSeatOnly)
+@php
+$fixture=json_decode(file_get_contents(database_path('fixtures/up-electoral-geography.json')),true,512,JSON_THROW_ON_ERROR);
+$normalize=fn(string $value):string=>mb_strtolower(trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i','',$value)));
+$seats=collect($kind==='pc'?$fixture['pcs']:$fixture['district_rows'])->filter(fn(array $seat):bool=>$normalize($seat['name'])===$normalize($name));
+$seat=$seats->count()===1?$seats->first():null;
+$segments=$seat?($kind==='pc'?collect($fixture['district_rows'])->whereIn('code',$seat['ac_codes']):collect([$seat])):collect();
+$codes=['Rampur'=>'136','Pilibhit'=>'151','Agra'=>'146','Aligarh'=>'143','Prayagraj'=>'175','Ambedkar Nagar'=>'178','Auraiya'=>'162','Azamgarh'=>'191','Baghpat'=>'139','Bahraich'=>'180','Ballia'=>'193','Balrampur'=>'182','Banda'=>'170','Barabanki'=>'176','Bareilly'=>'150','Basti'=>'185','Bijnor'=>'134','Badaun'=>'149','Bulandshahar'=>'142','Chandauli'=>'196','Chitrakoot'=>'171','Deoria'=>'190','Etah'=>'201','Etawah'=>'161','Ayodhya'=>'177','Farrukhabad'=>'159','Fatehpur'=>'172','Firozabad'=>'147','Ghaziabad'=>'140','Ghazipur'=>'195','Gonda'=>'183','Gorakhpur'=>'188','Hamirpur'=>'168','Hardoi'=>'155','Hathras'=>'144','Jalaun'=>'165','Jaunpur'=>'194','Jhansi'=>'166','Kannauj'=>'160','Kanpur Dehat'=>'163','Kanpur Nagar'=>'164','Kasganj'=>'202','Kaushambi'=>'174','Kheri'=>'153','Kushi Nagar'=>'189','Lalitpur'=>'167','Lucknow'=>'157','Maharajganj'=>'187','Mahoba'=>'169','Mainpuri'=>'148','Mathura'=>'145','Mau'=>'192','Meerut'=>'138','Mirzapur'=>'199','Moradabad'=>'135','Muzaffarnagar'=>'133','Pratapgarh'=>'173','Rae Bareli'=>'158','Saharanpur'=>'132','Sant Kabir Nagar'=>'186','Bhadohi'=>'198','Shahjahanpur'=>'152','Shrawasti'=>'181','Siddharthnagar'=>'184','Sitapur'=>'154','Sonbhadra'=>'200','Sultanpur'=>'179','Unnao'=>'156','Varanasi'=>'197','Gautam Buddha Nagar'=>'141','Amroha'=>'137'];
+$districtNames=$segments->pluck('district')->unique()->values();
+@endphp
+@if($seats->count()>1)<section id="census-context" class="panel"><h2>District context requires a constituency code</h2><p class="notice">This name matches multiple constituencies in the dated geographic fixture. District demographics are unavailable until the seat code is established; no district population is assigned from the name.</p><ul>@foreach($seats as $candidate)<li>{{ strtoupper($kind) }} {{ $candidate['code'] }} · {{ $candidate['name'] }}@if(isset($candidate['district'])) · {{ $candidate['district'] }}@endif</li>@endforeach</ul></section>@endif
+@if($seat)
+@php($mapSourceNames=[58=>'Dholana',109=>'Kishani (SC)',154=>'Sawaijpur',247=>'Bishwavnathganj',306=>'Domariyaganj',319=>'Paniyra'])
+@foreach($segments as $segment)
+@if(isset($mapSourceNames[$segment['code']]))
+<p class="notice" data-boundary-name-difference="{{ $segment['code'] }}">Map source name difference: AC {{ $segment['code'] }} is named {{ $mapSourceNames[$segment['code']] }} in the preserved electoral boundary layer and {{ $segment['name'] }} in the dated district fixture. Both source spellings are retained. A shared code alone does not establish boundary edition or map-to-election equivalence; name-based result matching remains unresolved. Original coordinates are unchanged. See the dated source links below.</p>
+@endif
+@endforeach
+@if(($kind==='ac' && $seat['code']===24) || ($kind==='pc' && in_array($seat['code'],[5,6],true)))
+<p class="notice" data-boundary-source-conflict="noorpur">Boundary source conflict: Noorpur (AC 24) is assigned to Moradabad (PC 6) in the preserved electoral map attributes. The dated parliamentary delimitation fixture lists AC 24 under Nagina (PC 5), PDF page 42. The dashboard links follow that dated fixture; original map coordinates and source attributes remain unchanged. Map boundary edition and correspondence require review. <a href="{{ $fixture['pc_url'] }}">Official parliamentary delimitation source</a>.</p>
+@endif
+<section id="census-context" class="panel"><p class="eyebrow">Constituency dashboard · Census context</p><h2>District demographics & geographic scope</h2>
+<p>{{ strtoupper($kind) }} {{ $seat['code'] }} · {{ $seat['name'] }}. Links use the dated district–Assembly gazette and parliamentary delimitation fixture.</p>
+@if($districtNames->contains('Gautam Buddha Nagar'))<p class="notice">The preserved SOI archive contains only 144 Gautam Buddha Nagar district-tagged source shapes. Complete district village coverage is not established. Six duplicate-code shapes remain ambiguous; accepted Census/LGD links and boundary edition are pending. No missing shapes or population allocations are synthesized. PC 13 also includes Sikandrabad (AC 64) and Khurja (AC 70) in Bulandshahr.</p>@endif
+@if($districtNames->contains('Amroha'))<p class="notice">Census 2011 identifies district 09/137 as Jyotiba Phule Nagar; the SOI archive and dated electoral fixture use Amroha. The official Amroha district history explicitly records its former Jyotiba Phule Nagar name. This name correspondence does not verify matching boundary editions or village coverage. Census/LGD links remain pending; district figures are context, never constituency totals. <a href="https://amroha.nic.in/history/">Official district name history</a> | <a href="https://censusindia.gov.in/nada/index.php/catalog/1232">Census district handbook</a>.</p>@endif
+@if($districtNames->contains('Bhadohi'))<p class="notice">Census 2011 identifies district 09/198 as Sant Ravidas Nagar (Bhadohi); the SOI archive and dated electoral fixture use Bhadohi. An Akashvani report dated 4 October 2026 announces the name Sant Ravidas Nagar Bhadohi. These dated name correspondences do not establish matching boundary editions or village coverage. District figures are context, never constituency totals. <a href="https://censusindia.gov.in/nada/index.php/catalog/1284">Census 2011 district handbook</a> | <a href="https://newsonair.gov.in/yogi-adityanath-announces-renaming-of-bhadohi-as-sant-ravidas-nagar-bhadohi/">Official rename announcement</a>.</p>@endif
+<p class="notice">Constituency Census population is not established by this district link. District figures below are contextual, not AC/PC totals. Population is never divided by polygon area. Electoral maps, Census geography and historical constituencies may describe different years.</p>
+@if($districtNames->count()>1)
+<p class="notice">This constituency spans district references: {{ $districtNames->implode(', ') }}. Their combined populations are not a constituency total.</p>
+@endif
+@if($districtNames->contains('Prayagraj'))<p class="notice">Census 2011 records use Allahabad. The electoral fixture uses Prayagraj, following the 18 October 2018 district renaming. This dated name correspondence does not establish matching boundary editions. <a href="https://prayagrajdivision.nic.in/about-department/introduction/">Official rename source</a>.</p>@endif
+@if($districtNames->contains('Barabanki'))<p class="notice">Census 2011 and SOI source records use Bara Banki; the dated election fixture uses Barabanki. This name correspondence does not verify matching boundary editions. <a href="https://censusindia.gov.in/nada/index.php/catalog/6367">Census district 09/176</a> | <a href="https://barabanki.nic.in/about-district/geography/">Official district geography</a>.</p>@endif
+@if($districtNames->contains('Badaun'))<p class="notice">Census 2011 and SOI records use Budaun; the dated electoral fixture uses Badaun. Official district notices use both spellings for AC 115. This name correspondence does not verify matching boundary editions or village coverage. Invalid source shapes remain excluded and documented; no population is assigned to shapes. <a href="https://budaun.nic.in/census/page/3/">Official electoral spelling source</a>.</p>@endif
+@if($districtNames->contains('Bulandshahar'))<p class="notice">Census 2011 and SOI records use Bulandshahr; the dated electoral district fixture uses Bulandshahar. The official district constituency directory confirms AC codes 64–70. This spelling correspondence does not verify matching boundary editions or village coverage. Source shapes remain unlinked; no population is assigned to shapes. <a href="https://bulandshahar.nic.in/constituencies/">Official constituency directory</a>.</p>@endif
+@if($districtNames->contains('Ghazipur'))<p class="notice">Source conflict: the dated district fixture names AC 376 Jangipur without a reservation suffix; the parliamentary source text labels Jangipur (SC). Both source descriptions are retained. This dashboard does not infer or change reservation status from that mismatch. See the district gazette and parliamentary source links below.</p>@endif
+@if($districtNames->contains('Ayodhya'))<p class="notice">Census 2011 uses Faizabad; the SOI archive and dated electoral district fixture use Ayodhya. Name correspondence does not establish matching boundary editions or village coverage. The official constituency page table includes Dariyabad (AC 270) and omits Goshainganj (AC 276), while its navigation lists AC 276. The dated district gazette places AC 270 in Barabanki and AC 276 in Ayodhya; this dashboard retains that dated membership and flags the conflicting webpage. District figures are context, never constituency totals. <a href="https://ayodhya.nic.in/constituencies/">Official conflicting directory</a> | <a href="https://ayodhyada.in/docs/ayodhya51051.pdf">2018 development-area naming notification</a>.</p>@endif
+<div class="source-grid">
+@foreach($districtNames as $district)
+<article><h3>{{ $district }} district</h3>
+@if(isset($codes[$district]))
+@php($context=app(\App\Services\DistrictDashboardData::class)->published($codes[$district]))
+@if($context)
+<p>Census {{ $context['year'] }} district population: {{ $context['totals']['Total']['population']===null?'Unavailable':number_format($context['totals']['Total']['population']) }}.</p>
+<p>Literacy age 7+: {{ $context['totals']['Total']['literacy']===null?'Unavailable':number_format($context['totals']['Total']['literacy'],2).'%' }}.</p><p>Read from published records on this request.</p>
+@else
+<p>Published district Census records are unavailable here. No population is inferred.</p>
+@endif
+<a href="{{ route('district-dashboard',['state'=>'09','district'=>$codes[$district]]) }}">District map, Census history & graphs →</a>
+@else
+<p>District code crosswalk is not established in this panel. See the dated geographic source.</p>
+@endif
+</article>
+@endforeach
+</div>
+@if($kind==='pc')
+<p>Assembly segments: {{ $segments->map(fn(array $row):string=>$row['name'].' (AC '.$row['code'].')')->implode(', ') }}.</p>
+@endif
+<details><summary>Scope flags & sources</summary><p>District reference {{ $fixture['district_source_date'] }}; parliamentary reference {{ $fixture['pc_source_date'] }}. Shared names do not establish historical equivalence. Existing election warnings and unverified map dates remain visible.</p><a href="{{ $fixture['district_url'] }}">District–Assembly source ↗</a> · <a href="{{ $fixture['pc_url'] }}">Parliamentary delimitation source ↗</a></details></section>
+@endif
+@endif

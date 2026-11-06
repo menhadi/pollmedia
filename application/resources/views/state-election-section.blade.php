@@ -18,7 +18,7 @@
 <section id="{{ $kind }}-constituency-results" class="state-constituency-results"><h3>All constituency results · {{ $election['year'] }}</h3>
 <div class="table-scroll"><table data-sortable><thead><tr><th>Constituency</th><th>Winner</th><th>Party</th><th>Margin (votes)</th></tr></thead><tbody>
 @forelse($election['constituency_results']??[] as $seat)
-<tr><th><a href="{{ route('constituency.overview',['kind'=>$kind,'state'=>$title,'name'=>$seat['name'],'edition'=>$edition,'code'=>$seat['code']]) }}">{{ $seat['name'] }}</a>@if($seat['has_warning']) †@endif</th>
+<tr><th><a href="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$title,'name'=>$seat['name'],'edition'=>$edition,'code'=>$seat['code']]) }}">{{ $seat['name'] }}</a>@if($seat['has_warning']) †@endif</th>
 <td>{{ $seat['result']['winner']??($seat['source_candidate']?'Candidate: '.$seat['source_candidate']['name'].' *':'See official report *') }}</td><td>{{ $seat['result']['party']??$seat['source_candidate']['party']??'—' }}</td><td>{{ ($seat['result']['uncontested']??false)?'Uncontested':(isset($seat['result']['margin'])?number_format($seat['result']['margin']):'—') }}</td></tr>
 @empty<tr><td colspan="4">Constituency details are not available for this year.</td></tr>@endforelse
 </tbody></table></div>

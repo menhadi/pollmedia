@@ -1,0 +1,1747 @@
+{
+  "district_source": {
+    "date": "2022-05-05",
+    "effective_date": "2022-05-20",
+    "url": "https://www.mha.gov.in/sites/default/files/2024-09/DelimitationOrderI_04092024.pdf",
+    "archive": "D:/pollmedia/pilot/raw/jammu-kashmir-intake/mha-delimitation-final.pdf",
+    "sha256": "5bc534cdf0526ac97f8e0ad64a6679bae7026cb3d05442df734f36caf1c43113"
+  },
+  "pc_source": {
+    "date": "2022-05-05",
+    "effective_date": "2022-05-20",
+    "url": "https://www.mha.gov.in/sites/default/files/2024-09/DelimitationOrderI_04092024.pdf",
+    "archive": "D:/pollmedia/pilot/raw/jammu-kashmir-intake/mha-delimitation-final.pdf",
+    "sha256": "5bc534cdf0526ac97f8e0ad64a6679bae7026cb3d05442df734f36caf1c43113"
+  },
+  "districts": [
+    {
+      "number": 1,
+      "name": "KUPWARA",
+      "acs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "number": 2,
+      "name": "BARAMULLA",
+      "acs": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "number": 3,
+      "name": "BANDIPORA",
+      "acs": [
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "number": 4,
+      "name": "GANDERBAL",
+      "acs": [
+        17,
+        18
+      ]
+    },
+    {
+      "number": 5,
+      "name": "SRINAGAR",
+      "acs": [
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ]
+    },
+    {
+      "number": 6,
+      "name": "BUDGAM",
+      "acs": [
+        27,
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "number": 7,
+      "name": "PULWAMA",
+      "acs": [
+        32,
+        33,
+        34,
+        35
+      ]
+    },
+    {
+      "number": 8,
+      "name": "SHOPIAN",
+      "acs": [
+        36,
+        37
+      ]
+    },
+    {
+      "number": 9,
+      "name": "KULGAM",
+      "acs": [
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "number": 10,
+      "name": "ANANTNAG",
+      "acs": [
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "number": 11,
+      "name": "KISHTWAR",
+      "acs": [
+        48,
+        49,
+        50
+      ]
+    },
+    {
+      "number": 12,
+      "name": "DODA",
+      "acs": [
+        51,
+        52,
+        53
+      ]
+    },
+    {
+      "number": 13,
+      "name": "RAMBAN",
+      "acs": [
+        54,
+        55
+      ]
+    },
+    {
+      "number": 14,
+      "name": "REASI",
+      "acs": [
+        56,
+        57,
+        58
+      ]
+    },
+    {
+      "number": 15,
+      "name": "UDHAMPUR",
+      "acs": [
+        59,
+        60,
+        61,
+        62
+      ]
+    },
+    {
+      "number": 16,
+      "name": "KATHUA",
+      "acs": [
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ]
+    },
+    {
+      "number": 17,
+      "name": "SAMBA",
+      "acs": [
+        69,
+        70,
+        71
+      ]
+    },
+    {
+      "number": 18,
+      "name": "JAMMU",
+      "acs": [
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82
+      ]
+    },
+    {
+      "number": 19,
+      "name": "RAJOURI",
+      "acs": [
+        83,
+        84,
+        85,
+        86,
+        87
+      ]
+    },
+    {
+      "number": 20,
+      "name": "POONCH",
+      "acs": [
+        88,
+        89,
+        90
+      ]
+    }
+  ],
+  "acs": [
+    {
+      "number": 1,
+      "name": "Karnah",
+      "district": "KUPWARA",
+      "pc": 1,
+      "pc_source_name": "Karnah",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KARNAH",
+        "record_code": 1,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 2,
+      "name": "Trehgam",
+      "district": "KUPWARA",
+      "pc": 1,
+      "pc_source_name": "Trehgam",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "TREHGAM",
+        "record_code": 2,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 3,
+      "name": "Kupwara",
+      "district": "KUPWARA",
+      "pc": 1,
+      "pc_source_name": "Kupwara",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KUPWARA",
+        "record_code": 3,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 4,
+      "name": "Lolab",
+      "district": "KUPWARA",
+      "pc": 1,
+      "pc_source_name": "Lolab",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "LOLAB",
+        "record_code": 4,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 5,
+      "name": "Handwara",
+      "district": "KUPWARA",
+      "pc": 1,
+      "pc_source_name": "Handwara",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "HANDWARA",
+        "record_code": 5,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 6,
+      "name": "Langate",
+      "district": "KUPWARA",
+      "pc": 1,
+      "pc_source_name": "Langate",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "LANGATE",
+        "record_code": 6,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 7,
+      "name": "Sopore",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Sopore",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SOPORE",
+        "record_code": 7,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 8,
+      "name": "Rafiabad",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Rafiabad",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "RAFIABAD",
+        "record_code": 8,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 9,
+      "name": "Uri",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Uri",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "URI",
+        "record_code": 9,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 10,
+      "name": "Baramulla",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Baramulla",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BARAMULLA",
+        "record_code": 10,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 11,
+      "name": "Gulmarg",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Gulmarg",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "GULMARG",
+        "record_code": 11,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 12,
+      "name": "Wagoora - Kreeri",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Wagoora - Kreeri",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "WAGOORA - KREERI",
+        "record_code": 12,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 13,
+      "name": "Pattan",
+      "district": "BARAMULLA",
+      "pc": 1,
+      "pc_source_name": "Pattan",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "PATTAN",
+        "record_code": 13,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 14,
+      "name": "Sonawari",
+      "district": "BANDIPORA",
+      "pc": 1,
+      "pc_source_name": "Sonawari",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SONAWARI",
+        "record_code": 14,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 15,
+      "name": "Bandipora",
+      "district": "BANDIPORA",
+      "pc": 1,
+      "pc_source_name": "Bandipora",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BANDIPORA",
+        "record_code": 15,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 16,
+      "name": "Gurez (ST)",
+      "district": "BANDIPORA",
+      "pc": 1,
+      "pc_source_name": "Gurez (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "GUREZ(ST) (ST)",
+        "record_code": 16,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 17,
+      "name": "Kangan (ST)",
+      "district": "GANDERBAL",
+      "pc": 2,
+      "pc_source_name": "Kangan (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KANGAN(ST) (ST)",
+        "record_code": 17,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 18,
+      "name": "Ganderbal",
+      "district": "GANDERBAL",
+      "pc": 2,
+      "pc_source_name": "Ganderbal",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "GANDERBAL",
+        "record_code": 18,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 19,
+      "name": "Hazratbal",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Hazratbal",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "HAZRATBAL",
+        "record_code": 19,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 20,
+      "name": "Khanyar",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Khanyar",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KHANYAR",
+        "record_code": 20,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 21,
+      "name": "Habbakadal",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Habbakadal",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "HABBAKADAL",
+        "record_code": 21,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 22,
+      "name": "Lal Chowk",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Lal Chowk",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "LAL CHOWK",
+        "record_code": 22,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 23,
+      "name": "Channapora",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Channapora",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "CHANNAPORA",
+        "record_code": 23,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 24,
+      "name": "Zadibal",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Zadibal",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "ZADIBAL",
+        "record_code": 24,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 25,
+      "name": "Eidgah",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Eidgah",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "EIDGAH",
+        "record_code": 25,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 26,
+      "name": "Central Shalteng",
+      "district": "SRINAGAR",
+      "pc": 2,
+      "pc_source_name": "Central Shalteng",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "CENTRAL SHALTENG",
+        "record_code": 26,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 27,
+      "name": "Budgam",
+      "district": "BUDGAM",
+      "pc": 1,
+      "pc_source_name": "Budgam",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BUDGAM",
+        "record_code": 27,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 28,
+      "name": "Beerwah",
+      "district": "BUDGAM",
+      "pc": 1,
+      "pc_source_name": "Beerwah",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BEERWAH",
+        "record_code": 28,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 29,
+      "name": "Khansahib",
+      "district": "BUDGAM",
+      "pc": 2,
+      "pc_source_name": "Khansahib",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KHANSAHIB",
+        "record_code": 29,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 30,
+      "name": "Chrar-i-Sharief",
+      "district": "BUDGAM",
+      "pc": 2,
+      "pc_source_name": "Chrar-i-Sharief",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "CHRAR-i- SHARIEF",
+        "record_code": 30,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 31,
+      "name": "Chadoora",
+      "district": "BUDGAM",
+      "pc": 2,
+      "pc_source_name": "Chadoora",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "CHADOORA",
+        "record_code": 31,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 32,
+      "name": "Pampore",
+      "district": "PULWAMA",
+      "pc": 2,
+      "pc_source_name": "Pampore",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "PAMPORE",
+        "record_code": 32,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 33,
+      "name": "Tral",
+      "district": "PULWAMA",
+      "pc": 2,
+      "pc_source_name": "Tral",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "TRAL",
+        "record_code": 33,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 34,
+      "name": "Pulwama",
+      "district": "PULWAMA",
+      "pc": 2,
+      "pc_source_name": "Pulwama",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "PULWAMA",
+        "record_code": 34,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 35,
+      "name": "Rajpora",
+      "district": "PULWAMA",
+      "pc": 2,
+      "pc_source_name": "Rajpora",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "RAJPORA",
+        "record_code": 35,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 36,
+      "name": "Zainapora",
+      "district": "SHOPIAN",
+      "pc": 3,
+      "pc_source_name": "Zainapora",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "ZAINAPORA",
+        "record_code": 36,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 37,
+      "name": "Shopian",
+      "district": "SHOPIAN",
+      "pc": 2,
+      "pc_source_name": "Shopian",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SHOPIAN",
+        "record_code": 37,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 38,
+      "name": "D.H. Pora",
+      "district": "KULGAM",
+      "pc": 3,
+      "pc_source_name": "D.H. Pora",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "D. H. PORA",
+        "record_code": 38,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 39,
+      "name": "Kulgam",
+      "district": "KULGAM",
+      "pc": 3,
+      "pc_source_name": "Kulgam",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KULGAM",
+        "record_code": 39,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 40,
+      "name": "Devsar",
+      "district": "KULGAM",
+      "pc": 3,
+      "pc_source_name": "Devsar",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "DEVSAR",
+        "record_code": 40,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 41,
+      "name": "Dooru",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Dooru",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "DOORU",
+        "record_code": 41,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 42,
+      "name": "Kokernag (ST)",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Kokernag (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KOKERNAG(ST) (ST)",
+        "record_code": 42,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 43,
+      "name": "Anantnag West",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Anantnag West",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "ANANTNAG WEST",
+        "record_code": 43,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 44,
+      "name": "Anantnag",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Anantnag",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "ANANTNAG",
+        "record_code": 44,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 45,
+      "name": "Srigufwara - Bijbehara",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Srigufwara - Bijbehara",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SRIGUFWARA - BIJBEHARA",
+        "record_code": 45,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 46,
+      "name": "Shangus-Anantnag East",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Shangus-Anantnag East",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SHANGUS - ANANTNAG EAST",
+        "record_code": 46,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 47,
+      "name": "Pahalgam",
+      "district": "ANANTNAG",
+      "pc": 3,
+      "pc_source_name": "Pahalgam",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "PAHALGAM",
+        "record_code": 47,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 48,
+      "name": "Inderwal",
+      "district": "KISHTWAR",
+      "pc": 4,
+      "pc_source_name": "Inderwal",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "INDERWAL",
+        "record_code": 48,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 49,
+      "name": "Kishtwar",
+      "district": "KISHTWAR",
+      "pc": 4,
+      "pc_source_name": "Kishtwar",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KISHTWAR",
+        "record_code": 49,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 50,
+      "name": "Padder-Nagseni",
+      "district": "KISHTWAR",
+      "pc": 4,
+      "pc_source_name": "Padder-Nagseni",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "PADDER - NAGSENI",
+        "record_code": 50,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 51,
+      "name": "Bhadarwah",
+      "district": "DODA",
+      "pc": 4,
+      "pc_source_name": "Bhadarwah",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BHADARWAH",
+        "record_code": 51,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 52,
+      "name": "Doda",
+      "district": "DODA",
+      "pc": 4,
+      "pc_source_name": "Doda",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "DODA",
+        "record_code": 52,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 53,
+      "name": "Doda West",
+      "district": "DODA",
+      "pc": 4,
+      "pc_source_name": "Doda West",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "DODA WEST",
+        "record_code": 53,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 54,
+      "name": "Ramban",
+      "district": "RAMBAN",
+      "pc": 4,
+      "pc_source_name": "Ramban",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "RAMBAN",
+        "record_code": 54,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 55,
+      "name": "Banihal",
+      "district": "RAMBAN",
+      "pc": 4,
+      "pc_source_name": "Banihal",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BANIHAL",
+        "record_code": 55,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 56,
+      "name": "Gulabgarh (ST)",
+      "district": "REASI",
+      "pc": 5,
+      "pc_source_name": "Gulabgarh (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "GULABGARH(ST) (ST)",
+        "record_code": 56,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 57,
+      "name": "Reasi",
+      "district": "REASI",
+      "pc": 5,
+      "pc_source_name": "Reasi",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "REASI",
+        "record_code": 57,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 58,
+      "name": "Shri Mata Vaishno Devi",
+      "district": "REASI",
+      "pc": 5,
+      "pc_source_name": "Shri Mata Vaishno Devi",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SHRI MATA VAISHNO DEVI",
+        "record_code": 58,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 59,
+      "name": "Udhampur West",
+      "district": "UDHAMPUR",
+      "pc": 4,
+      "pc_source_name": "Udhampur West",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "UDHAMPUR WEST",
+        "record_code": 59,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 60,
+      "name": "Udhampur East",
+      "district": "UDHAMPUR",
+      "pc": 4,
+      "pc_source_name": "Udhampur East",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "UDHAMPUR EAST",
+        "record_code": 60,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 61,
+      "name": "Chenani",
+      "district": "UDHAMPUR",
+      "pc": 4,
+      "pc_source_name": "Chenani",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "CHENANI",
+        "record_code": 61,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 62,
+      "name": "Ramnagar (SC)",
+      "district": "UDHAMPUR",
+      "pc": 4,
+      "pc_source_name": "Ramnagar (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "RAMNAGAR(SC) (SC)",
+        "record_code": 62,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 63,
+      "name": "Bani",
+      "district": "KATHUA",
+      "pc": 4,
+      "pc_source_name": "Bani",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BANI",
+        "record_code": 63,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 64,
+      "name": "Billawar",
+      "district": "KATHUA",
+      "pc": 4,
+      "pc_source_name": "Billawar",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BILLAWAR",
+        "record_code": 64,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 65,
+      "name": "Basohli",
+      "district": "KATHUA",
+      "pc": 4,
+      "pc_source_name": "Basohli",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BASOHLI",
+        "record_code": 65,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 66,
+      "name": "Jasrota",
+      "district": "KATHUA",
+      "pc": 4,
+      "pc_source_name": "Jasrota",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "JASROTA",
+        "record_code": 66,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 67,
+      "name": "Kathua (SC)",
+      "district": "KATHUA",
+      "pc": 4,
+      "pc_source_name": "Kathua (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KATHUA(SC) (SC)",
+        "record_code": 67,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 68,
+      "name": "Hiranagar",
+      "district": "KATHUA",
+      "pc": 4,
+      "pc_source_name": "Hiranagar",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "HIRANAGAR",
+        "record_code": 68,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 69,
+      "name": "Ramgarh (SC)",
+      "district": "SAMBA",
+      "pc": 5,
+      "pc_source_name": "Ramgarh (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "RAMGARH(SC) (SC)",
+        "record_code": 69,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 70,
+      "name": "Samba",
+      "district": "SAMBA",
+      "pc": 5,
+      "pc_source_name": "Samba",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SAMBA",
+        "record_code": 70,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 71,
+      "name": "Vijaypur",
+      "district": "SAMBA",
+      "pc": 5,
+      "pc_source_name": "Vijaypur",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "VIJAYPUR",
+        "record_code": 71,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 72,
+      "name": "Bishnah (SC)",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Bishnah (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BISHNAH(SC) (SC)",
+        "record_code": 72,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 73,
+      "name": "Suchetgarh (SC)",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Suchetgarh (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SUCHETGARH(SC) (SC)",
+        "record_code": 73,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 74,
+      "name": "R.S. Pura - Jammu South",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "R.S. Pura - Jammu South",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "R. S. PURA- JAMMU SOUTH",
+        "record_code": 74,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 75,
+      "name": "Bahu",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Bahu",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BAHU",
+        "record_code": 75,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 76,
+      "name": "Jammu East",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Jammu East",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "JAMMU EAST",
+        "record_code": 76,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 77,
+      "name": "Nagrota",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Nagrota",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "NAGROTA",
+        "record_code": 77,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 78,
+      "name": "Jammu West",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Jammu West",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "JAMMU WEST",
+        "record_code": 78,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 79,
+      "name": "Jammu North",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Jammu North",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "JAMMU NORTH",
+        "record_code": 79,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 80,
+      "name": "Marh (SC)",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Marh (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "MARH(SC) (SC)",
+        "record_code": 80,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 81,
+      "name": "Akhnoor (SC)",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Akhnoor (SC)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "AKHNOOR(SC) (SC)",
+        "record_code": 81,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 82,
+      "name": "Chhamb",
+      "district": "JAMMU",
+      "pc": 5,
+      "pc_source_name": "Chhamb",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "CHHAMB",
+        "record_code": 82,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 83,
+      "name": "Kalakote- Sunderbani",
+      "district": "RAJOURI",
+      "pc": 5,
+      "pc_source_name": "Kalakote- Sunderbani",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "KALAKOTE - SUNDERBANI",
+        "record_code": 83,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 84,
+      "name": "Nowshera",
+      "district": "RAJOURI",
+      "pc": 3,
+      "pc_source_name": "Nowshera",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "NOWSHERA",
+        "record_code": 84,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 85,
+      "name": "Rajouri (ST)",
+      "district": "RAJOURI",
+      "pc": 3,
+      "pc_source_name": "Rajouri (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "RAJOURI(ST) (ST)",
+        "record_code": 85,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 86,
+      "name": "Budhal (ST)",
+      "district": "RAJOURI",
+      "pc": 3,
+      "pc_source_name": "Budhal (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "BUDHAL(ST) (ST)",
+        "record_code": 86,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 87,
+      "name": "Thana Mandi (ST)",
+      "district": "RAJOURI",
+      "pc": 3,
+      "pc_source_name": "Thana Mandi (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "THANNAMANDI(ST) (ST)",
+        "record_code": 87,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 88,
+      "name": "Surankote (ST)",
+      "district": "POONCH",
+      "pc": 3,
+      "pc_source_name": "Surankote (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "SURANKOTE(ST) (ST)",
+        "record_code": 88,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 89,
+      "name": "Poonch Haveli",
+      "district": "POONCH",
+      "pc": 3,
+      "pc_source_name": "Poonch Haveli",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "POONCH HAVELI",
+        "record_code": 89,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    },
+    {
+      "number": 90,
+      "name": "Mendhar (ST)",
+      "district": "POONCH",
+      "pc": 3,
+      "pc_source_name": "Mendhar (ST)",
+      "archive": {
+        "kind": "ac",
+        "constituency_name": "MENDHAR(ST) (ST)",
+        "record_code": 90,
+        "edition_id": "1e7b04dde5cfe815dbb49020",
+        "year": 2024,
+        "state_label": "Jammu & Kashmir"
+      }
+    }
+  ],
+  "pcs": [
+    {
+      "number": 1,
+      "name": "Baramulla",
+      "acs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        27,
+        28
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "BARAMULLA",
+        "record_code": 537,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 2,
+      "name": "Srinagar",
+      "acs": [
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        37
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "SRINAGAR",
+        "record_code": 538,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 3,
+      "name": "Anantnag-Rajouri",
+      "acs": [
+        36,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "ANANTNAG-RAJOURI",
+        "record_code": 539,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 4,
+      "name": "Udhampur",
+      "acs": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "UDHAMPUR",
+        "record_code": 540,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    },
+    {
+      "number": 5,
+      "name": "Jammu",
+      "acs": [
+        56,
+        57,
+        58,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "archive": {
+        "kind": "pc",
+        "constituency_name": "JAMMU",
+        "record_code": 541,
+        "edition_id": "349e04305ee4652986f79497",
+        "year": 2024
+      }
+    }
+  ],
+  "note": "Final Order No. 2 dated 5 May 2022, effective 20 May 2022; territorial reference 15 June 2020. Final English tables only; preceding March proposals excluded. AC display names preserve Table B. Table A calls AC87 Thannamandi (ST), while Table B uses Thana Mandi (ST); original variants retained, no approximate archive match.",
+  "archive_match_exceptions": [],
+  "source_name_variants": [
+    {
+      "number": 87,
+      "table_a": "Thannamandi (ST)",
+      "table_b": "Thana Mandi (ST)"
+    }
+  ],
+  "archive_match_note": "AC2024 archive uses Jammu & Kashmir; PC2024 uses Jammu and Kashmir. Exact constituency numbers plus normalized names, removing repeated reservation suffixes only. AC87 matches documented Table A Thannamandi variant. Original archive labels and record codes retained."
+}

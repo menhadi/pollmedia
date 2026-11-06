@@ -1,0 +1,1072 @@
+{
+  "schema": 1,
+  "publication_enabled": true,
+  "records": [
+    {
+      "panchayat_code": "242953",
+      "name": "TODARPUR",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "16,02,800.00",
+      "payment_total_decimal": "1602800.00",
+      "unit": null,
+      "source_file": "up-aligarh-2020-block-1403-source.json",
+      "source_sha256": "49f7478d862bfec6a333376dddd5bf3485ac383e0ca5f0a2f354ec1645265f25",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:17:05.683Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "BHONAI",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "8,69,080.00",
+      "payment_total_decimal": "869080.00",
+      "unit": null,
+      "source_file": "up-aligarh-2020-block-1406-source.json",
+      "source_sha256": "5fd8062c53b02e41fd64eeb883768f350335f12b9b76b0fc66d89bc1711082b0",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:17:09.602Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "LALPUR",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "19,87,814.01",
+      "payment_total_decimal": "1987814.01",
+      "unit": null,
+      "source_file": "up-aligarh-2020-block-1408-source.json",
+      "source_sha256": "9863066d2047cb05ad07597cddf0bf22a812f8cc2d65397e32080757616e35e0",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:17:14.253Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RAIPURSUNAMAI",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "13,02,926.00",
+      "payment_total_decimal": "1302926.00",
+      "unit": null,
+      "source_file": "up-aligarh-2020-block-1409-source.json",
+      "source_sha256": "cc9da199430984aa6487653805fbc30602a9fed9ef110c6e9609303660d874d4",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:17:18.513Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PIPALGAON",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "5,24,654.00",
+      "payment_total_decimal": "524654.00",
+      "unit": null,
+      "source_file": "up-aligarh-2020-block-1410-source.json",
+      "source_sha256": "712ffadc3315fc0790b78d3813522f7ff3fb2bd05dea70d323a4feb094a165b4",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:17:23.452Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242953",
+      "name": "TodarPur",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "9,23,820.00",
+      "payment_total_decimal": "923820.00",
+      "unit": null,
+      "source_file": "up-aligarh-2021-block-1403-source.json",
+      "source_sha256": "effa80d58445f4bcda667ca1f010592cfce54104bd1913b9054f94aecca33b57",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:16:37.193Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "Bhonai",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "6,97,030.00",
+      "payment_total_decimal": "697030.00",
+      "unit": null,
+      "source_file": "up-aligarh-2021-block-1406-source.json",
+      "source_sha256": "57f99af5aa58dd11c93d0e40734a9716c87e60b923ecd10cd24d31c19a6a62fb",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:16:40.675Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "Lalpur",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "8,99,298.00",
+      "payment_total_decimal": "899298.00",
+      "unit": null,
+      "source_file": "up-aligarh-2021-block-1408-source.json",
+      "source_sha256": "52a3df940d4b993808880fede98212d24fb6729aef87e37edd5d486a43f5bc6d",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:16:43.077Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RaipurSunamai",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "1,14,696.00",
+      "payment_total_decimal": "114696.00",
+      "unit": null,
+      "source_file": "up-aligarh-2021-block-1409-source.json",
+      "source_sha256": "131de5071fa3a45a40e913c0bc707dacdc299231208b5b005c9f3e083dad437a",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:16:44.337Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PipalGaon",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "7,05,350.00",
+      "payment_total_decimal": "705350.00",
+      "unit": null,
+      "source_file": "up-aligarh-2021-block-1410-source.json",
+      "source_sha256": "93b516602f6d045383d0244de175f652b57915e1c0de5adcb1e2d1d7f642e9c0",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:16:45.901Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242953",
+      "name": "TodarPur",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "13,37,137.00",
+      "payment_total_decimal": "1337137.00",
+      "unit": null,
+      "source_file": "up-aligarh-2022-block-1403-source.json",
+      "source_sha256": "6c8fe6bf7493d0d59dc629abd9a6e33e7396c2a620628ae7e30c819ee47f2a2d",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:15:26.239Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "Bhonai",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "12,10,105.00",
+      "payment_total_decimal": "1210105.00",
+      "unit": null,
+      "source_file": "up-aligarh-2022-block-1406-source.json",
+      "source_sha256": "7539e55690e63cb397c9b8835beee4416cd888e0ddc7f1c9d6912caf754bdbfc",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:15:30.728Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "Lalpur",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "12,71,049.00",
+      "payment_total_decimal": "1271049.00",
+      "unit": null,
+      "source_file": "up-aligarh-2022-block-1408-source.json",
+      "source_sha256": "2411edf1631f7749deb92224d4d93f6cb33dfe791e7b6cc93d832cefe0d70402",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:15:33.124Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RaipurSunamai",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "12,39,187.00",
+      "payment_total_decimal": "1239187.00",
+      "unit": null,
+      "source_file": "up-aligarh-2022-block-1409-source.json",
+      "source_sha256": "522e2a922c85d913c7a50568cf2fef1318bfefa35e4a7a87accf2514dfc31936",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:15:34.502Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PipalGaon",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "7,52,348.00",
+      "payment_total_decimal": "752348.00",
+      "unit": null,
+      "source_file": "up-aligarh-2022-block-1410-source.json",
+      "source_sha256": "5e7b5750880b5b4cfefc799d007c75cc788ba83784bb7fae07b8a056a636608b",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:15:35.708Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242953",
+      "name": "TodarPur",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "8,79,287.00",
+      "payment_total_decimal": "879287.00",
+      "unit": null,
+      "source_file": "up-aligarh-2023-block-1403-source.json",
+      "source_sha256": "247f577d487bcd29bc37de3169956f9f9b315741e54586adad5e33acdc3fb587",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:14:38.225Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "Bhonai",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "8,98,830.00",
+      "payment_total_decimal": "898830.00",
+      "unit": null,
+      "source_file": "up-aligarh-2023-block-1406-source.json",
+      "source_sha256": "b41f9d050c90b367d04df39b16aa137e271c7eec246f5e192b358bd510997c1a",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:14:44.067Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "Lalpur",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "14,72,019.99",
+      "payment_total_decimal": "1472019.99",
+      "unit": null,
+      "source_file": "up-aligarh-2023-block-1408-source.json",
+      "source_sha256": "4fb219c682d9cbede020bb35d60ee641b1bc89cf8cebe8b78aaddc181dce72c0",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:14:46.035Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RaipurSunamai",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "10,62,389.00",
+      "payment_total_decimal": "1062389.00",
+      "unit": null,
+      "source_file": "up-aligarh-2023-block-1409-source.json",
+      "source_sha256": "88b76609cb0533007f293b7f1299ab9af231a839b015a923d427986378651939",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:14:47.059Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PipalGaon",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "11,53,986.00",
+      "payment_total_decimal": "1153986.00",
+      "unit": null,
+      "source_file": "up-aligarh-2023-block-1410-source.json",
+      "source_sha256": "f3e1d8627bdaacd1b70b82de6d465e76955ed76c007065a704546bcbfb26a4bd",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:14:48.371Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242953",
+      "name": "TodarPur",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "15,65,400.00",
+      "payment_total_decimal": "1565400.00",
+      "unit": null,
+      "source_file": "up-aligarh-2024-block-1403-source.json",
+      "source_sha256": "cb18d3809e578bea0ec674b0426bb9753174117c1e86d655bfb61604883c2d56",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:13:49.715Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "Bhonai",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "15,12,968.00",
+      "payment_total_decimal": "1512968.00",
+      "unit": null,
+      "source_file": "up-aligarh-2024-block-1406-source.json",
+      "source_sha256": "e5d67e3e999e3d6aaa840aad863c896538ef3c26251d42e3da7099dae77d9d93",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:13:55.998Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "Lalpur",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "17,20,431.00",
+      "payment_total_decimal": "1720431.00",
+      "unit": null,
+      "source_file": "up-aligarh-2024-block-1408-source.json",
+      "source_sha256": "c57a8f34b52e55823f568ecd335f5d4d7f7ff30d8cebcd544ea508d9df046ec6",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:13:58.308Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RaipurSunamai",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "14,92,462.00",
+      "payment_total_decimal": "1492462.00",
+      "unit": null,
+      "source_file": "up-aligarh-2024-block-1409-source.json",
+      "source_sha256": "4337322b11f78ff8462f415af5d4f641ff6d0110b985033d511a739febc37bac",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:13:59.325Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PipalGaon",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "15,76,323.00",
+      "payment_total_decimal": "1576323.00",
+      "unit": null,
+      "source_file": "up-aligarh-2024-block-1410-source.json",
+      "source_sha256": "0dbf41c6d99a200b8fec987109293d9aa60c6c8598247d2015acc36614b723e9",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:14:00.365Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242953",
+      "name": "TodarPur",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "12,20,701.00",
+      "payment_total_decimal": "1220701.00",
+      "unit": null,
+      "source_file": "up-aligarh-2025-block-1403-source.json",
+      "source_sha256": "3ee66288355fd612b84cb858bdf563ad6abf4c83ac31c47a66a37e3d14ca8653",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:13:13.848Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "Bhonai",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "9,90,597.00",
+      "payment_total_decimal": "990597.00",
+      "unit": null,
+      "source_file": "up-aligarh-2025-block-1406-source.json",
+      "source_sha256": "9914aaf05a09da99f7663e13f74d8364434506ebfdd7ce4d46f2fa0636dab3d0",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:13:16.870Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "Lalpur",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "13,42,244.00",
+      "payment_total_decimal": "1342244.00",
+      "unit": null,
+      "source_file": "up-aligarh-2025-block-1408-source.json",
+      "source_sha256": "3f63c923656c79e399b95e8029ee2a84e1abc49edf7b36d1cc00ceb15860dbc6",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:13:25.897Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RaipurSunamai",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "10,49,230.00",
+      "payment_total_decimal": "1049230.00",
+      "unit": null,
+      "source_file": "up-aligarh-2025-block-1409-source.json",
+      "source_sha256": "cc583174c5014854d6c563a80720bb2e8ab5bcde69922239c1e05cd1a9ce912f",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:13:30.455Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PipalGaon",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "16,47,890.00",
+      "payment_total_decimal": "1647890.00",
+      "unit": null,
+      "source_file": "up-aligarh-2025-block-1410-source.json",
+      "source_sha256": "1beec72b0c95bc348ca70a643cdd14dc92b7e5201202f56f30c36326437090ce",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:13:32.389Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242953",
+      "name": "TodarPur",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1403",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122153",
+        "122154",
+        "122163"
+      ],
+      "payment_total_source_text": "5,28,501.00",
+      "payment_total_decimal": "528501.00",
+      "unit": null,
+      "source_file": "up-aligarh-2026-block-1403-source.json",
+      "source_sha256": "ffde481998607156fdf306d288351b36ca709c98905494f0828150084bdfe063",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=242953.html",
+      "capture_batch_date": "2026-10-29T10:12:21.348Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242962",
+      "name": "Bhonai",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1406",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122310"
+      ],
+      "payment_total_source_text": "5,88,257.00",
+      "payment_total_decimal": "588257.00",
+      "unit": null,
+      "source_file": "up-aligarh-2026-block-1406-source.json",
+      "source_sha256": "747fe2c7bb15b96ec13346028d88bac22569a807098c606894987d2a8298d6d5",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=242962.html",
+      "capture_batch_date": "2026-10-29T10:12:35.145Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242975",
+      "name": "Lalpur",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1408",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122861"
+      ],
+      "payment_total_source_text": "7,35,680.01",
+      "payment_total_decimal": "735680.01",
+      "unit": null,
+      "source_file": "up-aligarh-2026-block-1408-source.json",
+      "source_sha256": "3f9cabe8a879444de582a40a6eab9ae7abd289b46453b290f00a412d24622dda",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=242975.html",
+      "capture_batch_date": "2026-10-29T10:12:38.694Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242979",
+      "name": "RaipurSunamai",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1409",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "122016"
+      ],
+      "payment_total_source_text": "5,66,847.00",
+      "payment_total_decimal": "566847.00",
+      "unit": null,
+      "source_file": "up-aligarh-2026-block-1409-source.json",
+      "source_sha256": "e4f0465244aa85c117913b58f9b630f8e93cea11fd1749dccf5f9e4c526754aa",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=242979.html",
+      "capture_batch_date": "2026-10-29T10:12:40.370Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "242976",
+      "name": "PipalGaon",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "110",
+      "report_block": "1410",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "119",
+      "village_lgd_codes": [
+        "121822"
+      ],
+      "payment_total_source_text": "3,52,854.00",
+      "payment_total_decimal": "352854.00",
+      "unit": null,
+      "source_file": "up-aligarh-2026-block-1410-source.json",
+      "source_sha256": "8f4535c12641d518ef88427172e667e5504b15b40398c3690b3a3cc70725b87d",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=242976.html",
+      "capture_batch_date": "2026-10-29T10:12:41.930Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    }
+  ],
+  "sources": {
+    "up-aligarh-2020-block-1403-source.json": {
+      "sha256": "49f7478d862bfec6a333376dddd5bf3485ac383e0ca5f0a2f354ec1645265f25",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-aligarh-2020-block-1406-source.json": {
+      "sha256": "5fd8062c53b02e41fd64eeb883768f350335f12b9b76b0fc66d89bc1711082b0",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-aligarh-2020-block-1408-source.json": {
+      "sha256": "9863066d2047cb05ad07597cddf0bf22a812f8cc2d65397e32080757616e35e0",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-aligarh-2020-block-1409-source.json": {
+      "sha256": "cc9da199430984aa6487653805fbc30602a9fed9ef110c6e9609303660d874d4",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-aligarh-2020-block-1410-source.json": {
+      "sha256": "712ffadc3315fc0790b78d3813522f7ff3fb2bd05dea70d323a4feb094a165b4",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-aligarh-2021-block-1403-source.json": {
+      "sha256": "effa80d58445f4bcda667ca1f010592cfce54104bd1913b9054f94aecca33b57",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2021-block-1406-source.json": {
+      "sha256": "57f99af5aa58dd11c93d0e40734a9716c87e60b923ecd10cd24d31c19a6a62fb",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2021-block-1408-source.json": {
+      "sha256": "52a3df940d4b993808880fede98212d24fb6729aef87e37edd5d486a43f5bc6d",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2021-block-1409-source.json": {
+      "sha256": "131de5071fa3a45a40e913c0bc707dacdc299231208b5b005c9f3e083dad437a",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2021-block-1410-source.json": {
+      "sha256": "93b516602f6d045383d0244de175f652b57915e1c0de5adcb1e2d1d7f642e9c0",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2022-block-1403-source.json": {
+      "sha256": "6c8fe6bf7493d0d59dc629abd9a6e33e7396c2a620628ae7e30c819ee47f2a2d",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2022-block-1406-source.json": {
+      "sha256": "7539e55690e63cb397c9b8835beee4416cd888e0ddc7f1c9d6912caf754bdbfc",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2022-block-1408-source.json": {
+      "sha256": "2411edf1631f7749deb92224d4d93f6cb33dfe791e7b6cc93d832cefe0d70402",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2022-block-1409-source.json": {
+      "sha256": "522e2a922c85d913c7a50568cf2fef1318bfefa35e4a7a87accf2514dfc31936",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2022-block-1410-source.json": {
+      "sha256": "5e7b5750880b5b4cfefc799d007c75cc788ba83784bb7fae07b8a056a636608b",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-aligarh-2023-block-1403-source.json": {
+      "sha256": "247f577d487bcd29bc37de3169956f9f9b315741e54586adad5e33acdc3fb587",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-aligarh-2023-block-1406-source.json": {
+      "sha256": "b41f9d050c90b367d04df39b16aa137e271c7eec246f5e192b358bd510997c1a",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-aligarh-2023-block-1408-source.json": {
+      "sha256": "4fb219c682d9cbede020bb35d60ee641b1bc89cf8cebe8b78aaddc181dce72c0",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-aligarh-2023-block-1409-source.json": {
+      "sha256": "88b76609cb0533007f293b7f1299ab9af231a839b015a923d427986378651939",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-aligarh-2023-block-1410-source.json": {
+      "sha256": "f3e1d8627bdaacd1b70b82de6d465e76955ed76c007065a704546bcbfb26a4bd",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-aligarh-2024-block-1403-source.json": {
+      "sha256": "cb18d3809e578bea0ec674b0426bb9753174117c1e86d655bfb61604883c2d56",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2024-block-1406-source.json": {
+      "sha256": "e5d67e3e999e3d6aaa840aad863c896538ef3c26251d42e3da7099dae77d9d93",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2024-block-1408-source.json": {
+      "sha256": "c57a8f34b52e55823f568ecd335f5d4d7f7ff30d8cebcd544ea508d9df046ec6",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2024-block-1409-source.json": {
+      "sha256": "4337322b11f78ff8462f415af5d4f641ff6d0110b985033d511a739febc37bac",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2024-block-1410-source.json": {
+      "sha256": "0dbf41c6d99a200b8fec987109293d9aa60c6c8598247d2015acc36614b723e9",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2025-block-1403-source.json": {
+      "sha256": "3ee66288355fd612b84cb858bdf563ad6abf4c83ac31c47a66a37e3d14ca8653",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2025-block-1406-source.json": {
+      "sha256": "9914aaf05a09da99f7663e13f74d8364434506ebfdd7ce4d46f2fa0636dab3d0",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2025-block-1408-source.json": {
+      "sha256": "3f63c923656c79e399b95e8029ee2a84e1abc49edf7b36d1cc00ceb15860dbc6",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2025-block-1409-source.json": {
+      "sha256": "cc583174c5014854d6c563a80720bb2e8ab5bcde69922239c1e05cd1a9ce912f",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2025-block-1410-source.json": {
+      "sha256": "1beec72b0c95bc348ca70a643cdd14dc92b7e5201202f56f30c36326437090ce",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2026-block-1403-source.json": {
+      "sha256": "ffde481998607156fdf306d288351b36ca709c98905494f0828150084bdfe063",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/110&name=1403.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2026-block-1406-source.json": {
+      "sha256": "747fe2c7bb15b96ec13346028d88bac22569a807098c606894987d2a8298d6d5",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/110&name=1406.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2026-block-1408-source.json": {
+      "sha256": "3f9cabe8a879444de582a40a6eab9ae7abd289b46453b290f00a412d24622dda",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/110&name=1408.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2026-block-1409-source.json": {
+      "sha256": "e4f0465244aa85c117913b58f9b630f8e93cea11fd1749dccf5f9e4c526754aa",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/110&name=1409.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-aligarh-2026-block-1410-source.json": {
+      "sha256": "8f4535c12641d518ef88427172e667e5504b15b40398c3690b3a3cc70725b87d",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/110&name=1410.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    }
+  }
+}

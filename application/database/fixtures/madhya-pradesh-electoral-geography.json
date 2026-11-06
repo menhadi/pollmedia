@@ -1,0 +1,1826 @@
+{
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_source_date": "2008-12-17",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Sheopur",
+      "district": "Sheopur",
+      "page": 227
+    },
+    {
+      "code": 2,
+      "name": "Vijaypur",
+      "district": "Sheopur",
+      "page": 227
+    },
+    {
+      "code": 3,
+      "name": "Sabalgarh",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 4,
+      "name": "Joura",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 5,
+      "name": "Sumawali",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 6,
+      "name": "Morena",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 7,
+      "name": "Dimani",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 8,
+      "name": "Ambah (SC)",
+      "district": "Morena",
+      "page": 227
+    },
+    {
+      "code": 9,
+      "name": "Ater",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 10,
+      "name": "Bhind",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 11,
+      "name": "Lahar",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 12,
+      "name": "Mehgaon",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 13,
+      "name": "Gohad (SC)",
+      "district": "Bhind",
+      "page": 228
+    },
+    {
+      "code": 20,
+      "name": "Sewda",
+      "district": "Datia",
+      "page": 228
+    },
+    {
+      "code": 21,
+      "name": "Bhander (SC)",
+      "district": "Datia",
+      "page": 229
+    },
+    {
+      "code": 22,
+      "name": "Datia",
+      "district": "Datia",
+      "page": 229
+    },
+    {
+      "code": 14,
+      "name": "Gwalior Rural",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 15,
+      "name": "Gwalior",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 16,
+      "name": "Gwalior East",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 17,
+      "name": "Gwalior South",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 18,
+      "name": "Bhitarwar",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 19,
+      "name": "Dabra (SC)",
+      "district": "Gwalior",
+      "page": 228
+    },
+    {
+      "code": 23,
+      "name": "Karera (SC)",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 24,
+      "name": "Pohari",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 25,
+      "name": "Shivpuri",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 26,
+      "name": "Pichhore",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 27,
+      "name": "Kolaras",
+      "district": "Shivpuri",
+      "page": 229
+    },
+    {
+      "code": 28,
+      "name": "Bamori",
+      "district": "Guna",
+      "page": 229
+    },
+    {
+      "code": 29,
+      "name": "Guna (SC)",
+      "district": "Guna",
+      "page": 229
+    },
+    {
+      "code": 32,
+      "name": "Ashok Nagar (SC)",
+      "district": "Ashok Nagar",
+      "page": 230
+    },
+    {
+      "code": 33,
+      "name": "Chanderi",
+      "district": "Ashok Nagar",
+      "page": 230
+    },
+    {
+      "code": 34,
+      "name": "Mungaoli",
+      "district": "Ashok Nagar",
+      "page": 230
+    },
+    {
+      "code": 43,
+      "name": "Tikamgarh",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 44,
+      "name": "Jatara (SC)",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 45,
+      "name": "Prithvipur",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 46,
+      "name": "Niwari",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 47,
+      "name": "Khargapur",
+      "district": "Tikamgarh",
+      "page": 231
+    },
+    {
+      "code": 48,
+      "name": "Maharajpur",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 51,
+      "name": "Chhatarpur",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 52,
+      "name": "Bijawar",
+      "district": "Chhatarpur",
+      "page": 232
+    },
+    {
+      "code": 49,
+      "name": "Chandla (SC)",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 50,
+      "name": "Rajnagar",
+      "district": "Chhatarpur",
+      "page": 231
+    },
+    {
+      "code": 53,
+      "name": "Malhara",
+      "district": "Chhatarpur",
+      "page": 232
+    },
+    {
+      "code": 38,
+      "name": "Deori",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 39,
+      "name": "Rehli",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 42,
+      "name": "Banda",
+      "district": "Sagar",
+      "page": 231
+    },
+    {
+      "code": 54,
+      "name": "Pathariya",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 55,
+      "name": "Damoh",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 56,
+      "name": "Jabera",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 57,
+      "name": "Hatta (SC)",
+      "district": "Damoh",
+      "page": 232
+    },
+    {
+      "code": 58,
+      "name": "Pawai",
+      "district": "Panna",
+      "page": 232
+    },
+    {
+      "code": 59,
+      "name": "Gunnaor (SC)",
+      "district": "Panna",
+      "page": 232
+    },
+    {
+      "code": 60,
+      "name": "Panna",
+      "district": "Panna",
+      "page": 232
+    },
+    {
+      "code": 92,
+      "name": "Vijayraghavgarh",
+      "district": "Katni",
+      "page": 235
+    },
+    {
+      "code": 93,
+      "name": "Murwara",
+      "district": "Katni",
+      "page": 235
+    },
+    {
+      "code": 94,
+      "name": "Bahoriband",
+      "district": "Katni",
+      "page": 236
+    },
+    {
+      "code": 35,
+      "name": "Bina (SC)",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 36,
+      "name": "Khurai",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 37,
+      "name": "Surkhi",
+      "district": "Sagar",
+      "page": 230
+    },
+    {
+      "code": 40,
+      "name": "Naryoli (SC)",
+      "district": "Sagar",
+      "page": 231
+    },
+    {
+      "code": 41,
+      "name": "Sagar",
+      "district": "Sagar",
+      "page": 231
+    },
+    {
+      "code": 146,
+      "name": "Kurwai (SC)",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 147,
+      "name": "Sironj",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 148,
+      "name": "Shamshabad",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 61,
+      "name": "Chitrakoot",
+      "district": "Satna",
+      "page": 232
+    },
+    {
+      "code": 62,
+      "name": "Raigaon (SC)",
+      "district": "Satna",
+      "page": 232
+    },
+    {
+      "code": 63,
+      "name": "Satna",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 64,
+      "name": "Nagod",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 65,
+      "name": "Maihar",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 66,
+      "name": "Amarpatan",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 67,
+      "name": "Rampur-Baghelan",
+      "district": "Satna",
+      "page": 233
+    },
+    {
+      "code": 68,
+      "name": "Sirmour",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 69,
+      "name": "Semariya",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 70,
+      "name": "Teonthar",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 71,
+      "name": "Mauganj",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 72,
+      "name": "Deotalab",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 73,
+      "name": "Mangawan (SC)",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 74,
+      "name": "Rewa",
+      "district": "Rewa",
+      "page": 233
+    },
+    {
+      "code": 75,
+      "name": "Gurh",
+      "district": "Rewa",
+      "page": 234
+    },
+    {
+      "code": 84,
+      "name": "Jaisinghnagar (ST)",
+      "district": "Shahdol",
+      "page": 235
+    },
+    {
+      "code": 85,
+      "name": "Jaitpur (ST)",
+      "district": "Shahdol",
+      "page": 235
+    },
+    {
+      "code": 86,
+      "name": "Kotma",
+      "district": "Anuppur",
+      "page": 235
+    },
+    {
+      "code": 87,
+      "name": "Anuppur (ST)",
+      "district": "Anuppur",
+      "page": 235
+    },
+    {
+      "code": 88,
+      "name": "Pushprajgarh (ST)",
+      "district": "Anuppur",
+      "page": 235
+    },
+    {
+      "code": 89,
+      "name": "Bandhavgarh (ST)",
+      "district": "Umaria",
+      "page": 235
+    },
+    {
+      "code": 90,
+      "name": "Manpur (ST)",
+      "district": "Umaria",
+      "page": 235
+    },
+    {
+      "code": 91,
+      "name": "Barwara (ST)",
+      "district": "Katni",
+      "page": 235
+    },
+    {
+      "code": 222,
+      "name": "Jaora",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 224,
+      "name": "Mandsour",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 225,
+      "name": "Malhargarh (SC)",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 226,
+      "name": "Suwasra",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 227,
+      "name": "Garoth",
+      "district": "Mandsaur",
+      "page": 249
+    },
+    {
+      "code": 228,
+      "name": "Manasa",
+      "district": "Neemuch",
+      "page": 250
+    },
+    {
+      "code": 229,
+      "name": "Neemuch",
+      "district": "Neemuch",
+      "page": 250
+    },
+    {
+      "code": 230,
+      "name": "Jawad",
+      "district": "Neemuch",
+      "page": 250
+    },
+    {
+      "code": 219,
+      "name": "Ratlam Rural (ST)",
+      "district": "Ratlam",
+      "page": 248
+    },
+    {
+      "code": 220,
+      "name": "Ratlam City",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 221,
+      "name": "Sailana (ST)",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 223,
+      "name": "Alot (SC)",
+      "district": "Ratlam",
+      "page": 249
+    },
+    {
+      "code": 191,
+      "name": "Alirajpur (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 192,
+      "name": "Jobat (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 193,
+      "name": "Jhabua (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 194,
+      "name": "Thandla (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 195,
+      "name": "Petlawad (ST)",
+      "district": "Jhabua",
+      "page": 246
+    },
+    {
+      "code": 212,
+      "name": "Nagada-Khachrod",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 213,
+      "name": "Mahidpur",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 214,
+      "name": "Tarana (SC)",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 215,
+      "name": "Ghatiya (SC)",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 216,
+      "name": "Ujjain Uttar",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 217,
+      "name": "Ujjain Dakshin",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 218,
+      "name": "Badnagar",
+      "district": "Ujjain",
+      "page": 248
+    },
+    {
+      "code": 165,
+      "name": "Susner",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 166,
+      "name": "Agar (SC)",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 167,
+      "name": "Shajapur",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 168,
+      "name": "Shujalpur",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 169,
+      "name": "Kalapipal",
+      "district": "Shajapur",
+      "page": 243
+    },
+    {
+      "code": 170,
+      "name": "Sonkatch (SC)",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 171,
+      "name": "Dewas",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 172,
+      "name": "Hatpipliya",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 157,
+      "name": "Ashta (SC)",
+      "district": "Sehore",
+      "page": 242
+    },
+    {
+      "code": 30,
+      "name": "Chachoura",
+      "district": "Guna",
+      "page": 230
+    },
+    {
+      "code": 31,
+      "name": "Raghogarh",
+      "district": "Guna",
+      "page": 230
+    },
+    {
+      "code": 160,
+      "name": "Narsinghgarh",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 161,
+      "name": "Biaora",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 162,
+      "name": "Rajgarh",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 163,
+      "name": "Khilchipur",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 164,
+      "name": "Sarangpur (SC)",
+      "district": "Rajgarh",
+      "page": 242
+    },
+    {
+      "code": 173,
+      "name": "Khategaon",
+      "district": "Dewas",
+      "page": 243
+    },
+    {
+      "code": 174,
+      "name": "Bagali (ST)",
+      "district": "Dewas",
+      "page": 244
+    },
+    {
+      "code": 175,
+      "name": "Mandhata",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 177,
+      "name": "Khandwa (SC)",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 178,
+      "name": "Pandhana (ST)",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 179,
+      "name": "Nepanagar (ST)",
+      "district": "Burhanpur",
+      "page": 244
+    },
+    {
+      "code": 180,
+      "name": "Burhanpur",
+      "district": "Burhanpur",
+      "page": 244
+    },
+    {
+      "code": 181,
+      "name": "Bhikangaon (ST)",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 182,
+      "name": "Badwah",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 141,
+      "name": "Bhojpur",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 142,
+      "name": "Sanchi (SC)",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 143,
+      "name": "Silwani",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 144,
+      "name": "Vidisha",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 145,
+      "name": "Basoda",
+      "district": "Vidisha",
+      "page": 241
+    },
+    {
+      "code": 156,
+      "name": "Budhni",
+      "district": "Sehore",
+      "page": 242
+    },
+    {
+      "code": 158,
+      "name": "Ichhawar",
+      "district": "Sehore",
+      "page": 242
+    },
+    {
+      "code": 196,
+      "name": "Sardarpur (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 197,
+      "name": "Gandhwani (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 198,
+      "name": "Kukshi (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 199,
+      "name": "Manawar (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 200,
+      "name": "Dharampuri (ST)",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 201,
+      "name": "Dhar",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 202,
+      "name": "Badnawar",
+      "district": "Dhar",
+      "page": 247
+    },
+    {
+      "code": 209,
+      "name": "Dr. Ambedkar Nagar-Mhow",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 203,
+      "name": "Depalpur",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 204,
+      "name": "Indore-1",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 205,
+      "name": "Indore-2",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 206,
+      "name": "Indore-3",
+      "district": "Indore",
+      "page": 247
+    },
+    {
+      "code": 207,
+      "name": "Indore-4",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 208,
+      "name": "Indore-5",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 210,
+      "name": "Rau",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 211,
+      "name": "Sanwer (SC)",
+      "district": "Indore",
+      "page": 248
+    },
+    {
+      "code": 183,
+      "name": "Maheshwar (SC)",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 184,
+      "name": "Kasrawad",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 185,
+      "name": "Khargone",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 186,
+      "name": "Bhagwanpura (ST)",
+      "district": "Khargone",
+      "page": 245
+    },
+    {
+      "code": 187,
+      "name": "Sendhawa (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 188,
+      "name": "Rajpur (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 189,
+      "name": "Pansemal (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 190,
+      "name": "Badwani (ST)",
+      "district": "Barwani",
+      "page": 246
+    },
+    {
+      "code": 149,
+      "name": "Berasia (SC)",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 150,
+      "name": "Bhopal Uttar",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 151,
+      "name": "Narela",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 152,
+      "name": "Bhopal Dakshin-Paschim",
+      "district": "Bhopal",
+      "page": 241
+    },
+    {
+      "code": 153,
+      "name": "Bhopal Madhya",
+      "district": "Bhopal",
+      "page": 242
+    },
+    {
+      "code": 154,
+      "name": "Govindpura",
+      "district": "Bhopal",
+      "page": 242
+    },
+    {
+      "code": 155,
+      "name": "Huzur",
+      "district": "Bhopal",
+      "page": 242
+    },
+    {
+      "code": 159,
+      "name": "Sehore",
+      "district": "Sehore",
+      "page": 242
+    },
+    {
+      "code": 140,
+      "name": "Udaipura",
+      "district": "Raisen",
+      "page": 241
+    },
+    {
+      "code": 119,
+      "name": "Narsingpur",
+      "district": "Narsinghpur",
+      "page": 238
+    },
+    {
+      "code": 120,
+      "name": "Tendukheda",
+      "district": "Narsinghpur",
+      "page": 238
+    },
+    {
+      "code": 121,
+      "name": "Gadarwara",
+      "district": "Narsinghpur",
+      "page": 239
+    },
+    {
+      "code": 136,
+      "name": "Seoni-Malwa",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 137,
+      "name": "Hoshangabad",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 138,
+      "name": "Sohagpur",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 139,
+      "name": "Pipariya (SC)",
+      "district": "Hoshangabad",
+      "page": 240
+    },
+    {
+      "code": 129,
+      "name": "Multai",
+      "district": "Betul",
+      "page": 239
+    },
+    {
+      "code": 130,
+      "name": "Amla (SC)",
+      "district": "Betul",
+      "page": 239
+    },
+    {
+      "code": 131,
+      "name": "Betul",
+      "district": "Betul",
+      "page": 239
+    },
+    {
+      "code": 132,
+      "name": "Ghoradongri (ST)",
+      "district": "Betul",
+      "page": 240
+    },
+    {
+      "code": 133,
+      "name": "Bhainsdehi (ST)",
+      "district": "Betul",
+      "page": 240
+    },
+    {
+      "code": 134,
+      "name": "Timarni (ST)",
+      "district": "Harda",
+      "page": 240
+    },
+    {
+      "code": 135,
+      "name": "Harda",
+      "district": "Harda",
+      "page": 240
+    },
+    {
+      "code": 176,
+      "name": "Harsud (ST)",
+      "district": "Khandwa",
+      "page": 244
+    },
+    {
+      "code": 95,
+      "name": "Patan",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 96,
+      "name": "Bargi",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 97,
+      "name": "Jabalpur Purba (SC)",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 98,
+      "name": "Jabalpur Uttar",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 99,
+      "name": "Jabalpur Cantt.",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 100,
+      "name": "Jabalpur Paschim",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 101,
+      "name": "Panagar",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 102,
+      "name": "Sihora (ST)",
+      "district": "Jabalpur",
+      "page": 236
+    },
+    {
+      "code": 103,
+      "name": "Shahpura (ST)",
+      "district": "Dindori",
+      "page": 236
+    },
+    {
+      "code": 104,
+      "name": "Dindori (ST)",
+      "district": "Dindori",
+      "page": 236
+    },
+    {
+      "code": 105,
+      "name": "Bichhiya (ST)",
+      "district": "Mandla",
+      "page": 236
+    },
+    {
+      "code": 106,
+      "name": "Niwas (ST)",
+      "district": "Mandla",
+      "page": 237
+    },
+    {
+      "code": 107,
+      "name": "Mandla (ST)",
+      "district": "Mandla",
+      "page": 237
+    },
+    {
+      "code": 116,
+      "name": "Keolari",
+      "district": "Seoni",
+      "page": 238
+    },
+    {
+      "code": 117,
+      "name": "Lakhnadon (ST)",
+      "district": "Seoni",
+      "page": 238
+    },
+    {
+      "code": 118,
+      "name": "Gotegaon (SC)",
+      "district": "Narsinghpur",
+      "page": 238
+    },
+    {
+      "code": 122,
+      "name": "Junnardeo (ST)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 123,
+      "name": "Amarwara (ST)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 124,
+      "name": "Churai",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 125,
+      "name": "Saunsar",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 126,
+      "name": "Chhindwara",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 127,
+      "name": "Parasia (SC)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 128,
+      "name": "Pandhurna (ST)",
+      "district": "Chhindwara",
+      "page": 239
+    },
+    {
+      "code": 108,
+      "name": "Baihar (ST)",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 109,
+      "name": "Lanji",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 110,
+      "name": "Paraswada",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 111,
+      "name": "Balaghat",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 112,
+      "name": "Waraseoni",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 113,
+      "name": "Katangi",
+      "district": "Balaghat",
+      "page": 237
+    },
+    {
+      "code": 114,
+      "name": "Barghat (ST)",
+      "district": "Seoni",
+      "page": 237
+    },
+    {
+      "code": 115,
+      "name": "Seoni",
+      "district": "Seoni",
+      "page": 238
+    },
+    {
+      "code": 76,
+      "name": "Churhat",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 77,
+      "name": "Sidhi",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 78,
+      "name": "Sihawal",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 79,
+      "name": "Chitrangi (ST)",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 80,
+      "name": "Singrauli",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 81,
+      "name": "Devsar (SC)",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 82,
+      "name": "Dhauhani (ST)",
+      "district": "Sidhi",
+      "page": 234
+    },
+    {
+      "code": 83,
+      "name": "Beohari (ST)",
+      "district": "Shahdol",
+      "page": 234
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Morena",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "page": 251
+    },
+    {
+      "code": 2,
+      "name": "Bhind (SC)",
+      "ac_codes": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        20,
+        21,
+        22
+      ],
+      "page": 251
+    },
+    {
+      "code": 3,
+      "name": "Gwalior",
+      "ac_codes": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        23,
+        24
+      ],
+      "page": 251
+    },
+    {
+      "code": 4,
+      "name": "Guna",
+      "ac_codes": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        32,
+        33,
+        34
+      ],
+      "page": 251
+    },
+    {
+      "code": 6,
+      "name": "Tikamgarh (SC)",
+      "ac_codes": [
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        51,
+        52
+      ],
+      "page": 251
+    },
+    {
+      "code": 7,
+      "name": "Damoh",
+      "ac_codes": [
+        38,
+        39,
+        42,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "page": 251
+    },
+    {
+      "code": 8,
+      "name": "Khajuraho",
+      "ac_codes": [
+        49,
+        50,
+        58,
+        59,
+        60,
+        92,
+        93,
+        94
+      ],
+      "page": 251
+    },
+    {
+      "code": 5,
+      "name": "Sagar",
+      "ac_codes": [
+        35,
+        36,
+        37,
+        40,
+        41,
+        146,
+        147,
+        148
+      ],
+      "page": 251
+    },
+    {
+      "code": 9,
+      "name": "Satna",
+      "ac_codes": [
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
+      ],
+      "page": 251
+    },
+    {
+      "code": 10,
+      "name": "Rewa",
+      "ac_codes": [
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75
+      ],
+      "page": 251
+    },
+    {
+      "code": 12,
+      "name": "Shahdol (ST)",
+      "ac_codes": [
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91
+      ],
+      "page": 252
+    },
+    {
+      "code": 23,
+      "name": "Mandsour",
+      "ac_codes": [
+        222,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230
+      ],
+      "page": 252
+    },
+    {
+      "code": 22,
+      "name": "Ujjain (SC)",
+      "ac_codes": [
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        223
+      ],
+      "page": 252
+    },
+    {
+      "code": 24,
+      "name": "Ratlam (ST)",
+      "ac_codes": [
+        191,
+        192,
+        193,
+        194,
+        195,
+        219,
+        220,
+        221
+      ],
+      "page": 253
+    },
+    {
+      "code": 20,
+      "name": "Rajgarh",
+      "ac_codes": [
+        30,
+        31,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165
+      ],
+      "page": 252
+    },
+    {
+      "code": 21,
+      "name": "Dewas (SC)",
+      "ac_codes": [
+        157,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172
+      ],
+      "page": 252
+    },
+    {
+      "code": 18,
+      "name": "Vidisha",
+      "ac_codes": [
+        141,
+        142,
+        143,
+        144,
+        145,
+        156,
+        158,
+        173
+      ],
+      "page": 252
+    },
+    {
+      "code": 28,
+      "name": "Khandwa",
+      "ac_codes": [
+        174,
+        175,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182
+      ],
+      "page": 253
+    },
+    {
+      "code": 25,
+      "name": "Dhar (ST)",
+      "ac_codes": [
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        209
+      ],
+      "page": 253
+    },
+    {
+      "code": 26,
+      "name": "Indore",
+      "ac_codes": [
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        210,
+        211
+      ],
+      "page": 253
+    },
+    {
+      "code": 27,
+      "name": "Khargone (ST)",
+      "ac_codes": [
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190
+      ],
+      "page": 253
+    },
+    {
+      "code": 19,
+      "name": "Bhopal",
+      "ac_codes": [
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        159
+      ],
+      "page": 252
+    },
+    {
+      "code": 17,
+      "name": "Hoshangabad",
+      "ac_codes": [
+        119,
+        120,
+        121,
+        136,
+        137,
+        138,
+        139,
+        140
+      ],
+      "page": 252
+    },
+    {
+      "code": 29,
+      "name": "Betul (ST)",
+      "ac_codes": [
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        176
+      ],
+      "page": 253
+    },
+    {
+      "code": 13,
+      "name": "Jabalpur",
+      "ac_codes": [
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102
+      ],
+      "page": 252
+    },
+    {
+      "code": 14,
+      "name": "Mandla (ST)",
+      "ac_codes": [
+        103,
+        104,
+        105,
+        106,
+        107,
+        116,
+        117,
+        118
+      ],
+      "page": 252
+    },
+    {
+      "code": 16,
+      "name": "Chhindwara",
+      "ac_codes": [
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128
+      ],
+      "page": 252
+    },
+    {
+      "code": 15,
+      "name": "Balaghat",
+      "ac_codes": [
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "page": 252
+    },
+    {
+      "code": 11,
+      "name": "Sidhi",
+      "ac_codes": [
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "page": 251
+    }
+  ],
+  "coverage_note": "Partial dated ECI2008 scope; shared Morena and Bhind PC memberships retained; source editions/current crosswalk unverified."
+}

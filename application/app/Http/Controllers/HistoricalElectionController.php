@@ -41,8 +41,8 @@ class HistoricalElectionController extends Controller
 
     public function sources(Request $request, ElectionArchive $archives): View
     {
-        $catalogue = ['entries' => $archives->nationalAssemblyEntries()];
-        $entries = collect($catalogue['entries']);
+        $catalogue = json_decode(file_get_contents(database_path('fixtures/eci-assembly-national.json')), true, 512, JSON_THROW_ON_ERROR);
+        $entries = collect($archives->nationalAssemblyEntries());
         $states = $entries->pluck('state')->unique()->sort()->values();
         $years = $entries->pluck('year')->unique()->sortDesc()->values();
         $input = $request->validate(['state' => ['nullable', Rule::in($states->all())], 'year' => ['nullable', 'integer', Rule::in($years->all())]]);
@@ -82,7 +82,7 @@ class HistoricalElectionController extends Controller
         if (! isset($input['format']) && isset($input['edition'], $input['state'], $input['code']) && Schema::hasTable('historical_constituency_index')) {
             $indexed = DB::table('historical_constituency_index')->where('edition_id', $input['edition'])->where('state_label', $input['state'])->where('record_code', $input['code'])->where('kind', $request->routeIs('elections.assembly') ? 'ac' : 'pc')->first();
             if ($indexed) {
-                return redirect()->route('constituency.overview', ['kind' => $indexed->kind, 'state' => $indexed->state_label, 'name' => $indexed->constituency_name, 'edition' => $indexed->edition_id, 'code' => $indexed->record_code]);
+                return redirect(\App\Services\ConstituencyUrls::url(['kind' => $indexed->kind, 'state' => $indexed->state_label, 'name' => $indexed->constituency_name, 'edition' => $indexed->edition_id, 'code' => $indexed->record_code]));
             }
         }
         $download = ($input['format'] ?? null) === 'csv';

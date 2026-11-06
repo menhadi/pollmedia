@@ -22,13 +22,39 @@ class CensusCatalogueController extends Controller
 
     private function browse(Request $request, bool $admin): View
     {
-        $input = $request->validate(['edition' => 'nullable|integer', 'state' => 'nullable|regex:/^\d{2}$/', 'district' => 'nullable|regex:/^\d{2,3}$/', 'original_area' => 'nullable|string|max:255', 'level' => 'nullable|string|max:30', 'residence' => 'nullable|in:Total,All Areas,Rural,Urban', 'field' => 'nullable|string|max:100']);
+        $input = $request->validate(['edition' => 'nullable|integer', 'state' => 'nullable|regex:/^\d{2}$/', 'district' => 'nullable|regex:/^\d{2,3}$/', 'original_area' => 'nullable|string|max:255', 'level' => 'nullable|string|max:30', 'residence' => 'nullable|in:Total,All Areas,Rural,Urban,Unresolved', 'field' => 'nullable|string|max:100']);
         $editions = DB::table('census_editions')->when(! $admin, fn ($q) => $q->whereIn('status', ['published', 'superseded']))->orderByDesc('year')->orderByDesc('id')->get();
         $edition = isset($input['edition']) ? $editions->firstWhere('id', (int) $input['edition']) : $editions->first();
         abort_if(isset($input['edition']) && ! $edition, 404);
         $fields = $edition ? json_decode($edition->fields, true) : [];
-        $field = $input['field'] ?? 'TOT_P';
+        $field = $input['field'] ?? (in_array('TOT_P', $fields, true) ? 'TOT_P' : ($fields[0] ?? 'TOT_P'));
         abort_if($edition && ! in_array($field, $fields, true), 422, 'This field is not available in the selected edition.');
+        $directoryFields = [];
+        $directoryRows = [];
+        if ($edition && str_starts_with($edition->source_key, 'census-2001-village-directory-')) {
+            $evidence = json_decode(DB::table('import_runs')->where('id', $edition->import_run_id)->value('extracted'), true, 512, JSON_THROW_ON_ERROR);
+            $directoryFields = $evidence['fields'];
+            foreach ($evidence['rows'] as &$directoryRow) {
+                $directoryRow['value_evidence'] ??= $evidence['sheet_evidence'][$directoryRow['source_sheet']] ?? [];
+            }
+            unset($directoryRow);
+            $directoryRows = collect($evidence['rows'])->mapWithKeys(fn (array $row): array => [hash('sha256', json_encode($row['identity'])) => $row])->all();
+        }
+        if ($edition && str_starts_with($edition->source_key, 'census-2001-source-only-')) {
+            $evidence = json_decode(DB::table('import_runs')->where('id', $edition->import_run_id)->value('extracted'), true, 512, JSON_THROW_ON_ERROR);
+            foreach ($fields as $originalField) {
+                $directoryFields[$originalField] = 'Original column '.substr($originalField, 7);
+            }
+            foreach ($evidence['rows'] as $sourceRow) {
+                $cellEvidence = [];
+                foreach ($evidence['original_headers_by_sheet'][$sourceRow['source_sheet']] as $index => $header) {
+                    $cellEvidence['COLUMN_'.($index + 1)] = ['source_column' => $index + 1, 'official_label' => $header];
+                }
+                $directoryRows[hash('sha256', json_encode([$sourceRow['source_sheet'], $sourceRow['source_row']]))] = [
+                    'source_sheet' => $sourceRow['source_sheet'], 'source_row' => $sourceRow['source_row'], 'value_evidence' => $cellEvidence,
+                ];
+            }
+        }
         $educationFields = [];
         $educationRows = [];
         $originalAreas = [];
@@ -58,7 +84,7 @@ class CensusCatalogueController extends Controller
             ->select('r.id', 'r.status', 'c.name')->orderByDesc('r.id')->get() : collect();
         $current = $edition ? (DB::table('census_editions')->where('source_key', $edition->source_key)->where('status', 'published')->value('id') ?? 0) : 0;
 
-        return view('census-catalogue', compact('admin', 'editions', 'edition', 'fields', 'field', 'input', 'states', 'districts', 'levels', 'residences', 'rows', 'runs', 'current', 'educationFields', 'educationRows', 'originalAreas'));
+        return view('census-catalogue', compact('admin', 'editions', 'edition', 'fields', 'field', 'input', 'states', 'districts', 'levels', 'residences', 'rows', 'runs', 'current', 'educationFields', 'educationRows', 'originalAreas', 'directoryFields', 'directoryRows'));
     }
 
     public function prepare(int $run, CensusCatalogue $catalogue): RedirectResponse

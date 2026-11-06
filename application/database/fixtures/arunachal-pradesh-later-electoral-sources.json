@@ -1,0 +1,59 @@
+[
+  {
+    "district_code": "252",
+    "district": "Upper Siang",
+    "ac_codes": [
+      34,
+      40
+    ],
+    "pc_code": 2,
+    "url": "https://uppersiang.nic.in/constituencies/",
+    "sha256": "b1408eaba36f705df322e430126ec93176d6745a13115c2a3895ec8c5bf55b57",
+    "page_last_updated": "2026-09-28",
+    "territorial_effective_date": "unverified",
+    "review_flags": []
+  },
+  {
+    "district_code": "256",
+    "district": "Kurung Kumey",
+    "ac_codes": [
+      19,
+      21
+    ],
+    "pc_code": 1,
+    "url": "https://kurungkumey.nic.in/constituencies/",
+    "sha256": "3820c9ea247b8945327ce5692c95c4f1fd756c4ddaca816a02b66386ca9614d8",
+    "page_last_updated": "2019-03-19",
+    "territorial_effective_date": "unverified",
+    "review_flags": []
+  },
+  {
+    "district_code": "258",
+    "district": "Lower Dibang Valley",
+    "ac_codes": [
+      42,
+      43
+    ],
+    "pc_code": 2,
+    "url": "https://roing.nic.in/constituencies/",
+    "sha256": "daec19d7dbf7b29d490cfe181e6463c67538f40546501447f3c952dac3004f85",
+    "page_last_updated": "2026-09-22",
+    "territorial_effective_date": "unverified",
+    "review_flags": [
+      "Lower Dibang page calls Arunachal East PC1; official historical order identifies PC2"
+    ]
+  },
+  {
+    "district_code": "260",
+    "district": "Anjaw",
+    "ac_codes": [
+      45
+    ],
+    "pc_code": 2,
+    "url": "https://anjaw.nic.in/constituencies/",
+    "sha256": "7b7f7426ced01f52733c66c7e7f233fdc84226dd7d2eaf93e037d751ba8382bd",
+    "page_last_updated": "2026-08-21",
+    "territorial_effective_date": "unverified",
+    "review_flags": []
+  }
+]

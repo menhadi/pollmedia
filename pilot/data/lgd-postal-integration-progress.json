@@ -1,0 +1,134 @@
+{
+  "status": "deployed_server_verified",
+  "source_retrieved_on": "2026-11-02",
+  "source_archive": "/home/pollmedia/app/pilot/raw/lgd-postal-20261102",
+  "index_sha256": "c10321c8ac4ee815b2e7de7540956c217abea7f1d8f1b9c7997fd5f6f5b19511",
+  "rollback_ref": "rollback/postal-20261102-5af6e3e0",
+  "identity_audit": {
+    "village_identity": {
+      "source_rows": 677323,
+      "matched": 672754,
+      "missing_in_live": 3633,
+      "administrative_mismatch": 936,
+      "matched_with_pin": 672754
+    },
+    "current_villages_without_source": 4212,
+    "sample_live_villages": [
+      [
+        "1",
+        "Bore",
+        "193224",
+        "Jammu And Kashmir"
+      ],
+      [
+        "644917",
+        "T.N.Palayam",
+        "605007",
+        "Puducherry"
+      ],
+      [
+        "524907",
+        "Vanakbara",
+        "362570",
+        "The Dadra And Nagar Haveli And Daman And Diu"
+      ],
+      [
+        "108884",
+        "Rehna",
+        "247122",
+        "Uttar Pradesh"
+      ]
+    ],
+    "sample_urban": [
+      [
+        "253092",
+        "Yanam",
+        "533464",
+        "Puducherry"
+      ],
+      [
+        "248145",
+        "Domariyaganj",
+        "272189",
+        "Uttar Pradesh"
+      ]
+    ]
+  },
+  "public_visual": "unverified: public HTTP checks returned 403; protections unchanged",
+  "tests": "6 PHP tests / 23 assertions; 3 Python builder tests; staged and live server rendering",
+  "live_commit": "348cf3b944ac4d67da34804d3dd92cc1799ba4e7",
+  "attached_current_villages": 672526,
+  "source_villages": 677094,
+  "urban_local_bodies": 5005,
+  "multiple_pin_villages": 229,
+  "multiple_pin_local_bodies": 777,
+  "verification": {
+    "php_tests": 6,
+    "php_assertions": 23,
+    "python_tests": 3,
+    "server_rendering": "passed",
+    "public_http_status": 403
+  },
+  "header_pin_search": {
+    "status": "deployed_server_verified",
+    "example": "https://pollmedia.org/search?q=262001",
+    "tests": "8 tests / 29 assertions; server suggestions, redirect and existing district search passed",
+    "public_verification": "previous HTTP 403; protections unchanged"
+  },
+  "hierarchy_tables": {
+    "status": "deployed_server_verified",
+    "columns": [
+      "area/village",
+      "taluka/subdistrict",
+      "district",
+      "state/UT"
+    ],
+    "links": "current villages open canonical dashboards; exact-code subdistricts; existing district/state pages with current-directory fallback",
+    "urban_missing_parents": "not inferred",
+    "tests": "13 tests / 49 assertions; four PIN tables and urban/state pages rendered on server",
+    "visual": "unverified: Computer Use stopped because browser URL could not be established",
+    "rollback_ref": "rollback/postal-table-20261102"
+  },
+  "urban_parent_links": {
+    "source": "https://www.data.gov.in/resource/local-government-directory-lgd-local-bodies",
+    "dates": {
+      "4": "2026-11-02T06:04:41Z",
+      "5": "2026-11-02T06:04:41Z",
+      "6": "2026-11-02T06:04:41Z",
+      "7": "2026-11-02T06:04:41Z",
+      "8": "2026-11-02T06:04:41Z",
+      "9": "2026-11-02T06:04:41Z",
+      "10": "2026-11-02T06:04:41Z",
+      "11": "2026-11-02T06:04:41Z",
+      "12": "2026-11-02T06:04:41Z",
+      "13": "2026-11-02T06:04:41Z",
+      "14": "2026-11-02T06:04:41Z",
+      "15": "2026-11-02T06:04:41Z"
+    },
+    "district_date": "2026-11-02T03:00:26Z",
+    "subdistrict_date": "2026-11-02T03:30:27Z",
+    "postal_bodies": 5005,
+    "source_matched_bodies": 4810,
+    "bodies_with_district": 4809,
+    "bodies_with_subdistrict": 4587,
+    "relationships": 10063,
+    "exceptions": {
+      "unresolved_district": 74,
+      "unresolved_subdistrict": 96
+    },
+    "types": {
+      "4": "Municipal Corporations",
+      "5": "Municipality",
+      "6": "Notified Area Council",
+      "7": "Town Panchayat"
+    },
+    "status": "deployed_server_verified",
+    "archive": "pilot/raw/lgd-urban-parents-20261102",
+    "index_sha256": "fc70bc6ff8aecc560213530266b108624cd560e7f4c7910af668ab8ad69798a7",
+    "scope_handling": "Existing verified district/taluka pages; dated individual LGD coverage pages for urban-only or edition-mismatched scopes",
+    "kengeri": "LGD938441 has Census2011 code0; separate from Gollahalli613025. Related 1991 published urban record673662 linked with unverified modern-boundary warning; no population copied.",
+    "tests": "17 tests / 63 assertions; four PIN tables, three multi-taluka urban pages, Chandigarh source scope and Kengeri historical panel server rendered",
+    "public_visual": "unverified; no Cloudflare protections changed",
+    "rollback_ref": "rollback/urban-postal-parents-20261102"
+  }
+}

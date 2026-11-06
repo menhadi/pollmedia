@@ -1,0 +1,35 @@
+{
+  "region": "puducherry",
+  "label": "Puducherry",
+  "districts": [
+    {
+      "source_name": "PUDUCHERRY",
+      "slug": "puducherry",
+      "file": "maps/puducherry-source-districts/puducherry.geojson",
+      "source_geometry_valid": true,
+      "bytes": 1420652,
+      "sha256": "9a4d8d310243a12985459a46abf365b041449a05ca713a9dad6389cdfe819001"
+    },
+    {
+      "source_name": "KARAIKAL",
+      "slug": "karaikal",
+      "file": "maps/puducherry-source-districts/karaikal.geojson",
+      "source_geometry_valid": true,
+      "bytes": 703641,
+      "sha256": "54e569312c9d6c7053d763d9e71067e8ecdf9c70d0ef274c6b81691c663f5967"
+    }
+  ],
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "simplification_metres": 0,
+    "census_lgd_join": "unverified"
+  }
+}

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use RuntimeException;
 
 class ElectionRuntimeCatalogue
@@ -12,10 +11,11 @@ class ElectionRuntimeCatalogue
 
     public function entries(bool $publishedOnly = true): array
     {
-        if (! Schema::hasTable('site_settings')) {
+        if (! RequestSchema::hasTable('site_settings')) {
             return [];
         }
-        $rows = json_decode(DB::table('site_settings')->where('key', self::KEY)->value('value') ?? '[]', true, 512, JSON_THROW_ON_ERROR);
+        $setting = PublicRequestCache::setting(self::KEY, JSON_THROW_ON_ERROR);
+        $rows = $setting['present'] ? $setting['value'] : [];
 
         return array_values(array_filter($rows, fn (array $row): bool => ! $publishedOnly || $row['status'] === 'published'));
     }

@@ -1,0 +1,982 @@
+{
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008-12-17",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_source_date": "2008-12-17",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Sujanpur",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 2,
+      "name": "Bhoa (SC)",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 3,
+      "name": "Pathankot",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 4,
+      "name": "Gurdaspur",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 5,
+      "name": "Dina Nagar (SC)",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 6,
+      "name": "Qadian",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 7,
+      "name": "Batala",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 8,
+      "name": "Sri Hargobindpur (SC)",
+      "district": "Gurdaspur",
+      "page": 336
+    },
+    {
+      "code": 9,
+      "name": "Fatehgarh Churian",
+      "district": "Gurdaspur",
+      "page": 337
+    },
+    {
+      "code": 10,
+      "name": "Dera Baba Nanak",
+      "district": "Gurdaspur",
+      "page": 337
+    },
+    {
+      "code": 11,
+      "name": "Ajnala",
+      "district": "Amritsar",
+      "page": 337
+    },
+    {
+      "code": 12,
+      "name": "Raja Sansi",
+      "district": "Amritsar",
+      "page": 337
+    },
+    {
+      "code": 13,
+      "name": "Majitha",
+      "district": "Amritsar",
+      "page": 337
+    },
+    {
+      "code": 14,
+      "name": "Jandiala (SC)",
+      "district": "Amritsar",
+      "page": 337
+    },
+    {
+      "code": 15,
+      "name": "Amritsar North",
+      "district": "Amritsar",
+      "page": 337
+    },
+    {
+      "code": 16,
+      "name": "Amritsar West (SC)",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 17,
+      "name": "Amritsar Central",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 18,
+      "name": "Amritsar East",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 19,
+      "name": "Amritsar South",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 20,
+      "name": "Attari (SC)",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 21,
+      "name": "Tarn Taran",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 22,
+      "name": "Khem Karan",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 23,
+      "name": "Patti",
+      "district": "Amritsar",
+      "page": 338
+    },
+    {
+      "code": 24,
+      "name": "Khadoor Sahib",
+      "district": "Amritsar",
+      "page": 339
+    },
+    {
+      "code": 25,
+      "name": "Baba Bakala (SC)",
+      "district": "Amritsar",
+      "page": 339
+    },
+    {
+      "code": 26,
+      "name": "Bholath",
+      "district": "Kapurthala",
+      "page": 339
+    },
+    {
+      "code": 27,
+      "name": "Kapurthala",
+      "district": "Kapurthala",
+      "page": 339
+    },
+    {
+      "code": 28,
+      "name": "Sultanpur Lodhi",
+      "district": "Kapurthala",
+      "page": 339
+    },
+    {
+      "code": 29,
+      "name": "Phagwara (SC)",
+      "district": "Kapurthala",
+      "page": 339
+    },
+    {
+      "code": 30,
+      "name": "Phillaur (SC)",
+      "district": "Jalandhar",
+      "page": 339
+    },
+    {
+      "code": 31,
+      "name": "Nakodar",
+      "district": "Jalandhar",
+      "page": 339
+    },
+    {
+      "code": 32,
+      "name": "Shahkot",
+      "district": "Jalandhar",
+      "page": 339
+    },
+    {
+      "code": 33,
+      "name": "Kartarpur (SC)",
+      "district": "Jalandhar",
+      "page": 340
+    },
+    {
+      "code": 34,
+      "name": "Jalandhar West (SC)",
+      "district": "Jalandhar",
+      "page": 340
+    },
+    {
+      "code": 35,
+      "name": "Jalandhar Central",
+      "district": "Jalandhar",
+      "page": 340
+    },
+    {
+      "code": 36,
+      "name": "Jalandhar North",
+      "district": "Jalandhar",
+      "page": 340
+    },
+    {
+      "code": 37,
+      "name": "Jalandhar Cantt.",
+      "district": "Jalandhar",
+      "page": 340
+    },
+    {
+      "code": 38,
+      "name": "Adampur (SC)",
+      "district": "Jalandhar",
+      "page": 340
+    },
+    {
+      "code": 39,
+      "name": "Mukerian",
+      "district": "Hoshiarpur",
+      "page": 340
+    },
+    {
+      "code": 40,
+      "name": "Dasuya",
+      "district": "Hoshiarpur",
+      "page": 340
+    },
+    {
+      "code": 41,
+      "name": "Urmar",
+      "district": "Hoshiarpur",
+      "page": 340
+    },
+    {
+      "code": 42,
+      "name": "Sham Chaurasi (SC)",
+      "district": "Hoshiarpur",
+      "page": 341
+    },
+    {
+      "code": 43,
+      "name": "Hoshiarpur",
+      "district": "Hoshiarpur",
+      "page": 341
+    },
+    {
+      "code": 44,
+      "name": "Chabbewal (SC)",
+      "district": "Hoshiarpur",
+      "page": 341
+    },
+    {
+      "code": 45,
+      "name": "Garhshankar",
+      "district": "Hoshiarpur",
+      "page": 341
+    },
+    {
+      "code": 46,
+      "name": "Banga (SC)",
+      "district": "Shahid Bhagat Singh Nagar",
+      "page": 341
+    },
+    {
+      "code": 47,
+      "name": "Nawan Shahr",
+      "district": "Shahid Bhagat Singh Nagar",
+      "page": 341
+    },
+    {
+      "code": 48,
+      "name": "Balachaur",
+      "district": "Shahid Bhagat Singh Nagar",
+      "page": 341
+    },
+    {
+      "code": 49,
+      "name": "Anandpur Sahib",
+      "district": "Rupnagar",
+      "page": 341
+    },
+    {
+      "code": 50,
+      "name": "Rupnagar",
+      "district": "Rupnagar",
+      "page": 341
+    },
+    {
+      "code": 51,
+      "name": "Chamkaur Sahib (SC)",
+      "district": "Rupnagar",
+      "page": 342
+    },
+    {
+      "code": 52,
+      "name": "Kharar",
+      "district": "Rupnagar",
+      "page": 342
+    },
+    {
+      "code": 53,
+      "name": "S.A.S.Nagar",
+      "district": "Rupnagar",
+      "page": 342
+    },
+    {
+      "code": 54,
+      "name": "Bassi Pathana (SC)",
+      "district": "Fatehgarh Sahib",
+      "page": 342
+    },
+    {
+      "code": 55,
+      "name": "Fatehgarh Sahib",
+      "district": "Fatehgarh Sahib",
+      "page": 342
+    },
+    {
+      "code": 56,
+      "name": "Amloh",
+      "district": "Fatehgarh Sahib",
+      "page": 342
+    },
+    {
+      "code": 57,
+      "name": "Khanna",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 58,
+      "name": "Samrala",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 59,
+      "name": "Sahnewal",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 60,
+      "name": "Ludhiana East",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 61,
+      "name": "Ludhiana South",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 62,
+      "name": "Atam Nagar",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 63,
+      "name": "Ludhiana Central",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 64,
+      "name": "Ludhiana West",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 65,
+      "name": "Ludhiana North",
+      "district": "Ludhiana",
+      "page": 342
+    },
+    {
+      "code": 66,
+      "name": "Gill (SC)",
+      "district": "Ludhiana",
+      "page": 343
+    },
+    {
+      "code": 67,
+      "name": "Payal (SC)",
+      "district": "Ludhiana",
+      "page": 343
+    },
+    {
+      "code": 68,
+      "name": "Dakha",
+      "district": "Ludhiana",
+      "page": 343
+    },
+    {
+      "code": 69,
+      "name": "Raikot (SC)",
+      "district": "Ludhiana",
+      "page": 343
+    },
+    {
+      "code": 70,
+      "name": "Jagraon (SC)",
+      "district": "Ludhiana",
+      "page": 343
+    },
+    {
+      "code": 71,
+      "name": "Nihal Singhwala (SC)",
+      "district": "Moga",
+      "page": 343
+    },
+    {
+      "code": 72,
+      "name": "Bhagha Purana",
+      "district": "Moga",
+      "page": 343
+    },
+    {
+      "code": 73,
+      "name": "Moga",
+      "district": "Moga",
+      "page": 343
+    },
+    {
+      "code": 74,
+      "name": "Dharamkot",
+      "district": "Moga",
+      "page": 343
+    },
+    {
+      "code": 75,
+      "name": "Zira",
+      "district": "Firozpur",
+      "page": 343
+    },
+    {
+      "code": 76,
+      "name": "Firozpur City",
+      "district": "Firozpur",
+      "page": 343
+    },
+    {
+      "code": 77,
+      "name": "Firozpur Rural (SC)",
+      "district": "Firozpur",
+      "page": 343
+    },
+    {
+      "code": 78,
+      "name": "Guru Har Sahai",
+      "district": "Firozpur",
+      "page": 344
+    },
+    {
+      "code": 79,
+      "name": "Jalalabad",
+      "district": "Firozpur",
+      "page": 344
+    },
+    {
+      "code": 80,
+      "name": "Fazilka",
+      "district": "Firozpur",
+      "page": 344
+    },
+    {
+      "code": 81,
+      "name": "Abohar",
+      "district": "Firozpur",
+      "page": 344
+    },
+    {
+      "code": 82,
+      "name": "Balluana (SC)",
+      "district": "Firozpur",
+      "page": 344
+    },
+    {
+      "code": 83,
+      "name": "Lambi",
+      "district": "Muktsar",
+      "page": 344
+    },
+    {
+      "code": 84,
+      "name": "Gidderbaha",
+      "district": "Muktsar",
+      "page": 344
+    },
+    {
+      "code": 85,
+      "name": "Malout (SC)",
+      "district": "Muktsar",
+      "page": 344
+    },
+    {
+      "code": 86,
+      "name": "Muktsar",
+      "district": "Muktsar",
+      "page": 345
+    },
+    {
+      "code": 87,
+      "name": "Faridkot",
+      "district": "Faridkot",
+      "page": 345
+    },
+    {
+      "code": 88,
+      "name": "Kotkapura",
+      "district": "Faridkot",
+      "page": 345
+    },
+    {
+      "code": 89,
+      "name": "Jaitu (SC)",
+      "district": "Faridkot",
+      "page": 345
+    },
+    {
+      "code": 90,
+      "name": "Rampura Phul",
+      "district": "Bathinda",
+      "page": 345
+    },
+    {
+      "code": 91,
+      "name": "Bhucho Mandi (SC)",
+      "district": "Bathinda",
+      "page": 345
+    },
+    {
+      "code": 92,
+      "name": "Bathinda Urban",
+      "district": "Bathinda",
+      "page": 345
+    },
+    {
+      "code": 93,
+      "name": "Bathinda Rural (SC)",
+      "district": "Bathinda",
+      "page": 345
+    },
+    {
+      "code": 94,
+      "name": "Talwandi Sabo",
+      "district": "Bathinda",
+      "page": 345
+    },
+    {
+      "code": 95,
+      "name": "Maur",
+      "district": "Bathinda",
+      "page": 345
+    },
+    {
+      "code": 96,
+      "name": "Mansa",
+      "district": "Mansa",
+      "page": 345
+    },
+    {
+      "code": 97,
+      "name": "Sardulgarh",
+      "district": "Mansa",
+      "page": 346
+    },
+    {
+      "code": 98,
+      "name": "Budhlada (SC)",
+      "district": "Mansa",
+      "page": 346
+    },
+    {
+      "code": 99,
+      "name": "Lehra",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 100,
+      "name": "Dirba (SC)",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 101,
+      "name": "Sunam",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 102,
+      "name": "Bhadaur (SC)",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 103,
+      "name": "Barnala",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 104,
+      "name": "Mehal Kalan (SC)",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 105,
+      "name": "Malerkotla",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 106,
+      "name": "Amargarh",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 107,
+      "name": "Dhuri",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 108,
+      "name": "Sangrur",
+      "district": "Sangrur",
+      "page": 346
+    },
+    {
+      "code": 109,
+      "name": "Nabha (SC)",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 110,
+      "name": "Patiala Rural",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 111,
+      "name": "Rajpura",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 112,
+      "name": "Dera Bassi",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 113,
+      "name": "Ghanaur",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 114,
+      "name": "Sanour",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 115,
+      "name": "Patiala",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 116,
+      "name": "Samana",
+      "district": "Patiala",
+      "page": 347
+    },
+    {
+      "code": 117,
+      "name": "Shutrana (SC)",
+      "district": "Patiala",
+      "page": 347
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Gurdaspur",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10
+      ]
+    },
+    {
+      "code": 2,
+      "name": "Amritsar",
+      "ac_codes": [
+        11,
+        12,
+        13,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "code": 3,
+      "name": "Khadoor Sahib",
+      "ac_codes": [
+        14,
+        21,
+        22,
+        23,
+        24,
+        25,
+        27,
+        28,
+        75
+      ]
+    },
+    {
+      "code": 4,
+      "name": "Jalandhar (SC)",
+      "ac_codes": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38
+      ]
+    },
+    {
+      "code": 5,
+      "name": "Hoshiarpur (SC)",
+      "ac_codes": [
+        8,
+        26,
+        29,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ]
+    },
+    {
+      "code": 6,
+      "name": "Anandpur Sahib",
+      "ac_codes": [
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53
+      ]
+    },
+    {
+      "code": 7,
+      "name": "Ludhiana",
+      "ac_codes": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        68,
+        70
+      ]
+    },
+    {
+      "code": 8,
+      "name": "Fatehgarh Sahib (SC)",
+      "ac_codes": [
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        67,
+        69,
+        106
+      ]
+    },
+    {
+      "code": 9,
+      "name": "Faridkot (SC)",
+      "ac_codes": [
+        71,
+        72,
+        73,
+        74,
+        84,
+        87,
+        88,
+        89,
+        90
+      ]
+    },
+    {
+      "code": 10,
+      "name": "Firozpur",
+      "ac_codes": [
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        85,
+        86
+      ]
+    },
+    {
+      "code": 11,
+      "name": "Bathinda",
+      "ac_codes": [
+        83,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ]
+    },
+    {
+      "code": 12,
+      "name": "Sangrur",
+      "ac_codes": [
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        107,
+        108
+      ]
+    },
+    {
+      "code": 13,
+      "name": "Patiala",
+      "ac_codes": [
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117
+      ]
+    }
+  ],
+  "territorial_reference": "2004-02-15",
+  "visual_audit_pdf_pages": [
+    337,
+    338,
+    339,
+    340,
+    341,
+    342,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348,
+    349,
+    350
+  ],
+  "coverage_note": "All 117 ACs and all 13 complete PCs from ECI 2008. District associations retain the order’s 2004 territorial references; additional official district listings are separate administrative associations, not a Census boundary crosswalk. Later Pathankot, Fazilka and Malerkotla splits are not backcast.",
+  "district_codes": {
+    "Gurdaspur": "035",
+    "Kapurthala": "036",
+    "Jalandhar": "037",
+    "Hoshiarpur": "038",
+    "Shahid Bhagat Singh Nagar": "039",
+    "Fatehgarh Sahib": "040",
+    "Ludhiana": "041",
+    "Moga": "042",
+    "Firozpur": "043",
+    "Muktsar": "044",
+    "Faridkot": "045",
+    "Bathinda": "046",
+    "Mansa": "047",
+    "Patiala": "048",
+    "Amritsar": "049",
+    "Tarn Taran": "050",
+    "Rupnagar": "051",
+    "Sahibzada Ajit Singh Nagar": "052",
+    "Sangrur": "053",
+    "Barnala": "054"
+  },
+  "supplemental_districts": {
+    "Tarn Taran": {
+      "ac_codes": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "url": "https://tarntaran.nic.in/constituencies/",
+      "retrieved_at": "2026-10-13",
+      "sha256": "98852a866a8603c50e54d5c225d3d30a7dbe2297be31d79003d8326d412c2132"
+    },
+    "Barnala": {
+      "ac_codes": [
+        102,
+        103,
+        104
+      ],
+      "url": "https://barnala.gov.in/electionoffice/",
+      "retrieved_at": "2026-10-13",
+      "sha256": "ba237a1f7c8f590aa828f477fe56d212e90ae0328181201405d4635f2e90c0ad"
+    },
+    "Sahibzada Ajit Singh Nagar": {
+      "ac_codes": [
+        52,
+        53,
+        112
+      ],
+      "url": "https://sasnagar.nic.in/constituencies/",
+      "retrieved_at": "2026-10-13",
+      "sha256": "17812acdd1c48525aa40ecbf54e0948d2cc978bd8b20b98f29c1572b00fe931d"
+    }
+  }
+}

@@ -1,0 +1,386 @@
+{
+  "state": "Sikkim",
+  "district_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "pc_url": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzVx8fLfn2ReU7TfrqYobgIgKcdK37FfkoonJSj9Zv9RvViTBqI3f7TwYNpRQavZojQgQeFGGUC%2BoWgMwz8LDSSFisGA9MRBjMisvEPvdZnIV0%2FpRNWHB6xVed36JxpqCFCtTz26GqXjQSC84fYThQWQ%3D%3D",
+  "district_source_date": "2008 reference; exact notification date pending",
+  "pc_source_date": "2008 reference; exact notification date pending",
+  "district_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "pc_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
+  "district_source_label": "2008 ScheduleXXV historical district headings; explicit cross-district extents retained",
+  "pc_source_label": "2008 ScheduleXXV TableB: entire state; constituency number verification pending",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "Yoksam-Tashiding (BL)",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 2,
+      "name": "Yangthang",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 3,
+      "name": "Maneybung-Dentam",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 4,
+      "name": "Gyalshing-Barnyak",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 5,
+      "name": "Rinchenpong (BL)",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 6,
+      "name": "Daramdin (BL)",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 7,
+      "name": "Soreng-Chakung",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West"
+      ],
+      "page": 368
+    },
+    {
+      "code": 8,
+      "name": "Salghari-Zoom (SC)",
+      "district": "West",
+      "context_district": "West District",
+      "district_memberships": [
+        "West",
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 9,
+      "name": "Barfung (BL)",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 10,
+      "name": "Poklok-Kamrang",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 11,
+      "name": "Namchi-Singhithang",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 12,
+      "name": "Melli",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 13,
+      "name": "Namthang-Rateypani",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 14,
+      "name": "Temi-Namphing",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 15,
+      "name": "Rangang-Yangang",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South"
+      ],
+      "page": 369
+    },
+    {
+      "code": 16,
+      "name": "Tumen-Lingi (BL)",
+      "district": "South",
+      "context_district": "South District",
+      "district_memberships": [
+        "South",
+        "East"
+      ],
+      "page": 369
+    },
+    {
+      "code": 17,
+      "name": "Khamdong-Singtam",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 18,
+      "name": "West Pendam (SC)",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 19,
+      "name": "Rhenock",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 20,
+      "name": "Chujachen",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 21,
+      "name": "Gnathang-Machong (BL)",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 22,
+      "name": "Namcheybung",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 23,
+      "name": "Shyari (BL)",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 24,
+      "name": "Martam-Rumtek (BL)",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 25,
+      "name": "Upper Tadong",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 370
+    },
+    {
+      "code": 26,
+      "name": "Arithang",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 371
+    },
+    {
+      "code": 27,
+      "name": "Gangtok (BL)",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 371
+    },
+    {
+      "code": 28,
+      "name": "Upper Burtuk",
+      "district": "East",
+      "context_district": "East District",
+      "district_memberships": [
+        "East"
+      ],
+      "page": 371
+    },
+    {
+      "code": 29,
+      "name": "Kabi Lungchuk (BL)",
+      "district": "North",
+      "context_district": "North District",
+      "district_memberships": [
+        "North",
+        "East"
+      ],
+      "page": 371
+    },
+    {
+      "code": 30,
+      "name": "Djongu (BL)",
+      "district": "North",
+      "context_district": "North District",
+      "district_memberships": [
+        "North"
+      ],
+      "page": 371
+    },
+    {
+      "code": 31,
+      "name": "Lachen Mangan (BL)",
+      "district": "North",
+      "context_district": "North District",
+      "district_memberships": [
+        "North"
+      ],
+      "page": 371
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Sikkim",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "page": 372,
+      "scope_note": "Entire state geographical extent from TableB; territorial AC list for navigation, not a certified segment crosswalk. Sangha relationship pending."
+    }
+  ],
+  "flags": [
+    "AC8 includes West and South; AC16 includes South and East; AC29 includes North and East",
+    "Sangha separate electoral constituency source pending; do not assign territorial district",
+    "Single statewide PC number verification pending; no invented PC code",
+    "Names and BL reservation retained; source spelling and election URL matching review pending"
+  ],
+  "identity_source": {
+    "url": "https://www.sikkim.gov.in/media/news-announcement/news-info?name=SCRUTINY+OF+NOMINATIONS+FOR+SIKKIM+PARLIAMENTARY+CONSTITUENCY+AND+SANGA+AC+FOR+GENERAL+ELECTION+2024+CONCLUDES",
+    "sha256": "71c1dd091fed660f1b33331d25f7292a2bc4dd8591b46ddddf70c0a5424ee714",
+    "date": "2024-03-29"
+  },
+  "separate_electoral_constituencies": [
+    {
+      "code": 32,
+      "name": "Sangha",
+      "district_memberships": [],
+      "territorial_assignment": "withheld; separate electoral constituency"
+    }
+  ]
+}

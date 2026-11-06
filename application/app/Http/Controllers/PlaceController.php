@@ -20,6 +20,10 @@ class PlaceController extends Controller
         abort_unless(in_array($type, ['district', 'pc', 'ac']), 404);
         $place = DB::table('places')->where('slug', $type.'-'.$slug)->first();
         abort_unless($place, 404);
+        if ($place->type === 'district') {
+            $destination = app(CensusPlaceNavigation::class)->url($place);
+            if (str_contains($destination, '/india/districts/')) { return redirect($destination, 301); }
+        }
         $censusRecord = app(CensusPlaceNavigation::class)->record($place);
         if ($censusRecord) {
             return redirect()->route('civic.place', ['record' => $censusRecord]);
@@ -27,7 +31,7 @@ class PlaceController extends Controller
         if (in_array($type, ['pc', 'ac']) && Schema::hasTable('historical_constituency_index') && DB::table('place_identifiers')->where('place_id', $place->id)->where('namespace', 'electoral:IN:UP:'.$type)->exists()) {
             $entry = DB::table('historical_constituency_index')->where('kind', $type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', ['uttar pradesh'])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
             if ($entry) {
-                return redirect()->route('constituency.overview', ['kind' => $type, 'state' => 'Uttar Pradesh', 'name' => $entry->constituency_name]);
+                return redirect(\App\Services\ConstituencyUrls::url(['kind' => $type, 'state' => 'Uttar Pradesh', 'name' => $entry->constituency_name]));
             }
         }
         $scope = [$place->id];

@@ -1,13 +1,13 @@
 @php
 $reportMode=$reportMode??false;
-$colors=['var(--palette-315d91)','var(--site-accent)','var(--site-primary)'];
+$colors=['#4285f4','#ea4335','#fbbc05','#34a853'];
 $isStateHistory=isset($stateHistory);
 $chartInputRows=$isStateHistory?collect($stateHistory)->map(fn($summary)=>['entry'=>(object)['year'=>$summary['year']],'summary'=>$summary]):($chartSourceRows??$rows);
 $chartRows=$chartInputRows->sortBy('entry.year')->values()->map(function($row){
  $summary=$row['summary']??($row['record']?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$row['record']]):[]);
- return ['year'=>$row['entry']->year,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'parties'=>$summary['parties']??[],'review'=>max($summary['turnout_review_count']??0,$summary['margin_review_count']??0,$summary['party_review_count']??0)];
+ return ['entry_id'=>$row['entry']->id??null,'year'=>$row['entry']->year,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'parties'=>$summary['parties']??[],'review'=>max($summary['turnout_review_count']??0,$summary['margin_review_count']??0,$summary['party_review_count']??0)];
 })->groupBy('year')->map(function($group){
- $point=['year'=>$group->first()['year'],'review'=>$group->max('review')];
+ $point=['entry_id'=>$group->pluck('entry_id')->filter()->unique()->count()===1?$group->first()['entry_id']:null,'year'=>$group->first()['year'],'review'=>$group->max('review')];
  foreach(['turnout','margin','polled','electors','parties'] as $key){
   $values=$group->pluck($key)->unique(fn($value)=>json_encode($value));
   $point[$key]=$values->count()===1?$values->first():($key==='parties'?[]:null);
@@ -19,7 +19,7 @@ foreach($chartRows as $point){foreach($point['parties'] as $party){if(!in_array(
 $fixedParties=collect($partyTotals)->map(fn($votes,$party)=>['party'=>(string)$party,'votes'=>$votes])->sortBy([['votes','desc'],['party','asc']])->take(3)->pluck('party')->values()->all();
 $plotRows=$chartRows->map(function($point)use($fixedParties){
  $ranked=collect($point['parties'])->reject(fn($party)=>in_array(strtoupper($party['party']),['NOTA','IND','INDEPENDENT']))->sortBy([['votes','desc'],['party','asc']])->take(2)->values();
- foreach([0,1] as $i){$point['party'.$i]=$ranked[$i]['votes']??null;$point['party'.$i.'_name']=$ranked[$i]['party']??null;}
+ foreach([0,1] as $i){$point['party'.$i]=$ranked[$i]['votes']??($point['parties']?0:null);$point['party'.$i.'_name']=$ranked[$i]['party']??($point['parties']?'No qualifying party':null);}
  $topParties=$ranked->pluck('party')->all();
  $point['others']=$point['parties']?collect($point['parties'])->reject(fn($party)=>in_array($party['party'],$topParties))->sum('votes'):null;
  $total=collect($point['parties'])->sum('votes');
@@ -35,20 +35,40 @@ $plots=[
 ];
 @endphp
 <section class="panel history-charts" aria-label="Historical election charts"><div class="panel-heading"><div><p class="kicker">Across the years</p><h2>{{ $isStateHistory?($kind==='pc'?'Lok Sabha voting history':'Assembly voting history'):'How voting has changed' }}</h2></div></div>
+@if(!$isStateHistory)
+@foreach($chartInputRows->map(fn($row)=>isset($row['record'])?app(\App\Services\HistoricalElectionAnalytics::class)->sourceGapNote($row['record']):null)->filter()->unique() as $sourceGapNote)
+<p class="small">{{ $sourceGapNote }}</p>
+@endforeach
+@endif
+@php($uncontestedYears=$isStateHistory?collect():$chartInputRows->filter(fn($row)=>!empty($row['result']['uncontested']))->map(fn($row)=>$row['entry']->year)->unique()->sort()->values())
+@if($uncontestedYears->isNotEmpty())
+<p class="small">Uncontested elections ({{ $uncontestedYears->implode(', ') }}): the candidate was returned without a contested poll. Vote shares, votes polled, turnout and winning margin are not available for these years; chart gaps are not zero results or missing polling data.</p>
+@endif
+@if(!$isStateHistory && $chartInputRows->contains(fn($row)=>(($row['record']['number_of_seats']??1)>1)))
+<p class="small">Historical multi-seat elections: party shares use recorded candidate votes across all seats. Turnout and a single winning margin are unavailable for comparison and remain blank; these are not zero results.</p>
+@endif
 @if(isset($reportAlternatives) && $reportAlternatives->isNotEmpty())
-<div class="notice"><p><strong>2019 report comparison:</strong> Charts show {{ $chartReport['entry']->edition_label }}. The two official reports use CPIM and CPM for the same candidate; original party labels are retained. This is a display selection, not a decision that one report is more authoritative. History rows below are report alternatives for the same election year.</p>
+<div class="notice"><p><strong>{{ $chartReport['entry']->year }} report comparison:</strong> Charts show {{ $reportAlternativeLabels[$chartReport['entry']->edition_id] ?? $chartReport['entry']->edition_label }}. {{ $reportComparisonNote ?? 'The two official reports use CPIM and CPM for the same candidate; original party labels are retained.' }} This is a display selection, not a decision that one report is more authoritative. History rows below are report alternatives for the same election year.</p>
 @foreach($reportAlternatives as $alternative)
-<p><a href="{{ route('constituency.overview',['kind'=>$kind,'state'=>$state,'name'=>$name,'edition'=>$alternative['entry']->edition_id,'code'=>$alternative['entry']->record_code,'format'=>$reportMode?'report':null]) }}">Use {{ $alternative['entry']->edition_label }} for 2019 charts and details</a> · <a href="{{ $alternative['source'] }}">Official source: {{ $alternative['entry']->edition_label }}</a></p>
+<p><a href="{{ route('constituency.overview',['kind'=>$kind,'state'=>$state,'name'=>$name,'edition'=>$alternative['entry']->edition_id,'code'=>$alternative['entry']->record_code,'format'=>$reportMode?'report':null]) }}">Use {{ $reportAlternativeLabels[$alternative['entry']->edition_id] ?? $alternative['entry']->edition_label }} for {{ $alternative['entry']->year }} charts and details</a> · <a href="{{ $alternative['source'] }}">Official source: {{ $reportAlternativeLabels[$alternative['entry']->edition_id] ?? $alternative['entry']->edition_label }}</a></p>
 @endforeach</div>
 @endif
 
 @foreach($plots as $plot)
 @php($plot['autoScale']=true)
-<section class="history-line" @if(!$reportMode) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
+<section class="history-line" @if(!$reportMode && count($plot['series']) > 0) data-history-chart @endif><h3>@if($reportMode)<span class="report-section-number">{{ sprintf("%02d",$loop->iteration) }}</span> @endif{{ $plot['title'] }}</h3>
 @if($loop->index===0)
 <p class="small">These three party labels are selected by total recorded votes across all available years and stay fixed when you change the year range. Independents and NOTA are excluded from selection.</p>
 @elseif($loop->index===1)
-<p class="small">The two leading parties are ranked separately each year. Independents and NOTA are included in Others, so an independent winner appears there. These lines rank parties, not candidates.</p>
+<p class="small">The two leading parties are ranked separately each year. Independents and any recorded NOTA votes are included in Others, so an independent winner appears there. These lines rank parties, not candidates. A zero labelled �No qualifying party� means that rank is absent from the available party results; missing results remain gaps.</p>
+@endif
+@if(count($plot['series']) === 0)
+<p class="small history-empty-state" role="status">No eligible party series is available for this chart. Independents and NOTA are excluded from selection; unavailable results remain blank.</p>
+@if(!$reportMode)
+<script type="application/json" class="history-chart-data">{!! json_encode(['rows'=>$plotRows,'series'=>[],'unit'=>$plot['unit'],'autoScale'=>true,'state'=>'empty','emptyReason'=>'no_eligible_party_series'],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
+@endif
+</section>
+@continue
 @endif
 @if($reportMode)
 @include('history-static-plot')
@@ -58,7 +78,7 @@ $plots=[
 <div class="history-controls"><label>From <select data-chart-from>@foreach($chartRows as $point)<option value="{{ $point['year'] }}">{{ $point['year'] }}</option>@endforeach</select></label><label>To <select data-chart-to>@foreach($chartRows as $point)<option value="{{ $point['year'] }}" @selected($loop->last)>{{ $point['year'] }}</option>@endforeach</select></label></div>
 <div class="history-legend" aria-label="Chart series"></div><div class="history-plot"></div><p class="history-readout" role="status">Hover or focus a year to see the value.</p>
 @endif
-@if(!$reportMode)<details class="chart-values"><summary><span class="chart-values-closed">Show data table</span><span class="chart-values-open">Hide data table</span><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>@else<h4>Chart values</h4>@endif<div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>@if($reportMode)<i class="report-series-swatch" style="background:{{ $series['key']==='others_share'?'var(--site-muted)':$colors[$loop->index] }}"></i>@endif{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':(($series['axis']??null)==='right'?'%':$plot['unit']) }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)<td>@if(isset($series['name_key']) && $point[$series['name_key']])<strong>{{ $point[$series['name_key']] }}</strong><br>@endif
+@if(!$reportMode)<details class="chart-values"><summary><span class="chart-values-closed">Show data table</span><span class="chart-values-open">Hide data table</span><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>@else<h4>Chart values</h4>@endif<div class="table-scroll"><table><thead><tr><th>Year</th>@foreach($plot['series'] as $series)<th>@if($reportMode)<i class="report-series-swatch" style="background:{{ $colors[$loop->index % count($colors)] }}"></i>@endif{{ $series['label'] }} ({{ isset($series['votes_key'])?'votes and share':(($series['axis']??null)==='right'?'%':$plot['unit']) }})</th>@endforeach</tr></thead><tbody>@foreach($plotRows as $point)<tr><th>{{ $point['year'] }}</th>@foreach($plot['series'] as $series)@php($sourceField=['polled'=>'votes_polled','electors'=>'electors'][$series['key']]??null)<td @if($sourceField && !empty($point['entry_id'])) data-correction-kind="election" data-correction-record="{{ $point['entry_id'] }}" data-correction-field="{{ $sourceField }}" @endif>@if(isset($series['name_key']) && $point[$series['name_key']])<strong>{{ $point[$series['name_key']] }}</strong><br>@endif
 @if(isset($series['votes_key']) && $point[$series['key']]!==null){{ number_format($point[$series['votes_key']]).' ('.number_format($point[$series['key']],2).'%)'.($point['review']?' †':'') }}@else{{ $point[$series['key']]===null?'—':number_format($point[$series['key']],($plot['unit']==='%'||($series['axis']??null)==='right')?2:0).(($plot['unit']==='%'||($series['axis']??null)==='right')?'%':'').($point['review']?' †':'') }}@endif</td>@endforeach</tr>@endforeach</tbody></table></div>@if(!$reportMode)</details>@endif
 </section>
 @endforeach

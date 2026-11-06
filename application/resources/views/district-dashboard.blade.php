@@ -1,0 +1,497 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{ $data['name'] }} district | Pollmedia</title><meta name="description" content="Explore {{ $data['name'] }} district population, literacy, village water connections and soil sample facts, with dated official sources and available-record comparisons."><link rel="stylesheet" href="{{ asset('css/pilibhit-ac-pilot.css') }}"><link rel="stylesheet" href="{{ asset('css/rampur-district-pilot.css') }}"><script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script><script src="{{ asset('js/district-dashboard-controls-20261017-navigation.js') }}?v={{ substr(hash_file('sha256', public_path('js/district-dashboard-controls-20261017-navigation.js')), 0, 12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}"><link rel="canonical" href="{{ url(request()->attributes->get('district_identity')['path'] ?? request()->path()) }}">@include('place-layout-assets')</head>
+
+
+
+<body class="place-layout election-ui rampur-dashboard">@include('public-header')
+
+
+
+@php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('district',$data['name'],(string)(request()->attributes->get('district_identity')['state'] ?? '')); @endphp
+
+
+
+@include('community-area-issues', ['deferDistrictAuthorities' => true])
+
+
+
+<main>
+
+
+
+@php
+
+
+
+$total=$data['totals']['Total'];
+
+
+
+$confirmedNewDelhiZeroVillages = ($data['census_district_code'] ?? '') === '094' && trim($data['name']) === 'New Delhi' && (int) $data['year'] === 2011 && (int) $data['census_village_rows'] === 0 && collect($data['census_editions'])->contains('source_key', 'delhi-new-delhi-pca-2011');
+
+
+
+$confirmedCentralZeroVillages = ($data['census_district_code'] ?? '') === '095' && trim($data['name']) === 'Central' && (int) $data['year'] === 2011 && (int) $data['census_village_rows'] === 0 && collect($data['census_editions'])->contains('source_key', 'delhi-central-pca-2011');
+
+
+
+
+
+
+
+$display=fn($value,$digits=0)=>$value===null?'Unavailable':number_format($value,$digits);
+
+
+
+$share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denominator:null;
+
+
+
+@endphp
+
+
+
+@if(($data['census_district_code'] ?? '')==='343' && $sourceMap==='maps/west-bengal-south-twenty-four-parganas-villages.geojson')<p class="notice">South Twenty Four Parganas source coverage: 2,175 shapes. Boundary edition and Census/LGD correspondence remain unverified; source coverage is not a certified perimeter. Shape flags remain in downloadable metadata. No population assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='342' && $sourceMap==='maps/west-bengal-kolkata-villages.geojson')<p class="notice">Kolkata source contains one shape only. Complete ward or district perimeter coverage is not established. Boundary edition and Census/LGD correspondence remain unverified; no population assigned to the shape.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='341' && $sourceMap==='maps/west-bengal-howrah-villages.geojson')<p class="notice">Haora Census identity; SOI source uses HOWRAH. 789 source shapes, with boundary edition and Census/LGD correspondence unverified. Source coverage is not a certified perimeter; no population assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='334' && $sourceMap==='maps/west-bengal-birbhum-villages.geojson')<p class="notice">Birbhum source coverage: 2,463 shapes. Boundary edition and Census/LGD correspondence remain unverified; coverage is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='332' && $sourceMap==='maps/west-bengal-maldah-villages.geojson')<p class="notice">Maldah source coverage: 1,803 shapes. Boundary edition and Census/LGD correspondence remain unverified; coverage is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='331' && $sourceMap==='maps/west-bengal-dakshin-dinajpur-villages.geojson')<p class="notice">Dakshin Dinajpur source coverage: 1,620 shapes. Boundary edition and Census/LGD links remain unverified; this is not a certified perimeter. Source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='330' && $sourceMap==='maps/west-bengal-uttar-dinajpur-villages.geojson')<p class="notice">Uttar Dinajpur source coverage: 1,499 shapes. Boundary edition and Census/LGD correspondence remain unverified. This coverage is not a certified perimeter; source geometry and duplicate flags remain in downloadable metadata. No population assigned to shapes. Complete electoral membership pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='345' && $sourceMap==='maps/west-bengal-purba-medinipur-villages.geojson')<p class="notice">Purba Medinipur source coverage: 3,023 shapes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified perimeter; duplicate-code and geometry flags remain in downloadable metadata. No population assigned to shapes. Official electoral membership pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='329' && $sourceMap==='maps/west-bengal-koch-bihar-villages.geojson')<p class="notice">Koch Bihar source coverage: 1,187 shapes. Boundary edition and Census/LGD correspondence remain unverified. This source coverage is not a certified perimeter, including historical enclave changes. Shape flags remain in downloadable metadata; no population assigned to shapes. Official electoral membership pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='339' && $sourceMap==='maps/west-bengal-bankura-villages.geojson')<p class="notice">Bankura source coverage: 3,835 shapes. Boundary edition and Census/LGD links remain unverified; source coverage is not a certified perimeter. Duplicate-code and geometry flags are recorded in downloadable metadata. No population assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='340' && $sourceMap==='maps/west-bengal-puruliya-villages.geojson')<p class="notice">Puruliya source coverage: 2,699 shapes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified perimeter; no population assigned to shapes. Duplicate-code shapes remain ambiguous where recorded in the downloadable metadata. Official constituency membership verification pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='338' && $sourceMap==='maps/west-bengal-hugli-villages.geojson')<p class="notice">Hugli source coverage: 1,944 valid shapes. Boundary edition and Census/LGD links remain unverified; this is source coverage, not a certified district perimeter. No population assigned to shapes. Complete official constituency membership verification pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='337' && $sourceMap==='maps/west-bengal-north-twenty-four-parganas-villages.geojson')<p class="notice">North Twenty Four Parganas source coverage: 1,635 shapes; invalid geometry4191 retained without repair and two duplicate-code shapes ambiguous. Boundary edition and Census/LGD links remain unverified; source coverage is not a certified perimeter. No population assigned to shapes. Complete constituency membership verification pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='336' && $sourceMap==='maps/west-bengal-nadia-villages.geojson')<p class="notice">Nadia source coverage: 1,363 valid shapes; two duplicate-code shapes remain ambiguous. Boundary edition and Census/LGD links are unverified. This is source coverage, not a certified district perimeter; no population is assigned to shapes. Complete official AC/PC membership verification is pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='333' && $sourceMap==='maps/west-bengal-murshidabad-villages.geojson')<p class="notice">Murshidabad source coverage: 2,217 shapes; invalid geometry 199 is retained without repair and two duplicate-code shapes remain ambiguous. Boundary edition and Census/LGD links are unverified. This is source coverage, not a certified district perimeter; no population is assigned to shapes. Official AC/PC membership verification is pending.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='211' && $sourceMap==='maps/bihar-purnia-villages.geojson')<p class="notice">Purnia source coverage: 1,227 shapes; six invalid source geometries (32956, 32957, 33015, 33295, 33425, 33911) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='208' && $sourceMap==='maps/bihar-supaul-villages.geojson')<p class="notice">Supaul source coverage: 548 shapes; invalid source geometry 42486 is retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='218' && $sourceMap==='maps/bihar-siwan-villages.geojson')<p class="notice">Siwan source coverage: 1,514 valid shapes; twenty shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='228' && $sourceMap==='maps/bihar-sheikhpura-villages.geojson')<p class="notice">Sheikhpura source coverage: 287 shapes; invalid source geometries 38389 and 39303 are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='221' && $sourceMap==='maps/bihar-samastipur-villages.geojson')<p class="notice">Samastipur source coverage: 1,148 shapes; invalid source geometry 36688 is retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='214' && $sourceMap==='maps/bihar-saharsa-villages.geojson')<p class="notice">Saharsa source coverage: 458 valid shapes; fourteen shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='230' && $sourceMap==='maps/bihar-patna-villages.geojson')<p class="notice">Patna source coverage: 1,378 shapes; invalid source geometry 30926 is retained without repair, and three shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='216' && $sourceMap==='maps/bihar-muzaffarpur-villages.geojson')<p class="notice">Muzaffarpur source coverage: 1,737 shapes; three invalid source geometries (24917, 24976, 25903) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='207' && $sourceMap==='maps/bihar-madhubani-villages.geojson')<p class="notice">Madhubani source coverage: 1,090 shapes; three invalid source geometries (23149, 23190, 23735) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='213' && $sourceMap==='maps/bihar-madhepura-villages.geojson')<p class="notice">Madhepura source coverage: 429 shapes; two invalid source geometries (22715, 22815) are retained without repair, and six shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='227' && $sourceMap==='maps/bihar-lakhisarai-villages.geojson')<p class="notice">Lakhisarai source coverage: 467 shapes; invalid source geometry 22089 is retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='226' && $sourceMap==='maps/bihar-munger-villages.geojson')<p class="notice">Munger source coverage: 850 shapes; two invalid source geometries (23951, 24560) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='212' && $sourceMap==='maps/bihar-katihar-villages.geojson')<p class="notice">Katihar source coverage: 1,528 shapes; six invalid source geometries (19484, 19502, 19980, 20466, 20580, 20766) are retained without repair, and three shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='215' && $sourceMap==='maps/bihar-darbhanga-villages.geojson')<p class="notice">Darbhanga source coverage: 1,247 shapes; two invalid source geometries (10217, 10346) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='232' && $sourceMap==='maps/bihar-buxar-villages.geojson')<p class="notice">Buxar source coverage: 1,119 valid shapes; 42 shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='224' && $sourceMap==='maps/bihar-bhagalpur-villages.geojson')<p class="notice">Bhagalpur source coverage: 1,519 shapes; eight invalid source geometries (6433, 6467, 6589, 7013, 7088, 7534, 7724, 7725) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='231' && $sourceMap==='maps/bihar-bhojpur-villages.geojson')<p class="notice">Bhojpur source coverage: 1,194 valid shapes; three shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='222' && $sourceMap==='maps/bihar-begusarai-villages.geojson')<p class="notice">Begusarai source coverage: 1,137 shapes; seven invalid source geometries (3491, 5499, 5952, 6016, 6021, 6024, 6033) are retained without repair. Boundary edition and Census/LGD links remain unverified. Source coverage is not a certified district outline; no population is assigned to shapes.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='225' && $sourceMap==='maps/bihar-banka-villages.geojson')<p class="notice">Banka source coverage: 2,097 shapes; two invalid source geometries (4280, 5111) are retained without repair, and four shapes have ambiguous duplicate codes. Boundary edition and Census/LGD links remain unverified. These shapes are source coverage, not a certified district outline; no population is assigned to them.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='187')<p class="notice">The SOI archive uses Mahrajganj; the dated electoral fixture uses Maharajganj. Official district profiles use both spellings. This name correspondence does not verify matching boundary editions or village coverage. Eight source shapes are ambiguous; accepted Census/LGD links remain pending. No population is assigned to shapes; district figures are context only. <a href="https://www.dcmsme.gov.in/old/dips/Mahrajganj.pdf">Official source-name correspondence</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='157')<p class="notice">Source coverage flags: four Lucknow source shapes are ambiguous; invalid source shape 143034 is excluded without repair. Accepted Census/LGD links and the boundary edition remain unverified. No population is assigned to shapes; district totals are context only.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='174')<p class="notice">Source coverage flags: two Kaushambi source shapes are ambiguous; invalid source shape 801077 is excluded without repair. Accepted Census/LGD links and the boundary edition remain unverified. No population is assigned to shapes; district totals are context only.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='202')<p class="notice">Census 2011 uses Kanshiram Nagar; the SOI archive and dated electoral fixture use Kasganj. Official district profiles identify both names. This name correspondence does not verify matching boundary editions or village coverage. Census/LGD links remain pending; district population is context only for constituencies. <a href="https://dcmsme.gov.in/dips/Kanshiram%20Nagar%20%28Kasganj%29.pdf">Official district name correspondence</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='163')<p class="notice">District sources use Kanpur Dehat and Ramabai Nagar. The official district profile records the Ramabai Nagar name from 1 July 2010 and restoration of Kanpur Dehat in 2012. This name correspondence does not verify matching boundary editions or village coverage. Census/LGD links remain pending; district totals are context only. <a href="https://kanpurdehat.nic.in/about-district/">Official name history</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='144')<p class="notice">Census 2011 uses Mahamaya Nagar; the SOI archive and dated electoral fixture use Hathras. The name correspondence does not verify matching boundary editions or village coverage. Source shape 800780 is invalid and excluded without repair. Accepted Census/LGD links remain pending; no population is assigned to shapes. <a href="https://censusindia.gov.in/nada/index.php/catalog/6335">Official Census district 09/144</a> | <a href="https://www.upsdm.gov.in/Content/WebAssets/DSDP/HATHRAS.pdf">Official Hathras (Mahamaya Nagar) district profile</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='155')<p class="notice">Dashboard coverage note: Shahabad AC 155 currently redirects to constituency search; its individual dashboard is incomplete and awaiting manual source/code review. The district and other constituency dashboards remain available. Boundary edition and Census/LGD links remain unverified; district population is context only.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='176')<p class="notice">Census 2011 and SOI source records use Bara Banki; the dated election fixture uses Barabanki. This name correspondence does not verify matching boundary editions. <a href="https://censusindia.gov.in/nada/index.php/catalog/6367">Census district 09/176</a> | <a href="https://barabanki.nic.in/about-district/geography/">Official district geography</a>.</p>@endif
+
+
+
+@if($data['name']==='Bellary')<p class="notice">Partial source map: SOI Ballari coverage does not represent the complete Census 2011 Bellary district. Vijayanagara was later carved out of Bellary. Its source shapes are not merged or backcast; matching boundary editions and Census/LGD links remain unverified. <a href="https://vijayanagara.nic.in/en/history/">Official district history</a>.</p>@endif
+
+
+
+@if($data['name']==='Davanagere')<p class="notice">Source coverage mismatch: SOI Davanagere subdistrict labels omit Harapanahalli, which appears in the dated district–Assembly scope. This map is not established as the complete Census 2011 district outline. Later shapes are not merged or backcast; matching boundary editions and Census/LGD links remain unverified.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='195')<p class="notice">Dashboard coverage note: Mohammadabad AC 378 currently redirects to constituency search; its individual dashboard is incomplete and awaiting manual source/code review. The district and other constituency dashboards remain available. Source conflict: AC 376 Jangipur has no reservation suffix in the district fixture, while PC 75 source text says Jangipur (SC). Both descriptions are retained; reservation status is not inferred from this mismatch. Source boundaries and Census/LGD links remain unverified.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='177')<p class="notice">Census 2011 uses Faizabad; the SOI archive and dated electoral district fixture use Ayodhya. Name correspondence does not establish matching boundary editions or village coverage. The official constituency page table includes Dariyabad (AC 270) and omits Goshainganj (AC 276), while its navigation lists AC 276. The dated district gazette places AC 270 in Barabanki and AC 276 in Ayodhya; this dashboard retains that dated membership and flags the conflicting webpage. District figures are context, never constituency totals. <a href="https://ayodhya.nic.in/constituencies/">Official conflicting directory</a> | <a href="https://ayodhyada.in/docs/ayodhya51051.pdf">2018 development-area naming notification</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='142')<p class="notice">Census 2011 and SOI records use Bulandshahr; the dated electoral district fixture uses Bulandshahar. The official district constituency directory confirms AC codes 64–70. This spelling correspondence does not verify matching boundary editions or village coverage. Source shapes remain unlinked; no population is assigned to shapes. <a href="https://bulandshahar.nic.in/constituencies/">Official constituency directory</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='149')<p class="notice">Census 2011 and SOI records use Budaun; the dated electoral fixture uses Badaun. Official district notices use both spellings for AC 115. This name correspondence does not verify matching boundary editions or village coverage. Invalid source shapes remain excluded and documented; no population is assigned to shapes. <a href="https://budaun.nic.in/census/page/3/">Official electoral spelling source</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='198')<p class="notice">Census 2011 identifies district 09/198 as Sant Ravidas Nagar (Bhadohi); the SOI archive and dated electoral fixture use Bhadohi. An Akashvani report dated 4 October 2026 announces the name Sant Ravidas Nagar Bhadohi. These dated name correspondences do not establish matching boundary editions or village coverage. District figures are context, never constituency totals. <a href="https://censusindia.gov.in/nada/index.php/catalog/1284">Census 2011 district handbook</a> | <a href="https://newsonair.gov.in/yogi-adityanath-announces-renaming-of-bhadohi-as-sant-ravidas-nagar-bhadohi/">Official rename announcement</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='141')<p class="notice">The preserved SOI archive contains only 144 Gautam Buddha Nagar district-tagged source shapes. Complete district village coverage is not established. Six duplicate-code shapes remain ambiguous; accepted Census/LGD links and boundary edition are pending. No missing shapes or population allocations are synthesized. <a href="https://gbnagar.nic.in/">Official district profile</a>.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='137')<p class="notice">Census 2011 identifies district 09/137 as Jyotiba Phule Nagar; the SOI archive and dated electoral fixture use Amroha. The official Amroha district history explicitly records its former Jyotiba Phule Nagar name. This name correspondence does not verify matching boundary editions or village coverage. Census/LGD links remain pending; district figures are context, never constituency totals. <a href="https://amroha.nic.in/history/">Official district name history</a> | <a href="https://censusindia.gov.in/nada/index.php/catalog/1232">Census district handbook</a>.</p>@endif
+
+
+
+<section class="district-title"><div>@php($breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null)
+
+
+
+@include('location-breadcrumbs',['locationTrail'=>array_values(array_filter([['label'=>'India','url'=>route('home')],$breadcrumbState?['label'=>$breadcrumbState,'url'=>route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($breadcrumbState)])]:null,['label'=>$data['name'],'url'=>null]]))])<p class="eyebrow">District dashboard · people, places & history</p><h1>{{ $data['name'] }} district</h1><nav class="section-nav" aria-label="Dashboard sections"><a class="authority-jump" href="#district-authority-contacts">Authorities ↗</a><a href="#overview">District overview</a><a href="#subdistricts">Subdistricts</a><a href="#towns">Towns</a><a href="#map">Explore places & data</a><a href="#villages">Village directory</a><a href="#history">History & graphs</a><a href="#elections">Lok Sabha / State Assembly elections</a><a href="{{ route('district-dashboard-directory') }}">All districts</a><a href="#sources">Sources & coverage</a><a href="#place-facts">Quick facts</a><a href="#soil">Soil health</a><a href="#groundwater-levels">Groundwater levels</a><a href="#groundwater-chemistry">Groundwater chemistry</a><a href="#drinking-water-quality">Drinking-water quality</a><a class="data-edit-listing" href="{{ route('community.scope',['state'=>request()->attributes->get('district_identity')['state'] ?? request()->route('state'),'district'=>$data['census_district_code'],'year'=>$data['year'],'level'=>'DISTRICT']) }}">Edit data</a></nav></div></section>
+
+
+
+@if(($data['census_district_code'] ?? '')==='463')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order records AC79-81 under Sidhi. Their assignment to Census2011 Singrauli is not inferred. Constituency membership remains unavailable until an accepted crosswalk is established.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='464')<p class="notice">Dated ECI2008 Jhabua AC191-195 includes Alirajpur and Jobat references. An accepted crosswalk to Census2011 Jhabua and Alirajpur districts is unavailable. These electoral links retain source geography; later district splits are not backcast.</p>@endif
+
+
+
+@if(($data['census_district_code'] ?? '')==='465')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order records AC191-192 under Jhabua. Their assignment to Census2011 Alirajpur is not inferred. Constituency membership remains unavailable until an accepted crosswalk is established.</p>@endif
+
+
+
+
+
+
+
+
+
+
+<section id="overview" class="metrics">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy age 7+'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ $display($total[$key],$key==='literacy'?2:0) }}{{ $key==='literacy'&&$total[$key]!==null?'%':'' }}</strong><small>Census {{ $data['year'] }}</small></article>@endforeach<article><span>Female per 1,000 male</span><strong>{{ $display($total['female']!==null&&$total['male']>0?1000*$total['female']/$total['male']:null) }}</strong><small>Census {{ $data['year'] }} sex ratio</small></article></section>
+
+
+
+@include('district-polygon-map')
+
+
+
+@include('water-evidence-panel',['waterCensusState'=>(string)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')),'waterCensusDistrict'=>(string)$data['census_district_code']])
+@include('district-authority-directory')
+
+
+
+@include('place-fact-tables', ['facts' => app(\App\Services\PlaceFactTables::class)->district($data)])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@if(($data['census_district_code'] ?? '')==='131')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order uses territorial definitions from2004 and records Pratapgarh AC172 under Chittorgarh. Its assignment and other AC memberships to Census2011 Pratapgarh district are not inferred. Later district splits are not backcast.</p>@endif
+
+
+
+<section class="panel district-glance" id="at-a-glance"><p class="eyebrow">What the figures mean</p><h2>{{ $data['name'] }} at a glance</h2><div class="source-grid"><article><h3>{{ $display($share($data['totals']['Rural']['population']??null,$total['population']),1) }}% rural</h3><p>Residents who lived in rural areas in {{ $data['year'] }}.</p></article><article><h3>{{ $display($total['male_literacy'],1) }}% / {{ $display($total['female_literacy'],1) }}%</h3><p>Male / female literacy among people aged 7+.</p></article><article><h3>{{ $display($share($total['children'],$total['population']),1) }}% aged 0–6</h3><p>{{ $display($total['children']) }} young children recorded.</p></article><article><h3>{{ $display($share($total['workers'],$total['population']),1) }}% workers</h3><p>Main and marginal workers as a share of all residents. This is Census worker participation, not an unemployment rate.</p></article></div><p class="muted">These describe {{ $data['year'] }} conditions; the figures do not estimate today’s population. Missing values remain unavailable.</p></section>
+
+
+
+@if(($total['population']??0)>0 && isset($data['totals']['Urban']['population'],$data['totals']['Rural']['population'],$total['literacy'],$total['male_literacy'],$total['female_literacy'])) @includeIf('rampur-district-charts') @endif
+
+
+
+<section class="panel district-settlement" id="rural-urban"><h2>Rural & urban</h2><div class="source-grid">@foreach(['Rural','Urban'] as $kind) @php($area=$data['totals'][$kind]??[])<article><p class="eyebrow">{{ $kind }}</p><h3>{{ $display($area['population']??null) }} people</h3>@if(isset($area['population'])&&$total['population']>0)<progress aria-label="{{ $kind }} share of district population" max="{{ $total['population'] }}" value="{{ $area['population'] }}" style="width:100%;accent-color:#176953"></progress>@endif<p>{{ $display($share($area['population']??null,$total['population']),1) }}% of district · {{ $display($area['households']??null) }} households</p><p>Literacy 7+: {{ $display($area['literacy']??null,2) }}%</p></article>@endforeach</div></section>
+
+
+
+@if(($data['census_district_code'] ?? '') === '151' && (request()->attributes->get('district_identity')['state'] ?? request()->route('state')) === '09')
+
+
+
+@include('jjm-water-district')
+
+
+
+@include('rainfall-panel', ['rainfallDistrict' => true])
+
+
+
+@endif
+
+
+
+
+
+
+
+
+
+@foreach(['subdistricts'=>'Subdistricts','towns'=>'Towns'] as $key=>$label)<section id="{{ $key }}" class="panel"><p class="eyebrow">Published Census {{ $data['year'] }} units</p><h2>Compare {{ count($data[$key]) }} {{ strtolower($label) }}</h2><div class="table-wrap"><table><thead><tr><th>Place / Census code</th><th>Population</th><th>District share</th><th>Households</th><th>Literacy 7+</th></tr></thead><tbody>@forelse($data[$key] as $place)<tr><td><a href="{{ route('civic.place',['record'=>$place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small></td><td>{{ $display($place['population']) }}</td><td>@if($place['population']!==null&&$total['population']>0)<progress aria-label="{{ $place['name'] }} population share" max="{{ $total['population'] }}" value="{{ $place['population'] }}"></progress> {{ $display($share($place['population'],$total['population']),1) }}%@else Unavailable @endif</td><td>{{ $display($place['households']) }}</td><td>{{ $display($place['literacy'],2) }}{{ $place['literacy']!==null?'%':'' }}</td></tr>@empty<tr><td colspan="5">No published {{ strtolower($label) }} records available.</td></tr>@endforelse</tbody></table></div></section>@endforeach
+
+
+
+@if($confirmedNewDelhiZeroVillages)
+
+
+
+<section id="villages" class="panel"><p class="eyebrow">Verified Census 2011 inventory</p><h2>No Census villages in this edition</h2><p>The official New Delhi district PCA contains no village rows and records zero rural population. All 142,004 residents are recorded as urban. This is a confirmed absence of Census villages, not missing village data.</p><p><a href="https://censusindia.gov.in/nada/index.php/catalog/6285">Official Census 2011 New Delhi source</a></p><p>The later SOI NEW DELHI selection contains two rural-labelled places (Kusumpur and Muradabad Pahari) and 20 unnamed urban features. It is not the historical Census district village inventory; those later shapes are not backcast onto this edition. Historical village-map linkage is not applicable. Current boundary correspondence and electoral membership remain pending.</p></section>
+
+
+
+@elseif($confirmedCentralZeroVillages)
+
+
+
+<section id="villages" class="panel"><p class="eyebrow">Verified Census 2011 inventory</p><h2>No Census villages in this edition</h2><p>The official Central district PCA contains no village rows and records zero rural population. All 582,320 residents are recorded as urban. This is a confirmed absence of Census villages, not missing village data.</p><p><a href="https://censusindia.gov.in/nada/index.php/catalog/6286">Official Census 2011 Central source</a></p><p>The SOI CENTRAL selection contains three rural-labelled places (Jagatpur Delhi, Jagatpur Shahdra and Badarpur) and 16 unnamed urban features. Its three village codes occur in the Census 2011 North district inventory, not Central. Matching boundary editions and accepted identifier crosswalks remain unverified; these shapes are not backcast onto Central's historical inventory. Historical village-map linkage is not applicable. Current boundary correspondence and electoral membership remain pending.</p></section>
+
+
+
+@else
+
+
+
+<section id="villages" class="panel"><p class="eyebrow">Published Census records</p><h2>Village directory · {{ $data['year'] }}</h2><p class="notice">{{ $data['census_village_rows'] }} published village records are available. These are Census records, not an accepted LGD directory. Where available, map selection shows Census code/name correspondence and its limitations. LGD and village-to-AC/PC links remain pending; Census figures are not polygon population estimates.</p><label>Find a Census village<input id="census-village-search" type="search" maxlength="120" placeholder="Village name or Census code"></label><p id="village-results" role="status"></p><div class="table-wrap"><table id="census-villages"><thead><tr><th>Village / Census code</th><th>Population</th><th>Households</th><th>Literacy 7+</th></tr></thead><tbody>@forelse(($data['census_villages']??[]) as $place)<tr><td><a href="{{ route('civic.place',['record'=>$place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small></td><td>{{ $display($place['population']) }}</td><td>{{ $display($place['households']) }}</td><td>{{ $display($place['literacy'],2) }}{{ $place['literacy']!==null?'%':'' }}</td></tr>@empty<tr data-empty><td colspan="4">Village Census records are unavailable in the selected published sources.</td></tr>@endforelse</tbody></table></div></section>
+
+
+
+@endif
+
+
+
+@includeIf('district-dashboard-history') @include('district-dashboard-elections')
+
+
+
+@include('place-market-panel', ['marketPageScope'=>app(\App\Services\PageMarketContext::class)->censusDistrict((string)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')), (string)$data['census_district_code'])])
+
+
+
+<details id="sources" class="panel approved-disclaimer" data-compact-group="Sources"><summary>Methodology and disclaimer</summary><div class="approved-disclaimer-body"><p>Published database records are read on every request. Newly published imports appear when this page reloads.</p>@if($confirmedNewDelhiZeroVillages || $confirmedCentralZeroVillages)<p>Zero village rows confirmed in the official {{ $data['name'] }} Census 2011 PCA; all residents are recorded as urban.</p>@else<p>{{ $data['census_village_rows'] }} village Census rows are available in the selected published sources. Missing records remain unavailable.</p>@endif
+
+
+
+@foreach($data['census_editions'] as $edition)<p><a href="{{ $edition['source_url'] }}">{{ $edition['source_key'] }} · official source</a></p>@endforeach</div></details>
+
+
+
+</main>@include('public-footer')</body></html>
+
+
+
+
+
+

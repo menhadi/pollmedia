@@ -50,6 +50,10 @@ class GeographyController extends Controller
     {
         $place = DB::table('places')->where('slug', $slug)->first();
         abort_unless($place, 404);
+        if ($place->type === 'district') {
+            $destination = app(CensusPlaceNavigation::class)->url($place);
+            if (str_contains($destination, '/india/districts/')) { return redirect($destination, 301); }
+        }
         $censusRecord = app(CensusPlaceNavigation::class)->record($place);
         if ($censusRecord) {
             return redirect()->route('civic.place', ['record' => $censusRecord]);

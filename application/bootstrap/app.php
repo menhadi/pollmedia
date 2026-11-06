@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\BlockOverloadingCrawlers;
 use App\Http\Middleware\GoogleAnalytics;
 use App\Http\Middleware\ManagedApi;
 use App\Http\Middleware\PageMetadata;
@@ -16,11 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->prepend(BlockOverloadingCrawlers::class);
+        $middleware->trimStrings(except: ['smtp_password', 'google_client_secret']);
         $middleware->preventRequestsDuringMaintenance(except: ['admin', 'admin/*']);
         $middleware->web(append: [PublicLocale::class, ManagedApi::class, PageMetadata::class, GoogleAnalytics::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->dontFlash(['api_key', 'access_key', 'secret_key']);
+        $exceptions->dontFlash(['api_key', 'access_key', 'secret_key', 'reference', 'code', 'google_client_secret', 'smtp_password']);
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );

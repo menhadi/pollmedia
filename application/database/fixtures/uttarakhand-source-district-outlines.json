@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "geometry_scope": "district outline",
+    "simplification_metres": 0,
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "census_lgd_join": "unverified",
+    "electoral_edition_join": "unverified;dated electoral source required",
+    "note": "Exact source record reprojected;source spelling retained;no population allocated."
+  },
+  "districts": [
+    {
+      "source_name": "ALMORA",
+      "slug": "almora",
+      "file": "maps/uttarakhand-source-districts/almora.geojson",
+      "source_geometry_valid": true,
+      "bytes": 197317,
+      "sha256": "02d343a4a31729a9ab0379dc87d762a2494c07d633ff16ceb4b3a34f16d9821d"
+    },
+    {
+      "source_name": "B>GESHWAR",
+      "slug": "b-geshwar",
+      "file": "maps/uttarakhand-source-districts/b-geshwar.geojson",
+      "source_geometry_valid": true,
+      "bytes": 107056,
+      "sha256": "cb262cd107802508158e8075c3f8e124b51660732a129a6c8b833087f8e16b71"
+    },
+    {
+      "source_name": "CHAMP>WAT",
+      "slug": "champ-wat",
+      "file": "maps/uttarakhand-source-districts/champ-wat.geojson",
+      "source_geometry_valid": true,
+      "bytes": 137426,
+      "sha256": "004dbb6c148937e1d748aa17791a3aa3decb3a0bbeef30042c80fd4ffac7344f"
+    },
+    {
+      "source_name": "DEHRAD@N",
+      "slug": "dehrad-n",
+      "file": "maps/uttarakhand-source-districts/dehrad-n.geojson",
+      "source_geometry_valid": true,
+      "bytes": 207315,
+      "sha256": "35cd6b40f1a94bd082701d487c7bb9a9bfd3298459721a30c9d5c2266c8f9458"
+    },
+    {
+      "source_name": "HARIDW>R",
+      "slug": "haridw-r",
+      "file": "maps/uttarakhand-source-districts/haridw-r.geojson",
+      "source_geometry_valid": true,
+      "bytes": 163363,
+      "sha256": "18c5a8a56e9901820243d3f66b7a2e48b6347fccd34910293a4cc9076522cb1b"
+    },
+    {
+      "source_name": "NAINIT>L",
+      "slug": "nainit-l",
+      "file": "maps/uttarakhand-source-districts/nainit-l.geojson",
+      "source_geometry_valid": true,
+      "bytes": 180030,
+      "sha256": "e15d2f3c4238b7e80ff76a2dedb9d148f148381c6459605bd2ab9ec23b796ed6"
+    },
+    {
+      "source_name": "PAURI GARHW>L",
+      "slug": "pauri-garhw-l",
+      "file": "maps/uttarakhand-source-districts/pauri-garhw-l.geojson",
+      "source_geometry_valid": true,
+      "bytes": 194605,
+      "sha256": "95f03e0d7f844b3b27910118ed558dd861a053ffd85039db3276cdeac61fd95a"
+    },
+    {
+      "source_name": "RUDRAPRAY>G",
+      "slug": "rudrapray-g",
+      "file": "maps/uttarakhand-source-districts/rudrapray-g.geojson",
+      "source_geometry_valid": true,
+      "bytes": 99913,
+      "sha256": "d7bb68cf2f4093a749da6406264ee25a1fe5cc7ed802fe4ffa171bff7c4ff062"
+    },
+    {
+      "source_name": "TEHRI GARHW>L",
+      "slug": "tehri-garhw-l",
+      "file": "maps/uttarakhand-source-districts/tehri-garhw-l.geojson",
+      "source_geometry_valid": true,
+      "bytes": 246226,
+      "sha256": "7b62d33ed01950aaf8c368e1a955edab7e916919cc0c010a9b2d5562a64201a6"
+    },
+    {
+      "source_name": "UDHAM SINGH NAGAR",
+      "slug": "udham-singh-nagar",
+      "file": "maps/uttarakhand-source-districts/udham-singh-nagar.geojson",
+      "source_geometry_valid": true,
+      "bytes": 318959,
+      "sha256": "7d74b729dd50be4aebd93f19845539cf13f06af738e0190e1835ee11f7291675"
+    },
+    {
+      "source_name": "CHAMOLI",
+      "slug": "chamoli",
+      "file": "maps/uttarakhand-source-districts/chamoli.geojson",
+      "source_geometry_valid": true,
+      "bytes": 184231,
+      "sha256": "6a59cacc3acdd6dad56a6253fe507514656bcd0557d64b14febba7531c6f844e"
+    },
+    {
+      "source_name": "PITHOR>GARH",
+      "slug": "pithor-garh",
+      "file": "maps/uttarakhand-source-districts/pithor-garh.geojson",
+      "source_geometry_valid": true,
+      "bytes": 252398,
+      "sha256": "22c427039bc2cef55ee6a043825e77592f8d1dfb910b92f77cb673fe3da65c4e"
+    },
+    {
+      "source_name": "UTTARK>SHI",
+      "slug": "uttark-shi",
+      "file": "maps/uttarakhand-source-districts/uttark-shi.geojson",
+      "source_geometry_valid": true,
+      "bytes": 275173,
+      "sha256": "be10c5564b64864f99ad126f85b375a7ed370a6de30c8ad194899278311d4917"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+<link rel="stylesheet" href="/css/community-page-edit.css?v={{ substr(hash_file('sha256',public_path('css/community-page-edit.css')),0,12) }}">
+<script src="/js/community-page-edit.js?v={{ substr(hash_file('sha256',public_path('js/community-page-edit.js')),0,12) }}" defer data-community-edit data-signed-in="{{ auth()->check() ? '1' : '0' }}" data-login="{{ route('community.login',[],false) }}" data-message="{{ session('status') ?: ($errors->first() ?: '') }}"></script>

@@ -1,0 +1,451 @@
+{
+  "state": "Nagaland",
+  "district_rows": [
+    {
+      "code": 1,
+      "name": "DIMAPUR-I",
+      "district": "Dimapur",
+      "source_year": "2026"
+    },
+    {
+      "code": 2,
+      "name": "DIMAPUR-II",
+      "district": "Dimapur",
+      "source_year": "2026"
+    },
+    {
+      "code": 3,
+      "name": "DIMAPUR-III",
+      "district": "Dimapur",
+      "source_year": "2026"
+    },
+    {
+      "code": 4,
+      "name": "GHASPANI-I",
+      "district": "CHUMOUKEDIMA",
+      "source_year": "2026"
+    },
+    {
+      "code": 5,
+      "name": "GHASPANI-II",
+      "district": "CHUMOUKEDIMA",
+      "source_year": "2026"
+    },
+    {
+      "code": 6,
+      "name": "TENNING",
+      "district": "Peren",
+      "source_year": "2026"
+    },
+    {
+      "code": 7,
+      "name": "PEREN",
+      "district": "Peren",
+      "source_year": "2026"
+    },
+    {
+      "code": 8,
+      "name": "WESTERN ANGAMI",
+      "district": "Kohima",
+      "source_year": "2026"
+    },
+    {
+      "code": 9,
+      "name": "KOHIMA TOWN",
+      "district": "Kohima",
+      "source_year": "2026"
+    },
+    {
+      "code": 10,
+      "name": "NORTHERN ANGAMI-I",
+      "district": "Kohima",
+      "source_year": "2026"
+    },
+    {
+      "code": 11,
+      "name": "NORTHERN ANGAMI-II",
+      "district": "Kohima",
+      "source_year": "2026"
+    },
+    {
+      "code": 12,
+      "name": "TSEMINYU",
+      "district": "SHAMATOR",
+      "source_year": "2026"
+    },
+    {
+      "code": 13,
+      "name": "PUGHOBOTO",
+      "district": "PUGHOBOTO",
+      "source_year": "2026"
+    },
+    {
+      "code": 14,
+      "name": "SOUTHERN ANGAMI-I",
+      "district": "Kohima",
+      "source_year": "2026"
+    },
+    {
+      "code": 15,
+      "name": "SOUTHERN ANGAMI-II",
+      "district": "Kohima",
+      "source_year": "2026"
+    },
+    {
+      "code": 16,
+      "name": "PFUTSERO",
+      "district": "Phek",
+      "source_year": "2026"
+    },
+    {
+      "code": 17,
+      "name": "CHIZAMI",
+      "district": "Phek",
+      "source_year": "2026"
+    },
+    {
+      "code": 18,
+      "name": "CHAZOUBA",
+      "district": "Phek",
+      "source_year": "2026"
+    },
+    {
+      "code": 19,
+      "name": "PHEK",
+      "district": "Phek",
+      "source_year": "2026"
+    },
+    {
+      "code": 20,
+      "name": "MELURI",
+      "district": "Phek",
+      "source_year": "2026"
+    },
+    {
+      "code": 21,
+      "name": "TULI",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 22,
+      "name": "ARKAKONG",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 23,
+      "name": "IMPUR",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 24,
+      "name": "ANGETYONGPANG",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 25,
+      "name": "MONGOYA",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 26,
+      "name": "AONGLENDEN",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 27,
+      "name": "MOKOKCHUNG TOWN",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 28,
+      "name": "KORIDANG",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 29,
+      "name": "JANGPETKONG",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 30,
+      "name": "ALONGTAKI",
+      "district": "Mokokchung",
+      "source_year": "2026"
+    },
+    {
+      "code": 31,
+      "name": "AKULUTO",
+      "district": "Zunheboto",
+      "source_year": "2026"
+    },
+    {
+      "code": 32,
+      "name": "ATOIZU",
+      "district": "Zunheboto",
+      "source_year": "2026"
+    },
+    {
+      "code": 33,
+      "name": "SURUHUTO",
+      "district": "Zunheboto",
+      "source_year": "2026"
+    },
+    {
+      "code": 34,
+      "name": "AGHUNATO",
+      "district": "Zunheboto",
+      "source_year": "2026"
+    },
+    {
+      "code": 35,
+      "name": "ZUNHEBOTO",
+      "district": "Zunheboto",
+      "source_year": "2026"
+    },
+    {
+      "code": 36,
+      "name": "SATAKHA",
+      "district": "Zunheboto",
+      "source_year": "2026"
+    },
+    {
+      "code": 37,
+      "name": "TYUI",
+      "district": "Wokha",
+      "source_year": "2026"
+    },
+    {
+      "code": 38,
+      "name": "WOKHA",
+      "district": "Wokha",
+      "source_year": "2026"
+    },
+    {
+      "code": 39,
+      "name": "SANIS",
+      "district": "Wokha",
+      "source_year": "2026"
+    },
+    {
+      "code": 40,
+      "name": "BHANDARI",
+      "district": "Wokha",
+      "source_year": "2026"
+    },
+    {
+      "code": 41,
+      "name": "TIZIT",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 42,
+      "name": "WAKCHING",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 43,
+      "name": "TAPI",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 44,
+      "name": "PHOMCHING",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 45,
+      "name": "TEHOK",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 46,
+      "name": "MON TOWN",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 47,
+      "name": "ABOI",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 48,
+      "name": "MOKA",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 49,
+      "name": "TAMLU",
+      "district": "Longleng",
+      "source_year": "2026"
+    },
+    {
+      "code": 50,
+      "name": "LONGLENG",
+      "district": "Longleng",
+      "source_year": "2026"
+    },
+    {
+      "code": 51,
+      "name": "NOKSEN",
+      "district": "Tuensang",
+      "source_year": "2026"
+    },
+    {
+      "code": 52,
+      "name": "LONGKHIM CHARE",
+      "district": "Tuensang",
+      "source_year": "2026"
+    },
+    {
+      "code": 53,
+      "name": "TUENSANG SADAR-I",
+      "district": "Tuensang",
+      "source_year": "2026"
+    },
+    {
+      "code": 54,
+      "name": "TUENSANG SADAR-II",
+      "district": "Tuensang",
+      "source_year": "2026"
+    },
+    {
+      "code": 55,
+      "name": "TOBU",
+      "district": "Mon",
+      "source_year": "2026"
+    },
+    {
+      "code": 56,
+      "name": "NOKLAK",
+      "district": "NOKLAK",
+      "source_year": "2026"
+    },
+    {
+      "code": 57,
+      "name": "THONOKNYU",
+      "district": "NOKLAK",
+      "source_year": "2026"
+    },
+    {
+      "code": 58,
+      "name": "SHAMATOR CHESSORE",
+      "district": "TSEMINYU",
+      "source_year": "2026"
+    },
+    {
+      "code": 59,
+      "name": "SEYOCHUNG SITIMI",
+      "district": "Kiphire",
+      "source_year": "2026"
+    },
+    {
+      "code": 60,
+      "name": "PUNGRO KIPHIRE",
+      "district": "Kiphire",
+      "source_year": "2026"
+    }
+  ],
+  "pcs": [
+    {
+      "code": 1,
+      "name": "Nagaland",
+      "ac_codes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "scope_note": "ECI Atlas 2024 reports 60 AC segments for Nagaland; statewide navigation retains all 60"
+    }
+  ],
+  "district_url": "https://ceo.nagaland.gov.in/service-voter",
+  "pc_url": "https://www.eci.gov.in/EBooks/atlas-2024/files/basic-html/page31.html",
+  "district_source_date": "Official CEO table 2026 entries; territorial effective date unverified",
+  "pc_source_date": "ECI Atlas 2024, published 2025; PC identity page131 and segment count page31",
+  "district_sha256": "b7452f58789444bc56a8a7f5c101a3d82a1915b4bf4566dbfd3f626e15a8bc41",
+  "pc_sha256": "9a2a9f8f03ca52c6c7926483c39f230a23ed64e974eb1ca583800c3f3333dfe7",
+  "pc_identity_source": {
+    "url": "https://www.eci.gov.in/EBooks/atlas-2024/files/basic-html/page131.html",
+    "sha256": "6edb439803739b7a44f86f383396c7ba66aaa13969d640d52d4b46b58ce12685"
+  },
+  "flags": [
+    "Official CEO table associates AC12 Tseminyu with SHAMATOR and AC58 Shamator Chessore with TSEMINYU; conflicting labels retained without reassignment",
+    "Modern electoral districts differ from eleven Census districts and source map labels; no silent successor merging",
+    "Historical 1976 order reproduced in Schedule XXI uses 1978-08-01 territorial reference; later CEO associations shown separately",
+    "Source spelling, reservation suffixes, effective dates and precise boundary correspondence remain under review",
+    "Invalid source shapes excluded without repair; Census joins and demographic accuracy pending"
+  ]
+}

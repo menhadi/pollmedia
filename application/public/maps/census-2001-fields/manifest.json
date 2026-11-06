@@ -1,0 +1,1236 @@
+{
+  "year": 2001,
+  "fields": {
+    "vd_ST_CODE": {
+      "label": "ST_CODE",
+      "kind": "category",
+      "sha256": "c12602d116b70337d23781cb24a4c28873652c300a0b5b1280d421b1eaa3f654",
+      "file": "field-76645f53545f434f4445.json"
+    },
+    "vd_DIST_CODE": {
+      "label": "DIST_CODE",
+      "kind": "category",
+      "sha256": "19ce12e1e2168670b846198c0a2ce599c2d0618cd7817e5ef44ea21624c704ba",
+      "file": "field-76645f444953545f434f4445.json"
+    },
+    "vd_THSIL_CODE": {
+      "label": "THSIL_CODE",
+      "kind": "category",
+      "sha256": "655273f34963ce2b85e605114c548807d866deab17a50eb9e0f89ca8de072ddb",
+      "file": "field-76645f544853494c5f434f4445.json"
+    },
+    "vd_BLOCK_CODE": {
+      "label": "BLOCK_CODE",
+      "kind": "category",
+      "sha256": "f60481552e812c7bf3a245a2bf8a71002a68321b326cc4385aff66bbbdd98a43",
+      "file": "field-76645f424c4f434b5f434f4445.json"
+    },
+    "vd_V_CT_CODE": {
+      "label": "V_CT_CODE",
+      "kind": "category",
+      "sha256": "a5e60fba6dc37a549e7d28eb5e67375cbb68f060ce97b548d118829a4656d9cb",
+      "file": "field-76645f565f43545f434f4445.json"
+    },
+    "vd_VILL_NAME": {
+      "label": "VILL_NAME",
+      "kind": "category",
+      "sha256": "8fda96d3cc5d6d1b6c1ee1a916a30ca7a3a91d9c1f6053d64245ddf16de78114",
+      "file": "field-76645f56494c4c5f4e414d45.json"
+    },
+    "vd_AREA": {
+      "label": "AREA",
+      "kind": "sum",
+      "sha256": "6bc649502d62679a3cd9a7aab3d1f9556dfec5a29ba323de67241aa4bd14c562",
+      "file": "field-76645f41524541.json"
+    },
+    "vd_T_HH": {
+      "label": "T_HH",
+      "kind": "sum",
+      "sha256": "804c25b8d23ab19dc4df1587ba9f698413fcfe829565a8180919aa0aeaaf5f42",
+      "file": "field-76645f545f4848.json"
+    },
+    "vd_T_P": {
+      "label": "T_P",
+      "kind": "sum",
+      "sha256": "e36deb84210fe51ce1a7c6882a554c1fec3ceb3132acc7802c5cb6248e946624",
+      "file": "field-76645f545f50.json"
+    },
+    "vd_T_M": {
+      "label": "T_M",
+      "kind": "sum",
+      "sha256": "c681aee59b257eb1e242059a89270710aa7d815f61bca6d9d59fd4c34a879656",
+      "file": "field-76645f545f4d.json"
+    },
+    "vd_T_F": {
+      "label": "T_F",
+      "kind": "sum",
+      "sha256": "8240f4e398af56d48a2971d955c3c3aa195da2aeec8e8013523f2677086d5ecd",
+      "file": "field-76645f545f46.json"
+    },
+    "vd_SC_P": {
+      "label": "SC_P",
+      "kind": "sum",
+      "sha256": "a51c43c6c33e55162f499bfd96caaf5752390bf5947ba710d02cc3244d226672",
+      "file": "field-76645f53435f50.json"
+    },
+    "vd_SC_M": {
+      "label": "SC_M",
+      "kind": "sum",
+      "sha256": "772f4c88e48689ee0aac709bccc476d7932b63f2c92dbbcfd0c7da493982c97b",
+      "file": "field-76645f53435f4d.json"
+    },
+    "vd_SC_F": {
+      "label": "SC_F",
+      "kind": "sum",
+      "sha256": "f925627688249e7df234963988e06a8d108ec7bec70b33580f6597b6325fb39f",
+      "file": "field-76645f53435f46.json"
+    },
+    "vd_ST_P": {
+      "label": "ST_P",
+      "kind": "sum",
+      "sha256": "a8d134393dd22f69064cba82d0ca1b331f1b87a78b322382442a966de3ededb1",
+      "file": "field-76645f53545f50.json"
+    },
+    "vd_ST_M": {
+      "label": "ST_M",
+      "kind": "sum",
+      "sha256": "9234916bad572df5508c512a04f496ad90865a6024b08ef97efde8f1c7d71c3c",
+      "file": "field-76645f53545f4d.json"
+    },
+    "vd_ST_F": {
+      "label": "ST_F",
+      "kind": "sum",
+      "sha256": "e21c386e7c63724fa8cb1a0190b1338e49535e16afc0727f813a603799bbda0b",
+      "file": "field-76645f53545f46.json"
+    },
+    "vd_EDU_FAC": {
+      "label": "Educational facilities (A/NA)",
+      "kind": "category",
+      "sha256": "578edaa3811ec6b0ff98b6a12a04338c47d513151758126add6cc60692d84892",
+      "file": "field-76645f4544555f464143.json"
+    },
+    "vd_P_SCH": {
+      "label": "Number of Primary School",
+      "kind": "sum",
+      "sha256": "79131218fd008acd483466f1854e069cee24e4d0f13ad453a203212ab893ca94",
+      "file": "field-76645f505f534348.json"
+    },
+    "vd_RANG_P_SCH": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "cd9cb7b821b4532349e4b2b51f84c7e8e6bc6aa1867fe9744b06ec139cea252e",
+      "file": "field-76645f52414e475f505f534348.json"
+    },
+    "vd_M_SCH": {
+      "label": "Number of Middle School",
+      "kind": "sum",
+      "sha256": "71cfa9ba1c0cac8134f8a8e3811230b7b11a2fa81a92ddb6b39b89ecede2c613",
+      "file": "field-76645f4d5f534348.json"
+    },
+    "vd_RANG_M_SCH": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "449fd0053f59eb33700a9c6bc6d45049e7f90b262b75841d11b4e7c264b32e40",
+      "file": "field-76645f52414e475f4d5f534348.json"
+    },
+    "vd_S_SCH": {
+      "label": "Number of Secondary School",
+      "kind": "sum",
+      "sha256": "b224cc491a7baad1d524609559304f19da2dcd32e8386f461e70fd96896a56fd",
+      "file": "field-76645f535f534348.json"
+    },
+    "vd_S_S_SCH": {
+      "label": "Number of Senior Secondary School",
+      "kind": "sum",
+      "sha256": "9acb4b9ce3d474ab3de9f6552fe09b74322318c6ab3ee07354d36ee47d3ddd5c",
+      "file": "field-76645f535f535f534348.json"
+    },
+    "vd_COLLEGE": {
+      "label": "Number of Collage",
+      "kind": "sum",
+      "sha256": "ad7493f00ae5113c92af77bcac2381ab0182f48562e7b6e50bc1a0d34ae0d283",
+      "file": "field-76645f434f4c4c454745.json"
+    },
+    "vd_RANG_COLL": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "8f8bba67fd53ffa72ac790e8b1dea226b765b81aae257874e03783c6a54bf925",
+      "file": "field-76645f52414e475f434f4c4c.json"
+    },
+    "vd_IND_SCH": {
+      "label": "Number of Industrial School",
+      "kind": "sum",
+      "sha256": "9c91187d5bace8fca9b821ea9dd1d93ff62d3f87866a3123ab6e70dbeb6dca7d",
+      "file": "field-76645f494e445f534348.json"
+    },
+    "vd_TR_SCH": {
+      "label": "Number of Training School",
+      "kind": "sum",
+      "sha256": "291f92aec530d311f5c3a028cd2c5d9f2a0a59862f7114e106def38a4bbd56f7",
+      "file": "field-76645f54525f534348.json"
+    },
+    "vd_ADLT_LT_CT": {
+      "label": "Number of Adult literacy Class/Centre",
+      "kind": "sum",
+      "sha256": "f684895dcb62457d38f19e74eb50ce0359bd4c6fdc304ea1c8e43a55d0498aac",
+      "file": "field-76645f41444c545f4c545f4354.json"
+    },
+    "vd_OTH_SCH": {
+      "label": "Number of Other educational facilities",
+      "kind": "sum",
+      "sha256": "5d114645071a35504bba49881ff0f596182c1672b5afa45b9ccb8e0287ad48f9",
+      "file": "field-76645f4f54485f534348.json"
+    },
+    "vd_MEDI_FAC": {
+      "label": "Medical facilities (A/NA)",
+      "kind": "category",
+      "sha256": "2def93a72a9e873a1cb7c0100cdd5567545a5bdf42a60a1c9c558a7de2aa083e",
+      "file": "field-76645f4d4544495f464143.json"
+    },
+    "vd_ALL_HOSP": {
+      "label": "Number of Allopathic Hospital",
+      "kind": "sum",
+      "sha256": "1922b96cf895c1840e2c391debf527eb44296c0c0b10c1cd880794f15b1dcad6",
+      "file": "field-76645f414c4c5f484f5350.json"
+    },
+    "vd_RANG_ALL": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "a884042d9af2ba9b8f29f98cc2396556668923457365d19131ca779fe01ea6a7",
+      "file": "field-76645f52414e475f414c4c.json"
+    },
+    "vd_AYU_HOSP": {
+      "label": "Number of Ayurvedic Hospital",
+      "kind": "sum",
+      "sha256": "01c4b1f3587d0211b64d391ed588cc392d1d85d780d2eab46d0781f1e0959bfe",
+      "file": "field-76645f4159555f484f5350.json"
+    },
+    "vd_UN_HOSP": {
+      "label": "Number of Unani Hospital",
+      "kind": "sum",
+      "sha256": "f5129cf5fd3577131b919a296beda267d88c1d1991bf872e59d35905848f002e",
+      "file": "field-76645f554e5f484f5350.json"
+    },
+    "vd_HOM_HOSP": {
+      "label": "Number of Homeopathic Hospital",
+      "kind": "sum",
+      "sha256": "3c1a2d77655678688bbd6d71895bbc7a42a9cd923d69cd455c8bb8efaba66a94",
+      "file": "field-76645f484f4d5f484f5350.json"
+    },
+    "vd_ALL_DISP": {
+      "label": "Number of Allopathic Dispensary",
+      "kind": "sum",
+      "sha256": "cef5f393d28b77b2786b66e5bd668b7ea7801e8b7b83dc6e04c161c3d25583da",
+      "file": "field-76645f414c4c5f44495350.json"
+    },
+    "vd_AYU_DISP": {
+      "label": "Number of Ayurvedic Dispensary",
+      "kind": "sum",
+      "sha256": "7eb6e4d89aa65a3954fb79c1d05c5da85f3858438f5bba8f7e4dffd9a063c21c",
+      "file": "field-76645f4159555f44495350.json"
+    },
+    "vd_UN_DISP": {
+      "label": "Number of Unani Dispensary",
+      "kind": "sum",
+      "sha256": "45c6b69efa3b0cc1c639d103c300146567d45db9055fa0723d696aa147cfed2a",
+      "file": "field-76645f554e5f44495350.json"
+    },
+    "vd_HOM_DISP": {
+      "label": "Number of Homeopathic Dispensary",
+      "kind": "sum",
+      "sha256": "a581728bdb2a710685b689df31046f5a3b7638bfaa0c54e2879f6668e0b35717",
+      "file": "field-76645f484f4d5f44495350.json"
+    },
+    "vd_MCW_CNTR": {
+      "label": "Number of Maternity and Child Welfare Centre",
+      "kind": "sum",
+      "sha256": "f1777799d9901c6f74c655fcecf91444fc106f348f7ebd24e7085715e00ef143",
+      "file": "field-76645f4d43575f434e5452.json"
+    },
+    "vd_RANG_MCW": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "7f3ba6bc5f59a00e14d87ee5081a478048f51defed2da54c62925dafbe54ba85",
+      "file": "field-76645f52414e475f4d4357.json"
+    },
+    "vd_M_HOME": {
+      "label": "Number of Maternity Home",
+      "kind": "sum",
+      "sha256": "3b99590a54fbc2bee583ef2c03750b29454217e228e94e5bccc8997d65227df1",
+      "file": "field-76645f4d5f484f4d45.json"
+    },
+    "vd_CWC": {
+      "label": "Number of Child Welfare Centre",
+      "kind": "sum",
+      "sha256": "e2095aa0391e7381952e2fb1e887cb6ec33271227998b59c5b96cae8d8b07274",
+      "file": "field-76645f435743.json"
+    },
+    "vd_H_CNTR": {
+      "label": "Number of Health Centre",
+      "kind": "sum",
+      "sha256": "e34c63bbd749c629ab32c577bb325b3e397d8840751794b3d25196b8a9c6a6d3",
+      "file": "field-76645f485f434e5452.json"
+    },
+    "vd_PH_CNTR": {
+      "label": "Number of Primary Health Centre",
+      "kind": "sum",
+      "sha256": "b82db88c10460d1fdec3a1b1e30168bd8ab704e5c2f8666c56c7b0e8a703122a",
+      "file": "field-76645f50485f434e5452.json"
+    },
+    "vd_RANG_PHC": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "7c1187c31d8caba817576a535f4604f2711620e7d4ae5a76d9817f68b87088a2",
+      "file": "field-76645f52414e475f504843.json"
+    },
+    "vd_PHS_CNT": {
+      "label": "Number of Primary Health Sub Centre",
+      "kind": "sum",
+      "sha256": "737d76d7e1233e7cdbe93e968916bd1e5913d49accd8194ac6096a208557fcee",
+      "file": "field-76645f5048535f434e54.json"
+    },
+    "vd_FWC_CNTR": {
+      "label": "Number of Family Welfare Centre",
+      "kind": "sum",
+      "sha256": "f3f67a662d3e196c1b4f1f798bbbce02b655c4c728c447258df5548648b40e97",
+      "file": "field-76645f4657435f434e5452.json"
+    },
+    "vd_TB_CLN": {
+      "label": "TB_CLN",
+      "kind": "sum",
+      "sha256": "685c48c1dc9ab5033ded49481fd83973f5396db1e43623785a79542e71b06fdd",
+      "file": "field-76645f54425f434c4e.json"
+    },
+    "vd_N_HOME": {
+      "label": "Number of Nursing Home",
+      "kind": "sum",
+      "sha256": "8aa0bb1fda780cac8bb7f442eea66e2eaf92395431c2b5c5d1bb75d14d571f74",
+      "file": "field-76645f4e5f484f4d45.json"
+    },
+    "vd_RMP": {
+      "label": "Number of Registered Private Medical Practitioners",
+      "kind": "sum",
+      "sha256": "e743a22c0933b129a485b9b9dfc98087564e039f466df3d413c52fe9442d2f3b",
+      "file": "field-76645f524d50.json"
+    },
+    "vd_SMP": {
+      "label": "Number of Subsided Medical Practitioners",
+      "kind": "sum",
+      "sha256": "ca4e6fa49356f9fa53ed2a85691bc532b1eb192a8755a707739a9a9273c603ab",
+      "file": "field-76645f534d50.json"
+    },
+    "vd_CHW": {
+      "label": "Number of Community Health workers",
+      "kind": "sum",
+      "sha256": "17aa182c4995905b81f7f6358be1d277c3c92cbcdf7f89f1a6a25229bd74c2bd",
+      "file": "field-76645f434857.json"
+    },
+    "vd_OTH_CNTR": {
+      "label": "Number of Other medical facilities",
+      "kind": "sum",
+      "sha256": "cf5ba9c1048e3d82414b38d2090b88d56d59761d7b508bc4d1bd99245d5b60fc",
+      "file": "field-76645f4f54485f434e5452.json"
+    },
+    "vd_DRNK_WAT_F": {
+      "label": "Drinking Water facility (A/NA)",
+      "kind": "category",
+      "sha256": "d2217cdf4af3a17d265db16d13c01c4d163e1f86e9aedf5c4fe69907350ecfae",
+      "file": "field-76645f44524e4b5f5741545f46.json"
+    },
+    "vd_RANG_WAT_F": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "bb937b52909f2f5ed3f7c6f55cb49bacaa2a2685eee18717721e9bff504e860c",
+      "file": "field-76645f52414e475f5741545f46.json"
+    },
+    "vd_TAP": {
+      "label": "Tap Water (T)",
+      "kind": "category",
+      "sha256": "a96d414ebfb83173fdd3b7577d30b9a0d0f068683184d45d5e5cb081b1cb9c38",
+      "file": "field-76645f544150.json"
+    },
+    "vd_WELL": {
+      "label": "Well Water (W)",
+      "kind": "category",
+      "sha256": "d421dacf386921cc5105b0f1c144b8661fe35d94983b546b7c8e875de56326fe",
+      "file": "field-76645f57454c4c.json"
+    },
+    "vd_TANK": {
+      "label": "Tank Water (TK)",
+      "kind": "category",
+      "sha256": "ceb0d3122153a8bd96c2e93dce4d9be9ee9cb7d8b58e1dd46ddc88145543a5b1",
+      "file": "field-76645f54414e4b.json"
+    },
+    "vd_TUBEWELL": {
+      "label": "Tubewell Water (TW)",
+      "kind": "category",
+      "sha256": "250e71218fa15b06a7cd4e565944477bbfb322dab904a288f8da151c5f7cf4b2",
+      "file": "field-76645f5455424557454c4c.json"
+    },
+    "vd_HANDPUMP": {
+      "label": "Handpump (HP)",
+      "kind": "category",
+      "sha256": "a7f1e666f505ab2bac7d6510c355c648a70bfe3dfe08ee32514145cfd50fb4d1",
+      "file": "field-76645f48414e4450554d50.json"
+    },
+    "vd_RIVER": {
+      "label": "River Water(R)",
+      "kind": "category",
+      "sha256": "8e5e51344413539af0430614e77b0af37786d67d874a230e2c5f014647d1822d",
+      "file": "field-76645f5249564552.json"
+    },
+    "vd_CANAL": {
+      "label": "Canal (C)",
+      "kind": "category",
+      "sha256": "3fcc1e3fadc4bf10f0fefa71ac3450f7f83da4bd7b025b702d79e71ba21e2eee",
+      "file": "field-76645f43414e414c.json"
+    },
+    "vd_LAKE": {
+      "label": "Lake (L)",
+      "kind": "category",
+      "sha256": "78dd1d6a20685431d169d58c4fcc9e17d38367157121e8a7ce7af5a160cb0b22",
+      "file": "field-76645f4c414b45.json"
+    },
+    "vd_SPRING": {
+      "label": "Spring (S)",
+      "kind": "category",
+      "sha256": "8eb48d38e4a05aceb06e18d62bf56b8f93220f6980f66e5fa5382e4b37f13f10",
+      "file": "field-76645f535052494e47.json"
+    },
+    "vd_OTHER": {
+      "label": "Other drinking water sources (O)",
+      "kind": "category",
+      "sha256": "8ea19479a0eca6e0b2ca13e4238b347e64a826730ecde86da5e05c4ed9d92020",
+      "file": "field-76645f4f54484552.json"
+    },
+    "vd_SOU_SUMM": {
+      "label": "Source of Drinking Water during Summer (indicate code from above)",
+      "kind": "category",
+      "sha256": "5d48a04adc10400eaa2673bc510f6ad51971ada00d07b950ca7f849495d5849c",
+      "file": "field-76645f534f555f53554d4d.json"
+    },
+    "vd_RANG_SS": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "1970fb0e4967647b29c77ba22bd3751722447695db6e6f7e74417c7d8e529904",
+      "file": "field-76645f52414e475f5353.json"
+    },
+    "vd_SS_CODE": {
+      "label": "Source code from above as applicable",
+      "kind": "category",
+      "sha256": "07a439e32701f74b1da3f63bba974b9ef073d1a7d3281d4e6aaae481eaa5f754",
+      "file": "field-76645f53535f434f4445.json"
+    },
+    "vd_P_T_FAC": {
+      "label": "Post, Telegraph and Telephone facilities (A/NA), if available",
+      "kind": "category",
+      "sha256": "7148800cdaa232273c180bba13e7f1cf784c1e7e3eb4ea0e4768b285de6e5c4f",
+      "file": "field-76645f505f545f464143.json"
+    },
+    "vd_POST_OFF": {
+      "label": "Number of Post Office",
+      "kind": "sum",
+      "sha256": "b89f62f073f539e53f7c094cb51a41fd45e2f9a810df19f92b1989ffb111ec11",
+      "file": "field-76645f504f53545f4f4646.json"
+    },
+    "vd_RANG_PO": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "b381be8b6a513f67079c7d016f1902efe9b6cada37b1cf3802f5a30c9702abf5",
+      "file": "field-76645f52414e475f504f.json"
+    },
+    "vd_TELE_OFF": {
+      "label": "Number of Telegraph Office",
+      "kind": "sum",
+      "sha256": "5229efbc55a63e94839ed883bf55cac043203078cd5035e783d56db49c5e19cb",
+      "file": "field-76645f54454c455f4f4646.json"
+    },
+    "vd_POST_TELE": {
+      "label": "Number of Post and Telegraph Office",
+      "kind": "sum",
+      "sha256": "615f1e43c811222c6eea5289218eca8a0be633db3b12ad2f86b62d35ec2b3f83",
+      "file": "field-76645f504f53545f54454c45.json"
+    },
+    "vd_PHONE": {
+      "label": "Number of Telephone connections",
+      "kind": "sum",
+      "sha256": "51020600b9f9e7f95a9678f16e9431769812ad040df6aa5c1e6f21a878f0d527",
+      "file": "field-76645f50484f4e45.json"
+    },
+    "vd_RANG_PHONE": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "13b740824d243a20c5823e867ae6de4cda27f42d417c2352f7a04d65ff4f527f",
+      "file": "field-76645f52414e475f50484f4e45.json"
+    },
+    "vd_COMM_FAC": {
+      "label": "Communication (Y/N)",
+      "kind": "category",
+      "sha256": "4e72223b614e9c1a4dc649e03ef055412faf672198327ee3b4e2362f5fdef707",
+      "file": "field-76645f434f4d4d5f464143.json"
+    },
+    "vd_BS_FAC": {
+      "label": "Bus services",
+      "kind": "category",
+      "sha256": "498bffd5476c656f6767d2b4dc5a353dfe73a4c444df6496c014326458436e13",
+      "file": "field-76645f42535f464143.json"
+    },
+    "vd_RANG_BS": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "9f635a93740273c0975d9eaee32162beb354ebed65d0ab3f898383c2a5d2b465",
+      "file": "field-76645f52414e475f4253.json"
+    },
+    "vd_RS_FAC": {
+      "label": "RS_FAC",
+      "kind": "category",
+      "sha256": "752ef0cb954601922358ecf644df1dfa3833266c7738d6dd511f6dab280cc287",
+      "file": "field-76645f52535f464143.json"
+    },
+    "vd_RANG_RS": {
+      "label": "Railways services - If not available, Provide the Range Cod",
+      "kind": "category",
+      "sha256": "fa0321f9cf517f836c320611c88c537232441b1aaf23958f3539ea1e101d0532",
+      "file": "field-76645f52414e475f5253.json"
+    },
+    "vd_NW_FAC": {
+      "label": "Navigable water way including River, Canal etc.",
+      "kind": "category",
+      "sha256": "ffb78846fd11c1f099265c72592a0b03ae24c051f9942004805a2b654268afd7",
+      "file": "field-76645f4e575f464143.json"
+    },
+    "vd_RANG_NW": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "d241e7434b88f0d2f8fcad5af01145f177b767386c387cfdb9224b11fb27d41c",
+      "file": "field-76645f52414e475f4e57.json"
+    },
+    "vd_BANK_FAC": {
+      "label": "Banking facility (Y/N)",
+      "kind": "category",
+      "sha256": "ef0791a95f280a3516cf8de80fb1b53a1489dfd5bf6b42e19a96dafe24666f45",
+      "file": "field-76645f42414e4b5f464143.json"
+    },
+    "vd_COMM_BANK": {
+      "label": "Number of Commercial Bank",
+      "kind": "sum",
+      "sha256": "c4f35219c34550683513d40e8e97bb33f1e95ad3b111ff6724d8978b17fc3962",
+      "file": "field-76645f434f4d4d5f42414e4b.json"
+    },
+    "vd_RANG_COMM": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "cd22c8b9db9f05613d6247b9ca688ea2fd3a2b5826e6f49876999eabdf0d45b1",
+      "file": "field-76645f52414e475f434f4d4d.json"
+    },
+    "vd_COOP_BANK": {
+      "label": "Number of Co-operative Commercial Bank",
+      "kind": "sum",
+      "sha256": "1a26a5d0ae2d1409741bb0f89ff43bcecbc1626a0defc25196f2c44744546960",
+      "file": "field-76645f434f4f505f42414e4b.json"
+    },
+    "vd_RANG_COOP": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "e3b464be419ef327d91bd11173360c32a9822165eed6f18f62e5e66d9537c25b",
+      "file": "field-76645f52414e475f434f4f50.json"
+    },
+    "vd_CRSOC_FAC": {
+      "label": "Credit Societies (Y/N)",
+      "kind": "category",
+      "sha256": "b7196362448e9f96703eab12145af8ab0168106a54feeebaa15be585c447c813",
+      "file": "field-76645f4352534f435f464143.json"
+    },
+    "vd_AC_SOC": {
+      "label": "Number of Agricultural Credit Societies",
+      "kind": "sum",
+      "sha256": "ecf9186bf72fe1d18df82f7851a35e566ce00505b72e093d299ef6d8b972772b",
+      "file": "field-76645f41435f534f43.json"
+    },
+    "vd_RANG_ACS": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "28a44b9abb87cd76b9bf36a9960c5bf8cea2c8bf0e1a49647b93718dca3feff4",
+      "file": "field-76645f52414e475f414353.json"
+    },
+    "vd_NAC_SOC": {
+      "label": "Number of Non Agricultural Credit Societies",
+      "kind": "sum",
+      "sha256": "88d5187e9e5f5496f7a6387d7cabc0a34a057ba16b806a3c36fc70dfc026d737",
+      "file": "field-76645f4e41435f534f43.json"
+    },
+    "vd_RANG_NAC": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "01543088a455e24b161b96c69e0434e801b1f21c5c2af445f26545439fc4bd59",
+      "file": "field-76645f52414e475f4e4143.json"
+    },
+    "vd_OTHER_SOC": {
+      "label": "Number of Other Credit Societies",
+      "kind": "sum",
+      "sha256": "8adc86f7acda08fec84be2c4ace761db2b08ab3930e18161730f5458b47a30b6",
+      "file": "field-76645f4f544845525f534f43.json"
+    },
+    "vd_RANG_OTH": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "d91f991fea31a932c81fbf0d795d701022260e0cd5d85c892693f22c7c422cf3",
+      "file": "field-76645f52414e475f4f5448.json"
+    },
+    "vd_RC_FAC": {
+      "label": "Recreational and Cultural facilities (Y/N)",
+      "kind": "category",
+      "sha256": "b8ec39791162f0b3df35c5b0f8c17b9e0cb5a53b164ea6185734696a3940b19e",
+      "file": "field-76645f52435f464143.json"
+    },
+    "vd_C_V_HALL": {
+      "label": "Number of Cinema/Video-hall",
+      "kind": "sum",
+      "sha256": "814532d64b6f79bd4b29b9b533ca378ab2090a84a2fc24aee57fc0453434d4a9",
+      "file": "field-76645f435f565f48414c4c.json"
+    },
+    "vd_RANG_CV": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "db0a83ad8a7da98069d08ad2eaf32a29288deb7e998ac8dadb7adf1b8a6b76df",
+      "file": "field-76645f52414e475f4356.json"
+    },
+    "vd_SP_CL_FAC": {
+      "label": "Number of Sports Club",
+      "kind": "sum",
+      "sha256": "3ec995a573dbfd1999101a987b1eb2d7123cd65dcd3b82af1edc31a2fe6790a6",
+      "file": "field-76645f53505f434c5f464143.json"
+    },
+    "vd_RANG_SPCL": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "b847ca27abc34836a9528073665a4dbe2c48054d500cf7ffb62b312c34bb1b4e",
+      "file": "field-76645f52414e475f5350434c.json"
+    },
+    "vd_ST_AU_FAC": {
+      "label": "Number of Stadium/Auditorium",
+      "kind": "sum",
+      "sha256": "c153e6b2d90f335a540b435e2e3b4fe697e9bf946b14338cc0c7570624c9d83a",
+      "file": "field-76645f53545f41555f464143.json"
+    },
+    "vd_RANG_STAU": {
+      "label": "If not available, Provide the Range Code",
+      "kind": "category",
+      "sha256": "1aee2bb310a38dfb7305feba41c385f4bb94b1738a04c477caa9b3fdf3b2ff62",
+      "file": "field-76645f52414e475f53544155.json"
+    },
+    "vd_APP_PR": {
+      "label": "Approach - Paved Road",
+      "kind": "category",
+      "sha256": "28aa6912f1b4e98bbeda816b750d0976a022deb4359a714da527caafd21815c0",
+      "file": "field-76645f4150505f5052.json"
+    },
+    "vd_APP_MR": {
+      "label": "Approach - Mud Road",
+      "kind": "category",
+      "sha256": "d17ec75a30972ac2c2eccc30a273ce248d35d3a236181fb3d630246d2e3fb848",
+      "file": "field-76645f4150505f4d52.json"
+    },
+    "vd_APP_FP": {
+      "label": "Approach - Foot Pathv",
+      "kind": "category",
+      "sha256": "56a4e971cb48164e155cc182bf2214772621e33dbaeaf16f52114ebe7e594f70",
+      "file": "field-76645f4150505f4650.json"
+    },
+    "vd_APP_NAVRIV": {
+      "label": "Approach - Navigable River",
+      "kind": "category",
+      "sha256": "ef783961b9034c5d6f1f4c10ace234e3803a4bbf3805fd2245c4258f378f38d9",
+      "file": "field-76645f4150505f4e4156524956.json"
+    },
+    "vd_APP_NAVCAN": {
+      "label": "Approach - Navigable Canal",
+      "kind": "category",
+      "sha256": "fde246b668520c832c159273e0c51484705e1c591e8bd9ee097210356f54d05d",
+      "file": "field-76645f4150505f4e415643414e.json"
+    },
+    "vd_APP_NW": {
+      "label": "Approach - Navigable water-way other than river or canal",
+      "kind": "category",
+      "sha256": "b69deaf7c30518faf78ed9a7fae9ab0f626f0d307efcfd97b0d2992673e8dcd1",
+      "file": "field-76645f4150505f4e57.json"
+    },
+    "vd_NEAR_TOWN": {
+      "label": "Nearest Town",
+      "kind": "category",
+      "sha256": "f654c1266c6aba1b52b785fbade8ad7d40833ddff2ac4781a0fb0ba77149c695",
+      "file": "field-76645f4e4541525f544f574e.json"
+    },
+    "vd_DIST_TOWN": {
+      "label": "Distance from the nearest Town (in Kilometer(s))",
+      "kind": "mean",
+      "sha256": "268107df13e5ed22ff4df2d722c8480f3f03f38a843f270eac77ca4450a13aee",
+      "file": "field-76645f444953545f544f574e.json"
+    },
+    "vd_POWER_SUPL": {
+      "label": "Power supply (A/NA)",
+      "kind": "category",
+      "sha256": "95262ed633c9627af7ddd70b5e16606beb1ab9ef25a432edf051b69bada584b7",
+      "file": "field-76645f504f5745525f5355504c.json"
+    },
+    "vd_POWER_DOM": {
+      "label": "Electricity for Domestic use",
+      "kind": "category",
+      "sha256": "fc6d65488b059fb450cc486ee82a0ee13774e96d3814ceeb6d2e56c30aca0487",
+      "file": "field-76645f504f5745525f444f4d.json"
+    },
+    "vd_POWER_AGR": {
+      "label": "Electricity of Agricultural use",
+      "kind": "category",
+      "sha256": "c7da48294da3b66ef9c6b738294280f04d6c5ad0507077d980486ae36fd19c12",
+      "file": "field-76645f504f5745525f414752.json"
+    },
+    "vd_POWER_OTH": {
+      "label": "Electricity of other purposes",
+      "kind": "category",
+      "sha256": "70f8dec69925d0c95c35810a56e9a2c648248e4956322e679093632d4203d3cf",
+      "file": "field-76645f504f5745525f4f5448.json"
+    },
+    "vd_POWER_ALL": {
+      "label": "Electricity for all purposes",
+      "kind": "category",
+      "sha256": "e075a172a2a373ca87e155ff1b263c6230ba39b476575257dce38e9d7a4fd113",
+      "file": "field-76645f504f5745525f414c4c.json"
+    },
+    "vd_PAP_MAG": {
+      "label": "Newspaper/Magazine (Y/N)",
+      "kind": "category",
+      "sha256": "571e277121e6c11cbd9f0457f8d92482b6d2f2c6f11ea6b9e975d69b4743bad8",
+      "file": "field-76645f5041505f4d4147.json"
+    },
+    "vd_NEWS_PAP": {
+      "label": "News Paper (Indicate N, if arrived)",
+      "kind": "category",
+      "sha256": "fc2354436169a701c5972bf5a4f48b29462dc97b40321143caffea1c7c61d2ed",
+      "file": "field-76645f4e4557535f504150.json"
+    },
+    "vd_MAGAZINE": {
+      "label": "Magazine (indicate M, if arrived)",
+      "kind": "category",
+      "sha256": "7bee898e246e6b287013bceaa6a6216082f0de87db98a3861b727e748762cd28",
+      "file": "field-76645f4d4147415a494e45.json"
+    },
+    "vd_A_INCEXP": {
+      "label": "Separate figures available (Y/N)",
+      "kind": "category",
+      "sha256": "7016fbaf912491a97aaf47f60d31f1df3de8ce45490d1ca12e8ab4aaa381e21a",
+      "file": "field-76645f415f494e43455850.json"
+    },
+    "vd_TOT_INC": {
+      "label": "Total Income",
+      "kind": "sum",
+      "sha256": "712bc80bc611ce50b287fa5d3c3c5d24b9373a82fb499a629f25b79ed43bb3e9",
+      "file": "field-76645f544f545f494e43.json"
+    },
+    "vd_TOT_EXP": {
+      "label": "Total Expenditure",
+      "kind": "sum",
+      "sha256": "f094d99cab7ebe99d8ec164ff321bd65a3d74bd90b3b78fc33bd71a1c32301e4",
+      "file": "field-76645f544f545f455850.json"
+    },
+    "vd_MAN_COMM1": {
+      "label": "Manufactured Item No. 1",
+      "kind": "category",
+      "sha256": "596bf875125032e59095a45d0583987a48c1392c374cd077a77d22a1c9472539",
+      "file": "field-76645f4d414e5f434f4d4d31.json"
+    },
+    "vd_MAN_COMM2": {
+      "label": "Manufactured Item No. 2",
+      "kind": "category",
+      "sha256": "247253c54ea65adf2db8d1d9d50cd52dc97b6cd4954560de377b2607eb96f833",
+      "file": "field-76645f4d414e5f434f4d4d32.json"
+    },
+    "vd_MAN_COMM3": {
+      "label": "Manufactured Item No. 3",
+      "kind": "category",
+      "sha256": "0e414aba965fe7cb040dd13d7dfaa3211039e2e542dc73d330eddfa7653cfeb3",
+      "file": "field-76645f4d414e5f434f4d4d33.json"
+    },
+    "vd_LAND_FORES": {
+      "label": "Forest",
+      "kind": "sum",
+      "sha256": "709f398c2e41b4ba25386389f543952672906b5ea3a89d02e8a845e9d9df8f71",
+      "file": "field-76645f4c414e445f464f524553.json"
+    },
+    "vd_CANAL_GOVT": {
+      "label": "Government Canal",
+      "kind": "sum",
+      "sha256": "35e79aeffad4395931c7f3a4e1e108396bc1944e7b4558926429ba049e475265",
+      "file": "field-76645f43414e414c5f474f5654.json"
+    },
+    "vd_CANAL_PVT": {
+      "label": "Private Canal",
+      "kind": "sum",
+      "sha256": "fcd95dba0c366a3a5a1c77ac3e973bf6534ddbfa33fcdb5a3528409f1b2f5c69",
+      "file": "field-76645f43414e414c5f505654.json"
+    },
+    "vd_WELL_WO_EL": {
+      "label": "Well (without electricity)",
+      "kind": "sum",
+      "sha256": "e0a85ae0468f15c2e08379cf206280cee979792abfb0253ada3e1035e84cb8ef",
+      "file": "field-76645f57454c4c5f574f5f454c.json"
+    },
+    "vd_WELL_W_EL": {
+      "label": "Well (with electricity)",
+      "kind": "sum",
+      "sha256": "76e551ba0c78417323fdd54fb41524c14ea17bb430005800410decd6f9165861",
+      "file": "field-76645f57454c4c5f575f454c.json"
+    },
+    "vd_TW_WO_EL": {
+      "label": "Tube-well (without electricity)",
+      "kind": "sum",
+      "sha256": "9c29d0f60e8baa8548cecf12b42afa266a0365d7aa171d15bf5cad5fe78fd7d1",
+      "file": "field-76645f54575f574f5f454c.json"
+    },
+    "vd_TW_W_EL": {
+      "label": "Tube-well (with electricity)",
+      "kind": "sum",
+      "sha256": "f47b5b2abb9b661dd75c47282d325b01a665e68001983b492a264b88d44494c3",
+      "file": "field-76645f54575f575f454c.json"
+    },
+    "vd_TANK_IRR": {
+      "label": "Tank",
+      "kind": "sum",
+      "sha256": "5792fd55ca65d98d4fb95adde8667dd9b4f55a625de63b20669dd12c95388a7f",
+      "file": "field-76645f54414e4b5f495252.json"
+    },
+    "vd_RIVER_IRR": {
+      "label": "River",
+      "kind": "sum",
+      "sha256": "a4605e76cc878bf3b3b90f3d451174fb815a82a9184b027f0685b09d8c8ede94",
+      "file": "field-76645f52495645525f495252.json"
+    },
+    "vd_LAKE_IRR": {
+      "label": "Lake",
+      "kind": "sum",
+      "sha256": "2a7ce48213b9f4346ad3ba1c7a6165adcb1b2a176e863d99a2c2fd0cceffd1e6",
+      "file": "field-76645f4c414b455f495252.json"
+    },
+    "vd_W_FALL": {
+      "label": "Waterfall",
+      "kind": "sum",
+      "sha256": "734e0c0b8fdafbeb4f030e771b506fb7558356b975f19a5e7ba11ebff1d3aad4",
+      "file": "field-76645f575f46414c4c.json"
+    },
+    "vd_OTH_IRR": {
+      "label": "Others",
+      "kind": "sum",
+      "sha256": "87eb320fc26e9b58079923a2f37c43c610141f7009f0672c5a6c2c4e43b41f62",
+      "file": "field-76645f4f54485f495252.json"
+    },
+    "vd_TOT_IRR": {
+      "label": "Total Irrigated Area",
+      "kind": "sum",
+      "sha256": "54206a8826469679714d2b7415fd64d75d0caf853f8b6965a19e83b4b5a6f5b6",
+      "file": "field-76645f544f545f495252.json"
+    },
+    "vd_UN_IRR": {
+      "label": "Unirrigated Area",
+      "kind": "sum",
+      "sha256": "279eb370a6840c1eb65e6aa43bbede4273ac6b1e975918f39c1106a9ca0a1b57",
+      "file": "field-76645f554e5f495252.json"
+    },
+    "vd_CULT_WASTE": {
+      "label": "Culturable waste (including gauchar and groves)",
+      "kind": "sum",
+      "sha256": "f31f82c372a767222160542ad347fd444beaa8daf26d68203f7e368cbca5599d",
+      "file": "field-76645f43554c545f5741535445.json"
+    },
+    "vd_AREA_NA_CU": {
+      "label": "Area not available for cultivation",
+      "kind": "sum",
+      "sha256": "d14796ae20771ad6eae4ea674aef3b1c299d9bed2e5494455f679fb17ebda169",
+      "file": "field-76645f415245415f4e415f4355.json"
+    },
+    "vd_COLUMN_122": {
+      "label": "COLUMN_122",
+      "kind": "category",
+      "sha256": "d5b93cd3a5df8a7518f204705641ee370e39d9f6b609c091fd9b1d06f8fa9b83",
+      "file": "field-76645f434f4c554d4e5f313232.json"
+    },
+    "vd_DR_WAT": {
+      "label": "DR_WAT",
+      "kind": "category",
+      "sha256": "d1fe0e6b0807a4b8fe8baca8f4ea1c54fc2b02614d833bd5584868fda81a9ec6",
+      "file": "field-76645f44525f574154.json"
+    },
+    "vd_ST_Code": {
+      "label": "ST_Code",
+      "kind": "category",
+      "sha256": "31d500111bf3cffbcef88b8e531028795a7f73eb600755817097ae703cd3d59f",
+      "file": "field-76645f53545f436f6465.json"
+    },
+    "vd_COLUMN_70": {
+      "label": "COLUMN_70",
+      "kind": "category",
+      "sha256": "98594ef431aa6dd54eae091e54039dba5e398a8a527fa48e9983ea135dcd4c47",
+      "file": "field-76645f434f4c554d4e5f3730.json"
+    },
+    "vd_JHUM_CUL": {
+      "label": "JHUM_CUL",
+      "kind": "category",
+      "sha256": "55b9a10978f36c431b8701ad0b23abdde55cc9f72a576b84c9222b9ea967fcd5",
+      "file": "field-76645f4a48554d5f43554c.json"
+    },
+    "vd_ROTATION_P": {
+      "label": "ROTATION_P",
+      "kind": "category",
+      "sha256": "f1dcfe331d6e99fa87b1af5843eac2be10a5aedd692644e3db66dd5d54e7cb0d",
+      "file": "field-76645f524f544154494f4e5f50.json"
+    },
+    "vd_MAIN_CROP": {
+      "label": "MAIN_CROP",
+      "kind": "category",
+      "sha256": "4466b8f3d4d0f19e259a37289bfd110858487c231d61c847580ca73d09aef2ba",
+      "file": "field-76645f4d41494e5f43524f50.json"
+    },
+    "vd_STATE_CODE": {
+      "label": "STATE_CODE",
+      "kind": "category",
+      "sha256": "9ebd3bb69e36d2dc2f84502540f45f8eb18df9e69fff4394e9823fea28944969",
+      "file": "field-76645f53544154455f434f4445.json"
+    },
+    "pca_No_HH": {
+      "label": "No_HH",
+      "kind": "sum",
+      "sha256": "cb517370d45c5daf86a9022c84bbd6dca0c9170f9fa33acd36366ff73a2e234e",
+      "file": "field-7063615f4e6f5f4848.json"
+    },
+    "pca_TOT_P": {
+      "label": "Population · total",
+      "kind": "sum",
+      "sha256": "b262c26783c24b2864d5fdffab36eb428e0c783871f642e42d3b12ed14c7e93c",
+      "file": "field-7063615f544f545f50.json"
+    },
+    "pca_TOT_M": {
+      "label": "Population · male",
+      "kind": "sum",
+      "sha256": "9f184400c35aebaeef2795cda4fc896153f8a41a03dd54a8bc43abd11d3e56d5",
+      "file": "field-7063615f544f545f4d.json"
+    },
+    "pca_TOT_F": {
+      "label": "Population · female",
+      "kind": "sum",
+      "sha256": "3f280fcab6d8ec7d4287c67b0cc7204b40b89309b8c2e2780244b830b9fc5368",
+      "file": "field-7063615f544f545f46.json"
+    },
+    "pca_P_06": {
+      "label": "Population aged 0–6 · total",
+      "kind": "sum",
+      "sha256": "c5651a0e2072f5d26a0cc2d84da29f67c44e8adc03539be1a727790c4f1ce857",
+      "file": "field-7063615f505f3036.json"
+    },
+    "pca_M_06": {
+      "label": "Population aged 0–6 · male",
+      "kind": "sum",
+      "sha256": "6ab9a54c9f601a022fd6a91a28ce82ce0bb600796b2427b2a6856097fd5d78cc",
+      "file": "field-7063615f4d5f3036.json"
+    },
+    "pca_F_06": {
+      "label": "Population aged 0–6 · female",
+      "kind": "sum",
+      "sha256": "3d2233a9290923d85274bc7e0ca2b195f9c1d3d9e505ed9eaea9a372fbbb720f",
+      "file": "field-7063615f465f3036.json"
+    },
+    "pca_P_SC": {
+      "label": "P_SC",
+      "kind": "sum",
+      "sha256": "3339a07581963d29108228e89f425bf5a03332f33e9a3f3432bc5a334b3c4393",
+      "file": "field-7063615f505f5343.json"
+    },
+    "pca_M_SC": {
+      "label": "M_SC",
+      "kind": "sum",
+      "sha256": "f9a5c3b1ac32605eb723928d0581c3839c327f53e7207875680c58a917827364",
+      "file": "field-7063615f4d5f5343.json"
+    },
+    "pca_F_SC": {
+      "label": "F_SC",
+      "kind": "sum",
+      "sha256": "6105cebe2eee1d5a26a0fd76cc8fd4900132476f841e3d76f68ebcec1818150c",
+      "file": "field-7063615f465f5343.json"
+    },
+    "pca_P_ST": {
+      "label": "P_ST",
+      "kind": "sum",
+      "sha256": "9a0f0ac097fd09403680e8a6a6f93118dd8a6f0393c7dd1ae0cfb0c0f7d1eba8",
+      "file": "field-7063615f505f5354.json"
+    },
+    "pca_M_ST": {
+      "label": "M_ST",
+      "kind": "sum",
+      "sha256": "8068310e3a660f9675c6f791799ba00ce71886773fff22cdc2c7c5e7f52e9acd",
+      "file": "field-7063615f4d5f5354.json"
+    },
+    "pca_F_ST": {
+      "label": "F_ST",
+      "kind": "sum",
+      "sha256": "1f05153e690542e1402196c075d540e34784af1afc7190ff88dbdca0913034eb",
+      "file": "field-7063615f465f5354.json"
+    },
+    "pca_P_LIT": {
+      "label": "Literate population · total",
+      "kind": "sum",
+      "sha256": "40b4048223e2bff0e070681a6b80c377636dc95412c375092d0f8d69d256297f",
+      "file": "field-7063615f505f4c4954.json"
+    },
+    "pca_M_LIT": {
+      "label": "Literate population · male",
+      "kind": "sum",
+      "sha256": "6fc7f0f3fd69a2ff8f2fca9bb932b31fbf1ff5904f72259d21fa0f7dd2b86da4",
+      "file": "field-7063615f4d5f4c4954.json"
+    },
+    "pca_F_LIT": {
+      "label": "Literate population · female",
+      "kind": "sum",
+      "sha256": "782df52127e8f0e8fa672365ec3b9caa737f22c641243daf6846fc5da9873f6a",
+      "file": "field-7063615f465f4c4954.json"
+    },
+    "pca_P_ILL": {
+      "label": "P_ILL",
+      "kind": "sum",
+      "sha256": "6ad3fbb5dd2e059b8e9372dc860738c7e17b55c029a39c517f378cfe0793b5e3",
+      "file": "field-7063615f505f494c4c.json"
+    },
+    "pca_M_ILL": {
+      "label": "M_ILL",
+      "kind": "sum",
+      "sha256": "035174d15737a7ae4f2bb2c8c5d5c26aef91c144de4743e3645e601aac0dba38",
+      "file": "field-7063615f4d5f494c4c.json"
+    },
+    "pca_F_ILL": {
+      "label": "F_ILL",
+      "kind": "sum",
+      "sha256": "61e7cfbe6df26ed7c1e6e3621f51ff48a37de0348dc32ba4a7188614bc1b4186",
+      "file": "field-7063615f465f494c4c.json"
+    },
+    "pca_TOT_WORK_P": {
+      "label": "TOT_WORK_P",
+      "kind": "sum",
+      "sha256": "8299adc64cc23f92e724ae1c928aa1e8f409bd59756301192db98bd592bbe94a",
+      "file": "field-7063615f544f545f574f524b5f50.json"
+    },
+    "pca_TOT_WORK_M": {
+      "label": "TOT_WORK_M",
+      "kind": "sum",
+      "sha256": "78850850a2a47c5cde9107bcfafb9556db3d85843da0717fcf619eeba8c90621",
+      "file": "field-7063615f544f545f574f524b5f4d.json"
+    },
+    "pca_TOT_WORK_F": {
+      "label": "TOT_WORK_F",
+      "kind": "sum",
+      "sha256": "59a71d8cac45b757e826288a9d19d96a3ddd70e454d9000367dfbf4dfa2f15ab",
+      "file": "field-7063615f544f545f574f524b5f46.json"
+    },
+    "pca_MAINWORK_P": {
+      "label": "MAINWORK_P",
+      "kind": "sum",
+      "sha256": "20e468dcc58a9a1fad9caf0ba3cafd2979cb13303458a1f2b0ea547a9d8efe91",
+      "file": "field-7063615f4d41494e574f524b5f50.json"
+    },
+    "pca_MAINWORK_M": {
+      "label": "MAINWORK_M",
+      "kind": "sum",
+      "sha256": "3c304627b6552599ac23c86a7f3f0e80333530d16c28c1d9cfc9c2779c223d7d",
+      "file": "field-7063615f4d41494e574f524b5f4d.json"
+    },
+    "pca_MAINWORK_F": {
+      "label": "MAINWORK_F",
+      "kind": "sum",
+      "sha256": "b36c66b33e4092b6c982f64786d021e9e75190552310feee0d6b661037ac3d5b",
+      "file": "field-7063615f4d41494e574f524b5f46.json"
+    },
+    "pca_MAIN_CL_P": {
+      "label": "MAIN_CL_P",
+      "kind": "sum",
+      "sha256": "a43e5294ba1fa08944a8efaab700565d2c46b282b93e42536b5e76aa9091b6ae",
+      "file": "field-7063615f4d41494e5f434c5f50.json"
+    },
+    "pca_MAIN_CL_M": {
+      "label": "MAIN_CL_M",
+      "kind": "sum",
+      "sha256": "9b78b80c06b84722e6d262b92816dcbba1a8404a36fae63ef243913aa4dd4d68",
+      "file": "field-7063615f4d41494e5f434c5f4d.json"
+    },
+    "pca_MAIN_CL_F": {
+      "label": "MAIN_CL_F",
+      "kind": "sum",
+      "sha256": "e5ac4a1da9993d30fe3775819b1b414f696d9bba6fd0ab4a4a90cbf46fc00423",
+      "file": "field-7063615f4d41494e5f434c5f46.json"
+    },
+    "pca_MAIN_AL_P": {
+      "label": "MAIN_AL_P",
+      "kind": "sum",
+      "sha256": "0b8616277bb20798b4296696c01300c04337f72e7880924cf6f5a2ded3bfe51a",
+      "file": "field-7063615f4d41494e5f414c5f50.json"
+    },
+    "pca_MAIN_AL_M": {
+      "label": "MAIN_AL_M",
+      "kind": "sum",
+      "sha256": "6ff0291f7db657271d9859cdc238ad594e42e1208c4bcc70494ab908210b6b22",
+      "file": "field-7063615f4d41494e5f414c5f4d.json"
+    },
+    "pca_MAIN_AL_F": {
+      "label": "MAIN_AL_F",
+      "kind": "sum",
+      "sha256": "542ef179001f5951fddb6e2ee0b65e7ceba504c2c657edd217ea87d910bb0f65",
+      "file": "field-7063615f4d41494e5f414c5f46.json"
+    },
+    "pca_MAIN_HH_P": {
+      "label": "MAIN_HH_P",
+      "kind": "sum",
+      "sha256": "5d8f7a551513cfdaa9745e67b1bb79b9d78a20d08c891b4bf79cf47c9440340c",
+      "file": "field-7063615f4d41494e5f48485f50.json"
+    },
+    "pca_MAIN_HH_M": {
+      "label": "MAIN_HH_M",
+      "kind": "sum",
+      "sha256": "d9da1edf2c7f0ae177b72c435ed9033d33731abb65bdb3c666453acde5525c2f",
+      "file": "field-7063615f4d41494e5f48485f4d.json"
+    },
+    "pca_MAIN_HH_F": {
+      "label": "MAIN_HH_F",
+      "kind": "sum",
+      "sha256": "b5f3b883438d9734c00b2679e125ed6c216e38465308f525ff141ef18ad1789a",
+      "file": "field-7063615f4d41494e5f48485f46.json"
+    },
+    "pca_MAIN_OT_P": {
+      "label": "MAIN_OT_P",
+      "kind": "sum",
+      "sha256": "5461fba7a63fc17ef7ca4b464ed8c1561a614851eb57660b7a891a23a349cd10",
+      "file": "field-7063615f4d41494e5f4f545f50.json"
+    },
+    "pca_MAIN_OT_M": {
+      "label": "MAIN_OT_M",
+      "kind": "sum",
+      "sha256": "c2267a1b122c8214e7b6c948fa4874c3c03fed9d3b8decd9bc7330d67584133b",
+      "file": "field-7063615f4d41494e5f4f545f4d.json"
+    },
+    "pca_MAIN_OT_F": {
+      "label": "MAIN_OT_F",
+      "kind": "sum",
+      "sha256": "bd4e4371d3745b83ebed2f0be4d828a6ba80f9a071b74b227b4c0541cd7295ce",
+      "file": "field-7063615f4d41494e5f4f545f46.json"
+    },
+    "pca_MARGWORK_P": {
+      "label": "MARGWORK_P",
+      "kind": "sum",
+      "sha256": "74e295f8c8f72e072474c53c2769a8e0d4b57ec741820319afb56419b5a2fd93",
+      "file": "field-7063615f4d415247574f524b5f50.json"
+    },
+    "pca_MARGWORK_M": {
+      "label": "MARGWORK_M",
+      "kind": "sum",
+      "sha256": "c9d07e63fa07e521eaa2f262d97f532f8f4c6d223d2bc0e7d7f85e5ff3e6a853",
+      "file": "field-7063615f4d415247574f524b5f4d.json"
+    },
+    "pca_MARGWORK_F": {
+      "label": "MARGWORK_F",
+      "kind": "sum",
+      "sha256": "90646fbd29d7bfeef6abf9a09869b73e24354a95f8b01edc540d582ee25e4cbb",
+      "file": "field-7063615f4d415247574f524b5f46.json"
+    },
+    "pca_MARG_CL_P": {
+      "label": "MARG_CL_P",
+      "kind": "sum",
+      "sha256": "9bf728f1bfcc9f34c9de98aa0fd0b05cff50d2bf2518d395d745268347ece47a",
+      "file": "field-7063615f4d4152475f434c5f50.json"
+    },
+    "pca_MARG_CL_M": {
+      "label": "MARG_CL_M",
+      "kind": "sum",
+      "sha256": "c4ca868550d6665c746fd957ddfdf908363ebfc9301aec56d611f120b0a9ff27",
+      "file": "field-7063615f4d4152475f434c5f4d.json"
+    },
+    "pca_MARG_CL_F": {
+      "label": "MARG_CL_F",
+      "kind": "sum",
+      "sha256": "84fc3e9a96af045674514e9b4fb56e470b19893481d333bf5504d0f8992a61e4",
+      "file": "field-7063615f4d4152475f434c5f46.json"
+    },
+    "pca_MARG_AL_P": {
+      "label": "MARG_AL_P",
+      "kind": "sum",
+      "sha256": "9c075a4c29bf0104d47dcd1d7dc80b8f9681904bd53137d24a1fdc9f6faf4561",
+      "file": "field-7063615f4d4152475f414c5f50.json"
+    },
+    "pca_MARG_AL_M": {
+      "label": "MARG_AL_M",
+      "kind": "sum",
+      "sha256": "5f0e5f2170e010a6227274441701e448f4e723bc2f81b56426e09b2fa4804464",
+      "file": "field-7063615f4d4152475f414c5f4d.json"
+    },
+    "pca_MARG_AL_F": {
+      "label": "MARG_AL_F",
+      "kind": "sum",
+      "sha256": "06d5d135501aca9030a623aaa5183aea64d0f5ab54586c8aa0d0b50e07e20f73",
+      "file": "field-7063615f4d4152475f414c5f46.json"
+    },
+    "pca_MARG_HH_P": {
+      "label": "MARG_HH_P",
+      "kind": "sum",
+      "sha256": "852850612470d9dc9cb78dbb6ea2f5c4a092d2afc26240402f139d2af4f01256",
+      "file": "field-7063615f4d4152475f48485f50.json"
+    },
+    "pca_MARG_HH_M": {
+      "label": "MARG_HH_M",
+      "kind": "sum",
+      "sha256": "e272a8de586ff836436e37f6cffabd82a5d39e61fda8c66e5d525f5e2b1edeab",
+      "file": "field-7063615f4d4152475f48485f4d.json"
+    },
+    "pca_MARG_HH_F": {
+      "label": "MARG_HH_F",
+      "kind": "sum",
+      "sha256": "327a69680750a5bc8d0ce67cf0d7303180f8563a316e2500364e36fa8342c476",
+      "file": "field-7063615f4d4152475f48485f46.json"
+    },
+    "pca_MARG_OT_P": {
+      "label": "MARG_OT_P",
+      "kind": "sum",
+      "sha256": "531ef37b26ddbe75aed65a99a589cd9720a74b605e3beaadb405a2cee2a56d1a",
+      "file": "field-7063615f4d4152475f4f545f50.json"
+    },
+    "pca_MARG_OT_M": {
+      "label": "MARG_OT_M",
+      "kind": "sum",
+      "sha256": "b06c6d6949c693298b00493973011a41d85f336e7e561bc78325af07bc34322f",
+      "file": "field-7063615f4d4152475f4f545f4d.json"
+    },
+    "pca_MARG_OT_F": {
+      "label": "MARG_OT_F",
+      "kind": "sum",
+      "sha256": "36147eda6dc6c3cb00551cdba4186f88f2a5c252a57cd2f771325daa4f8e7845",
+      "file": "field-7063615f4d4152475f4f545f46.json"
+    },
+    "pca_NON_WORK_P": {
+      "label": "NON_WORK_P",
+      "kind": "sum",
+      "sha256": "1d862c3ad19a168afff3a03fc4e43324b2a70b3f6dc2ef7b7e548fb2cbcc4edc",
+      "file": "field-7063615f4e4f4e5f574f524b5f50.json"
+    },
+    "pca_NON_WORK_M": {
+      "label": "NON_WORK_M",
+      "kind": "sum",
+      "sha256": "8469e76b5065a9106b83f6a9a1947c51232a78f75fb1d93c21e3e9278a1d86c5",
+      "file": "field-7063615f4e4f4e5f574f524b5f4d.json"
+    },
+    "pca_NON_WORK_F": {
+      "label": "NON_WORK_F",
+      "kind": "sum",
+      "sha256": "5c1ddbf682a35eed4a45547d5af528c247bcaf626d35a93e1ca1e331c5e0ad3d",
+      "file": "field-7063615f4e4f4e5f574f524b5f46.json"
+    }
+  },
+  "counts": {
+    "vd_": 578849,
+    "pca_": 567785
+  },
+  "held": {},
+  "scope": "Existing published records grouped by current official parents; partial coverage, historical boundaries unverified. Category colours show reported-record share, not service availability.",
+  "created_utc": "2026-10-15T10:30:38.317372+00:00"
+}

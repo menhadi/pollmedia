@@ -1,0 +1,226 @@
+{
+  "districts": [
+    {
+      "source_name": "Anantnag",
+      "slug": "anantnag",
+      "file": "maps/jammu-kashmir-source-villages/anantnag.geojson",
+      "features": 376,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 4,
+      "bytes": 726854,
+      "sha256": "40a9909c72a56461a967b3e257861f5e4fcb25372cdc8183e30622f5757ca392"
+    },
+    {
+      "source_name": "Bandipora",
+      "slug": "bandipora",
+      "file": "maps/jammu-kashmir-source-villages/bandipora.geojson",
+      "features": 126,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 1,
+      "bytes": 276509,
+      "sha256": "b1397abc0b39121da3f9095b7e0f3e09dba0a793fcf25ce8aebc7bae91d19c75"
+    },
+    {
+      "source_name": "Baramulla",
+      "slug": "baramulla",
+      "file": "maps/jammu-kashmir-source-villages/baramulla.geojson",
+      "features": 545,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 13,
+      "bytes": 697560,
+      "sha256": "d07d6b65250a8cf0bfae2f4bc1c7258c9ed4dc9643dfe89f3ecf62f84bd037aa"
+    },
+    {
+      "source_name": "Budgam",
+      "slug": "budgam",
+      "file": "maps/jammu-kashmir-source-villages/budgam.geojson",
+      "features": 490,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 2,
+      "bytes": 553983,
+      "sha256": "ea947d7cea22d4db8b4ff5ffa11c3cebcb94e1d5d199f3cfee0fae6d6297c672"
+    },
+    {
+      "source_name": "Doda",
+      "slug": "doda",
+      "file": "maps/jammu-kashmir-source-villages/doda.geojson",
+      "features": 417,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 9,
+      "bytes": 624755,
+      "sha256": "99b6d2816696c9575861ea7771cb8d3041d20a77ab88d5deddfb6f7632892ee6"
+    },
+    {
+      "source_name": "Ganderbal",
+      "slug": "ganderbal",
+      "file": "maps/jammu-kashmir-source-villages/ganderbal.geojson",
+      "features": 122,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 4,
+      "bytes": 323909,
+      "sha256": "072076d78b40ba7154d24b41f30f8dfa0a3176e124cffbf8f18ad5bd1746e465"
+    },
+    {
+      "source_name": "Jammu",
+      "slug": "jammu",
+      "file": "maps/jammu-kashmir-source-villages/jammu.geojson",
+      "features": 900,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 3,
+      "bytes": 1372026,
+      "sha256": "18d2f6ef0da2874dd6817ee819922294b80c1410b372452f601868daaff0ba60"
+    },
+    {
+      "source_name": "Kathua",
+      "slug": "kathua",
+      "file": "maps/jammu-kashmir-source-villages/kathua.geojson",
+      "features": 527,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 2,
+      "bytes": 643043,
+      "sha256": "b6265dc6b330d4f0a280eb76e2bcd92b72ca47e22e17f6e35e4963bd392a93b8"
+    },
+    {
+      "source_name": "Kishtwar",
+      "slug": "kishtwar",
+      "file": "maps/jammu-kashmir-source-villages/kishtwar.geojson",
+      "features": 163,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 5,
+      "bytes": 348848,
+      "sha256": "a646a3d12b9bd85c9fc969f4125a080c909295f07592cebaf5ec32caeced3875"
+    },
+    {
+      "source_name": "Kulgam",
+      "slug": "kulgam",
+      "file": "maps/jammu-kashmir-source-villages/kulgam.geojson",
+      "features": 241,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 3,
+      "bytes": 287879,
+      "sha256": "43b674b003dfeeedac19d87f8db2595a60946df2e4ee55e1839fa86187c7b2b0"
+    },
+    {
+      "source_name": "Kupwara",
+      "slug": "kupwara",
+      "file": "maps/jammu-kashmir-source-villages/kupwara.geojson",
+      "features": 379,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 7,
+      "bytes": 477018,
+      "sha256": "cfd36e7bb89d3a45faebccd727f84390fc33de97c8a7cf3153b7c388557f58fc"
+    },
+    {
+      "source_name": "Poonch",
+      "slug": "poonch",
+      "file": "maps/jammu-kashmir-source-villages/poonch.geojson",
+      "features": 184,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 3,
+      "bytes": 317900,
+      "sha256": "0aff94cb657e9d00126969b3bfb121e2864cc5f8c4da3e6ec3c8522aab48b115"
+    },
+    {
+      "source_name": "Pulwama",
+      "slug": "pulwama",
+      "file": "maps/jammu-kashmir-source-villages/pulwama.geojson",
+      "features": 336,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 3,
+      "bytes": 541856,
+      "sha256": "78728ab4e566cb6648764b34ae7f451e624c96378806aac03a7854ac79fd0fa2"
+    },
+    {
+      "source_name": "Rajouri",
+      "slug": "rajouri",
+      "file": "maps/jammu-kashmir-source-villages/rajouri.geojson",
+      "features": 391,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 2,
+      "bytes": 910673,
+      "sha256": "4ce1ea091af05827a0d5e5605d347dc5c382fb24fe22c61d60f2434f7eb1021f"
+    },
+    {
+      "source_name": "Ramban",
+      "slug": "ramban",
+      "file": "maps/jammu-kashmir-source-villages/ramban.geojson",
+      "features": 138,
+      "invalid_retained": 1,
+      "ambiguous_shapes": 6,
+      "bytes": 204182,
+      "sha256": "faea0cb224255409c5a6dd46570d4ec5789966420ac8d92b3928c22e2850b307"
+    },
+    {
+      "source_name": "Reasi",
+      "slug": "reasi",
+      "file": "maps/jammu-kashmir-source-villages/reasi.geojson",
+      "features": 260,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "bytes": 402178,
+      "sha256": "63b760ea8579ae9368ff40db8f8297b3f2fddbc5bdec6214c85f5a0fad1229b3"
+    },
+    {
+      "source_name": "Samba",
+      "slug": "samba",
+      "file": "maps/jammu-kashmir-source-villages/samba.geojson",
+      "features": 384,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 2,
+      "bytes": 560691,
+      "sha256": "8cab57aab0df572be10095332d370a0aa11266c74f58dc208917b43cc65473dc"
+    },
+    {
+      "source_name": "Shopian",
+      "slug": "shopian",
+      "file": "maps/jammu-kashmir-source-villages/shopian.geojson",
+      "features": 231,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 1,
+      "bytes": 342561,
+      "sha256": "f708677d17275efabf8244a57cf1d6946c6f7df37ac63cff89a3f2536eecf971"
+    },
+    {
+      "source_name": "Srinagar",
+      "slug": "srinagar",
+      "file": "maps/jammu-kashmir-source-villages/srinagar.geojson",
+      "features": 19,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 3,
+      "bytes": 68926,
+      "sha256": "900ab3368a4bf5e75ed0360de3032d2532581026c696f6a5bdb840b522436b8c"
+    },
+    {
+      "source_name": "Udhampur",
+      "slug": "udhampur",
+      "file": "maps/jammu-kashmir-source-villages/udhampur.geojson",
+      "features": 361,
+      "invalid_retained": 0,
+      "ambiguous_shapes": 0,
+      "bytes": 556897,
+      "sha256": "36f527251fb8f10f3b963b3024de5d5170b4712c11cea076560a37a01a2de584"
+    }
+  ],
+  "excluded_records": [
+    {
+      "index": 0,
+      "district": "Poonch",
+      "name": "Data Not Available",
+      "reason": "Unidentified coverage polygon or district outside checked administrative register; original archive retained."
+    },
+    {
+      "index": 19,
+      "district": "Muzaffarabad",
+      "name": "Data Not Available",
+      "reason": "Unidentified coverage polygon or district outside checked administrative register; original archive retained."
+    },
+    {
+      "index": 840,
+      "district": "Mirpur",
+      "name": "Data Not Available",
+      "reason": "Unidentified coverage polygon or district outside checked administrative register; original archive retained."
+    }
+  ],
+  "source_archive_sha256": "728d8319e4b8bcbd458d95d462fe51fbb657e494179143a4d2b19f0f13f5468b",
+  "ladakh_coverage": "No Leh or Kargil source district groups in this archive."
+}

@@ -11,6 +11,20 @@ class CivicExplorerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_native_2001_subdistrict_header_keeps_village_data_and_parent_scope(): void
+    {
+        $ids = $this->fixture(2001);
+        foreach (DB::table('census_catalogue_rows')->where('edition_id', $ids['edition'])->get() as $row) {
+            $geo = json_decode($row->geography, true);
+            $geo['SUB-DISTT'] = $geo['TAHSIL'];
+            unset($geo['TAHSIL']);
+            DB::table('census_catalogue_rows')->where('id', $row->id)->update(['geography' => json_encode($geo)]);
+        }
+        $this->get('/india/census/places/'.$ids['VILLAGE'])->assertOk()
+            ->assertSee('Village Alpha')->assertSee('Tehsil Alpha')->assertDontSee('Wrong district child')
+            ->assertViewHas('records', fn ($rows) => $rows->count() === 1 && $rows->first()->id === $ids['VILLAGE']);
+    }
+
     public function test_state_dropdown_groups_navigation_without_changing_source_names_or_boundaries(): void
     {
         $first = $this->fixture(1901);

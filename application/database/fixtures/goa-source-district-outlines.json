@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "source": "https://surveyofindia.gov.in/documents/State_District_Subdistrict_PAN%20INDIA.rar",
+    "archive_sha256": "b8325e5d9dd0f04a6663d775363fe38cd2f23bd9dbae3fb7118b4e6e0ce0bcb7",
+    "dataset_identifier": "SOI/ABDB/VECTOR/50000/2025/DISTRICT/INDIA",
+    "publication_date": "2026-05-06",
+    "temporal_scope": "2022-2025",
+    "source_crs": "PROJCS[\"LCC_WGS84\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Lambert_Conformal_Conic\"],PARAMETER[\"False_Easting\",4000000.0],PARAMETER[\"False_Northing\",4000000.0],PARAMETER[\"Central_Meridian\",80.0],PARAMETER[\"Standard_Parallel_1\",12.472944],PARAMETER[\"Standard_Parallel_2\",35.172806],PARAMETER[\"Latitude_Of_Origin\",24.0],UNIT[\"Meter\",1.0]]",
+    "output_crs": "EPSG:4326",
+    "geometry_scope": "district outline",
+    "simplification_metres": 0,
+    "source_geometry_valid": true,
+    "geometry_repaired": false,
+    "census_lgd_join": "unverified",
+    "electoral_edition_join": "unverified;dated electoral source required",
+    "note": "Exact source record reprojected;source spelling retained;no population allocated."
+  },
+  "districts": [
+    {
+      "source_name": "NORTH GOA",
+      "slug": "north-goa",
+      "file": "maps/goa-source-districts/north-goa.geojson",
+      "source_geometry_valid": true,
+      "bytes": 151716,
+      "sha256": "7d7d62f92cba65ccd28aa951e333766f6d7a9b44157dc107ed456d296ec07917"
+    },
+    {
+      "source_name": "KUSHAVATI",
+      "slug": "kushavati",
+      "file": "maps/goa-source-districts/kushavati.geojson",
+      "source_geometry_valid": true,
+      "bytes": 257940,
+      "sha256": "6a18c97c4c328625da009f5e16fc1534ea7de80fd1c5c2c7ce6209a25a6352ac"
+    },
+    {
+      "source_name": "SOUTH GOA",
+      "slug": "south-goa",
+      "file": "maps/goa-source-districts/south-goa.geojson",
+      "source_geometry_valid": true,
+      "bytes": 173870,
+      "sha256": "b5205c9ff5000989f2ddd81099fca98151012b1df4a1a73255a5aefa6dcd1f9d"
+    }
+  ]
+}

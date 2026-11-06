@@ -5,6 +5,19 @@
 
     RewriteEngine On
 
+    # Keep public links and microphone access on the secure canonical host.
+    RewriteCond %{HTTP_HOST} ^(www\.)?pollmedia\.org(:[0-9]+)?$ [NC]
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]
+    RewriteRule ^ https://pollmedia.org%{REQUEST_URI} [R=308,L,NE]
+
+    RewriteCond %{HTTP_HOST} ^www\.pollmedia\.org(:[0-9]+)?$ [NC]
+    RewriteRule ^ https://pollmedia.org%{REQUEST_URI} [R=308,L,NE]
+
+
+
+
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

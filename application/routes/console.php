@@ -18,3 +18,11 @@ foreach (app(ManagedTasks::class)->all() as $key => $task) {
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Schedule::command('farmers:prune')->daily()->withoutOverlapping();
+
+Artisan::command('seo:build-sitemaps', function () {
+    $this->info(json_encode(app(\App\Services\PublicSitemaps::class)->build(), JSON_THROW_ON_ERROR));
+})->purpose('Publish public sitemap files atomically');
+
+Schedule::command('seo:build-sitemaps')->dailyAt('03:40')->timezone('Asia/Kolkata')->withoutOverlapping()->runInBackground();

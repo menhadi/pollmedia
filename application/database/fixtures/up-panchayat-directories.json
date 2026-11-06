@@ -1,0 +1,450 @@
+{
+  "schema": 1,
+  "publication_enabled": true,
+  "districts": {
+    "118": {
+      "file": "up-panchayat-directory-9-118.json",
+      "sha256": "4d7c453c7da0872d67917f8f4b10ec0c23badc4fd873ed1122e84e7e2035ea08",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "119": {
+      "file": "up-panchayat-directory-9-119.json",
+      "sha256": "f73ea506a909ac5f09f2535a1daf93df07a51c0169416217c135c130f0c60c63",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "120": {
+      "file": "up-panchayat-directory-9-120.json",
+      "sha256": "2b17d1880ea5e02cc13c94981c83c6037568239e005b602271514880f0b05db2",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "121": {
+      "file": "up-panchayat-directory-9-121.json",
+      "sha256": "e11b07bb44ae28d18d9d18b064184f08eaac7e3bfff97b8e5b3849f31204c241",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "122": {
+      "file": "up-panchayat-directory-9-122.json",
+      "sha256": "03e609b8665600c2ff0abd469936f7b5ae31edf38b56909cf891a659159bd3eb",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "123": {
+      "file": "up-panchayat-directory-9-123.json",
+      "sha256": "3e27df0d11ced1874b1cdb6b3899274cff50b607ee891c5028cbd53d7d8a5a2f",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "124": {
+      "file": "up-panchayat-directory-9-124.json",
+      "sha256": "5f6638509f08f15a1ab3600db49518390f84c2a7c2604acc3f794a8ca223a71e",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "125": {
+      "file": "up-panchayat-directory-9-125.json",
+      "sha256": "463f7458d91decb9aec108e41392b2e9c97fb8204d0b91780ca6a3b284d72a5d",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "126": {
+      "file": "up-panchayat-directory-9-126.json",
+      "sha256": "a9818675dd0c0c66ba29311fe731bcad90cd399f380c4dc51401d46fb4aff70e",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "127": {
+      "file": "up-panchayat-directory-9-127.json",
+      "sha256": "4a302cdd26e292566804811788c3e382f3edca8d62c1d3e3519671bd7ecdae18",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "128": {
+      "file": "up-panchayat-directory-9-128.json",
+      "sha256": "cb01995eabd635d917b7998b8f905558dd6e58dd16ec2ab845d6af3ff807d316",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "129": {
+      "file": "up-panchayat-directory-9-129.json",
+      "sha256": "fc16fc6bfaceb839cfb93f09d83ac03e04e36664b68449a5c6662dace80b2d71",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "130": {
+      "file": "up-panchayat-directory-9-130.json",
+      "sha256": "c19e809a37cf05f4de2fb947ec85f78ca39ea55ad959f5494a95902657a80a26",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "131": {
+      "file": "up-panchayat-directory-9-131.json",
+      "sha256": "4cf1eeee0c15d9c33989b9d78b5dc89ba8192a211ab355328f9429126ce0356c",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "132": {
+      "file": "up-panchayat-directory-9-132.json",
+      "sha256": "1a461cdb63c805a868ea0e79d7784f0af6635e086bfcb834f333457318b8e5c7",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "133": {
+      "file": "up-panchayat-directory-9-133.json",
+      "sha256": "0fb3bd9dfc2dede26f9140190512d8de5fc5f24f6762dd5819bf6be1e3da1ddd",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "134": {
+      "file": "up-panchayat-directory-9-134.json",
+      "sha256": "71e83f1f693849fdb0442b8a937c5cd4b1e413eb6fbba3e6911e7c2227ef086e",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "135": {
+      "file": "up-panchayat-directory-9-135.json",
+      "sha256": "4934860aad3877b2eee2b1e7751e06fe7a99566a4480caec4a500ad82664f086",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "136": {
+      "file": "up-panchayat-directory-9-136.json",
+      "sha256": "295cf8c707135713ad1a1a40b7780548118450caf55837417ed627df13f4b889",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "137": {
+      "file": "up-panchayat-directory-9-137.json",
+      "sha256": "f767fd1f40ffa5e46278911b5c64293709d6d6873253b0cc12f73cbac935e6e5",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "138": {
+      "file": "up-panchayat-directory-9-138.json",
+      "sha256": "91b1a4a90b9f6187e86a03def40974350f55862884762a35f441217c6c31a539",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "139": {
+      "file": "up-panchayat-directory-9-139.json",
+      "sha256": "1d6e6018c318623f4829f36388071eb6da7197ad6a84486626f7a9451be16b97",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "140": {
+      "file": "up-panchayat-directory-9-140.json",
+      "sha256": "973a28ef4cb1b09cfa5e06d5d31bbda73206235106dd6e83645b90ed4ef32b48",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "141": {
+      "file": "up-panchayat-directory-9-141.json",
+      "sha256": "e8036bae72450b0bee0a7b2985ba75a3d0b63f5828f665c3722079af8aa3b6b4",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "142": {
+      "file": "up-panchayat-directory-9-142.json",
+      "sha256": "6068f7e5be1959d62bc91076d5a26f8d3db0f47782a1358d583c428e7c971e7a",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "143": {
+      "file": "up-panchayat-directory-9-143.json",
+      "sha256": "ecba94f9c4f322b5c3090446e5995ae75eeb55ef71987cc951b9a178b0c20262",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "144": {
+      "file": "up-panchayat-directory-9-144.json",
+      "sha256": "19c22ba45117ae764b21bff148b731f53004c66d605697aabbe6d80330e2e1a2",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "145": {
+      "file": "up-panchayat-directory-9-145.json",
+      "sha256": "217af90191aa766e3348b8d9f016521313ab352ee7708ef91299add51fdcda2a",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "146": {
+      "file": "up-panchayat-directory-9-146.json",
+      "sha256": "cf105280af063ba61a336c52b738f8ff34eb4a6f09ffafaf9a6ad38ccd742e68",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "147": {
+      "file": "up-panchayat-directory-9-147.json",
+      "sha256": "42125873eb326ff22558edf5cb714531c8711d7620b608ec6cda89fd0944ef6d",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "148": {
+      "file": "up-panchayat-directory-9-148.json",
+      "sha256": "f7eb2c0cc12eed960c27b5d97416dcdb7c35e9de973672016d47ab4f2232f92b",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "149": {
+      "file": "up-panchayat-directory-9-149.json",
+      "sha256": "804765a11673c3608aff4782a154f554316b30a55f723667b919466d0fac44f9",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "150": {
+      "file": "up-panchayat-directory-9-150.json",
+      "sha256": "233b570dc89c91e0dd6a3e25a9e1e5a7e213764a7fd700be60739d00df280764",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "151": {
+      "file": "up-panchayat-directory-9-151.json",
+      "sha256": "aa711fbe0746bd1842059f432b41a5e316c9e39d0e6c8e41f45caddef30c9506",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "152": {
+      "file": "up-panchayat-directory-9-152.json",
+      "sha256": "c9933e04be0ba64e4d8b2dd7bc7e44973e354ca31cd3fb9e1ad8d12bd4ae1ae6",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "153": {
+      "file": "up-panchayat-directory-9-153.json",
+      "sha256": "769f5022db1507d1ef197e1ecc58a8eef24360c45c61d8fbf31b06e8b601e63f",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "154": {
+      "file": "up-panchayat-directory-9-154.json",
+      "sha256": "8ef27185981391211b68e7d37997b13efa5a7a2c33cd5d4e1fae353b4450b6fe",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "155": {
+      "file": "up-panchayat-directory-9-155.json",
+      "sha256": "a2a3aa12f20da91560103880c379f865953b96f5979d19cc7eb021e905c9ca2d",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "156": {
+      "file": "up-panchayat-directory-9-156.json",
+      "sha256": "2fc2c3d918aade448d7fd02f7e32653e0c027958b598096b39d47104833444f0",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "157": {
+      "file": "up-panchayat-directory-9-157.json",
+      "sha256": "35ee598d397dcc6a5dc886f0a9e73a6a1188edf948e33d79cb79e1551effad42",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "158": {
+      "file": "up-panchayat-directory-9-158.json",
+      "sha256": "f5be92333837c0e14475c79da1d8ba5d59e14a735db00cead533ab6ef3833727",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "159": {
+      "file": "up-panchayat-directory-9-159.json",
+      "sha256": "b898ebafd523f36aa6c73a74e346fcf71b41fba681aca33c20a1c5bd9fd0e70d",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "160": {
+      "file": "up-panchayat-directory-9-160.json",
+      "sha256": "17558b037fc513c674b34d2082a957bb47512b2639f9be329eeff9758edf899b",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "161": {
+      "file": "up-panchayat-directory-9-161.json",
+      "sha256": "4b484cd5c777c8feaa96fb6ccb3c8e718732fe47e98858f038115ec75e140f6f",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "162": {
+      "file": "up-panchayat-directory-9-162.json",
+      "sha256": "e965103bd01587ec9779963100aaec5d98097c6412cc0c017641e29b793c21ff",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "163": {
+      "file": "up-panchayat-directory-9-163.json",
+      "sha256": "b51f6365e9347db982ff2c4b3ca54b18ded1844f927a4c63717ca5737a6f13e4",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "164": {
+      "file": "up-panchayat-directory-9-164.json",
+      "sha256": "08786b7e19ca9448fbd7d5a814eb68c2bfaa1c13c32d1d0a375dda09927c93f0",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "165": {
+      "file": "up-panchayat-directory-9-165.json",
+      "sha256": "e8a1dc8780f94a988d28614ac20cbf82075e8b4ae6ce983f4c32d57ab289c369",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "166": {
+      "file": "up-panchayat-directory-9-166.json",
+      "sha256": "f486323233be4ee436716a3150b4a9e2cb7bb62c63043c2101c0f9467723eb36",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "167": {
+      "file": "up-panchayat-directory-9-167.json",
+      "sha256": "b3a9661be9559daab6116b44b3b91c175cef0a06cfc624b69aef51e6b464a2d9",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "168": {
+      "file": "up-panchayat-directory-9-168.json",
+      "sha256": "a01a7fb4e2440c535b3c7dfbd6d558d7ba1fb93651f48847fc2ba83302697593",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "169": {
+      "file": "up-panchayat-directory-9-169.json",
+      "sha256": "20c345a49240ad2a730437050a707505f6663af1a46ff9eac7337b879c4b7a11",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "170": {
+      "file": "up-panchayat-directory-9-170.json",
+      "sha256": "1796de3d0956a7bbcc65a993eaaf9e609dc1b0cd01c96bb4d1729a9148f16bda",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "171": {
+      "file": "up-panchayat-directory-9-171.json",
+      "sha256": "a39fd7b20bcbff32605f27ceb16c1c339f4d9bbbb069f056599218f9ff96b684",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "172": {
+      "file": "up-panchayat-directory-9-172.json",
+      "sha256": "dd26749395bd8f66db5e4867798a777617abd9d1e0e270186a6a8a2e31f1de3d",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "174": {
+      "file": "up-panchayat-directory-9-174.json",
+      "sha256": "e7964838a62cd3d016baacc41a5c1dc01ce32396520125fe9ed9bef3bc7a235e",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "175": {
+      "file": "up-panchayat-directory-9-175.json",
+      "sha256": "48f2ecfd3d3f2789a1e17c18659a77f650d22752baf402e8593c272884679652",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "176": {
+      "file": "up-panchayat-directory-9-176.json",
+      "sha256": "3c2804fe338c3152778934722d6943b18aa67d58fe7d2eecbd8588cd61fce61f",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "177": {
+      "file": "up-panchayat-directory-9-177.json",
+      "sha256": "da6eb6669e5443096410d3dca3f059075f50ef14385a0bfd2a58b40ab2ae5def",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "178": {
+      "file": "up-panchayat-directory-9-178.json",
+      "sha256": "7934723cb9239b28a072e594287dcccde2da1febd1d5355d01ee25e07b313908",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "179": {
+      "file": "up-panchayat-directory-9-179.json",
+      "sha256": "007ad701fa58021f4f8e40bbdedd892ffc3933af44e3253bbcdad50833b9dd44",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "180": {
+      "file": "up-panchayat-directory-9-180.json",
+      "sha256": "27d56a5b726b820d6ba0b5a709404e773e834ec03bdb8d9e348d33c3357bdc42",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "181": {
+      "file": "up-panchayat-directory-9-181.json",
+      "sha256": "0d2ad3fb58dae040d450ae10f3ce1a4e38fd9c431cf2c033d4f49b426c26ac95",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "182": {
+      "file": "up-panchayat-directory-9-182.json",
+      "sha256": "77fc01e83802a692353afd9cb375ddc36de74307dab2aadac604bcf76004ce18",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "183": {
+      "file": "up-panchayat-directory-9-183.json",
+      "sha256": "27d302547659d8c3c289bf743b6fe90d7b48e47b49a88fd300e97415885fa102",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "184": {
+      "file": "up-panchayat-directory-9-184.json",
+      "sha256": "a9073e3bcfadb8386a34e5418a1985a52b1f24423e2ac0a445554abcd6794f4b",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "185": {
+      "file": "up-panchayat-directory-9-185.json",
+      "sha256": "76e4f5df7b295a64693e968f656386e84c598c997c619c8dfc0bdce9bff7be6a",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "186": {
+      "file": "up-panchayat-directory-9-186.json",
+      "sha256": "6c2f4d97ef8212fa9cf6628c75fedc1e45bfcafc8022c7f6a24520dde88ac92a",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "187": {
+      "file": "up-panchayat-directory-9-187.json",
+      "sha256": "e49307890cc843ccb1f8dce9a25ad571dfda4a0c907c8866a99b67455471cbac",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "640": {
+      "file": "up-panchayat-directory-9-640.json",
+      "sha256": "f4c96b27bc6d1cb308d2b1487471dd215fe4d630e24f2949870d5e768c451b81",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "633": {
+      "file": "up-panchayat-directory-9-633.json",
+      "sha256": "8d55697c1ea9f6c35554693b0419f43a5f15bdd13aaaea29b31b599e2779d6a1",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "659": {
+      "file": "up-panchayat-directory-9-659.json",
+      "sha256": "22f38c6b7e2e90ccd9335c52512270283af91b3717a3f4f0343e117f4a18624c",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "660": {
+      "file": "up-panchayat-directory-9-660.json",
+      "sha256": "e354c291fddb99a23a5756ada9987e0875a2d57b7b0c46beb646778849a5a4d1",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    },
+    "661": {
+      "file": "up-panchayat-directory-9-661.json",
+      "sha256": "f2d48bc49cad22f70c71b0999d69a22d729719d8e8b9b4bfa9ebc776efa336cf",
+      "snapshot": "2026-09-16",
+      "mapping_receipt": "up-existing-lgd-correspondence-receipt.json"
+    }
+  }
+}

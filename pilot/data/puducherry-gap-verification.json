@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-23",
+  "groups": [
+    {
+      "group": "pondicherry",
+      "original_features": 69,
+      "published_features": 69,
+      "geometry_identical": true,
+      "added_village_polygons": 0,
+      "context_sha256": "0d77ffbf038ff5433cee519fe7dcfa2ce9a86d27b60206b883d935140a9018fb",
+      "classification": "Tamil Nadu uses actual SOI state polygon; uncovered areas and overlaps are unresolved differences, not missing-village identities."
+    },
+    {
+      "group": "karaikal",
+      "original_features": 30,
+      "published_features": 30,
+      "geometry_identical": true,
+      "added_village_polygons": 0,
+      "context_sha256": "1eedd3d36436ebd25103a9926b261c439e7a7a7681665460517a25f2aa75cb36",
+      "classification": "Tamil Nadu uses actual SOI state polygon; uncovered areas and overlaps are unresolved differences, not missing-village identities."
+    }
+  ],
+  "official_references": [
+    "https://ceopuducherry.py.gov.in/images/overall.jpg",
+    "https://sec.py.gov.in/puducherry-ward-maps",
+    "https://lad.py.gov.in/sites/default/files/g.o.ms.no.22-dt-15.11.2024.pdf"
+  ],
+  "finding": "All original settlement records retained. No additional georeferenced village polygon verified from the reviewed official references. Ward, revenue-village and source settlement editions must not be conflated.",
+  "live_commit": "528dbdb6f79e3495638cfae4b125bfde997c9bd1",
+  "rollback_ref": "rollback/puducherry-gaps-20261023",
+  "tests": {
+    "geometry_comparison": "passed",
+    "four_Puducherry_pages_and_AC_PC_links": "passed",
+    "javascript_syntax": "passed",
+    "public_visual": "Pondicherry context loaded; grey, hatching, outline and all 69 source shapes visible",
+    "pint": "unavailable"
+  },
+  "reference_archive": {
+    "path": "D:/pollmedia/pilot/raw/island-ut-intake/puducherry-ceo-overall.jpg",
+    "sha256": "dd851289fc1a926de61a71e36c5ee03e3f972e608bcf6b6e4ba5fe55cd9cdf51"
+  }
+}

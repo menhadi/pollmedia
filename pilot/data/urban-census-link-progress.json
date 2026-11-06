@@ -1,0 +1,389 @@
+{
+  "published_urban_records": 91231,
+  "town_keys": 7933,
+  "lgd_local_bodies_audited": 4860,
+  "postal_local_bodies": 5005,
+  "villages_audited": 677673,
+  "villages_without_census_code": 36875,
+  "linked_local_bodies": 3295,
+  "linked_postal_bodies": 3294,
+  "village_town_code_links": 3774,
+  "coverage_only_villages": 1626,
+  "named_ward_links": 1,
+  "exceptions": {
+    "no_unique_published_town": 489,
+    "missing_code": 1065,
+    "multiple_codes": 11
+  },
+  "states": {
+    "2": {
+      "local-body:lgd-town-code": 47,
+      "village:coverage-only": 43,
+      "village:lgd-town-code": 3
+    },
+    "3": {
+      "local-body:lgd-town-code": 114,
+      "village:coverage-only": 41,
+      "village:lgd-town-code": 77
+    },
+    "5": {
+      "local-body:lgd-town-code": 57,
+      "village:coverage-only": 11,
+      "village:lgd-town-code": 41
+    },
+    "6": {
+      "local-body:lgd-town-code": 64,
+      "village:coverage-only": 12,
+      "village:lgd-town-code": 65
+    },
+    "8": {
+      "local-body:lgd-town-code": 162,
+      "village:coverage-only": 122,
+      "village:lgd-town-code": 112
+    },
+    "9": {
+      "local-body:lgd-town-code": 588,
+      "village:coverage-only": 73,
+      "village:lgd-town-code": 267
+    },
+    "10": {
+      "local-body:lgd-town-code": 125,
+      "village:coverage-only": 111,
+      "village:lgd-town-code": 60
+    },
+    "11": {
+      "local-body:lgd-town-code": 6,
+      "village:lgd-town-code": 1
+    },
+    "16": {
+      "local-body:lgd-town-code": 14,
+      "village:coverage-only": 7,
+      "village:lgd-town-code": 24
+    },
+    "19": {
+      "local-body:lgd-town-code": 114,
+      "village:lgd-town-code": 772
+    },
+    "20": {
+      "local-body:lgd-town-code": 41,
+      "village:coverage-only": 1,
+      "village:lgd-town-code": 180
+    },
+    "21": {
+      "local-body:lgd-town-code": 88,
+      "village:coverage-only": 25,
+      "village:lgd-town-code": 105
+    },
+    "22": {
+      "local-body:lgd-town-code": 148,
+      "village:coverage-only": 142,
+      "village:lgd-town-code": 14
+    },
+    "23": {
+      "local-body:lgd-town-code": 328,
+      "village:coverage-only": 276,
+      "village:lgd-town-code": 105
+    },
+    "24": {
+      "local-body:lgd-town-code": 127,
+      "village:coverage-only": 48,
+      "village:lgd-town-code": 153
+    },
+    "27": {
+      "local-body:lgd-town-code": 278,
+      "village:coverage-only": 181,
+      "village:lgd-town-code": 265
+    },
+    "28": {
+      "local-body:lgd-town-code": 44,
+      "village:lgd-town-code": 111
+    },
+    "29": {
+      "local-body:lgd-town-code": 51,
+      "village:coverage-only": 15,
+      "village:lgd-town-code": 121,
+      "village:named-ward": 1
+    },
+    "32": {
+      "local-body:lgd-town-code": 50,
+      "village:coverage-only": 6,
+      "village:lgd-town-code": 451
+    },
+    "33": {
+      "local-body:lgd-town-code": 640,
+      "village:coverage-only": 481,
+      "village:lgd-town-code": 348
+    },
+    "13": {
+      "local-body:lgd-town-code": 19,
+      "village:lgd-town-code": 5
+    },
+    "17": {
+      "local-body:lgd-town-code": 9,
+      "village:lgd-town-code": 11
+    },
+    "18": {
+      "local-body:lgd-town-code": 71,
+      "village:lgd-town-code": 122
+    },
+    "1": {
+      "local-body:lgd-town-code": 52,
+      "village:coverage-only": 19,
+      "village:lgd-town-code": 31
+    },
+    "34": {
+      "local-body:lgd-town-code": 5,
+      "village:coverage-only": 5,
+      "village:lgd-town-code": 4
+    },
+    "35": {
+      "local-body:lgd-town-code": 1,
+      "village:lgd-town-code": 4
+    },
+    "12": {
+      "local-body:lgd-town-code": 17,
+      "village:lgd-town-code": 1
+    },
+    "30": {
+      "local-body:lgd-town-code": 13,
+      "village:coverage-only": 13,
+      "village:lgd-town-code": 56
+    },
+    "15": {
+      "local-body:lgd-town-code": 22
+    },
+    "7": {
+      "village:lgd-town-code": 106
+    },
+    "37": {
+      "village:lgd-town-code": 2
+    },
+    "31": {
+      "village:lgd-town-code": 6
+    },
+    "14": {
+      "village:lgd-town-code": 24
+    },
+    "36": {
+      "village:lgd-town-code": 116
+    },
+    "38": {
+      "village:lgd-town-code": 11
+    }
+  },
+  "published_export_sha256": "401e1a846b845f3893ced96d30219f000a0db7408d858eb513fd7f462069700d",
+  "status": "available_source_rollout_closed_with_unresolved_exceptions",
+  "archive": "pilot/raw/urban-census-links-20261102",
+  "index_sha256": "ffeda0a42215d420a2da20a67950a788103789c8e82c8468c98eef772a11b579",
+  "tests": "21 tests, 76 assertions; full Kengeri overview, Gollahalli non-overwrite, three-state urban panels and coverage-only exclusions server checked",
+  "public_visual": "unverified; protections unchanged",
+  "rollback_ref": "rollback/urban-census-links-20261102",
+  "boundary_policy": "2011 town/ward metrics explicitly separated from current LGD village boundaries. Coverage-only municipality totals never used as village overview figures.",
+  "kengeri": {
+    "lgd": "938441",
+    "record": 1414213,
+    "census_state": "29",
+    "census_district": "572",
+    "town": "803162",
+    "ward": "0159",
+    "official_ward_name_source": "https://site.bbmp.gov.in/zonalclassification.html",
+    "name_source_readback": "official indexed ward directory; direct fetch availability retained separately"
+  },
+  "limitations": [
+    "Nationwide available-source audit; not all urban identities resolved",
+    "Missing/conflicting town codes and unverified ward-name mappings remain unlinked",
+    "No name-only or PIN-based population joins"
+  ],
+  "remaining_urban_followup": {
+    "postal_bodies_audited": 5005,
+    "previous_linked_postal_bodies": 3294,
+    "newly_linked_postal_bodies": 413,
+    "linked_postal_bodies": 3707,
+    "remaining_postal_bodies": 1298,
+    "new_scope_records": 891,
+    "new_related_only_postal_bodies": 113,
+    "states_new_bodies": {
+      "8": 43,
+      "36": 60,
+      "24": 37,
+      "16": 2,
+      "29": 16,
+      "10": 8,
+      "23": 39,
+      "19": 9,
+      "7": 3,
+      "3": 19,
+      "6": 12,
+      "22": 19,
+      "28": 37,
+      "9": 33,
+      "27": 15,
+      "2": 2,
+      "33": 4,
+      "1": 5,
+      "5": 8,
+      "21": 15,
+      "32": 15,
+      "18": 8,
+      "20": 2,
+      "4": 1,
+      "30": 1
+    },
+    "source_sha256": "401e1a846b845f3893ced96d30219f000a0db7408d858eb513fd7f462069700d",
+    "policy": "Separate 2011 source scopes; no summation; exact codes only; coverage-only references never become current-area totals",
+    "telangana_2011_state_basis": "https://www.telangana.gov.in/departments/legislative-affairs/",
+    "status": "deployed_server_verified",
+    "archive": "pilot/raw/urban-census-scopes-20261102",
+    "index_sha256": "1e21b88f3ff14d28fd0a4ae5dcc83eb55c9b5328463328606bd3e1c8b6f68987",
+    "tests": "22 PHPUnit tests / 80 assertions; 4 Python scope tests; full Kengeri page and six urban body render checks",
+    "public_visual": "unverified; Cloudflare protections unchanged",
+    "rollback_ref": "rollback/urban-census-scopes-20261102"
+  },
+  "official_sources_urban_followup": {
+    "starting_unresolved": 1298,
+    "newly_linked": 260,
+    "remaining": 1038,
+    "linked_postal_bodies": 3967,
+    "new_record_links": 274,
+    "states": {
+      "14": 11,
+      "29": 158,
+      "9": 9,
+      "3": 10,
+      "32": 9,
+      "36": 6,
+      "33": 3,
+      "8": 10,
+      "20": 1,
+      "27": 6,
+      "38": 3,
+      "21": 3,
+      "6": 4,
+      "5": 4,
+      "10": 9,
+      "37": 2,
+      "19": 1,
+      "18": 3,
+      "28": 3,
+      "23": 3,
+      "12": 1,
+      "24": 1
+    },
+    "exceptions": {
+      "no_unique_mohua_body_identity": 285,
+      "no_unique_2011_town_in_crosswalk_district": 715,
+      "no_unique_official_district": 38
+    },
+    "mohua_rows": 5590,
+    "mohua_pdf_sha256": "24b9fb9b81f6d96f318b4a389f8474d909952db91d2d04bc8c25a7ee47b7544c",
+    "source": "https://pmay-urban.gov.in/list-ulb.pdf",
+    "policy": "Historical 2011 town references; no current-boundary equivalence, no fuzzy names or population aggregation",
+    "status": "deployed_server_verified",
+    "archive": "pilot/raw/urban-official-links-20261102",
+    "index_sha256": "7d588b2e795200f8c6b7c4d100338f4d300e5d7244cbeff7747ea7b3f28af4a4",
+    "tests": "23 PHPUnit tests / 82 assertions; 3 official-reference Python tests; Kengeri regression and urban page render checks",
+    "public_visual": "unverified; Cloudflare protections unchanged",
+    "rollback_ref": "rollback/urban-official-links-20261102"
+  },
+  "parent_sources_urban_followup": {
+    "starting_unresolved": 1038,
+    "newly_linked": 6,
+    "remaining": 1032,
+    "new_record_links": 6,
+    "states": {
+      "28": 2,
+      "20": 1,
+      "29": 1,
+      "27": 1,
+      "8": 1
+    },
+    "policy": "Exact name within explicit LGD parent Census crosswalk; unique historical town; no current extent equivalence or aggregation",
+    "status": "deployed_server_verified",
+    "archive": "pilot/raw/urban-parent-links-20261102",
+    "index_sha256": "fdd7f1000d44ec44f2200ba8cbda79ce91d8f421eb5014d6b689a41dae65d117",
+    "tests": "4 Python parent matching tests and all six live page render checks passed; PHPUnit stalled without results and was stopped.",
+    "public_visual": "unverified; Cloudflare protections unchanged",
+    "rollback_ref": "rollback/urban-parent-links-20261102"
+  },
+  "ancestry_sources_urban_followup": {
+    "starting_unresolved": 1032,
+    "newly_linked": 8,
+    "remaining": 1024,
+    "new_record_links": 10,
+    "states": {
+      "8": 3,
+      "36": 1,
+      "9": 1,
+      "29": 2,
+      "21": 1
+    },
+    "policy": "Exact name within explicit LGD parent crosswalk, including covered-village ancestry, or official rename plus district evidence; unique historical town; no current extent equivalence or aggregation",
+    "status": "deployed_server_verified",
+    "archive": "pilot/raw/urban-ancestry-links-20261102",
+    "index_sha256": "00b4defc719d5531cccce2ed5de987cc7a3eb071e638eb9705a2c635ea450f2b",
+    "tests": "4 Python matching tests passed; all eight added page renders and retained Kengeri/scoped-town checks passed; no PHP application logic changed",
+    "public_visual": "unverified; Cloudflare protections unchanged",
+    "rollback_ref": "rollback/urban-ancestry-links-20261102"
+  },
+  "final_review": {
+    "remaining": 1024,
+    "reasons": {
+      "No usable explicit Census town code in LGD; other tested identity/parent crosswalks unresolved": 888,
+      "No matching body in archived LGD coverage source": 36,
+      "Explicit code has no matching published 2011 town in historical state": 100
+    },
+    "states": {
+      "1": 21,
+      "16": 11,
+      "18": 32,
+      "23": 43,
+      "27": 115,
+      "28": 38,
+      "29": 84,
+      "3": 23,
+      "36": 92,
+      "21": 8,
+      "6": 8,
+      "32": 19,
+      "5": 39,
+      "10": 129,
+      "8": 113,
+      "9": 134,
+      "19": 4,
+      "2": 12,
+      "20": 4,
+      "13": 20,
+      "24": 11,
+      "7": 1,
+      "14": 16,
+      "12": 17,
+      "15": 1,
+      "17": 2,
+      "11": 1,
+      "22": 24,
+      "33": 2
+    },
+    "status": "available_source_rollout_closed_with_unresolved_exceptions",
+    "newly_linked": 0,
+    "reason": "User requested closure after bounded final source review if further regions cannot be verified.",
+    "archive": "pilot/raw/urban-final-review-20261102",
+    "last_dashboard_deployment": "c587f87e7efdb092af8168f6cbc136b9ddbd30a9",
+    "boundary_year": 2011,
+    "public_visual": "unverified; existing protections unchanged",
+    "source_checks": [
+      {
+        "url": "https://kupwara.nic.in/notice/final-delimitation-of-municipal-council-kupwara-municipal-committee-handwara-municipal-committee-langate/",
+        "result": "Official municipal delimitation listing found; no verified bridge to a 2011 town or ward established."
+      },
+      {
+        "url": "https://www.udd.tripura.gov.in/sites/default/files/2023-09/Notification.pdf",
+        "result": "Fetch timed out; unverified."
+      },
+      {
+        "url": "https://mohua.gov.in/upload/uploadfiles/files/ULBs-population-data-considered-for-funding-of-AMRUT-2_0.pdf",
+        "result": "Fetch returned 404; unverified."
+      }
+    ],
+    "index_sha256": "00b4defc719d5531cccce2ed5de987cc7a3eb071e638eb9705a2c635ea450f2b"
+  }
+}

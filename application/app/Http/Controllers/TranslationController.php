@@ -13,7 +13,7 @@ class TranslationController extends Controller
 {
     public function index(SiteSettings $settings): View
     {
-        $entries = config('hindi');
+        $entries = array_replace(config('hindi'), $settings->get('translations.hi', []));
         foreach (app(StaticPages::class)->all() as $page) {
             foreach (['title', 'summary', 'content'] as $field) {
                 $entries[$page[$field]] ??= '';

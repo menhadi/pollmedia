@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -26,22 +25,33 @@ class ArchiveFiles
         return $this->pdfs->allowed($path) ? DB::table('pdf_storage_files')->where('path_hash', hash('sha256', $path))->first() : null;
     }
 
-    private function jsonRecord(string $path): ?object
+    private function jsonRecord(string $path, bool $includeBody = false, ?string $digestSuffix = null): ?object
     {
         if (str_contains($path, '..') || str_contains($path, '\\') || str_contains($path, "\0")
             || ! preg_match('~^(election-archive|election-by-elections)/[a-zA-Z0-9_./-]+\.json$~', $path)
-            || ! Schema::hasTable('archive_json_files')) {
+            || ! RequestSchema::hasTable('archive_json_files')) {
             return null;
         }
 
-        return DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))->first();
+        $query = DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))
+            ->select($includeBody ? ['*'] : ['path', 'sha256', 'bytes']);
+        if ($digestSuffix !== null) {
+            $source = $query->selectRaw("pg_catalog.convert_to(body, pg_catalog.current_setting('client_encoding')) AS fingerprint_body")->offset(0);
+            $query = DB::query()->fromSub($source, 'verified_archive_bytes')->select(['path', 'sha256', 'bytes'])
+                ->selectRaw("pg_catalog.octet_length(fingerprint_body) AS fingerprint_bytes, pg_catalog.encode(pg_catalog.sha256(fingerprint_body), 'hex') AS fingerprint_sha256");
+            if ($digestSuffix !== '') {
+                $query->selectRaw("pg_catalog.encode(pg_catalog.sha256(fingerprint_body || pg_catalog.convert_to(?, pg_catalog.current_setting('client_encoding'))), 'hex') AS derived_sha256", [$digestSuffix]);
+            }
+        }
+
+        return $query->first();
     }
 
     private function originalRecord(string $path): ?object
     {
         if (str_contains($path, '..') || str_contains($path, '\\') || str_contains($path, "\0")
             || ! preg_match('~^(election-archive|election-by-elections)/[a-f0-9]{24}/[A-Za-z0-9_.-]+\.(?:html|xls|xlsx|zip)$~', $path)
-            || ! Schema::hasTable('archive_original_files')) {
+            || ! RequestSchema::hasTable('archive_original_files')) {
             return null;
         }
 
@@ -60,14 +70,11 @@ class ArchiveFiles
         if ($local->exists($path)) {
             return $local->readStream($path);
         }
-        $json = $this->jsonRecord($path);
+        $json = $this->jsonRecord($path, true);
         if ($json) {
-            if ($json->path !== $path || (int) $json->bytes !== strlen($json->body)
-                || ! hash_equals($json->sha256, hash('sha256', $json->body))) {
-                throw new RuntimeException('Archived JSON checksum differs.');
-            }
+            $body = $this->checkedJsonBody($json, $path);
             $stream = fopen('php://temp/maxmemory:1048576', 'w+b');
-            fwrite($stream, $json->body);
+            fwrite($stream, $body);
             rewind($stream);
 
             return $stream;
@@ -83,8 +90,41 @@ class ArchiveFiles
         }
     }
 
+    private function checkedJsonBody(object $record, string $path): string
+    {
+        if ($record->path !== $path || (int) $record->bytes !== strlen($record->body)
+            || ! hash_equals($record->sha256, hash('sha256', $record->body))) {
+            throw new RuntimeException('Archived JSON checksum differs.');
+        }
+
+        return $record->body;
+    }
+
+    public function verifiedJsonDigest(string $path, string $suffix = ''): ?string
+    {
+        if (Storage::disk('local')->exists($path) || DB::connection()->getDriverName() !== 'pgsql') {
+            return null;
+        }
+        $record = $this->jsonRecord($path, false, $suffix);
+        if ($record === null) {
+            return null;
+        }
+        if ($record->path !== $path || (int) $record->bytes !== (int) $record->fingerprint_bytes
+            || ! hash_equals($record->sha256, $record->fingerprint_sha256)) {
+            throw new RuntimeException('Archived JSON checksum differs.');
+        }
+
+        return $suffix === '' ? $record->fingerprint_sha256 : $record->derived_sha256;
+    }
+
     public function get(string $path): string
     {
+        if (str_ends_with($path, '.json') && ! Storage::disk('local')->exists($path)) {
+            $json = $this->jsonRecord($path, true);
+            if ($json) {
+                return $this->checkedJsonBody($json, $path);
+            }
+        }
         $stream = $this->readStream($path);
         try {
             $body = stream_get_contents($stream);
@@ -151,6 +191,48 @@ class ArchiveFiles
             return false;
         }
 
+        if (! Storage::disk('local')->exists($path) && preg_match('/^[a-f0-9]{64}$/', $sha256)) {
+            $record = $this->record($path) ?: $this->originalRecord($path);
+            if ($record?->profile_id && hash_equals($record->sha256, $sha256)) {
+                $directory = storage_path('app/verified-originals');
+                if (! is_dir($directory) && ! mkdir($directory, 0700, true) && ! is_dir($directory)) {
+                    throw new RuntimeException('Could not prepare verified source storage.');
+                }
+                $cached = $directory.'/'.$sha256;
+                if (is_file($cached) && filesize($cached) === (int) $record->bytes && hash_equals($sha256, hash_file('sha256', $cached))) {
+                    return true;
+                }
+                $temporary = tempnam($directory, 'source-');
+                $input = null;
+                $output = null;
+                try {
+                    $input = $this->readStream($path);
+                    $output = fopen($temporary, 'wb');
+                    stream_copy_to_stream($input, $output);
+                    fclose($output);
+                    $output = null;
+                    if (filesize($temporary) !== (int) $record->bytes || ! hash_equals($sha256, hash_file('sha256', $temporary))) {
+                        return false;
+                    }
+                    if (! rename($temporary, $cached)) {
+                        throw new RuntimeException('Could not preserve verified source bytes.');
+                    }
+
+                    return true;
+                } finally {
+                    if (is_resource($input)) {
+                        fclose($input);
+                    }
+                    if (is_resource($output)) {
+                        fclose($output);
+                    }
+                    if (is_file($temporary)) {
+                        unlink($temporary);
+                    }
+                }
+            }
+        }
+
         return hash_equals($sha256, $this->pdfs->hashStream($this->readStream($path)));
     }
 
@@ -191,7 +273,7 @@ class ArchiveFiles
         $locks = [];
         try {
             $files = DB::table('pdf_storage_files')->whereNotNull('profile_id')->get()->all();
-            if (Schema::hasTable('archive_original_files')) {
+            if (RequestSchema::hasTable('archive_original_files')) {
                 array_push($files, ...DB::table('archive_original_files')->get()->all());
             }
             foreach ($files as $file) {

@@ -1,0 +1,1 @@
+<nav class="location-breadcrumbs" aria-label="{{ app()->getLocale()==='hi'?'स्थान पथ':'Location breadcrumb' }}"><ol>@foreach($locationTrail as $crumb)<li>@if(!empty($crumb['url']))<a href="{{ $crumb['url'] }}">{{ $crumb['label'] }}</a>@else<span @if($loop->last) aria-current="page" @endif>{{ $crumb['label'] }}</span>@endif</li>@endforeach</ol></nav>

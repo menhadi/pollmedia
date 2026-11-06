@@ -16,9 +16,9 @@
 
 @include('seo-metadata', ['seoTitle' => $__env->yieldContent('title').' · Pollmedia', 'seoDescription' => $__env->yieldContent('description')])
 
-<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')</head>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">@include('india-map-assets')<link rel="stylesheet" href="{{ asset('css/census-profile.css') }}"><script src="{{ asset('js/history-lines.js') }}" defer></script>@include('place-layout-assets')</head>
 
-<body>@include('public-header')<main>
+<body class="place-layout election-ui census-area-ui">@include('public-header')<main class="area-dashboard" data-local-dashboard>
 
 <nav class="crumb" aria-label="Breadcrumb"><a href="{{ route('india') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / <a href="{{ route('places.show',['type'=>'district','slug'=>'pilibhit']) }}">Pilibhit district</a> / <a href="{{ route('villages.index',['year'=>$census['year']]) }}">Census villages</a></nav>
 
@@ -36,4 +36,4 @@
 
 </section>
 
-</main>@include('public-footer')</body></html>
+</main>@include('public-footer')<script type="module" src="{{ asset('js/census-local-dashboard.js') }}?v={{ substr(hash_file('sha256',public_path('js/census-local-dashboard.js')),0,12) }}"></script></body></html>

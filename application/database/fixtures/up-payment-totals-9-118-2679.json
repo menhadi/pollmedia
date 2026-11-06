@@ -1,0 +1,596 @@
+{
+  "schema": 1,
+  "publication_enabled": true,
+  "records": [
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "5,62,100.00",
+      "payment_total_decimal": "562100.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1391-source.json",
+      "source_sha256": "3270e4819c4a8683b732d5aab6676cbd63b4f632045d757b81e70e5ac3581812",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T09:35:00.214Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "NaglaGola",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "5,98,339.00",
+      "payment_total_decimal": "598339.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1391-source.json",
+      "source_sha256": "3270e4819c4a8683b732d5aab6676cbd63b4f632045d757b81e70e5ac3581812",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T09:35:00.214Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2026-2027",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "6,14,836.00",
+      "payment_total_decimal": "614836.00",
+      "unit": null,
+      "source_file": "up-agra-2026-block-1396-source.json",
+      "source_sha256": "b6fd8750518eaa995e9e63d6973745ca6a0433f1cc82a0dc88976808423b727f",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2026-2027/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T09:35:57.915Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "11,68,555.00",
+      "payment_total_decimal": "1168555.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1391-source.json",
+      "source_sha256": "ed66857c158036db47815cc03861e4867a4a5cdc8c06acaa6a6386ea52a3e6ab",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T10:00:49.606Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "Naglagola",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "9,44,042.00",
+      "payment_total_decimal": "944042.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1391-source.json",
+      "source_sha256": "ed66857c158036db47815cc03861e4867a4a5cdc8c06acaa6a6386ea52a3e6ab",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T10:00:49.606Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2020-2021",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "8,92,557.00",
+      "payment_total_decimal": "892557.00",
+      "unit": null,
+      "source_file": "up-agra-2020-block-1396-source.json",
+      "source_sha256": "0cf73cad81daa655f33e5577fe25f3502ff6d69fb811eb5f5eec001f24121e58",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2020-2021/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T10:01:03.732Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "6,90,021.00",
+      "payment_total_decimal": "690021.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1391-source.json",
+      "source_sha256": "4ddac0d8d004a4652887c7228dd1ffd330a4df545fbb809b12bdedf4a6807d87",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T09:59:47.494Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "NaglaGola",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "13,03,701.00",
+      "payment_total_decimal": "1303701.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1391-source.json",
+      "source_sha256": "4ddac0d8d004a4652887c7228dd1ffd330a4df545fbb809b12bdedf4a6807d87",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T09:59:47.494Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2021-2022",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "11,20,671.00",
+      "payment_total_decimal": "1120671.00",
+      "unit": null,
+      "source_file": "up-agra-2021-block-1396-source.json",
+      "source_sha256": "3afec9f4af81d3ad192a02e8f414e2819981a3e2011423abe0de5fb2d9f775af",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2021-2022/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T09:59:52.640Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "7,53,631.00",
+      "payment_total_decimal": "753631.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1391-source.json",
+      "source_sha256": "95f5c9c8c16160a726d2663413f829340535492f865b27cf964b4e3586f85a46",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T09:59:23.613Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "NaglaGola",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "6,75,280.00",
+      "payment_total_decimal": "675280.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1391-source.json",
+      "source_sha256": "95f5c9c8c16160a726d2663413f829340535492f865b27cf964b4e3586f85a46",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T09:59:23.613Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2022-2023",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "8,22,333.00",
+      "payment_total_decimal": "822333.00",
+      "unit": null,
+      "source_file": "up-agra-2022-block-1396-source.json",
+      "source_sha256": "fa8ab79a98457b66515caa0ca0acead1b4d97879fa979ddb27a92b9bee7abab1",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2022-2023/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T09:59:28.924Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "11,29,705.00",
+      "payment_total_decimal": "1129705.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1391-source.json",
+      "source_sha256": "3c0434f28480e8366e0e964c20ad16f6afe993c5d152745fa558945823cd9518",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T09:58:49.458Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "NaglaGola",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "12,36,372.00",
+      "payment_total_decimal": "1236372.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1391-source.json",
+      "source_sha256": "3c0434f28480e8366e0e964c20ad16f6afe993c5d152745fa558945823cd9518",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T09:58:49.458Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2023-2024",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "7,24,043.00",
+      "payment_total_decimal": "724043.00",
+      "unit": null,
+      "source_file": "up-agra-2023-block-1396-source.json",
+      "source_sha256": "89ef775b7ff81f3d0a8baf8f23c557ef09cd33b90a6467a773bb728349cc286e",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2023-2024/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T09:58:54.670Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "15,96,830.00",
+      "payment_total_decimal": "1596830.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1391-source.json",
+      "source_sha256": "5a7f50241710291348ba34fdde2f784640ab60cf35ad53836d3f791bf5bed445",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T09:57:42.394Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "NaglaGola",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "11,12,065.00",
+      "payment_total_decimal": "1112065.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1391-source.json",
+      "source_sha256": "5a7f50241710291348ba34fdde2f784640ab60cf35ad53836d3f791bf5bed445",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T09:57:42.394Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2024-2025",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "9,61,277.00",
+      "payment_total_decimal": "961277.00",
+      "unit": null,
+      "source_file": "up-agra-2024-block-1396-source.json",
+      "source_sha256": "62418b277efa795fd0fa3f48129212018782ef467a6507de7ee7bdeb4891e266",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2024-2025/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T09:57:46.737Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267978",
+      "name": "NagalaMahasingh",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124534"
+      ],
+      "payment_total_source_text": "11,79,237.00",
+      "payment_total_decimal": "1179237.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1391-source.json",
+      "source_sha256": "dea3c77192fa1fd97b3d92bf5854660d966812392bfdc7f9cb8dbe5b24ed2eb2",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=267978.html",
+      "capture_batch_date": "2026-10-29T09:57:01.019Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267964",
+      "name": "NaglaGola",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1391",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124544"
+      ],
+      "payment_total_source_text": "11,20,324.00",
+      "payment_total_decimal": "1120324.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1391-source.json",
+      "source_sha256": "dea3c77192fa1fd97b3d92bf5854660d966812392bfdc7f9cb8dbe5b24ed2eb2",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=267964.html",
+      "capture_batch_date": "2026-10-29T09:57:01.019Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    },
+    {
+      "panchayat_code": "267985",
+      "name": "RahanKhudra",
+      "financial_year": "2025-2026",
+      "report_state": "9",
+      "report_district": "109",
+      "report_block": "1396",
+      "civil_state_lgd": "9",
+      "civil_district_lgd": "118",
+      "village_lgd_codes": [
+        "124506"
+      ],
+      "payment_total_source_text": "8,20,697.00",
+      "payment_total_decimal": "820697.00",
+      "unit": null,
+      "source_file": "up-agra-2025-block-1396-source.json",
+      "source_sha256": "b9ac6f612838f280d43283c4cb0ae724e5215e084f59f6482dfab4bd07c7f482",
+      "official_detail_url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpFY2025-2026/9&name=267985.html",
+      "capture_batch_date": "2026-10-29T09:57:11.281Z",
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM",
+      "measure": "Source-reported Payments total from financial progress summary",
+      "independently_verified": false,
+      "annual_accounts_complete": false
+    }
+  ],
+  "sources": {
+    "up-agra-2020-block-1391-source.json": {
+      "sha256": "ed66857c158036db47815cc03861e4867a4a5cdc8c06acaa6a6386ea52a3e6ab",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2020-block-1396-source.json": {
+      "sha256": "0cf73cad81daa655f33e5577fe25f3502ff6d69fb811eb5f5eec001f24121e58",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2020-2021/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Monday, July 18, 2022 3:58 AM"
+    },
+    "up-agra-2021-block-1391-source.json": {
+      "sha256": "4ddac0d8d004a4652887c7228dd1ffd330a4df545fbb809b12bdedf4a6807d87",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2021-block-1396-source.json": {
+      "sha256": "3afec9f4af81d3ad192a02e8f414e2819981a3e2011423abe0de5fb2d9f775af",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2021-2022/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1391-source.json": {
+      "sha256": "95f5c9c8c16160a726d2663413f829340535492f865b27cf964b4e3586f85a46",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2022-block-1396-source.json": {
+      "sha256": "fa8ab79a98457b66515caa0ca0acead1b4d97879fa979ddb27a92b9bee7abab1",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2022-2023/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Wednesday, October 23, 2024 3:42 AM"
+    },
+    "up-agra-2023-block-1391-source.json": {
+      "sha256": "3c0434f28480e8366e0e964c20ad16f6afe993c5d152745fa558945823cd9518",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2023-block-1396-source.json": {
+      "sha256": "89ef775b7ff81f3d0a8baf8f23c557ef09cd33b90a6467a773bb728349cc286e",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2023-2024/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, February 6, 2025 3:07 AM"
+    },
+    "up-agra-2024-block-1391-source.json": {
+      "sha256": "5a7f50241710291348ba34fdde2f784640ab60cf35ad53836d3f791bf5bed445",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2024-block-1396-source.json": {
+      "sha256": "62418b277efa795fd0fa3f48129212018782ef467a6507de7ee7bdeb4891e266",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2024-2025/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1391-source.json": {
+      "sha256": "dea3c77192fa1fd97b3d92bf5854660d966812392bfdc7f9cb8dbe5b24ed2eb2",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2025-block-1396-source.json": {
+      "sha256": "b9ac6f612838f280d43283c4cb0ae724e5215e084f59f6482dfab4bd07c7f482",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2025-2026/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1391-source.json": {
+      "sha256": "3270e4819c4a8683b732d5aab6676cbd63b4f632045d757b81e70e5ac3581812",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1391.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    },
+    "up-agra-2026-block-1396-source.json": {
+      "sha256": "b6fd8750518eaa995e9e63d6973745ca6a0433f1cc82a0dc88976808423b727f",
+      "url": "https://egramswaraj.gov.in/FileRedirect.jsp?FD=ExpenditureReport2026-2027/9/109&name=1396.html",
+      "unit": null,
+      "source_generated_text": "Report generated through eGramSwaraj(https://egramswaraj.gov.in) on Thursday, October 29, 2026 4:32 AM"
+    }
+  }
+}

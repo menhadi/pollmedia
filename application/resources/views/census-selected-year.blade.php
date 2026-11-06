@@ -3,7 +3,7 @@
 @foreach(array_reverse($censusSeries['rows']) as $point)
 <div data-census-year-panel="{{ $point['year'] }}" @if($point['year']!==$year) hidden @endif><div class="metrics">
 @php
-$currentValues=$point['year']===$year && $records->count()===1?json_decode($records->first()->values,true):[];
+$currentValues=$point['year']===$year?($areaPresentation['values']??($records->count()===1?json_decode($records->first()->values,true):[])):[];
 $pointFields=['TOT_P'=>'population','TOT_M'=>'male','TOT_F'=>'female','No_HH'=>'households','P_LIT'=>'literates'];
 @endphp
 @foreach($measures as $code=>$label)

@@ -1,0 +1,169 @@
+{
+  "source_url": "https://surveyofindia.gov.in/documents/ANDHRA_PRADESH.zip",
+  "sha256": "7a63088711811c648ea24be61e9a2e93e1d29310ed29ba0b415d17ad456a5740",
+  "source_edition": "Unverified",
+  "maps": {
+    "anakapalli": {
+      "source_label": "Anakapalli",
+      "map_path": "maps/andhra-pradesh-source-villages/anakapalli.geojson",
+      "accepted_shapes": 736,
+      "statuses": {
+        "unlinked": 713,
+        "ambiguous": 23
+      },
+      "rejected": []
+    },
+    "kakinada": {
+      "source_label": "Kakinada",
+      "map_path": "maps/andhra-pradesh-source-villages/kakinada.geojson",
+      "accepted_shapes": 420,
+      "statuses": {
+        "unlinked": 410,
+        "ambiguous": 10
+      },
+      "rejected": [
+        {
+          "code": "",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "parvathipuram-manyam": {
+      "source_label": "Parvathipuram Manyam",
+      "map_path": "maps/andhra-pradesh-source-villages/parvathipuram-manyam.geojson",
+      "accepted_shapes": 971,
+      "statuses": {
+        "unlinked": 957,
+        "ambiguous": 14
+      },
+      "rejected": []
+    },
+    "konaseema": {
+      "source_label": "Dr. B.R. Ambedkar Konaseema",
+      "map_path": "maps/andhra-pradesh-source-villages/konaseema.geojson",
+      "accepted_shapes": 326,
+      "statuses": {
+        "unlinked": 313,
+        "ambiguous": 13
+      },
+      "rejected": []
+    },
+    "eluru": {
+      "source_label": "Eluru",
+      "map_path": "maps/andhra-pradesh-source-villages/eluru.geojson",
+      "accepted_shapes": 674,
+      "statuses": {
+        "unlinked": 653,
+        "ambiguous": 21
+      },
+      "rejected": []
+    },
+    "bapatla": {
+      "source_label": "Bapatla",
+      "map_path": "maps/andhra-pradesh-source-villages/bapatla.geojson",
+      "accepted_shapes": 286,
+      "statuses": {
+        "unlinked": 278,
+        "ambiguous": 8
+      },
+      "rejected": []
+    },
+    "ntr": {
+      "source_label": "NTR",
+      "map_path": "maps/andhra-pradesh-source-villages/ntr.geojson",
+      "accepted_shapes": 316,
+      "statuses": {
+        "unlinked": 304,
+        "ambiguous": 12
+      },
+      "rejected": [
+        {
+          "code": "588859",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "palnadu": {
+      "source_label": "Palnadu",
+      "map_path": "maps/andhra-pradesh-source-villages/palnadu.geojson",
+      "accepted_shapes": 402,
+      "statuses": {
+        "unlinked": 354,
+        "ambiguous": 48
+      },
+      "rejected": []
+    },
+    "tirupati": {
+      "source_label": "Tirupati",
+      "map_path": "maps/andhra-pradesh-source-villages/tirupati.geojson",
+      "accepted_shapes": 1056,
+      "statuses": {
+        "unlinked": 1010,
+        "ambiguous": 46
+      },
+      "rejected": []
+    },
+    "annamayya": {
+      "source_label": "Annamayya",
+      "map_path": "maps/andhra-pradesh-source-villages/annamayya.geojson",
+      "accepted_shapes": 543,
+      "statuses": {
+        "unlinked": 464,
+        "ambiguous": 79
+      },
+      "rejected": []
+    },
+    "alluri-sitharama-raju": {
+      "source_label": "Alluri Sitharama Raju",
+      "map_path": "maps/andhra-pradesh-source-villages/alluri-sitharama-raju.geojson",
+      "accepted_shapes": 3424,
+      "statuses": {
+        "unlinked": 3295,
+        "ambiguous": 129
+      },
+      "rejected": [
+        {
+          "code": "",
+          "reason": "Invalid source shape"
+        },
+        {
+          "code": "",
+          "reason": "Invalid source shape"
+        },
+        {
+          "code": "",
+          "reason": "Invalid source shape"
+        },
+        {
+          "code": "",
+          "reason": "Invalid source shape"
+        }
+      ]
+    },
+    "nandyal": {
+      "source_label": "Nandyal",
+      "map_path": "maps/andhra-pradesh-source-villages/nandyal.geojson",
+      "accepted_shapes": 489,
+      "statuses": {
+        "unlinked": 445,
+        "ambiguous": 44
+      },
+      "rejected": []
+    },
+    "sri-sathya-sai": {
+      "source_label": "Sri Sathya Sai",
+      "map_path": "maps/andhra-pradesh-source-villages/sri-sathya-sai.geojson",
+      "accepted_shapes": 475,
+      "statuses": {
+        "unlinked": 453,
+        "ambiguous": 22
+      },
+      "rejected": [
+        {
+          "code": "595583",
+          "reason": "Invalid source shape"
+        }
+      ]
+    }
+  }
+}

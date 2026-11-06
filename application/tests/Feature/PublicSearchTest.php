@@ -22,7 +22,7 @@ class PublicSearchTest extends TestCase
         $this->assertCount(1, collect($suggestions)->filter(fn (array $row): bool => $row['label'] === 'Pilibhit' && $row['type'] === 'Assembly (AC)'));
         $this->assertStringNotContainsString('Place profile', json_encode($suggestions));
         $this->getJson('/search?q=P')->assertOk()->assertExactJson(['suggestions' => []]);
-        $this->get('/search?q=Pilibhit')->assertOk()->assertSee('Lok Sabha')->assertSee('Assembly (AC)')->assertSee('Pilibhit Test Village')->assertSee('/india/village/123456-pilibhit-test-village', false)->assertDontSee('PC · 2024');
+        $this->get('/search?q=Pilibhit')->assertOk()->assertSee('Lok Sabha')->assertSee('Assembly (AC)')->assertSee('Pilibhit Test Village')->assertSee('/india/village/uttar-pradesh/pilibhit/pilibhit-test-village-123456', false)->assertDontSee('PC · 2024');
         $this->get('/search?q=Pilibhit&kind=pc')->assertOk()->assertSee('Places')->assertDontSee('Pilibhit Test Village')->assertDontSee('/india/ac/pilibhit', false);
         $this->get('/search?q=123456&kind=village')->assertOk()->assertSee('Pilibhit Test Village')->assertDontSee('matching records');
         $this->get('/search?q=NoSuchPlace')->assertOk()->assertSee('No matching pages yet');
@@ -40,5 +40,17 @@ class PublicSearchTest extends TestCase
         $this->assertSame('Uttar Pradesh · 1962–1962', $matches[3]['period']);
         $this->assertSame('Pilibhit Old', $matches[3]['label']);
         $this->get('/search?q=Pilibhit')->assertSee('Pilibhit Old')->assertDontSee('Place profile');
+    }
+
+    public function test_repeated_suggestions_reuse_results_without_requerying_place_catalogues(): void
+    {
+        $this->seed(PilibhitSeeder::class);
+        $first = $this->getJson('/search?q=Pilibhit')->assertOk()->json();
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+        $this->getJson('/search?q=Pilibhit')->assertOk()->assertExactJson($first);
+        $catalogueQueries = collect(DB::getQueryLog())->filter(fn ($query) => str_contains($query['query'], 'historical_constituency_index') || str_contains($query['query'], 'census_catalogue_rows'));
+        $this->assertCount(0, $catalogueQueries);
+        DB::disableQueryLog();
     }
 }
