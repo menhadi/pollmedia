@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
-use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -42,9 +40,7 @@ class ConstituencyKhangabokHistoryTest extends TestCase
 
     private function verifyRendered(string $name, array $years, array $rawNames): void
     {
-        Cache::flush();
-        $this->app->forgetInstance(ConstituencyUrls::class);
-        $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
+        $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
             ->assertViewHas('rows', fn ($rows) => $rows->pluck('entry.constituency_name')->sort()->values()->all() === collect($rawNames)->sort()->values()->all());
         $dom = new \DOMDocument;
         @$dom->loadHTML($response->getContent());
@@ -111,9 +107,7 @@ class ConstituencyKhangabokHistoryTest extends TestCase
         $this->add(self::OLD, 1974, 'Khangabok', 35);
         foreach ([['pc', 'Manipur'], ['ac', 'Tripura']] as [$kind, $state]) {
             DB::table('historical_constituency_index')->update(['kind' => $kind, 'state_label' => $state]);
-            Cache::flush();
-            $this->app->forgetInstance(ConstituencyUrls::class);
-            $this->get(ConstituencyUrls::url(['kind' => $kind, 'state' => $state, 'name' => 'Khangabo']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
+            $this->get(route('constituency.overview', ['kind' => $kind, 'state' => $state, 'name' => 'Khangabo']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
         }
     }
 
@@ -121,7 +115,7 @@ class ConstituencyKhangabokHistoryTest extends TestCase
     {
         $this->add(self::OLD, 1974, 'Khangabok', 34);
         $this->add(self::OLD, 1974, 'Khangabo', 35);
-        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Khangabok']))->assertOk()->assertViewIs('constituency-history-choices')->assertViewHas('entries', fn ($entries) => $entries->count() === 2);
+        $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Khangabok']))->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Manipur', 'q' => 'Khangabok']));
     }
 
     public function test_preserved_archive_fallback_applies_the_same_edition_guards(): void

@@ -4,11 +4,9 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
-use App\Services\ConstituencyUrls;
 use App\Services\ElectionArchive;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -46,7 +44,7 @@ class ConstituencyManipurSpellingHistoryTest extends TestCase
         $this->index('d', 2007, 'Khetrigao', 7);
         $this->mockRecords();
         foreach (['Kshetrigao', 'Khetrigao'] as $name) {
-            $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
+            $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
                 ->assertViewHas('rows', function ($rows) use ($name): bool {
                     $names = $rows->pluck('entry.constituency_name');
 
@@ -88,10 +86,8 @@ class ConstituencyManipurSpellingHistoryTest extends TestCase
         $this->mockRecords();
         foreach ([['ac', 'Manipur'], ['pc', 'Manipur'], ['ac', 'Tripura']] as [$kind, $state]) {
             DB::table('historical_constituency_index')->update(['kind' => $kind, 'state_label' => $state]);
-            Cache::flush();
-            $this->app->forgetInstance(ConstituencyUrls::class);
             DB::table('historical_constituency_index')->where('edition_id', str_repeat('b', 24))->update(['record_code' => $kind === 'ac' && $state === 'Manipur' ? 7 : 4]);
-            $this->get(ConstituencyUrls::url(['kind' => $kind, 'state' => $state, 'name' => 'Kshetrigao']))->assertOk()
+            $this->get(route('constituency.overview', ['kind' => $kind, 'state' => $state, 'name' => 'Kshetrigao']))->assertOk()
                 ->assertViewHas('rows', fn ($rows) => $rows->count() === 1 && $rows->first()['entry']->constituency_name === 'Kshetrigao');
         }
         $this->assertSame([], ConstituencyArchiveHistory::manipurAssemblyAliasNames('ac', 'Manipur', 'Kshetrigao (ST)'));
@@ -102,8 +98,8 @@ class ConstituencyManipurSpellingHistoryTest extends TestCase
         $this->index('a', 2017, 'Kshetrigao', 7);
         $this->index('a', 2017, 'Khetrigao', 4);
         $this->mockRecords();
-        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Kshetrigao']))
-            ->assertOk()->assertViewIs('constituency-history-choices')->assertViewHas('entries', fn ($entries) => $entries->count() === 2);
+        $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Kshetrigao']))
+            ->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Manipur', 'q' => 'Kshetrigao']));
     }
 
     public function test_unindexed_alias_matches_only_manipur_assembly_code_four_and_preserves_raw_names(): void

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -150,7 +149,7 @@ JSON, true, flags: JSON_THROW_ON_ERROR);
         $this->mock(HistoricalElectionArchive::class, function ($mock) use ($record): void {
             $mock->shouldReceive('load')->andReturn([['source_url' => 'https://old.eci.gov.in/files/file/3309-tripura-2008/', 'source_sha256' => $record['summary_source_sha256'], 'records' => [$record]]]);
         });
-        $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Tripura', 'name' => 'Banamalipur']))->assertOk();
+        $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Tripura', 'name' => 'Banamalipur']))->assertOk();
         $dom = new \DOMDocument;
         @$dom->loadHTML($response->getContent());
         $xpath = new \DOMXPath($dom);

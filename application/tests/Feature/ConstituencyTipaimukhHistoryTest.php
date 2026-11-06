@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
-use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -42,9 +40,7 @@ class ConstituencyTipaimukhHistoryTest extends TestCase
 
     private function verifyRendered(string $name, array $years, array $rawNames): void
     {
-        Cache::flush();
-        $this->app->forgetInstance(ConstituencyUrls::class);
-        $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
+        $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
             ->assertViewHas('rows', fn ($rows) => $rows->pluck('entry.constituency_name')->sort()->values()->all() === collect($rawNames)->sort()->values()->all());
         $dom = new \DOMDocument;
         @$dom->loadHTML($response->getContent());
@@ -89,15 +85,9 @@ class ConstituencyTipaimukhHistoryTest extends TestCase
         }
         $this->add('c2f796a4415124c983df09b7', 1967, 'TIPAIMUKH (SC)', 55);
         $this->records();
-        foreach (['tipaimukh', 'Tipaimukh (ST)', 'Tipalmukh (ST)'] as $name) {
+        foreach (['tipaimukh', 'tipalmukh', 'Tipaimukh (ST)', 'Tipalmukh (ST)'] as $name) {
             $this->verifyRendered($name, $years, $names);
         }
-    }
-
-    public function test_unpublished_bare_alias_is_not_a_named_route(): void
-    {
-        $this->add(self::OLD, 1974, 'Tipalmukh (ST)', 55);
-        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'tipalmukh']))->assertNotFound();
     }
 
     public function test_aliases_refuse_wrong_codes_editions_states_kinds_and_reservations(): void
@@ -119,9 +109,7 @@ class ConstituencyTipaimukhHistoryTest extends TestCase
         $this->add(self::OLD, 1974, 'Tipalmukh (ST)', 55);
         foreach ([['pc', 'Manipur'], ['ac', 'Tripura']] as [$kind, $state]) {
             DB::table('historical_constituency_index')->update(['kind' => $kind, 'state_label' => $state]);
-            Cache::flush();
-            $this->app->forgetInstance(ConstituencyUrls::class);
-            $this->get(ConstituencyUrls::url(['kind' => $kind, 'state' => $state, 'name' => 'Tipalmukh (ST)']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
+            $this->get(route('constituency.overview', ['kind' => $kind, 'state' => $state, 'name' => 'Tipalmukh (ST)']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
         }
     }
 
@@ -129,7 +117,7 @@ class ConstituencyTipaimukhHistoryTest extends TestCase
     {
         $this->add(self::OLD, 1974, 'Tipaimukh (ST)', 56);
         $this->add(self::OLD, 1974, 'Tipalmukh (ST)', 55);
-        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Tipaimukh (ST)']))->assertOk()->assertViewIs('constituency-history-choices')->assertViewHas('entries', fn ($entries) => $entries->count() === 2);
+        $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Tipaimukh (ST)']))->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Manipur', 'q' => 'Tipaimukh (ST)']));
     }
 
     public function test_preserved_archive_fallback_applies_edition_and_code_guards(): void

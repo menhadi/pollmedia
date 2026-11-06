@@ -9,7 +9,3 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
-
-database/fixtures/national-2001-profile-links.json filter=lfs diff=lfs merge=lfs -text
-
-database/fixtures/village-directory-2001-links.sqlite filter=lfs diff=lfs merge=lfs -text
