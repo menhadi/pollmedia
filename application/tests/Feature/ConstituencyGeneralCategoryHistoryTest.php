@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyUrls;
 use App\Services\ElectionArchive;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,7 +38,7 @@ class ConstituencyGeneralCategoryHistoryTest extends TestCase
         $this->index('d', 2007, 'Khundrakpam (ST)');
         $this->mockRecords();
         foreach (['Khundrakpam', 'Khundrakpam (GEN)'] as $name) {
-            $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
+            $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
                 ->assertSee('3 available years')->assertSee('2017')->assertSee('2012')->assertSee('2022')->assertDontSee('2007')
                 ->assertViewHas('rows', fn ($rows) => $rows->pluck('entry.constituency_name')->contains('Khundrakpam (GEN)'));
         }
@@ -48,9 +49,9 @@ class ConstituencyGeneralCategoryHistoryTest extends TestCase
         $this->index('a', 2017, 'Heingang', 1);
         $this->index('a', 2017, 'Heingang (GEN)', 2);
         $this->mockRecords();
-        $base = route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Heingang']);
-        $this->get($base)->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Manipur', 'q' => 'Heingang']));
-        $this->get($base.'&edition='.str_repeat('a', 24).'&code=2')->assertOk()->assertSee('Second candidate')->assertDontSee('First candidate')->assertSee('This page shows the selected seat');
+        $base = ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Heingang']);
+        $this->get($base)->assertOk()->assertViewIs('constituency-history-choices')->assertViewHas('entries', fn ($entries) => $entries->count() === 2);
+        $this->get(url()->query($base, ['edition' => str_repeat('a', 24), 'code' => 2]))->assertOk()->assertSee('Second candidate')->assertDontSee('First candidate')->assertSee('This page shows the selected seat');
     }
 
     public function test_preserved_unindexed_general_category_record_is_found_without_rewriting_its_name(): void

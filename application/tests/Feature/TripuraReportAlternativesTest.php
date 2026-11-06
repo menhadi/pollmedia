@@ -2,13 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\ConstituencyOverviewController;
-use App\Services\ElectionArchive;
-use App\Services\HistoricalElectionAnalytics;
+use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionArchive;
-use App\Services\HistoricalElectionReview;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -32,8 +28,7 @@ class TripuraReportAlternativesTest extends TestCase
         });
         foreach (['Tripura East' => 482126, 'Tripura West' => 573532] as $name => $votes) {
             foreach ($editions as $edition => $label) {
-                $request = Request::create('/india/constituency', 'GET', ['kind' => 'pc', 'state' => 'Tripura', 'name' => $name, 'edition' => $edition]);
-                $view = app(ConstituencyOverviewController::class)->index($request, $archive, app(ElectionArchive::class), app(HistoricalElectionReview::class), app(HistoricalElectionAnalytics::class));
+                $view = $this->get(ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Tripura', 'name' => $name, 'edition' => $edition]))->assertOk()->original;
                 $data = $view->getData();
                 $this->assertCount(2, $data['rows']);
                 $this->assertCount(2, $data['reportAlternatives']);
@@ -51,8 +46,8 @@ class TripuraReportAlternativesTest extends TestCase
                 $this->assertStringContainsString('2019 report comparison:', view('place-history-charts', $data + ['reportMode' => true])->render());
                 $code = $data['chosen']['entry']->record_code;
                 $parameters = ['kind' => 'pc', 'state' => 'Tripura', 'name' => $name, 'edition' => $edition, 'code' => $code];
-                $overview = $this->get(route('constituency.overview', $parameters))->assertOk();
-                $printUrl = route('constituency.overview', ['kind' => 'pc', 'state' => 'Tripura', 'name' => $name, 'format' => 'report', 'edition' => $edition, 'code' => $code]);
+                $overview = $this->get(ConstituencyUrls::url($parameters))->assertOk();
+                $printUrl = ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Tripura', 'name' => $name, 'format' => 'report', 'edition' => $edition, 'code' => $code]);
                 $overview->assertSee($printUrl);
                 $printed = $this->get($printUrl)->assertOk();
                 foreach ([$overview, $printed] as $response) {
@@ -86,8 +81,7 @@ class TripuraReportAlternativesTest extends TestCase
                 }
             }
             unset($record);
-            $request = Request::create('/india/constituency', 'GET', ['kind' => 'pc', 'state' => 'Tripura', 'name' => 'Tripura East']);
-            $view = app(ConstituencyOverviewController::class)->index($request, $archive, app(ElectionArchive::class), app(HistoricalElectionReview::class), app(HistoricalElectionAnalytics::class));
+            $view = $this->get(ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Tripura', 'name' => 'Tripura East']))->assertOk()->original;
             $this->assertCount(0, $view->getData()['reportAlternatives'], $field);
             $this->assertCount(2, $view->getData()['chartSourceRows'], $field);
             $datasets[$revision] = $original;

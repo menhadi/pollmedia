@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -22,6 +24,8 @@ class ConstituencyBishenpurNambolHistoryTest extends TestCase
     private function add(string $id, int $year, string $name, int $code): void
     {
         DB::table('historical_constituency_index')->insert(['edition_id' => $id, 'record_code' => $code, 'kind' => 'ac', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => 'Manipur', 'constituency_name' => $name, 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 2, 'extraction_sha256' => str_repeat('c', 64)]);
+        Cache::flush();
+        $this->app->forgetInstance(ConstituencyUrls::class);
     }
 
     private function records(): void
@@ -40,7 +44,9 @@ class ConstituencyBishenpurNambolHistoryTest extends TestCase
 
     private function verifyRendered(string $name, array $years, array $rawNames): void
     {
-        $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
+        Cache::flush();
+        $this->app->forgetInstance(ConstituencyUrls::class);
+        $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
             ->assertViewHas('rows', fn ($rows) => $rows->pluck('entry.constituency_name')->sort()->values()->all() === collect($rawNames)->sort()->values()->all());
         $dom = new \DOMDocument;
         @$dom->loadHTML($response->getContent());
@@ -101,7 +107,9 @@ class ConstituencyBishenpurNambolHistoryTest extends TestCase
             DB::table('historical_constituency_index')->where('edition_id', self::OLD)->update(['record_code' => $code]);
             foreach ([['pc', 'Manipur'], ['ac', 'Tripura']] as [$kind, $state]) {
                 DB::table('historical_constituency_index')->update(['kind' => $kind, 'state_label' => $state]);
-                $this->get(route('constituency.overview', compact('kind', 'state', 'name')))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
+                Cache::flush();
+                $this->app->forgetInstance(ConstituencyUrls::class);
+                $this->get(ConstituencyUrls::url(compact('kind', 'state', 'name')))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
             }
         }
         DB::table('historical_constituency_index')->delete();
@@ -122,7 +130,7 @@ class ConstituencyBishenpurNambolHistoryTest extends TestCase
             DB::table('historical_constituency_index')->delete();
             $this->add(self::OLD, 1974, $name, $code + 1);
             $this->add(self::OLD, 1974, $alias, $code);
-            $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Manipur', 'q' => $name]));
+            $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()->assertViewIs('constituency-history-choices')->assertViewHas('entries', fn ($entries) => $entries->count() === 2);
         }
     }
 

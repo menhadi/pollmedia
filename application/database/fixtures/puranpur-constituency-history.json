@@ -1,0 +1,294 @@
+{
+  "1cc8415ab4d57b66831417e8": {
+    "source_url": "https://old.eci.gov.in/files/file/3259-uttar-pradesh-1996/",
+    "source_sha256": "a08f0f434a0042acb8530d9d0788a0e481c220729fd0fd2f8ec6e8adba0f607d",
+    "kind": "ac",
+    "year": 1996,
+    "source_file": "1cc8415ab4d57b66831417e8-7503.pdf",
+    "records": [
+      {
+        "code": 60,
+        "name": "PURANPUR",
+        "detail_page": 473,
+        "summary_page": 93,
+        "candidates": [
+          {
+            "candidate_name": "GOPAL KRISHNA",
+            "sex": "M",
+            "party_at_election": "SP",
+            "votes": 65330,
+            "reported_vote_percent": 39.04,
+            "source_row": 1,
+            "general_votes": null,
+            "postal_votes": null
+          },
+          {
+            "candidate_name": "VINOD KUMAR",
+            "sex": "M",
+            "party_at_election": "BJP",
+            "votes": 60878,
+            "reported_vote_percent": 36.38,
+            "source_row": 2,
+            "general_votes": null,
+            "postal_votes": null
+          },
+          {
+            "candidate_name": "HARJINDER SINGH KAHLON",
+            "sex": "M",
+            "party_at_election": "BSP",
+            "votes": 27281,
+            "reported_vote_percent": 16.3,
+            "source_row": 3,
+            "general_votes": null,
+            "postal_votes": null
+          },
+          {
+            "candidate_name": "MOHAMMED ASLAM",
+            "sex": "M",
+            "party_at_election": "KVP",
+            "votes": 7068,
+            "reported_vote_percent": 4.22,
+            "source_row": 4,
+            "general_votes": null,
+            "postal_votes": null
+          },
+          {
+            "candidate_name": "KRISHNA ADHIKARI",
+            "sex": "F",
+            "party_at_election": "CPI(ML)(L)",
+            "votes": 4211,
+            "reported_vote_percent": 2.52,
+            "source_row": 5,
+            "general_votes": null,
+            "postal_votes": null
+          },
+          {
+            "candidate_name": "GURDEEP SINGH",
+            "sex": "M",
+            "party_at_election": "BHJS",
+            "votes": 2570,
+            "reported_vote_percent": 1.54,
+            "source_row": 6,
+            "general_votes": null,
+            "postal_votes": null
+          }
+        ],
+        "number_of_seats": 1,
+        "electors": 245644,
+        "valid_candidate_votes": 167338,
+        "votes_polled": 170352,
+        "reported_candidate_count": 6,
+        "summary_totals": {
+          "electors": 245644,
+          "votes_polled": 170357,
+          "valid_candidate_votes": 167333
+        },
+        "status": "needs_review",
+        "error": "Summary and detailed totals differ: votes_polled: detail 170352, summary 170357; valid_candidate_votes: detail 167338, summary 167333"
+      }
+    ]
+  },
+  "174ec81b511a8fb1aeca553f": {
+    "source_url": "https://old.eci.gov.in/files/file/3261-uttar-pradesh-2007/",
+    "source_sha256": "2153061c1466cebb9b09b1539e5948d1a26ccac8f9c4fa642e6b5763ed502291",
+    "kind": "ac",
+    "year": 2007,
+    "source_file": "174ec81b511a8fb1aeca553f-7507.pdf",
+    "records": [
+      {
+        "code": 44,
+        "name": "PURANPUR",
+        "detail_page": 490,
+        "candidates": [
+          {
+            "candidate_name": "ARSHAD KHAN",
+            "sex": "M",
+            "general_votes": 48193,
+            "postal_votes": 0,
+            "party_at_election": "BSP",
+            "age": 56,
+            "category": "GEN",
+            "votes": 48193,
+            "source_row": 1
+          },
+          {
+            "candidate_name": "V.M.SINGH",
+            "sex": "M",
+            "general_votes": 41925,
+            "postal_votes": 1,
+            "party_at_election": "INC",
+            "age": 48,
+            "category": "GEN",
+            "votes": 41926,
+            "source_row": 2
+          },
+          {
+            "candidate_name": "KUNWAR JIVESH PRASAD",
+            "sex": "M",
+            "general_votes": 33271,
+            "postal_votes": 0,
+            "party_at_election": "SP",
+            "age": 40,
+            "category": "GEN",
+            "votes": 33271,
+            "source_row": 3
+          },
+          {
+            "candidate_name": "DR.VINOD TIWARI",
+            "sex": "M",
+            "general_votes": 28692,
+            "postal_votes": 0,
+            "party_at_election": "BJP",
+            "age": 59,
+            "category": "GEN",
+            "votes": 28692,
+            "source_row": 4
+          },
+          {
+            "candidate_name": "MANJEET SINGH",
+            "sex": "M",
+            "general_votes": 6027,
+            "postal_votes": 0,
+            "party_at_election": "RLD",
+            "age": 31,
+            "category": "GEN",
+            "votes": 6027,
+            "source_row": 5
+          },
+          {
+            "candidate_name": "KRISHNA ADHIKARI",
+            "sex": "F",
+            "general_votes": 3708,
+            "postal_votes": 0,
+            "party_at_election": "CPI(ML)(L)",
+            "age": 42,
+            "category": "GEN",
+            "votes": 3708,
+            "source_row": 6
+          },
+          {
+            "candidate_name": "RAM RATAN",
+            "sex": "M",
+            "general_votes": 2268,
+            "postal_votes": 0,
+            "party_at_election": "IND",
+            "age": 35,
+            "category": "GEN",
+            "votes": 2268,
+            "source_row": 7
+          },
+          {
+            "candidate_name": "RAM NIVAS",
+            "sex": "M",
+            "general_votes": 892,
+            "postal_votes": 0,
+            "party_at_election": "LPSP",
+            "age": 31,
+            "category": "GEN",
+            "votes": 892,
+            "source_row": 8
+          },
+          {
+            "candidate_name": "GANGA RAM",
+            "sex": "M",
+            "general_votes": 779,
+            "postal_votes": 0,
+            "party_at_election": "IND",
+            "age": 47,
+            "category": "SC",
+            "votes": 779,
+            "source_row": 9
+          },
+          {
+            "candidate_name": "NET RAM",
+            "sex": "M",
+            "general_votes": 709,
+            "postal_votes": 0,
+            "party_at_election": "IND",
+            "age": 49,
+            "category": "SC",
+            "votes": 709,
+            "source_row": 10
+          },
+          {
+            "candidate_name": "DIWAKAR SHUKLA",
+            "sex": "M",
+            "general_votes": 672,
+            "postal_votes": 0,
+            "party_at_election": "IND",
+            "age": 38,
+            "category": "GEN",
+            "votes": 672,
+            "source_row": 11
+          },
+          {
+            "candidate_name": "JAGESHWAR",
+            "sex": "M",
+            "general_votes": 650,
+            "postal_votes": 0,
+            "party_at_election": "RTKP",
+            "age": 52,
+            "category": "GEN",
+            "votes": 650,
+            "source_row": 12
+          },
+          {
+            "candidate_name": "MOH.UDDIN",
+            "sex": "M",
+            "general_votes": 605,
+            "postal_votes": 0,
+            "party_at_election": "IND",
+            "age": 28,
+            "category": "GEN",
+            "votes": 605,
+            "source_row": 13
+          },
+          {
+            "candidate_name": "DR.YOGESH SRIVASTAVA",
+            "sex": "M",
+            "general_votes": 587,
+            "postal_votes": 0,
+            "party_at_election": "LJP",
+            "age": 47,
+            "category": "GEN",
+            "votes": 587,
+            "source_row": 14
+          },
+          {
+            "candidate_name": "NATHU BAKSH",
+            "sex": "M",
+            "general_votes": 571,
+            "postal_votes": 0,
+            "party_at_election": "IND",
+            "age": 52,
+            "category": "GEN",
+            "votes": 571,
+            "source_row": 15
+          },
+          {
+            "candidate_name": "GANGA SINGH",
+            "sex": "M",
+            "general_votes": 506,
+            "postal_votes": 0,
+            "party_at_election": "BRPP",
+            "age": 42,
+            "category": "SC",
+            "votes": 506,
+            "source_row": 16
+          }
+        ],
+        "summary_page": 87,
+        "electors": 289306,
+        "votes_polled": 170064,
+        "valid_candidate_votes": 170060,
+        "detailed_totals": {
+          "general_votes": 170055,
+          "postal_votes": 1,
+          "votes": 170056
+        },
+        "status": "needs_review",
+        "error": "Candidate sum 170056; detailed total 170056; summary valid votes 170060. Totals differ."
+      }
+    ]
+  }
+}

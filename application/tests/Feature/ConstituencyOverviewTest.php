@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyUrls;
 use App\Services\ElectionArchive;
 use App\Services\ElectionGeographySummary;
 use App\Services\HistoricalElectionAnalytics;
@@ -87,7 +88,7 @@ class ConstituencyOverviewTest extends TestCase
             $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [['code' => 1, 'name' => 'NEW DELHI', 'status' => 'validated', 'winner' => 'Example winner', 'candidates' => [['candidate_name' => 'Example winner', 'party_at_election' => 'Example party', 'votes' => 100]], 'number_of_seats' => 1]]]]);
         });
         foreach (['Delhi', 'NCT OF Delhi', 'u05'] as $state) {
-            $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => $state, 'name' => 'NEW DELHI']))->assertOk()->assertSee('2024 results')->assertSee('2019')->assertSee('2004')->assertSee('Example winner');
+            $this->get(ConstituencyUrls::url(['kind' => 'pc', 'state' => $state, 'name' => 'NEW DELHI']))->assertOk()->assertSee('2024 results')->assertSee('2019')->assertSee('2004')->assertSee('Example winner');
         }
     }
 
@@ -96,16 +97,17 @@ class ConstituencyOverviewTest extends TestCase
         foreach ([2019, 2024] as $year) {
             DB::table('historical_constituency_index')->insert(['edition_id' => str_repeat($year === 2024 ? 'a' : 'b', 24), 'record_code' => 1, 'kind' => 'pc', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => $year === 2019 ? 'UTTAR PRADESH' : 'Uttar Pradesh', 'constituency_name' => 'Lucknow', 'status' => 'validated', 'has_warning' => false, 'candidate_count' => 1, 'extraction_sha256' => str_repeat('c', 64)]);
         }
-        $this->getJson('/search?q=Lucknow')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.type', 'Lok Sabha')->assertJsonPath('suggestions.0.period', 'Uttar Pradesh')->assertJsonPath('suggestions.0.label', 'Lucknow');
+        $this->getJson('/search?q=Lucknow&kind=pc')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.type', 'Lok Sabha')->assertJsonPath('suggestions.0.period', 'Uttar Pradesh')->assertJsonPath('suggestions.0.label', 'Lucknow');
         $this->mock(HistoricalElectionArchive::class, function ($mock) {
             $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [['code' => 1, 'status' => 'validated', 'winner' => 'Example winner', 'candidates' => [['candidate_name' => 'Example winner', 'party_at_election' => 'Example party', 'votes' => 100]], 'number_of_seats' => 1]]]]);
         });
-        $url = '/india/constituency?kind=pc&state=UTTAR%20PRADESH&name=lucknow';
-        $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Election winners may differ from current representatives')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('data-selected="lucknow"', false)->assertSee('data-mode="focus"', false)->assertSeeInOrder(['Lok Sabha map', 'How voting has changed'])->assertDontSee('google.com/maps')->assertSee('Registered electors, votes polled and turnout')->assertSee('Margin, registered electors and votes polled are absolute counts.');
-        $this->get($url.'&edition='.str_repeat('a', 24))->assertOk()->assertSee('2024 results')->assertSee('Example party');
-        $this->get($url.'&edition='.str_repeat('d', 24))->assertNotFound();
-        $this->get($url.'&format=report')->assertOk()->assertSee('Print / Save as PDF')->assertSee('Sources and data notes')->assertSee('https://eci.gov.in')->assertSee('<svg', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('history-lines.js')->assertDontSee('data-history-chart');
-        $this->get('/india/elections/lok-sabha?edition='.str_repeat('a', 24).'&state=Uttar%20Pradesh&code=1')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Lucknow', 'edition' => str_repeat('a', 24), 'code' => 1]));
+        $url = ConstituencyUrls::url(['kind' => 'pc', 'state' => 'UTTAR PRADESH', 'name' => 'lucknow']);
+        $this->get('/india/constituency?kind=pc&state=UTTAR%20PRADESH&name=lucknow')->assertStatus(301)->assertRedirect($url);
+        $this->get($url)->assertOk()->assertSee('Election history')->assertSee('Example winner')->assertSee('Election winners may differ from current representatives')->assertSee('2019')->assertSee('2024')->assertSee('2024 results')->assertSee('How voting has changed')->assertSee('Election year')->assertSee('data-selected="Lucknow"', false)->assertSee('data-mode="focus"', false)->assertSeeInOrder(['Lok Sabha map', 'How voting has changed'])->assertDontSee('google.com/maps')->assertSee('Registered electors, votes polled and turnout');
+        $this->get(url()->query($url, ['edition' => str_repeat('a', 24)]))->assertOk()->assertSee('2024 results')->assertSee('Example party');
+        $this->get(url()->query($url, ['edition' => str_repeat('d', 24)]))->assertNotFound();
+        $this->get(url()->query($url, ['format' => 'report']))->assertOk()->assertSee('Print / Save as PDF')->assertSee('Sources and data notes')->assertSee('https://eci.gov.in')->assertSee('<svg', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('history-lines.js')->assertDontSee('data-history-chart');
+        $this->get('/india/elections/lok-sabha?edition='.str_repeat('a', 24).'&state=Uttar%20Pradesh&code=1')->assertRedirect(ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Lucknow', 'edition' => str_repeat('a', 24), 'code' => 1]));
     }
 
     public function test_same_name_seats_keep_their_official_record_codes(): void
@@ -125,13 +127,14 @@ class ConstituencyOverviewTest extends TestCase
                 ]]]);
         });
 
-        $base = route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Nawabganj']);
-        $this->get($base)->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'q' => 'Nawabganj']));
-        $this->get($base.'&edition='.$edition.'&code=20')->assertOk()
+        $base = ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Nawabganj']);
+        $this->get($base)->assertOk()->assertViewIs('constituency-history-choices')
+            ->assertViewHas('entries', fn ($entries) => $entries->pluck('record_code')->sort()->values()->all() === [10, 20]);
+        $this->get(url()->query($base, ['edition' => $edition, 'code' => 20]))->assertOk()
             ->assertSee('Second seat candidate')->assertDontSee('First seat candidate')
             ->assertSee('This page shows the selected seat');
         $this->get('/india/elections/assembly?edition='.$edition.'&state=Uttar%20Pradesh&code=20')
-            ->assertRedirect(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh',
+            ->assertRedirect(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Uttar Pradesh',
                 'name' => 'Nawabganj', 'edition' => $edition, 'code' => 20]));
     }
 
@@ -142,8 +145,8 @@ class ConstituencyOverviewTest extends TestCase
         $this->mock(HistoricalElectionArchive::class, function ($mock) {
             $mock->shouldReceive('load')->andReturn([['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [['code' => 26, 'status' => 'needs_review', 'candidates' => []]]]]);
         });
-        $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']))->assertOk()->assertSee('Connected places')->assertSee('Baheri')->assertSee('Bareilly')->assertSee('Puranpur');
-        $this->get('/india/pc/pilibhit')->assertRedirect(route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']));
+        $this->get(ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']))->assertOk()->assertSee('Connected places')->assertSee('Baheri')->assertSee('Bareilly')->assertSee('Puranpur');
+        $this->get('/india/pc/pilibhit')->assertRedirect(ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']));
     }
 
     public function test_related_seats_use_official_mapping_without_legacy_profiles(): void
@@ -154,7 +157,7 @@ class ConstituencyOverviewTest extends TestCase
         $this->mock(HistoricalElectionArchive::class, function ($mock) {
             $mock->shouldReceive('load')->andReturn([['records' => []]]);
         });
-        $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => 'UTTAR PRADESH', 'name' => 'Aonla']))->assertOk()->assertSee('Connected places')->assertSee('Bithari Chainpur')->assertSee('Bareilly')->assertSee('Official district reference')->assertSee(route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Bithari Chainpur']));
+        $this->get(ConstituencyUrls::url(['kind' => 'pc', 'state' => 'UTTAR PRADESH', 'name' => 'Aonla']))->assertOk()->assertSee('Connected places')->assertSee('Bithari Chainpur')->assertSee('Bareilly')->assertSee('Official district reference')->assertSee(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'Bithari Chainpur']));
         $this->assertDatabaseCount('places', 0);
     }
 
@@ -183,7 +186,7 @@ class ConstituencyOverviewTest extends TestCase
             });
         });
 
-        $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
+        $url = ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
         $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('281,501 †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $overview->getContent(), $charts);
         $this->assertCount(4, $charts[1]);
@@ -194,7 +197,7 @@ class ConstituencyOverviewTest extends TestCase
         $this->assertSame(2, substr_count($selector[1], '<option'));
         $this->assertStringNotContainsString('Vol', $selector[1]);
         $this->assertStringNotContainsString('Vellore', $selector[1]);
-        $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
+        $this->get(url()->query($url, ['edition' => $edition2009]))->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
     }
 
     public function test_source_vote_count_remains_visible_without_an_invalid_turnout_percentage(): void
@@ -222,24 +225,26 @@ class ConstituencyOverviewTest extends TestCase
             ]]);
         });
 
-        $url = route('constituency.overview', ['kind' => 'ac', 'state' => 'Example State', 'name' => 'Example Seat']);
+        $url = ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Example State', 'name' => 'Example Seat']);
         $this->get($url)->assertOk()->assertSee('150 ‡')->assertSee('Vote count from the linked source record')
             ->assertSee('Multi-member vote count exceeds electors')->assertDontSee('150.00%');
-        $this->get($url.'&format=report')->assertOk()->assertSee('150 ‡')
+        $this->get(url()->query($url, ['format' => 'report']))->assertOk()->assertSee('150 ‡')
             ->assertSee('Vote count from the linked source record');
     }
 
     public function test_puranpur_displays_documented_1996_and_2007_source_values_with_notes(): void
     {
+        $datasets = json_decode(file_get_contents(database_path('fixtures/puranpur-constituency-history.json')), true, 512, JSON_THROW_ON_ERROR);
+        $this->mock(HistoricalElectionArchive::class)->shouldReceive('load')->andReturnUsing(fn ($edition) => [$datasets[$edition]]);
         foreach ([['1cc8415ab4d57b66831417e8', 1996, 60, 6], ['174ec81b511a8fb1aeca553f', 2007, 44, 16]] as [$edition, $year, $code, $candidates]) {
             DB::table('historical_constituency_index')->insert(['edition_id' => $edition, 'record_code' => $code, 'kind' => 'ac', 'year' => $year, 'edition_label' => (string) $year, 'state_label' => 'Uttar Pradesh', 'constituency_name' => 'PURANPUR', 'status' => 'needs_review', 'has_warning' => true, 'candidate_count' => $candidates, 'extraction_sha256' => str_repeat('c', 64)]);
         }
 
-        $url = route('constituency.overview', ['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'PURANPUR']);
+        $url = ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Uttar Pradesh', 'name' => 'PURANPUR']);
         $this->get($url)->assertOk()
             ->assertSee('170,064 †')->assertSee('ARSHAD KHAN †')->assertSee('6,267 †')
             ->assertSee('170,352 †')->assertSee('GOPAL KRISHNA †')->assertSee('4,452 †');
-        $this->get($url.'&edition=174ec81b511a8fb1aeca553f')->assertOk()
+        $this->get(url()->query($url, ['edition' => '174ec81b511a8fb1aeca553f']))->assertOk()
             ->assertSee('Candidate sum 170056; detailed total 170056; summary valid votes 170060. Totals differ.')
             ->assertSee('Check the official report');
     }
@@ -255,8 +260,8 @@ class ConstituencyOverviewTest extends TestCase
             $mock->shouldReceive('load')->andReturn([['records' => []]]);
         });
         foreach (['KARNATAKA' => 'Example Karnataka', 'ASSAM' => 'Example Assam', 'UTTAR PRADESH' => 'Example UP'] as $state => $name) {
-            $this->get(route('constituency.overview', ['kind' => 'pc', 'state' => $state, 'name' => $name]))->assertOk()->assertSee('2004')->assertSee('2014')->assertSee('2024')->assertSee('3 available years');
-            $this->getJson('/search?q='.urlencode($name))->assertOk()->assertJsonCount(1, 'suggestions');
+            $this->get(ConstituencyUrls::url(['kind' => 'pc', 'state' => $state, 'name' => $name]))->assertOk()->assertSee('2004')->assertSee('2014')->assertSee('2024')->assertSee('3 available years');
+            $this->getJson('/search?kind=pc&q='.urlencode($name))->assertOk()->assertJsonCount(1, 'suggestions');
         }
     }
 

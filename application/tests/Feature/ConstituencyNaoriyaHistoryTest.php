@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -43,7 +45,7 @@ class ConstituencyNaoriyaHistoryTest extends TestCase
         $this->index(self::NEW_ID, 1980, 'Naoriya Pakhanglakpa');
         $this->records();
         foreach (['Naoriya Pakanglakpa', 'Naoriya Pakhanglakpa'] as $name) {
-            $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
+            $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => $name]))->assertOk()
                 ->assertViewHas('rows', fn ($rows) => $rows->pluck('entry.constituency_name')->all() === ['Naoriya Pakhanglakpa', 'Naoriya Pakanglakpa']);
             $dom = new \DOMDocument;
             @$dom->loadHTML($response->getContent());
@@ -75,14 +77,16 @@ class ConstituencyNaoriyaHistoryTest extends TestCase
         $this->index(str_repeat('a', 24), 1974, 'Naoriya Pakanglakpa');
         $this->index(self::OLD_ID, 1974, 'Naoriya Pakanglakpa', 22);
         $this->records();
-        $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Naoriya Pakhanglakpa']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
+        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Naoriya Pakhanglakpa']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
         DB::table('historical_constituency_index')->delete();
         $this->index(self::OLD_ID, 1974, 'Naoriya Pakanglakpa');
         $this->index(self::NEW_ID, 1974, 'Naoriya Pakhanglakpa');
-        $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Naoriya Pakanglakpa']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
+        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Naoriya Pakanglakpa']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
         foreach ([['ac', 'Tripura'], ['pc', 'Manipur']] as [$kind, $state]) {
             DB::table('historical_constituency_index')->update(['kind' => $kind, 'state_label' => $state]);
-            $this->get(route('constituency.overview', compact('kind', 'state') + ['name' => 'Naoriya Pakhanglakpa']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
+            Cache::flush();
+            $this->app->forgetInstance(ConstituencyUrls::class);
+            $this->get(ConstituencyUrls::url(compact('kind', 'state') + ['name' => 'Naoriya Pakhanglakpa']))->assertOk()->assertViewHas('rows', fn ($rows) => $rows->count() === 1);
         }
     }
 
@@ -90,8 +94,8 @@ class ConstituencyNaoriyaHistoryTest extends TestCase
     {
         $this->index(self::OLD_ID, 1974, 'Naoriya Pakanglakpa');
         $this->index(self::OLD_ID, 1974, 'Naoriya Pakhanglakpa', 22);
-        $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Naoriya Pakhanglakpa']))
-            ->assertRedirect(route('elections.constituencies', ['kind' => 'ac', 'state' => 'Manipur', 'q' => 'Naoriya Pakhanglakpa']));
+        $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Manipur', 'name' => 'Naoriya Pakhanglakpa']))
+            ->assertOk()->assertViewIs('constituency-history-choices')->assertViewHas('entries', fn ($entries) => $entries->count() === 2);
     }
 
     public function test_unindexed_archive_respects_the_same_exact_edition_rule_and_preserves_bytes(): void

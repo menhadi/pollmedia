@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyUrls;
 use App\Services\HistoricalElectionArchive;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -34,7 +36,9 @@ class ConstituencyKalyanpurHistoryTest extends TestCase
 
     private function verifyRendered(string $name, array $years, array $rawNames): void
     {
-        $response = $this->get(route('constituency.overview', ['kind' => 'ac', 'state' => 'Tripura', 'name' => $name]))->assertOk()
+        Cache::flush();
+        $this->app->forgetInstance(ConstituencyUrls::class);
+        $response = $this->get(ConstituencyUrls::url(['kind' => 'ac', 'state' => 'Tripura', 'name' => $name]))->assertOk()
             ->assertViewHas('rows', fn ($rows) => $rows->pluck('entry.constituency_name')->sort()->values()->all() === collect($rawNames)->sort()->values()->all());
         $dom = new \DOMDocument;
         @$dom->loadHTML($response->getContent());
