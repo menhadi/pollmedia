@@ -16,7 +16,7 @@ final class PilibhitDistrictPreviews
         ];
         $versions = array_map(fn ($path) => is_file($path) ? filemtime($path).'-'.filesize($path) : 'missing', $paths);
 
-        return Cache::remember('pilibhit:district-previews:v1:'.implode(':', $versions), now()->addDay(), function () use ($paths) {
+        return Cache::remember('pilibhit:district-previews:v2:'.implode(':', $versions), now()->addDay(), function () use ($paths) {
             $read = static fn ($path) => is_readable($path) ? json_decode(file_get_contents($path), true) : null;
             $rain = [];
             foreach ($read($paths['rain'])['years'] ?? [] as $year => $report) {
@@ -42,17 +42,26 @@ final class PilibhitDistrictPreviews
                 }
                 foreach ($village['panchayats'] ?? [] as $gp) {
                     if (! empty($gp['code'])) {
-                        $panchayats[$gp['code']] = true;
+                        $panchayats[$gp['code']] ??= ['code' => $gp['code'], 'name' => $gp['name'], 'villages' => []];
+                        $panchayats[$gp['code']]['villages'][$village['code']] = true;
                         $villages[$village['code']] = true;
                     }
                 }
             }
+            $directoryRows = collect($panchayats)->sortBy([
+                ['name', 'asc'], ['code', 'asc'],
+            ])->take(5)->map(fn (array $gp) => [
+                'code' => $gp['code'], 'name' => $gp['name'], 'villages' => count($gp['villages']),
+            ])->values()->all();
             $seats = is_readable($paths['elections']) ? app(DistrictConstituencyLinks::class)->forDistrict('Pilibhit') : [];
 
             return [
                 'rain' => $rain, 'soil' => $soilSummary,
-                'directory' => $panchayats ? ['panchayats' => count($panchayats), 'villages' => count($villages), 'date' => $directory['checked_on']] : null,
-                'elections' => empty($seats['available']) ? null : ['assembly' => count($seats['assembly']), 'parliamentary' => count($seats['parliamentary']), 'date' => $seats['sources'][0]['date']],
+                'directory' => $panchayats ? ['panchayats' => count($panchayats), 'villages' => count($villages), 'date' => $directory['checked_on'], 'rows' => $directoryRows] : null,
+                'elections' => empty($seats['available']) ? null : ['assembly' => count($seats['assembly']), 'parliamentary' => count($seats['parliamentary']), 'date' => $seats['sources'][0]['date'],
+                    'rows' => collect(['assembly' => 'AC', 'parliamentary' => 'PC'])->flatMap(fn (string $label, string $kind) => collect($seats[$kind])->map(fn (array $seat) => [
+                        'type' => $label, 'code' => $seat['code'], 'name' => $seat['name'], 'url' => $seat['url'],
+                    ]))->take(5)->values()->all()],
             ];
         });
     }

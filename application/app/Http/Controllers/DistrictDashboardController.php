@@ -31,7 +31,7 @@ class DistrictDashboardController extends Controller
             $input = request()->validate(['q' => 'nullable|string|max:120', 'vp' => 'nullable|integer|min:1|max:100000']);
             $search = trim($input['q'] ?? '');
             $directory = app(DistrictDashboardData::class);
-            $villages = $directory->villagePage($district, $state, 2011, $search, (int) ($input['vp'] ?? 1));
+            $villages = $directory->villagePage($district, $state, 2011, $search, (int) ($input['vp'] ?? 1), $topic === 'overview' ? 10 : 20);
             $hi = app()->getLocale() === 'hi' || request('lang') === 'hi';
             $params = array_filter(['topic' => $topic === 'places' ? 'places' : null, 'lang' => $hi ? 'hi' : null, 'q' => $search], fn ($value) => $value !== null && $value !== '');
             $villages->appends($params);

@@ -79,7 +79,7 @@ class DistrictDashboardData
             ->select('c.*', 'e.source_url', 'e.source_key', 'e.retrieved_at', 'e.sha256', 'e.landing_url');
     }
 
-    public function villagePage(string $district, string $state, int $year, string $search, int $page): LengthAwarePaginator
+    public function villagePage(string $district, string $state, int $year, string $search, int $page, int $perPage = 20): LengthAwarePaginator
     {
         $subdistrict = "COALESCE(c.geography::jsonb->>'Subdistt',c.geography::jsonb->>'TAHSIL','')";
         $village = "COALESCE(c.geography::jsonb->>'Town/Village',c.geography::jsonb->>'TOWN_VILL','')";
@@ -92,7 +92,7 @@ class DistrictDashboardData
             ->when($search !== '', fn ($query) => $query->where(fn ($match) => $match->whereRaw('strpos(lower(name), lower(?)) > 0', [$search])
                 ->orWhereRaw('strpos(village_code, ?) > 0', [$search])))
             ->orderBy('village_code')->orderBy('sub_code')->orderBy('id')
-            ->paginate(20, ['*'], 'vp', $page)->through(fn ($row) => $this->record($row));
+            ->paginate($perPage, ['*'], 'vp', $page)->through(fn ($row) => $this->record($row));
     }
 
     private function record(object $row): array
