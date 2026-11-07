@@ -16,7 +16,7 @@
 <title>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }} · Pollmedia</title>
 <meta name="description" content="{{ $tr('Pilibhit district at a glance. Explore Census population trends, Panchayats, villages, satellite vegetation readings, mandi prices and public offices.','पीलीभीत ज़िले की जनसंख्या के रुझान, पंचायतें, गाँव, उपग्रह हरियाली सूचकांक, मंडी भाव और सरकारी कार्यालय देखें।') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=5">
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=6">
 <script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">

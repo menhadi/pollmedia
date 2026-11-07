@@ -34,3 +34,8 @@ body.pb-site:has(.public-header) main.pb-dashboard table tbody :is(td,th){backgr
 .pb-offices{list-style:none;margin:0;padding:0}.pb-offices li{padding:.45rem 0;border-bottom:1px solid #dce6e3}.pb-offices span,.pb-offices small,.pb-market-board small{display:block}.pb-market-board td,.pb-market-board th{overflow-wrap:anywhere}.pb-market-board small{font-weight:400}.pb-market-board td strong{font-variant-numeric:tabular-nums}.pb-market-board time{white-space:nowrap}
 @media(max-width:650px){.pb-anchor-pair{grid-template-columns:1fr;gap:.75rem}.pb-market-board table{font-size:.77rem}.pb-market-board small{font-size:.69rem}.pb-market-board table :is(td,th){padding-inline-end:3px!important}.pb-market-board time{white-space:normal}.pb-trend-values{gap:.35em}.pb-market-board th:first-child{width:31%}}
 
+@media(max-width:650px){
+  .pb-dashboard .pb-market-board table{width:100%;min-width:0;table-layout:fixed}
+  .pb-dashboard .pb-market-board table :is(th,td){white-space:normal!important;overflow-wrap:anywhere}
+  .pb-market-board th:nth-child(1){width:32%}.pb-market-board th:nth-child(2){width:24%}.pb-market-board th:nth-child(3){width:23%}.pb-market-board th:nth-child(4){width:21%}
+}
