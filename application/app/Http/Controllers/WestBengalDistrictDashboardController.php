@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\DistrictConstituencyLinks;
 use App\Services\DistrictDashboardData;
 use App\Services\DistrictDashboardUrls;
+use App\Services\DistrictSummaryPage;
 use App\Services\PlaceTopics;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -18,12 +19,21 @@ class WestBengalDistrictDashboardController extends Controller
             return redirect($identity['path'].(request()->getQueryString() ? '?'.request()->getQueryString() : ''), 301);
         }
         request()->attributes->set('district_identity', $identity);
+        $topic = PlaceTopics::selected('district');
+        if ($identity && DistrictSummaryPage::enabled($identity) && request()->query('view') !== 'details' && in_array($topic, ['overview', 'places'], true)) {
+            return app(DistrictSummaryPage::class)->show($identity, $topic, fn ($data) => $this->supportingRecords($district, $data));
+        }
         $data = app(DistrictDashboardData::class)->published($district, '19', 2011, PlaceTopics::selected('district') === 'overview');
         abort_unless($data, 404);
         if (PlaceTopics::selected('district') === 'overview') {
             return view('district-dashboard', ['data' => $data, 'sourceMap' => null, 'censusSeries' => [], 'constituencyLinks' => []]);
         }
 
+        return view('district-dashboard', ['data' => $data, 'censusSeries' => $data['history']] + $this->supportingRecords($district, $data));
+    }
+
+    private function supportingRecords(string $district, array $data): array
+    {
         $maps = [
             '343' => 'maps/west-bengal-south-twenty-four-parganas-villages.geojson',
             '342' => 'maps/west-bengal-kolkata-villages.geojson',
@@ -43,9 +53,8 @@ class WestBengalDistrictDashboardController extends Controller
         ];
         $file = $maps[$district] ?? null;
         $sourceMap = $file && is_file(public_path($file)) ? $file : null;
-        $censusSeries = $data['history'];
         $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'West Bengal');
 
-        return view('district-dashboard', compact('data', 'sourceMap', 'censusSeries', 'constituencyLinks'));
+        return compact('constituencyLinks', 'sourceMap') + ['mapFile' => $file];
     }
 }

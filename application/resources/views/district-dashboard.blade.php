@@ -4,7 +4,7 @@ $villageGps=$topic==='places' && (int)($data['year']??0)===2011 ? app(\App\Servi
 @endphp
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{ $data['name'] }} district | Pollmedia</title><meta name="description" content="Explore {{ $data['name'] }} district population, literacy, village water connections and soil sample facts, with dated official sources and available-record comparisons."><link rel="stylesheet" href="{{ asset('css/pilibhit-ac-pilot.css') }}"><link rel="stylesheet" href="{{ asset('css/rampur-district-pilot.css') }}"><script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script><script src="{{ asset('js/district-dashboard-controls-20261017-navigation.js') }}?v={{ substr(hash_file('sha256', public_path('js/district-dashboard-controls-20261017-navigation.js')), 0, 12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}"><link rel="canonical" href="{{ url(request()->attributes->get('district_identity')['path'] ?? request()->path()) }}">@include('place-layout-assets')</head>
 <body class="place-layout election-ui rampur-dashboard">@include('public-header')
-<main @if(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09') data-pilibhit-native @endif>
+<main @if(request()->attributes->get('district_identity') && \App\Services\DistrictSummaryPage::enabled(request()->attributes->get('district_identity'))) data-pilibhit-native @endif>
 @php
 
 
@@ -36,8 +36,8 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 @endphp
 <section class="district-title pm-district-heading"><div><?php $breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null; ?>
 @include('location-breadcrumbs',['locationTrail'=>array_values(array_filter([['label'=>'India','url'=>route('home')],$breadcrumbState?['label'=>$breadcrumbState,'url'=>route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($breadcrumbState)])]:null,['label'=>$data['name'],'url'=>null]]))])<p class="eyebrow">District dashboard · people, places & history</p><h1>{{ $data['name'] }} district</h1></div></section>
-@if(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09')
-<p><a href="{{ route('district-dashboard.named',array_filter(['state'=>'uttar-pradesh','district'=>'pilibhit','lang'=>request('lang')==='hi'?'hi':null])) }}">← {{ (app()->getLocale()==='hi'||request('lang')==='hi')?'ज़िले का सारांश':'District summary' }}</a></p>
+@if(request()->attributes->get('district_identity') && \App\Services\DistrictSummaryPage::enabled(request()->attributes->get('district_identity')))
+<p><a href="{{ url(request()->attributes->get('district_identity')['path']).(request('lang')==='hi'?'?lang=hi':'') }}">← {{ (app()->getLocale()==='hi'||request('lang')==='hi')?'ज़िले का सारांश':'District summary' }}</a></p>
 @endif
 @include('place-topic-nav',['topicGroup'=>'district','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['district'],fn($k)=>$k!=='rainfall'||(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09')))])
 <div data-topic-body>

@@ -42,3 +42,5 @@ body.pb-site:has(.public-header) main.pb-dashboard table tbody :is(td,th){backgr
 
 .pb-index-pair .pb-index-arrow{align-self:center;display:inline-grid;place-items:center;flex:none;width:1.85rem;height:1.85rem;border-radius:50%;background:#e8f1ed;color:#245d49;font-size:1.25rem;line-height:1}
 @media(max-width:420px){.pb-index-pair{gap:.7rem}}
+
+.pb-grid>.pb-panel:only-child,.pb-record-grid>.pb-panel:only-child{grid-column:1/-1}.pb-dashboard .pb-row>a{min-width:0;overflow-wrap:anywhere}.pb-dashboard .pb-directory-table th{overflow-wrap:anywhere}

@@ -14,7 +14,7 @@
     <p>{{ $label('No villages found on this page.','इस पृष्ठ पर कोई गाँव नहीं मिला।') }}</p>
     @endif
     @if($topic === 'overview')
-    @php($directoryUrl = route('district-dashboard.named', array_filter(['state'=>'uttar-pradesh','district'=>'pilibhit','topic'=>'places','lang'=>$hi?'hi':null,'q'=>$search],fn($value)=>$value!==null && $value!=='')))
+    @php($directoryUrl = url($identity['path']).'?'.http_build_query(array_filter(['topic'=>'places','lang'=>$hi?'hi':null,'q'=>$search],fn($value)=>$value!==null && $value!=='')))
     <a class="pb-more" href="{{ $directoryUrl }}#places">{{ $search !== '' ? $label('View search results in the directory','निर्देशिका में खोज परिणाम देखें') : $label('Browse all villages','सभी गाँव देखें') }} →</a>
     @else
     <nav class="pb-pages" aria-label="{{ $label('Village directory pages','गाँव निर्देशिका के पृष्ठ') }}">
