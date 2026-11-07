@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 
 class DistrictDashboardData
 {
-    public function published(string $districtCode, string $stateCode = '09', int $year = 2011, bool $overviewOnly = false, bool $includeAreas = false): ?array
+    public function published(string $districtCode, string $stateCode = '09', int $year = 2011, bool $overviewOnly = false, bool $includeAreas = false, bool $includeHistory = false): ?array
     {
         foreach (['census_editions', 'census_publications', 'census_catalogue_rows'] as $table) {
             if (! Schema::hasTable($table)) {
@@ -62,7 +62,7 @@ class DistrictDashboardData
             'census_villages' => $villages, 'census_village_rows' => count($villages),
             'census_editions' => $editions, 'data_mode' => 'live_published',
             'checked_at' => now()->toIso8601String(),
-            'history' => $overviewOnly ? [] : app(CensusProfileSummary::class)->series($district, [$district], $year),
+            'history' => $overviewOnly && ! $includeHistory ? [] : app(CensusProfileSummary::class)->series($district, [$district], $year),
         ];
     }
 

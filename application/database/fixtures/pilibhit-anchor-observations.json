@@ -1,0 +1,130 @@
+{
+  "satellite": {
+    "comparison_url": "maps/satellite-pilibhit-20261014/comparison.json",
+    "sha256": "3f54cad2bf20f65e7f10de8af29119bbbf0c62d07f0835561b9e7c4ee5bb8765",
+    "layer_id": "aa42595d08e74cd4d9a2",
+    "geometry_sha256": "5711c0233a8ba1320f6e38e7c60c33cd5dc8462ab0d5457997ec8ccb64df0633",
+    "dates": [
+      "2023-11-22",
+      "2024-11-26"
+    ],
+    "summary": {
+      "paired_pixels": 9437980,
+      "polygon_pixels": 9442104,
+      "paired_coverage_pct": 99.96,
+      "before_ndvi": 0.4021,
+      "after_ndvi": 0.315,
+      "ndvi_change": -0.0871
+    },
+    "attribution": "Contains modified Copernicus Sentinel data (2023, 2024). Processed by Pollmedia."
+  },
+  "market_snapshot": {
+    "source": "AGMARKNET",
+    "state": "9",
+    "district": "173",
+    "retrieved_at": "2026-11-06T18:09:49+00:00",
+    "sha256": "5a3b6a1ffedacd8b974c8fb831695658e4500bd967209ab5031c8113f5f063df",
+    "records": [
+      {
+        "commodity": "Firewood",
+        "commodity_hi": "जलाऊ लकड़ी",
+        "variety": "Firewood",
+        "grade": "FAQ",
+        "market": "Pilibhit APMC",
+        "unit": "Quintal",
+        "modal": 520,
+        "date": "2026-11-05"
+      },
+      {
+        "commodity": "Paddy(Basmati)",
+        "commodity_hi": "धान (धन) (बासमती)",
+        "variety": "Basmati",
+        "grade": "FAQ",
+        "market": "Puranpur APMC",
+        "unit": "Quintal",
+        "modal": 3475.15,
+        "date": "2026-11-05"
+      },
+      {
+        "commodity": "Paddy(Common)",
+        "commodity_hi": "धान (धन) (सामान्य)",
+        "variety": "Common",
+        "grade": "FAQ",
+        "market": "Bishalpur APMC",
+        "unit": "Quintal",
+        "modal": 1854.25,
+        "date": "2026-11-05"
+      },
+      {
+        "commodity": "Rice",
+        "commodity_hi": "चावल",
+        "variety": "Other",
+        "grade": "FAQ",
+        "market": "Pilibhit APMC",
+        "unit": "Quintal",
+        "modal": 8900,
+        "date": "2026-11-05"
+      },
+      {
+        "commodity": "Wood",
+        "commodity_hi": "लकड़ी",
+        "variety": "Eucalyptus",
+        "grade": "FAQ",
+        "market": "Pilibhit APMC",
+        "unit": "Quintal",
+        "modal": 540,
+        "date": "2026-11-05"
+      },
+      {
+        "commodity": "Onion",
+        "commodity_hi": "प्याज",
+        "variety": "Other",
+        "grade": "FAQ",
+        "market": "Bishalpur APMC",
+        "unit": "Quintal",
+        "modal": 2212.5,
+        "date": "2026-11-04"
+      },
+      {
+        "commodity": "Tomato",
+        "commodity_hi": "टमाटर",
+        "variety": "Other",
+        "grade": "FAQ",
+        "market": "Bishalpur APMC",
+        "unit": "Quintal",
+        "modal": 1500,
+        "date": "2026-10-23"
+      },
+      {
+        "commodity": "Turmeric",
+        "commodity_hi": "हल्दी",
+        "variety": "Other",
+        "grade": "FAQ",
+        "market": "Puranpur APMC",
+        "unit": "Quintal",
+        "modal": 1700,
+        "date": "2026-10-23"
+      },
+      {
+        "commodity": "Wheat",
+        "commodity_hi": "गेहूं",
+        "variety": "Other",
+        "grade": "FAQ",
+        "market": "Bishalpur APMC",
+        "unit": "Quintal",
+        "modal": 2550,
+        "date": "2026-10-23"
+      },
+      {
+        "commodity": "Green Gram Dal(Moong Dal)",
+        "commodity_hi": "मूंग दाल",
+        "variety": "Other",
+        "grade": "FAQ",
+        "market": "Pilibhit APMC",
+        "unit": "Quintal",
+        "modal": 9916,
+        "date": "2026-10-22"
+      }
+    ]
+  }
+}

@@ -17,11 +17,7 @@ class OfficialMarketPrices
             return $empty;
         }
         $sourceState = $this->sourceStateName($context);
-        $scopeParts = [$context['state']['code'], $context['district']['code'], $commodity, $offset];
-        if ($sourceState !== $context['state']['name']) {
-            $scopeParts[] = $sourceState;
-        }
-        $scope = hash('sha256', json_encode($scopeParts));
+        $scope = $this->reportScope($context, $commodity, $offset);
 
         return Cache::remember('my-place-markets:v5:'.$scope, 1800, function () use ($context, $key, $resource, $empty, $commodity, $offset, $scope, $sourceState): array {
             try {
@@ -218,6 +214,31 @@ class OfficialMarketPrices
                 'comparison' => ['month' => $currentMonth, 'prior_month' => $priorMonth, 'through_day' => $today->day, 'current' => $current, 'previous' => $prior, 'previous_full_month' => $summarize($buckets[$priorMonth] ?? []),
                     'change_percent' => $current['value'] !== null && $prior['value'] > 0 ? round(($current['value'] / $prior['value'] - 1) * 100, 2) : null]];
         });
+    }
+
+    public function overviewRecords(array $context): array
+    {
+        $scope = $this->reportScope($context, null, 0);
+        $report = Cache::get('my-place-markets:v5:'.$scope);
+        if (empty($report['records'])) {
+            if (Cache::add('market-preview-refresh:'.$scope, true, now()->addMinutes(30))) {
+                \Illuminate\Support\defer(fn () => $this->forPlace($context));
+            }
+            $report = Cache::get('my-place-last-prices:v4:'.$scope);
+        }
+
+        return $report['records'] ?? [];
+    }
+
+    private function reportScope(array $context, ?string $commodity, int $offset): string
+    {
+        $parts = [$context['state']['code'], $context['district']['code'], $commodity, $offset];
+        $sourceState = $this->sourceStateName($context);
+        if ($sourceState !== $context['state']['name']) {
+            $parts[] = $sourceState;
+        }
+
+        return hash('sha256', json_encode($parts));
     }
 
     private function sourceStateName(array $context): string
