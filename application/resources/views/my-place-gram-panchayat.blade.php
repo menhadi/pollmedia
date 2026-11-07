@@ -1,4 +1,7 @@
 @if($panchayat['directory'])
+@if(!empty($panchayat['directory'][0]['profile_state']) && empty($context['village']))
+<p><a href="{{ route('gram-panchayats.area',['scope'=>'lgd','state'=>$context['state']['code'],'district'=>$context['district']['code'],'subdistrict'=>$context['gp_subdistrict']??null,'lang'=>$language]) }}">{{ $t('Browse the Panchayat directory','पंचायत निर्देशिका खोलें') }}</a></p>
+@endif
 @if(count($panchayat['directory'])>1)
 <form data-local-data-form class="local-data-filters">
     <label>{{ $t('Gram Panchayat','ग्राम पंचायत') }}
@@ -13,7 +16,8 @@
 @php($gp=$panchayat['selected'])
 <article class="gp-identity" translate="no"><p class="gp-eyebrow">{{ $t('Panchayat overview','पंचायत परिचय') }}</p><h3>{{ $gp['name'] }}</h3>
 <dl class="panchayat-status"><div><dt>{{ $t('Panchayat identifier','पंचायत पहचान') }}</dt><dd>{{ $gp['code'] }}</dd><small>{{ $gp['namespace'] }}</small></div>
-<div><dt>{{ $t('Block','ब्लॉक') }}</dt><dd>{{ implode(' · ',$gp['blocks']) }}</dd></div>
+@if($gp['blocks'])<div><dt>{{ $t('Block','ब्लॉक') }}</dt><dd>{{ implode(' · ',$gp['blocks']) }}</dd></div>@endif
+@if(!empty($gp['profile_state']))<div><a href="{{ route('gram-panchayats.show',['state'=>$gp['profile_state'],'gp'=>$gp['code'],'lang'=>$language]) }}">{{ $t('Open Panchayat profile','पंचायत प्रोफ़ाइल खोलें') }}</a></div>@endif
 @if($gp['villages'])<div><dt>{{ $t('Linked villages','जुड़े गाँव') }}</dt><dd>{{ count($gp['villages']) }}</dd></div>@endif</dl>
 @if($gp['checked_on'])<p class="place-note">{{ $t('Directory checked','निर्देशिका जाँच') }}: {{ $gp['checked_on'] }}</p>@endif
 @if($gp['villages'])

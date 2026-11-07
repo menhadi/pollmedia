@@ -378,6 +378,7 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 @include('water-evidence-panel',['waterCensusState'=>(string)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')),'waterCensusDistrict'=>(string)$data['census_district_code']])
+@include('gram-panchayat-panel', ['gpScope'=>'census','gpState'=>(int)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')),'gpDistrict'=>(int)$data['census_district_code']])
 @include('district-authority-directory')
 
 

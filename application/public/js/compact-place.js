@@ -1,4 +1,4 @@
-import { placeGroups, groupForSection, pageSlice, compactReference, editableNumber, panelCanShareRow, concisePageLink, summaryFingerprint, compactCountValue } from './compact-place-model.js?v=20261104-polish-4';
+import { placeGroups, groupForSection, pageSlice, compactReference, editableNumber, panelCanShareRow, concisePageLink, summaryFingerprint, compactCountValue } from './compact-place-model.js?v=20261107-panchayats';
 
 
 
@@ -12,9 +12,9 @@ if (main && !main.matches('.my-place') && !/^\/issues(?:\/|$)/.test(location.pat
 
     const hindi = document.documentElement.lang.startsWith('hi');
 
-    const labels = hindi ? {Overview:'सारांश',Map:'मानचित्र',People:'जनसंख्या',Water:'जल',Agriculture:'कृषि',Authorities:'प्रतिनिधि और अधिकारी',Related:'संबंधित स्थान',Services:'सेवाएँ',Governance:'शासन',Elections:'चुनाव',Sources:'स्रोत'} : {};
+    const labels = hindi ? {'Panchayats':'ग्राम पंचायत',Overview:'सारांश',Map:'मानचित्र',People:'जनसंख्या',Water:'जल',Agriculture:'कृषि',Authorities:'प्रतिनिधि और अधिकारी',Related:'संबंधित स्थान',Services:'सेवाएँ',Governance:'शासन',Elections:'चुनाव',Sources:'स्रोत'} : {};
 
-    const label = text => (text === 'Sources' ? (hindi ? 'कार्यप्रणाली और अस्वीकरण' : 'Methodology and disclaimer') : labels[text]) || ({Mandi:hindi?'मंडी भाव और रुझान':'Mandi prices and trends',Authorities:'Representatives & authorities',Related:'Related places',Governance:'Community & governance'}[text]) || text;
+    const label = text => (text === 'Sources' ? (hindi ? 'कार्यप्रणाली और अस्वीकरण' : 'Methodology and disclaimer') : labels[text]) || ({Panchayats:'Gram Panchayat',Mandi:hindi?'मंडी भाव और रुझान':'Mandi prices and trends',Authorities:'Representatives & authorities',Related:'Related places',Governance:'Community & governance'}[text]) || text;
 
     const create = (tag, className, text) => {
 

@@ -1,4 +1,4 @@
-export const placeGroups = ['Overview','Places','Map','Satellite','Water','Soil','Rainfall','Mandi','Authorities','Facts','Graphs','Elections','Related','Sources'];
+export const placeGroups = ['Overview','Places','Map','Satellite','Water','Panchayats','Soil','Rainfall','Mandi','Authorities','Facts','Graphs','Elections','Related','Sources'];
 
 export function compactCountValue(value) {
     return String(value).replace(/^(\s*[-+]?\d[\d,]*(?:\.\d+)?)\s+(?:people|households)\s*$/i,'$1');

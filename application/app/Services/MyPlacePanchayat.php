@@ -42,6 +42,10 @@ class MyPlacePanchayat
                     'checked_on' => $source['checked_on'] ?? null, 'source_url' => $source['url'] ?? null];
             }
         }
+        if ((string) $context['state']['code'] !== '9') {
+            $directory = app(GramPanchayatDirectory::class)->myPlace($context, $selection);
+            $usesLocalDirectory = $directory !== [] || ! empty($context['gp_subdistrict']);
+        }
         if (! $usesLocalDirectory && $directory === [] && ! empty($context['village']) && $reports !== []
             && count(array_unique(array_column($reports, 'panchayat_code'))) === 1
             && count(array_unique(array_column($reports, 'name'))) === 1) {
@@ -52,7 +56,7 @@ class MyPlacePanchayat
                     'name' => $context['village']['name'] ?? (string) $context['village']['code']]],
                 'checked_on' => null, 'source_url' => null];
         }
-        if (empty($context['village'])) {
+        if (empty($context['village']) && empty($context['gp_subdistrict'])) {
             foreach ($reports as $report) {
                 if (! collect($directory)->contains('code', $report['panchayat_code'])) {
                     $directory[] = ['code' => $report['panchayat_code'], 'name' => $report['name'], 'namespace' => 'eGramSwaraj Panchayat',

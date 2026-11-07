@@ -27,6 +27,14 @@ $areaStateSlug=\App\Services\PlaceFactTables::stateSlug($place->name);
 @if($isState)
 <section id="area-environment" class="panel"><h2>Water, soil &amp; rainfall</h2><p>Use the map's <strong>Map data</strong> filter to select Water (JJM), Soil or Rainfall. Reporting periods follow each dataset independently of the Census year. Select a place to see its existing observations and missing-data notes.</p><a href="#area-map">Open map &amp; filters ↑</a></section>
 @endif
+@if((int)$year===2011 && in_array($place->level,['SUB-DISTRICT','SUBDISTRICT','TEHSIL','DISTRICT'],true))
+@php
+    $gpSubdistrictCode=(int)(json_decode($place->geography,true)['Subdistt']??0);
+@endphp
+@if($place->level==='DISTRICT' || $gpSubdistrictCode>0)
+@include('gram-panchayat-panel',['gpScope'=>'census','gpState'=>(int)$place->state_code,'gpDistrict'=>(int)$place->district_code,'gpSubdistrict'=>$place->level==='DISTRICT'?null:$gpSubdistrictCode])
+@endif
+@endif
 @if($place->level==='VILLAGE' && (int)$year===2011)@include('jjm-water-village')@endif
 <section class="panel area-literacy"><h2>Literacy among people aged 7+</h2><div class="metrics">@foreach(['literacy'=>'All people','male_literacy'=>'Male','female_literacy'=>'Female'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ $areaPresentation['rates'][$key]===null?'Unavailable':number_format($areaPresentation['rates'][$key],2).'%' }}</strong><small>Census {{ $year }} · {{ $residence }}</small></article>@endforeach</div><p class="small">Literate people divided by the corresponding population aged seven and above.</p></section>
 <section id="area-history">@includeIf('census-area-literacy-chart')@include('census-profile-charts')@include('census-selected-year')</section>

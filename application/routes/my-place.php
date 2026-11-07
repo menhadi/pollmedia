@@ -22,3 +22,8 @@ Route::get('/my-place/schemes/pincode', [SchemeFinderController::class, 'pincode
 
 Route::get('/my-place/school-records', [MyPlaceSchoolsController::class, 'index'])->middleware('throttle:60,1')->name('my-place.school-records');
 Route::get('/my-place/panchayat-records', [MyPlacePanchayatController::class, 'index'])->middleware('throttle:60,1')->name('my-place.panchayat-records');
+
+Route::get('/india/gram-panchayats/area/{scope}/{state}/{district}/{subdistrict?}', [MyPlacePanchayatController::class, 'area'])
+    ->whereIn('scope', ['lgd', 'census'])->whereNumber('state')->whereNumber('district')->whereNumber('subdistrict')->name('gram-panchayats.area');
+Route::get('/india/gram-panchayats/{state}/{gp}', [MyPlacePanchayatController::class, 'profile'])
+    ->whereNumber('state')->whereNumber('gp')->name('gram-panchayats.show');

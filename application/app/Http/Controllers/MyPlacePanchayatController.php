@@ -2,17 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GramPanchayatDirectory;
 use App\Services\MyPlaceDirectory;
 use App\Services\MyPlacePanchayat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class MyPlacePanchayatController extends Controller
 {
+    public function area(Request $request, GramPanchayatDirectory $directory, string $scope, int $state, int $district, ?int $subdistrict = null): View
+    {
+        $input = $request->validate(['q' => 'nullable|string|max:120', 'page' => 'nullable|integer|min:1|max:100000']);
+        $q = trim($input['q'] ?? '');
+        $page = (int) ($input['page'] ?? 1);
+        $listing = $directory->listing($scope, $state, $district, $subdistrict, $q, $page);
+        $areaName = $scope === 'lgd' ? $directory->areaName($state, $district, $subdistrict) : null;
+        if ($scope === 'census') {
+            $names = DB::table('census_catalogue_rows as c')
+                ->join('census_editions as e', 'e.id', '=', 'c.edition_id')->where('e.status', 'published')->where('e.year', 2011)
+                ->where('c.state_code', str_pad((string) $state, 2, '0', STR_PAD_LEFT))
+                ->where('c.district_code', str_pad((string) $district, 3, '0', STR_PAD_LEFT));
+            $names = $subdistrict === null ? $names->where('c.level', 'DISTRICT') : $names
+                ->whereIn('c.level', ['SUB-DISTRICT', 'SUBDISTRICT', 'TEHSIL'])
+                ->where('c.geography->Subdistt', str_pad((string) $subdistrict, 5, '0', STR_PAD_LEFT));
+            $areaName = $names->value('c.name');
+        }
+        $subdistricts = $scope === 'lgd' && ! $subdistrict ? $directory->districtSubdistricts($state, $district) : [];
+
+        return view('gram-panchayat-area', compact('scope', 'state', 'district', 'subdistrict', 'listing', 'q', 'page', 'areaName', 'subdistricts'));
+    }
+
+    public function profile(GramPanchayatDirectory $directory, int $state, int $gp): View
+    {
+        $profile = $directory->profile($state, $gp);
+        $reports = [];
+        foreach (array_unique(array_column($profile['villages'], 'district')) as $district) {
+            $context = ['state' => ['code' => (string) $state], 'district' => ['code' => (string) $district], 'village' => null];
+            foreach (app(MyPlacePanchayat::class)->reports($context) as $report) {
+                if ((string) $report['panchayat_code'] === (string) $gp) {
+                    $reports[] = $report;
+                }
+            }
+        }
+
+        return view('gram-panchayat-profile', $profile + ['reports' => $reports]);
+    }
+
     public function index(Request $request, MyPlaceDirectory $directory, MyPlacePanchayat $panchayats): View
     {
-        $input = $request->validate(['state' => 'required|regex:/^[0-9]{1,3}$/', 'district' => 'required|regex:/^[0-9]{1,8}$/', 'village' => 'nullable|regex:/^[0-9]{1,8}$/', 'panchayat' => 'nullable|regex:/^[0-9]{1,10}$/', 'lang' => 'nullable|in:en,hi']);
+        $input = $request->validate(['state' => 'required|regex:/^[0-9]{1,3}$/', 'district' => 'required|regex:/^[0-9]{1,8}$/', 'village' => 'nullable|regex:/^[0-9]{1,8}$/', 'subdistrict' => 'nullable|regex:/^[0-9]{1,8}$/', 'panchayat' => 'nullable|regex:/^[0-9]{1,10}$/', 'lang' => 'nullable|in:en,hi']);
         $context = $directory->context($input['state'], $input['district'], $input['village'] ?? null);
+        $context['gp_subdistrict'] = $input['subdistrict'] ?? null;
         $language = ($input['lang'] ?? 'en') === 'hi' ? 'hi' : 'en';
         $panchayat = $panchayats->data($context, $input['panchayat'] ?? null);
         abort_if(! empty($input['panchayat']) && ! $panchayat['selected'], 404);
