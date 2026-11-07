@@ -27,7 +27,7 @@
 <?php endif; ?>
 <?php if (in_array($topic, ['rainfall'], true)): ?>
 @include('rainfall-village-annual',['factCodes'=>[(string)$village['lgd']]])
-@include('rainfall-panel')
+@include('rainfall-panel',['waterCodes'=>[(string)$village['lgd']],'waterCensus'=>$village['census2011']??''])
 <?php endif; ?>
 <?php if (in_array($topic, ['history'], true)): ?>
 @include('census-local-history')
