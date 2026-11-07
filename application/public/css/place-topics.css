@@ -5,3 +5,7 @@
 .pm-js [data-topic-body] [data-approved-page-hidden]{display:none!important}
 [data-topic-body] .approved-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin:.6rem 0;font:inherit}
 [data-topic-body] .approved-pagination button,[data-topic-body] .approved-pagination select{min-height:36px;padding:.35rem .65rem}
+
+/* Keep the global control consistent on dashboards with their own button theme. */
+html.pm-js body button.pm-top-button{background:#0f766e!important;color:white!important;border:0!important;border-radius:11px!important;box-shadow:0 6px 20px #183f4933!important}
+html.pm-js body button.pm-top-button:hover{background:#095e58!important}
