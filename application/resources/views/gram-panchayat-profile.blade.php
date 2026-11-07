@@ -16,7 +16,7 @@
 </div>
 <p class="eyebrow">{{ $t('Gram Panchayat','ग्राम पंचायत') }}</p>
 <h1 class="village-heading" translate="no">{{ $record['name'] }}</h1>
-@if($enabled)<p><a href="{{ route('gram-panchayats.show',$profileParams) }}">← {{ $t('Panchayat summary','पंचायत का सारांश') }}</a></p>@endif
+<p><a href="{{ route('gram-panchayats.show',$profileParams) }}">← {{ $t('Panchayat summary','पंचायत का सारांश') }}</a></p>
 <?php $topic = \App\Services\PlaceTopics::selected('gp'); ?>
 @include('place-topic-nav',['topicGroup'=>'gp'])
 <div data-topic-body>

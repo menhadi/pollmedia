@@ -39,14 +39,12 @@ class MyPlacePanchayatController extends Controller
 
     public function profile(Request $request, GramPanchayatDirectory $directory, ElectoralVillageMap $map, int $state, int $gp): View
     {
-        $enabled = PanchayatSummaryPage::enabled($state, $gp);
-        abort_if($state === 9 && ! $enabled, 404);
         $profile = $directory->profile($state, $gp);
         $chosen = $request->query('village');
         abort_if($chosen !== null && (! is_string($chosen) || ! ctype_digit($chosen)), 404);
         $member = $chosen === null ? $profile['villages'][0] : collect($profile['villages'])->firstWhere('village', $chosen);
         abort_unless($member, 404);
-        if ($enabled && PlaceTopics::selected('gp') === 'overview' && $request->query('view') !== 'details' && $chosen === null) {
+        if (PlaceTopics::selected('gp') === 'overview' && $request->query('view') !== 'details' && $chosen === null) {
             return app(PanchayatSummaryPage::class)->show($profile);
         }
         $village = null;
@@ -66,7 +64,7 @@ class MyPlacePanchayatController extends Controller
             ? app(MyPlacePanchayat::class)->profileRecords($profile['record'], array_column($profile['villages'], 'district'))
             : ['reports' => [], 'payment_totals' => [], 'allocations' => []];
 
-        return view('gram-panchayat-profile', $profile + ['reports' => $own['reports']] + compact('own', 'member', 'village', 'enabled'));
+        return view('gram-panchayat-profile', $profile + ['reports' => $own['reports']] + compact('own', 'member', 'village'));
     }
 
     public function index(Request $request, MyPlaceDirectory $directory, MyPlacePanchayat $panchayats): View

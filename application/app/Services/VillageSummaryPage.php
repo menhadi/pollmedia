@@ -159,40 +159,8 @@ final class VillageSummaryPage
 
     private function panchayat(string $state, string $code, bool $hi): ?array
     {
-        if ($state === '9') {
-            $q = app(ElectoralVillageMap::class)->database()->prepare('SELECT district,subdistrict FROM ancestry WHERE lgd=? AND state=?');
-            $q->execute([$code, $state]);
-            $parent = $q->fetch(PDO::FETCH_ASSOC);
-            if (! $parent) {
-                return null;
-            }
-            $file = $parent['district'] === '173' ? 'pilibhit-lgd.json' : 'up-panchayat-directory-9-'.$parent['district'].'.json';
-            $path = database_path('fixtures/'.$file);
-            if (! is_file($path)) {
-                return null;
-            }
-            $index = Cache::remember('village-gp-names:'.$file.':'.filemtime($path), 86400, function () use ($path, $parent) {
-                $names = [];
-                foreach (json_decode(file_get_contents($path), true)['villages'] ?? [] as $v) {
-                    if ((string) $v['district_code'] === $parent['district'] && count($v['panchayats'] ?? []) === 1) {
-                        $names[$v['code']] = $v['panchayats'][0]['name'];
-                    }
-                }
+        $row = app(GramPanchayatDirectory::class)->forVillage((int) $state, (int) $code);
 
-                return $names;
-            });
-
-            return isset($index[$code]) ? ['name' => $index[$code], 'url' => route('my-place.index', ['state' => $state, 'district' => $parent['district'], 'subdistrict' => $parent['subdistrict'], 'village' => $code, 'topic' => 'gram-panchayat', 'lang' => $hi ? 'hi' : null])] : null;
-        }
-        $path = database_path('fixtures/gram-panchayat-directory.sqlite');
-        if (! is_file($path)) {
-            return null;
-        }
-        $db = new PDO('sqlite:file:'.$path.'?mode=ro');
-        $q = $db->prepare('SELECT DISTINCT g.gp,g.name FROM villages v JOIN gps g ON v.state=g.state AND v.gp=g.gp WHERE v.village=? AND v.state=? LIMIT 2');
-        $q->execute([$code, $state]);
-        $rows = $q->fetchAll(PDO::FETCH_ASSOC);
-
-        return count($rows) === 1 ? ['name' => $rows[0]['name'], 'url' => route('gram-panchayats.show', ['state' => $state, 'gp' => $rows[0]['gp'], 'lang' => $hi ? 'hi' : null])] : null;
+        return $row ? ['name' => $row['name'], 'url' => route('gram-panchayats.show', ['state' => $state, 'gp' => $row['gp'], 'lang' => $hi ? 'hi' : null])] : null;
     }
 }

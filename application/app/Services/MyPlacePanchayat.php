@@ -39,7 +39,7 @@ class MyPlacePanchayat
                 }
                 $directory[] = ['code' => (string) $code, 'name' => array_key_first($group['names']), 'namespace' => 'LGD Gram Panchayat',
                     'blocks' => array_keys($group['blocks'] ?? []), 'villages' => array_values($group['villages']),
-                    'profile_state' => PanchayatSummaryPage::enabled(9, (int) $code) ? 9 : null, 'checked_on' => $source['checked_on'] ?? null, 'source_url' => $source['url'] ?? null];
+                    'profile_state' => 9, 'checked_on' => $source['checked_on'] ?? null, 'source_url' => $source['url'] ?? null];
             }
         }
         if ((string) $context['state']['code'] !== '9') {

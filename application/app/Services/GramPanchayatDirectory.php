@@ -79,6 +79,13 @@ class GramPanchayatDirectory
         return $result;
     }
 
+    public function forVillage(int $state, int $village): ?array
+    {
+        $rows = $this->rows('SELECT DISTINCT g.gp,g.name FROM villages v JOIN gps g USING(state,gp) WHERE v.village=? AND v.state=? LIMIT 2', [$village, $state], $state);
+
+        return count($rows) === 1 ? $rows[0] : null;
+    }
+
     public function profile(int $state, int $gp): array
     {
         $record = $this->rows('SELECT * FROM gps WHERE state=? AND gp=?', [$state, $gp], $state)[0] ?? null;
