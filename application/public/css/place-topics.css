@@ -20,3 +20,7 @@ body:has([data-place-topics]){overflow-anchor:none}
 [data-topic-body] .compact-converted-metrics:has(>.compact-summary-table){display:block!important;overflow-x:auto}
 [data-topic-body] .compact-summary-table{width:100%;border-collapse:collapse}
 [data-topic-body] .compact-summary-table :is(td,th){padding:.5rem .7rem;text-align:start;border-bottom:1px solid #d6e2e2}
+html body main section#overview.pm-overview-table{display:block!important}
+html body main #overview.pm-overview-table>.table-wrap{display:block!important;width:100%!important;max-width:none!important;min-width:0!important}
+html body main #overview.pm-overview-table table{width:100%!important;min-width:0!important;table-layout:auto!important}
+html body main #overview.pm-overview-table thead :is(th,button,span){color:#fff!important;background-color:#173f50!important}
