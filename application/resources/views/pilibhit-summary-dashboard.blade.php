@@ -16,7 +16,7 @@
 <title>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }} · Pollmedia</title>
 <meta name="description" content="{{ $tr('Pilibhit district population, household water coverage, subdistrict comparisons and village directory.','पीलीभीत की जनसंख्या, नल जल कवरेज, उपजिले और गाँव निर्देशिका।') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=3">
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=4">
 <script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">
@@ -63,10 +63,19 @@
 <input type="search" name="q" maxlength="120" aria-label="{{ $tr('Village name or Census code','गाँव का नाम या जनगणना कोड') }}" placeholder="{{ $tr('Village name or Census code','गाँव का नाम या जनगणना कोड') }}" value="{{ $search }}"><button>{{ $tr('Search','खोजें') }}</button></form></div>
 <p class="pb-status" role="status" data-pb-status></p>
 @include('pilibhit-summary-villages')
-@if($topic==='overview')<a class="pb-more" href="{{ $url('places') }}">{{ $tr('Open Places','स्थान देखें') }} →</a>
+@if($topic==='overview')<a class="pb-more" href="{{ $url('places') }}#places">{{ $tr('Browse all villages','सभी गाँव देखें') }} →</a>
 @else
 @foreach(['subdistricts'=>$tr('Subdistricts','उपजिले'),'towns'=>$tr('Towns','कस्बे')] as $kind=>$heading)
 @if($data[$kind])<h2>{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ route('civic.place',['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
 @endforeach
 @endif</section>
+@if($topic==='overview')
+<details class="pb-panel pb-wide pb-other-records"><summary>{{ $tr('More district records','ज़िले के अन्य रिकॉर्ड') }}</summary>
+<ul class="pb-topic-index">
+@foreach(['map'=>['Village boundaries and satellite layers','गाँव की सीमाएँ और उपग्रह चित्र'],'history'=>['Census comparisons across years','विभिन्न वर्षों की जनगणना तुलना'],'authorities'=>['District offices and contacts','ज़िले के कार्यालय और संपर्क'],'markets'=>['Market reports and prices','मंडी रिपोर्ट और भाव'],'issues'=>['Local issue reports','स्थानीय समस्याओं की रिपोर्ट'],'sources'=>['Data references and coverage','आँकड़ों के स्रोत और कवरेज']] as $key=>$description)
+<li><a data-pb-preview="{{ $key }}" href="{{ $url($key) }}"><b>{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</b><span>{{ $description[$hi?1:0] }}</span><i aria-hidden="true">→</i></a></li>
+@endforeach
+</ul>
+</details>
+@endif
 </div></main>@include('public-footer')</body></html>
