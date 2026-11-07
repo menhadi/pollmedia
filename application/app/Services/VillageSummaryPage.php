@@ -28,7 +28,7 @@ final class VillageSummaryPage
             $lgd = $this->linkedVillage((string) ($geo['Town/Village'] ?? $geo['TOWN_VILL'] ?? ''), (string) $row->state_code);
 
         }
-        $metrics = ['population' => $values['TOT_P'] ?? null, 'households' => $values['No_HH'] ?? $values['HOUSEHOLDS'] ?? null, 'literacy' => CensusAreaPresentation::rates($values)['literacy'], 'children' => $values['P_06'] ?? null, 'workers' => $values['TOT_WORK_P'] ?? null];
+        $metrics = ['population' => $values['TOT_P'] ?? $values['T_P'] ?? null, 'households' => $values['No_HH'] ?? $values['HOUSEHOLDS'] ?? $values['T_HH'] ?? null, 'literacy' => CensusAreaPresentation::rates($values)['literacy'], 'children' => $values['P_06'] ?? null, 'workers' => $values['TOT_WORK_P'] ?? null];
 
         return $this->page($row->name, $identity['name'] ?? $labels['District _Name'] ?? null, $identity['state_name'] ?? $labels['State_Name'] ?? null, $year, $metrics, $lgd, $identity);
     }
@@ -51,12 +51,12 @@ final class VillageSummaryPage
         return count($matches) === 1 && in_array((string) $matches[0]['state'], $states, true) ? $map->village($matches[0]['lgd'], true) : null;
     }
 
-    public function directory(array $lgd): View
+    public function directory(array $lgd, bool $fromGeography = false): View
     {
         $facts = app(MyPlaceFacts::class)->village(['code' => $lgd['lgd'], 'census2011' => $lgd['census2011']], (string) $lgd['state']);
         $metrics = array_intersect_key($facts, array_flip(['population', 'households', 'literacy']));
 
-        return $this->page($lgd['name'], $lgd['district'], $lgd['state_name'], 2011, $metrics, $lgd, null, $facts);
+        return $this->page($lgd['name'], $lgd['district'], $lgd['state_name'], 2011, $metrics, $lgd, null, $facts, $fromGeography);
     }
 
     public function pilibhit(array $row, int $year, ?array $lgd): View
@@ -66,7 +66,12 @@ final class VillageSummaryPage
         return $this->page($row['name'], 'Pilibhit', 'Uttar Pradesh', $year, $metrics, $lgd, app(DistrictDashboardUrls::class)->identity('09', '151'));
     }
 
-    private function page(string $name, ?string $district, ?string $state, int $year, array $metrics, ?array $lgd, ?array $identity, ?array $facts = null): View
+    public function archive(object $place, array $archive): View
+    {
+        return $this->page($place->name, null, null, 0, [], null, null, null, false, $archive);
+    }
+
+    private function page(string $name, ?string $district, ?string $state, int $year, array $metrics, ?array $lgd, ?array $identity, ?array $facts = null, bool $fromGeography = false, array $archive = []): View
     {
         $metrics = array_filter($metrics, fn ($v) => is_numeric($v) && $v >= 0);
         $hi = app()->getLocale() === 'hi';
@@ -79,6 +84,9 @@ final class VillageSummaryPage
             $code = (string) $lgd['lgd'];
             $st = (string) $lgd['state'];
             $current = url(app(NamedPlaceUrls::class)->village($lgd, false));
+            if ($fromGeography) {
+                $people = $current.'?'.http_build_query(array_filter(['view' => 'details', 'topic' => 'people', 'lang' => $hi ? 'hi' : null]));
+            }
             $water = $facts !== null ? $facts['water'] : (app(WaterMapData::class)->records([['feature_index' => 0, 'state' => $st, 'lgd' => $code]])[0] ?? null);
             if (! is_numeric($water['households'] ?? null) || ! is_numeric($water['tap_connections'] ?? null) || $water['households'] <= 0 || $water['tap_connections'] < 0 || $water['tap_connections'] > $water['households']) {
                 $water = null;
@@ -97,7 +105,7 @@ final class VillageSummaryPage
             }
         }
 
-        return view('village-summary', compact('name', 'district', 'state', 'year', 'metrics', 'hi', 'detail', 'people', 'water', 'soil', 'satellite', 'gp', 'rain', 'current', 'identity', 'lgd'));
+        return view('village-summary', compact('name', 'district', 'state', 'year', 'metrics', 'hi', 'detail', 'people', 'water', 'soil', 'satellite', 'gp', 'rain', 'current', 'identity', 'lgd', 'archive'));
     }
 
     private function vegetation(string $state, string $code): ?array
