@@ -1,3 +1,4 @@
+import {paginate} from './place-table-pagination.js?v=1';
 import {placeHierarchy, placeOptions} from '/js/place-hierarchy.js';
 import {pageSlice, uniquePlaceLinks, valueBarAppearance, compactCountValue} from './compact-place-model.js?v=20261104-polish-4';
 
@@ -5,7 +6,7 @@ const main = document.querySelector('main.dashboard-main, main');
 const hi = document.documentElement.lang.startsWith('hi');
 const text = (en,hindi) => hi ? hindi : en;
 const make = (tag,cls='',value) => { const node=document.createElement(tag); node.className=cls; if(value!==undefined)node.textContent=value; return node; };
-const paged = new WeakMap();
+
 const barStyles = new WeakMap();
 
 function compactCounts(root) {
@@ -176,34 +177,9 @@ function methodology(root) {
     }
 }
 
-function paginate(table) {
-    if (paged.has(table)) { paged.get(table)(); return; }
-    if (table.querySelector('[rowspan]')) return;
-    if (!table.tBodies.length || table.closest('[data-local-data-browser]') || table.parentElement.nextElementSibling?.matches('.compact-pager')) return;
-    if ([...table.tBodies].reduce((sum,body)=>sum+body.rows.length,0)<=50) return;
-    let page=1,size=50;
-    const bar=make('nav','approved-pagination');bar.setAttribute('aria-label',text('Table pages','तालिका पृष्ठ'));
-    const count=make('span');count.setAttribute('aria-live','polite');
-    const select=make('select');select.setAttribute('aria-label',text('Rows per page','प्रति पृष्ठ पंक्तियाँ'));
-    for(const number of [50,100,'All']){const option=make('option','',String(number));option.value=String(number);select.append(option);}
-    const previous=make('button','',text('Previous','पिछला')),next=make('button','',text('Next','अगला')),position=make('span');previous.type=next.type='button';
-    bar.append(count,select,previous,position,next);
-    (table.closest('.table-scroll,.table-wrap,.place-table-scroll,.compact-table-wrap')||table).after(bar);
-    const render=()=>{
-        const rows=[...table.tBodies].flatMap(body=>[...body.rows]);
-        const eligible=rows.filter(row=>!row.hidden&&row.style.display!=='none');
-        const slice=pageSlice(eligible,page,size==='All'?Math.max(1,eligible.length):Number(size));page=slice.page;
-        const shown=new Set(slice.rows);rows.forEach(row=>row.toggleAttribute('data-approved-page-hidden',!shown.has(row)));
-        count.textContent=`${slice.start}–${slice.end} / ${slice.total}`;position.textContent=`${page} / ${slice.pages}`;previous.disabled=page===1;next.disabled=page===slice.pages;
-    };
-    previous.onclick=()=>{page--;render();};next.onclick=()=>{page++;render();};select.onchange=()=>{size=select.value;page=1;render();};
-    table.tHead?.addEventListener('click',()=>setTimeout(render,0));table.closest('section')?.addEventListener('input',()=>{page=1;setTimeout(render,0);});
-    paged.set(table,render);render();
-}
-
 function visibleTables(root) {
     root.querySelectorAll('details').forEach(detail=>{
-        if(detail.closest('.approved-disclaimer'))return;
+        if(detail.closest('.approved-disclaimer,[data-topic-body]'))return;
         if(detail.querySelector('table')||detail.matches('[data-market-page-details]')){detail.open=true;detail.classList.add('ordered-visible-table');}
     });
     root.querySelectorAll('table').forEach(table=>{

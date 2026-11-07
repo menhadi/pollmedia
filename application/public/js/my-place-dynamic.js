@@ -64,6 +64,7 @@ if(root){
             initServices();
 
             present();
+            document.dispatchEvent(new Event('pm-topic-mounted'));
 
             message(t('Your place is ready.','आपके क्षेत्र की जानकारी तैयार है।'));
 

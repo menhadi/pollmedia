@@ -15,6 +15,16 @@
         if(!panel || panel.innerText.trim() || panel.querySelector('iframe,canvas,[role=status],svg'))return;
         const note=doc.createElement('p');note.textContent=label('No published records are available for this selection.','इस चयन के लिए प्रकाशित रिकॉर्ड उपलब्ध नहीं हैं।');panel.append(note);
     }
+    async function pageLongTables(){
+        const panel=bodyFor(primary());
+        if(!panel)return;
+        const tables=[...panel.querySelectorAll('table')].filter(t=>t.rows.length>21 && !t.closest('[data-local-data-browser]'));
+        if(!tables.length)return;
+        const {paginate}=await import('/js/place-table-pagination.js?v=1');
+        for(const table of tables)paginate(table,20);
+    }
+    pageLongTables().catch(()=>{});
+    doc.addEventListener('pm-topic-mounted',()=>{emptyState();pageLongTables().catch(()=>{});});
     emptyState();
     if(framed){
         const body=bodyFor(primary());
