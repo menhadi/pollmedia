@@ -7,11 +7,6 @@ use PDO;
 
 final class PanchayatSummaryPage
 {
-    public static function enabled(int $state, int $gp): bool
-    {
-        return $state === 9 && $gp === 81724;
-    }
-
     public function show(array $profile): View
     {
         $record = $profile['record'];

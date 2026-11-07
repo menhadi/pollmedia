@@ -8,7 +8,7 @@
     $parent=$pilot?['9','173']:($previews['directory']['parent']??null);
     $gpDistricts=$previews['directory']['parents']??[];
     $parent??=$gpDistricts ? ['9',array_key_first($gpDistricts)] : null;
-    $gpUrl=$parent?route('my-place.index',['state'=>$parent[0],'district'=>$parent[1],'topic'=>'gram-panchayat','lang'=>$hi?'hi':null]):route('gram-panchayats.area',['scope'=>'census','state'=>(int)$identity['state'],'district'=>(int)$identity['district'],'lang'=>$hi?'hi':null]);
+    $gpUrl=$parent?route('gram-panchayats.area',['scope'=>'lgd','state'=>$parent[0],'district'=>$parent[1],'lang'=>$hi?'hi':null]):route('gram-panchayats.area',['scope'=>'census','state'=>(int)$identity['state'],'district'=>(int)$identity['district'],'lang'=>$hi?'hi':null]);
     $number=new \NumberFormatter('en_IN',\NumberFormatter::DECIMAL);
     $fmt=fn($n)=>$n===null?'—':$number->format($n);
     $pct=fn($n,$precision=1)=>$n===null?'—':number_format($n,$precision).'%';
