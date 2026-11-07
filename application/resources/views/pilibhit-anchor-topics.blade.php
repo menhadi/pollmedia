@@ -41,7 +41,7 @@
 <a class="pb-more" href="{{ $url('authorities') }}">{{ $tr('Open the authority directory','अधिकारी निर्देशिका खोलें') }} →</a>
 </section></div>
 <section class="pb-panel pb-wide pb-market-board" data-pb-preview="markets"><h2>{{ $tr('Commodity prices','मंडी भाव') }}</h2>
-<p class="pb-sub">{{ $tr('AGMARKNET · One reported modal price per commodity, with its mandi and date.','एगमार्कनेट · प्रत्येक जिंस का एक प्रचलित भाव, मंडी और रिपोर्ट की तारीख।') }}</p>
+<p class="pb-sub">{{ $tr('One reported modal price per commodity, with its mandi and date.','प्रत्येक जिंस का एक प्रचलित भाव, मंडी और रिपोर्ट की तारीख।') }}</p>
 <table><thead><tr><th scope="col">{{ $tr('Commodity','जिंस') }}</th><th scope="col">{{ $tr('Market','मंडी') }}</th><th scope="col">{{ $tr('Modal price','प्रचलित भाव') }}</th><th scope="col">{{ $tr('Reported','रिपोर्ट तिथि') }}</th></tr></thead><tbody>
 @foreach($previews['prices'] as $row)<tr>
 <th scope="row">{{ $hi ? ($row['commodity_hi'] ?: $row['commodity']) : $row['commodity'] }}<small>{{ collect([$row['variety'],$row['grade']])->filter()->implode(' · ') }}</small></th>
