@@ -39,7 +39,7 @@ class MyPlacePanchayat
                 }
                 $directory[] = ['code' => (string) $code, 'name' => array_key_first($group['names']), 'namespace' => 'LGD Gram Panchayat',
                     'blocks' => array_keys($group['blocks'] ?? []), 'villages' => array_values($group['villages']),
-                    'checked_on' => $source['checked_on'] ?? null, 'source_url' => $source['url'] ?? null];
+                    'profile_state' => PanchayatSummaryPage::enabled(9, (int) $code) ? 9 : null, 'checked_on' => $source['checked_on'] ?? null, 'source_url' => $source['url'] ?? null];
             }
         }
         if ((string) $context['state']['code'] !== '9') {
@@ -149,7 +149,26 @@ class MyPlacePanchayat
         return collect($result)->sortByDesc('year')->values()->all();
     }
 
-    public function reports(array $context): array
+    public function profileRecords(array $record, array $districts): array
+    {
+        $reports = $payments = $allocations = [];
+        $code = (string) $record['gp'];
+        $selected = ['code' => $code, 'name' => $record['name'], 'namespace' => 'LGD Gram Panchayat'];
+        foreach (array_unique($districts) as $district) {
+            $context = ['state' => ['code' => (string) $record['state']], 'district' => ['code' => (string) $district], 'village' => null];
+            array_push($reports, ...$this->reports($context, $code));
+            array_push($payments, ...app(MyPlacePanchayatPaymentTotals::class)->forSelection($context, $selected));
+            array_push($allocations, ...$this->stateAllocations($context, $selected));
+        }
+
+        return [
+            'reports' => collect($reports)->unique()->values()->all(),
+            'payment_totals' => collect($payments)->unique()->groupBy('year')->filter(fn ($rows) => $rows->count() === 1)->map->first()->sortByDesc('year')->values()->all(),
+            'allocations' => collect($allocations)->unique()->values()->all(),
+        ];
+    }
+
+    public function reports(array $context, ?string $code = null): array
     {
         $path = config('services.egramswaraj.reports_path', database_path('fixtures/egramswaraj-accounts.json'));
         if (! is_file($path) || filesize($path) > 8 * 1024 * 1024) {
@@ -165,7 +184,7 @@ class MyPlacePanchayat
 
         $reports = [];
         foreach ($package['reports'] as $report) {
-            if (! is_array($report) || ! $this->matches($report, $context)) {
+            if (! is_array($report) || ($code !== null && (string) ($report['panchayat_code'] ?? '') !== $code) || ! $this->matches($report, $context)) {
                 continue;
             }
             $key = $report['panchayat_code'].':'.$report['financial_year'];

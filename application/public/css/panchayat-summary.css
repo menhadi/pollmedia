@@ -1,0 +1,6 @@
+[data-gp-summary] .pb-record-card table{margin-bottom:.75rem}
+[data-gp-summary] table :is(th,td){overflow-wrap:anywhere;white-space:normal}
+[data-gp-summary] .pb-record-card>small{color:#475f65;margin-bottom:.7rem}
+[data-gp-summary] .gp-members td{font-variant-numeric:tabular-nums}
+@media(max-width:650px){[data-gp-summary] table{table-layout:fixed}[data-gp-summary] .gp-members th:first-child{width:46%}}
+
