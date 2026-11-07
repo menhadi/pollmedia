@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ElectoralVillageMap;
 use App\Services\GramPanchayatDirectory;
 use App\Services\MyPlaceDirectory;
+use App\Services\MyPlaceFacts;
 use App\Services\MyPlacePanchayat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +35,23 @@ class MyPlacePanchayatController extends Controller
         return view('gram-panchayat-area', compact('scope', 'state', 'district', 'subdistrict', 'listing', 'q', 'page', 'areaName', 'subdistricts'));
     }
 
-    public function profile(GramPanchayatDirectory $directory, int $state, int $gp): View
+    public function profile(Request $request, GramPanchayatDirectory $directory, ElectoralVillageMap $map, int $state, int $gp): View
     {
         $profile = $directory->profile($state, $gp);
+        $chosen = $request->query('village');
+        abort_if($chosen !== null && (! is_string($chosen) || ! ctype_digit($chosen)), 404);
+        $member = $chosen === null ? $profile['villages'][0] : collect($profile['villages'])->firstWhere('village', $chosen);
+        abort_unless($member, 404);
+        $lookup = $map->database()->prepare('SELECT 1 FROM ancestry WHERE lgd=? AND state=? AND district=? AND subdistrict=?');
+        $lookup->execute(array_map('strval', [$member['village'], $state, $member['district'], $member['subdistrict']]));
+        $village = $lookup->fetchColumn() ? $map->village((string) $member['village']) : null;
+        if ($village && empty($village['census']) && empty($village['urban_boundary'])) {
+            $facts = app(MyPlaceFacts::class)->village(['code' => (string) $member['village'], 'census2011' => $village['census2011'] ?? null], (string) $state);
+            if ($facts['census_status'] === 'available') {
+                $village['census'] = ['population' => $facts['population'], 'households' => $facts['households'], 'literacy_rate' => $facts['literacy']];
+                $village['census_source'] = $facts['census_source'];
+            }
+        }
         $reports = [];
         foreach (array_unique(array_column($profile['villages'], 'district')) as $district) {
             $context = ['state' => ['code' => (string) $state], 'district' => ['code' => (string) $district], 'village' => null];
@@ -46,7 +62,7 @@ class MyPlacePanchayatController extends Controller
             }
         }
 
-        return view('gram-panchayat-profile', $profile + ['reports' => $reports]);
+        return view('gram-panchayat-profile', $profile + compact('reports', 'member', 'village'));
     }
 
     public function index(Request $request, MyPlaceDirectory $directory, MyPlacePanchayat $panchayats): View

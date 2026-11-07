@@ -231,6 +231,31 @@ function linkList(links,searchable=false) {
     search.oninput=()=>{page=1;update();};prev.onclick=()=>{page--;update();};next.onclick=()=>{page++;update();};bar.append(count,prev,next);if(searchable)wrap.append(search);wrap.append(list,bar);update();return wrap;
 }
 
+function panchayatList(records) {
+    const wrap=make('div','approved-tree-branch');
+    const search=make('input');search.type='search';search.placeholder=text('Search Panchayat name or LGD code','पंचायत का नाम या LGD कोड खोजें');
+    search.setAttribute('aria-label',search.placeholder);
+    const list=make('ul','approved-tree-links');
+    const controls=make('div','approved-pagination'),status=make('span');
+    status.setAttribute('role','status');
+    const previous=make('button','',text('Previous','पिछला')),next=make('button','',text('Next','अगला'));
+    previous.type=next.type='button';
+    let page=1;
+    function render() {
+        const term=search.value.trim().toLocaleLowerCase();
+        const matches=records.filter(record=>record.name.toLocaleLowerCase().includes(term)||String(record.gp).includes(term));
+        const slice=pageSlice(matches,page,8);page=slice.page;
+        list.replaceChildren(...slice.rows.map(record=>{
+            const item=make('li'),link=make('a','',record.name);
+            link.href='/india/gram-panchayats/'+record.state+'/'+record.gp+(hi?'?lang=hi':'');item.append(link);return item;
+        }));
+        status.textContent=slice.total?String(slice.start)+'–'+slice.end+' / '+slice.total:text('No matching Panchayats','कोई पंचायत नहीं मिली');
+        previous.disabled=page===1;next.disabled=page>=slice.pages;
+    }
+    search.oninput=()=>{page=1;render();};previous.onclick=()=>{page--;render();};next.onclick=()=>{page++;render();};
+    controls.append(status,previous,next);wrap.append(search,list,controls);render();return wrap;
+}
+
 function hierarchyPicker(panel,root) {
     const form=make('form','approved-hierarchy');form.action='/my-place';form.method='get';
     const status=make('p','approved-hierarchy-status');status.setAttribute('role','status');
@@ -260,14 +285,18 @@ function explorer(root,scopeMain=true) {
     const administrative=make('button','',text('Administrative places','प्रशासनिक क्षेत्र')),electoral=make('button','',text('Electoral areas','निर्वाचन क्षेत्र'));administrative.type=electoral.type='button';
     const adminPanel=make('div','approved-tree-panel'),electoralPanel=make('div','approved-tree-panel');adminPanel.id='approved-administrative';electoralPanel.id='approved-electoral';
     const all=[...root.querySelectorAll('a[href]'),...document.querySelectorAll('.dashboard-sidebar a[href]')].filter(link=>!link.closest('.public-header,.approved-explorer,.issue-post'));
+    const data=root.querySelector('[data-gp-choices]');
+    const panchayats=data?JSON.parse(data.textContent):[];
+    if(panchayats.length)root.querySelector('[data-gp-browser]')?.replaceChildren(panchayatList(panchayats));
+    const gpTitle=text('Panchayats','पंचायतें');
     const adminGroups=[
         [text('State','राज्य'),all.filter(link=>/\/india\/(?:census\/states|state|states)\//.test(link.pathname))],
         [text('Districts','जिले'),all.filter(link=>/\/india\/(?:districts|district|census\/districts)\//.test(link.pathname))],
         [text('Subdistricts','तहसीलें'),[...root.querySelectorAll('#subdistricts tbody a[href]')]],
-        [text('Panchayats','पंचायतें'),all.filter(link=>/panchayat/.test(link.pathname))],
-        [text('Villages and towns','गाँव और कस्बे'),[...root.querySelectorAll('#villages tbody a[href],#towns tbody a[href]'),...all.filter(link=>/\/india\/(?:villages?|towns|census\/(?:villages|towns))\//.test(link.pathname))]],
+        [gpTitle,all.filter(link=>/^\/india\/gram-panchayats\/\d+\/\d+$/.test(link.pathname))],
+        [text('Villages and towns','गाँव और कस्बे'),[...root.querySelectorAll('#villages tbody tr > :first-child a[href],#towns tbody a[href]'),...all.filter(link=>/\/india\/(?:villages?|towns|census\/(?:villages|towns))\//.test(link.pathname))]],
     ];
-    for(const [title,links] of adminGroups){const list=linkList(links,title===text('Villages and towns','गाँव और कस्बे'));if(!list)continue;const branch=make('details','approved-tree-node');branch.open=true;branch.append(make('summary','',title),list);adminPanel.append(branch);}
+    for(const [title,links] of adminGroups){const list=title===gpTitle && panchayats.length?panchayatList(panchayats):linkList(links,title===gpTitle || title===text('Villages and towns','गाँव और कस्बे'));if(!list)continue;const branch=make('details','approved-tree-node');branch.open=true;branch.append(make('summary','',title),list);adminPanel.append(branch);}
     electoralPanel.append(electoralPicker(root));
     for(const [kind,title] of [['pc','Lok Sabha (PC)'],['ac','State Assembly (AC)']]){
         const links=all.filter(link=>new RegExp(`/india/(?:constituencies/${kind}|${kind})/`).test(link.pathname));
