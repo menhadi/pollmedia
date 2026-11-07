@@ -216,12 +216,12 @@ class OfficialMarketPrices
         });
     }
 
-    public function overviewRecords(array $context): array
+    public function overviewRecords(array $context, bool $limitRefresh = false): array
     {
         $scope = $this->reportScope($context, null, 0);
         $report = Cache::get('my-place-markets:v5:'.$scope);
         if (empty($report['records'])) {
-            if (Cache::add('market-preview-refresh:'.$scope, true, now()->addMinutes(30))) {
+            if ((! $limitRefresh || Cache::add('district-summary-market-refresh-window', true, 30)) && Cache::add('market-preview-refresh:'.$scope, true, now()->addMinutes(30))) {
                 \Illuminate\Support\defer(fn () => $this->forPlace($context));
             }
             $report = Cache::get('my-place-last-prices:v4:'.$scope);

@@ -44,3 +44,5 @@ body.pb-site:has(.public-header) main.pb-dashboard table tbody :is(td,th){backgr
 @media(max-width:420px){.pb-index-pair{gap:.7rem}}
 
 .pb-grid>.pb-panel:only-child,.pb-record-grid>.pb-panel:only-child{grid-column:1/-1}.pb-dashboard .pb-row>a{min-width:0;overflow-wrap:anywhere}.pb-dashboard .pb-directory-table th{overflow-wrap:anywhere}
+
+body.pb-site .public-header.site-header{backdrop-filter:none;-webkit-backdrop-filter:none}

@@ -1,4 +1,6 @@
 (() => {
+ const summary=Boolean(document.querySelector('[data-district-summary],[data-district-source-summary]'));
+ const localeRoot=summary?(document.querySelector('.public-header')||document.body):document.body;
  if(!document.documentElement.lang.startsWith('hi')&&!/^\/issues(?:\/|$)/.test(location.pathname)){
   const replace=value=>value.includes('Subdistrict/Taluka/Tehsil')?value:value.replace(/\bSubdistricts?\b(?:\s*\/\s*(?:Talukas?\s*\/\s*)?Tehsils?)?/gi,'Subdistrict/Taluka/Tehsil');
   const labels='label,option,summary,h1,h2,h3,caption,thead,nav a,.place-type,.eyebrow,.kicker,.approved-context-links';
@@ -12,8 +14,8 @@
    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())apply(walker.currentNode);
    for(const element of [root,...root.querySelectorAll('[aria-label],[placeholder]')])for(const attr of ['aria-label','placeholder']){const value=element.getAttribute(attr);if(value&&replace(value)!==value)element.setAttribute(attr,replace(value));}
   };
-  apply(document.body);
-  new MutationObserver(records=>{for(const record of records){if(record.type==='characterData')apply(record.target);else for(const node of record.addedNodes)apply(node);}}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  if(!summary)apply(localeRoot);
+  new MutationObserver(records=>{for(const record of records){if(record.type==='characterData')apply(record.target);else for(const node of record.addedNodes)apply(node);}}).observe(localeRoot,{childList:true,subtree:true,characterData:true});
  }
  const header=document.querySelector('.public-header'),toggle=header?.querySelector('.public-menu-toggle'),nav=header?.querySelector('#public-navigation');
  if(toggle&&nav){
@@ -77,11 +79,11 @@
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while(node=walker.nextNode())textNode(node);
   for(const element of [root,...root.querySelectorAll('[placeholder],[aria-label],[title],[alt]')])if(!skip(element))for(const name of ['placeholder','aria-label','title','alt'])if(element.hasAttribute(name)){const value=element.getAttribute(name),text=translate(value);if(text!==value)element.setAttribute(name,text);if(!Object.hasOwn(dictionary,value)&&!ambiguousWords(value))queue(value,result=>{if(element.isConnected&&element.getAttribute(name)===text&&result!==value&&result!==text)element.setAttribute(name,result);});}
  };
- localize(document.body);
+ if(!summary)localize(localeRoot);
  const note=document.createElement('p');note.className='hindi-place-name-note';note.textContent='स्थान नाम उपलब्ध मूल देवनागरी वर्तनी या स्वचालित हिन्दी लिप्यंतरण से दिखाए गए हैं। लिप्यंतरण आधिकारिक नाम-संशोधन नहीं है; मूल नाम, स्रोत कोड और पहचान सुरक्षित हैं। संपादित हिन्दी वर्तनी को प्राथमिकता मिलती है।';
  const credit=document.createElement('a');credit.href='https://huggingface.co/datasets/ai4bharat/Aksharantar';credit.target='_blank';credit.rel='noopener';credit.textContent=' AI4Bharat IndicXlit / Aksharantar · Madhani और सहयोगी (2022)';note.append(credit);
  const container=document.querySelector('#coverage,.district-map-disclaimer,#sources');
  if(container)container.append(note);else{const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='भाषा और नामों की जानकारी';details.append(summary,note);document.querySelector('main')?.append(details);}
 
- new MutationObserver(records=>{for(const record of records){if(record.type==='characterData')localize(record.target);else if(record.type==='attributes')localize(record.target);else for(const node of record.addedNodes)localize(node);}}).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt']});
+ new MutationObserver(records=>{for(const record of records){if(record.type==='characterData')localize(record.target);else if(record.type==='attributes')localize(record.target);else for(const node of record.addedNodes)localize(node);}}).observe(localeRoot,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','title','alt']});
 })();

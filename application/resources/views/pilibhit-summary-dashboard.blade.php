@@ -26,7 +26,7 @@
 <title>{{ $title }} · Pollmedia</title>
 <meta name="description" content="{{ $title }} · {{ $tr('District figures, places and published records','ज़िले के आँकड़े, स्थान और प्रकाशित रिकॉर्ड') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=8">
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9">
 <script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-district-summary data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">
@@ -70,8 +70,8 @@
 @endif
 </div>
 @if($data['subdistricts'])
-<section class="pb-panel pb-wide" id="population"><h2>{{ $tr('Population by subdistrict','उपजिले के अनुसार जनसंख्या') }}</h2><p class="pb-sub">{{ $tr('Residents and share of district population','निवासी और ज़िले की जनसंख्या में हिस्सा') }} · {{ $census }}</p>
-@foreach(collect($data['subdistricts'])->sortByDesc('population') as $sub)
+<section class="pb-panel pb-wide" id="population"><h2>{{ count($data['subdistricts'])>5?$tr('Five most populous subdistricts','सर्वाधिक जनसंख्या वाले पाँच उपज़िले'):$tr('Population by subdistrict','उपजिले के अनुसार जनसंख्या') }}</h2><p class="pb-sub">{{ $tr('Residents and share of district population','निवासी और ज़िले की जनसंख्या में हिस्सा') }} · {{ $census }}</p>
+@foreach(collect($data['subdistricts'])->whereNotNull('population')->sortByDesc('population')->take(5) as $sub)
 @php($part=$share($sub['population'],$total['population']))
 <div class="pb-row"><a href="{{ route('civic.place',['record'=>$sub['id'],'lang'=>$hi?'hi':null]) }}">{{ $sub['name'] }}</a><div class="pb-track" aria-hidden="true">@if($part!==null)<i style="width:{{ min(100,max(0,$part)) }}%"></i>@endif</div><strong>{{ $fmt($sub['population']) }}</strong><small>{{ $pct($part) }}</small></div>
 @endforeach
