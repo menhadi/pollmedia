@@ -8,6 +8,7 @@ use App\Services\DistrictDashboardData;
 use App\Services\DistrictDashboardUrls;
 use App\Services\JharkhandDistrictEditionLinks;
 use App\Services\JjmWaterSnapshot;
+use App\Services\PilibhitDistrictPreviews;
 use App\Services\PlaceTopics;
 use App\Services\SikkimDistrictConstituencyLinks;
 use Illuminate\Contracts\View\View;
@@ -26,7 +27,7 @@ class DistrictDashboardController extends Controller
         }
         request()->attributes->set('district_identity', $identity);
         $topic = PlaceTopics::selected('district');
-        if ($state === '09' && $district === '151' && in_array($topic, ['overview', 'places'], true)) {
+        if ($state === '09' && $district === '151' && request()->query('view') !== 'details' && in_array($topic, ['overview', 'places'], true)) {
             $input = request()->validate(['q' => 'nullable|string|max:120', 'vp' => 'nullable|integer|min:1|max:100000']);
             $search = trim($input['q'] ?? '');
             $directory = app(DistrictDashboardData::class);
@@ -39,8 +40,10 @@ class DistrictDashboardController extends Controller
             }
             $data = $directory->published($district, $state, 2011, true, true);
             abort_unless($data, 404);
+            $previews = [];
             $water = null;
             if ($topic === 'overview') {
+                $previews = app(PilibhitDistrictPreviews::class)->summaries();
                 try {
                     $water = app(JjmWaterSnapshot::class)->pilibhit();
                 } catch (HttpExceptionInterface $error) {
@@ -50,7 +53,7 @@ class DistrictDashboardController extends Controller
                 }
             }
 
-            return view('pilibhit-summary-dashboard', compact('data', 'villages', 'water', 'topic', 'hi', 'search'));
+            return view('pilibhit-summary-dashboard', compact('data', 'villages', 'water', 'topic', 'hi', 'search', 'previews'));
         }
         $data = app(DistrictDashboardData::class)->published($district, $state, 2011, PlaceTopics::selected('district') === 'overview');
         abort_unless($data, 404, 'No published Census district records are available for this code.');

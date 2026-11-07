@@ -36,6 +36,9 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 @endphp
 <section class="district-title pm-district-heading"><div><?php $breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null; ?>
 @include('location-breadcrumbs',['locationTrail'=>array_values(array_filter([['label'=>'India','url'=>route('home')],$breadcrumbState?['label'=>$breadcrumbState,'url'=>route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($breadcrumbState)])]:null,['label'=>$data['name'],'url'=>null]]))])<p class="eyebrow">District dashboard · people, places & history</p><h1>{{ $data['name'] }} district</h1></div></section>
+@if(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09')
+<p><a href="{{ route('district-dashboard.named',array_filter(['state'=>'uttar-pradesh','district'=>'pilibhit','lang'=>request('lang')==='hi'?'hi':null])) }}">← {{ (app()->getLocale()==='hi'||request('lang')==='hi')?'ज़िले का सारांश':'District summary' }}</a></p>
+@endif
 @include('place-topic-nav',['topicGroup'=>'district','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['district'],fn($k)=>$k!=='rainfall'||(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09')))])
 <div data-topic-body>
 <?php if (in_array($topic, ['issues'], true)): ?>
