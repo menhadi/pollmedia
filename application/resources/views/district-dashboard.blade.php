@@ -34,7 +34,7 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 @endphp
-<section class="district-title"><div><?php $breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null; ?>
+<section class="district-title pm-district-heading"><div><?php $breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null; ?>
 @include('location-breadcrumbs',['locationTrail'=>array_values(array_filter([['label'=>'India','url'=>route('home')],$breadcrumbState?['label'=>$breadcrumbState,'url'=>route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($breadcrumbState)])]:null,['label'=>$data['name'],'url'=>null]]))])<p class="eyebrow">District dashboard · people, places & history</p><h1>{{ $data['name'] }} district</h1></div></section>
 @include('place-topic-nav',['topicGroup'=>'district','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['district'],fn($k)=>$k!=='rainfall'||(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09')))])
 <div data-topic-body>
@@ -349,7 +349,7 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 @if(($data['census_district_code'] ?? '')==='465')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order records AC191-192 under Jhabua. Their assignment to Census2011 Alirajpur is not inferred. Constituency membership remains unavailable until an accepted crosswalk is established.</p>@endif
 <?php endif; ?>
 <?php if (in_array($topic, ['overview'], true)): ?>
-<section id="overview" class="metrics">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy age 7+'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ $display($total[$key],$key==='literacy'?2:0) }}{{ $key==='literacy'&&$total[$key]!==null?'%':'' }}</strong><small>Census {{ $data['year'] }}</small></article>@endforeach<article><span>Female per 1,000 male</span><strong>{{ $display($total['female']!==null&&$total['male']>0?1000*$total['female']/$total['male']:null) }}</strong><small>Census {{ $data['year'] }} sex ratio</small></article></section>
+@include('district-overview-table')
 <?php endif; ?>
 <?php if (in_array($topic, ['map'], true)): ?>
 @include('district-polygon-map')

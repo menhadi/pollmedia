@@ -9,3 +9,14 @@
 /* Keep the global control consistent on dashboards with their own button theme. */
 html.pm-js body button.pm-top-button{background:#0f766e!important;color:white!important;border:0!important;border-radius:11px!important;box-shadow:0 6px 20px #183f4933!important}
 html.pm-js body button.pm-top-button:hover{background:#095e58!important}
+
+html body main .district-title.pm-district-heading{background:#f4f8f8!important;color:#18363e!important}
+html body main .district-title.pm-district-heading h1{color:#18363e!important}
+html body main .district-title.pm-district-heading .eyebrow{color:#36565e!important}
+.pm-overview-table .table-wrap{overflow-x:auto}.pm-overview-table table{width:100%;border-collapse:collapse}.pm-overview-table :is(td,th){text-align:start;padding:.55rem .7rem;border-bottom:1px solid #d6e2e2}.pm-overview-table tbody th{font-weight:600}.pm-overview-table td:nth-child(2){font-variant-numeric:tabular-nums}
+.pm-scroll-section{min-width:0;margin:1.5rem 0;scroll-margin-top:5rem}.pm-scroll-section>h2{color:#18363e;font:650 1.35rem/1.4 system-ui;margin:0 0 .6rem}
+
+body:has([data-place-topics]){overflow-anchor:none}
+[data-topic-body] .compact-converted-metrics:has(>.compact-summary-table){display:block!important;overflow-x:auto}
+[data-topic-body] .compact-summary-table{width:100%;border-collapse:collapse}
+[data-topic-body] .compact-summary-table :is(td,th){padding:.5rem .7rem;text-align:start;border-bottom:1px solid #d6e2e2}
