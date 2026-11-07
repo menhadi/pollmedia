@@ -43,7 +43,7 @@
 @if($satellite)<section class="pb-panel pb-record-card" data-village-panel="satellite"><h2>{{ $tr('Vegetation index (NDVI)','वनस्पति सूचकांक (NDVI)') }}</h2>
 <div class="pb-index-pair"><div><time>{{ $satellite['date1'] }}</time><strong>{{ number_format($satellite['a'],4) }}</strong></div><span class="pb-index-arrow" aria-hidden="true">→</span><div><time>{{ $satellite['date2'] }}</time><strong>{{ number_format($satellite['b'],4) }}</strong></div></div>
 <p>{{ $tr('Paired coverage','तुलनीय कवरेज') }} <strong>{{ $fmt($satellite['coverage']) }}%</strong></p>
-<a class="pb-more" href="{{ route('district-dashboard-directory',['satellite'=>$satellite['layer'],'lang'=>$hi?'hi':null]) }}#satellite-index">{{ $tr('Explore the satellite map','उपग्रह मानचित्र देखें') }} →</a></section>@endif
+<a class="pb-more" href="{{ $topic('rainfall') }}#satellite-comparison">{{ $tr('Compare village satellite images','गाँव के उपग्रह चित्रों की तुलना करें') }} →</a></section>@endif
 @if($soil)<section class="pb-panel pb-record-card" data-village-panel="soil"><h2>{{ $tr('Soil tests','मृदा परीक्षण') }}</h2><p class="pb-sub">2025–26</p>
 <p><strong>{{ $fmt(round($soil['value'],1)) }}%</strong> {{ $tr('of tested samples had low nitrogen','परीक्षित नमूनों में नाइट्रोजन कम थी') }} · {{ $fmt($soil['samples']) }} {{ $tr('samples','नमूने') }}</p>
 <a class="pb-more" href="{{ $topic('soil') }}">{{ $tr('View soil records','मृदा रिकॉर्ड देखें') }} →</a></section>@endif
