@@ -10,7 +10,7 @@ final class DistrictSummaryPage
 {
     public static function enabled(array $identity): bool
     {
-        return in_array($identity['state'].':'.$identity['district'], ['09:151', '27:522', '19:342', '07:094', '09:146'], true);
+        return isset($identity['state'], $identity['district'], $identity['path']);
     }
 
     public function show(array $identity, string $topic, callable $support): View
