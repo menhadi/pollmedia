@@ -11,6 +11,9 @@
         $targets[$key]=[$baseUrl.'?'.http_build_query(array_merge($params,[$topicKey=>$key])),\App\Services\PlaceTopics::LABELS[$key][$topicHi?1:0]];
     }
 @endphp
+@if(request()->attributes->get('village_summary_route') && request('view')==='details')
+<p><a href="{{ request()->fullUrlWithoutQuery(['topic','view']) }}">← {{ $topicHi?'गाँव का सारांश':'Village summary' }}</a></p>
+@endif
 <nav class="pm-topics" data-place-topics="{{ $topicGroup }}" data-active-topic="{{ $activeTopic }}" aria-label="{{ $topicHi?'विषय':'Topics' }}">
     <div class="pm-topic-links">@foreach($targets as $key=>[$href,$label])
         <a href="{{ $href }}" data-topic="{{ $key }}" @if($activeTopic===$key) aria-current="page" @endif>{{ $label }}</a>

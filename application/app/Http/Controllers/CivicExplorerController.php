@@ -142,10 +142,8 @@ class CivicExplorerController extends Controller
             : ($anchorEdition ?? $availableEditions->firstWhere('source_key', 'india-basic-'.$year.'-total') ?? $availableEditions->where('year', $year)->first());
         abort_if(isset($input['edition']) && ! $edition, 404);
         if ($anchor?->level === 'VILLAGE' && $edition && (int) $edition->id === (int) $anchorEdition->id) {
-            $geo = json_decode($anchor->geography, true);
-            $pilot = $year === 2011 && $anchor->state_code === '09' && $anchor->district_code === '151' && (string) ($geo['Town/Village'] ?? '') === '131191';
             $summary = app(VillageSummaryPage::class);
-            if ($summary->enabled($pilot)) {
+            if ($summary->enabled()) {
                 return $summary->census($anchor, $year);
             }
         }

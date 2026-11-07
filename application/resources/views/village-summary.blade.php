@@ -17,6 +17,7 @@
 @if($district)<span>›</span>@if($identity)<a href="{{ url($identity['path']).($hi?'?lang=hi':'') }}">{{ $district }}</a>@else<span>{{ $district }}</span>@endif @endif</nav>
 <h1>{{ $name }}</h1><p class="pb-scope">{{ $tr('Village summary','गाँव का सारांश') }}</p>
 <p class="pb-view-switch"><a href="{{ $detail }}">{{ $tr('Open full village records','गाँव के विस्तृत रिकॉर्ड खोलें') }} →</a></p>
+@if(!$metrics && !$lgd)<p>{{ $tr('Village record from the','गाँव का रिकॉर्ड ·') }} {{ $year }} {{ $tr('Census','जनगणना') }}</p>@endif
 <div class="pb-record-grid pb-anchor-pair">
 @if($metrics)<section class="pb-panel pb-record-card" data-village-panel="people"><h2>{{ $tr('Population and households','जनसंख्या और परिवार') }}</h2><p class="pb-sub">{{ $tr('Census','जनगणना') }} {{ $year }}</p>
 <table class="pb-metrics"><tbody>@foreach($metrics as $key=>$v)<tr><th scope="row">{{ $labels[$key][$hi?1:0] }}</th><td>{{ $fmt($v) }}{{ $key==='literacy'?'%':'' }}</td></tr>@endforeach</tbody></table>
@@ -35,7 +36,7 @@
 <a class="pb-more" href="{{ $topic('rainfall') }}">{{ $tr('Explore rainfall records','वर्षा रिकॉर्ड देखें') }} →</a></section>@endif
 @if($satellite)<section class="pb-panel pb-record-card" data-village-panel="satellite"><h2>{{ $tr('Vegetation index (NDVI)','वनस्पति सूचकांक (NDVI)') }}</h2>
 <div class="pb-index-pair"><div><time>{{ $satellite['date1'] }}</time><strong>{{ number_format($satellite['a'],4) }}</strong></div><span class="pb-index-arrow" aria-hidden="true">→</span><div><time>{{ $satellite['date2'] }}</time><strong>{{ number_format($satellite['b'],4) }}</strong></div></div>
-<p>{{ $tr('Change on paired village pixels','गाँव के तुलनीय पिक्सेल पर बदलाव') }} <strong>{{ number_format($satellite['b']-$satellite['a'],4) }}</strong></p>
+<p>{{ $tr('Paired coverage','तुलनीय कवरेज') }} <strong>{{ $fmt($satellite['coverage']) }}%</strong></p>
 <a class="pb-more" href="{{ route('district-dashboard-directory',['satellite'=>$satellite['layer'],'lang'=>$hi?'hi':null]) }}#satellite-index">{{ $tr('Explore the satellite map','उपग्रह मानचित्र देखें') }} →</a></section>@endif
 @if($soil)<section class="pb-panel pb-record-card" data-village-panel="soil"><h2>{{ $tr('Soil tests','मृदा परीक्षण') }}</h2><p class="pb-sub">2025–26</p>
 <p><strong>{{ $fmt(round($soil['value'],1)) }}%</strong> {{ $tr('of tested samples had low nitrogen','परीक्षित नमूनों में नाइट्रोजन कम थी') }} · {{ $fmt($soil['samples']) }} {{ $tr('samples','नमूने') }}</p>
