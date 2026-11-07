@@ -5,6 +5,21 @@
     $villages=$district['revenue_villages']??[];
     $features=$district['features']??$shapeCount??null;
     $details=request()->fullUrlWithQuery(['view'=>'details']);
+    $file=$district['file']??$sourceMap??null;
+    $ndvi=null;
+    if ($file) {
+        $layers=json_decode(file_get_contents(database_path('fixtures/district-summary-satellite.json')),true,flags:JSON_THROW_ON_ERROR);
+        $layer=$layers[$file]??null;
+        if ($layer) {
+            $checksum=$district['sha256']??null;
+            if ($checksum===null && isset($sourceMap) && is_file(public_path($sourceMap))) {
+                $checksum=hash_file('sha256',public_path($sourceMap));
+            }
+            if ($checksum===$layer['geometry_sha256']) {
+                $ndvi=$layer;
+            }
+        }
+    }
     $map=request()->fullUrlWithQuery(['view'=>'details','topic'=>'map']);
 @endphp
 <!doctype html><html lang="{{ $hi?'hi':'en' }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -26,6 +41,7 @@
 @else<p>{{ $tr('District boundary from the source map','स्रोत मानचित्र में ज़िले की सीमा') }}</p>@endif
 <a class="pb-more" href="{{ $map }}">{{ $tr('Explore the map and its coverage','मानचित्र और उसका कवरेज देखें') }} →</a></section>
 @endif
+@if($ndvi)<div class="pb-record-grid pb-anchor-pair">@include('district-summary-vegetation')</div>@endif
 @if(!empty($constituencyLinks['assembly']))<section class="pb-panel pb-wide"><h2>{{ $tr('Assembly constituencies','विधानसभा क्षेत्र') }}</h2>
 <ul>@foreach(array_slice($constituencyLinks['assembly'],0,5) as $seat)<li><a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a></li>@endforeach</ul><a href="{{ request()->fullUrlWithQuery(['view'=>'details','topic'=>'elections']) }}">{{ $tr('More election records','अन्य चुनाव रिकॉर्ड') }} →</a></section>@endif
 </main>@include('public-footer')</body></html>
