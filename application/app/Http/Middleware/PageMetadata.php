@@ -18,6 +18,18 @@ class PageMetadata
         if (str_starts_with(strtolower($response->headers->get('Content-Disposition', '')), 'attachment')) {
             return $response;
         }
+        if (! $request->is('admin', 'admin/*', 'api/*') && str_contains(strtolower((string) $response->headers->get('Content-Type')), 'text/html')) {
+            $html = $response->getContent();
+            if (is_string($html) && stripos($html, '</head>') !== false) {
+                $assets = '<link rel="stylesheet" href="'.e(asset('css/place-topics.css')).'?v=1"><script defer src="'.e(asset('js/place-topics.js')).'?v=1"></script>';
+                $original = $response instanceof LaravelResponse ? $response->getOriginalContent() : null;
+                $response->setContent(str_ireplace('</head>', $assets.'</head>', $html));
+                if ($response instanceof LaravelResponse) {
+                    $response->original = $original;
+                }
+                $response->headers->remove('Content-Length');
+            }
+        }
         app(PublicPageCanonical::class)->apply($request, $response);
         if ($request->is('admin', 'admin/*', 'api/*') || ! $response->isSuccessful() || ! str_contains($response->headers->get('Content-Type', ''), 'text/html') || ! Schema::hasTable('seo_metadata')) {
             return $response;

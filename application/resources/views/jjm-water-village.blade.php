@@ -24,7 +24,7 @@ $waterRow = $waterService->forVillage($waterCodes, $waterCensus);
 </details>
 @include('jjm-water-disclaimer')
 
-@include('rainfall-panel')
+@if(empty($onlyTopic)) @include('rainfall-panel') @endif
 
-@php($groundwaterVillage = count(array_unique($waterCodes))===1 ? (string)$waterCodes[0] : null)
+<?php $groundwaterVillage = count(array_unique($waterCodes))===1 ? (string)$waterCodes[0] : null; ?>
 @include('water-evidence-panel',['waterVillage'=>$groundwaterVillage])

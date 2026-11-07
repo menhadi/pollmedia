@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ArunachalDistrictEditionLinks;
 use App\Services\DistrictConstituencyLinks;
 use App\Services\DistrictDashboardData;
+use App\Services\DistrictDashboardUrls;
+use App\Services\JharkhandDistrictEditionLinks;
+use App\Services\PlaceTopics;
+use App\Services\SikkimDistrictConstituencyLinks;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -13,13 +18,17 @@ class DistrictDashboardController extends Controller
 {
     public function index(string $state, string $district): View|RedirectResponse
     {
-        $identity = app(\App\Services\DistrictDashboardUrls::class)->identity($state, $district);
+        $identity = app(DistrictDashboardUrls::class)->identity($state, $district);
         if ($identity && ! request()->routeIs('district-dashboard.named')) {
-            return redirect($identity['path'], 301);
+            return redirect($identity['path'].(request()->getQueryString() ? '?'.request()->getQueryString() : ''), 301);
         }
         request()->attributes->set('district_identity', $identity);
-        $data = app(DistrictDashboardData::class)->published($district, $state);
+        $data = app(DistrictDashboardData::class)->published($district, $state, 2011, PlaceTopics::selected('district') === 'overview');
         abort_unless($data, 404, 'No published Census district records are available for this code.');
+        if (PlaceTopics::selected('district') === 'overview') {
+            return view('district-dashboard', ['data' => $data, 'sourceMap' => null, 'censusSeries' => [], 'constituencyLinks' => []]);
+        }
+
         $censusSeries = $data['history'];
         $constituencyLinks = $state === '29' && in_array($district, ['555', '556', '557', '558', '559', '560', '561', '562', '563', '564', '565', '566', '567', '568', '569', '570', '571', '572', '573', '574', '575', '576', '577', '578', '579', '580', '581', '582', '583', '584'], true) ? app(DistrictConstituencyLinks::class)->forDistrict(match ($district) {
             '555' => 'Belgaum', '556' => 'Bagalkot', '557' => 'Bijapur', '558' => 'Bidar', '559' => 'Raichur', '560' => 'Koppal', '561' => 'Gadag', '562' => 'Dharwad', '563' => 'Uttara Kannada', '564' => 'Haveri', '565' => 'Bellary', '566' => 'Chitradurga', '567' => 'Davanagere', '568' => 'Shimoga', '569' => 'Udupi', '570' => 'Chikmagalur', '571' => 'Tumkur', '572' => 'Bangalore', '573' => 'Mandya', '574' => 'Hassan', '575' => 'Dakshina Kannada', '576' => 'Kodagu', '577' => 'Mysore', '578' => 'Chamarajanagar', '579' => 'Gulbarga', '580' => 'Yadgir', '581' => 'Kolar', '582' => 'Chikkaballapura', '583' => 'Bangalore Rural', '584' => 'Ramanagara'
@@ -473,7 +482,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '20' && $district === '359') {
             $mapFile = 'maps/jharkhand-latehar-villages.geojson';
-            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->latehar();
+            $constituencyLinks = app(JharkhandDistrictEditionLinks::class)->latehar();
         }
         if ($state === '06' && $district === '071') {
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Yamunanagar', 'Haryana');
@@ -489,7 +498,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '20' && $district === '361') {
             $mapFile = 'maps/jharkhand-ramgarh-villages.geojson';
-            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->ramgarh();
+            $constituencyLinks = app(JharkhandDistrictEditionLinks::class)->ramgarh();
         }
         if ($state === '20' && $district === '362') {
             $mapFile = 'maps/jharkhand-dumka-villages.geojson';
@@ -501,7 +510,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '20' && $district === '363') {
             $mapFile = 'maps/jharkhand-jamtara-villages.geojson';
-            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->jamtara();
+            $constituencyLinks = app(JharkhandDistrictEditionLinks::class)->jamtara();
         }
         if ($state === '20' && $district === '364') {
             $mapFile = 'maps/jharkhand-ranchi-villages.geojson';
@@ -513,7 +522,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '20' && $district === '365') {
             $mapFile = 'maps/jharkhand-khunti-villages.geojson';
-            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->khunti();
+            $constituencyLinks = app(JharkhandDistrictEditionLinks::class)->khunti();
         }
         if ($state === '20' && $district === '366') {
             $mapFile = 'maps/jharkhand-gumla-villages.geojson';
@@ -525,7 +534,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '20' && $district === '367') {
             $mapFile = 'maps/jharkhand-simdega-villages.geojson';
-            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->simdega();
+            $constituencyLinks = app(JharkhandDistrictEditionLinks::class)->simdega();
         }
         if ($state === '20' && $district === '368') {
             $mapFile = 'maps/jharkhand-pashchimi-singhbhum-villages.geojson';
@@ -537,7 +546,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '20' && $district === '369') {
             $mapFile = 'maps/jharkhand-saraikela-kharsawan-villages.geojson';
-            $constituencyLinks = app(\App\Services\JharkhandDistrictEditionLinks::class)->saraikelaKharsawan();
+            $constituencyLinks = app(JharkhandDistrictEditionLinks::class)->saraikelaKharsawan();
         }
         if ($state === '06' && $district === '077') {
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Jind', 'Haryana');
@@ -553,19 +562,19 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '11' && $district === '241') {
             $mapFile = 'maps/sikkim-north-villages.geojson';
-            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('North');
+            $constituencyLinks = app(SikkimDistrictConstituencyLinks::class)->forDistrict('North');
         }
         if ($state === '11' && $district === '242') {
             $mapFile = 'maps/sikkim-west-villages.geojson';
-            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('West');
+            $constituencyLinks = app(SikkimDistrictConstituencyLinks::class)->forDistrict('West');
         }
         if ($state === '11' && $district === '243') {
             $mapFile = 'maps/sikkim-south-villages.geojson';
-            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('South');
+            $constituencyLinks = app(SikkimDistrictConstituencyLinks::class)->forDistrict('South');
         }
         if ($state === '11' && $district === '244') {
             $mapFile = 'maps/sikkim-east-villages.geojson';
-            $constituencyLinks = app(\App\Services\SikkimDistrictConstituencyLinks::class)->forDistrict('East');
+            $constituencyLinks = app(SikkimDistrictConstituencyLinks::class)->forDistrict('East');
         }
         if ($state === '06' && $district === '080') {
             $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict('Hisar', 'Haryana');
@@ -601,7 +610,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '248') {
             $mapFile = 'maps/arunachal-pradesh-papum-pare-villages.geojson';
-            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->papumPare();
+            $constituencyLinks = app(ArunachalDistrictEditionLinks::class)->papumPare();
         }
         if ($state === '12' && $district === '255') {
             $mapFile = 'maps/arunachal-pradesh-lower-subansiri-villages.geojson';
@@ -628,7 +637,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '252') {
             $mapFile = 'maps/arunachal-pradesh-upper-siang-villages.geojson';
-            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Upper Siang');
+            $constituencyLinks = app(ArunachalDistrictEditionLinks::class)->laterDistrict('Upper Siang');
         }
         if ($state === '12' && $district === '253') {
             $mapFile = 'maps/arunachal-pradesh-changlang-villages.geojson';
@@ -640,7 +649,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '256') {
             $mapFile = 'maps/arunachal-pradesh-kurung-kumey-villages.geojson';
-            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Kurung Kumey');
+            $constituencyLinks = app(ArunachalDistrictEditionLinks::class)->laterDistrict('Kurung Kumey');
         }
         if ($state === '12' && $district === '257') {
             $mapFile = 'maps/arunachal-pradesh-dibang-valley-villages.geojson';
@@ -648,7 +657,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '258') {
             $mapFile = 'maps/arunachal-pradesh-lower-dibang-valley-villages.geojson';
-            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Lower Dibang Valley');
+            $constituencyLinks = app(ArunachalDistrictEditionLinks::class)->laterDistrict('Lower Dibang Valley');
         }
         if ($state === '12' && $district === '259') {
             $mapFile = 'maps/arunachal-pradesh-lohit-villages.geojson';
@@ -656,7 +665,7 @@ class DistrictDashboardController extends Controller
         }
         if ($state === '12' && $district === '260') {
             $mapFile = 'maps/arunachal-pradesh-anjaw-villages.geojson';
-            $constituencyLinks = app(\App\Services\ArunachalDistrictEditionLinks::class)->laterDistrict('Anjaw');
+            $constituencyLinks = app(ArunachalDistrictEditionLinks::class)->laterDistrict('Anjaw');
         }
         if ($state === '06' && $district === '087') {
             $mapFile = 'maps/mewat-villages.geojson';
@@ -915,7 +924,6 @@ class DistrictDashboardController extends Controller
         if ($state === '07' && $district === '093') {
             $mapFile = 'maps/delhi-east-villages.geojson';
         }
-
 
         if ($state === '07') {
             $delhiRegionMaps = [

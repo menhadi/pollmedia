@@ -16,7 +16,7 @@
 
 @include('seo-metadata', ['seoTitle' => $__env->yieldContent('title').' · Pollmedia', 'seoDescription' => $__env->yieldContent('description')])
 
-<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">@include('india-map-assets')<link rel="stylesheet" href="{{ asset('css/census-profile.css') }}"><script src="{{ asset('js/history-lines.js') }}" defer></script>@include('place-layout-assets')</head>
+<link rel="stylesheet" href="/css/villages.css"><link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256',public_path('css/election-dashboard.css')),0,12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">@if(\App\Services\PlaceTopics::selected('village')==='map') @include('india-map-assets') @endif<link rel="stylesheet" href="{{ asset('css/census-profile.css') }}"><script src="{{ asset('js/history-lines.js') }}" defer></script>@include('place-layout-assets')</head>
 
 <body class="place-layout election-ui census-area-ui">@include('public-header')<main class="area-dashboard" data-local-dashboard>
 

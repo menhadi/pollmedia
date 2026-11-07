@@ -9,9 +9,9 @@
     @include('site-theme')
     <link rel="stylesheet" href="{{ asset('css/place-layout.css') }}">
     @if(isset($record))
-        @include('india-map-assets')
+        @if(\App\Services\PlaceTopics::selected('gp')==='village-data' && \App\Services\PlaceTopics::selected('member')==='map') @include('india-map-assets') @endif
         <link rel="stylesheet" href="{{ asset('css/census-profile.css') }}">
-        <script defer src="{{ asset('js/history-lines.js') }}"></script>
+        @if(\App\Services\PlaceTopics::selected('gp')==='village-data' && \App\Services\PlaceTopics::selected('member')==='history') <script defer src="{{ asset('js/history-lines.js') }}"></script> @endif
     @endif
     <link rel="stylesheet" href="{{ asset('css/gram-panchayat-directory.css') }}?v={{ substr(hash_file('sha256',public_path('css/gram-panchayat-directory.css')),0,12) }}">
 </head>

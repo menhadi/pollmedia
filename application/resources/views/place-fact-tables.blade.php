@@ -6,6 +6,7 @@
         <p>Population, literacy, water and soil highlights from available records.</p>
     </header>
     @foreach($facts['sections'] as $section)
+        @continue(!empty($onlyTopic) && ($onlyTopic==='soil' ? !str_contains(strtolower($section['title']),'soil') : ($onlyTopic==='water' ? !str_contains(strtolower($section['title']),'water') : preg_match('/soil|water/i',$section['title']))))
         @php
             $visibleRows = array_values(array_filter($section['rows'], fn ($row) => isset($row['value']) ? $row['value'] !== 'Unavailable' : !str_starts_with($row['answer'] ?? 'Unavailable', 'Unavailable')));
             $hasPlaces = collect($visibleRows)->contains(fn ($row) => !empty($row['place']));
@@ -28,6 +29,6 @@
         @endif
     @endforeach
 </section>
-@php($factCanonical = url()->current().(request()->routeIs('villages.show', 'villages.named') && (string) request('year') === '2001' ? '?year=2001' : ''))
-@php($factPage = ['@context' => 'https://schema.org', '@type' => 'WebPage', '@id' => $factCanonical.'#place-facts', 'url' => $factCanonical, 'name' => 'Facts about '.$facts['name'], 'about' => ['@type' => 'Place', 'name' => $facts['name']], 'description' => 'Population, literacy, water and soil highlights from available records.'])
+<?php $factCanonical = url()->current().(request()->routeIs('villages.show', 'villages.named') && (string) request('year') === '2001' ? '?year=2001' : ''); ?>
+<?php $factPage = ['@context' => 'https://schema.org', '@type' => 'WebPage', '@id' => $factCanonical.'#place-facts', 'url' => $factCanonical, 'name' => 'Facts about '.$facts['name'], 'about' => ['@type' => 'Place', 'name' => $facts['name']], 'description' => 'Population, literacy, water and soil highlights from available records.']; ?>
 <script type="application/ld+json">{!! json_encode($factPage, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) !!}</script>

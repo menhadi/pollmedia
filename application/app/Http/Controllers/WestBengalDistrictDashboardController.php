@@ -1,18 +1,30 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Services\DistrictDashboardData;
+
 use App\Services\DistrictConstituencyLinks;
+use App\Services\DistrictDashboardData;
+use App\Services\DistrictDashboardUrls;
+use App\Services\PlaceTopics;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+
 class WestBengalDistrictDashboardController extends Controller
 {
-    public function index(string $district): View|\Illuminate\Http\RedirectResponse
+    public function index(string $district): View|RedirectResponse
     {
-        $identity = app(\App\Services\DistrictDashboardUrls::class)->identity('19', $district);
-        if ($identity && ! request()->routeIs('district-dashboard.named')) { return redirect($identity['path'], 301); }
+        $identity = app(DistrictDashboardUrls::class)->identity('19', $district);
+        if ($identity && ! request()->routeIs('district-dashboard.named')) {
+            return redirect($identity['path'].(request()->getQueryString() ? '?'.request()->getQueryString() : ''), 301);
+        }
         request()->attributes->set('district_identity', $identity);
-        $data=app(DistrictDashboardData::class)->published($district,'19');
-        abort_unless($data,404);
-        $maps=[
+        $data = app(DistrictDashboardData::class)->published($district, '19', 2011, PlaceTopics::selected('district') === 'overview');
+        abort_unless($data, 404);
+        if (PlaceTopics::selected('district') === 'overview') {
+            return view('district-dashboard', ['data' => $data, 'sourceMap' => null, 'censusSeries' => [], 'constituencyLinks' => []]);
+        }
+
+        $maps = [
             '343' => 'maps/west-bengal-south-twenty-four-parganas-villages.geojson',
             '342' => 'maps/west-bengal-kolkata-villages.geojson',
             '341' => 'maps/west-bengal-howrah-villages.geojson',
@@ -29,10 +41,11 @@ class WestBengalDistrictDashboardController extends Controller
             '332' => 'maps/west-bengal-maldah-villages.geojson',
             '334' => 'maps/west-bengal-birbhum-villages.geojson',
         ];
-        $file=$maps[$district]??null;
-        $sourceMap=$file&&is_file(public_path($file))?$file:null;
-        $censusSeries=$data['history'];
-        $constituencyLinks=app(DistrictConstituencyLinks::class)->forDistrict($data['name'],'West Bengal');
-        return view('district-dashboard',compact('data','sourceMap','censusSeries','constituencyLinks'));
+        $file = $maps[$district] ?? null;
+        $sourceMap = $file && is_file(public_path($file)) ? $file : null;
+        $censusSeries = $data['history'];
+        $constituencyLinks = app(DistrictConstituencyLinks::class)->forDistrict($data['name'], 'West Bengal');
+
+        return view('district-dashboard', compact('data', 'sourceMap', 'censusSeries', 'constituencyLinks'));
     }
 }

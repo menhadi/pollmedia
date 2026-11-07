@@ -8,6 +8,7 @@ use App\Services\DistrictDashboardUrls;
 use App\Services\ElectoralVillageMap;
 use App\Services\NamedPlaceUrls;
 use App\Services\PlaceFactTables;
+use App\Services\PlaceTopics;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -297,7 +298,7 @@ class CivicExplorerController extends Controller
 
         $areaDashboard = $place && in_array($this->level($place->level), ['STATE', 'SUB-DISTRICT', 'VILLAGE', 'TOWN'], true);
         $childResidence = $place?->level === 'STATE' && (clone $base)->where('state_code', $place->state_code)->where('level', 'DISTRICT')->where('residence', 'Total')->exists() ? 'Total' : $residence;
-        $dashboardChildren = $areaDashboard ? $this->scope(clone $base, $codes, $depth, $year)->whereIn('level', $childLevels)->when($depth !== 3 || $residence !== 'Total', fn ($query) => $query->where('residence', $childResidence))->orderBy('name')->orderBy('id')->get()->unique(fn ($row) => $this->level($row->level).':'.implode(':', $this->codes($row)))->values() : collect();
+        $dashboardChildren = $areaDashboard && PlaceTopics::selected('census') === 'places' ? $this->scope(clone $base, $codes, $depth, $year)->whereIn('level', $childLevels)->when($depth !== 3 || $residence !== 'Total', fn ($query) => $query->where('residence', $childResidence))->orderBy('name')->orderBy('id')->get()->unique(fn ($row) => $this->level($row->level).':'.implode(':', $this->codes($row)))->values() : collect();
 
         $areaPresentation = ['values' => json_decode($records->first()?->values ?? ($place?->residence === $residence ? $place->values : '{}'), true), 'aggregated_fields' => [], 'expected_districts' => 0];
         $censusMapContext = null;

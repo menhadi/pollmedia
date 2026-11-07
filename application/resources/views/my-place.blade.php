@@ -11,6 +11,10 @@
 <header class="place-hero"><p class="eyebrow">{{ $t('Pilibhit · Uttar Pradesh', 'पीलीभीत · उत्तर प्रदेश') }}</p><h1>{{ $t('My place', 'मेरा क्षेत्र') }} · {{ $placeTitle }}</h1><p>{{ $t('Know your village. Find useful services in your district.', 'अपने गाँव की जानकारी पाएँ। जिले की ज़रूरी सेवाएँ खोजें।') }}</p><nav aria-label="{{ $t('Language', 'भाषा') }}" class="place-languages"><a href="{{ request()->fullUrlWithQuery(['lang' => 'hi']) }}" lang="hi" @if($hi) aria-current="page" @endif
 >हिन्दी</a><a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}" lang="en" @if(!$hi) aria-current="page" @endif
 >English</a></nav></header><div class="place-actions" style="margin-bottom:22px"><a class="place-button secondary" href="{{ route('my-place.index',['lang'=>$language]) }}">{{ $t('Use location or choose another place','लोकेशन इस्तेमाल करें या दूसरा क्षेत्र चुनें') }}</a><a class="place-button" href="{{ route('my-place.schemes',['state'=>'9','district'=>'173','lang'=>$language]) }}">{{ $t('Find schemes for me','मेरे लिए योजनाएँ खोजें') }}</a></div>
+<?php $topic = \App\Services\PlaceTopics::selected('pilot'); ?>
+@include('place-topic-nav',['topicGroup'=>'pilot'])
+<div data-topic-body>
+<?php if (in_array($topic, ['places'], true)): ?>
 <section class="place-panel"><h2>{{ $t('Choose your village', 'अपना गाँव चुनें') }}</h2>
 @if(count($villages))
 <form method="get" action="{{ route('my-place.pilibhit') }}" data-place-form><input type="hidden" name="lang" value="{{ $language }}"><div class="place-picker"><label>{{ $t('Subdistrict / Tehsil', 'तहसील') }}<select name="subdistrict" data-subdistrict><option value="">{{ $t('All subdistricts', 'सभी तहसीलें') }}</option>@foreach($tehsils as $tehsil)<option value="{{ $tehsil['subdistrict_code'] }}" @selected((string)$subdistrict === (string)$tehsil['subdistrict_code'])>{{ $tehsil['display_subdistrict'] ?? $tehsil['subdistrict'] }}</option>@endforeach
@@ -19,6 +23,8 @@
 @else<p>{{ $t('The village directory is temporarily unavailable. District services are shown below.', 'गाँवों की सूची अभी उपलब्ध नहीं है। जिले की सेवाएँ नीचे दी गई हैं।') }}</p>@endif
 
 </section>
+<?php endif; ?>
+<?php if (in_array($topic, ['overview'], true)): ?>
 <section class="place-panel"><h2>{{ $placeTitle }} · {{ $t('at a glance', 'एक नज़र में') }}</h2>@if($selected)<p class="place-note">{{ $t('Village code', 'गाँव कोड') }} {{ $selected['code'] }}</p>@endif
 
 <div class="place-facts"><article><span>{{ $t('Population · Census 2011', 'जनसंख्या · जनगणना 2011') }}</span><strong>{{ $number($facts['population']) }}</strong></article>@if($selected)<article><span>{{ $t('Households · Census 2011', 'परिवार · जनगणना 2011') }}</span><strong>{{ $number($facts['households']) }}</strong></article><article><span>{{ $t('Literacy · age 7+ · 2011', 'साक्षरता · आयु 7+ · 2011') }}</span><strong>{{ $number($facts['literacy'], '%') }}</strong></article>@endif
@@ -26,6 +32,8 @@
 @if($facts['water_source'])<small>{{ $t('Report retrieved', 'रिपोर्ट प्राप्त') }} {{ substr($facts['water_source']['retrieved_at'], 0, 10) }}</small>@endif
 </article></div>
 <div class="place-actions"><a class="place-button" href="{{ $dashboard }}">{{ $t('Map & full place details', 'नक्शा और पूरी जानकारी') }} &rarr;</a><a class="place-button secondary" href="{{ route('farmers.index', ['lang' => $language]) }}">{{ $t('Insight · farming help', 'Insight · खेती में मदद') }}</a><a class="place-button secondary" href="{{ route('issues.index', ['lang' => $language]) }}">{{ $t('Report a local problem', 'स्थानीय समस्या बताएँ') }}</a></div></section>
+<?php endif; ?>
+<?php if (in_array($topic, ['schools-services'], true)): ?>
 <section class="place-panel" id="services"><h2>{{ $t('Services in Pilibhit', 'पीलीभीत की सेवाएँ') }}</h2><p>{{ $t('Find a health centre, school information or a district contact. Distances and opening hours are unavailable; confirm before visiting.', 'स्वास्थ्य केंद्र, स्कूल की जानकारी या जिले के संपर्क खोजें। दूरी और खुलने का समय उपलब्ध नहीं हैं; जाने से पहले पुष्टि करें।') }}</p>
 <div data-service-tools hidden><div class="service-filters" role="group" aria-label="{{ $t('Service category', 'सेवा श्रेणी') }}"><button type="button" data-category="all" aria-pressed="true">{{ $t('All services', 'सभी सेवाएँ') }}</button>@foreach($categories as $key => $label)<button type="button" data-category="{{ $key }}" aria-pressed="false">{{ $label }}</button>@endforeach
 </div><label class="service-search">{{ $t('Search services', 'सेवाएँ खोजें') }}<input type="search" data-service-search placeholder="{{ $t('Name or address', 'नाम या पता') }}"></label><p class="place-note" data-service-count role="status" data-template="{{ $t(':count services shown', ':count सेवाएँ दिखाई गई हैं') }}"></p></div>
@@ -35,9 +43,15 @@
 @if($service['kind'] === 'online')<a href="{{ $source['url'] }}" target="_blank" rel="noopener noreferrer">{{ $t('Find schools', 'स्कूल खोजें') }} ↗</a>@endif
 </div><small>{{ $t('Directory date:', 'सूची की तारीख:') }} {{ $source['directory_updated'] ?? $t('not provided', 'नहीं दी गई') }}</small></article>@endforeach
 </div><p data-service-empty hidden>{{ $t('No matching services. Try another name or category.', 'कोई सेवा नहीं मिली। दूसरा नाम या श्रेणी चुनें।') }}</p></section>
+<?php endif; ?>
+<?php if (in_array($topic, ['water'], true)): ?>
 @include('water-evidence-panel',['waterState'=>'9','waterDistrict'=>'173','waterVillage'=>isset($selected['code'])?(string)$selected['code']:null,'waterLanguage'=>$language])
+<?php endif; ?>
+<?php if (in_array($topic, ['sources'], true)): ?>
 <details class="place-panel place-methodology"><summary>{{ $t('Methodology, sources & dates', 'पद्धति, स्रोत और तारीखें') }}</summary><h3>{{ $t('Service coverage', 'सेवाओं का क्षेत्र') }}</h3><p>{{ $t('This pilot lists services in Pilibhit district. It does not claim that a facility is the nearest or that a village falls within its catchment. Map links search the published name and address, rather than a verified location pin. Telephone numbers were checked against the published directory, not by calling them. Confirm staff, hours, fees and availability directly.', 'यह प्रारंभिक सुविधा पीलीभीत जिले की सेवाएँ दिखाती है। किसी केंद्र को सबसे पास या किसी गाँव का निर्धारित केंद्र नहीं बताया गया है। नक्शे के लिंक प्रकाशित नाम और पते से खोजते हैं; सटीक स्थान की पुष्टि नहीं हुई है। फोन नंबर प्रकाशित सूची से जाँचे गए हैं, फोन करके नहीं। कर्मचारियों, समय, शुल्क और उपलब्धता की सीधे पुष्टि करें।') }}</p><h3>{{ $t('Your place data', 'आपके क्षेत्र की जानकारी') }}</h3><p>{{ $t('Villages use the existing official LGD directory. Census 2011 facts and JJM report households are separate dated sources. Only unique official identity links are used. Missing values stay unavailable. Tap coverage does not measure water quality or daily supply. A saved village is stored only on this device and can be removed above.', 'गाँवों के लिए मौजूदा आधिकारिक LGD सूची का उपयोग होता है। जनगणना 2011 और JJM रिपोर्ट के परिवार अलग-अलग तारीखों के स्रोत हैं। केवल एकमात्र आधिकारिक पहचान संबंध उपयोग किए जाते हैं। अनुपलब्ध आँकड़े उपलब्ध नहीं ही रहते हैं। नल कवरेज पानी की गुणवत्ता या दैनिक आपूर्ति का माप नहीं है। सहेजा गाँव केवल इस डिवाइस पर रहता है और ऊपर से हटाया जा सकता है।') }}</p><h3>{{ $t('Government directories', 'सरकारी सूचियाँ') }}</h3><p>{{ $t('Links and published entries checked:', 'लिंक और प्रकाशित जानकारी की जाँच:') }} {{ $directory['checked_on'] }}</p><ul>@foreach($directory['sources'] as $key => $source)<li><a href="{{ $source['url'] }}" target="_blank" rel="noopener noreferrer">{{ $t(['hospitals'=>'Pilibhit hospitals','education'=>'Education department','agriculture'=>'Agriculture department','utilities'=>'Water and electricity contacts','schools'=>'UDISE+ school finder'][$key], ['hospitals'=>'पीलीभीत के अस्पताल','education'=>'शिक्षा विभाग','agriculture'=>'कृषि विभाग','utilities'=>'पानी और बिजली संपर्क','schools'=>'UDISE+ स्कूल खोज'][$key]) }}</a> · {{ $source['directory_updated'] ?? $t('date not provided', 'तारीख नहीं दी गई') }}</li>@endforeach
 @if($facts['census_source'])<li><a href="{{ $facts['census_source'] }}">{{ $t('Census 2011 source', 'जनगणना 2011 स्रोत') }}</a></li>@endif
 @if($facts['water_source'])<li><a href="{{ $facts['water_source']['url'] }}">{{ $t('JJM source report', 'JJM स्रोत रिपोर्ट') }}</a> · {{ substr($facts['water_source']['retrieved_at'], 0, 10) }}</li>@endif
 </ul></details>
+<?php endif; ?>
+</div>
 </main>@include('public-footer')<script src="{{ asset('js/my-place.js') }}?v=1" defer></script></body></html>

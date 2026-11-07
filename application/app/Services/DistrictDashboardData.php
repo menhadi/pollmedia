@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 
 class DistrictDashboardData
 {
-    public function published(string $districtCode, string $stateCode = '09', int $year = 2011): ?array
+    public function published(string $districtCode, string $stateCode = '09', int $year = 2011, bool $overviewOnly = false): ?array
     {
         foreach (['census_editions', 'census_publications', 'census_catalogue_rows'] as $table) {
             if (! Schema::hasTable($table)) {
@@ -21,6 +21,7 @@ class DistrictDashboardData
             })
             ->where('e.status', 'published')->where('e.year', $year)
             ->where('c.state_code', $stateCode)->where('c.district_code', $districtCode)
+            ->when($overviewOnly, fn ($query) => $query->where('c.level', 'DISTRICT'))
             ->whereNotLike('e.source_key', 'census-a02-%')
             ->select('c.*', 'e.source_url', 'e.source_key', 'e.retrieved_at', 'e.sha256', 'e.landing_url')
             ->orderByDesc('e.retrieved_at')->orderByDesc('e.id')->orderBy('c.id')->get();
@@ -67,7 +68,7 @@ class DistrictDashboardData
             'census_villages' => $villages, 'census_village_rows' => count($villages),
             'census_editions' => $editions, 'data_mode' => 'live_published',
             'checked_at' => now()->toIso8601String(),
-            'history' => app(CensusProfileSummary::class)->series($district, [$district], $year),
+            'history' => $overviewOnly ? [] : app(CensusProfileSummary::class)->series($district, [$district], $year),
         ];
     }
 

@@ -7,6 +7,7 @@ use App\Services\GramPanchayatDirectory;
 use App\Services\MyPlaceDirectory;
 use App\Services\MyPlaceFacts;
 use App\Services\MyPlacePanchayat;
+use App\Services\PlaceTopics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -42,24 +43,30 @@ class MyPlacePanchayatController extends Controller
         abort_if($chosen !== null && (! is_string($chosen) || ! ctype_digit($chosen)), 404);
         $member = $chosen === null ? $profile['villages'][0] : collect($profile['villages'])->firstWhere('village', $chosen);
         abort_unless($member, 404);
-        $lookup = $map->database()->prepare('SELECT 1 FROM ancestry WHERE lgd=? AND state=? AND district=? AND subdistrict=?');
-        $lookup->execute(array_map('strval', [$member['village'], $state, $member['district'], $member['subdistrict']]));
-        $village = $lookup->fetchColumn() ? $map->village((string) $member['village']) : null;
-        if ($village && empty($village['census']) && empty($village['urban_boundary'])) {
-            $facts = app(MyPlaceFacts::class)->village(['code' => (string) $member['village'], 'census2011' => $village['census2011'] ?? null], (string) $state);
-            if ($facts['census_status'] === 'available') {
-                $village['census'] = ['population' => $facts['population'], 'households' => $facts['households'], 'literacy_rate' => $facts['literacy']];
-                $village['census_source'] = $facts['census_source'];
+        $village = null;
+        if (PlaceTopics::selected('gp') === 'village-data') {
+            $lookup = $map->database()->prepare('SELECT 1 FROM ancestry WHERE lgd=? AND state=? AND district=? AND subdistrict=?');
+            $lookup->execute(array_map('strval', [$member['village'], $state, $member['district'], $member['subdistrict']]));
+            $village = $lookup->fetchColumn() ? $map->village((string) $member['village'], PlaceTopics::selected('member') === 'overview') : null;
+            if (PlaceTopics::selected('member') === 'people' && $village && empty($village['census']) && empty($village['urban_boundary'])) {
+                $facts = app(MyPlaceFacts::class)->village(['code' => (string) $member['village'], 'census2011' => $village['census2011'] ?? null], (string) $state);
+                if ($facts['census_status'] === 'available') {
+                    $village['census'] = ['population' => $facts['population'], 'households' => $facts['households'], 'literacy_rate' => $facts['literacy']];
+                    $village['census_source'] = $facts['census_source'];
+                }
             }
         }
         $reports = [];
-        foreach (array_unique(array_column($profile['villages'], 'district')) as $district) {
-            $context = ['state' => ['code' => (string) $state], 'district' => ['code' => (string) $district], 'village' => null];
-            foreach (app(MyPlacePanchayat::class)->reports($context) as $report) {
-                if ((string) $report['panchayat_code'] === (string) $gp) {
-                    $reports[] = $report;
+        if (PlaceTopics::selected('gp') === 'records') {
+            foreach (array_unique(array_column($profile['villages'], 'district')) as $district) {
+                $context = ['state' => ['code' => (string) $state], 'district' => ['code' => (string) $district], 'village' => null];
+                foreach (app(MyPlacePanchayat::class)->reports($context) as $report) {
+                    if ((string) $report['panchayat_code'] === (string) $gp) {
+                        $reports[] = $report;
+                    }
                 }
             }
+
         }
 
         return view('gram-panchayat-profile', $profile + compact('reports', 'member', 'village'));

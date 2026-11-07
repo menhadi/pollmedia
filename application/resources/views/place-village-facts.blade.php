@@ -10,5 +10,5 @@
         $placeFacts = app(\App\Services\PlaceFactTables::class)->village($factVillage, $factWater, $factCodes, isset($place) && is_object($place) ? $place : null, $census ?? null);
     @endphp
     @include('place-fact-tables', ['facts' => $placeFacts])
-    @include('rainfall-village-annual')
+    @if(empty($onlyTopic)) @include('rainfall-village-annual') @endif
 @endif

@@ -1,26 +1,10 @@
+<?php $topic = \App\Services\PlaceTopics::selected('district'); ?>
 @php
-$villageGps=(int)($data['year']??0)===2011 ? app(\App\Services\GramPanchayatDirectory::class)->forCensusVillages(array_column($data['census_villages']??[],'code')) : [];
+$villageGps=$topic==='places' && (int)($data['year']??0)===2011 ? app(\App\Services\GramPanchayatDirectory::class)->forCensusVillages(array_column($data['census_villages']??[],'code')) : [];
 @endphp
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{ $data['name'] }} district | Pollmedia</title><meta name="description" content="Explore {{ $data['name'] }} district population, literacy, village water connections and soil sample facts, with dated official sources and available-record comparisons."><link rel="stylesheet" href="{{ asset('css/pilibhit-ac-pilot.css') }}"><link rel="stylesheet" href="{{ asset('css/rampur-district-pilot.css') }}"><script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script><script src="{{ asset('js/district-dashboard-controls-20261017-navigation.js') }}?v={{ substr(hash_file('sha256', public_path('js/district-dashboard-controls-20261017-navigation.js')), 0, 12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}"><link rel="canonical" href="{{ url(request()->attributes->get('district_identity')['path'] ?? request()->path()) }}">@include('place-layout-assets')</head>
-
-
-
 <body class="place-layout election-ui rampur-dashboard">@include('public-header')
-
-
-
-@php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('district',$data['name'],(string)(request()->attributes->get('district_identity')['state'] ?? '')); @endphp
-
-
-
-@include('community-area-issues', ['deferDistrictAuthorities' => true])
-
-
-
 <main>
-
-
-
 @php
 
 
@@ -50,6 +34,18 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 @endphp
+<section class="district-title"><div><?php $breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null; ?>
+@include('location-breadcrumbs',['locationTrail'=>array_values(array_filter([['label'=>'India','url'=>route('home')],$breadcrumbState?['label'=>$breadcrumbState,'url'=>route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($breadcrumbState)])]:null,['label'=>$data['name'],'url'=>null]]))])<p class="eyebrow">District dashboard · people, places & history</p><h1>{{ $data['name'] }} district</h1></div></section>
+@include('place-topic-nav',['topicGroup'=>'district','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['district'],fn($k)=>$k!=='rainfall'||(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09')))])
+<div data-topic-body>
+<?php if (in_array($topic, ['issues'], true)): ?>
+@php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('district',$data['name'],(string)(request()->attributes->get('district_identity')['state'] ?? '')); @endphp
+
+
+
+@include('community-area-issues', ['deferDistrictAuthorities' => true])
+<?php endif; ?>
+<?php if (in_array($topic, ['sources'], true)): ?>
 
 
 
@@ -342,17 +338,6 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 @if(($data['census_district_code'] ?? '')==='137')<p class="notice">Census 2011 identifies district 09/137 as Jyotiba Phule Nagar; the SOI archive and dated electoral fixture use Amroha. The official Amroha district history explicitly records its former Jyotiba Phule Nagar name. This name correspondence does not verify matching boundary editions or village coverage. Census/LGD links remain pending; district figures are context, never constituency totals. <a href="https://amroha.nic.in/history/">Official district name history</a> | <a href="https://censusindia.gov.in/nada/index.php/catalog/1232">Census district handbook</a>.</p>@endif
-
-
-
-<section class="district-title"><div>@php($breadcrumbState=request()->attributes->get('district_identity')['state_name']??$data['state_name']??null)
-
-
-
-@include('location-breadcrumbs',['locationTrail'=>array_values(array_filter([['label'=>'India','url'=>route('home')],$breadcrumbState?['label'=>$breadcrumbState,'url'=>route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($breadcrumbState)])]:null,['label'=>$data['name'],'url'=>null]]))])<p class="eyebrow">District dashboard · people, places & history</p><h1>{{ $data['name'] }} district</h1><nav class="section-nav" aria-label="Dashboard sections"><a class="authority-jump" href="#district-authority-contacts">Authorities ↗</a><a href="#overview">District overview</a><a href="#subdistricts">Subdistricts</a><a href="#towns">Towns</a><a href="#map">Explore places & data</a><a href="#villages">Village directory</a><a href="#history">History & graphs</a><a href="#elections">Lok Sabha / State Assembly elections</a><a href="{{ route('district-dashboard-directory') }}">All districts</a><a href="#sources">Sources & coverage</a><a href="#place-facts">Quick facts</a><a href="#soil">Soil health</a><a href="#groundwater-levels">Groundwater levels</a><a href="#groundwater-chemistry">Groundwater chemistry</a><a href="#drinking-water-quality">Drinking-water quality</a><a class="data-edit-listing" href="{{ route('community.scope',['state'=>request()->attributes->get('district_identity')['state'] ?? request()->route('state'),'district'=>$data['census_district_code'],'year'=>$data['year'],'level'=>'DISTRICT']) }}">Edit data</a></nav></div></section>
-
-
-
 @if(($data['census_district_code'] ?? '')==='463')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order records AC79-81 under Sidhi. Their assignment to Census2011 Singrauli is not inferred. Constituency membership remains unavailable until an accepted crosswalk is established.</p>@endif
 
 
@@ -362,50 +347,28 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 @if(($data['census_district_code'] ?? '')==='465')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order records AC191-192 under Jhabua. Their assignment to Census2011 Alirajpur is not inferred. Constituency membership remains unavailable until an accepted crosswalk is established.</p>@endif
-
-
-
-
-
-
-
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['overview'], true)): ?>
 <section id="overview" class="metrics">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy age 7+'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ $display($total[$key],$key==='literacy'?2:0) }}{{ $key==='literacy'&&$total[$key]!==null?'%':'' }}</strong><small>Census {{ $data['year'] }}</small></article>@endforeach<article><span>Female per 1,000 male</span><strong>{{ $display($total['female']!==null&&$total['male']>0?1000*$total['female']/$total['male']:null) }}</strong><small>Census {{ $data['year'] }} sex ratio</small></article></section>
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['map'], true)): ?>
 @include('district-polygon-map')
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['water'], true)): ?>
 @include('water-evidence-panel',['waterCensusState'=>(string)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')),'waterCensusDistrict'=>(string)$data['census_district_code']])
+@if(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09') @include('jjm-water-district') @endif
+<?php endif; ?>
+<?php if (in_array($topic, ['places', 'panchayats'], true)): ?>
 @include('gram-panchayat-panel', ['gpScope'=>'census','gpState'=>(int)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')),'gpDistrict'=>(int)$data['census_district_code']])
+<?php endif; ?>
+<?php if (in_array($topic, ['authorities'], true)): ?>
+@php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('district',$data['name'],(string)(request()->attributes->get('district_identity')['state'] ?? '')); @endphp
 @include('district-authority-directory')
-
-
-
-@include('place-fact-tables', ['facts' => app(\App\Services\PlaceFactTables::class)->district($data)])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['soil','people','water'], true)): ?>
+@include('place-fact-tables', ['onlyTopic'=>$topic,'facts' => app(\App\Services\PlaceFactTables::class)->district($data)])
+<?php endif; ?>
+<?php if (in_array($topic, ['history'], true)): ?>
 @if(($data['census_district_code'] ?? '')==='131')<p class="notice">Electoral crosswalk unavailable: the dated ECI2008 order uses territorial definitions from2004 and records Pratapgarh AC172 under Chittorgarh. Its assignment and other AC memberships to Census2011 Pratapgarh district are not inferred. Later district splits are not backcast.</p>@endif
 
 
@@ -418,32 +381,13 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 
-<section class="panel district-settlement" id="rural-urban"><h2>Rural & urban</h2><div class="source-grid">@foreach(['Rural','Urban'] as $kind) @php($area=$data['totals'][$kind]??[])<article><p class="eyebrow">{{ $kind }}</p><h3>{{ $display($area['population']??null) }} people</h3>@if(isset($area['population'])&&$total['population']>0)<progress aria-label="{{ $kind }} share of district population" max="{{ $total['population'] }}" value="{{ $area['population'] }}" style="width:100%;accent-color:#176953"></progress>@endif<p>{{ $display($share($area['population']??null,$total['population']),1) }}% of district · {{ $display($area['households']??null) }} households</p><p>Literacy 7+: {{ $display($area['literacy']??null,2) }}%</p></article>@endforeach</div></section>
-
-
-
-@if(($data['census_district_code'] ?? '') === '151' && (request()->attributes->get('district_identity')['state'] ?? request()->route('state')) === '09')
-
-
-
-@include('jjm-water-district')
-
-
-
+<section class="panel district-settlement" id="rural-urban"><h2>Rural & urban</h2><div class="source-grid">@foreach(['Rural','Urban'] as $kind) <?php $area=$data['totals'][$kind]??[]; ?><article><p class="eyebrow">{{ $kind }}</p><h3>{{ $display($area['population']??null) }} people</h3>@if(isset($area['population'])&&$total['population']>0)<progress aria-label="{{ $kind }} share of district population" max="{{ $total['population'] }}" value="{{ $area['population'] }}" style="width:100%;accent-color:#176953"></progress>@endif<p>{{ $display($share($area['population']??null,$total['population']),1) }}% of district · {{ $display($area['households']??null) }} households</p><p>Literacy 7+: {{ $display($area['literacy']??null,2) }}%</p></article>@endforeach</div></section>
+@includeIf('district-dashboard-history')
+<?php endif; ?>
+<?php if (in_array($topic, ['rainfall'], true)): ?>
 @include('rainfall-panel', ['rainfallDistrict' => true])
-
-
-
-@endif
-
-
-
-
-
-
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['places'], true)): ?>
 @foreach(['subdistricts'=>'Subdistricts','towns'=>'Towns'] as $key=>$label)<section id="{{ $key }}" class="panel"><p class="eyebrow">Published Census {{ $data['year'] }} units</p><h2>Compare {{ count($data[$key]) }} {{ strtolower($label) }}</h2><div class="table-wrap"><table><thead><tr><th>Place / Census code</th><th>Population</th><th>District share</th><th>Households</th><th>Literacy 7+</th></tr></thead><tbody>@forelse($data[$key] as $place)<tr><td><a href="{{ route('civic.place',['record'=>$place['id']]) }}">{{ $place['name'] }}</a><small>{{ $place['code'] }}</small></td><td>{{ $display($place['population']) }}</td><td>@if($place['population']!==null&&$total['population']>0)<progress aria-label="{{ $place['name'] }} population share" max="{{ $total['population'] }}" value="{{ $place['population'] }}"></progress> {{ $display($share($place['population'],$total['population']),1) }}%@else Unavailable @endif</td><td>{{ $display($place['households']) }}</td><td>{{ $display($place['literacy'],2) }}{{ $place['literacy']!==null?'%':'' }}</td></tr>@empty<tr><td colspan="5">No published {{ strtolower($label) }} records available.</td></tr>@endforelse</tbody></table></div></section>@endforeach
 
 
@@ -473,29 +417,19 @@ $share=fn($value,$denominator)=>$value!==null&&$denominator>0?100*$value/$denomi
 
 
 @endif
-
-
-
-@includeIf('district-dashboard-history') @include('district-dashboard-elections')
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['elections'], true)): ?>
+@include('district-dashboard-elections')
+<?php endif; ?>
+<?php if (in_array($topic, ['markets'], true)): ?>
 @include('place-market-panel', ['marketPageScope'=>app(\App\Services\PageMarketContext::class)->censusDistrict((string)(request()->attributes->get('district_identity')['state'] ?? request()->route('state')), (string)$data['census_district_code'])])
-
-
-
+<?php endif; ?>
+<?php if (in_array($topic, ['sources'], true)): ?>
 <details id="sources" class="panel approved-disclaimer" data-compact-group="Sources"><summary>Methodology and disclaimer</summary><div class="approved-disclaimer-body"><p>Published database records are read on every request. Newly published imports appear when this page reloads.</p>@if($confirmedNewDelhiZeroVillages || $confirmedCentralZeroVillages)<p>Zero village rows confirmed in the official {{ $data['name'] }} Census 2011 PCA; all residents are recorded as urban.</p>@else<p>{{ $data['census_village_rows'] }} village Census rows are available in the selected published sources. Missing records remain unavailable.</p>@endif
 
 
 
 @foreach($data['census_editions'] as $edition)<p><a href="{{ $edition['source_url'] }}">{{ $edition['source_key'] }} · official source</a></p>@endforeach</div></details>
-
-
-
+<?php endif; ?>
+</div>
 </main>@include('public-footer')</body></html>
-
-
-
-
-
-

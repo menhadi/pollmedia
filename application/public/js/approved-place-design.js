@@ -216,6 +216,16 @@ function visibleTables(root) {
     });
 }
 
+function listMemory(kind, scope) {
+    const url=new URL(location.href);
+    url.searchParams.delete('pm_panel');
+    const key='pollmedia-place-list:'+url.pathname+'?'+url.searchParams.toString()+':'+kind+':'+scope;
+    return {
+        read(){try{return JSON.parse(sessionStorage.getItem(key))||{};}catch{return {};}},
+        save(search,page){try{sessionStorage.setItem(key,JSON.stringify({search,page}));}catch{}}
+    };
+}
+
 function linkList(links,searchable=false) {
     const list=make('ul','approved-tree-links');
     const seen=new Set();
@@ -227,7 +237,9 @@ function linkList(links,searchable=false) {
     if(!list.children.length)return null;
     let page=1;const search=make('input');search.type='search';search.placeholder=text('Search places','क्षेत्र खोजें');search.setAttribute('aria-label',search.placeholder);
     const wrap=make('div','approved-tree-branch');const bar=make('div','approved-pagination');const count=make('span'),prev=make('button','',text('Previous','पिछला')),next=make('button','',text('Next','अगला'));prev.type=next.type='button';
-    const update=()=>{const rows=[...list.children].filter(row=>row.textContent.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()));const slice=pageSlice(rows,page,8);page=slice.page;const shown=new Set(slice.rows);[...list.children].forEach(row=>row.hidden=!shown.has(row));count.textContent=`${slice.start}–${slice.end} / ${slice.total}`;prev.disabled=page===1;next.disabled=page===slice.pages;bar.hidden=list.children.length<=8;};
+    const memory=listMemory('places',list.querySelector('a')?.pathname||'');
+    const saved=memory.read();search.value=saved.search||'';page=Number(saved.page)||1;
+    const update=()=>{const rows=[...list.children].filter(row=>row.textContent.toLocaleLowerCase().includes(search.value.toLocaleLowerCase()));const slice=pageSlice(rows,page,8);page=slice.page;const shown=new Set(slice.rows);[...list.children].forEach(row=>row.hidden=!shown.has(row));count.textContent=`${slice.start}–${slice.end} / ${slice.total}`;prev.disabled=page===1;next.disabled=page===slice.pages;bar.hidden=list.children.length<=8;memory.save(search.value,page);};
     search.oninput=()=>{page=1;update();};prev.onclick=()=>{page--;update();};next.onclick=()=>{page++;update();};bar.append(count,prev,next);if(searchable)wrap.append(search);wrap.append(list,bar);update();return wrap;
 }
 
@@ -240,7 +252,9 @@ function panchayatList(records) {
     status.setAttribute('role','status');
     const previous=make('button','',text('Previous','पिछला')),next=make('button','',text('Next','अगला'));
     previous.type=next.type='button';
-    let page=1;
+    const memory=listMemory('panchayats',records[0]?.gp||'');
+    const saved=memory.read();search.value=saved.search||'';
+    let page=Number(saved.page)||1;
     function render() {
         const term=search.value.trim().toLocaleLowerCase();
         const matches=records.filter(record=>record.name.toLocaleLowerCase().includes(term)||String(record.gp).includes(term));
@@ -250,7 +264,7 @@ function panchayatList(records) {
             link.href='/india/gram-panchayats/'+record.state+'/'+record.gp+(hi?'?lang=hi':'');item.append(link);return item;
         }));
         status.textContent=slice.total?String(slice.start)+'–'+slice.end+' / '+slice.total:text('No matching Panchayats','कोई पंचायत नहीं मिली');
-        previous.disabled=page===1;next.disabled=page>=slice.pages;
+        previous.disabled=page===1;next.disabled=page>=slice.pages;memory.save(search.value,page);
     }
     search.oninput=()=>{page=1;render();};previous.onclick=()=>{page--;render();};next.onclick=()=>{page++;render();};
     controls.append(status,previous,next);wrap.append(search,list,controls);render();return wrap;
@@ -382,7 +396,13 @@ function constituencyLayout(root) {
 
 if(main){
     document.body.classList.add('approved-place-design');
-    if(main.matches('.my-place'))myPlace(main);
+    const topics=main.querySelector('[data-place-topics]');
+    if(topics || main.id==='my-place-dynamic'){
+        if(topics && ['places','panchayats'].includes(topics.dataset.activeTopic) && !main.matches('.my-place')){
+            const content=main.querySelector('[data-topic-body]');
+            if(content){explorer(content);visibleTables(content);}
+        }
+    } else if(main.matches('.my-place'))myPlace(main);
     else{
         constituencyLayout(main);explorer(main);relatedPlaces(main);localSections(main);methodology(main);compactCounts(main);chartColours(main);pageHeading(main);mobileJump(main);visibleTables(main);
         let pending=false;

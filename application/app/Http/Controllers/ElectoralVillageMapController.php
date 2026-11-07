@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ElectoralVillageMap;
 use App\Services\NamedPlaceUrls;
+use App\Services\PlaceTopics;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -46,7 +47,7 @@ class ElectoralVillageMapController extends Controller
 
     public function village(string $code, ElectoralVillageMap $map, Request $request): View|RedirectResponse
     {
-        $village = $map->village($code);
+        $village = $map->village($code, PlaceTopics::selected('village') === 'overview');
         $canonical = app(NamedPlaceUrls::class)->village($village, false);
         if ($request->getPathInfo() !== $canonical) {
             return redirect(url($canonical).($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);

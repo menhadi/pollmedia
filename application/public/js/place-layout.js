@@ -1,7 +1,7 @@
 (() => {
 
     function setup() {
-        if (document.querySelector('[data-compact-place-assets]')) return;
+        if (document.querySelector('[data-compact-place-assets],[data-place-topics]')) return;
 
         const main = document.querySelector('body.place-layout main');
 

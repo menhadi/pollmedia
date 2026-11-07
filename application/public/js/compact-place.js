@@ -4,7 +4,7 @@ import { placeGroups, groupForSection, pageSlice, compactReference, editableNumb
 
 const main = document.querySelector('main.dashboard-main, main');
 
-if (main && !main.matches('.my-place') && !/^\/issues(?:\/|$)/.test(location.pathname)) {
+if (main && !document.querySelector('[data-place-topics]') && !main.matches('.my-place') && !/^\/issues(?:\/|$)/.test(location.pathname)) {
 
     document.body.classList.add('compact-place');
     const electionOnly = /\/constituencies\/(?:pc|ac)\//.test(location.pathname);

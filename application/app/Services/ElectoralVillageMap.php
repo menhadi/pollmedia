@@ -202,12 +202,15 @@ class ElectoralVillageMap
         return array_replace($village, ['url' => route('electoral-villages.village', ['code' => $code])], app(VillageProfileLinks::class)->records($village, true));
     }
 
-    public function village(string $code): array
+    public function village(string $code, bool $identityOnly = false): array
     {
         $statement = $this->database()->prepare('SELECT d.*,s.name AS state_name FROM directory d JOIN states s ON s.code=d.state WHERE lgd=?');
         $statement->execute([$code]);
         $village = $statement->fetch(PDO::FETCH_ASSOC);
         abort_unless($village, 404);
+        if ($identityOnly) {
+            return $village;
+        }
         $statement = $this->database()->prepare("SELECT file,feature_index FROM shapes WHERE lgd=? AND state=? AND file LIKE '%.json'");
         $statement->execute([$code, $village['state']]);
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $shape) {
