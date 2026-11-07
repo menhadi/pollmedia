@@ -38,12 +38,12 @@ class DistrictDashboardController extends Controller
             if (request()->query('part') === 'village-list') {
                 return view('pilibhit-summary-villages', compact('villages', 'hi', 'search'));
             }
-            $data = $directory->published($district, $state, 2011, true, true);
+            $data = $directory->published($district, $state, 2011, true, true, $topic === 'overview');
             abort_unless($data, 404);
             $previews = [];
             $water = null;
             if ($topic === 'overview') {
-                $previews = app(PilibhitDistrictPreviews::class)->summaries();
+                $previews = app(PilibhitDistrictPreviews::class)->summaries() + app(PilibhitDistrictPreviews::class)->anchorTopics();
                 try {
                     $water = app(JjmWaterSnapshot::class)->pilibhit();
                 } catch (HttpExceptionInterface $error) {
