@@ -34,14 +34,22 @@
 <a class="pb-more" href="{{ $detail('records') }}#panchayat-records">{{ $tr('View all reported years','सभी दर्ज वर्ष देखें') }} →</a></section>
 @endif
 @if($own['allocations'] || $own['reports'])
-<section class="pb-panel pb-record-card" data-gp-panel="records"><h2>{{ $tr('Other Panchayat records','पंचायत के अन्य रिकॉर्ड') }}</h2>
-<ul class="pb-locations">
-@if($own['allocations'])<li>{{ $tr('State Finance Commission allocations','राज्य वित्त आयोग के आवंटन') }} · {{ collect($own['allocations'])->pluck('year')->unique()->sortDesc()->implode(', ') }}</li>@endif
-@if($own['reports'])<li>{{ $tr('Accounts and activity reports','लेखा और गतिविधि रिपोर्ट') }} · {{ collect($own['reports'])->pluck('financial_year')->unique()->sortDesc()->implode(', ') }}</li>@endif
-</ul><a class="pb-more" href="{{ $detail('records') }}">{{ $tr('Explore Panchayat records','पंचायत रिकॉर्ड देखें') }} →</a></section>@endif
+<section class="pb-panel pb-record-card" data-gp-panel="records"><h2>{{ $tr('Panchayat accounts and allocations','पंचायत के लेखे और आवंटन') }}</h2>
+@if($own['allocations'])
+<h3>{{ $tr('State Finance Commission allocations','राज्य वित्त आयोग के आवंटन') }}</h3>
+@foreach(array_slice($own['allocations'],0,2) as $allocation)
+<p>{{ $allocation['year'] }}@if(!empty($allocation['installments'][0])) · {{ $allocation['installments'][0]['label'] }} <strong translate="no">{{ $allocation['unit']==='INR'?'₹':'' }}{{ $allocation['installments'][0]['amount'] }}</strong>@if($allocation['unit']===null) <small>{{ $tr('Unit unconfirmed','इकाई की पुष्टि नहीं') }}</small>@endif @endif</p>
+@endforeach
+@endif
+@if($own['reports'])
+<h3>{{ $tr('Captured records','संग्रहित रिकॉर्ड') }}</h3>
+@foreach(collect($own['reports'])->sortByDesc('financial_year')->take(2) as $report)
+<p><strong>{{ $report['financial_year'] }}</strong>@foreach(['activities'=>['activities','गतिविधियाँ'],'payments'=>['payment entries','भुगतान प्रविष्टियाँ'],'receipts'=>['receipt entries','प्राप्ति प्रविष्टियाँ']] as $kind=>$label)@if(!empty($report[$kind])) · {{ $num->format(count($report[$kind])) }} {{ $label[$hi?1:0] }}@endif @endforeach</p>
+@endforeach
+@endif<a class="pb-more" href="{{ $detail('records') }}">{{ $tr('Explore Panchayat records','पंचायत रिकॉर्ड देखें') }} →</a></section>@endif
 </div>
 <section class="pb-panel pb-wide" data-gp-panel="villages"><h2>{{ $tr('Linked villages','संबंधित गाँव') }}</h2>
-@if($hasPopulation || $hasHouseholds)<p>{{ $tr('Each row describes one village in the 2011 Census. The directory shows its current Panchayat link.','हर पंक्ति में एक गाँव के 2011 की जनगणना के आँकड़े हैं। निर्देशिका उसका वर्तमान पंचायत संबंध दिखाती है।') }}</p>@endif
+@if($hasPopulation || $hasHouseholds)<p>{{ $tr('Residents and households are 2011 Census figures for each linked place. Panchayat membership is from the current directory.','निवासी और परिवार प्रत्येक संबंधित स्थान के 2011 की जनगणना के आँकड़े हैं। पंचायत की सदस्यता वर्तमान निर्देशिका के अनुसार है।') }}</p>@endif
 <table class="pb-metrics gp-members"><thead><tr><th scope="col">{{ $tr('Village','गाँव') }}</th>
 @if($hasPopulation)<th scope="col">{{ $tr('Residents','निवासी') }}</th>@endif
 @if($hasHouseholds)<th scope="col">{{ $tr('Households','परिवार') }}</th>@endif
