@@ -16,7 +16,7 @@
 <title>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }} · Pollmedia</title>
 <meta name="description" content="{{ $tr('Pilibhit district at a glance. Explore Census population trends, Panchayats, villages, satellite vegetation readings, mandi prices and public offices.','पीलीभीत ज़िले की जनसंख्या के रुझान, पंचायतें, गाँव, उपग्रह हरियाली सूचकांक, मंडी भाव और सरकारी कार्यालय देखें।') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=6">
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=7">
 <script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">
@@ -61,11 +61,10 @@
 <section class="pb-panel pb-wide" id="places"><div class="pb-search"><div><h2>{{ $tr('Village directory','गाँव निर्देशिका') }}</h2><p class="pb-sub">{{ $census }}</p></div>
 <form data-pb-form method="get" action="{{ $path }}#places">
 @if($topic==='places')<input type="hidden" name="topic" value="places">@endif @if($hi)<input type="hidden" name="lang" value="hi">@endif
-<input type="search" name="q" maxlength="120" aria-label="{{ $tr('Village name or Census code','गाँव का नाम या जनगणना कोड') }}" placeholder="{{ $tr('Village name or Census code','गाँव का नाम या जनगणना कोड') }}" value="{{ $search }}"><button>{{ $tr('Search','खोजें') }}</button></form></div>
+<input type="search" name="q" maxlength="120" aria-label="{{ $tr('Village name','गाँव का नाम') }}" placeholder="{{ $tr('Village name','गाँव का नाम') }}" value="{{ $search }}"><button>{{ $tr('Search','खोजें') }}</button></form></div>
 <p class="pb-status" role="status" data-pb-status></p>
 @include('pilibhit-summary-villages')
-@if($topic==='overview')<a class="pb-more" href="{{ $url('places') }}#places">{{ $tr('Browse all villages','सभी गाँव देखें') }} →</a>
-@else
+@if($topic==='places')
 @foreach(['subdistricts'=>$tr('Subdistricts','उपजिले'),'towns'=>$tr('Towns','कस्बे')] as $kind=>$heading)
 @if($data[$kind])<h2>{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ route('civic.place',['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
 @endforeach
