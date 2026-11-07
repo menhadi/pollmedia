@@ -32,8 +32,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['*-source-district-map', '*-source-village-map', 'modern-district-source-map', 'ladakh-current-district'], function (\Illuminate\View\View $view) {
             if (request()->is('india/districts/*/dashboard') && request()->query('view') !== 'details'
                 && request()->query('topic', 'overview') === 'overview'
-                && request()->except(['lang', 'topic', 'view', 'utm_source', 'utm_medium', 'utm_campaign']) === []
-                && in_array(request()->path(), ['india/districts/source/goa/north-goa/dashboard', 'india/districts/current/ladakh/sham/dashboard'], true)) {
+                && request()->except(['lang', 'topic', 'view', 'utm_source', 'utm_medium', 'utm_campaign']) === []) {
                 $view->setPath(app('view.finder')->find('district-source-summary'));
             }
         });
