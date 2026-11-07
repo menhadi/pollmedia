@@ -39,3 +39,6 @@ body.pb-site:has(.public-header) main.pb-dashboard table tbody :is(td,th){backgr
   .pb-dashboard .pb-market-board table :is(th,td){white-space:normal!important;overflow-wrap:anywhere}
   .pb-market-board th:nth-child(1){width:32%}.pb-market-board th:nth-child(2){width:24%}.pb-market-board th:nth-child(3){width:23%}.pb-market-board th:nth-child(4){width:21%}
 }
+
+.pb-index-pair .pb-index-arrow{align-self:center;display:inline-grid;place-items:center;flex:none;width:1.85rem;height:1.85rem;border-radius:50%;background:#e8f1ed;color:#245d49;font-size:1.25rem;line-height:1}
+@media(max-width:420px){.pb-index-pair{gap:.7rem}}

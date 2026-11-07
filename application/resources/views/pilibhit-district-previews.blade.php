@@ -15,11 +15,11 @@
 <small>{{ $tr('Soil Health Card','मृदा स्वास्थ्य कार्ड') }} · {{ $previews['soil']['cycle'] }}</small>
 @elseif($key==='panchayats' && $previews['directory'])
 <p><strong>{{ $fmt($previews['directory']['panchayats']) }}</strong> {{ $tr('Gram Panchayats','ग्राम पंचायतें') }} · {{ $fmt($previews['directory']['villages']) }} {{ $tr('linked villages','संबंधित गाँव') }}</p>
-<table class="pb-sample"><thead><tr><th scope="col">{{ $tr('Panchayat','पंचायत') }}</th><th scope="col">{{ $tr('LGD code','एलजीडी कोड') }}</th><th scope="col">{{ $tr('Villages','गाँव') }}</th></tr></thead>
+<table class="pb-sample"><thead><tr><th scope="col">{{ $tr('Panchayat','पंचायत') }}</th><th scope="col">{{ $tr('Villages','गाँव') }}</th></tr></thead>
 <tbody>@foreach($previews['directory']['rows'] as $gp)
-<tr><th scope="row">{{ $gp['name'] }}</th><td>{{ $gp['code'] }}</td><td>{{ $fmt($gp['villages']) }}</td></tr>
+<tr><th scope="row">{{ $gp['name'] }}</th><td>{{ $fmt($gp['villages']) }}</td></tr>
 @endforeach</tbody></table>
-<small>LGD · {{ $previews['directory']['date'] }}</small>
+<small>{{ $tr('Directory checked','निर्देशिका की जाँच') }} · {{ $previews['directory']['date'] }}</small>
 @elseif($key==='elections' && $previews['elections'])
 <p><strong>{{ $fmt($previews['elections']['assembly']) }}</strong> {{ $tr('Assembly seats','विधानसभा क्षेत्र') }} · {{ $fmt($previews['elections']['parliamentary']) }} {{ $tr($previews['elections']['parliamentary']===1?'linked Lok Sabha seat':'linked Lok Sabha seats','संबंधित लोकसभा क्षेत्र') }}</p>
 <table class="pb-sample"><thead><tr><th scope="col">{{ $tr('Constituency','निर्वाचन क्षेत्र') }}</th><th scope="col">{{ $tr('Seat','सीट') }}</th></tr></thead>
