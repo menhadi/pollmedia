@@ -70,10 +70,10 @@
 
 
 
-@include('compact-place-assets')
+@if(empty($summaryLayout)) @include('compact-place-assets') @endif
 @endif
 
 
 @if(request()->is('my-place','my-place/pilibhit'))
-@include('compact-place-assets')
+@if(empty($summaryLayout)) @include('compact-place-assets') @endif
 @endif

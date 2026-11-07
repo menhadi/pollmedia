@@ -7,12 +7,14 @@ use App\Services\DistrictConstituencyLinks;
 use App\Services\DistrictDashboardData;
 use App\Services\DistrictDashboardUrls;
 use App\Services\JharkhandDistrictEditionLinks;
+use App\Services\JjmWaterSnapshot;
 use App\Services\PlaceTopics;
 use App\Services\SikkimDistrictConstituencyLinks;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class DistrictDashboardController extends Controller
 {
@@ -23,6 +25,33 @@ class DistrictDashboardController extends Controller
             return redirect($identity['path'].(request()->getQueryString() ? '?'.request()->getQueryString() : ''), 301);
         }
         request()->attributes->set('district_identity', $identity);
+        $topic = PlaceTopics::selected('district');
+        if ($state === '09' && $district === '151' && in_array($topic, ['overview', 'places'], true)) {
+            $input = request()->validate(['q' => 'nullable|string|max:120', 'vp' => 'nullable|integer|min:1|max:100000']);
+            $search = trim($input['q'] ?? '');
+            $directory = app(DistrictDashboardData::class);
+            $villages = $directory->villagePage($district, $state, 2011, $search, (int) ($input['vp'] ?? 1));
+            $hi = app()->getLocale() === 'hi' || request('lang') === 'hi';
+            $params = array_filter(['topic' => $topic === 'places' ? 'places' : null, 'lang' => $hi ? 'hi' : null, 'q' => $search], fn ($value) => $value !== null && $value !== '');
+            $villages->appends($params);
+            if (request()->query('part') === 'village-list') {
+                return view('pilibhit-summary-villages', compact('villages', 'hi', 'search'));
+            }
+            $data = $directory->published($district, $state, 2011, true, true);
+            abort_unless($data, 404);
+            $water = null;
+            if ($topic === 'overview') {
+                try {
+                    $water = app(JjmWaterSnapshot::class)->pilibhit();
+                } catch (HttpExceptionInterface $error) {
+                    if ($error->getStatusCode() !== 503) {
+                        throw $error;
+                    }
+                }
+            }
+
+            return view('pilibhit-summary-dashboard', compact('data', 'villages', 'water', 'topic', 'hi', 'search'));
+        }
         $data = app(DistrictDashboardData::class)->published($district, $state, 2011, PlaceTopics::selected('district') === 'overview');
         abort_unless($data, 404, 'No published Census district records are available for this code.');
         if (PlaceTopics::selected('district') === 'overview') {

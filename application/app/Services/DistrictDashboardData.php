@@ -2,28 +2,22 @@
 
 namespace App\Services;
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class DistrictDashboardData
 {
-    public function published(string $districtCode, string $stateCode = '09', int $year = 2011, bool $overviewOnly = false): ?array
+    public function published(string $districtCode, string $stateCode = '09', int $year = 2011, bool $overviewOnly = false, bool $includeAreas = false): ?array
     {
         foreach (['census_editions', 'census_publications', 'census_catalogue_rows'] as $table) {
             if (! Schema::hasTable($table)) {
                 return null;
             }
         }
-        $rows = DB::table('census_catalogue_rows as c')
-            ->join('census_editions as e', 'e.id', '=', 'c.edition_id')
-            ->join('census_publications as p', function ($join): void {
-                $join->on('p.edition_id', '=', 'e.id')->on('p.source_key', '=', 'e.source_key');
-            })
-            ->where('e.status', 'published')->where('e.year', $year)
-            ->where('c.state_code', $stateCode)->where('c.district_code', $districtCode)
-            ->when($overviewOnly, fn ($query) => $query->where('c.level', 'DISTRICT'))
-            ->whereNotLike('e.source_key', 'census-a02-%')
-            ->select('c.*', 'e.source_url', 'e.source_key', 'e.retrieved_at', 'e.sha256', 'e.landing_url')
+        $rows = $this->publishedRows($districtCode, $stateCode, $year)
+            ->when($overviewOnly, fn ($query) => $query->whereIn('c.level', $includeAreas ? ['DISTRICT', 'SUB-DISTRICT', 'SUBDISTRICT', 'TEHSIL', 'TOWN'] : ['DISTRICT']))
             ->orderByDesc('e.retrieved_at')->orderByDesc('e.id')->orderBy('c.id')->get();
         $selected = [];
         foreach ($rows as $row) {
@@ -70,6 +64,35 @@ class DistrictDashboardData
             'checked_at' => now()->toIso8601String(),
             'history' => $overviewOnly ? [] : app(CensusProfileSummary::class)->series($district, [$district], $year),
         ];
+    }
+
+    private function publishedRows(string $districtCode, string $stateCode, int $year): Builder
+    {
+        return DB::table('census_catalogue_rows as c')
+            ->join('census_editions as e', 'e.id', '=', 'c.edition_id')
+            ->join('census_publications as p', function ($join): void {
+                $join->on('p.edition_id', '=', 'e.id')->on('p.source_key', '=', 'e.source_key');
+            })
+            ->where('e.status', 'published')->where('e.year', $year)
+            ->where('c.state_code', $stateCode)->where('c.district_code', $districtCode)
+            ->whereNotLike('e.source_key', 'census-a02-%')
+            ->select('c.*', 'e.source_url', 'e.source_key', 'e.retrieved_at', 'e.sha256', 'e.landing_url');
+    }
+
+    public function villagePage(string $district, string $state, int $year, string $search, int $page): LengthAwarePaginator
+    {
+        $subdistrict = "COALESCE(c.geography::jsonb->>'Subdistt',c.geography::jsonb->>'TAHSIL','')";
+        $village = "COALESCE(c.geography::jsonb->>'Town/Village',c.geography::jsonb->>'TOWN_VILL','')";
+        $records = $this->publishedRows($district, $state, $year)
+            ->where('c.level', 'VILLAGE')->where('c.residence', 'Rural')
+            ->selectRaw("{$village} AS village_code, {$subdistrict} AS sub_code")
+            ->selectRaw("row_number() OVER (PARTITION BY {$subdistrict},{$village} ORDER BY e.retrieved_at DESC,e.id DESC,c.id) AS source_rank");
+
+        return DB::query()->fromSub($records, 'published_villages')->where('source_rank', 1)
+            ->when($search !== '', fn ($query) => $query->where(fn ($match) => $match->whereRaw('strpos(lower(name), lower(?)) > 0', [$search])
+                ->orWhereRaw('strpos(village_code, ?) > 0', [$search])))
+            ->orderBy('village_code')->orderBy('sub_code')->orderBy('id')
+            ->paginate(20, ['*'], 'vp', $page)->through(fn ($row) => $this->record($row));
     }
 
     private function record(object $row): array

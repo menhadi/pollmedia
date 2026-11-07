@@ -80,6 +80,7 @@
         if(Number.isFinite(height))frame.style.height=Math.max(80,Math.min(50000,height))+'px';
     }
     function nextOnScroll(){
+        if(doc.querySelector('[data-pilibhit-native]'))return;
         if(pending)return;
         const nav=primary(),body=bodyFor(nav);
         if(!body)return;
@@ -121,7 +122,7 @@
     }
     function openTopic(raw,historyAction=true,append=false){
         const url=clean(raw),nav=primary(),body=bodyFor(nav);
-        if(!body||url.origin!==location.origin||url.pathname!==location.pathname){location.assign(url);return;}
+        if(doc.querySelector('[data-pilibhit-native]')||!body||url.origin!==location.origin||url.pathname!==location.pathname){location.assign(url);return;}
         stopPending();
         const status=doc.createElement('div');status.hidden=true;status.className='pm-topic-state';status.setAttribute('role','status');
         const key=url.searchParams.get('topic')||'overview';
@@ -183,7 +184,7 @@
         event.preventDefault();openTopic(a.href);
     });
     doc.addEventListener('change',event=>{if(event.target.matches('.pm-topic-picker select'))openTopic(event.target.value);});
-    addEventListener('popstate',()=>{if(primary())openTopic(location.href,false);});
+    addEventListener('popstate',()=>{if(primary()&&!doc.querySelector('[data-pilibhit-native]'))openTopic(location.href,false);});
     // Old bookmarks open the equivalent topic on the new, smaller initial document.
     const anchors={'compact-panchayats':'panchayats','gram-panchayats':'panchayats','compact-places':'places','compact-water':'water','compact-soil':'soil','compact-rainfall':'rainfall','compact-map':'map','compact-satellite':'map','compact-graphs':'history','compact-elections':'elections','compact-mandi':'markets','compact-authorities':'authorities','compact-sources':'sources','member-villages':'villages','panchayat-records':'records','linked-village-data':'village-data','villages':'places','subdistricts':'places','groundwater-levels':'water','place-facts':'people'};
     const target=anchors[location.hash.slice(1)]||location.hash.slice(1);

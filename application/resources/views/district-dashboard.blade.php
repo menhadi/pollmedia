@@ -4,7 +4,7 @@ $villageGps=$topic==='places' && (int)($data['year']??0)===2011 ? app(\App\Servi
 @endphp
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{ $data['name'] }} district | Pollmedia</title><meta name="description" content="Explore {{ $data['name'] }} district population, literacy, village water connections and soil sample facts, with dated official sources and available-record comparisons."><link rel="stylesheet" href="{{ asset('css/pilibhit-ac-pilot.css') }}"><link rel="stylesheet" href="{{ asset('css/rampur-district-pilot.css') }}"><script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script><script src="{{ asset('js/district-dashboard-controls-20261017-navigation.js') }}?v={{ substr(hash_file('sha256', public_path('js/district-dashboard-controls-20261017-navigation.js')), 0, 12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}"><link rel="canonical" href="{{ url(request()->attributes->get('district_identity')['path'] ?? request()->path()) }}">@include('place-layout-assets')</head>
 <body class="place-layout election-ui rampur-dashboard">@include('public-header')
-<main>
+<main @if(($data['census_district_code']??'')==='151' && (request()->attributes->get('district_identity')['state']??request()->route('state'))==='09') data-pilibhit-native @endif>
 @php
 
 
