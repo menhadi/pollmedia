@@ -31,13 +31,18 @@
 @if($topic==='overview')
 <div class="pb-grid">
 <section class="pb-panel" id="overview"><h2>{{ $tr('District overview','ज़िले का सारांश') }}</h2>
-<table class="pb-metrics"><thead><tr><th scope="col">{{ $tr('Measure','माप') }}</th><th scope="col">{{ $tr('Value','मान') }}</th><th scope="col">{{ $tr('Reference','संदर्भ') }}</th></tr></thead><tbody>
+<p class="pb-sub">{{ $census }}</p>
+<table class="pb-metrics"><thead><tr><th scope="col">{{ $tr('Measure','माप') }}</th><th scope="col">{{ $tr('Value','मान') }}</th></tr></thead><tbody>
 @foreach([[$tr('Population','जनसंख्या'),$fmt($total['population'])],[$tr('Households','परिवार'),$fmt($total['households'])],[$tr('Literacy, age 7+','साक्षरता, आयु 7+'),$pct($total['literacy'],2)],[$tr('Rural population share','ग्रामीण जनसंख्या का हिस्सा'),$pct($share($data['totals']['Rural']['population']??null,$total['population']))]] as [$name,$value])
-<tr><th scope="row">{{ $name }}</th><td>{{ $value }}</td><td>{{ $census }}</td></tr>
-@endforeach</tbody></table>
+<tr><th scope="row">{{ $name }}</th><td>{{ $value }}</td></tr>
+@endforeach
+@if($data['subdistricts'] && $data['towns'])
+<tr><th scope="row">{{ $tr('Places','स्थान') }}</th><td><a href="{{ $url('places') }}#pb-subdistricts">{{ $fmt(count($data['subdistricts'])) }} {{ $tr('subdistricts','उपज़िले') }}</a> · <a href="{{ $url('places') }}#pb-towns">{{ $fmt(count($data['towns'])) }} {{ $tr('towns','कस्बे') }}</a></td></tr>
+@endif
+</tbody></table>
 <details class="pb-extra"><summary>{{ $tr('More Census figures','जनगणना के अन्य आँकड़े') }}</summary><table class="pb-metrics"><tbody>
 @foreach([[$tr('Female per 1,000 male','प्रति 1,000 पुरुषों पर महिलाएँ'),$total['male']>0 && $total['female']!==null?$fmt(round(1000*$total['female']/$total['male'])):'—'],[$tr('Population aged 0–6','आयु 0–6 की जनसंख्या'),$fmt($total['children'])],[$tr('Male literacy age 7+','पुरुष साक्षरता, आयु 7+'),$pct($total['male_literacy'])],[$tr('Female literacy age 7+','महिला साक्षरता, आयु 7+'),$pct($total['female_literacy'])],[$tr('Worker participation','कार्य सहभागिता'),$pct($share($total['workers'],$total['population']))]] as [$name,$value])
-<tr><th scope="row">{{ $name }}</th><td>{{ $value }}</td><td>{{ $census }}</td></tr>
+<tr><th scope="row">{{ $name }}</th><td>{{ $value }}</td></tr>
 @endforeach</tbody></table></details></section>
 <section class="pb-panel pb-water" id="water"><h2>{{ $tr('Household tap water','घरेलू नल जल') }}</h2>
 @if($water)
@@ -45,7 +50,9 @@
 <strong class="pb-big">{{ $pct($coverage,2) }}</strong><p>{{ $tr('Reported tap connection coverage','रिपोर्ट किया गया नल कनेक्शन कवरेज') }}</p>
 @if($coverage!==null)<div class="pb-track" aria-hidden="true"><i style="width:{{ min(100,max(0,$coverage)) }}%"></i></div>@endif
 <div class="pb-pairs"><div><strong>{{ $fmt($water['summary']['tap_connections']) }}</strong><small>{{ $tr('Tap connections','नल कनेक्शन') }}</small></div><div><strong>{{ $fmt($water['summary']['households']) }}</strong><small>{{ $tr('Households in report','रिपोर्ट में परिवार') }}</small></div></div>
-<p class="pb-source"><a href="{{ $water['source_url'] }}">Jal Jeevan Mission</a> · {{ $tr('Retrieved','प्राप्त') }} {{ \Illuminate\Support\Carbon::parse($water['retrieved_at'])->locale($hi?'hi':'en')->translatedFormat('j F Y') }}</p>
+@if($coverage !== null && $water['summary']['tap_connections'] >= 0 && $water['summary']['households'] >= $water['summary']['tap_connections'])
+<p><strong>{{ $fmt($water['summary']['households'] - $water['summary']['tap_connections']) }}</strong> {{ $tr('households without a reported tap connection','परिवारों के लिए नल कनेक्शन दर्ज नहीं था') }}</p>
+@endif
 @else<p>{{ $tr('The water snapshot is currently unavailable.','जल रिपोर्ट अभी उपलब्ध नहीं है।') }}</p>@endif
 <a class="pb-more" href="{{ $url('water') }}">{{ $tr('Explore water records','जल रिकॉर्ड देखें') }} →</a></section>
 </div>
@@ -66,7 +73,7 @@
 @include('pilibhit-summary-villages')
 @if($topic==='places')
 @foreach(['subdistricts'=>$tr('Subdistricts','उपजिले'),'towns'=>$tr('Towns','कस्बे')] as $kind=>$heading)
-@if($data[$kind])<h2>{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ route('civic.place',['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
+@if($data[$kind])<h2 id="pb-{{ $kind }}">{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ route('civic.place',['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
 @endforeach
 @endif</section>
 @if($topic==='overview')
