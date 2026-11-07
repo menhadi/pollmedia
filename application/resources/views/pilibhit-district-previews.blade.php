@@ -21,7 +21,7 @@
 @endforeach</tbody></table>
 <small>LGD · {{ $previews['directory']['date'] }}</small>
 @elseif($key==='elections' && $previews['elections'])
-<p><strong>{{ $fmt($previews['elections']['assembly']) }}</strong> {{ $tr('Assembly seats','विधानसभा क्षेत्र') }} · {{ $fmt($previews['elections']['parliamentary']) }} {{ $tr('linked Lok Sabha seats','संबंधित लोकसभा क्षेत्र') }}</p>
+<p><strong>{{ $fmt($previews['elections']['assembly']) }}</strong> {{ $tr('Assembly seats','विधानसभा क्षेत्र') }} · {{ $fmt($previews['elections']['parliamentary']) }} {{ $tr($previews['elections']['parliamentary']===1?'linked Lok Sabha seat':'linked Lok Sabha seats','संबंधित लोकसभा क्षेत्र') }}</p>
 <table class="pb-sample"><thead><tr><th scope="col">{{ $tr('Constituency','निर्वाचन क्षेत्र') }}</th><th scope="col">{{ $tr('Seat','सीट') }}</th></tr></thead>
 <tbody>@foreach($previews['elections']['rows'] as $seat)
 <tr><th scope="row"><a href="{{ $hi ? url($seat['url']).(str_contains($seat['url'],'?')?'&':'?').'lang=hi' : $seat['url'] }}">{{ $seat['name'] }}</a></th><td>{{ $seat['type'] }} {{ $seat['code'] }}</td></tr>
