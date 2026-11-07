@@ -1,7 +1,7 @@
 @php
     $tr=fn($en,$hindi)=>$hi?$hindi:$en;
     $path=route('district-dashboard.named',['state'=>'uttar-pradesh','district'=>'pilibhit']);
-    $url=fn($key)=>$path.'?'.http_build_query(array_filter(['topic'=>$key==='overview'?null:$key,'lang'=>$hi?'hi':null]));
+    $url=fn($key)=>$path.'?'.http_build_query(array_filter(['topic'=>$key==='overview'?null:$key,'view'=>in_array($key,['overview','places'],true)?null:'details','lang'=>$hi?'hi':null]));
     $gpUrl=route('my-place.index',['state'=>9,'district'=>173,'topic'=>'gram-panchayat','lang'=>$hi?'hi':null]);
     $number=new \NumberFormatter('en_IN',\NumberFormatter::DECIMAL);
     $fmt=fn($n)=>$n===null?'—':$number->format($n);
@@ -16,12 +16,13 @@
 <title>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }} · Pollmedia</title>
 <meta name="description" content="{{ $tr('Pilibhit district population, household water coverage, subdistrict comparisons and village directory.','पीलीभीत की जनसंख्या, नल जल कवरेज, उपजिले और गाँव निर्देशिका।') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=2">
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=3">
 <script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb','स्थान क्रम') }}"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a><span>›</span><a href="{{ route('civic.state',['state'=>'uttar-pradesh','lang'=>$hi?'hi':null]) }}">{{ $tr('Uttar Pradesh','उत्तर प्रदेश') }}</a><span>›</span><span>{{ $tr('Pilibhit','पीलीभीत') }}</span></nav>
 <h1>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }}</h1><p class="pb-scope">{{ $tr('Uttar Pradesh · District dashboard','उत्तर प्रदेश · ज़िला डैशबोर्ड') }}</p>
+<p class="pb-view-switch"><a href="{{ $path.'?'.http_build_query(array_filter(['view'=>'details','topic'=>$topic==='places'?'places':null,'lang'=>$hi?'hi':null])) }}">{{ $tr('Open full district dashboard','विस्तृत ज़िला डैशबोर्ड खोलें') }} →</a></p>
 <nav class="pb-tabs" data-place-topics="district" data-active-topic="{{ $topic }}" aria-label="{{ $tr('District topics','ज़िले के विषय') }}">
 @foreach(['overview','water','people','places'] as $key)<a data-topic="{{ $key }}" href="{{ $url($key) }}" @if($key===$topic) aria-current="page" @endif>{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach
 <details><summary>{{ $tr('More','अन्य') }}</summary><div>@foreach($extra as $key)<a data-topic="{{ $key }}" href="{{ $key==='panchayats'?$gpUrl:$url($key) }}">{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach</div></details>
@@ -54,6 +55,7 @@
 <div class="pb-row"><a href="{{ route('civic.place',['record'=>$sub['id'],'lang'=>$hi?'hi':null]) }}">{{ $sub['name'] }}</a><div class="pb-track" aria-hidden="true">@if($part!==null)<i style="width:{{ min(100,max(0,$part)) }}%"></i>@endif</div><strong>{{ $fmt($sub['population']) }}</strong><small>{{ $pct($part) }}</small></div>
 @endforeach
 <a class="pb-more" href="{{ $url('people') }}">{{ $tr('Explore population records','जनसंख्या रिकॉर्ड देखें') }} →</a></section>
+@include('pilibhit-district-previews')
 @endif
 <section class="pb-panel pb-wide" id="places"><div class="pb-search"><div><h2>{{ $tr('Village directory','गाँव निर्देशिका') }}</h2><p class="pb-sub">{{ $census }}</p></div>
 <form data-pb-form method="get" action="{{ $path }}#places">
@@ -67,5 +69,4 @@
 @if($data[$kind])<h2>{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ route('civic.place',['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
 @endforeach
 @endif</section>
-<nav class="pb-footlinks" aria-label="{{ $tr('Related records','संबंधित रिकॉर्ड') }}"><a href="{{ $url('soil') }}">{{ $tr('Soil records','मृदा रिकॉर्ड') }} →</a><a href="{{ $url('map') }}">{{ $tr('District map','ज़िले का नक्शा') }} →</a><a href="{{ $gpUrl }}">{{ $tr('Gram Panchayats','ग्राम पंचायतें') }} →</a></nav>
 </div></main>@include('public-footer')</body></html>
