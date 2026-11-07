@@ -1,9 +1,10 @@
 @php
     $history = collect($data['history']['rows'] ?? [])->filter(fn($row) => is_numeric($row['population'] ?? null))->sortBy('year')->values();
     $ndvi = $previews['satellite'];
-    $metric = $ndvi['summary'];
+    $metric = $ndvi['summary'] ?? null;
     $units = ['Quintal'=>['quintal','क्विंटल'],'Kilogram'=>['kg','किलो'],'Nos'=>['item','नग'],'Bundle'=>['bundle','गट्ठर']];
 @endphp
+@if($history->count()>=2)
 <section class="pb-panel pb-wide pb-trend" data-pb-preview="history">
 <h2>{{ $tr('Population over time','समय के साथ जनसंख्या') }}</h2>
 @if($history->count() >= 2)
@@ -23,7 +24,10 @@
 @endif
 <a class="pb-more" href="{{ $url('history') }}">{{ $tr('Explore population history','जनसंख्या का इतिहास देखें') }} →</a>
 </section>
+@endif
+@if($ndvi || $previews['offices'])
 <div class="pb-record-grid pb-anchor-pair">
+@if($ndvi)
 <section class="pb-panel pb-record-card" data-pb-preview="satellite"><h2>{{ $tr('Vegetation index (NDVI)','वनस्पति सूचकांक (NDVI)') }}</h2>
 <p>{{ $tr('Sentinel-2 · Same mapped area on both dates','सेंटिनल-2 · दोनों तिथियों पर वही मानचित्रित क्षेत्र') }}</p>
 <div class="pb-index-pair">
@@ -34,12 +38,18 @@
 <p>{{ $tr('Index change','सूचकांक में बदलाव') }} <strong>{{ number_format($metric['ndvi_change'],4) }}</strong> · {{ $pct($metric['paired_coverage_pct'],2) }} {{ $tr('paired coverage','दोनों तिथियों पर कवरेज') }}</p>
 <a class="pb-more" href="{{ route('district-dashboard-directory',['satellite'=>$ndvi['layer_id'],'lang'=>$hi?'hi':null]) }}#satellite-index">{{ $tr('Compare satellite images','उपग्रह चित्रों की तुलना करें') }} →</a>
 </section>
+@endif
+@if($previews['offices'])
 <section class="pb-panel pb-record-card" data-pb-preview="authorities"><h2>{{ $tr('District authorities','ज़िला अधिकारी') }}</h2>
 <ul class="pb-offices">@forelse($previews['offices'] as $office)<li><a href="{{ $office['url'] }}">{{ $office['title'] }}</a>
 @if($office['holder'])<span>{{ $office['holder'] }}</span>@if($office['recorded'])<small>{{ $tr('Last recorded','अंतिम दर्ज तिथि') }} {{ $office['recorded'] }}</small>@endif @endif</li>
 @empty<li>{{ $tr('Office listings are unavailable.','कार्यालय सूची उपलब्ध नहीं है।') }}</li>@endforelse</ul>
 <a class="pb-more" href="{{ $url('authorities') }}">{{ $tr('Open the authority directory','अधिकारी निर्देशिका खोलें') }} →</a>
-</section></div>
+</section>
+@endif
+</div>
+@endif
+@if(collect($previews['prices'])->isNotEmpty())
 <section class="pb-panel pb-wide pb-market-board" data-pb-preview="markets"><h2>{{ $tr('Commodity prices','मंडी भाव') }}</h2>
 <p class="pb-sub">{{ $tr('One reported modal price per commodity, with its mandi and date.','प्रत्येक जिंस का एक प्रचलित भाव, मंडी और रिपोर्ट की तारीख।') }}</p>
 <table><thead><tr><th scope="col">{{ $tr('Commodity','जिंस') }}</th><th scope="col">{{ $tr('Market','मंडी') }}</th><th scope="col">{{ $tr('Modal price','प्रचलित भाव') }}</th><th scope="col">{{ $tr('Reported','रिपोर्ट तिथि') }}</th></tr></thead><tbody>
@@ -49,3 +59,4 @@
 </tbody></table>
 <a class="pb-more" href="{{ $url('markets') }}">{{ $tr('Explore market prices and trends','सभी मंडी भाव और रुझान देखें') }} →</a>
 </section>
+@endif

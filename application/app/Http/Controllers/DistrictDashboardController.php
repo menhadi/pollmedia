@@ -6,16 +6,14 @@ use App\Services\ArunachalDistrictEditionLinks;
 use App\Services\DistrictConstituencyLinks;
 use App\Services\DistrictDashboardData;
 use App\Services\DistrictDashboardUrls;
+use App\Services\DistrictSummaryPage;
 use App\Services\JharkhandDistrictEditionLinks;
-use App\Services\JjmWaterSnapshot;
-use App\Services\PilibhitDistrictPreviews;
 use App\Services\PlaceTopics;
 use App\Services\SikkimDistrictConstituencyLinks;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class DistrictDashboardController extends Controller
 {
@@ -27,33 +25,8 @@ class DistrictDashboardController extends Controller
         }
         request()->attributes->set('district_identity', $identity);
         $topic = PlaceTopics::selected('district');
-        if ($state === '09' && $district === '151' && request()->query('view') !== 'details' && in_array($topic, ['overview', 'places'], true)) {
-            $input = request()->validate(['q' => 'nullable|string|max:120', 'vp' => 'nullable|integer|min:1|max:100000']);
-            $search = trim($input['q'] ?? '');
-            $directory = app(DistrictDashboardData::class);
-            $villages = $directory->villagePage($district, $state, 2011, $search, $topic === 'overview' ? 1 : (int) ($input['vp'] ?? 1), $topic === 'overview' ? 10 : 20);
-            $hi = app()->getLocale() === 'hi' || request('lang') === 'hi';
-            $params = array_filter(['topic' => $topic === 'places' ? 'places' : null, 'lang' => $hi ? 'hi' : null, 'q' => $search], fn ($value) => $value !== null && $value !== '');
-            $villages->appends($params);
-            if (request()->query('part') === 'village-list') {
-                return view('pilibhit-summary-villages', compact('villages', 'hi', 'search', 'topic'));
-            }
-            $data = $directory->published($district, $state, 2011, true, true, $topic === 'overview');
-            abort_unless($data, 404);
-            $previews = [];
-            $water = null;
-            if ($topic === 'overview') {
-                $previews = app(PilibhitDistrictPreviews::class)->summaries() + app(PilibhitDistrictPreviews::class)->anchorTopics();
-                try {
-                    $water = app(JjmWaterSnapshot::class)->pilibhit();
-                } catch (HttpExceptionInterface $error) {
-                    if ($error->getStatusCode() !== 503) {
-                        throw $error;
-                    }
-                }
-            }
-
-            return view('pilibhit-summary-dashboard', compact('data', 'villages', 'water', 'topic', 'hi', 'search', 'previews'));
+        if ($identity && DistrictSummaryPage::enabled($identity) && request()->query('view') !== 'details' && in_array($topic, ['overview', 'places'], true)) {
+            return app(DistrictSummaryPage::class)->show($identity, $topic, fn ($data) => $this->supportingRecords($state, $district, $data));
         }
         $data = app(DistrictDashboardData::class)->published($district, $state, 2011, PlaceTopics::selected('district') === 'overview');
         abort_unless($data, 404, 'No published Census district records are available for this code.');
@@ -61,7 +34,11 @@ class DistrictDashboardController extends Controller
             return view('district-dashboard', ['data' => $data, 'sourceMap' => null, 'censusSeries' => [], 'constituencyLinks' => []]);
         }
 
-        $censusSeries = $data['history'];
+        return view('district-dashboard', ['data' => $data, 'censusSeries' => $data['history']] + $this->supportingRecords($state, $district, $data));
+    }
+
+    private function supportingRecords(string $state, string $district, array $data): array
+    {
         $constituencyLinks = $state === '29' && in_array($district, ['555', '556', '557', '558', '559', '560', '561', '562', '563', '564', '565', '566', '567', '568', '569', '570', '571', '572', '573', '574', '575', '576', '577', '578', '579', '580', '581', '582', '583', '584'], true) ? app(DistrictConstituencyLinks::class)->forDistrict(match ($district) {
             '555' => 'Belgaum', '556' => 'Bagalkot', '557' => 'Bijapur', '558' => 'Bidar', '559' => 'Raichur', '560' => 'Koppal', '561' => 'Gadag', '562' => 'Dharwad', '563' => 'Uttara Kannada', '564' => 'Haveri', '565' => 'Bellary', '566' => 'Chitradurga', '567' => 'Davanagere', '568' => 'Shimoga', '569' => 'Udupi', '570' => 'Chikmagalur', '571' => 'Tumkur', '572' => 'Bangalore', '573' => 'Mandya', '574' => 'Hassan', '575' => 'Dakshina Kannada', '576' => 'Kodagu', '577' => 'Mysore', '578' => 'Chamarajanagar', '579' => 'Gulbarga', '580' => 'Yadgir', '581' => 'Kolar', '582' => 'Chikkaballapura', '583' => 'Bangalore Rural', '584' => 'Ramanagara'
         }, 'Karnataka') : ($state === '09' ? app(DistrictConstituencyLinks::class)->forDistrict(match ($district) {
@@ -1009,7 +986,7 @@ class DistrictDashboardController extends Controller
 
         $sourceMap = $mapFile && is_file(public_path($mapFile)) ? $mapFile : null;
 
-        return view('district-dashboard', compact('data', 'censusSeries', 'constituencyLinks', 'sourceMap'));
+        return compact('constituencyLinks', 'sourceMap', 'mapFile');
     }
 
     public function directory(): View
