@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ElectoralVillageMap;
 use App\Services\NamedPlaceUrls;
 use App\Services\PlaceTopics;
+use App\Services\VillageSummaryPage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -51,6 +52,11 @@ class ElectoralVillageMapController extends Controller
         $canonical = app(NamedPlaceUrls::class)->village($village, false);
         if ($request->getPathInfo() !== $canonical) {
             return redirect(url($canonical).($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);
+        }
+
+        $summary = app(VillageSummaryPage::class);
+        if ($summary->enabled((string) $village['state'] === '9' && (string) $village['lgd'] === '131191')) {
+            return $summary->directory($village);
         }
 
         return view('electoral-village-place', compact('village'));

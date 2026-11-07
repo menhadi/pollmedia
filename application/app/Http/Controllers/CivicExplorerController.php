@@ -9,6 +9,7 @@ use App\Services\ElectoralVillageMap;
 use App\Services\NamedPlaceUrls;
 use App\Services\PlaceFactTables;
 use App\Services\PlaceTopics;
+use App\Services\VillageSummaryPage;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -140,6 +141,15 @@ class CivicExplorerController extends Controller
         $edition = isset($input['edition']) ? $availableEditions->firstWhere('id', (int) $input['edition'])
             : ($anchorEdition ?? $availableEditions->firstWhere('source_key', 'india-basic-'.$year.'-total') ?? $availableEditions->where('year', $year)->first());
         abort_if(isset($input['edition']) && ! $edition, 404);
+        if ($anchor?->level === 'VILLAGE' && $edition && (int) $edition->id === (int) $anchorEdition->id) {
+            $geo = json_decode($anchor->geography, true);
+            $pilot = $year === 2011 && $anchor->state_code === '09' && $anchor->district_code === '151' && (string) ($geo['Town/Village'] ?? '') === '131191';
+            $summary = app(VillageSummaryPage::class);
+            if ($summary->enabled($pilot)) {
+                return $summary->census($anchor, $year);
+            }
+        }
+
         if ($edition && $edition !== $anchorEdition) {
             $edition = DB::table('census_editions')->where('id', $edition->id)->first();
         }
