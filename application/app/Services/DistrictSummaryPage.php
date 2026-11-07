@@ -86,7 +86,7 @@ final class DistrictSummaryPage
             $dt = collect($places->districts($state))->firstWhere('code', $district);
             if ($st && $dt) {
                 $scope = ['state' => $st, 'district' => $dt];
-                $prices = collect(app(OfficialMarketPrices::class)->overviewRecords($scope))
+                $prices = collect(app(OfficialMarketPrices::class)->overviewRecords($scope, true))
                     ->filter(fn ($row) => filled($row['commodity'] ?? null) && filled($row['unit'] ?? null) && is_numeric($row['modal'] ?? null))
                     ->sortBy([['date', 'desc'], ['commodity', 'asc'], ['market', 'asc']])
                     ->unique(fn ($row) => strtolower(trim($row['commodity'])))->take(10)->values();
