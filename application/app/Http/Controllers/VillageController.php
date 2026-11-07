@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ElectoralVillageMap;
 use App\Services\VillageProfileLinks;
 use App\Services\VillageSummaryPage;
-use App\Services\WaterMapData;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -103,15 +101,8 @@ class VillageController extends Controller
         }
 
         $summary = app(VillageSummaryPage::class);
-        if ($summary->enabled($year === '2011' && $code === '131191')) {
-            $lgd = null;
-            if ($year === '2011') {
-                $map = app(ElectoralVillageMap::class);
-                $ids = app(WaterMapData::class)->publishedIdentities([['feature_index' => 0, 'level' => 'VILLAGE', 'residence' => 'Rural', 'state_code' => '09', 'census_code' => $code]], $map->database());
-                if (count($ids) === 1) {
-                    $lgd = $map->village($ids[0]['lgd'], true);
-                }
-            }
+        if ($summary->enabled()) {
+            $lgd = $year === '2011' ? $summary->linkedVillage($code, '09') : null;
 
             return $summary->pilibhit($village, (int) $year, $lgd);
         }

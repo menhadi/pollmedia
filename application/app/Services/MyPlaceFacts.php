@@ -38,6 +38,13 @@ class MyPlaceFacts
         return $facts;
     }
 
+    public static function censusCodeForms(string $code): array
+    {
+        $number = (string) (int) $code;
+
+        return array_map(fn ($width) => str_pad($number, $width, '0', STR_PAD_LEFT), range(strlen($number), max(6, strlen($code))));
+    }
+
     public function village(array $village, string $state): array
     {
         $facts = ['population' => null, 'households' => null, 'literacy' => null, 'census_source' => null, 'census_name' => null, 'water' => null, 'water_source' => null, 'census_status' => 'no_record'];
@@ -58,8 +65,10 @@ class MyPlaceFacts
             '36' => ['28'], '37' => ['01'], '38' => ['25', '26'],
             default => [str_pad($state, 2, '0', STR_PAD_LEFT)],
         };
-        $query = app(MyPlaceDirectory::class)->database()->prepare('SELECT DISTINCT lgd,state FROM directory WHERE CAST(census2011 AS INTEGER)=?');
-        $query->execute([(int) $code]);
+        $forms = self::censusCodeForms($code);
+        $marks = implode(',', array_fill(0, count($forms), '?'));
+        $query = app(MyPlaceDirectory::class)->database()->prepare("SELECT DISTINCT lgd,state FROM directory WHERE census2011 IN ($marks)");
+        $query->execute($forms);
         $matches = array_filter($query->fetchAll(\PDO::FETCH_ASSOC), fn ($row) => in_array((string) $row['state'], [$state], true));
         if (count($matches) !== 1 || (string) reset($matches)['lgd'] !== (string) $village['code']) {
             $facts['census_status'] = 'conflicting_identity';

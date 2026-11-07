@@ -8,9 +8,11 @@ use PDO;
 
 final class VillageSummaryPage
 {
-    public function enabled(bool $pilot): bool
+    public function enabled(): bool
     {
-        return $pilot && request()->query('view') !== 'details'
+        request()->attributes->set('village_summary_route', true);
+
+        return request()->query('view') !== 'details'
             && request()->query('topic', 'overview') === 'overview'
             && request()->except(['view', 'topic', 'lang', 'year', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']) === [];
     }
@@ -19,18 +21,34 @@ final class VillageSummaryPage
     {
         $geo = json_decode($row->geography, true);
         $values = json_decode($row->values, true);
-        $identity = app(DistrictDashboardUrls::class)->identity($row->state_code, $row->district_code);
+        $identity = $year === 2011 ? app(DistrictDashboardUrls::class)->identity($row->state_code, $row->district_code) : null;
+        $labels = $geo['source_codes']['original_labels'] ?? [];
         $lgd = null;
         if ($year === 2011 && $row->residence === 'Rural') {
-            $map = app(ElectoralVillageMap::class);
-            $ids = app(WaterMapData::class)->publishedIdentities([['feature_index' => 0, 'level' => 'VILLAGE', 'residence' => 'Rural', 'state_code' => $row->state_code, 'census_code' => $geo['Town/Village'] ?? $geo['TOWN_VILL'] ?? '']], $map->database());
-            if (count($ids) === 1) {
-                $lgd = $map->village($ids[0]['lgd'], true);
-            }
-        }
-        $metrics = ['population' => $values['TOT_P'] ?? null, 'households' => $values['No_HH'] ?? null, 'literacy' => CensusAreaPresentation::rates($values)['literacy'], 'children' => $values['P_06'] ?? null, 'workers' => $values['TOT_WORK_P'] ?? null];
+            $lgd = $this->linkedVillage((string) ($geo['Town/Village'] ?? $geo['TOWN_VILL'] ?? ''), (string) $row->state_code);
 
-        return $this->page($row->name, $identity['name'] ?? null, $identity['state_name'] ?? null, $year, $metrics, $lgd, $identity);
+        }
+        $metrics = ['population' => $values['TOT_P'] ?? null, 'households' => $values['No_HH'] ?? $values['HOUSEHOLDS'] ?? null, 'literacy' => CensusAreaPresentation::rates($values)['literacy'], 'children' => $values['P_06'] ?? null, 'workers' => $values['TOT_WORK_P'] ?? null];
+
+        return $this->page($row->name, $identity['name'] ?? $labels['District _Name'] ?? null, $identity['state_name'] ?? $labels['State_Name'] ?? null, $year, $metrics, $lgd, $identity);
+    }
+
+    public function linkedVillage(string $code, string $censusState): ?array
+    {
+        if (! ctype_digit($code) || (int) $code <= 0 || (int) $code >= 999999) {
+            return null;
+        }
+        $map = app(ElectoralVillageMap::class);
+        $forms = MyPlaceFacts::censusCodeForms($code);
+        $marks = implode(',', array_fill(0, count($forms), '?'));
+        $q = $map->database()->prepare("SELECT lgd,state FROM directory WHERE census2011 IN ($marks) LIMIT 2");
+        $q->execute($forms);
+        $matches = $q->fetchAll(PDO::FETCH_ASSOC);
+        $states = match ((int) $censusState) {
+            28 => ['28', '36'], 1 => ['1', '37'], 25,26 => ['38'], default => [(string) (int) $censusState],
+        };
+
+        return count($matches) === 1 && in_array((string) $matches[0]['state'], $states, true) ? $map->village($matches[0]['lgd'], true) : null;
     }
 
     public function directory(array $lgd): View

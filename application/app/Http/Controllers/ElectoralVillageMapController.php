@@ -55,7 +55,7 @@ class ElectoralVillageMapController extends Controller
         }
 
         $summary = app(VillageSummaryPage::class);
-        if ($summary->enabled((string) $village['state'] === '9' && (string) $village['lgd'] === '131191')) {
+        if ($summary->enabled()) {
             return $summary->directory($village);
         }
 
