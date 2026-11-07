@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ElectoralVillageMap;
 use App\Services\VillageProfileLinks;
+use App\Services\VillageSummaryPage;
+use App\Services\WaterMapData;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -83,6 +86,7 @@ class VillageController extends Controller
     public function namedShow(Request $request, string $state, string $district, string $slug, string $code): View|RedirectResponse
     {
         abort_unless($state === 'uttar-pradesh' && $district === 'pilibhit', 404);
+
         return $this->show($request, $code, $slug);
     }
 
@@ -96,6 +100,20 @@ class VillageController extends Controller
         $canonical = route('villages.named', ['state' => 'uttar-pradesh', 'district' => 'pilibhit', 'slug' => Str::slug($village['name']), 'code' => $code], false);
         if ($request->getPathInfo() !== $canonical) {
             return redirect(url($canonical).($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);
+        }
+
+        $summary = app(VillageSummaryPage::class);
+        if ($summary->enabled($year === '2011' && $code === '131191')) {
+            $lgd = null;
+            if ($year === '2011') {
+                $map = app(ElectoralVillageMap::class);
+                $ids = app(WaterMapData::class)->publishedIdentities([['feature_index' => 0, 'level' => 'VILLAGE', 'residence' => 'Rural', 'state_code' => '09', 'census_code' => $code]], $map->database());
+                if (count($ids) === 1) {
+                    $lgd = $map->village($ids[0]['lgd'], true);
+                }
+            }
+
+            return $summary->pilibhit($village, (int) $year, $lgd);
         }
 
         $mapping = $this->mapping();
