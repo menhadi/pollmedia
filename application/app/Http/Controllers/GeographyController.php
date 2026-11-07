@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\CensusPlaceNavigation;
+use App\Services\ElectoralVillageMap;
+use App\Services\VillageSummaryPage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,7 +54,9 @@ class GeographyController extends Controller
         abort_unless($place, 404);
         if ($place->type === 'district') {
             $destination = app(CensusPlaceNavigation::class)->url($place);
-            if (str_contains($destination, '/india/districts/')) { return redirect($destination, 301); }
+            if (str_contains($destination, '/india/districts/')) {
+                return redirect($destination, 301);
+            }
         }
         $censusRecord = app(CensusPlaceNavigation::class)->record($place);
         if ($censusRecord) {
@@ -61,6 +65,19 @@ class GeographyController extends Controller
         $identifiers = DB::table('place_identifiers as i')->join('source_releases as r', 'r.id', '=', 'i.source_release_id')
             ->where('i.place_id', $place->id)->where('r.status', 'accepted')
             ->select('i.namespace', 'i.code', 'i.version', 'r.url')->orderBy('i.namespace')->get();
+        $villageSummary = $place->type === 'village' && $place->country_code === 'IN' && app(VillageSummaryPage::class)->enabled();
+        if ($villageSummary) {
+            $codes = $identifiers->where('namespace', 'lgd:IN:village')->pluck('code')->unique()->values();
+            if ($codes->count() === 1) {
+                $code = (string) $codes->first();
+                $map = app(ElectoralVillageMap::class);
+                $q = $map->database()->prepare('SELECT 1 FROM directory WHERE lgd=?');
+                $q->execute([$code]);
+                if ($q->fetchColumn()) {
+                    return app(VillageSummaryPage::class)->directory($map->village($code, true), true);
+                }
+            }
+        }
         $observations = DB::table('observations as v')->join('indicators as i', 'i.id', '=', 'v.indicator_id')
             ->join('source_releases as r', 'r.id', '=', 'v.source_release_id')->where('v.place_id', $place->id)
             ->where('r.status', 'accepted')->where('v.status', 'reported')
@@ -84,6 +101,13 @@ class GeographyController extends Controller
         $elections = DB::table('election_contests as e')->join('source_releases as r', 'r.id', '=', 'e.source_release_id')
             ->where('e.place_id', $place->id)->where('e.active', true)->where('r.status', 'accepted')
             ->select('e.year', 'e.election_type', 'e.source_locator', 'r.url')->orderByDesc('e.year')->get();
+
+        if ($villageSummary) {
+            return app(VillageSummaryPage::class)->archive($place, [
+                'observations' => $observations->filter(fn ($row) => $row->value !== null)->unique(fn ($row) => $row->label.'|'.$row->unit.'|'.$row->period)->take(5),
+                'places' => $relatedPlaces->except($place->id)->take(5),
+            ]);
+        }
 
         return view('geography-place', compact('place', 'identifiers', 'observations', 'relations', 'relatedPlaces', 'people', 'elections'));
     }

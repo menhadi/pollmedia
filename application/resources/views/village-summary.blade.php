@@ -17,8 +17,14 @@
 @if($district)<span>›</span>@if($identity)<a href="{{ url($identity['path']).($hi?'?lang=hi':'') }}">{{ $district }}</a>@else<span>{{ $district }}</span>@endif @endif</nav>
 <h1>{{ $name }}</h1><p class="pb-scope">{{ $tr('Village summary','गाँव का सारांश') }}</p>
 <p class="pb-view-switch"><a href="{{ $detail }}">{{ $tr('Open full village records','गाँव के विस्तृत रिकॉर्ड खोलें') }} →</a></p>
-@if(!$metrics && !$lgd)<p>{{ $tr('Village record from the','गाँव का रिकॉर्ड ·') }} {{ $year }} {{ $tr('Census','जनगणना') }}</p>@endif
+@if($year && !$metrics && !$lgd)<p>{{ $tr('Village record from the','गाँव का रिकॉर्ड ·') }} {{ $year }} {{ $tr('Census','जनगणना') }}</p>@endif
 <div class="pb-record-grid pb-anchor-pair">
+@if(!empty($archive) && $archive['observations']->isNotEmpty())<section class="pb-panel pb-record-card" data-village-panel="reported"><h2>{{ $tr('Reported figures','दर्ज आँकड़े') }}</h2><table><tbody>
+@foreach($archive['observations'] as $row)<tr><th scope="row">{{ $row->label }}<small>{{ $row->period }}</small></th><td>{{ $row->value }} {{ $row->unit }}</td></tr>@endforeach
+</tbody></table><a class="pb-more" href="{{ $detail }}">{{ $tr('Open reported records','दर्ज रिकॉर्ड खोलें') }} →</a></section>@endif
+@if(!empty($archive) && $archive['places']->isNotEmpty())<section class="pb-panel pb-record-card" data-village-panel="places"><h2>{{ $tr('Linked places','संबंधित स्थान') }}</h2><ul>
+@foreach($archive['places'] as $other)<li><a href="{{ route('geography.show',['slug'=>$other->slug,'lang'=>$hi?'hi':null]) }}">{{ $other->name }}</a></li>@endforeach
+</ul></section>@endif
 @if($metrics)<section class="pb-panel pb-record-card" data-village-panel="people"><h2>{{ $tr('Population and households','जनसंख्या और परिवार') }}</h2><p class="pb-sub">{{ $tr('Census','जनगणना') }} {{ $year }}</p>
 <table class="pb-metrics"><tbody>@foreach($metrics as $key=>$v)<tr><th scope="row">{{ $labels[$key][$hi?1:0] }}</th><td>{{ $fmt($v) }}{{ $key==='literacy'?'%':'' }}</td></tr>@endforeach</tbody></table>
 <a class="pb-more" href="{{ $people }}">{{ $tr('View Census records','जनगणना रिकॉर्ड देखें') }} →</a></section>@endif
