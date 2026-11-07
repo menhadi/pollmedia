@@ -81,6 +81,9 @@ class GramPanchayatDirectory
 
     public function forVillage(int $state, int $village): ?array
     {
+        if (! is_file(database_path($state === 9 ? 'fixtures/up-gram-panchayat-profiles.sqlite' : 'fixtures/gram-panchayat-directory.sqlite'))) {
+            return null;
+        }
         $rows = $this->rows('SELECT DISTINCT g.gp,g.name FROM villages v JOIN gps g USING(state,gp) WHERE v.village=? AND v.state=? LIMIT 2', [$village, $state], $state);
 
         return count($rows) === 1 ? $rows[0] : null;
