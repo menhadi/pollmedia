@@ -62,7 +62,9 @@
 
 
 
+@if(empty($summaryLayout))
 <script src="{{ asset('js/sortable-tables.js') }}?v={{ substr(hash_file('sha256',public_path('js/sortable-tables.js')),0,12) }}" defer></script>
+@endif
 
 
 

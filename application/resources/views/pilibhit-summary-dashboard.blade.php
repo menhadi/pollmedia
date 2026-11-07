@@ -16,7 +16,7 @@
 <title>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }} · Pollmedia</title>
 <meta name="description" content="{{ $tr('Pilibhit district population, household water coverage, subdistrict comparisons and village directory.','पीलीभीत की जनसंख्या, नल जल कवरेज, उपजिले और गाँव निर्देशिका।') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=1">
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=2">
 <script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">
@@ -24,7 +24,7 @@
 <h1>{{ $tr('Pilibhit district','पीलीभीत ज़िला') }}</h1><p class="pb-scope">{{ $tr('Uttar Pradesh · District dashboard','उत्तर प्रदेश · ज़िला डैशबोर्ड') }}</p>
 <nav class="pb-tabs" data-place-topics="district" data-active-topic="{{ $topic }}" aria-label="{{ $tr('District topics','ज़िले के विषय') }}">
 @foreach(['overview','water','people','places'] as $key)<a data-topic="{{ $key }}" href="{{ $url($key) }}" @if($key===$topic) aria-current="page" @endif>{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach
-<details><summary>{{ $tr('More','अन्य') }}</summary><div>@foreach($extra as $key)<a href="{{ $key==='panchayats'?$gpUrl:$url($key) }}">{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach</div></details>
+<details><summary>{{ $tr('More','अन्य') }}</summary><div>@foreach($extra as $key)<a data-topic="{{ $key }}" href="{{ $key==='panchayats'?$gpUrl:$url($key) }}">{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach</div></details>
 </nav>
 <div data-topic-body>
 @if($topic==='overview')

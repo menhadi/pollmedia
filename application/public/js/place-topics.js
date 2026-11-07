@@ -66,7 +66,7 @@
     top.setAttribute('aria-label',label('Back to top','पृष्ठ के शीर्ष पर जाएँ'));top.title=top.getAttribute('aria-label');
     top.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19V5m-7 7 7-7 7 7"/></svg>';
     doc.body.append(top);
-    const showTop=()=>{top.hidden=scrollY<350;};
+    const showTop=()=>{const hide=scrollY<350;if(top.hidden!==hide)top.hidden=hide;};
     addEventListener('scroll',showTop,{passive:true});addEventListener('pageshow',showTop);showTop();
     top.onclick=()=>{const first=doc.querySelector('h1')||doc.body;if(!first.hasAttribute('tabindex'))first.tabIndex=-1;first.focus({preventScroll:true});window.scrollTo({top:0,behavior:reduced()?'instant':'smooth'});};
 
@@ -92,9 +92,10 @@
         const index=links.findIndex(link=>link.dataset.topic===key);
         if(index>=0 && links[index+1])openTopic(links[index+1].href,false,true);
     }
+    const nativePilibhit=Boolean(doc.querySelector('[data-pilibhit-native]'));
     let scheduled=false,lastY=scrollY;
     function queueNext(){
-        if(scheduled)return;
+        if(nativePilibhit||scheduled)return;
         scheduled=true;
         requestAnimationFrame(()=>{scheduled=false;nextOnScroll();});
     }
@@ -188,7 +189,7 @@
     // Old bookmarks open the equivalent topic on the new, smaller initial document.
     const anchors={'compact-panchayats':'panchayats','gram-panchayats':'panchayats','compact-places':'places','compact-water':'water','compact-soil':'soil','compact-rainfall':'rainfall','compact-map':'map','compact-satellite':'map','compact-graphs':'history','compact-elections':'elections','compact-mandi':'markets','compact-authorities':'authorities','compact-sources':'sources','member-villages':'villages','panchayat-records':'records','linked-village-data':'village-data','villages':'places','subdistricts':'places','groundwater-levels':'water','place-facts':'people'};
     const target=anchors[location.hash.slice(1)]||location.hash.slice(1);
-    if(target&&!location.search.includes('topic=')){
+    if(target&&!location.search.includes('topic=')&&!(nativePilibhit&&doc.getElementById(location.hash.slice(1)))){
         const nav=primary(),a=nav?.querySelector('a[data-topic="'+CSS.escape(target)+'"]');
         if(a && a.dataset.topic!==nav.dataset.activeTopic)location.replace(a.href);
     }
