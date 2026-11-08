@@ -157,10 +157,10 @@ body .pm-state-census #area-tables .table-wrap{min-width:0;max-width:100%;overfl
 /* A header and its values use the same inline edge, including sortable headers. */
 body :is(.compact-election,.pm-state-census) main table[data-state-table] tr>:is(th,td),
 body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>:is(th,td){text-align:start!important;padding-inline:9px!important}
-body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>[data-number]{text-align:end!important;font-variant-numeric:tabular-nums}
+body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>[data-number]{text-align:left!important;font-variant-numeric:tabular-nums}
 body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th>button{box-sizing:border-box;display:flex!important;align-items:center;justify-content:flex-start!important;gap:4px;width:100%!important;padding-inline:0!important;text-align:inherit!important}
-body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th[data-number]>button{justify-content:flex-end!important}
-body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th[data-number] .table-sort-indicator{order:-1}
+body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th[data-number]>button{justify-content:flex-start!important}
+body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th[data-number] .table-sort-indicator{order:1}
 .state-table-more{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin:8px 0 14px;font-size:.87rem;position:sticky;left:0;width:fit-content}
 body .state-table-more a{display:inline-flex;align-items:center;min-height:38px;padding:5px 12px;border-radius:5px;background:var(--pm-action,#185c6c);color:#fff!important;text-decoration:none}
 body .state-table-more a:hover{background:var(--pm-action-hover,#123d50)}
@@ -176,3 +176,7 @@ body main:is(.compact-election,.pm-state-census) table[data-state-table] thead .
  body .pm-state-census :is(#area-tables,.compact-directory) table[data-state-table] th[data-number]{white-space:normal;overflow-wrap:normal;word-break:normal}
  body .pm-state-census #area-tables table[data-state-table] th[data-number]{min-width:6.8em}
 }
+
+body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>:is(th,td),
+body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>[data-number]{text-align:left!important}
+body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th>button{justify-content:flex-start!important;text-align:left!important}

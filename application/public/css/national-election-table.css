@@ -1,0 +1,14 @@
+.national-elections{box-sizing:border-box;width:min(1240px,100%);margin:auto;padding:16px clamp(12px,3vw,36px) 30px;color:#183444;font:1rem/1.45 system-ui,sans-serif}
+.national-elections h1,.national-elections h2{font-family:Georgia,serif;line-height:1.15}.national-elections h1{font-size:clamp(1.9rem,4vw,3rem);margin:8px 0 12px}.national-elections h2{font-size:1.4rem;margin:16px 0 4px}
+.national-elections p{margin:4px 0 10px;color:#405a65}
+.national-elections form{display:flex;gap:8px 12px;align-items:end;flex-wrap:wrap;background:#edf4f5;padding:12px;border-radius:6px}
+.national-elections label{display:grid;gap:3px;min-width:0;font-size:.875rem;font-weight:650}
+.national-elections :is(select,input){box-sizing:border-box;min-width:0;max-width:100%;padding:7px 9px;border:1px solid #8fa9b3;background:white;color:#173746;border-radius:4px;font:inherit}
+.national-elections button,.national-pager [data-national-more]{background:var(--pm-action,#185c6c);color:#fff;padding:7px 13px;border-radius:5px;border:0;font:inherit;text-decoration:none}
+.national-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.national-elections table{width:100%;border-collapse:collapse;font-size:.9rem}
+body .national-elections table :is(th,td){padding:8px!important;text-align:left!important;border-bottom:1px solid #c4d4dc;vertical-align:top;font-variant-numeric:tabular-nums}
+.national-elections thead th{background:#183f52;color:#fff}.national-elections tbody tr:nth-child(even){background:#f0f5f6}.national-elections tbody th{font-weight:600}
+.national-elections small{display:block;color:#52656e}.national-elections a{color:#185c6c}.national-pager{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+@media(max-width:700px){.national-elections form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.national-elections table{min-width:54rem}.national-elections input{width:100%}.national-elections :is(select,input,button){min-height:44px}}
+

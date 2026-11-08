@@ -9,15 +9,7 @@
 @foreach(['elections'=>'Elections','census'=>'Census'] as $topic=>$label)
 
 <details class="topic-menu"><summary>{{ \App\Services\PublicLanguage::text($label) }} <svg class="menu-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><div class="state-megamenu"><div class="mega-national">
-<a class="mega-all-india" href="{{ $topic==='elections'?route('elections.history'):route('civic.index') }}"><strong>{{ app()->getLocale()==='hi'?'अखिल भारत':'All India' }}</strong>@if($topic==='elections') <span>· {{ app()->getLocale()==='hi'?'लोक सभा चुनाव':'Lok Sabha elections' }}</span>@endif</a>
-@if($topic==='elections')<nav class="mega-election-links" aria-label="Election pages"><a href="{{ route('elections.assembly') }}">Assembly elections →</a><a href="{{ route('elections.by-election-results') }}">By-elections →</a><a href="{{ route('elections.maps.index') }}">Constituency maps →</a></nav>@endif
-
-@if($topic==='census')<nav class="mega-election-links" aria-label="District dashboards"><a href="{{ route('district-dashboard-directory') }}">District dashboards →</a></nav>@endif
-
-
-
-@if($topic==='census')<p class="mega-heading"><a href="{{ route('community.data') }}">Data tables & quick facts →</a></p>@endif
-
+<a class="mega-all-india" href="{{ route($topic==='elections'?'elections.all-india':'civic.index',app()->getLocale()==='hi'?['lang'=>'hi']:[]) }}"><strong>{{ app()->getLocale()==='hi'?'अखिल भारत':'All India' }}</strong></a>
 </div><div class="mega-groups">
 @foreach(['State'=>'States','Union Territory'=>'Union Territories'] as $group=>$groupLabel)<section><h2>{{ \App\Services\PublicLanguage::text($groupLabel) }}</h2><div class="mega-state-links">@foreach($menuStates->where('kind',$group) as $item)<a href="{{ $topic==='elections'?route('states.show',['state'=>$item['slug'],'election'=>'pc']):route('civic.index',['state'=>$item['slug']]) }}">{{ \App\Services\PublicLanguage::text($item['name']) }}</a>@endforeach</div></section>@endforeach
 

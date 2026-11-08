@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ArchiveFiles;
+use App\Services\ByElectionRecords;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -11,10 +11,8 @@ class ByElectionResultController extends Controller
 {
     public function index(Request $request): View
     {
-        $disk = app(ArchiveFiles::class);
-        $root = 'election-by-elections/structured/';
-        $index = $disk->exists($root.'index.json') ? json_decode($disk->get($root.'index.json'), true, 512, JSON_THROW_ON_ERROR) : ['records' => [], 'unmapped_tables' => 0];
-        $all = collect($index['records']);
+        $source = app(ByElectionRecords::class);
+        $all = $source->index();
         $years = $all->map(fn ($record) => (int) ($record['year'] ?? 0))->unique()->sortDesc()->values();
         $states = $all->pluck('state')->filter()->unique()->sort()->values();
         $input = $request->validate([
@@ -30,13 +28,7 @@ class ByElectionResultController extends Controller
             && (! isset($input['kind']) || $record['kind'] === $input['kind']))->values();
         $selected = isset($input['record']) ? $choices->firstWhere('id', $input['record']) : $choices->first();
         abort_if(isset($input['record']) && ! $selected, 404);
-        $record = null;
-        if ($selected) {
-            abort_unless(preg_match('/^[a-f0-9]{24}-[a-f0-9]{16}\.json$/', $selected['file']), 503);
-            $path = $disk->path($root.$selected['file']);
-            abort_unless(is_file($path) && filesize($path) <= 4000000 && hash_equals($selected['sha256'], hash_file('sha256', $path)), 503, 'Result source integrity check failed.');
-            $record = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
-        }
+        $record = $selected ? $source->record($selected) : null;
 
         if (isset($input['format'])) {
             abort_unless($record && $record['id'] === $selected['id'], 404);
