@@ -8,10 +8,13 @@
         return;
     }
     document.addEventListener('change', event => {
-        if (event.target.matches('[data-go-url]')) location.assign(event.target.value);
+        if (event.target.matches('[data-go-url]') && event.target.value) location.assign(event.target.value);
         if (event.target.matches('[data-submit-choice]')) event.target.form.requestSubmit();
     });
-    document.querySelectorAll('[data-party-list], [data-seat-list]').forEach(list => {
+    const selector = '[data-party-list], [data-seat-list], [data-district-list]';
+    function mount(list) {
+        if (list.dataset.listReady) return;
+        list.dataset.listReady = 'true';
         const body = list.querySelector('tbody');
         if (!body?.querySelector('th')) return;
         const input = list.querySelector('input[type=search]');
@@ -19,7 +22,7 @@
         const steps = list.querySelectorAll('[data-step]');
         const toggle = list.querySelector('[data-show-all]');
         const hi = document.documentElement.lang.startsWith('hi');
-        const size = 12;
+        const size = list.matches('[data-district-list]') ? 5 : 12;
         let page = 0;
         let showAll = false;
         function render() {
@@ -45,5 +48,14 @@
         new MutationObserver(firstPage).observe(body, {childList:true});
         list.querySelectorAll('[data-seat-tools]').forEach(item => { item.hidden = false; });
         render();
-    });
+    }
+    document.querySelectorAll(selector).forEach(mount);
+    const topicHost = document.querySelector('.pm-state-census');
+    if (topicHost) new MutationObserver(changes => {
+        for (const change of changes) for (const node of change.addedNodes) {
+            if (node.nodeType!==1) continue;
+            if (node.matches(selector)) mount(node);
+            node.querySelectorAll(selector).forEach(mount);
+        }
+    }).observe(topicHost, {childList:true, subtree:true});
 })();

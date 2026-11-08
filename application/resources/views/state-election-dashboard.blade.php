@@ -1,14 +1,14 @@
 <!doctype html><html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 @include('seo-metadata', ['breadcrumbs'=>['India'=>route('home'),$title=>route('states.show',['state'=>$state])], 'canonical'=>route('states.show',['state'=>$state]), 'seoTitle'=>$title.' Census, elections & civic records · Pollmedia', 'seoDescription'=>'Explore available turnout, party vote shares and winning margins with constituency results and official sources.'])
-<link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/civic-pages.css') }}?v={{ substr(hash_file('sha256',public_path('css/civic-pages.css')),0,12) }}"><script src="/js/history-lines.js?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script><script src="/js/state-fragments.js?v={{ substr(hash_file('sha256',public_path('js/state-fragments.js')),0,12) }}" defer></script><link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}"><script src="{{ asset('js/public-landings.js') }}?v={{ substr(hash_file('sha256',public_path('js/public-landings.js')),0,12) }}" defer></script><link rel="stylesheet" href="{{ asset('css/constituency-atlas.css') }}?v={{ substr(hash_file('sha256', public_path('css/constituency-atlas.css')),0,12) }}"></head><body class="election-ui civic-design state-design pm-landing seat-atlas-page">
+<link rel="stylesheet" href="/css/election-dashboard.css?v={{ substr(hash_file('sha256', public_path('css/election-dashboard.css')), 0, 12) }}"><script src="/js/instant-filters.js?v={{ substr(hash_file('sha256',public_path('js/instant-filters.js')),0,12) }}" defer></script>@include('site-theme')<link rel="stylesheet" href="{{ asset('css/civic-pages.css') }}?v={{ substr(hash_file('sha256',public_path('css/civic-pages.css')),0,12) }}"><script src="/js/history-lines.js?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script><script src="/js/state-fragments.js?v={{ substr(hash_file('sha256',public_path('js/state-fragments.js')),0,12) }}" defer></script><link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}"><script src="{{ asset('js/public-landings.js') }}?v={{ substr(hash_file('sha256',public_path('js/public-landings.js')),0,12) }}" defer></script><link rel="stylesheet" href="{{ asset('css/constituency-atlas.css') }}?v={{ substr(hash_file('sha256', public_path('css/constituency-atlas.css')),0,12) }}"><link rel="stylesheet" href="{{ asset('css/compact-area-pages.css') }}?v={{ substr(hash_file('sha256',public_path('css/compact-area-pages.css')),0,12) }}"></head><body class="election-ui civic-design state-design pm-landing seat-atlas-page">
 @include('public-header',['summaryLayout'=>true])
 @php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('state',$title,$title); @endphp
 
 
 <div class="dashboard-shell">
-<main class="dashboard-main landing-state seat-atlas">
+<main class="dashboard-main landing-state seat-atlas compact-election">
 @php($sectionLabel=$kind==='pc'?'Lok Sabha (PC)':'Assembly (AC)')
-<div class="state-atlas-lead"><div class="state-atlas-filters">
+<div class="state-atlas-filters">
 <header class="landing-intro"><nav aria-label="Breadcrumb"><a href="{{ route('home') }}">India</a> / Elections</nav>
 <h1>{{ $title }} elections</h1>
 <div class="landing-controls"><label>State or union territory<select data-go-url>@foreach($states as $item)<option value="{{ route('states.show',['state'=>$item['slug'],'election'=>$kind]) }}" @selected($item['slug']===$state)>{{ $item['name'] }}</option>@endforeach</select></label>
@@ -17,8 +17,7 @@
 </div></header>
 @include('state-results-summary')
 </div>
-@include('state-results-map')
-</div>
+
 <nav class="landing-links"><a href="#{{ $kind }}-constituency-results">Constituency results</a><a href="#{{ $kind }}-history">Election history</a><a href="{{ route('civic.state',['state'=>$state]) }}">State Census →</a></nav>
 <div id="election-analysis">@include('state-election-section')</div>
 @include('census-landing-section',['censusState'=>$state])

@@ -1,0 +1,81 @@
+/* Compact public summaries share the heading, figure strip and table rhythm. */
+:is(.compact-election,.compact-district,.pm-state-census,.compact-national-directory){
+ --area-ink:var(--site-text,#183932);--area-tint:#e6f0e9;--area-rule:#c8d7ce;--area-teal:#236a55;
+}
+body :is(.compact-election,.compact-district,.pm-state-census,.compact-national-directory){min-width:0}
+body .compact-election .landing-intro,body .pm-state-census .area-intro.landing-intro,body .compact-national-directory .area-intro{
+ display:block;padding:0!important;margin:0 0 8px!important;border:0!important;background:transparent!important;box-shadow:none;color:var(--area-ink)!important;
+}
+body :is(.compact-election .landing-intro,.compact-district,.pm-state-census .area-intro.landing-intro,.compact-national-directory .area-intro)>h1{
+ font:600 clamp(1.65rem,3.1vw,2.55rem)/1.13 Georgia,serif!important;letter-spacing:-.035em;margin:4px 0 8px!important;color:var(--area-ink)!important;
+}
+body .pb-dashboard.compact-district,body .area-dashboard.pm-state-census,body .compact-national-directory{padding-top:12px!important}
+body:has(.compact-election) .dashboard-shell{margin-top:0!important;padding-top:12px!important}
+.compact-election .landing-controls,.pm-state-census .landing-controls{display:flex!important;flex-wrap:wrap;align-items:center!important;gap:6px 16px!important;margin:4px 0!important}
+.compact-election .landing-controls label,.compact-election .landing-year,.pm-state-census .landing-controls label{display:inline-flex;align-items:center;gap:5px;margin:0}
+.compact-election .landing-controls select,.pm-state-census .landing-controls select{width:auto;max-width:100%;min-width:0}
+body .compact-election .landing-controls :is(select,button,.landing-switch a),body .pm-state-census .landing-controls :is(select,button){padding:5px 8px;min-height:34px;height:auto;font-size:.88rem}
+body .compact-election .state-year-results{padding:0!important;margin:0!important;background:none;border:0}
+body .compact-election .state-year-metrics.compact-facts,body dl.compact-facts{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px;padding:9px 12px!important;border:0;border-radius:5px;background:var(--area-tint);margin:6px 0!important;
+}
+body .compact-facts>div{display:flex!important;flex-direction:column-reverse!important;align-items:flex-start;justify-content:center;padding:0!important;margin:0;border:0!important;background:none!important;min-width:0}
+body .compact-facts :is(dd,strong){color:#173d35;margin:0;font:600 clamp(1rem,2.2vw,1.65rem)/1.2 Georgia,serif!important;font-variant-numeric:lining-nums tabular-nums;overflow-wrap:anywhere}
+body .compact-facts :is(dt,span),.compact-meta{font:500 .8rem/1.35 system-ui;color:#385448}
+body .compact-election .result-coverage,body .compact-election .result-coverage summary{margin:4px 0;padding:2px 0;color:var(--area-ink);font-size:.85rem}
+.result-coverage>div strong{margin-inline-start:.45em}
+body .compact-election .landing-links{gap:5px 15px;margin:8px 0}
+body .compact-election .state-election-section{margin:0!important;padding:0!important;border:0}
+.state-map-analysis{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start;gap:12px}
+.state-map-analysis:not(:has(.landing-bars)){grid-template-columns:minmax(0,1fr)}
+body .compact-election :is(.landing-bars,.state-share-table,.state-constituency-results,.state-atlas-map .election-map){min-width:0;margin:0 0 8px!important;padding:10px!important;border:0;border-top:1px solid var(--area-rule);box-shadow:none}
+body .compact-election .state-atlas-map .election-map{display:grid;grid-template-columns:minmax(0,1fr) minmax(128px,.75fr);gap:3px 9px;align-items:start}
+.compact-election .election-map-heading{grid-column:1/-1}
+.compact-election .election-map-surface{grid-column:1;grid-row:2/span 5}
+body .compact-election .election-map-surface svg{width:100%;height:clamp(140px,17vw,210px);aspect-ratio:auto}
+.compact-election .election-map :is(.election-map-search,.election-map-tools,.election-map-selection,[data-map-status]){grid-column:2;margin:0}
+.compact-election .election-map :is(.election-map-legend,details){grid-column:1/-1}
+.compact-election .election-map-legend{margin:3px 0}
+body .compact-election .state-atlas-map :is(.election-map-selection,.election-map-tools){min-height:0}
+body .compact-election .state-atlas-map .election-map-tools{justify-content:flex-start;flex-wrap:wrap}
+body .compact-election .state-atlas-map .election-map-tools button{padding:4px 8px;min-height:30px}
+body .compact-election .landing-bars h2,body .compact-election .state-election-section h2,body .compact-district .pb-panel h2,body .residence-split h2,body .compact-directory h2{font:600 clamp(1.1rem,2vw,1.48rem)/1.18 Georgia,serif;margin:0 0 5px}
+body .compact-election .landing-bars>div{margin:3px 0}
+.compact-election .state-constituency-results .table-scroll :is(th,td),.compact-directory :is(th,td){padding:5px 8px;font-variant-numeric:tabular-nums}
+.compact-district .pb-view-switch,.compact-district .pb-crumb,.compact-district .pb-scope,.compact-meta{margin:3px 0!important}
+body .compact-district .pb-tabs{margin:6px 0}
+body .compact-district .pb-panel,body .compact-national-directory .panel,body .pm-state-census .landing-card{margin-block:8px;padding:10px 12px}
+.compact-district-directory{display:grid;gap:12px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start}
+.compact-district-directory>:only-child{grid-column:1/-1}
+.residence-split,.compact-directory{margin-block:8px;border-top:1px solid var(--area-rule);padding-top:8px}
+.residence-track{display:flex;width:100%;height:10px;border-radius:3px;overflow:hidden;background:#ad764f}
+.residence-track i{background:var(--area-teal)}
+.residence-values,.compact-section-title{display:flex;gap:4px 12px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.residence-values small{font-size:.8rem}.residence-values{margin:4px 0}
+.compact-directory table{width:100%;border-collapse:collapse}
+.compact-directory :is(th,td){border:0;border-bottom:1px solid var(--area-rule);text-align:end}
+.compact-directory :is(th,td):first-child{text-align:start}
+.compact-directory [hidden]{display:none!important}
+.compact-section-title input{max-width:100%;width:11rem}
+@media(max-width:700px){.state-map-analysis,.compact-district-directory{grid-template-columns:minmax(0,1fr);gap:3px}body .compact-election .landing-controls{display:flex!important;align-items:center}.compact-election .landing-controls .landing-year select{width:auto}.compact-election .landing-year{max-width:100%;flex-wrap:wrap}body .compact-election .election-map-surface svg{height:160px}.compact-district .pb-search{padding:0}.compact-election .landing-bars>div{grid-template-columns:7ch minmax(0,1fr) 4ch}body dl.compact-facts{padding-inline:6px!important}}
+@media(pointer:coarse){body .compact-election .landing-controls :is(select,button,.landing-switch a),body .compact-election .election-map-tools button{min-height:44px}}
+
+
+body .dashboard-shell .dashboard-main.compact-election{padding-top:4px!important}
+body .compact-election .landing-intro>.landing-controls{width:100%!important;max-width:none!important}
+@media(min-width:1000px){
+ body .compact-election .landing-intro>.landing-controls{display:grid!important;grid-template-columns:minmax(15rem,1fr) max-content minmax(15rem,1fr);align-items:center!important}
+ body .compact-election .landing-controls :is(label,select,form){min-width:0;max-width:100%}
+ body .compact-election .landing-year>div{min-width:0;flex:1}
+ body .compact-election .landing-controls label>select{flex:1}
+}
+body .compact-election .state-map-analysis .election-map-search{grid-row:2}
+body .compact-election .state-map-analysis .election-map-tools{grid-row:3}
+body .compact-election .state-map-analysis [data-map-status]{grid-row:4}
+body .compact-election .state-map-analysis .election-map-selection{grid-row:5;margin:0}
+body .compact-election .state-map-analysis .election-map-legend{grid-row:6}
+body .pm-state-census .compact-directory table{min-width:0!important;width:100%!important;table-layout:fixed}
+body .pm-state-census .compact-directory :is(th,td){min-width:0!important;white-space:normal;overflow-wrap:anywhere}
+body .compact-directory .compact-section-title label{margin:0;padding:0}
+body .compact-directory input:focus-visible,body .compact-election :is(select,input):focus-visible{outline:2px solid var(--area-teal)!important;outline-offset:2px}
+@media(max-width:700px){body .pm-state-census .compact-directory th:first-child{width:40%}body .pm-state-census .compact-directory :is(th,td){padding:5px 3px}body .pm-state-census .compact-directory thead :is(th,button){font-size:.83rem;white-space:normal}}

@@ -25,9 +25,9 @@
 <!doctype html><html lang="{{ $hi?'hi':'en' }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{{ $name }} · {{ $tr('District records','ज़िला रिकॉर्ड') }} · Pollmedia</title>
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=8"></head>
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=8"><link rel="stylesheet" href="{{ asset('css/compact-area-pages.css') }}?v={{ substr(hash_file('sha256',public_path('css/compact-area-pages.css')),0,12) }}"></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
-<main class="pb-dashboard" data-district-source-summary data-pilibhit-native>
+<main class="pb-dashboard compact-district" data-district-source-summary data-pilibhit-native>
 <nav class="pb-crumb"><a href="{{ route('district-dashboard-directory') }}">{{ $tr('Districts','ज़िले') }}</a><span>›</span><span>{{ $name }}</span></nav>
 <h1>{{ $name }}</h1><p class="pb-scope">{{ $regionLabel??$tr('District records','ज़िला रिकॉर्ड') }}</p>
 <p class="pb-view-switch"><a href="{{ $details }}">{{ $tr('Open full district records','विस्तृत ज़िला रिकॉर्ड खोलें') }} →</a></p>

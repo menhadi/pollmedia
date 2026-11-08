@@ -115,12 +115,17 @@ body .public-header.site-header #public-navigation .state-megamenu a{display:blo
 .public-header .state-megamenu [hidden]{display:none!important}
 @media(min-width:1024px){
 body .public-header.site-header #public-navigation{gap:0!important}
-body .public-header.site-header #public-navigation>:not(:first-child){border-inline-start:1px solid color-mix(in srgb,currentColor 30%,transparent);padding-inline-start:8px;margin-inline-start:6px}
+body .public-header.site-header #public-navigation>:not(:first-child){border-inline-start:0;padding-inline-start:8px;margin-inline-start:6px}
 .public-header .mega-tabs{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid #bccdc7;margin:6px 0 16px}
-.public-header .mega-tabs button{font:inherit;font-weight:600;min-height:42px;padding:8px 15px;background:transparent;color:#194b40;border:0;border-inline-end:1px solid #c8d8d1;border-bottom:3px solid transparent;cursor:pointer}
+.public-header .mega-tabs button{font:inherit;font-weight:600;min-height:42px;padding:8px 15px;background:transparent;color:#194b40;border:0;border-bottom:3px solid transparent;cursor:pointer}
 .public-header .mega-tabs button[aria-selected="true"]{color:#0e574c;border-bottom-color:#176c60;background:#e4efeb}
 .public-header .mega-tabs button:focus-visible{outline:2px solid #19675d;outline-offset:-4px}
 .public-header .state-megamenu:has(.mega-tabs:not([hidden])) .mega-groups{display:block}
 .public-header .state-megamenu:has(.mega-tabs:not([hidden])) .mega-groups section .mega-state-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}
 .public-header .state-megamenu [role="tabpanel"]>h2{display:none}
 }
+
+body .public-header.site-header #public-navigation>.public-account-link{border:0}
+body .public-header.site-header .state-megamenu :is(.mega-state-links,.mega-election-links)>a,
+body .public-header.site-header .state-megamenu .mega-heading>a{border:0;border-bottom:1px solid #bdd0c9;border-radius:0}
+@media(min-width:1024px){body .public-header.site-header .state-megamenu .mega-election-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 16px}}
