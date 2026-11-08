@@ -9,6 +9,7 @@ use App\Services\IssueLocationResolver;
 use App\Services\MyPlaceDirectory;
 use App\Services\PilibhitMyPlace;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
@@ -87,7 +88,7 @@ class MyPlaceController extends Controller
         return $context;
     }
 
-    public function index(Request $request, PilibhitMyPlace $places): View
+    public function index(Request $request, PilibhitMyPlace $places): View|RedirectResponse
     {
         $input = $request->validate(['village' => ['nullable', 'regex:/^[0-9]{1,8}$/'], 'subdistrict' => ['nullable', 'regex:/^[0-9]{1,8}$/'], 'lang' => 'nullable|in:en,hi']);
         $language = $input['lang'] ?? app()->getLocale();
@@ -97,6 +98,9 @@ class MyPlaceController extends Controller
         abort_if(isset($input['village']) && ! $selected, 404);
         $subdistrict = $selected['subdistrict_code'] ?? ($input['subdistrict'] ?? '');
         abort_if($subdistrict !== '' && ! collect($villages)->contains('subdistrict_code', $subdistrict), 404);
+        if ($request->query('view') !== 'details' && $request->query('topic', 'overview') === 'overview') {
+            return redirect()->route('my-place.index', array_filter(['state' => '9', 'district' => '173', 'village' => $selected['code'] ?? null, 'subdistrict' => $subdistrict, 'lang' => $language]));
+        }
         if ($language === 'hi') {
             $names = app(HindiPlaceNames::class);
             foreach ($villages as &$village) {

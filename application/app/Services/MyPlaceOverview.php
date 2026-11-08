@@ -4,13 +4,6 @@ namespace App\Services;
 
 final class MyPlaceOverview
 {
-    public static function enabled(array $context): bool
-    {
-        return (string) $context['state']['code'] === '9'
-            && (string) $context['district']['code'] === '173'
-            && (string) ($context['village']['code'] ?? '') === '131191';
-    }
-
     public function previews(array $context): array
     {
         $gp = null;

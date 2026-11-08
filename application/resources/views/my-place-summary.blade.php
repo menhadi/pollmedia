@@ -7,11 +7,11 @@
  $facts=$context['facts']; $number=fn($n,$suffix='')=>is_numeric($n)?number_format((float)$n,$suffix==='%'?2:0).$suffix:$t('Unavailable','उपलब्ध नहीं');
 @endphp
 <?php $topic = \App\Services\PlaceTopics::selected('my'); ?>
-@if($topic==='overview' && request('view')!=='details' && \App\Services\MyPlaceOverview::enabled($context))
+@if($topic==='overview' && request('view')!=='details')
 @include('my-place-compact')
 @else
 <section class="place-panel place-overview"><p class="eyebrow">{{ $label($context['state']['name']) }} · {{ $label($context['district']['name']) }}</p><h2 data-place-heading="{{ $placeHeading }}">{{ $placeTitle }}</h2></section>
-@if(request('view')==='details' && \App\Services\MyPlaceOverview::enabled($context))
+@if(request('view')==='details')
 <p><a href="{{ route('my-place.index',request()->except(['view','topic','pm_panel'])) }}">← {{ $t('My Place summary','मेरा क्षेत्र का सारांश') }}</a></p>@endif
 @include('place-topic-nav',['topicGroup'=>'my'])
 <div data-topic-body>
