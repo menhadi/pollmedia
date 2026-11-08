@@ -1,5 +1,6 @@
 @php
-$delhiRegionCandidates = array_map(fn ($row) => ['code' => $row['code'], 'name' => $row['name'], 'url' => route('civic.place', ['record' => $row['id']], false)], $data['census_villages'] ?? []);
+    app(\App\Services\NamedPlaceUrls::class)->primeCensus(collect($data['census_villages'] ?? [])->pluck('id'));
+$delhiRegionCandidates = array_map(fn ($row) => ['code' => $row['code'], 'name' => $row['name'], 'url' => app(\App\Services\NamedPlaceUrls::class)->link(['record' => $row['id']], false)], $data['census_villages'] ?? []);
 @endphp
 <script type="application/json" id="haryana-map-census-candidates">{!! json_encode($delhiRegionCandidates, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) !!}</script>
 <section id="map" class="panel" data-source-map="{{ asset($sourceMap) }}"><div class="section-heading"><h2>{{ $data['name'] }} region map</h2><a href="{{ asset($sourceMap) }}">Download source geometry ↓</a></div>

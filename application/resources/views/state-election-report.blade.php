@@ -1,6 +1,6 @@
 <!doctype html><html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>{{ $title }} · {{ $kind==='pc'?'Lok Sabha':'Assembly' }} history report</title>
 @include('site-theme')
-<link rel="stylesheet" href="/css/history-report.css?v={{ substr(hash_file('sha256',public_path('css/history-report.css')),0,12) }}"></head><body class="history-report">
+<link rel="stylesheet" href="/css/history-report.css?v={{ substr(hash_file('sha256',public_path('css/history-report.css')),0,12) }}"><link rel="canonical" href="{{ route('states.show',['state'=>$state,'election'=>$kind==='ac'?'ac':null,'lang'=>app()->getLocale()==='hi'?'hi':null]) }}"></head><body class="history-report">
 <div class="report-actions"><button onclick="window.print()">Print / Save as PDF</button><p>All chart values and official references are included.</p></div>
 <header class="report-masthead"><div class="report-brand">{{ app(\App\Services\SiteSettings::class)->appearance()['name'] }}<span>State election history</span></div><h1>{{ $title }}</h1><p class="report-subtitle">{{ $kind==='pc'?'Lok Sabha':'State Assembly · AC' }}</p><div class="report-meta"><span>{{ collect($history)->min('year') }}–{{ collect($history)->max('year') }} · reference years</span><span>Prepared {{ now()->format('d M Y') }}</span></div></header>
 <main>

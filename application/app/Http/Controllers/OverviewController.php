@@ -11,6 +11,7 @@ use App\Services\HistoricalElectionAnalytics;
 use App\Services\HomeElectionSummary;
 use App\Services\IndiaVillageMap;
 use App\Services\PlaceFactTables;
+use App\Services\PublicPageCanonical;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -43,6 +44,10 @@ class OverviewController extends Controller
         $input = $request->validate(['format' => 'nullable|in:report', 'suggest' => 'nullable|in:pc,ac', 'pc_q' => 'nullable|string|max:100', 'ac_q' => 'nullable|string|max:100', 'pc_scope' => 'nullable|in:current,archive', 'ac_scope' => 'nullable|in:current,archive', 'seat_q' => 'nullable|string|max:100', 'pc_page' => 'nullable|integer|min:1|max:10000', 'ac_page' => 'nullable|integer|min:1|max:10000', 'q' => 'nullable|string|max:100', 'type' => 'nullable|in:pc,ac,district', 'place' => 'nullable|string|max:200', 'page' => 'nullable|integer|min:1|max:10000', 'pc_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'ac_edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'election' => 'nullable|in:ac,pc', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'party' => 'nullable|string|max:100']);
         $title = $stateSummary['name'] ?? 'India';
         $states = $summary->states();
+
+        if ($stateSummary && $request->query('election') === 'pc' && array_values(PublicPageCanonical::contentParameters($request)) === ['election']) {
+            return redirect()->route('states.show', ['state' => $state] + $request->except('election'), 301);
+        }
 
         if ($stateSummary) {
             $kind = $input['election'] ?? 'pc';

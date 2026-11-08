@@ -31,10 +31,10 @@
 @if($latest && $latest['growth'] !== null)<strong>{{ number_format($latest['growth'],2) }}%</strong><p>{{ $tr('Population change in the decade ending','इस वर्ष तक के दशक में जनसंख्या परिवर्तन') }} {{ $latest['year'] }}.</p>@endif
 <a href="{{ route('census.national-history',['state'=>'00']+$lang) }}">{{ $tr('Compare Census years','जनगणना वर्षों की तुलना') }} →</a></section>
 <section><h2>{{ $tr('Census place profiles','जनगणना क्षेत्र प्रोफ़ाइल') }}</h2><p>{{ $tr('Browse population, households, literacy and work by state, district, town or village.','राज्य, ज़िले, नगर या गाँव की आबादी, परिवार, साक्षरता और कामकाज देखें।') }}</p><a href="{{ route('civic.index',['year'=>$year,'group'=>'population']+$lang) }}">{{ $tr('Open the place explorer','क्षेत्र खोजें') }} →</a></section>
-<section><h2>{{ $tr('Source tables','स्रोत तालिकाएँ') }}</h2><p>{{ $tr('Find published Census editions, original columns and geographic definitions.','प्रकाशित जनगणना संस्करण, मूल कॉलम और भौगोलिक परिभाषाएँ देखें।') }}</p><a href="{{ route('census-catalogue.index',$lang) }}#catalogue-editions">{{ $tr('Browse the catalogue','सूची देखें') }} →</a></section>
+<section><h2>{{ $tr('Source tables','स्रोत तालिकाएँ') }}</h2><p>{{ $tr('Find published Census editions, original columns and geographic definitions.','प्रकाशित जनगणना संस्करण, मूल कॉलम और भौगोलिक परिभाषाएँ देखें।') }}</p><a href="{{ \App\Services\CensusPlaceNavigation::catalogueUrl($lang) }}#catalogue-editions">{{ $tr('Browse the catalogue','सूची देखें') }} →</a></section>
 </div>
 <section id="census-states" class="hub-panel"><div class="hub-panel-title"><h2>{{ $tr('Choose a state or UT','राज्य या केंद्र शासित प्रदेश चुनें') }}</h2><span>{{ $tr('Census geography','जनगणना भूगोल') }} · {{ $year }}</span></div>
-@if($stateOptions->isNotEmpty())<ul class="hub-places">@foreach($stateOptions as $area)<li><a href="{{ route('civic.place',['record'=>$area->id]+$lang) }}">{{ $area->display_name }} <span aria-hidden="true">→</span></a></li>@endforeach</ul>
+@if($stateOptions->isNotEmpty())<ul class="hub-places">@foreach($stateOptions as $area)<li><a href="{{ route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($area->name),'census'=>(int)$year===2011?null:$year]+$lang) }}">{{ $area->display_name }} <span aria-hidden="true">→</span></a></li>@endforeach</ul>
 @else<p>{{ $tr('State profiles are unavailable for this edition.','इस संस्करण में राज्य प्रोफ़ाइल उपलब्ध नहीं हैं।') }}</p>@endif
 </section>
 </main>@include('public-footer')</body></html>

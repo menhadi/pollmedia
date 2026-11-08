@@ -1,12 +1,13 @@
 <!doctype html><html lang="{{ app()->getLocale() }}"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow">
-<title>{{ $selectedState['name'] }} constituency boundaries · Pollmedia</title>@include('site-theme')
+<title>{{ $selectedState['name'] }} constituency boundaries · Pollmedia</title><link rel="canonical" href="{{ route('elections.maps.show',['state'=>$selectedState['slug'],'kind'=>$initialKind==='ac'?'ac':null,'lang'=>app()->getLocale()==='hi'?'hi':null]) }}">@include('site-theme')
 <link rel="stylesheet" href="{{ asset('css/electoral-map-pilot.css') }}?v={{ substr(hash_file('sha256',public_path('css/electoral-map-pilot.css')),0,12) }}">
 </head><body class="electoral-map-page">@include('public-header')
 <main class="electoral-pilot">
 <p>{{ $selectedState['name'] }}</p><h1>Explore parliamentary and Assembly constituencies</h1>
 <form class="electoral-pilot-controls" action="{{ route('elections.maps.index') }}" method="get">
-<label>State / Union Territory<select name="state">@foreach($catalogue['states'] as $item)<option value="{{ $item['slug'] }}" @selected($item['slug']===$selectedState['slug'])>{{ $item['name'] }}</option>@endforeach</select></label>
+@if(app()->getLocale()==='hi')<input type="hidden" name="lang" value="hi">@endif
+<label>State / Union Territory<select name="state">@foreach($catalogue['states'] as $item)<option data-map-path="{{ route('elections.maps.show',['state'=>$item['slug']]) }}" value="{{ $item['slug'] }}" @selected($item['slug']===$selectedState['slug'])>{{ $item['name'] }}</option>@endforeach</select></label>
 <label>Constituency type<select name="kind"><option value="pc" @selected($initialKind==='pc')>Lok Sabha</option><option value="ac" @selected($initialKind==='ac')>State Assembly · AC</option></select></label><button>Show map</button>
 <a href="{{ route('states.show',['state'=>$selectedState['slug']]) }}">Explore {{ $selectedState['name'] }} →</a></form>
 @include('election-map',['mapKind'=>$initialKind,'mapStateName'=>$selectedState['name']])
@@ -20,4 +21,4 @@
 <p>Download: <a href="{{ asset('maps/electoral/'.$selectedState['file']) }}">{{ $selectedState['name'] }} source shapes and attributes</a> · <a href="{{ asset('maps/electoral/catalogue.json') }}">National source inventory, hashes and counts</a>@if($selectedState['slug']==='telangana') · <a href="{{ asset('maps/electoral/andhra-pradesh.json') }}">Combined Andhra Pradesh / Telangana Assembly source</a>@endif</p>
 <p>Parliamentary data: <a href="https://github.com/datameet/maps/tree/b3fbbde595310b397a55d718e0958ce249a4fa1f/parliamentary-constituencies" target="_blank" rel="noopener noreferrer">Arun Ganesh / DataMeet</a> (CC0 1.0). Assembly data: <a href="https://github.com/datameet/maps/tree/b3fbbde595310b397a55d718e0958ce249a4fa1f/assembly-constituencies" target="_blank" rel="noopener noreferrer">DataMeet</a> (<a href="https://creativecommons.org/licenses/by/2.5/in/" target="_blank" rel="noopener noreferrer">CC BY 2.5 India</a>); simplified for display. Original attributes remain in the pinned source files.</p></section>
 <noscript><p>JavaScript enables the interactive shapes. The constituency directory and boundary source links remain available.</p></noscript>
-</main>@include('public-footer')</body></html>
+</main>@include('public-footer')<script src="{{ asset('js/state-map-navigation.js') }}?v={{ substr(hash_file('sha256',public_path('js/state-map-navigation.js')),0,12) }}" defer></script></body></html>

@@ -6,6 +6,7 @@ use App\Services\ElectoralMapCatalogue;
 use App\Services\ElectoralMapResults;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ElectoralMapController extends Controller
@@ -19,12 +20,20 @@ class ElectoralMapController extends Controller
         return response()->json(['records' => $results->records($input['kind'], $state, $input['edition'] ?? null), 'colors' => $results->colors()]);
     }
 
-    public function index(Request $request, ElectoralMapCatalogue $maps, ?string $state = null): View
+    public function index(Request $request, ElectoralMapCatalogue $maps, ?string $state = null): View|RedirectResponse
     {
         $input = $request->validate(['state' => 'nullable|string|max:100', 'kind' => 'nullable|in:pc,ac']);
         $catalogue = $maps->all();
         $stateSlug = $state ?? ($input['state'] ?? 'uttar-pradesh');
         abort_unless(isset($catalogue['states'][$stateSlug]), 404);
+        if ($state === null || $request->query->has('state') || ($input['kind'] ?? null) === 'pc') {
+            $query = $request->except('state');
+            if (($query['kind'] ?? null) === 'pc') {
+                unset($query['kind']);
+            }
+
+            return redirect()->route('elections.maps.show', ['state' => $stateSlug] + $query, 301);
+        }
         $selectedState = $catalogue['states'][$stateSlug];
         $layerSources = [];
         foreach (['pc', 'ac'] as $kind) {

@@ -78,7 +78,7 @@
 <section class="pb-panel pb-wide" id="population"><h2>{{ count($data['subdistricts'])>5?$tr('Five most populous subdistricts','सर्वाधिक जनसंख्या वाले पाँच उपज़िले'):$tr('Population by subdistrict','उपजिले के अनुसार जनसंख्या') }}</h2><p class="pb-sub">{{ $tr('Residents and share of district population','निवासी और ज़िले की जनसंख्या में हिस्सा') }} · {{ $census }}</p>
 @foreach(collect($data['subdistricts'])->whereNotNull('population')->sortByDesc('population')->take(5) as $sub)
 @php($part=$share($sub['population'],$total['population']))
-<div class="pb-row"><a href="{{ route('civic.place',['record'=>$sub['id'],'lang'=>$hi?'hi':null]) }}">{{ $sub['name'] }}</a><div class="pb-track" aria-hidden="true">@if($part!==null)<i style="width:{{ min(100,max(0,$part)) }}%"></i>@endif</div><strong>{{ $fmt($sub['population']) }}</strong><small>{{ $pct($part) }}</small></div>
+<div class="pb-row"><a href="{{ app(\App\Services\NamedPlaceUrls::class)->link(['record'=>$sub['id'],'lang'=>$hi?'hi':null]) }}">{{ $sub['name'] }}</a><div class="pb-track" aria-hidden="true">@if($part!==null)<i style="width:{{ min(100,max(0,$part)) }}%"></i>@endif</div><strong>{{ $fmt($sub['population']) }}</strong><small>{{ $pct($part) }}</small></div>
 @endforeach
 <a class="pb-more" href="{{ $url('people') }}">{{ $tr('Explore population records','जनसंख्या रिकॉर्ड देखें') }} →</a></section>
 @endif

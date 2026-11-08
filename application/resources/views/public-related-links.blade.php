@@ -12,6 +12,6 @@
 <a href="{{ route('elections.by-election-results') }}">By-election results →</a>
 <a href="{{ route('elections.polling-stations') }}">Polling-station tables →</a>
 <a href="{{ route('geography.index') }}">Explore places →</a>
-<a href="{{ route('census-catalogue.index') }}">Census tables →</a>
+<a href="{{ \App\Services\CensusPlaceNavigation::catalogueUrl() }}">Census tables →</a>
 <a href="{{ route('sources.index') }}">Official sources →</a>
 </nav></details></aside>

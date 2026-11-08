@@ -5,8 +5,9 @@
     @php($boundaryState = app(\App\Services\ElectoralMapCatalogue::class)->stateFromQuery($mapQuery))
     @if($boundaryState)
         <nav class="sidebar-links constituency-state-links" aria-label="Explore state constituencies">
-            <a href="{{ route('states.show',['state'=>$boundaryState['slug']]) }}#pc-history">Explore Lok Sabha constituencies →</a>
-            <a href="{{ route('states.show',['state'=>$boundaryState['slug']]) }}#ac-history">Explore State Assembly constituencies →</a>
+            <a href="{{ route('states.show',['state'=>$boundaryState['slug'],'lang'=>app()->getLocale()==='hi'?'hi':null]) }}#pc-history">Explore Lok Sabha constituencies →</a>
+            <a href="{{ route('states.show',['state'=>$boundaryState['slug'],'election'=>'ac','lang'=>app()->getLocale()==='hi'?'hi':null]) }}#ac-history">Explore State Assembly constituencies →</a>
+            <a href="{{ route('elections.maps.show',['state'=>$boundaryState['slug'],'lang'=>app()->getLocale()==='hi'?'hi':null]) }}">{{ app()->getLocale()==='hi'?'निर्वाचन क्षेत्र मानचित्र':'State constituency map' }} →</a>
         </nav>
     @endif
 </section>
