@@ -97,7 +97,7 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .atlas-mast>.atlas-title{grid-area:title}
 .atlas-map-jump{grid-area:jump;justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--site-primary,#185c6c);font-size:.9rem;font-weight:600;text-underline-offset:3px}
 #atlas-state-maps,#linked-villages{scroll-margin-top:1rem}
-html body.seat-atlas-page main.seat-atlas :is(select,button,input,.atlas-map-jump,.registry-paging a):is(:focus,:focus-visible){
+html body.seat-atlas-page main.seat-atlas :is(select,button,input:not([data-seat-query]),.atlas-map-jump,.registry-paging a):is(:focus,:focus-visible){
  outline:2px solid var(--site-primary,#185c6c)!important;outline-offset:2px;box-shadow:none!important;border-color:var(--site-primary,#185c6c)!important}
 html body.seat-atlas-page .seat-atlas .atlas-search-field:focus-within{outline:2px solid var(--site-primary,#185c6c)!important;outline-offset:2px;border-color:var(--site-primary,#185c6c)!important}
 html body.seat-atlas-page .seat-atlas .atlas-search-field input:is(:focus,:focus-visible){outline:none!important;box-shadow:none!important;border:0!important}
