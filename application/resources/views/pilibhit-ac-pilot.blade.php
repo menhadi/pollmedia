@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
     <title>Pilibhit AC 127 · Village evidence pilot | Pollmedia</title>
     <link rel="stylesheet" href="{{ asset('css/pilibhit-ac-pilot.css') }}">
     <script type="module" src="{{ asset('js/pilibhit-ac-pilot.js') }}"></script>
-</head>
+@include('site-theme')</head>
 <body>
-<header><a class="brand" href="https://pollmedia.org">Pollmedia<span>Places, people & public evidence</span></a><a href="{{ $data['links']['constituency'] }}">Pilibhit election history ↗</a></header>
+@include('public-header',['summaryLayout'=>true])<nav class="source-directory-link" aria-label="Related pages"><a href="{{ $data['links']['constituency'] }}">Pilibhit election history ↗</a></nav>
 <main id="ac-pilot" data-source="{{ asset('maps/pilibhit-ac-pilot.json') }}">
     <div class="breadcrumb">Uttar Pradesh / Pilibhit / Assembly constituency 127</div>
     <section class="hero"><div><p class="eyebrow">Village evidence · Pilot</p><h1>Know the places<br>within Pilibhit.</h1><p>Explore Census villages linked to AC 127, compare their boundaries, and follow the official evidence behind each connection.</p></div><aside><strong>Three sources, one place</strong><p>Census 2011 counts<br>LGD links checked 16 September 2026<br>Polling areas published 26 December 2025</p><span class="pill">Rural coverage · Urban wards excluded</span></aside></section>
