@@ -12,7 +12,7 @@ export function compareCells(left, right, direction = 1) {
 export function mountTables(root) {
     const ready = new WeakSet();
     const scan = () => root.querySelectorAll('table').forEach(table => {
-        if(ready.has(table) || !table.tBodies.length) return;
+        if(table.closest('[data-my-place-compact]') || ready.has(table) || !table.tBodies.length) return;
         if(!table.tHead) {
             const rows=[...table.tBodies[0].rows];
             if(!rows.length || !rows.every(row=>row.cells.length===2 && row.cells[0].tagName==='TH' && row.cells[1].tagName==='TD')) return;

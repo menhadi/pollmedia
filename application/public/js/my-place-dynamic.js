@@ -1,6 +1,6 @@
 import './water-evidence.js?v=1';
 
-import {mountTables} from './my-place-tables.js?v=20261029b';
+import {mountTables} from './my-place-tables.js?v=20261108';
 
 import {placeHierarchy} from './place-hierarchy.js?v=1253aea07152';
 
