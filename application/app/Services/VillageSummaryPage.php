@@ -121,7 +121,7 @@ final class VillageSummaryPage
         return $q->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    private function nitrogen(string $state, string $code): ?array
+    public function nitrogen(string $state, string $code): ?array
     {
         $dir = public_path('maps/soil-national-20261014');
         $manifest = $dir.'/manifest.json';

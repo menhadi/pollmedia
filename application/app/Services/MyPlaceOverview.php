@@ -27,6 +27,9 @@ final class MyPlaceOverview
             ->sortBy([['date', 'desc'], ['commodity', 'asc'], ['market', 'asc'], ['variety', 'asc'], ['grade', 'asc']])
             ->unique(fn ($row) => strtolower(trim($row['commodity'])))->take(3)->values();
 
-        return compact('gp', 'payments', 'prices');
+        $issue = app(MyPlaceHub::class)->data($context, 'local-issues')['issues']->first();
+        $soil = $context['village'] ? app(VillageSummaryPage::class)->nitrogen($state, (string) $context['village']['code']) : null;
+
+        return compact('gp', 'payments', 'prices', 'issue', 'soil');
     }
 }
