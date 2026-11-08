@@ -50,7 +50,7 @@
         };
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
         const matches = new Map(), paths = new Map();
-        const locatorColors = colourLocator ? window.constituencyMapColours(features) : new Map();
+        const locatorColors = colourLocator ? window.constituencyMapColours(features, root.closest('[data-constituency-atlas]') ? 'dark' : 'reference') : new Map();
         // A boundary code is not an extraction row number. Name/state matches are approximate;
         // multiple source shapes with the same name never establish a unique geographic join.
         const names = new Map(), codes = new Map();
@@ -158,7 +158,7 @@
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&seatUrl(r);if(url)location.assign(url);});
         if(colourLocator){
             legend.hidden=false;
-            const note=document.createElement('span');note.textContent=document.documentElement.lang==='hi'?'रंग अलग-अलग निर्वाचन क्षेत्र दिखाते हैं। चुने हुए क्षेत्र की सीमा गहरी है।':'Colours distinguish constituencies. The selected seat has a dark outline.';legend.append(note);
+            const note=document.createElement('span');note.textContent=document.documentElement.lang==='hi'?'रंग अलग-अलग निर्वाचन क्षेत्र दिखाते हैं। चुने हुए क्षेत्र की सीमा उजली है।':'Colours distinguish constituencies. The selected seat is outlined.';legend.append(note);
             if(root.dataset.kind==='pc' && normalize(root.dataset.selected)==='chikkballapur'){const aliasNote=document.createElement('span');aliasNote.textContent='PC27: the locator source says Chikballapur; ECI Delimitation2008 (Table B, p208) says Chikkballapur. Spelling correspondence only; boundary equivalence remains unverified.';legend.append(aliasNote);}
         }else if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});

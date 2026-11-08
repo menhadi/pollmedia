@@ -1,7 +1,10 @@
 // Use intersecting bounding boxes as a conservative neighbour test. This also
 // separates colours across small gaps between independently simplified borders.
-window.constituencyMapColours = function (features) {
-    const palette = ['#86bca8','#dca46f','#a79bc5','#84aec7','#bdc783','#d99caa','#9cbbb9','#c4a789'];
+window.constituencyMapColours = function (features, tone = 'reference') {
+    const dark = tone === 'dark';
+    const palette = dark
+        ? ['#185749','#82451e','#56385e','#234c70','#505c27','#853956','#126467','#634832']
+        : ['#86bca8','#dca46f','#a79bc5','#84aec7','#bdc783','#d99caa','#9cbbb9','#c4a789'];
     const nodes = features.map(feature => {
         let west=Infinity, east=-Infinity, south=Infinity, north=-Infinity;
         const polygons=feature.geometry.type==='Polygon' ? [feature.geometry.coordinates] : feature.geometry.coordinates;
@@ -25,7 +28,7 @@ window.constituencyMapColours = function (features) {
         const taken=new Set(node.neighbours.map(n=>n.colour));
         let colour=0;while(taken.has(colour))colour++;
         node.colour=colour;
-        result.set(node.feature.id,palette[colour] ?? ('hsl('+Math.round((colour*137.5)%360)+' 37% 65%)'));
+        result.set(node.feature.id,palette[colour] ?? ('hsl('+Math.round((colour*137.5)%360)+(dark?' 48% 32%)':' 37% 65%)')));
     }
     return result;
 };

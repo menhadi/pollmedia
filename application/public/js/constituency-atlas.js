@@ -4,12 +4,10 @@
 
     const form = atlas.querySelector('[data-atlas-year]');
     form.querySelector('select').addEventListener('change', () => form.requestSubmit());
-    form.querySelector('button').hidden = true;
 
     for (const picker of atlas.querySelectorAll('[data-atlas-switch]')) {
         const select=picker.querySelector('select');
         if(!select) continue;
-        picker.querySelector('button').hidden=true;
         select.addEventListener('change',()=>{
             if(!select.value)return;
             const url=select.selectedOptions[0]?.dataset.url;
