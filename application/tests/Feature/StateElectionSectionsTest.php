@@ -32,10 +32,10 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
         });
         $page = $this->get('/india/state/uttar-pradesh')->assertOk()
-            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'Parliament Seat winner', 'id="pc-history"'], false)
+            ->assertSeeInOrder(['id="pc-results"', 'class="state-atlas-map"', 'data-kind="pc"', 'Seats won by party', 'Parliament Seat winner', 'id="pc-history"'], false)
             ->assertDontSee('id="ac-results"', false)->assertSee('Official report');
         $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
-            ->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);
+            ->assertSee('data-kind="ac"', false)->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);
         foreach (['pc' => 'Lok Sabha', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {
             $report = $this->get('/india/state/uttar-pradesh?format=report&election='.$reportKind)->assertOk()->assertSee($reportLabel)->assertSee('Print / Save as PDF')->assertSee('Sources and coverage by election year')->assertSee('Methodology & disclaimer', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('data-history-chart');
             $this->assertSame(4, substr_count($report->getContent(), 'class="report-plot"'));

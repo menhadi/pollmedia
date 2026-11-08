@@ -53,3 +53,24 @@ body .landing-state .landing-controls{align-items:flex-end}
 body .landing-state .state-election-section{margin-top:0;padding-top:0;border-top:0}
 body .landing-intro .landing-switch{display:flex;flex-wrap:nowrap;gap:0;align-items:stretch}
 @media(max-width:700px){body .landing-state{min-width:0}body .landing-state .landing-controls{display:grid;gap:10px}body .landing-state .landing-switch a{flex:1;text-align:center;padding:9px 5px;font-size:.95rem}.landing-year{min-width:0}.landing-year select{width:0}.landing-state .landing-links{margin-bottom:8px}}
+
+.home-map-panel{margin:16px 0 24px;min-width:0}
+.home-map-panel .home-section-heading{align-items:baseline;margin:0 0 10px}
+.home-map-panel .explorer,.home-map-panel .explorer>*{min-width:0}
+body .landing-state.seat-atlas{max-width:none;padding:0}
+.state-atlas-lead,.state-party-analysis{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.state-atlas-lead>*{min-width:0}
+body .state-atlas-lead .landing-intro,body .state-atlas-lead .election-map{margin:0}
+body .state-atlas-lead .landing-intro{padding:clamp(16px,2.4vw,28px)}
+body .state-atlas-lead .state-year-results{margin:12px 0 0}
+body .state-atlas-lead .state-year-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+body .state-atlas-lead .election-map-surface svg{height:clamp(240px,33vw,420px);max-width:100%;aspect-ratio:auto}
+body .landing-state .state-party-analysis .panel{margin:0}
+body .landing-state .state-party-analysis{margin-block:16px}
+body .landing-state .table-scroll{width:100%;overflow-x:auto}
+body .landing-state .table-scroll table{width:100%;min-width:100%;table-layout:auto;border-collapse:collapse}
+body .landing-state .table-scroll :is(th,td){padding:8px 10px;white-space:normal;word-break:normal;overflow-wrap:normal;vertical-align:top;font-variant-numeric:tabular-nums}
+body .landing-state .table-scroll thead th{background:var(--site-header_background,#173b43);color:var(--site-header_text,#fff)}
+body .landing-state .table-scroll tbody tr:nth-child(even){background:var(--atlas-tint)}
+@media(min-width:900px){.state-atlas-lead{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.state-party-analysis:has(>.landing-bars){grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}}
+@media(max-width:700px){body .landing-state .state-constituency-results .table-scroll table{min-width:32rem}body .landing-state .landing-intro h1{font-size:2.15rem}.home-map-panel .home-section-heading{display:flex;gap:6px;flex-wrap:wrap}}
