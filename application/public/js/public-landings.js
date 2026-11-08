@@ -11,26 +11,38 @@
         if (event.target.matches('[data-go-url]')) location.assign(event.target.value);
         if (event.target.matches('[data-submit-choice]')) event.target.form.requestSubmit();
     });
-    document.querySelectorAll('[data-seat-list]').forEach(list => {
-        const rows = Array.from(list.querySelectorAll('tbody tr'));
-        if (!rows.some(row => row.querySelector('th'))) return;
-        const input = list.querySelector('[data-seat-filter]');
+    document.querySelectorAll('[data-party-list], [data-seat-list]').forEach(list => {
+        const body = list.querySelector('tbody');
+        if (!body?.querySelector('th')) return;
+        const input = list.querySelector('input[type=search]');
         const status = list.querySelector('[role=status]');
-        const buttons = list.querySelectorAll('[data-step]');
-        let page = 0;
+        const steps = list.querySelectorAll('[data-step]');
+        const toggle = list.querySelector('[data-show-all]');
+        const hi = document.documentElement.lang.startsWith('hi');
         const size = 12;
+        let page = 0;
+        let showAll = false;
         function render() {
+            const rows = Array.from(body.rows);
             const query = input.value.trim().toLocaleLowerCase();
             const matches = rows.filter(row => row.cells[0].textContent.toLocaleLowerCase().includes(query));
-            const start = page * size;
-            const visible = new Set(matches.slice(start, start + size));
+            const start = showAll ? 0 : page * size;
+            const end = showAll ? matches.length : Math.min(start + size, matches.length);
+            const visible = new Set(matches.slice(start, end));
             rows.forEach(row => { row.hidden = !visible.has(row); });
-            status.textContent = matches.length ? (start + 1) + '–' + Math.min(start + size, matches.length) + ' / ' + matches.length : '0 results';
-            buttons[0].disabled = page === 0;
-            buttons[1].disabled = start + size >= matches.length;
+            status.textContent = matches.length ? (start + 1) + '–' + end + ' / ' + matches.length : (hi ? '0 परिणाम' : '0 results');
+            steps[0].disabled = showAll || page === 0;
+            steps[1].disabled = end >= matches.length;
+            toggle.hidden = matches.length <= size;
+            toggle.setAttribute('aria-pressed', String(showAll));
+            toggle.textContent = showAll ? (hi ? 'पृष्ठों में दिखाएँ' : 'Show pages') : (hi ? 'सभी दिखाएँ' : 'Show all');
         }
-        input.addEventListener('input', () => { page = 0; render(); });
-        buttons.forEach(button => button.addEventListener('click', () => { page += Number(button.dataset.step); render(); }));
+        function firstPage() { page = 0; render(); }
+        input.addEventListener('input', firstPage);
+        steps.forEach(button => button.addEventListener('click', () => { page += Number(button.dataset.step); render(); }));
+        toggle.addEventListener('click', () => { showAll = !showAll; firstPage(); });
+        // The shared sorter reorders tbody rows. Page the new order on every sort.
+        new MutationObserver(firstPage).observe(body, {childList:true});
         list.querySelectorAll('[data-seat-tools]').forEach(item => { item.hidden = false; });
         render();
     });
