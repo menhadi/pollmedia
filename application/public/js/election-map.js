@@ -49,13 +49,18 @@
         }
         function render(){
             const query=searchKey(input.value);
-            visible=ordered.filter(seat=>searchKey(seat.name).includes(query));
+            // The native selector already participates in the site's place-name translations.
+            for(const option of list.children){
+                const entry=visible[Number(option.dataset.index)];
+                if(hi && entry && option.firstChild) entry.displayed=option.firstChild.textContent;
+            }
+            visible=ordered.filter(seat=>[seat.name,seat.nativeName,seat.nativeOption?.textContent,seat.displayed].some(label=>label && searchKey(label).includes(query)));
             active=-1;input.removeAttribute('aria-activedescendant');
             const items=document.createDocumentFragment();
             visible.forEach((seat,index)=>{
                 const option=document.createElement('li');
                 option.id=list.id+'-'+index;option.dataset.index=index;option.setAttribute('role','option');option.setAttribute('aria-selected','false');
-                option.append(document.createTextNode(seat.name));
+                option.append(document.createTextNode(hi?(seat.nativeName||seat.nativeOption?.textContent||seat.name):seat.name));
                 if(seat.linked){
                     const badge=document.createElement('small');badge.textContent=hi?'संबंधित':'Connected';option.append(badge);
                 }
@@ -229,13 +234,15 @@
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&seatUrl(r);if(url)location.assign(url);});
         if(explorer){
             const entries=new Map();
+            const nativeOptions=new Map(Array.from(seats.options,option=>[option.value,option]));
             for(const r of records){
                 const url=seatUrl(r);
-                if(url)entries.set(url,{name:r.name,url,linked:false,shapeIds:[]});
+                if(url)entries.set(url,{name:r.name,url,linked:false,shapeIds:[],nativeOption:nativeOptions.get(String(r.id))});
             }
             for(const f of features){
                 const url=seatUrl(matches.get(f.id))||finderUrl(f);
                 const entry=entries.get(url)??{name:f.properties.name,url,linked:false,shapeIds:[]};
+                entry.nativeName ||= f.properties.source_attributes?.[root.dataset.kind+'_name_hi'];
                 entry.linked ||= linked(f);entry.shapeIds.push(f.id);entries.set(url,entry);
             }
             mountSeatFilter(root,Array.from(entries.values()),paths);
