@@ -18,35 +18,40 @@
   new MutationObserver(records=>{for(const record of records){if(record.type==='characterData')apply(record.target);else for(const node of record.addedNodes)apply(node);}}).observe(localeRoot,{childList:true,subtree:true,characterData:true});
  }
  const header=document.querySelector('.public-header'),toggle=header?.querySelector('.public-menu-toggle'),nav=header?.querySelector('#public-navigation');
- const searchToggle=header?.querySelector('.mp-search-toggle');
- if(searchToggle){
-  const search=document.getElementById(searchToggle.getAttribute('aria-controls'));
+ if(header && toggle && nav){
+  const searchToggle=header.querySelector('.mp-search-toggle');
+  const search=header.querySelector('#mp-site-search');
   const small=matchMedia('(max-width:700px)');
+  const collapsedMenu=matchMedia('(max-width:1250px)');
   const setSearch=open=>{
    searchToggle.hidden=!small.matches;
    search.hidden=small.matches&&!open;
    searchToggle.setAttribute('aria-expanded',String(small.matches&&open));
   };
-  setSearch(false);
-  small.addEventListener('change',()=>setSearch(false));
+  const setMenu=open=>{
+   nav.hidden=collapsedMenu.matches&&!open;
+   toggle.setAttribute('aria-expanded',String(collapsedMenu.matches&&open));
+   if(!open)nav.querySelectorAll('details[open]').forEach(item=>item.open=false);
+  };
+  const reset=()=>{setSearch(false);setMenu(false);};
+  header.dataset.menuReady='true';reset();
+  small.addEventListener('change',reset);collapsedMenu.addEventListener('change',reset);
+  const measure=()=>document.documentElement.style.setProperty('--pm-header-height',Math.ceil(header.getBoundingClientRect().height)+'px');
+  measure();new ResizeObserver(measure).observe(header);
   searchToggle.addEventListener('click',()=>{
-   setSearch(search.hidden);
-   if(!search.hidden)search.querySelector('input')?.focus();
+   const open=search.hidden;setMenu(false);setSearch(open);
+   if(open)search.querySelector('input')?.focus();
   });
-  search.addEventListener('keydown',event=>{
-   if(event.key==='Escape'&&small.matches){
-    event.stopPropagation();
-    setSearch(false);
-    searchToggle.focus();
+  toggle.addEventListener('click',()=>{const open=nav.hidden;setSearch(false);setMenu(open);});
+  header.addEventListener('keydown',event=>{
+   if(event.key!=='Escape')return;
+   if(small.matches&&!search.hidden&&search.contains(event.target)){
+    setSearch(false);searchToggle.focus();
+   }else if(collapsedMenu.matches&&!nav.hidden){
+    setMenu(false);toggle.focus();
    }
   });
- }
- if(toggle&&nav){
-  const mobile=matchMedia('(max-width:1100px)');
-  const setOpen=open=>{nav.hidden=mobile.matches&&!open;toggle.setAttribute('aria-expanded',String(open));};
-  const layout=()=>setOpen(!mobile.matches);header.dataset.menuReady='true';layout();mobile.addEventListener('change',layout);
-  toggle.addEventListener('click',()=>setOpen(nav.hidden));
-  header.addEventListener('keydown',event=>{if(event.key==='Escape'&&mobile.matches){setOpen(false);toggle.focus();}});
+  document.addEventListener('pointerdown',event=>{if(!header.contains(event.target))reset();});
  }
  const source=document.getElementById('public-hindi-dictionary');if(!source)return;
  const dictionary=JSON.parse(source.textContent),keys=Object.keys(dictionary).filter(key=>key&&typeof dictionary[key]==='string'&&dictionary[key].trim()).sort((a,b)=>b.length-a.length);

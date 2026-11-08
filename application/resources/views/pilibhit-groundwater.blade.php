@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{{ $pilot['district'] ?? 'Pilibhit' }} groundwater monitoring pilot · Pollmedia</title><meta name="robots" content="noindex">
 <link rel="stylesheet" href="{{ asset('css/pilibhit-groundwater.css') }}">
 <link rel="stylesheet" href="{{ asset('vendor/maplibre/maplibre-gl.css') }}">
 <script src="{{ asset('vendor/maplibre/maplibre-gl.js') }}" defer></script>
-<script src="{{ asset('js/pilibhit-groundwater.js') }}" defer></script></head>
-<body><main>
+<script src="{{ asset('js/pilibhit-groundwater.js') }}" defer></script>@include('site-theme')</head>
+<body>@include('public-header',['summaryLayout'=>true])<main>
 <nav><a href="{{ url('/india/districts/uttar-pradesh/pilibhit') }}">Pilibhit district</a> / <a href="{{ route('india-map.index') }}">India map</a></nav>
 <p class="eyebrow">Pollmedia · Historical monitoring pilot</p><h1>{{ $pilot['district'] ?? 'Pilibhit' }} groundwater</h1>
 <p class="intro">Explore official monitoring records, their locations and the chemistry that was actually measured.</p>
