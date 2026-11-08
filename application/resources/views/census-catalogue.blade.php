@@ -1,6 +1,10 @@
 @extends($admin ? 'seo-layout' : 'geography-layout')
 @section('title', 'India Census data')
 @section('content')
+@if(! $admin)
+<style>.public-census-catalogue,.public-census-catalogue .card,.public-census-catalogue .filters>div{min-width:0;max-width:100%;box-sizing:border-box}.public-census-catalogue .filters>div{flex:0 1 auto}.public-census-catalogue select{max-width:100%;width:100%}.public-census-catalogue .scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.public-census-catalogue :is(p,td){overflow-wrap:anywhere}@media(max-width:700px){.public-census-catalogue .filters>div{flex-basis:100%}}</style>
+<div class="public-census-catalogue">
+@endif
 <p><a href="{{ route('civic.index') }}">Browse state → district → tehsil → village / town profiles →</a></p><h1>India Census data</h1><p>Explore recorded population and household figures using official Census geography. Census boundaries and names can differ between years and from today's administrative areas.</p>
 <p><a href="{{ route('census.national-history') }}">Historical population: 1901 to 2011, with original source notes</a></p>
 <p><a href="{{ route('census.source-tables') }}">Historical Census source tables: original columns, definitions and district filters</a></p>
@@ -51,4 +55,6 @@
 </section>
 @endif
 @else<p class="card">No Census tables have been published in this catalogue yet.</p>@endif
+@if(! $admin)</div>
+@endif
 @endsection
