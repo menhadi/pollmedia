@@ -12,3 +12,12 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .seat-atlas .table-scroll{max-height:none}
 .seat-atlas .atlas-analysis .table-scroll th,.seat-atlas .atlas-analysis .table-scroll td{text-align:start}
 .seat-atlas .history-charts .atlas-selected-year>th{box-shadow:inset 3px 0 var(--chart-series-1)}
+
+.seat-atlas .atlas-map-explorer{margin:16px 0 24px}.atlas-map-explorer h2{margin-bottom:4px}.atlas-map-explorer .election-map{margin:8px 0}.atlas-map-explorer .election-map-surface{width:100%;height:clamp(300px,42vw,475px)}.atlas-map-explorer .election-map-surface svg{height:100%;width:100%}
+.atlas-map-explorer .election-map[data-mode="focus"] .election-map-seat{fill:var(--locator-fill)!important}
+.atlas-map-explorer .election-map-seat:is(.is-selected,:focus-visible),.atlas-map-frame a:is(:hover,:focus-visible) path{stroke:#152f36!important;stroke-width:2.4!important}
+.atlas-map-frame a{cursor:pointer}.atlas-region th a{text-decoration:underline;text-underline-offset:.17em}
+.atlas-controls .atlas-other[open]{flex:1 1 100%}.atlas-controls .atlas-other[open] form{display:flex;align-items:end;padding-top:0}.atlas-controls .atlas-other select,.atlas-controls [data-atlas-switch] select{max-width:100%;min-height:44px}.seat-atlas #history tbody td:last-child{grid-column:auto}
+@media(min-width:800px){.atlas-map-explorer .election-map{display:grid;grid-template-columns:minmax(0,2fr) minmax(190px,1fr);gap:6px 20px;align-items:start}.atlas-map-explorer .election-map-surface{grid-column:1;grid-row:1 / span 9}.atlas-map-explorer .election-map>:not(.election-map-surface):not(.election-map-tooltip){grid-column:2}}
+
+.atlas-map-explorer .election-map-heading{display:none}

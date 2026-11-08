@@ -39,17 +39,18 @@
         const records = result.status === 'fulfilled' ? result.value.records : [], colors = result.status === 'fulfilled' ? result.value.colors : {};
         const focusMode = root.dataset.mode === 'focus';
         const karnatakaLocator = focusMode && ['karnataka','tamilnadu'].includes(stateKey(root.dataset.state));
-        const locatorPalette = ['#c5dfeb','#d5dfb7','#efd0b5','#d8cbed','#b8ded6','#eddcb0','#e9c7d6'];
+        const colourLocator = focusMode && (karnatakaLocator || root.closest('[data-constituency-atlas]'));
         const seatText = (feature, record) => focusMode ? `${record?.name || feature.properties.name} · ${(root.dataset.kind === 'pc' ? 'Lok Sabha' : 'AC')}` : (record ? recordText(record) : feature.properties.name);
         const seatUrl = record => {
             const safe = record && safeUrl(record.url);
             if (!safe || !focusMode) return safe;
             const url = new URL(safe); url.searchParams.delete('edition'); url.searchParams.delete('code');
+            if(document.documentElement.lang==='hi') url.searchParams.set('lang','hi');
             return url.href;
         };
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
         const matches = new Map(), paths = new Map();
-        const locatorColors = new Map([...features].sort((a,b) => String(a.id).localeCompare(String(b.id), undefined, {numeric:true})).map((feature,index) => [feature.id,locatorPalette[index % locatorPalette.length]]));
+        const locatorColors = colourLocator ? window.constituencyMapColours(features) : new Map();
         // A boundary code is not an extraction row number. Name/state matches are approximate;
         // multiple source shapes with the same name never establish a unique geographic join.
         const names = new Map(), codes = new Map();
@@ -94,8 +95,8 @@
         const hideTooltip=()=>{if(tooltip)tooltip.hidden=true;};
         const selected = r => normalize(r.name) === normalize(root.dataset.selected) && (!root.dataset.selectedCode || String(r.code) === root.dataset.selectedCode);
         features.forEach(f => {
-            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?(karnatakaLocator?locatorColors.get(f.id):'#ead59e'):partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
-            if(karnatakaLocator) path.style.setProperty('--locator-fill',locatorColors.get(f.id));
+            const record=matches.get(f.id), path=svgElement('path',{d:rings(f).map(ring => ring.map((point,i) => (i?'L':'M')+project(point).map(v=>v.toFixed(2)).join(',')).join(' ')+'Z').join(' '),fill:focusMode?(colourLocator?locatorColors.get(f.id):'#ead59e'):partyColor(record?.party,colors),'fill-rule':'evenodd',tabindex:'0',role:'link','aria-label':seatText(f,record),class:'election-map-seat'});
+            if(colourLocator) path.style.setProperty('--locator-fill',locatorColors.get(f.id));
             if (!focusMode) { const title=svgElement('title');title.textContent=seatText(f,record);path.append(title); }
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
@@ -153,11 +154,11 @@
         root.append(printDetails);
         seats.replaceChildren();const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Choose a constituency';seats.append(placeholder);
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
-        ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=recordText(r);option.selected=selected(r);seats.append(option);});
-        seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&safeUrl(r.url);if(url)location.assign(url);});
-        if(karnatakaLocator){
+        ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=focusMode?r.name:recordText(r);option.selected=selected(r);seats.append(option);});
+        seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&seatUrl(r);if(url)location.assign(url);});
+        if(colourLocator){
             legend.hidden=false;
-            const note=document.createElement('span');note.textContent='Colours distinguish source shapes; they do not indicate results or Census values. The selected constituency has an outline.';legend.append(note);
+            const note=document.createElement('span');note.textContent=document.documentElement.lang==='hi'?'रंग अलग-अलग निर्वाचन क्षेत्र दिखाते हैं। चुने हुए क्षेत्र की सीमा गहरी है।':'Colours distinguish constituencies. The selected seat has a dark outline.';legend.append(note);
             if(root.dataset.kind==='pc' && normalize(root.dataset.selected)==='chikkballapur'){const aliasNote=document.createElement('span');aliasNote.textContent='PC27: the locator source says Chikballapur; ECI Delimitation2008 (Table B, p208) says Chikkballapur. Spelling correspondence only; boundary equivalence remains unverified.';legend.append(aliasNote);}
         }else if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
@@ -173,7 +174,7 @@
         svg.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>5)moved=true;const ratio=drag.box[2]/svg.getBoundingClientRect().width;svg.setAttribute('viewBox',`${drag.box[0]-dx*ratio} ${drag.box[1]-dy*ratio} ${drag.box[2]} ${drag.box[3]}`);});
         svg.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopImmediatePropagation();moved=false;}},true);
         ['pointerup','pointerleave','pointercancel'].forEach(name=>svg.addEventListener(name,()=>{drag=null;}));
-        status.textContent=focusMode && source.status==='fulfilled' && features.length ? 'Hover for a constituency name. Click to open its page.' : source.status==='rejected'?'Map unavailable. Constituency records remain accessible below.':result.status==='rejected'?'Election results could not be loaded. Shapes remain available with neutral colours.':features.length?'Select a constituency to explore its election records.':'No separate boundary layer is available. Constituency records are listed below.';
+        status.textContent=focusMode && source.status==='fulfilled' && features.length ? (root.closest('[data-constituency-atlas]') ? features.length+(document.documentElement.lang==='hi'?' निर्वाचन क्षेत्र':' constituencies') : 'Hover for a constituency name. Click to open its page.') : source.status==='rejected'?'Map unavailable. Constituency records remain accessible below.':result.status==='rejected'?'Election results could not be loaded. Shapes remain available with neutral colours.':features.length?'Select a constituency to explore its election records.':'No separate boundary layer is available. Constituency records are listed below.';
     }
     function init(container=document) {
         const roots=[...(container.matches?.('[data-election-map]')?[container]:[]),...container.querySelectorAll('[data-election-map]')];
