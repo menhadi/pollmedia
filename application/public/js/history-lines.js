@@ -11,7 +11,7 @@
         });
     }
     const ns = 'http://www.w3.org/2000/svg';
-    const colors = ['#4285f4', '#ea4335', '#fbbc05', '#34a853'];
+    const colors = ['var(--chart-series-1,#155748)', 'var(--chart-series-2,#573451)', 'var(--chart-series-3,#825026)', 'var(--chart-series-4,#314766)'];
     const element = (tag, attributes = {}, text = '') => {
         const node = document.createElementNS(ns, tag);
         Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, value));
@@ -72,6 +72,11 @@
                     svg.append(element('text',{x:x(row.year),y:bottom+24,'text-anchor':'middle'},String(row.year)));
                 }
             });
+            const highlighted = rows.findIndex(row => String(row.year) === chart.dataset.selectedYear);
+            if (highlighted >= 0) {
+                const xx = x(rows[highlighted].year);
+                svg.append(element('line', {x1:xx,x2:xx,y1:top,y2:bottom,stroke:'currentColor','stroke-dasharray':'2 4',opacity:.55}));
+            }
             series.forEach(item => {
                 const index = data.series.indexOf(item), color = colors[index % colors.length];
                 let path = '', area = '', previous = null, start = null;

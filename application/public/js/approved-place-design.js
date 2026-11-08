@@ -1,6 +1,6 @@
 import {paginate} from './place-table-pagination.js?v=1';
 import {placeHierarchy, placeOptions} from '/js/place-hierarchy.js';
-import {pageSlice, uniquePlaceLinks, valueBarAppearance, compactCountValue} from './compact-place-model.js?v=20261104-polish-4';
+import {pageSlice, uniquePlaceLinks, valueBarAppearance, compactCountValue} from './compact-place-model.js?v=20261108-atlas';
 
 const main = document.querySelector('main.dashboard-main, main');
 const hi = document.documentElement.lang.startsWith('hi');

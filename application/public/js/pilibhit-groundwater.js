@@ -69,7 +69,7 @@
         const pad = (max-min || Math.max(Math.abs(max)*.1, 1))*.12; min-=pad; max+=pad;
         const x = t => 70+(t-minT)/(maxT-minT || 1)*800; const y = v => 230-(v-min)/(max-min)*205;
         for (let i=0;i<5;i++) {const value=min+(max-min)*i/4; make('line',{x1:70,x2:870,y1:y(value),y2:y(value),stroke:'#dce5e8'}); make('text',{x:60,y:y(value)+4,'text-anchor':'end'},value.toFixed(2));}
-        valid.forEach((o,i) => {const circle=make('circle',{cx:x(times[i]),cy:y(o.values[key]),r:4,fill:'#4285f4'}); const title=document.createElementNS(ns,'title'); title.textContent=`${o.observed_at}: ${o.values[key]}`; circle.append(title);});
+        valid.forEach((o,i) => {const circle=make('circle',{cx:x(times[i]),cy:y(o.values[key]),r:4,fill:'var(--chart-series-1,#155748)'}); const title=document.createElementNS(ns,'title'); title.textContent=`${o.observed_at}: ${o.values[key]}`; circle.append(title);});
         make('text',{x:70,y:260},valid[0].observed_at.slice(0,10)); make('text',{x:870,y:260,'text-anchor':'end'},valid.at(-1).observed_at.slice(0,10)); chart.append(svg);
     }
     kind.addEventListener('change', filter); search.addEventListener('input', filter); selector.addEventListener('change', select); parameter.addEventListener('change', draw);
