@@ -10,6 +10,7 @@ use App\Services\ElectoralVillageMap;
 use App\Services\NamedPlaceUrls;
 use App\Services\PlaceFactTables;
 use App\Services\PlaceTopics;
+use App\Services\PublicPageCanonical;
 use App\Services\VillageSummaryPage;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -190,6 +191,14 @@ class CivicExplorerController extends Controller
                     return $option;
                 })->sortBy('display_name')->values();
         }
+        if (! $record && $request->routeIs('civic.index') && ! PublicPageCanonical::contentParameters($request)) {
+            return view('national-census', [
+                'year' => $year,
+                'stateOptions' => $stateOptions,
+                'nationalSeries' => app(CensusProfileSummary::class)->series(),
+            ]);
+        }
+
         $districtOptions = $anchor && $anchor->level === 'STATE'
             ? DB::table('census_catalogue_rows')->where('edition_id', $anchor->edition_id)->where('state_code', $anchor->state_code)
                 ->where('level', 'DISTRICT')->where('residence', 'Total')->orderBy('id')->get()->unique('district_code')->sortBy('name')->values()

@@ -1,20 +1,15 @@
 @extends($admin ? 'seo-layout' : 'geography-layout')
-@section('title', 'India Census data')
+@section('title', $admin ? 'India Census data' : 'Census source catalogue')
 @section('content')
 @if(! $admin)
 <style>.public-census-catalogue,.public-census-catalogue .card,.public-census-catalogue .filters>div{min-width:0;max-width:100%;box-sizing:border-box}.public-census-catalogue .filters>div{flex:0 1 auto}.public-census-catalogue select{max-width:100%;width:100%}.public-census-catalogue .scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.public-census-catalogue :is(p,td){overflow-wrap:anywhere}@media(max-width:700px){.public-census-catalogue .filters>div{flex-basis:100%}}</style>
 <link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}"><div class="public-census-catalogue pm-landing">
 @endif
 @if(! $admin)
-@php($nationalSeries=app(\App\Services\CensusProfileSummary::class)->series())
-<header class="landing-intro"><p class="landing-kicker">Census of India</p><h1>India Census data</h1>
-<p>Find population, households and literacy for a state, district or village.</p>
-<a class="landing-action" href="{{ route('civic.index') }}">Choose a place →</a></header>
-<div class="landing-duo"><section class="landing-card"><h2>India’s population</h2>
-@foreach(collect($nationalSeries['rows'])->whereNotNull('population')->sortByDesc('year')->take(3)->reverse() as $point)<div class="landing-stat"><span>{{ $point['year'] }}</span><strong>{{ number_format($point['population']) }}</strong></div>@endforeach
-<a href="{{ route('census.national-history') }}">Population history and boundaries →</a></section>
-<section class="landing-card"><h2>Source tables</h2><p>Compare measures within one Census edition. Names and boundaries can change between years.</p>
-<a href="#catalogue-editions">Choose a year and table ↓</a><p><a href="{{ route('census.source-tables') }}">Browse original columns and definitions →</a></p></section></div>
+<header class="landing-intro"><h1>{{ app()->getLocale()==='hi'?'जनगणना स्रोत सूची':'Census source catalogue' }}</h1>
+<p>{{ app()->getLocale()==='hi'?'स्रोत पंक्तियाँ देखने के लिए जनगणना संस्करण और तालिका चुनें।':'Choose a Census edition and table to inspect its source rows.' }}</p>
+<a class="landing-action" href="{{ route('civic.index',app()->getLocale()==='hi'?['lang'=>'hi']:[]) }}">{{ app()->getLocale()==='hi'?'अखिल भारतीय जनगणना':'All India Census' }} →</a>
+<a href="{{ route('census.source-tables') }}">Original columns and definitions →</a></header>
 @else
 <p><a href="{{ route('civic.index') }}">Browse state → district → tehsil → village / town profiles →</a></p><h1>India Census data</h1><p>Explore recorded population and household figures using official Census geography. Census boundaries and names can differ between years and from today's administrative areas.</p>
 <p><a href="{{ route('census.national-history') }}">Historical population: 1901 to 2011, with original source notes</a></p>

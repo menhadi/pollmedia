@@ -120,6 +120,7 @@ Route::get('/india/census', [CensusCatalogueController::class, 'index'])->name('
 Route::get('/', [OverviewController::class, 'index'])->name('home');
 Route::get('/india', [OverviewController::class, 'index'])->name('india');
 Route::get('/sources', [SourceController::class, 'index'])->name('sources.index');
+Route::get('/india/elections', [AllIndiaElectionsController::class, 'redirect'])->name('elections.index');
 Route::get('/india/elections/all-india', AllIndiaElectionsController::class)->name('elections.all-india');
 Route::get('/india/elections/lok-sabha', [HistoricalElectionController::class, 'index'])->name('elections.history');
 Route::get('/india/elections/maps/uttar-pradesh', [ElectoralMapController::class, 'index'])->defaults('state', 'uttar-pradesh')->name('elections.map-pilot');

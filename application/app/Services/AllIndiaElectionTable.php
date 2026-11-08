@@ -75,7 +75,7 @@ class AllIndiaElectionTable
         $rows = collect($rows)->sortBy([['position', 'asc'], ['order', 'asc']])->values();
         $hasMore = $current * self::PAGE_SIZE < $total;
 
-        return compact('states', 'years', 'rows', 'filters', 'current', 'total', 'hasMore');
+        return compact('states', 'years', 'counts', 'rows', 'filters', 'current', 'total', 'hasMore');
     }
 
     /** Number of records consumed from each stream after interleaving its first $length records. */

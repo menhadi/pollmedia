@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Services\AllIndiaElectionTable;
+use App\Services\ElectionGeographySummary;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AllIndiaElectionsController extends Controller
 {
+    public function redirect(Request $request): RedirectResponse
+    {
+        return redirect()->route('elections.all-india', $request->query(), 301);
+    }
+
     public function __invoke(Request $request, AllIndiaElectionTable $table): View|JsonResponse
     {
         $filters = $request->validate([
@@ -34,6 +41,9 @@ class AllIndiaElectionsController extends Controller
                 'last' => $data['last'], 'total' => $data['total'], 'next' => $data['nextUrl'],
             ]);
         }
+
+        $data['isOverview'] = $page === 1 && ! collect($filters)->except('page')->contains(fn ($value) => $value !== null && $value !== '');
+        $data['stateDirectory'] = $data['isOverview'] ? app(ElectionGeographySummary::class)->states() : collect();
 
         return view('all-india-elections', $data);
     }

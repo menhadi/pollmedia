@@ -71,6 +71,17 @@ class CivicExplorerTest extends TestCase
         $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [2011]);
     }
 
+    public function test_national_census_dashboard_and_filtered_explorer_have_distinct_navigation(): void
+    {
+        $this->fixture();
+        $page = $this->get('/india/census/explore?utm_source=directory')->assertOk()
+            ->assertViewIs('national-census')->assertSee('All India Census')->assertSee('Population by Census year')
+            ->assertSee('State Alpha')->assertSee(route('census.national-history'), false);
+        $this->assertFalse($page->headers->has('X-Robots-Tag'));
+        $this->get('/india/census/explore?year=2011&group=population')->assertOk()
+            ->assertViewIs('civic-explorer')->assertHeader('X-Robots-Tag', 'noindex, follow');
+    }
+
     public function test_header_and_explorer_lead_from_state_to_district_and_tehsil(): void
     {
         $ids = $this->fixture();

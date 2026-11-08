@@ -27,7 +27,7 @@ class SitemapController extends Controller
 
     public function buildXml(PlaceController $places): string
     {
-        $urls = [route('home'), route('states.show', ['state' => 'uttar-pradesh'])];
+        $urls = [route('home'), route('elections.all-india'), route('civic.index'), route('states.show', ['state' => 'uttar-pradesh'])];
         foreach (DB::table('seo_metadata')->where('path', 'like', '/india/census/states/%')->pluck('path') as $statePath) {
             $urls[] = url($statePath);
         }

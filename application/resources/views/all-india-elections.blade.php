@@ -1,18 +1,25 @@
 @php
     $hi=app()->getLocale()==='hi';
     $tr=fn($en,$hn)=>$hi?$hn:$en;
+    $lang = $hi ? ['lang'=>'hi'] : [];
     $labels=['pc'=>$tr('Lok Sabha (PC)','लोक सभा (पीसी)'), 'ac'=>$tr('Assembly (AC)','विधान सभा (एसी)'), 'by'=>$tr('By-election','उपचुनाव')];
     $title=$tr('All India elections','अखिल भारतीय चुनाव');
 @endphp
 <!doctype html><html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-@include('seo-metadata',['breadcrumbs'=>['Pollmedia'=>url('/'),$title=>route('elections.all-india')],'canonical'=>route('elections.all-india'),'seoTitle'=>$title.' · Pollmedia','seoDescription'=>'Search parliamentary, Assembly and by-election constituency records in one national table.'])
+@include('seo-metadata',['breadcrumbs'=>['Pollmedia'=>url('/'),$title=>route('elections.all-india')],'canonical'=>route('elections.all-india',$lang),'seoTitle'=>$title.' · Pollmedia','seoDescription'=>'Search parliamentary, Assembly and by-election constituency records in one national table.'])
 @include('site-theme')
 <link rel="stylesheet" href="{{ asset('css/national-election-table.css') }}?v={{ substr(hash_file('sha256',public_path('css/national-election-table.css')),0,12) }}">
 <script defer src="{{ asset('js/national-election-table.js') }}?v={{ substr(hash_file('sha256',public_path('js/national-election-table.js')),0,12) }}"></script>
+<link rel="stylesheet" href="{{ asset('css/national-dashboards.css') }}?v={{ substr(hash_file('sha256',public_path('css/national-dashboards.css')),0,12) }}">
 </head><body>@include('public-header',['summaryLayout'=>true])
-<main class="national-elections" data-national-elections data-first="{{ $first }}">
-<nav aria-label="Breadcrumb"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a> › {{ $tr('Elections','चुनाव') }}</nav>
-<h1>{{ $title }}</h1>
+<main class="national-elections india-hub" data-national-elections data-first="{{ $first }}">
+<nav class="hub-crumb" aria-label="Breadcrumb"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a> › {{ $tr('Elections','चुनाव') }}</nav>
+@if($isOverview)
+@include('national-election-overview')
+@else
+<h1>{{ $title }}</h1><p><a href="{{ route('elections.all-india',$lang) }}">{{ $tr('All India election overview','अखिल भारतीय चुनाव सारांश') }} →</a></p>
+@endif
+<section id="national-records" aria-label="{{ $tr('Search constituency records','निर्वाचन क्षेत्र रिकॉर्ड खोजें') }}"><h2>{{ $tr('Constituency records','निर्वाचन क्षेत्र रिकॉर्ड') }}</h2>
 <form method="get" action="{{ route('elections.all-india') }}">
 @if($hi)<input type="hidden" name="lang" value="hi">@endif
 <label>{{ $tr('Election type','चुनाव का प्रकार') }}<select name="type"><option value="">{{ $tr('All elections','सभी चुनाव') }}</option>@foreach($labels as $key=>$label)<option value="{{ $key }}" @selected(($filters['type']??'')===$key)>{{ $label }}</option>@endforeach</select></label>
@@ -31,5 +38,5 @@
 @if($previousUrl)<a href="{{ $previousUrl }}">{{ $tr('Previous records','पिछले रिकॉर्ड') }}</a>@endif
 <span role="status" data-national-status>{{ $rows->isEmpty()?'0':number_format($first).'–'.number_format($last) }} / {{ number_format($total) }}</span>
 @if($nextUrl)<a data-national-more href="{{ $nextUrl }}">{{ $tr('Load more','और दिखाएँ') }}</a>@endif
-</nav>
+</nav></section>
 </main>@include('public-footer')</body></html>
