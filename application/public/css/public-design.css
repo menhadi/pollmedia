@@ -1,3 +1,4 @@
+:root{--pm-action:#185c6c;--pm-action-hover:#123d50;--pm-action-tint:#e9f2f6}
 /* Shared public design: navigation and actions share one civic palette.
    Chart series, party colors and map layers retain their data meaning. */
 body:has(.public-header){--site-primary:#185c6c;--site-background:#f4f7f8;--site-surface:#fff;--site-text:#183444;--site-muted:#526775;--site-border:#d3e0e7;--site-accent:#c99a42;--site-header_background:#123b45;--site-header_text:#fff;--ink:#183444;--muted:#526775;--paper:#f4f7f8;--line:#d3e0e7;--green:#185c6c;--gold:#c99a42;background:#f4f7f8;color:#183444;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}

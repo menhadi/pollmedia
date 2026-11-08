@@ -32,8 +32,10 @@ class StateElectionSectionsTest extends TestCase
         $document = new \DOMDocument;
         @$document->loadHTML($page->getContent());
         $xpath = new \DOMXPath($document);
-        $this->assertSame(1, $xpath->query('//main//h1/parent::div/a[contains(@class,"state-census-button")]')->length);
-        $this->assertSame(0, $xpath->query('//main//details//table')->length);
+        $this->assertSame(1, $xpath->query('//main//a[contains(@class,"state-census-button")][following-sibling::*[1][self::details and @id="state-methodology" and not(@open)]]')->length);
+        $this->assertSame(1, $xpath->query('//main//details//table')->length);
+        $this->assertSame(1, $xpath->query('//details[@id="state-methodology" and not(@open)]//details[not(@open)]//table')->length);
+        $this->assertSame(1, $xpath->query('//details[contains(@class,"result-coverage") and not(@open)]')->length);
         $this->assertSame(2, $xpath->query('//main//table[contains(@class,"atlas-party-history") and thead/tr/th="Party" and thead/tr/th="Votes" and thead/tr/th="Share (%)"]')->length);
         $this->assertSame(2, $xpath->query('//main//*[@data-default-all]')->length);
         $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
