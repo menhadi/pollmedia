@@ -31,8 +31,69 @@
     }
     function recordText(record) {return `${record.name} · ${record.state} · ${record.year}${record.party ? ' · '+record.party : ''}`;}
     function safeUrl(value) {try {const url = new URL(value,location.href); return url.origin === location.origin ? url.href : null;} catch {return null;}}
+    function mountSeatFilter(root, entries, paths) {
+        const filter=root.querySelector('[data-map-filter]');
+        if (!filter || !entries.length) return;
+        const input=filter.querySelector('[data-seat-query]');
+        const list=filter.querySelector('[data-seat-options]');
+        const empty=filter.querySelector('[data-seat-no-match]');
+        const hi=document.documentElement.lang==='hi';
+        const searchKey=value=>String(value).normalize('NFKC').toLocaleLowerCase().replace(/[^\p{L}\p{N}\p{M}]+/gu,'');
+        const ordered=entries.sort((a,b)=>Number(b.linked)-Number(a.linked)||a.name.localeCompare(b.name));
+        let visible=[], active=-1;
+
+        function close(){
+            list.hidden=true;empty.hidden=true;active=-1;
+            input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');
+            for(const path of paths.values()) path.classList.remove('seat-filter-muted');
+        }
+        function render(){
+            const query=searchKey(input.value);
+            visible=ordered.filter(seat=>searchKey(seat.name).includes(query));
+            active=-1;input.removeAttribute('aria-activedescendant');
+            const items=document.createDocumentFragment();
+            visible.forEach((seat,index)=>{
+                const option=document.createElement('li');
+                option.id=list.id+'-'+index;option.dataset.index=index;option.setAttribute('role','option');option.setAttribute('aria-selected','false');
+                option.append(document.createTextNode(seat.name));
+                if(seat.linked){
+                    const badge=document.createElement('small');badge.textContent=hi?'संबंधित':'Connected';option.append(badge);
+                }
+                items.append(option);
+            });
+            list.replaceChildren(items);list.hidden=!visible.length;empty.hidden=Boolean(visible.length);
+            input.setAttribute('aria-expanded',String(Boolean(visible.length)));list.scrollTop=0;
+            const shown=new Set(visible.flatMap(seat=>seat.shapeIds));
+            for(const [id,path] of paths) path.classList.toggle('seat-filter-muted',Boolean(query)&&!shown.has(id));
+        }
+        function highlight(index){
+            if(!visible.length)return;
+            if(active>=0)list.children[active].setAttribute('aria-selected','false');
+            active=(index+visible.length)%visible.length;
+            const option=list.children[active];option.setAttribute('aria-selected','true');input.setAttribute('aria-activedescendant',option.id);
+            list.scrollTop=Math.min(option.offsetTop,Math.max(list.scrollTop,option.offsetTop+option.offsetHeight-list.clientHeight));
+        }
+        filter.addEventListener('focusin',()=>{const tip=root.querySelector('[data-map-tooltip]');if(tip)tip.hidden=true;});
+        input.addEventListener('focus',render);input.addEventListener('click',render);input.addEventListener('input',render);
+        input.addEventListener('keydown',event=>{
+            if(event.key==='Escape'){event.preventDefault();close();return;}
+            if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+                event.preventDefault();if(list.hidden)render();
+                highlight(event.key==='ArrowDown'?active+1:(active<0?visible.length-1:active-1));
+            } else if(event.key==='Enter' && !list.hidden && (active>=0||visible.length===1)){
+                event.preventDefault();location.assign(visible[Math.max(0,active)].url);
+            }
+        });
+        list.addEventListener('pointerdown',event=>{if(event.pointerType==='mouse')event.preventDefault();});
+        list.addEventListener('click',event=>{const option=event.target.closest('[data-index]');if(option)location.assign(visible[Number(option.dataset.index)].url);});
+        filter.addEventListener('focusout',()=>setTimeout(()=>{if(!filter.contains(document.activeElement))close();},0));
+        document.addEventListener('pointerdown',event=>{if(!filter.contains(event.target))close();});
+        root.querySelector('.election-map-search').hidden=true;filter.hidden=false;
+    }
+
+
     async function load(root) {
-        const svg = root.querySelector('svg'), seats = root.querySelector('[data-map-seats]'), status = root.querySelector('[data-map-status]');
+        const svg = root.querySelector('.election-map-surface svg'), seats = root.querySelector('[data-map-seats]'), status = root.querySelector('[data-map-status]');
         const selection = root.querySelector('[data-map-selection]'), legend = root.querySelector('[data-map-legend]');
         const tooltip = root.querySelector('[data-map-tooltip]');
         const [source, result] = await Promise.allSettled([get(root.dataset.source),get(root.dataset.results)]);
@@ -50,7 +111,16 @@
         };
         const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
         const matches = new Map(), paths = new Map();
-        const locatorColors = colourLocator ? window.constituencyMapColours(features, root.closest('[data-constituency-atlas]') ? 'dark' : 'reference') : new Map();
+        const explorer=root.closest('.atlas-map-explorer');
+        const family=JSON.parse(root.querySelector('[data-linked-seats]')?.textContent || '[]');
+        const linked=f=>family.some(seat=>String(seat.code)===String(f.properties.code) && normalize(seat.name)===normalize(f.properties.name));
+        const finderUrl=f=>{
+            const url=new URL(root.dataset.finder,location.href);
+            url.searchParams.set('kind',root.dataset.kind);url.searchParams.set('state',root.dataset.state||f.properties.state);
+            url.searchParams.set('q',f.properties.name||'');url.searchParams.set('lang',document.documentElement.lang==='hi'?'hi':'en');
+            return url.href;
+        };
+        const locatorColors = colourLocator ? window.constituencyMapColours(features) : new Map();
         // A boundary code is not an extraction row number. Name/state matches are approximate;
         // multiple source shapes with the same name never establish a unique geographic join.
         const names = new Map(), codes = new Map();
@@ -71,7 +141,7 @@
         function describe(feature, record) {
             selection.replaceChildren();
             const villageMap=root.querySelector('[data-map-village-link]');
-            if(villageMap){const url=new URL(villageMap.href);url.searchParams.set('state',feature.properties.state||root.dataset.state);url.searchParams.set('kind',feature.properties.kind);url.searchParams.set('name',feature.properties.name);villageMap.href=url.href;villageMap.textContent=`Explore ${feature.properties.name} village polygons →`;}
+            if(villageMap && !explorer){const url=new URL(villageMap.href);url.searchParams.set('state',feature.properties.state||root.dataset.state);url.searchParams.set('kind',feature.properties.kind);url.searchParams.set('name',feature.properties.name);villageMap.href=url.href;villageMap.textContent=`Explore ${feature.properties.name} village polygons →`;}
             const title=document.createElement('strong'); title.textContent=record ? recordText(record) : (feature.properties.name || 'Unnamed constituency');selection.append(title);
             if (record) {
                 if(record.winner){const winner=document.createElement('p');winner.textContent=record.winner;selection.append(winner);}
@@ -100,7 +170,8 @@
             if (!focusMode) { const title=svgElement('title');title.textContent=seatText(f,record);path.append(title); }
             path.addEventListener('pointerenter',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointermove',event=>showTooltip(f,record,event));
             path.addEventListener('focus',event=>{describe(f,record);showTooltip(f,record,event);});path.addEventListener('pointerleave',hideTooltip);path.addEventListener('blur',hideTooltip);
-            const open=()=>{describe(f,record);const url=seatUrl(record);if(url) location.assign(url);else {const finder=new URL(root.dataset.finder,location.href);finder.searchParams.set('kind',root.dataset.kind);finder.searchParams.set('state',root.dataset.state || f.properties.state);finder.searchParams.set('q',f.properties.name || '');location.assign(finder.href);}};
+            if(explorer && linked(f))path.classList.add('is-connected');
+            const open=()=>{describe(f,record);location.assign(seatUrl(record)||finderUrl(f));};
             path.addEventListener('click',open);path.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});
             if((record&&selected(record)) || (!record&&root.dataset.selected&&locatorName(f.properties.name,root.dataset.state,root.dataset.kind)===locatorName(root.dataset.selected,root.dataset.state,root.dataset.kind)&&names.get(stateKey(f.properties.state)+':'+normalize(f.properties.name))===1)){path.classList.add('is-selected');path.setAttribute('aria-current','true');describe(f,record);}
             svg.append(path);paths.set(f.id,path);
@@ -156,10 +227,24 @@
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=focusMode?r.name:recordText(r);option.selected=selected(r);seats.append(option);});
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&seatUrl(r);if(url)location.assign(url);});
+        if(explorer){
+            const entries=new Map();
+            for(const r of records){
+                const url=seatUrl(r);
+                if(url)entries.set(url,{name:r.name,url,linked:false,shapeIds:[]});
+            }
+            for(const f of features){
+                const url=seatUrl(matches.get(f.id))||finderUrl(f);
+                const entry=entries.get(url)??{name:f.properties.name,url,linked:false,shapeIds:[]};
+                entry.linked ||= linked(f);entry.shapeIds.push(f.id);entries.set(url,entry);
+            }
+            mountSeatFilter(root,Array.from(entries.values()),paths);
+        }
         if(colourLocator){
             legend.hidden=false;
-            const note=document.createElement('span');note.textContent=document.documentElement.lang==='hi'?'रंग अलग-अलग निर्वाचन क्षेत्र दिखाते हैं। चुने हुए क्षेत्र की सीमा उजली है।':'Colours distinguish constituencies. The selected seat is outlined.';legend.append(note);
+            const note=document.createElement('span');note.textContent=document.documentElement.lang==='hi'?'रंग अलग-अलग निर्वाचन क्षेत्र दिखाते हैं। चुने हुए क्षेत्र की सीमा उजली है।':'Colours distinguish constituencies. The selected seat is outlined.';if(!explorer)legend.append(note);
             if(root.dataset.kind==='pc' && normalize(root.dataset.selected)==='chikkballapur'){const aliasNote=document.createElement('span');aliasNote.textContent='PC27: the locator source says Chikballapur; ECI Delimitation2008 (Table B, p208) says Chikkballapur. Spelling correspondence only; boundary equivalence remains unverified.';legend.append(aliasNote);}
+            if(!legend.childElementCount)legend.hidden=true;
         }else if(focusMode){
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
         }else{

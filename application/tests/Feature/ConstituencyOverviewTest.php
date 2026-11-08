@@ -124,6 +124,15 @@ class ConstituencyOverviewTest extends TestCase
             $xpath = new \DOMXPath($doc);
             $this->assertSame("Winner $year", trim($xpath->evaluate('string(//*[@id="atlas-winner"])')));
             $this->assertSame($edition, $xpath->evaluate('string(//select[@id="edition"]/option[@selected]/@value)'));
+            $maps = $xpath->query('//div[@class="atlas-secondary"]/following-sibling::section[contains(@class,"atlas-state-explorers")]//*[@data-election-map]');
+            $this->assertSame(2, $maps->length);
+            $this->assertSame('pc', $maps->item(0)->getAttribute('data-kind'));
+            $this->assertSame('ac', $maps->item(1)->getAttribute('data-kind'));
+            $this->assertSame('', $maps->item(1)->getAttribute('data-selected'));
+            foreach (['pc', 'ac'] as $kind) {
+                $this->assertSame(1, $xpath->query('//input[@aria-controls="atlas-options-'.$kind.'"]')->length);
+                $this->assertSame(1, $xpath->query('//ul[@role="listbox" and @id="atlas-options-'.$kind.'"]')->length);
+            }
             $this->assertGreaterThan(0, $xpath->query('//*[@data-history-chart]//table')->length);
             $this->assertSame(0, $xpath->query('//details[contains(@class,"chart-values")]//table')->length);
         }
