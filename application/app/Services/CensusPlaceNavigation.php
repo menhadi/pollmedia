@@ -3,9 +3,20 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CensusPlaceNavigation
 {
+    public function publishedState(string $state, int $year): ?object
+    {
+        $rows = DB::table('census_catalogue_rows as c')->join('census_editions as e', 'e.id', '=', 'c.edition_id')
+            ->where('e.status', 'published')->where('e.year', $year)->where('c.level', 'STATE')->where('c.residence', 'Total')
+            ->select('c.id', 'c.name', 'c.state_code')->orderByRaw("CASE WHEN e.source_key LIKE 'india-basic-%-total' THEN 0 ELSE 1 END")->orderBy('c.id')->get()
+            ->filter(fn ($row) => PlaceFactTables::stateSlug($row->name) === $state || ($state === 'delhi' && (int) $row->state_code === 7));
+
+        return $rows->pluck('state_code')->unique()->count() === 1 ? $rows->first() : null;
+    }
+
     public function record(object $place): ?int
     {
         if ($place->type !== 'district') {
@@ -46,9 +57,12 @@ class CensusPlaceNavigation
         }
 
         if ($place->type === 'district' && ($place->country_code ?? 'IN') === 'IN') {
-            $matches = collect(app(DistrictDashboardUrls::class)->all())->filter(fn ($row) => \Illuminate\Support\Str::slug($row['name']) === \Illuminate\Support\Str::slug($place->name));
-            if ($matches->count() === 1) { return url($matches->first()['path']); }
+            $matches = collect(app(DistrictDashboardUrls::class)->all())->filter(fn ($row) => Str::slug($row['name']) === Str::slug($place->name));
+            if ($matches->count() === 1) {
+                return url($matches->first()['path']);
+            }
         }
+
         return route('geography.show', $place->slug);
     }
 }

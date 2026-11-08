@@ -24,7 +24,7 @@
         const hi = document.documentElement.lang.startsWith('hi');
         const size = list.matches('[data-district-list]') ? 5 : 12;
         let page = 0;
-        let showAll = false;
+        let showAll = list.hasAttribute('data-default-all');
         function render() {
             const rows = Array.from(body.rows);
             const query = input.value.trim().toLocaleLowerCase();
@@ -34,6 +34,7 @@
             const visible = new Set(matches.slice(start, end));
             rows.forEach(row => { row.hidden = !visible.has(row); });
             status.textContent = matches.length ? (start + 1) + '–' + end + ' / ' + matches.length : (hi ? '0 परिणाम' : '0 results');
+            steps.forEach(button => { button.hidden = showAll || matches.length <= size; });
             steps[0].disabled = showAll || page === 0;
             steps[1].disabled = end >= matches.length;
             toggle.hidden = matches.length <= size;

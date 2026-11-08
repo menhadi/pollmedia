@@ -22,7 +22,7 @@
     $party = isset($series['name_key']) ? $point[$series['name_key']] : $series['label'];
     $note = $point['review'] ? ' †' : '';
 @endphp
-<tr @class(['atlas-selected-year'=>(int)$point['year']===(int)($chosen['entry']->year??0),'atlas-year-start'=>$loop->first])>
+<tr @class(['atlas-selected-year'=>(int)$point['year']===(int)($chosen['entry']->year??($isStateHistory?($election['year']??0):0)),'atlas-year-start'=>$loop->first])>
 <th scope="row">{{ $point['year'] }}</th>
 @if($ranked)<td>{{ isset($series['name_key']) ? $loop->iteration : '—' }}</td>@endif
 <td>{{ $party ?? '—' }}</td>
