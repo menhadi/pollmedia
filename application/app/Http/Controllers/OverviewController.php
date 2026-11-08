@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CensusPlaceNavigation;
 use App\Services\ConstituencyUrls;
+use App\Services\ElectionArchive;
 use App\Services\ElectionGeographySummary;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionAnalytics;
@@ -13,7 +14,6 @@ use App\Services\PlaceFactTables;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OverviewController extends Controller
@@ -71,10 +71,10 @@ class OverviewController extends Controller
             foreach (['pc', 'ac'] as $seatKind) {
                 $seatQueries[$seatKind] = trim($input[$seatKind.'_q'] ?? $seatQuery);
                 $seatScopes[$seatKind] = $input[$seatKind.'_scope'] ?? 'current';
-                $base = DB::table('historical_constituency_index')->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)]);
+                $base = ElectionArchive::publicIndex()->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)]);
                 $seatLatestYears[$seatKind] = (clone $base)->max('year');
                 $latestEdition = (clone $base)->where('year', $seatLatestYears[$seatKind])->select('edition_id')->groupBy('edition_id')->orderByRaw('COUNT(*) DESC')->orderByDesc('edition_id')->value('edition_id');
-                $seatDirectories[$seatKind] = DB::table('historical_constituency_index')
+                $seatDirectories[$seatKind] = ElectionArchive::publicIndex()
                     ->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)])
                     ->when($seatScopes[$seatKind] === 'current', fn ($builder) => $builder->where('edition_id', $latestEdition))
                     ->when($seatScopes[$seatKind] === 'archive', fn ($builder) => $builder->where('year', '<', $seatLatestYears[$seatKind]))

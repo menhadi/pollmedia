@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Services\ByElectionRecords;
+use App\Services\ElectionArchive;
 use App\Services\ElectoralMapResults;
 use App\Services\HistoricalElectionAnalytics;
 use App\Services\HistoricalElectionArchive;
@@ -16,6 +17,25 @@ use Tests\TestCase;
 class StateElectionSectionsTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_old_lok_sabha_links_redirect_to_the_same_seat_in_the_final_edition(): void
+    {
+        $old = ElectionArchive::PC_2019_SUPERSEDED;
+        $final = ElectionArchive::PC_2019_FINAL;
+        foreach ([1 => 1, 327 => 327, 328 => 329, 542 => 543] as $before => $after) {
+            $path = '/india/elections/lok-sabha?edition=';
+            $this->get($path.$old.'&code='.$before.'&format=report&state=Tamil%20Nadu')
+                ->assertRedirect($path.$final.'&code='.$after.'&format=report&state=Tamil%20Nadu')->assertStatus(301);
+        }
+        $this->get('/india/state/tamil-nadu?pc_edition='.$old.'&lang=hi')
+            ->assertRedirect('/india/state/tamil-nadu?pc_edition='.$final.'&lang=hi');
+        $this->get('/india/elections/lok-sabha?edition='.$old.'&code=543')->assertNotFound();
+        $catalogue = app(ElectionArchive::class);
+        $ids = fn ($data) => collect($data['pc'])->map(fn ($row) => substr(hash('sha256', $row[1]), 0, 24));
+        $this->assertTrue($ids($catalogue->catalogue())->contains($old));
+        $this->assertFalse($ids($catalogue->publicCatalogue())->contains($old));
+        $this->assertTrue($ids($catalogue->publicCatalogue())->contains($final));
+    }
 
     public function test_sections_keep_histories_and_year_selections_separate(): void
     {
@@ -70,8 +90,9 @@ class StateElectionSectionsTest extends TestCase
         $html = view('state-winning-margins', $data)->render();
         $doc = HTMLDocument::createFromString($html, LIBXML_NOERROR, 'UTF-8');
         $this->assertStringContainsString('4 of 6 constituencies', $doc->documentElement->textContent);
+        $this->assertStringNotContainsString('>Mode<', $html);
         $cells = fn ($n) => $doc->querySelector('tbody tr:nth-child('.$n.') td')->textContent;
-        $this->assertSame(['12', '0', '0', '3', '4', '0'], array_map($cells, range(1, 6)));
+        $this->assertSame(['12', '0', '0', '3', '4'], array_map($cells, range(1, 5)));
         $this->assertSame(['West', 'North', 'South'], array_map(fn ($a) => $a->textContent, iterator_to_array($doc->querySelectorAll('tbody a'))));
         $this->assertSame('South winner', $doc->querySelector('tbody tr:nth-child(3) td:nth-child(4)')->textContent);
         $this->assertSame('Example party', $doc->querySelector('tbody tr:nth-child(3) td:nth-child(5)')->textContent);
@@ -81,8 +102,8 @@ class StateElectionSectionsTest extends TestCase
         ]])->render();
         $historical = HTMLDocument::createFromString($history, LIBXML_NOERROR, 'UTF-8');
         $values = fn ($n) => array_map(fn ($c) => trim($c->textContent), iterator_to_array($historical->querySelectorAll('tbody tr:nth-child('.$n.') td')));
-        $this->assertSame(['4 / 6', '12', '0', '3', '4', '0'], $values(1));
-        $this->assertSame(['0 / 2', '—', '—', '—', '—', '—'], $values(2));
+        $this->assertSame(['4 / 6', '12', '0', '3', '4'], $values(1));
+        $this->assertSame(['0 / 2', '—', '—', '—', '—'], $values(2));
         $this->assertStringContainsString('pc_edition='.$other['id'].'#margin-summary-title', $historical->querySelector('tbody tr:nth-child(2) a')->getAttribute('href'));
         $data['seatRows'] = $rows->slice(4);
         $empty = view('state-winning-margins', $data)->render();

@@ -18,7 +18,7 @@ class ConstituencyOverviewTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_only_identical_results_in_the_known_2019_revision_pair_are_displayed_once(): void
+    public function test_only_the_including_vellore_edition_is_displayed_even_when_source_values_differ(): void
     {
         $record = ['code' => 255, 'status' => 'validated', 'state_name' => 'Manipur', 'constituency_name' => 'Inner Manipur',
             'detail_page' => 311, 'votes_polled' => 100, 'candidates' => [
@@ -53,7 +53,7 @@ class ConstituencyOverviewTest extends TestCase
             } else {
                 $different['record'][$difference] = 'Different source information';
             }
-            $this->assertCount(2, $analytics->distinctConstituencyHistoryRows(collect([$first, $different])), $difference);
+            $this->assertCount($difference === 'unknown_edition' ? 2 : 1, $analytics->distinctConstituencyHistoryRows(collect([$first, $different])), $difference);
         }
     }
 
@@ -223,7 +223,7 @@ class ConstituencyOverviewTest extends TestCase
     public function test_2009_turnout_with_source_discrepancy_stays_visible_and_identical_2019_charts_are_not_repeated(): void
     {
         $edition2009 = str_repeat('d', 24);
-        foreach ([[$edition2009, 2009, 404, '2009 Vol I, II, III'], [str_repeat('a', 24), 2019, 387, '2019 (Including Vellore PC)'], [str_repeat('b', 24), 2019, 387, '2019 (Excluding Vellore PC)']] as [$edition,$year,$code,$label]) {
+        foreach ([[$edition2009, 2009, 404, '2009 Vol I, II, III'], [ElectionArchive::PC_2019_FINAL, 2019, 387, '2019 (Including Vellore PC)'], [ElectionArchive::PC_2019_SUPERSEDED, 2019, 386, '2019 (Excluding Vellore PC)']] as [$edition,$year,$code,$label]) {
             DB::table('historical_constituency_index')->insert(['edition_id' => $edition, 'record_code' => $code, 'kind' => 'pc', 'year' => $year, 'edition_label' => $label, 'state_label' => 'Uttar Pradesh', 'constituency_name' => 'Pilibhit', 'status' => $year === 2009 ? 'needs_review' : 'validated', 'has_warning' => $year === 2009, 'candidate_count' => 2, 'extraction_sha256' => str_repeat('c', 64)]);
         }
         $this->mock(HistoricalElectionArchive::class, function ($mock) use ($edition2009): void {
@@ -245,8 +245,8 @@ class ConstituencyOverviewTest extends TestCase
             });
         });
 
-        $url = route('constituency.overview', ['kind' => 'pc', 'state' => 'Uttar Pradesh', 'name' => 'Pilibhit']);
-        $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('281,501 †')->assertSee('2019 (Including Vellore PC)')->assertSee('2019 (Excluding Vellore PC)');
+        $url = route('constituency.named', ['kind' => 'pc', 'state' => 'uttar-pradesh', 'name' => 'pilibhit']);
+        $overview = $this->get($url)->assertOk()->assertSee('63.96% †')->assertSee('281,501 †')->assertSee('2019 (Including Vellore PC)')->assertDontSee('2019 (Excluding Vellore PC)');
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $overview->getContent(), $charts);
         $this->assertCount(4, $charts[1]);
         $chart = json_decode($charts[1][0], true);
@@ -256,7 +256,7 @@ class ConstituencyOverviewTest extends TestCase
         $this->assertSame(2, substr_count($selector[1], '<option'));
         $this->assertStringNotContainsString('Vol', $selector[1]);
         $this->assertStringNotContainsString('Vellore', $selector[1]);
-        $this->get($url.'&edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
+        $this->get($url.'?edition='.$edition2009)->assertOk()->assertSee('837,929 †')->assertSee('Summary and detailed totals differ')->assertSee('Candidate A †')->assertSee('281,501 †')->assertSee('Report a problem with this result');
     }
 
     public function test_source_vote_count_remains_visible_without_an_invalid_turnout_percentage(): void

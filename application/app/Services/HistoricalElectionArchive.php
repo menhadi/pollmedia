@@ -26,6 +26,7 @@ class HistoricalElectionArchive
     {
         return collect($this->entries($kind))
             ->map(fn (array $entry): array => ['id' => substr(hash('sha256', $entry[1]), 0, 24), 'label' => $entry[0], 'year' => (int) substr($entry[0], 0, 4)])
+            ->reject(fn (array $entry): bool => $entry['id'] === ElectionArchive::PC_2019_SUPERSEDED)
             ->filter(fn (array $entry): bool => app(ArchiveFiles::class)->exists('election-archive/'.$entry['id'].'/extraction.json'))
             ->sortByDesc('year')->values()->all();
     }

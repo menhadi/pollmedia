@@ -304,7 +304,7 @@ class ConstituencyArchiveHistory
         }
         $catalogue = app(ElectionArchive::class);
         $editions = [];
-        foreach ($catalogue->catalogue()[$kind] as [$label, $url]) {
+        foreach ($catalogue->publicCatalogue()[$kind] as [$label, $url]) {
             $editions[substr(hash('sha256', $url), 0, 24)] = ['url' => $url, 'year' => (int) substr($label, 0, 4), 'label' => $label];
         }
         if ($kind === 'ac') {

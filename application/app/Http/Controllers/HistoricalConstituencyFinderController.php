@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class HistoricalConstituencyFinderController extends Controller
@@ -23,9 +23,9 @@ class HistoricalConstituencyFinderController extends Controller
             $input['state'] = ElectionPlaceIdentity::state($input['state']);
         }
         $indexed = Schema::hasTable('historical_constituency_index');
-        $states = $indexed ? DB::table('historical_constituency_index')->whereNotNull('state_label')->distinct()->pluck('state_label')->map(fn ($label) => ElectionPlaceIdentity::state($label))->unique(fn ($label) => mb_strtolower($label))->sort()->values() : collect();
-        $years = $indexed ? DB::table('historical_constituency_index')->distinct()->orderByDesc('year')->pluck('year') : collect();
-        $results = $indexed ? DB::table('historical_constituency_index')
+        $states = $indexed ? ElectionArchive::publicIndex()->whereNotNull('state_label')->distinct()->pluck('state_label')->map(fn ($label) => ElectionPlaceIdentity::state($label))->unique(fn ($label) => mb_strtolower($label))->sort()->values() : collect();
+        $years = $indexed ? ElectionArchive::publicIndex()->distinct()->orderByDesc('year')->pluck('year') : collect();
+        $results = $indexed ? ElectionArchive::publicIndex()
             ->when(! empty($input['q']), fn ($query) => $query->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower(trim($input['q'])).'%']))
             ->when(! empty($input['kind']), fn ($query) => $query->where('kind', $input['kind']))
             ->when(! empty($input['year']), fn ($query) => $query->where('year', (int) $input['year']))

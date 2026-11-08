@@ -27,8 +27,6 @@
             @foreach(['median' => $tr('Median', 'मध्यिका'), 'mean' => $tr('Mean', 'औसत')] as $key => $label)
                 <tr><th scope="row">{{ $label }}</th><td>{{ number_format($summary[$key]) }}</td><td colspan="3">{{ $tr('Across included seats', 'शामिल निर्वाचन क्षेत्र') }}</td></tr>
             @endforeach
-            <tr><th scope="row">{{ $tr('Mode', 'बहुलक') }}</th><td>{{ $summary['modes'] ? implode(', ', array_map('number_format', $summary['modes'])) : '—' }}</td>
-                <td colspan="3">{{ $summary['modes'] ? $tr('Most frequent margin', 'सबसे अधिक बार दर्ज अंतर') : $tr('No repeated margin', 'कोई अंतर दोहराया नहीं गया') }}</td></tr>
             </tbody>
         </table>
         </div>

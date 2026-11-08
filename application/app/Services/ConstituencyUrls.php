@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ConstituencyUrls
@@ -27,7 +26,7 @@ class ConstituencyUrls
 
     public static function resolve(string $kind, string $state, string $name, ?string $sourceName = null): ?array
     {
-        $states = app(self::class)->states ??= Cache::remember('constituency-url-states-v2', 600, fn () => DB::table('historical_constituency_index')->distinct()->pluck('state_label')->map(fn ($value) => ElectionPlaceIdentity::state($value))->unique(fn ($value) => mb_strtolower(trim($value)))->values()->all());
+        $states = app(self::class)->states ??= Cache::remember('constituency-url-states-v3', 600, fn () => ElectionArchive::publicIndex()->distinct()->pluck('state_label')->map(fn ($value) => ElectionPlaceIdentity::state($value))->unique(fn ($value) => mb_strtolower(trim($value)))->values()->all());
         $matches = array_values(array_filter($states, fn ($value) => Str::slug($value) === $state));
         if (count($matches) !== 1) {
             return null;
@@ -86,6 +85,6 @@ class ConstituencyUrls
 
     private static function names(string $kind, string $state): array
     {
-        return Cache::remember('constituency-url-names-v1-'.sha1($kind.'|'.$state), 600, fn () => DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->distinct()->pluck('constituency_name')->all());
+        return Cache::remember('constituency-url-names-v2-'.sha1($kind.'|'.$state), 600, fn () => ElectionArchive::publicIndex()->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->distinct()->pluck('constituency_name')->all());
     }
 }

@@ -36,7 +36,7 @@ class ConstituencyOverviewController extends Controller
         $name = $input['name'];
         $names = ConstituencyArchiveHistory::generalCategoryNames($name);
         $aliases = ConstituencyArchiveHistory::historyAliasRules($kind, $state, $name);
-        $entries = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->where(function ($query) use ($names, $aliases): void {
+        $entries = ElectionArchive::publicIndex()->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->where(function ($query) use ($names, $aliases): void {
             $query->whereIn(DB::raw('LOWER(TRIM(constituency_name))'), $names);
             foreach ($aliases as $rule) {
                 $query->orWhere(function ($aliasQuery) use ($rule): void {
@@ -134,7 +134,7 @@ class ConstituencyOverviewController extends Controller
                 $linkedSeats = $kind === 'pc' ? $linkedAcs->map(fn ($row) => ['name' => $row['name'], 'type' => 'ac']) : $pcs->filter(fn ($row) => in_array($match['code'], $row['ac_codes']))->map(fn ($row) => ['name' => $row['name'], 'type' => 'pc']);
                 $candidateNames = [];
                 foreach ($linkedSeats as $seat) {
-                    $namesForKind = $candidateNames[$seat['type']] ??= DB::table('historical_constituency_index')->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->where('kind', $seat['type'])->select('constituency_name')->distinct()->get();
+                    $namesForKind = $candidateNames[$seat['type']] ??= ElectionArchive::publicIndex()->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->where('kind', $seat['type'])->select('constituency_name')->distinct()->get();
                     $candidates = $namesForKind->filter(fn ($row) => $normalize($row->constituency_name) === $normalize($seat['name']))->pluck('constituency_name')->unique(fn ($n) => mb_strtolower($n));
                     if ($candidates->count() === 1) {
                         $related->push((object) ['name' => $seat['name'], 'type' => $seat['type'], 'url' => ConstituencyUrls::url(['kind' => $seat['type'], 'state' => $state, 'name' => $candidates->first()]), 'reference' => false]);
@@ -149,7 +149,7 @@ class ConstituencyOverviewController extends Controller
 
         foreach ($related as $place) {
             if (! isset($place->url) && in_array($place->type, ['ac', 'pc'], true) && $state === 'Uttar Pradesh') {
-                $entry = DB::table('historical_constituency_index')->where('kind', $place->type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
+                $entry = ElectionArchive::publicIndex()->where('kind', $place->type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
                 if ($entry) {
                     $place->url = ConstituencyUrls::url(['kind' => $place->type, 'state' => $state, 'name' => $entry->constituency_name]);
                 }
@@ -163,67 +163,6 @@ class ConstituencyOverviewController extends Controller
         $reportAlternativeLabels = [];
         $reportComparisonNote = null;
         $selectedReportOmitsNota = false;
-        if ($kind === 'pc' && $state === 'Tripura') {
-            $pair = $rows->filter(fn (array $row): bool => (int) $row['entry']->year === 2019
-                && in_array($row['entry']->edition_id, ['2e749f2174f08a9ea1fc803d', '70e603b1037bf7ca8e1350b0'], true)
-                && ($row['record']['state_code'] ?? null) === 'S23'
-                && in_array($row['record']['official_pc_code'] ?? null, [1, 2], true));
-            if ($pair->count() === 2 && $pair->pluck('entry.edition_id')->unique()->count() === 2
-                && $pair->pluck('record.official_pc_code')->unique()->count() === 1
-                && $pair->pluck('record.constituency_name')->unique()->count() === 1
-                && $pair->map(function (array $row): string {
-                    $comparison = $row['record'];
-                    unset($comparison['code'], $comparison['detail_page'], $comparison['summary_page'], $comparison['review_fingerprint'], $comparison['review_archive']);
-                    $comparison['candidates'] = collect($comparison['candidates'] ?? [])->map(function (array $candidate): array {
-                        unset($candidate['source_row']);
-                        if (in_array($candidate['party_at_election'] ?? null, ['CPIM', 'CPM'], true)) {
-                            $candidate['party_at_election'] = 'CPIM/CPM source-label comparison';
-                        }
-                        ksort($candidate);
-
-                        return $candidate;
-                    })->sortBy(fn (array $candidate): string => json_encode($candidate, JSON_THROW_ON_ERROR))->values()->all();
-                    ksort($comparison);
-
-                    return json_encode([$comparison, $row['result']], JSON_THROW_ON_ERROR);
-                })->unique()->count() === 1) {
-                $reportAlternatives = $pair;
-                $chartReport = $pair->first(fn (array $row): bool => $row['entry']->edition_id === $chosen['entry']->edition_id) ?? $pair->first();
-                $chartSourceRows = $rows->reject(fn (array $row): bool => $pair->contains(fn (array $alternative): bool => $alternative['entry']->edition_id === $row['entry']->edition_id)
-                    && $row['entry']->edition_id !== $chartReport['entry']->edition_id)->values();
-            }
-        }
-
-        if ($kind === 'pc' && in_array($state, ['Andhra Pradesh', 'Assam', 'Bihar'], true)) {
-            $verifiedKurnoolReports = [
-                '70e603b1037bf7ca8e1350b0' => ['1373a39c1bd71aa48054129339485b7815b9a1b247afdcd2a20191f6d8325124', ['da28fdc52f6775efc8632542bcbf6693c4354de53778444c8ba3d15076809c68', '26c37c30ec3b9a7eb9bf3228cfdeb85229caae24c6279c1d557befcc6048a104', '9c0f98f04b098a6c8f88b59f5ba821d2836576a8e93b8deb85e015549d020d63', '5c248bbd2c3eed94beebad277679e28d0ea663d936b0ea603cedd155d9af2199', 'f30f379e487c3e1ca80052a96fd17609257e2fe31300aad01992b4c7d0be84f5', 'da732f1f2fa5cf04678654ec5f0c3960add101fb23eb338ef8acee8d4bc652dd', '7fe5877179983dc02c5dc4703f37aea90df2d0e111d347ddf212ce5f419cc896']],
-                '2e749f2174f08a9ea1fc803d' => ['8eae235e18a1bfce90ef8207979c06f332333f367d6c1e81bdf63f0f2c9917f7', ['e2a60d5a6577341c83d06a1ac52ec67e12b22de14bd5f82123c2bf1ba2342594', '2079ed942a3623fa7144d9271d93469a174c33d2cd34f783875d0b52ee87208c', '30fb7fb9fe92bf3c93de4fd96bae7b0b1842fd70f7d5727f2be73d091b9459fc', '2f44d0bcb5e68fc77d4a18e6572ce190e5656c3d1a088c99eb6cc8b0569d392e', '2673d6dc00fd5ac91d5968c630a11a0928854c36690de207da74b9dff21448f2', 'e2022dd41826e366d2e00feba605b3b550dc90e056813b009ddf73b2e3276f2b', '512210899f473638bf0946acf21e095f54cfb0135798fba54da44186f37f1c6f']],
-            ];
-            $pair = $rows->filter(function (array $row) use ($verifiedKurnoolReports): bool {
-                $source = $verifiedKurnoolReports[$row['entry']->edition_id] ?? null;
-                if ($source === null || (int) $row['entry']->year !== 2019 || ! in_array($row['record']['review_fingerprint'] ?? null, $source[1], true)) {
-                    return false;
-                }
-                $raw = $row['record'];
-                unset($raw['review'], $raw['review_fingerprint'], $raw['review_archive'], $raw['review_id'], $raw['has_warning']);
-
-                return hash_equals($row['record']['review_fingerprint'], hash('sha256', $source[0].json_encode($raw, JSON_THROW_ON_ERROR)));
-            });
-            if ($pair->count() === 2 && $pair->pluck('entry.edition_id')->unique()->count() === 2) {
-                $reportAlternatives = $pair;
-                $chartReport = $pair->first(fn (array $row): bool => $row['entry']->edition_id === $chosen['entry']->edition_id) ?? $pair->first();
-                $chartSourceRows = $rows->reject(fn (array $row): bool => $pair->contains(fn (array $alternative): bool => $alternative['entry']->edition_id === $row['entry']->edition_id)
-                    && $row['entry']->edition_id !== $chartReport['entry']->edition_id)->values();
-                $reportComparisonNote = 'Both official 2019 reports agree on the candidates and their votes, but use CPM and CPIM for the same candidate. The selected report supplies its original party label and votes; no labels or votes are merged.';
-                if ($state === 'Bihar' && ($chartReport['record']['code'] ?? null) === 70) {
-                    $reportComparisonNote = 'Both official 2019 reports agree on the candidates and their votes, but identify Dinanath Pandey as IND in the excluding-Vellore report and BIP in the including-Vellore report. The selected report supplies its original party label and votes; this source disagreement is preserved, not resolved or merged.';
-                }
-                if ($state === 'Assam' && ($chartReport['record']['code'] ?? null) === 35) {
-                    $reportComparisonNote = 'Both official 2019 reports agree on the candidates and their votes, but identify Prodeep Kumar Daimary as UPPL in the excluding-Vellore report and IND in the including-Vellore report. The selected report supplies its original party label and votes; this source disagreement is preserved, not resolved or merged.';
-                }
-            }
-        }
-
         if ($kind === 'ac' && $state === 'Meghalaya') {
             $pair = $rows->filter(fn (array $row): bool => (int) $row['entry']->year === 2023
                 && $this->isReviewedMeghalayaReport($row, $reviews));

@@ -7,6 +7,7 @@ use App\Services\CommunityData;
 use App\Services\CommunityElectionCorrections;
 use App\Services\CommunityMapCorrections;
 use App\Services\DistrictDashboardUrls;
+use App\Services\ElectionArchive;
 use App\Services\ElectionGeographySummary;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\ElectoralVillageMap;
@@ -105,7 +106,7 @@ class CommunityListingController extends Controller
         $rows = $query->select('r.*', 'e.year', 'e.name as edition_name')->orderByDesc('e.year')->orderBy('r.residence')->orderByDesc('e.id')->paginate(15)->withQueryString();
         $data = app(CommunityData::class);
 
-        $electionEntries = $stateName && ($input['level'] ?? 'STATE') === 'STATE' ? DB::table('historical_constituency_index')->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($stateName))])->orderByDesc('year')->orderBy('constituency_name')->paginate(20, ['*'], 'elections_page')->withQueryString() : null;
+        $electionEntries = $stateName && ($input['level'] ?? 'STATE') === 'STATE' ? ElectionArchive::publicIndex()->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($stateName))])->orderByDesc('year')->orderBy('constituency_name')->paginate(20, ['*'], 'elections_page')->withQueryString() : null;
 
         return view('community-scope', compact('rows', 'data', 'electionEntries'));
     }

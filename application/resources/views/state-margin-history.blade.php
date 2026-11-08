@@ -8,7 +8,7 @@
     <p>{{ $tr('Margins in votes. Select a report edition to see its constituencies and winning candidates.', 'अंतर मतों में है। निर्वाचन क्षेत्र और विजयी उम्मीदवार देखने के लिए रिपोर्ट संस्करण चुनें।') }}</p>
     <div class="table-scroll" role="region" aria-labelledby="margin-history-title" tabindex="0">
     <table data-total-rows="{{ $editions->count() }}"><thead><tr>
-        @foreach([['Election edition','चुनाव संस्करण'], ['Seats with margins','अंतर वाले क्षेत्र'], ['Highest','अधिकतम'], ['Lowest','न्यूनतम'], ['Median','मध्यिका'], ['Mean','औसत'], ['Mode','बहुलक']] as [$en, $hn])
+        @foreach([['Election edition','चुनाव संस्करण'], ['Seats with margins','अंतर वाले क्षेत्र'], ['Highest','अधिकतम'], ['Lowest','न्यूनतम'], ['Median','मध्यिका'], ['Mean','औसत']] as [$en, $hn])
             <th scope="col">{{ $tr($en, $hn) }}</th>
         @endforeach
     </tr></thead><tbody>
@@ -20,7 +20,6 @@
                 @foreach(['highest', 'lowest', 'median', 'mean'] as $key)
                     <td>{{ $summary[$key] === null ? '—' : number_format($summary[$key]) }}</td>
                 @endforeach
-                <td>{{ $summary['modes'] ? implode(', ', array_map('number_format', $summary['modes'])) : '—' }}</td>
             </tr>
         @endforeach
     </tbody></table>
