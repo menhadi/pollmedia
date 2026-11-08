@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Services\ConstituencyUrls;
 use App\Services\HomeElectionSummary;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
@@ -101,10 +102,10 @@ class HomeElectionDashboardTest extends TestCase
         $this->edition('a', 'pc', 2019, 'Punjab', [$this->record(1, 'Former Seat', 100, 50)]);
         $this->edition('b', 'pc', 2024, 'Punjab', [$this->record(1, 'Current Seat', 100, 60)]);
         $this->edition('c', 'ac', 2022, 'Punjab', [$this->record(1, 'Assembly Seat', 100, 60)]);
-        $page = $this->get('/')->assertOk()->assertSeeInOrder(['id="lok-sabha"', 'id="assembly"', 'id="census-places"'], false)->assertSee('Top five parties')->assertDontSee('dashboard-sidebar')->assertSee('/india/state/punjab#pc-history', false)->assertSee('/india/state/punjab#ac-history', false);
+        $page = $this->get('/')->assertOk()->assertSeeInOrder(['id="lok-sabha"', 'id="assembly"', 'id="census-places"'], false)->assertSee('Find your place')->assertSee('Explore the India map')->assertSee('Top five parties')->assertDontSee('dashboard-sidebar')->assertSee('/india/state/punjab?election=pc#pc-history', false)->assertSee('/india/state/punjab?election=ac#ac-history', false);
         $this->assertSame(4, substr_count(explode('id="census-places"', $page->getContent())[0], 'data-history-chart'));
         $page->assertSee('People through the years')->assertSee('Decadal population growth');
-        $this->getJson('/?finder=1&kind=pc&state=Punjab')->assertOk()->assertJsonCount(1, 'seats')->assertJsonPath('seats.0.name', 'Current Seat')->assertJsonPath('seats.0.url', route('constituency.overview', ['kind' => 'pc', 'state' => 'Punjab', 'name' => 'Current Seat']));
+        $this->getJson('/?finder=1&kind=pc&state=Punjab')->assertOk()->assertJsonCount(1, 'seats')->assertJsonPath('seats.0.name', 'Current Seat')->assertJsonPath('seats.0.url', ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Punjab', 'name' => 'Current Seat']));
         $this->getJson('/?finder=1&kind=ac&state=Punjab')->assertOk()->assertJsonPath('seats.0.name', 'Assembly Seat');
         $this->getJson('/?finder=1&kind=pc&state=Goa')->assertOk()->assertJsonCount(0, 'seats');
         $this->getJson('/?finder=1&kind=other&state=Punjab')->assertUnprocessable();
@@ -114,6 +115,6 @@ class HomeElectionDashboardTest extends TestCase
     {
         $this->edition('a', 'pc', 2019, 'u05', [$this->record(1, 'New Delhi', 100, 50)]);
         $this->edition('b', 'pc', 2024, 'NCT OF Delhi', [$this->record(1, 'New Delhi', 100, 60)]);
-        $this->getJson('/?finder=1&kind=pc&state=Delhi')->assertOk()->assertJsonCount(1, 'seats')->assertJsonPath('seats.0.url', route('constituency.overview', ['kind' => 'pc', 'state' => 'Delhi', 'name' => 'New Delhi']));
+        $this->getJson('/?finder=1&kind=pc&state=Delhi')->assertOk()->assertJsonCount(1, 'seats')->assertJsonPath('seats.0.url', ConstituencyUrls::url(['kind' => 'pc', 'state' => 'Delhi', 'name' => 'New Delhi']));
     }
 }

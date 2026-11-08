@@ -2,7 +2,7 @@
 <!doctype html><html lang="{{ app()->getLocale() }}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">@include('seo-metadata',['breadcrumbs'=>['India'=>url('/india'),'Census'=>route('civic.index')],'canonical'=>$place->level==='STATE'?route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($place->name),'census'=>(int)$year===2011?null:$year]):app(\App\Services\NamedPlaceUrls::class)->census($place->id),'seoTitle'=>\Illuminate\Support\Str::title($title).' Census '.$year.': Population & Literacy | Pollmedia','seoDescription'=>'Explore '.\Illuminate\Support\Str::title($title).' Census '.$year.' population, literacy, households, maps, graphs and district comparisons, plus available water, soil and rainfall records.'])
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}"><link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">@include('site-theme')<?php if (in_array($topic, ['map'], true)): ?>
 @include('india-map-assets')
-<?php endif; ?><script src="{{ asset('js/census-profile.js') }}" defer></script><script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script>@include('place-layout-assets')</head><body class="place-layout election-ui census-area-ui">@include('public-header', ['compactCensusHeader'=>in_array($place->level,['DISTRICT','VILLAGE'],true)])
+<?php endif; ?><script src="{{ asset('js/census-profile.js') }}" defer></script><script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script>@include('place-layout-assets')@if($place->level==='STATE')<link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}"><script src="{{ asset('js/public-landings.js') }}?v={{ substr(hash_file('sha256',public_path('js/public-landings.js')),0,12) }}" defer></script>@endif</head><body class="place-layout election-ui census-area-ui">@include('public-header', ['compactCensusHeader'=>in_array($place->level,['DISTRICT','VILLAGE'],true)])
 @php
 $isState = $place->level === 'STATE';
 $isVillage = in_array($place->level,['VILLAGE','TOWN'],true);
@@ -12,7 +12,8 @@ $areaValues=\App\Services\VillageMapMetrics::values($areaRawValues);
 $areaStateSlug=\App\Services\PlaceFactTables::stateSlug($place->name);
 $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)->forCensusVillages($areaRows->pluck('village_code')->all()) : [];
 @endphp
-<main class="area-dashboard"><header class="area-intro district-title"><p class="eyebrow">Census {{ $year }} · {{ $isState?'State / Union territory':($isVillage?'Village / town':'Subdistrict') }}</p><h1>{{ $title }}</h1></header>
+<main class="area-dashboard {{ $isState?'pm-state-census':'' }}"><header class="area-intro district-title {{ $isState?'landing-intro':'' }}"><p class="eyebrow">Census {{ $year }} · {{ $isState?'State / Union territory':($isVillage?'Village / town':'Subdistrict') }}</p><h1>{{ $title }}</h1>
+@if($isState)<form class="landing-controls" action="{{ route('civic.index') }}"><input type="hidden" name="state" value="{{ $areaStateSlug }}"><label>Census year<select name="year" data-submit-choice>@foreach($years as $option)<option value="{{ $option }}" @selected((int)$year===(int)$option)>{{ $option }}</option>@endforeach</select></label><button>View year</button><a href="{{ route('civic.index',['year'=>$year]) }}">Choose another place →</a></form>@endif</header>
 @include('place-topic-nav',['topicGroup'=>'census','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['census'],fn($k)=>($k!=='elections'||$isState)&&($k!=='markets'||$place->level==='VILLAGE')&&(!in_array($k,['water','soil','rainfall'],true)||($place->level==='VILLAGE'&&(int)$year===2011)||($isState&&$k!=='rainfall'&&(int)$year===2011))) )])
 <div data-topic-body>
 @if(in_array($topic,['people','water','soil'],true) && $isState && (int)$year===2011 && $residence==='Total')
@@ -28,7 +29,17 @@ $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)
 @include('community-area-issues')
 <?php endif; ?>
 <?php if (in_array($topic, ['overview'], true)): ?>
-<section id="area-overview" class="metrics">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy age 7+'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ isset($areaValues[$key])?number_format($areaValues[$key],$key==='literacy'?2:0).($key==='literacy'?'%':''):'Unavailable' }}</strong><small>Census {{ $year }} · {{ $residence }}</small></article>@endforeach<article><span>{{ $isVillage?'Females per 1,000 males':($isState?'Districts in this source':'Villages & towns in this source') }}</span><strong>{{ $isVillage?((($areaRawValues['TOT_M']??0)>0 && isset($areaRawValues['TOT_F']))?number_format(1000*$areaRawValues['TOT_F']/$areaRawValues['TOT_M']):'Unavailable'):$areaRows->count() }}</strong><small>{{ $isVillage?'Census '.$year.' · '.$residence:'Unique source identities' }}</small></article></section>
+<section id="area-overview" class="metrics">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy age 7+'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ isset($areaValues[$key])?number_format($areaValues[$key],$key==='literacy'?2:0).($key==='literacy'?'%':''):'Unavailable' }}</strong><small>Census {{ $year }} · {{ $residence }}</small></article>@endforeach @unless($isState)<article><span>{{ $isVillage?'Females per 1,000 males':($isState?'Districts in this source':'Villages & towns in this source') }}</span><strong>{{ $isVillage?((($areaRawValues['TOT_M']??0)>0 && isset($areaRawValues['TOT_F']))?number_format(1000*$areaRawValues['TOT_F']/$areaRawValues['TOT_M']):'Unavailable'):$areaRows->count() }}</strong><small>{{ $isVillage?'Census '.$year.' · '.$residence:'Unique source identities' }}</small></article>@endunless</section>
+@if($isState)
+<div class="landing-duo">
+<section class="landing-card"><h2>Population by residence</h2><p>Census {{ $year }}</p>
+@forelse($residencePopulation as $category=>$value)<div class="landing-stat"><span>{{ $category }}</span><strong>{{ number_format($value) }}</strong></div>@empty<p>Separate rural and urban figures are unavailable for this edition.</p>@endforelse
+<a href="{{ request()->fullUrlWithQuery(['topic'=>'people']) }}">Population and literacy →</a></section>
+<section class="landing-card"><h2>Population history</h2>
+@foreach(collect($censusSeries['rows'])->whereNotNull('population')->sortByDesc('year')->take(3)->reverse() as $point)<div class="landing-stat"><span>{{ $point['year'] }}</span><strong>{{ number_format($point['population']) }}{{ !empty($point['notes'])?' †':'' }}</strong></div>@endforeach
+<a href="{{ request()->fullUrlWithQuery(['topic'=>'history']) }}">History and source notes →</a></section></div>
+<p><a href="{{ request()->fullUrlWithQuery(['topic'=>'places']) }}">Search district records →</a></p>
+@endif
 <?php endif; ?>
 <?php if (in_array($topic, ['map'], true)): ?>
 @if($isState)

@@ -339,6 +339,18 @@ class CivicExplorerController extends Controller
             $areaPresentation['rates'] = $presentation::rates($areaPresentation['values']);
         }
 
-        return view($areaDashboard ? 'census-area-dashboard' : 'civic-explorer', compact('areaPresentation', 'censusMapContext', 'dashboardChildren', 'input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'electoralState', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions', 'censusSeries', 'areaOptions', 'authorities', 'adjacentPlaces'));
+        $residencePopulation = [];
+        if ($areaDashboard && $place->level === 'STATE' && PlaceTopics::selected('census') === 'overview') {
+            $residenceRows = $this->scope(clone $base, $codes, $depth, $year)->where('level', 'STATE')
+                ->whereIn('residence', ['Rural', 'Urban'])->get(['residence', 'values'])->groupBy('residence');
+            foreach ($residenceRows as $category => $rows) {
+                $value = $rows->count() === 1 ? (json_decode($rows->first()->values, true)['TOT_P'] ?? null) : null;
+                if (is_numeric($value)) {
+                    $residencePopulation[$category] = $value;
+                }
+            }
+        }
+
+        return view($areaDashboard ? 'census-area-dashboard' : 'civic-explorer', compact('residencePopulation', 'areaPresentation', 'censusMapContext', 'dashboardChildren', 'input', 'editions', 'availableEditions', 'years', 'year', 'edition', 'group', 'residence', 'place', 'records', 'parents', 'linked', 'matchedPlace', 'electoralState', 'children', 'childLevels', 'measures', 'title', 'residenceOptions', 'villageBrowse', 'stateOptions', 'districtOptions', 'censusSeries', 'areaOptions', 'authorities', 'adjacentPlaces'));
     }
 }
