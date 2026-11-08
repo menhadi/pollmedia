@@ -97,6 +97,56 @@
     }
 
 
+    function mountStateFilters(root, features, matches, paths, records, seats) {
+        const fields = root.querySelector('[data-state-map-filters]');
+        if (!fields) return;
+        const query = fields.querySelector('[data-map-query]');
+        const party = fields.querySelector('[data-map-party]');
+        const count = fields.querySelector('[data-filter-count]');
+        const clear = fields.querySelector('[data-clear-filters]');
+        const hi = document.documentElement.lang === 'hi';
+        const options = new Map(Array.from(seats.options, opt => [opt.value, opt]));
+        if (party) {
+            const parties = [...new Set(records.map(record => record.party).filter(Boolean))].sort();
+            parties.forEach(name => party.add(new Option(name, name)));
+            party.disabled = !parties.length;
+        }
+        function update() {
+            const needle = normalize(query.value.trim());
+            const winner = party?.value || '';
+            const accepts = (name, record) => (!winner || record?.party === winner)
+                && (!needle || normalize(name || '').includes(needle) || normalize(record?.name || '').includes(needle));
+            let boundaries = 0, results = 0;
+            for (const feature of features) {
+                const show = accepts(feature.properties.name, matches.get(feature.id));
+                const path = paths.get(feature.id);
+                path.classList.toggle('is-filtered-out', !show);
+                path.setAttribute('tabindex', show ? '0' : '-1');
+                if (!show) path.setAttribute('aria-hidden','true'); else path.removeAttribute('aria-hidden');
+                if (show) boundaries++;
+            }
+            for (const record of records) {
+                const option = options.get(String(record.id)), show = accepts(record.name, record);
+                if (option) { option.hidden = !show; option.disabled = !show; }
+                if (show) results++;
+            }
+            const selection = root.querySelector('[data-map-selection]');
+            if (!selection.hidden) {
+                selection.textContent = results || boundaries
+                    ? (hi ? 'विवरण देखने के लिए निर्वाचन क्षेत्र चुनें।' : 'Choose a constituency to view its election records.')
+                    : (hi ? 'कोई निर्वाचन क्षेत्र नहीं मिला।' : 'No constituency matches these filters.');
+            }
+            seats.value = '';
+            seats.disabled = results === 0;
+            clear.disabled = !needle && !winner;
+            count.textContent = hi ? boundaries+' सीमाएँ · '+results+' रिकॉर्ड' : boundaries+' boundaries · '+results+' records';
+        }
+        query.addEventListener('input', update);
+        party?.addEventListener('change', update);
+        clear.addEventListener('click', () => { query.value = ''; if (party) party.value = ''; update(); query.focus(); });
+        fields.hidden = false;
+        update();
+    }
     async function load(root) {
         const svg = root.querySelector('.election-map-surface svg'), seats = root.querySelector('[data-map-seats]'), status = root.querySelector('[data-map-status]');
         const selection = root.querySelector('[data-map-selection]'), legend = root.querySelector('[data-map-legend]');
@@ -255,6 +305,7 @@
         const ordered=[...records].sort((a,b)=>a.name.localeCompare(b.name));
         ordered.forEach(r=>{const option=document.createElement('option');option.value=r.id;option.textContent=focusMode?r.name:recordText(r);option.selected=selected(r);seats.append(option);});
         seats.disabled=!records.length;seats.addEventListener('change',()=>{const r=records.find(r=>r.id===seats.value),url=r&&seatUrl(r);if(url)location.assign(url);});
+        mountStateFilters(root, features, matches, paths, records, seats);
         if(explorer){
             const entries=new Map();
             const nativeOptions=new Map(Array.from(seats.options,option=>[option.value,option]));
@@ -279,7 +330,7 @@
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
         }else{
             const parties=[...new Set(records.map(r=>r.party).filter(Boolean))].sort();
-            root.closest('.state-map-analysis')?.querySelectorAll('[data-winning-party]').forEach(bar=>{
+            root.closest('.state-election-section')?.querySelectorAll('[data-winning-party]').forEach(bar=>{
                 bar.style.setProperty('--seat-bar','color-mix(in srgb,'+partyColor(bar.dataset.winningParty,colors)+' 72%, #214239)');
             });
             [...parties,null].forEach(party=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=partyColor(party,colors);swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(party||'Result not available'));legend.append(item);});
