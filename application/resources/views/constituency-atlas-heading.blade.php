@@ -22,9 +22,9 @@
 @else<details class="atlas-other"><summary>{{ $text }}</summary><form method="get" action="{{ route('constituency.overview') }}">
 <input type="hidden" name="kind" value="{{ $type }}"><input type="hidden" name="state" value="{{ $state }}"><input type="hidden" name="lang" value="{{ app()->getLocale() }}">
 @php
-$availableNames=$opposite->isNotEmpty()?$opposite->pluck('name'):\Illuminate\Support\Facades\Cache::remember('atlas-options:'.$type.':'.$state,3600,fn()=>\Illuminate\Support\Facades\DB::table('historical_constituency_index')->where('kind',$type)->whereRaw(\App\Services\ElectionPlaceIdentity::stateSql().' = ?',[mb_strtolower($state)])->distinct()->orderBy('constituency_name')->pluck('constituency_name'));
+$availableNames=$opposite->isNotEmpty()?$opposite->pluck('name')->all():\Illuminate\Support\Facades\Cache::remember('atlas-options-list-v2:'.$type.':'.$state,3600,fn()=>\Illuminate\Support\Facades\DB::table('historical_constituency_index')->where('kind',$type)->whereRaw(\App\Services\ElectionPlaceIdentity::stateSql().' = ?',[mb_strtolower($state)])->distinct()->orderBy('constituency_name')->pluck('constituency_name')->all());
 @endphp
-@if($availableNames->isNotEmpty())<label>{{ $text }} · {{ $state }} <select name="name" required><option value="">{{ $tr('Choose a constituency','निर्वाचन क्षेत्र चुनें') }}</option>@foreach($availableNames as $seatName)<option value="{{ $seatName }}">{{ $seatName }}</option>@endforeach</select></label><button>{{ $tr('Show','देखें') }}</button>@else<p>{{ $tr('No election records for this chamber in the selected state.','इस राज्य में इस सदन का चुनाव रिकॉर्ड उपलब्ध नहीं है।') }}</p>@endif</form></details>@endif
+@if($availableNames)<label>{{ $text }} · {{ $state }} <select name="name" required><option value="">{{ $tr('Choose a constituency','निर्वाचन क्षेत्र चुनें') }}</option>@foreach($availableNames as $seatName)<option value="{{ $seatName }}">{{ $seatName }}</option>@endforeach</select></label><button>{{ $tr('Show','देखें') }}</button>@else<p>{{ $tr('No election records for this chamber in the selected state.','इस राज्य में इस सदन का चुनाव रिकॉर्ड उपलब्ध नहीं है।') }}</p>@endif</form></details>@endif
 @endforeach
 </nav>
 <form method="get" action="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$state,'name'=>$name]) }}" data-atlas-year>
