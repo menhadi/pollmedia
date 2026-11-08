@@ -18,6 +18,29 @@
   new MutationObserver(records=>{for(const record of records){if(record.type==='characterData')apply(record.target);else for(const node of record.addedNodes)apply(node);}}).observe(localeRoot,{childList:true,subtree:true,characterData:true});
  }
  const header=document.querySelector('.public-header'),toggle=header?.querySelector('.public-menu-toggle'),nav=header?.querySelector('#public-navigation');
+ const searchToggle=header?.querySelector('.mp-search-toggle');
+ if(searchToggle){
+  const search=document.getElementById(searchToggle.getAttribute('aria-controls'));
+  const small=matchMedia('(max-width:700px)');
+  const setSearch=open=>{
+   searchToggle.hidden=!small.matches;
+   search.hidden=small.matches&&!open;
+   searchToggle.setAttribute('aria-expanded',String(small.matches&&open));
+  };
+  setSearch(false);
+  small.addEventListener('change',()=>setSearch(false));
+  searchToggle.addEventListener('click',()=>{
+   setSearch(search.hidden);
+   if(!search.hidden)search.querySelector('input')?.focus();
+  });
+  search.addEventListener('keydown',event=>{
+   if(event.key==='Escape'&&small.matches){
+    event.stopPropagation();
+    setSearch(false);
+    searchToggle.focus();
+   }
+  });
+ }
  if(toggle&&nav){
   const mobile=matchMedia('(max-width:1100px)');
   const setOpen=open=>{nav.hidden=mobile.matches&&!open;toggle.setAttribute('aria-expanded',String(open));};

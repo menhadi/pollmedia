@@ -61,3 +61,19 @@
 
 /* One alignment baseline and room for every desktop navigation item. */
 @media(min-width:1251px){.public-header.site-header{grid-template-columns:auto minmax(220px,520px) max-content max-content!important;justify-content:space-between;column-gap:18px!important;align-items:center!important}.public-header.site-header>.header-search-wrap{width:100%!important;max-width:520px!important}.public-header.site-header #public-navigation{align-items:center!important}.public-header.site-header #public-navigation>a,.public-header.site-header #public-navigation>a.public-account-link,.public-header.site-header #public-navigation>.topic-menu>summary,.public-header.site-header .language-switch a{display:inline-flex!important;align-items:center!important;justify-content:center;min-height:44px!important;height:44px!important;margin:0!important;padding-top:8px!important;padding-bottom:8px!important;box-sizing:border-box;line-height:1.4!important}.public-header.site-header .language-switch{align-items:center!important;min-height:44px}.public-header.site-header .topic-menu{align-self:center!important}}
+
+/* Keep the place header on one row until the visitor opens search. */
+.public-header[data-compact-place-header]>.mp-search-toggle[hidden]{display:none!important}
+@media(max-width:700px){
+.public-header.site-header[data-compact-place-header]:has(.mp-search-toggle:not([hidden])){grid-template-columns:minmax(0,1fr) auto auto auto!important;align-items:center!important;gap:4px!important}
+.public-header.site-header[data-compact-place-header]>.mp-search-toggle{grid-column:2;grid-row:1;background:transparent;color:inherit;border:1px solid currentColor;border-radius:7px;min-height:40px;font:inherit;font-size:.82rem;padding:0 .45rem;cursor:pointer}
+.public-header.site-header[data-compact-place-header]:has(.mp-search-toggle:not([hidden]))>.language-switch{grid-column:3!important;grid-row:1!important}
+.public-header.site-header[data-compact-place-header]:has(.mp-search-toggle:not([hidden]))>.public-menu-toggle{grid-column:4!important;grid-row:1!important}
+.public-header.site-header[data-compact-place-header]>#mp-site-search[hidden]{display:none!important}
+}
+@media(max-width:380px){
+.public-header.site-header[data-compact-place-header]:has(.mp-search-toggle:not([hidden])){padding-inline:10px!important;column-gap:4px!important}
+.public-header.site-header[data-compact-place-header]>.brand .brand-mark{display:none!important}
+.public-header.site-header[data-compact-place-header]>.brand .brand-name{font-size:clamp(15px,5vw,19px)!important;line-height:1.2}
+.public-header.site-header[data-compact-place-header]>.brand img{width:100%!important;max-width:100%!important;height:auto!important}
+}
