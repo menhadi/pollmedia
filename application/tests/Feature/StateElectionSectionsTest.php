@@ -30,7 +30,7 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
         });
         $page = $this->get('/india/state/uttar-pradesh')->assertOk()
-            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'Vote share by party', 'class="state-atlas-map"', 'data-kind="pc"', 'Parliament Seat winner', 'id="pc-history"'], false)
+            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'Vote share by party', 'id="margin-summary-title"', 'class="state-atlas-map"', 'data-kind="pc"', 'Parliament Seat winner', 'id="pc-history"'], false)
             ->assertDontSee('id="ac-results"', false)->assertSee('Official report');
         $page->assertSee('data-map-party', false)->assertSee('data-map-query', false)
             ->assertSee('Explore Census')->assertDontSee('id="politics"', false)->assertDontSee('id="place-facts"', false)
@@ -59,6 +59,24 @@ class StateElectionSectionsTest extends TestCase
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha (PC) results')->assertDontSee('2022 Assembly (AC) results')->assertSee('data-year="2019"', false)->assertDontSee('data-year="2022"', false)->assertSee('edition='.str_repeat('b', 24), false);
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('c', 24))->assertNotFound();
         $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 Assembly (AC) results');
+    }
+
+    public function test_margin_table_keeps_zero_and_tied_seats_and_excludes_unavailable_or_uncontested_results(): void
+    {
+        $rows = collect([['North', 0], ['South', 0], ['East', 5], ['West', 12], ['Missing', null], ['Unopposed', 99]])
+            ->map(fn ($pair, $code) => ['name' => $pair[0], 'code' => $code + 1, 'result' => ['margin' => $pair[1], 'uncontested' => $pair[0] === 'Unopposed']]);
+        $data = ['seatRows' => $rows, 'election' => ['label' => '2024', 'tables' => 6], 'title' => 'Gujarat',
+            'sectionLabel' => 'Lok Sabha (PC)', 'kind' => 'pc', 'edition' => str_repeat('a', 24)];
+        $html = view('state-winning-margins', $data)->render();
+        $doc = HTMLDocument::createFromString($html, LIBXML_NOERROR, 'UTF-8');
+        $this->assertStringContainsString('4 of 6 constituencies', $doc->documentElement->textContent);
+        $cells = fn ($n) => $doc->querySelector('tbody tr:nth-child('.$n.') td')->textContent;
+        $this->assertSame(['12', '0', '2.5', '4.3'], array_map($cells, range(1, 4)));
+        $this->assertSame(['West', 'North', 'South'], array_map(fn ($a) => $a->textContent, iterator_to_array($doc->querySelectorAll('tbody a'))));
+        $data['seatRows'] = $rows->slice(4);
+        $empty = view('state-winning-margins', $data)->render();
+        $this->assertStringContainsString('0 of 6 constituencies', $empty);
+        $this->assertStringNotContainsString('<table>', $empty);
     }
 
     public function test_long_state_tables_send_twenty_rows_then_return_the_requested_table(): void

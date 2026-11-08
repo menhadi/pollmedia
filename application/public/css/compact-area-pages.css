@@ -180,3 +180,8 @@ body main:is(.compact-election,.pm-state-census) table[data-state-table] thead .
 body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>:is(th,td),
 body main:is(.compact-election,.pm-state-census) table[data-state-table] tr>[data-number]{text-align:left!important}
 body main:is(.compact-election,.pm-state-census) table[data-state-table] thead th>button{justify-content:flex-start!important;text-align:left!important}
+
+body .compact-election .landing-controls .landing-switch{width:max-content;max-width:100%}
+body .compact-election .landing-controls .landing-switch a{flex:0 0 auto;white-space:nowrap}
+.compact-election .state-margin-summary table{width:100%;min-width:0;table-layout:auto}
+.compact-election .state-margin-summary :is(th,td){white-space:normal;overflow-wrap:anywhere}

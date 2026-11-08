@@ -13,7 +13,7 @@
 <div class="state-title-row"><h1>{{ $title }} elections</h1>
 
 </div>
-<div class="landing-controls"><label>State or union territory<select data-go-url>@foreach($states as $item)<option value="{{ route('states.show',['state'=>$item['slug'],'election'=>$kind]) }}" @selected($item['slug']===$state)>{{ $item['name'] }}</option>@endforeach</select></label>
+<div class="landing-controls"><label>{{ app()->getLocale()==='hi'?'राज्य / यूटी':'State / UT' }}<select data-go-url>@foreach($states as $item)<option value="{{ route('states.show',['state'=>$item['slug'],'election'=>$kind]) }}" @selected($item['slug']===$state)>{{ $item['name'] }}</option>@endforeach</select></label>
 <nav class="landing-switch" aria-label="Election type">@foreach(['pc'=>'Lok Sabha (PC)','ac'=>'Assembly (AC)'] as $key=>$name)<a href="{{ route('states.show',['state'=>$state,'election'=>$key]) }}" @if($key===$kind) aria-current="page" @endif>{{ $name }}</a>@endforeach</nav>
 <form data-manual-submit  class="landing-year" method="get" action="{{ route('states.show',['state'=>$state]) }}#{{ $kind }}-results"><input type="hidden" name="election" value="{{ $kind }}"><input type="hidden" name="{{ $kind==='pc'?'ac_edition':'pc_edition' }}" value="{{ $electionSections[$kind==='pc'?'ac':'pc']['edition'] }}"><label for="{{ $kind }}-edition">Election year</label><div><select data-submit-choice id="{{ $kind }}-edition" name="{{ $kind }}_edition" @disabled(!$history)>@forelse($history as $row)<option value="{{ $row['id'] }}" @selected($edition===$row['id'])>{{ $row['label'] }}</option>@empty<option>No available election years</option>@endforelse</select><button @disabled(!$history)>Show results</button></div></form>
 </div></header>
