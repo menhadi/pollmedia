@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Services\HistoricalElectionAnalytics;
-use App\Services\PlaceFactTables;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -11,13 +10,6 @@ use Tests\TestCase;
 class StateElectionSectionsTest extends TestCase
 {
     use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->mock(PlaceFactTables::class)
-            ->shouldReceive('state')->andReturn(['name' => 'State', 'sections' => []]);
-    }
 
     public function test_sections_keep_histories_and_year_selections_separate(): void
     {
@@ -32,8 +24,11 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
         });
         $page = $this->get('/india/state/uttar-pradesh')->assertOk()
-            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'class="state-atlas-map"', 'data-kind="pc"', 'Parliament Seat winner', 'id="pc-history"'], false)
+            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'Vote share by party', 'class="state-atlas-map"', 'data-kind="pc"', 'Parliament Seat winner', 'id="pc-history"'], false)
             ->assertDontSee('id="ac-results"', false)->assertSee('Official report');
+        $page->assertSee('data-map-party', false)->assertSee('data-map-query', false)
+            ->assertSee('Explore Census')->assertDontSee('id="politics"', false)->assertDontSee('id="place-facts"', false)
+            ->assertDontSee('id="census-places"', false)->assertDontSee('data-map-village-link', false);
         $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
             ->assertSee('data-kind="ac"', false)->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);
         foreach (['pc' => 'Lok Sabha', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {

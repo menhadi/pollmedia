@@ -16,6 +16,18 @@
 <section class="election-map" data-election-map data-mode="{{ $mapMode ?? 'results' }}" data-kind="{{ $mapKind }}" data-labels="{{ ($mapLabels ?? false) ? 'true' : 'false' }}" data-year="{{ $isLocator ? '' : ($mapYear ?? '') }}" data-source="{{ asset('maps/electoral/'.$mapFile) }}?v={{ substr($mapHash,0,12) }}" data-results="{{ route('elections.maps.results',$mapContext) }}" data-state="{{ $mapState['name'] ?? '' }}" data-selected="{{ $mapSelectedName ?? '' }}" data-selected-code="{{ $mapSelectedCode ?? '' }}" data-finder="{{ route('elections.constituencies') }}">
 <div class="election-map-heading"><h3>{{ $mapState['name'] ?? 'India' }} · {{ $mapKind==='pc'?'Lok Sabha (PC)':'Assembly' }} map</h3>@unless($isLocator)<span>{{ $mapYear ?? 'Latest available results by state' }}</span>@endunless</div>
 @if($mapLabels ?? false)<p class="election-map-guide">Explore {{ $mapKind==='pc'?'Lok Sabha (PC)':'Assembly' }} constituencies · Hover for a name, click to see results.</p>@endif
+@if(!empty($stateMapFilters))
+<div class="state-map-layout">
+<div class="election-map-surface"><svg role="group" aria-label="{{ $mapState['name'] ?? 'India' }} {{ strtoupper($mapKind) }} constituency map" viewBox="0 0 600 600"></svg></div>
+<div class="election-map-tooltip" data-map-tooltip role="tooltip" hidden></div>
+<div class="state-map-controls">
+<h4>{{ app()->getLocale()==='hi'?'मानचित्र फ़िल्टर':'Map filters' }}</h4>
+<div class="state-map-fields" data-state-map-filters hidden>
+@if(!$isLocator)<label>{{ app()->getLocale()==='hi'?'विजेता दल':'Winning party' }}<select data-map-party><option value="">{{ app()->getLocale()==='hi'?'सभी दल':'All parties' }}</option></select></label>@endif
+<label>{{ app()->getLocale()==='hi'?'निर्वाचन क्षेत्र खोजें':'Find a constituency' }}<input type="search" data-map-query autocomplete="off" placeholder="{{ app()->getLocale()==='hi'?'नाम लिखें':'Type a seat name' }}"></label>
+<div class="map-filter-feedback"><span data-filter-count role="status"></span><button type="button" data-clear-filters>{{ app()->getLocale()==='hi'?'फ़िल्टर हटाएँ':'Clear filters' }}</button></div>
+</div>
+@endif
 @if(!empty($atlasExplorer))
 <script type="application/json" data-linked-seats>{!! json_encode($atlasLinkedSeats??[],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
 <div class="atlas-map-filter" data-map-filter hidden>
@@ -25,14 +37,18 @@
 <ul id="atlas-options-{{ $mapKind }}" role="listbox" aria-label="{{ $mapKind==='pc'?$tr('Lok Sabha seats','लोक सभा क्षेत्र'):$tr('Assembly seats','विधान सभा क्षेत्र') }}" data-seat-options hidden></ul>
 <p data-seat-no-match role="status" hidden>{{ $tr('No matching constituency','कोई मिलान नहीं मिला') }}</p></div>
 @endif
-<label class="election-map-search" @if($isLocator && empty($atlasExplorer)) hidden @endif>Open a constituency<select data-map-seats disabled><option>Loading constituencies…</option></select></label>
+<label class="election-map-search" @if($isLocator && empty($atlasExplorer) && empty($stateMapFilters)) hidden @endif>Open a constituency<select data-map-seats disabled><option>Loading constituencies…</option></select></label>
 <div class="election-map-tools" aria-label="Map controls"><button type="button" data-map-zoom="in" aria-label="Zoom in">+</button><button type="button" data-map-zoom="out" aria-label="Zoom out">−</button><button type="button" data-map-zoom="reset">Reset map</button></div>
+@empty($stateMapFilters)
 <div class="election-map-surface"><svg role="group" aria-label="{{ $mapState['name'] ?? 'India' }} {{ strtoupper($mapKind) }} constituency map" viewBox="0 0 600 600"></svg></div>
 <div class="election-map-tooltip" data-map-tooltip role="tooltip" hidden></div>
+@endempty
 <p data-map-status role="status">Loading the map…</p>
 <div data-map-legend @if($isLocator) hidden @endif class="election-map-legend" aria-label="Map colours"></div>
 <div data-map-selection @if($isLocator) hidden @endif class="election-map-selection" aria-live="polite">Select a constituency to open its election history.</div>
-@if(!empty($atlasExplorer))
+@if(!empty($stateMapFilters))
+</div></div>
+@elseif(!empty($atlasExplorer))
 <a data-map-village-link href="{{ route('electoral-villages.index',array_filter(['state'=>$mapState['name']??null,'kind'=>$mapKind,'name'=>$mapSelectedName?:null,'lang'=>app()->getLocale()])) }}">{{ $mapSelectedName?$tr('Explore villages in ','गाँव देखें · ').$mapSelectedName:$tr('Explore village polygons','गाँवों का नक्शा देखें') }} →</a>
 @else<a data-map-village-link href="{{ route('electoral-villages.index') }}">Explore constituency village polygons across India →</a>@endif
 <noscript><a href="{{ route('elections.constituencies',['kind'=>$mapKind,'state'=>$mapState['name']??null]) }}">Browse constituency records →</a></noscript>
