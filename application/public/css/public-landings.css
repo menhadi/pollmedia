@@ -74,3 +74,7 @@ body .landing-state .table-scroll thead th{background:var(--site-header_backgrou
 body .landing-state .table-scroll tbody tr:nth-child(even){background:var(--atlas-tint)}
 @media(min-width:900px){.state-atlas-lead{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.state-party-analysis:has(>.landing-bars){grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}}
 @media(max-width:700px){body .landing-state .state-constituency-results .table-scroll table{min-width:32rem}body .landing-state .landing-intro h1{font-size:2.15rem}.home-map-panel .home-section-heading{display:flex;gap:6px;flex-wrap:wrap}}
+
+[data-party-list] tr[hidden],.landing-pager button[hidden]{display:none!important}
+.state-party-analysis .landing-pager{align-items:center;gap:6px}
+.state-party-analysis .landing-pager button{padding:6px 10px}

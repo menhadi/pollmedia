@@ -1,0 +1,1 @@
+<div class="landing-pager" hidden data-seat-tools><button type="button" data-step="-1">Previous</button><span role="status"></span><button type="button" data-step="1">Next</button><button type="button" data-show-all aria-pressed="false">{{ app()->getLocale()==='hi'?'सभी दिखाएँ':'Show all' }}</button></div>
