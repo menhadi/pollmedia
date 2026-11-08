@@ -20,7 +20,7 @@ if(root){
 
     const savedKey='pollmedia-my-place-v2',remember=root.querySelector('.hub-remember');
 
-    const present=()=>{const heading=result.querySelector('h2');if(heading){root.dataset.selected='true';root.querySelector('h1').textContent=t('My Place','मेरा क्षेत्र');const placeLabel=root.querySelector('[data-selected-place-label]');if(placeLabel)placeLabel.textContent=heading.dataset.placeHeading||heading.textContent;document.title=t('My Place','मेरा क्षेत्र')+' · '+(heading.dataset.placeHeading||heading.textContent)+' | Pollmedia';form.hidden=false;if(remember)remember.hidden=false;root.querySelector('[data-manual]').textContent=t('Change place','क्षेत्र बदलें');}};
+    const present=()=>{const heading=result.querySelector('h2');if(heading){root.dataset.selected='true';root.querySelector('h1').textContent=t('My Place','मेरा क्षेत्र');const placeLabel=root.querySelector('[data-selected-place-label]');if(placeLabel)placeLabel.textContent=heading.dataset.placeHeading||heading.textContent;document.title=t('My Place','मेरा क्षेत्र')+' · '+(heading.dataset.placeHeading||heading.textContent)+' | Pollmedia';form.hidden=Boolean(result.querySelector('[data-my-place-compact]'));if(remember)remember.hidden=false;root.querySelector('[data-manual]').textContent=t('Change place','क्षेत्र बदलें');}};
 
     const message=text=>{status.textContent=text;};
 
@@ -78,7 +78,7 @@ if(root){
 
     form.addEventListener('place-error',event=>message(event.detail));
 
-    root.querySelector('[data-manual]').addEventListener('click',async()=>{interacted=true;++pending;const version=++locationVersion;locationRequest?.abort();root.querySelector('[data-detect]').disabled=false;form.hidden=false;if(remember)remember.hidden=false;choices.replaceChildren();message(t('Choose your state, district and village.','अपना राज्य, जिला और गाँव चुनें।'));try{const ready=hierarchy||await hierarchyReady;if(version!==locationVersion)return;if(detectedPlace){await ready.set(detectedPlace);detectedPlace=null;}if(version===locationVersion)ready.fields.state.focus();}catch(error){if(version===locationVersion)message(error.message);}});
+    root.querySelector('[data-manual]').addEventListener('click',async()=>{interacted=true;++pending;const version=++locationVersion;locationRequest?.abort();root.querySelector('[data-detect]').disabled=false;form.hidden=false;if(remember)remember.hidden=false;choices.replaceChildren();message(t('Choose your state, district and village.','अपना राज्य, जिला और गाँव चुनें।'));try{const ready=hierarchy||await ensureHierarchy();if(version!==locationVersion)return;if(detectedPlace){await ready.set(detectedPlace);detectedPlace=null;}if(version===locationVersion)ready.fields.state.focus();}catch(error){if(version===locationVersion)message(error.message);}});
 
     const applyLocation=async(choice,version)=>{
 
@@ -166,9 +166,12 @@ if(root){
 
     const initial=JSON.parse(root.dataset.initial);
 
-    hierarchyReady=placeHierarchy(form,root.dataset.options,language,initial);
+    function ensureHierarchy(){
+        hierarchyReady??=placeHierarchy(form,root.dataset.options,language,initial).then(value=>{hierarchy=value;return value;}).catch(error=>{hierarchyReady=null;throw error;});
+        return hierarchyReady;
+    }
 
-    hierarchyReady.then(async value=>{
+    if(!result.querySelector('[data-my-place-compact]'))ensureHierarchy().then(async value=>{
 
         hierarchy=value;if(initial.state||interacted)return;
 
