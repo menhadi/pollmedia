@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CensusPlaceNavigation;
 use App\Services\ConstituencyUrls;
 use App\Services\ElectionGeographySummary;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\HistoricalElectionAnalytics;
 use App\Services\HomeElectionSummary;
 use App\Services\IndiaVillageMap;
+use App\Services\PlaceFactTables;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -92,7 +94,13 @@ class OverviewController extends Controller
                 ])->values()]);
             }
 
-            return view('state-election-dashboard', compact('title', 'state', 'stateSummary', 'states', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories', 'seatScopes', 'seatQueries', 'seatLatestYears', 'electionSections'));
+            $profile = app(CensusPlaceNavigation::class)->publishedState($state, 2011);
+            $language = app()->getLocale() === 'hi' ? ['lang' => 'hi'] : [];
+            $censusUrl = $profile
+                ? route('civic.state', ['state' => PlaceFactTables::stateSlug($profile->name)] + $language)
+                : route('civic.index', ['state' => $state, 'year' => 2011] + $language);
+
+            return view('state-election-dashboard', compact('censusUrl', 'title', 'state', 'stateSummary', 'states', 'kind', 'history', 'edition', 'election', 'party', 'partyOptions', 'seatQuery', 'seatDirectories', 'seatScopes', 'seatQueries', 'seatLatestYears', 'electionSections'));
         }
 
         abort(404);

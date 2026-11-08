@@ -109,3 +109,20 @@ body .compact-election .state-map-controls [hidden]{display:none!important}
 .state-map-layout .election-map-seat.is-filtered-out{opacity:.13;pointer-events:none}
 @media(max-width:700px){body .compact-election .state-party-comparison,.state-map-layout{grid-template-columns:minmax(0,1fr);gap:6px}.state-map-controls{padding:10px}body .compact-election .state-map-layout .election-map-surface svg{height:235px}body .compact-election .landing-links .state-census-button{margin-inline-start:0}}
 @media(pointer:coarse){body .compact-election .state-map-controls :is(input,select,button){min-height:44px}}
+
+body .compact-election .landing-intro .state-title-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 14px;width:100%;max-width:none;margin:3px 0 8px}
+body .compact-election .state-title-row h1{margin:0!important;font:600 clamp(1.65rem,3.1vw,2.55rem)/1.13 Georgia,serif!important;letter-spacing:-.035em;color:var(--area-ink)!important}
+body .compact-election .state-title-row a.state-census-button{display:inline-flex;align-items:center;min-height:42px;border-radius:6px;background:#165f50;color:white!important;font-weight:650;text-decoration:none;padding:8px 15px}
+body .compact-election .state-title-row a.state-census-button:hover{background:#104b40;text-decoration:underline}
+body .compact-election .state-title-row a.state-census-button:focus-visible{outline:2px solid var(--area-teal);outline-offset:3px}
+body .compact-election .history-line .table-scroll,body .compact-election .state-edition-history .table-scroll{max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-inline:contain}
+body .compact-election .history-line,body .compact-election .history-charts{min-width:0}
+body .compact-election .history-line table,body .compact-election .state-edition-history table{table-layout:auto;width:100%}
+body .compact-election .history-line .atlas-number,body .compact-election .state-edition-history td:not(:nth-child(2)){white-space:nowrap;font-variant-numeric:tabular-nums;text-align:end}
+body .compact-election .table-scroll :is(th,td){line-height:1.35}
+@media(max-width:700px){
+ body .compact-election .history-line .table-scroll table{min-width:max-content;width:100%}
+ body .compact-election .history-line .table-scroll :is(th,td){padding:6px 8px}
+ body .compact-election .state-edition-history .table-scroll table{min-width:52rem}
+ body .compact-election .state-title-row a.state-census-button{min-height:44px}
+}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CensusAreaPresentation;
+use App\Services\CensusPlaceNavigation;
 use App\Services\CensusProfileSummary;
 use App\Services\DistrictDashboardUrls;
 use App\Services\ElectoralVillageMap;
@@ -57,18 +58,15 @@ class CivicExplorerController extends Controller
     public function state(Request $request, string $state, ?int $census = null): View|RedirectResponse
     {
         $year = $census ?? 2011;
-        $rows = DB::table('census_catalogue_rows as c')->join('census_editions as e', 'e.id', '=', 'c.edition_id')
-            ->where('e.status', 'published')->where('e.year', $year)->where('c.level', 'STATE')->where('c.residence', 'Total')
-            ->select('c.*')->orderByRaw("CASE WHEN e.source_key LIKE 'india-basic-%-total' THEN 0 ELSE 1 END")->orderBy('c.id')->get()
-            ->filter(fn ($row) => PlaceFactTables::stateSlug($row->name) === $state || ($state === 'delhi' && (int) $row->state_code === 7));
-        abort_unless($rows->pluck('state_code')->unique()->count() === 1, 404);
+        $record = app(CensusPlaceNavigation::class)->publishedState($state, $year);
+        abort_unless($record, 404);
 
-        $canonicalSlug = PlaceFactTables::stateSlug($rows->first()->name);
+        $canonicalSlug = PlaceFactTables::stateSlug($record->name);
         if ($state !== $canonicalSlug) {
             return redirect()->route('civic.state', ['state' => $canonicalSlug, 'census' => $census] + $request->query(), 301);
         }
 
-        return $this->index($request, (int) $rows->first()->id);
+        return $this->index($request, (int) $record->id);
     }
 
     public function named(Request $request, string $kind, string $state, string $district, string $slug, int $record): View|RedirectResponse

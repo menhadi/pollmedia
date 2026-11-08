@@ -10,7 +10,9 @@
 @php($sectionLabel=$kind==='pc'?'Lok Sabha (PC)':'Assembly (AC)')
 <div class="state-atlas-filters">
 <header class="landing-intro"><nav aria-label="Breadcrumb"><a href="{{ route('home') }}">India</a> / Elections</nav>
-<h1>{{ $title }} elections</h1>
+<div class="state-title-row"><h1>{{ $title }} elections</h1>
+<a class="state-census-button" href="{{ $censusUrl }}">{{ app()->getLocale()==='hi'?'जनगणना देखें':'Explore Census' }} →</a>
+</div>
 <div class="landing-controls"><label>State or union territory<select data-go-url>@foreach($states as $item)<option value="{{ route('states.show',['state'=>$item['slug'],'election'=>$kind]) }}" @selected($item['slug']===$state)>{{ $item['name'] }}</option>@endforeach</select></label>
 <nav class="landing-switch" aria-label="Election type">@foreach(['pc'=>'Lok Sabha (PC)','ac'=>'Assembly (AC)'] as $key=>$name)<a href="{{ route('states.show',['state'=>$state,'election'=>$key]) }}" @if($key===$kind) aria-current="page" @endif>{{ $name }}</a>@endforeach</nav>
 <form data-manual-submit  class="landing-year" method="get" action="{{ route('states.show',['state'=>$state]) }}#{{ $kind }}-results"><input type="hidden" name="election" value="{{ $kind }}"><input type="hidden" name="{{ $kind==='pc'?'ac_edition':'pc_edition' }}" value="{{ $electionSections[$kind==='pc'?'ac':'pc']['edition'] }}"><label for="{{ $kind }}-edition">Election year</label><div><select data-submit-choice id="{{ $kind }}-edition" name="{{ $kind }}_edition" @disabled(!$history)>@forelse($history as $row)<option value="{{ $row['id'] }}" @selected($edition===$row['id'])>{{ $row['label'] }}</option>@empty<option>No available election years</option>@endforelse</select><button @disabled(!$history)>Show results</button></div></form>
@@ -18,8 +20,8 @@
 @include('state-results-summary')
 </div>
 
-<nav class="landing-links"><a href="#{{ $kind }}-constituency-results">Constituency results</a><a href="#{{ $kind }}-history">Election history</a><a class="state-census-button" href="{{ route('civic.index',array_filter(['state'=>$state,'year'=>2011,'lang'=>app()->getLocale()==='hi'?'hi':null])) }}">{{ app()->getLocale()==='hi'?'जनगणना देखें':'Explore Census' }} →</a></nav>
-<div id="election-analysis">@include('state-election-section')</div>
+<nav class="landing-links"><a href="#{{ $kind }}-constituency-results">Constituency results</a><a href="#{{ $kind }}-history">Election history</a></nav>
+<div id="election-analysis" data-local-data-browser>@include('state-election-section')</div>
 <section class="panel" id="state-evidence"><h2>{{ $title }} election coverage</h2><h3>Assembly archive</h3><a href="{{ route('elections.assembly-sources',['state'=>$title]) }}">Browse {{ $title }} Assembly sources</a><p><a href="{{ route('elections.assembly') }}">Assembly results</a> · <a href="{{ route('elections.history') }}">Lok Sabha results</a></p></section>
 <p><a href="{{ route('community.scope',['state'=>$state,'level'=>'STATE']) }}">Edit data</a> · <a href="{{ route('elections.by-election-results') }}">By-elections</a></p>
 @include('election-methodology',['isStateHistory'=>true])

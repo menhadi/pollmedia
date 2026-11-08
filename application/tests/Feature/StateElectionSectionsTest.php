@@ -29,6 +29,13 @@ class StateElectionSectionsTest extends TestCase
         $page->assertSee('data-map-party', false)->assertSee('data-map-query', false)
             ->assertSee('Explore Census')->assertDontSee('id="politics"', false)->assertDontSee('id="place-facts"', false)
             ->assertDontSee('id="census-places"', false)->assertDontSee('data-map-village-link', false);
+        $document = new \DOMDocument;
+        @$document->loadHTML($page->getContent());
+        $xpath = new \DOMXPath($document);
+        $this->assertSame(1, $xpath->query('//main//h1/parent::div/a[contains(@class,"state-census-button")]')->length);
+        $this->assertSame(0, $xpath->query('//main//details//table')->length);
+        $this->assertSame(2, $xpath->query('//main//table[contains(@class,"atlas-party-history") and thead/tr/th="Party" and thead/tr/th="Votes" and thead/tr/th="Share (%)"]')->length);
+        $this->assertSame(2, $xpath->query('//main//*[@data-default-all]')->length);
         $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
             ->assertSee('data-kind="ac"', false)->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);
         foreach (['pc' => 'Lok Sabha', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {
