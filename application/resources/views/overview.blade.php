@@ -7,7 +7,10 @@
 <script src="{{ asset('js/history-lines.js') }}?v={{ substr(hash_file('sha256',public_path('js/history-lines.js')),0,12) }}" defer></script>
 <script src="{{ asset('js/home-dashboard.js') }}?v={{ substr(hash_file('sha256',public_path('js/home-dashboard.js')),0,12) }}" defer></script>
 
-<link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}"></head><body class="election-ui home-dashboard pm-landing">@include('public-header')
+<link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}">@isset($catalogue)
+@include('india-map-assets')
+@endisset
+</head><body class="election-ui home-dashboard pm-landing">@include('public-header')
 @php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('india','India'); @endphp
 
 
@@ -24,8 +27,14 @@
     <div class="landing-finder" data-place-search><form role="search" action="{{ route('public.search') }}">
         <input aria-label="Search by place or PIN code" name="q" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="home-matches" autocomplete="off" type="search" required minlength="2" maxlength="100" placeholder="Place name or PIN code"><button aria-label="Search">@include('search-symbol')</button>
     </form><div id="home-matches" class="search-suggestions" role="listbox" hidden></div><span class="visually-hidden" role="status"></span></div></div>
-    <nav aria-label="Explore India"><a href="{{ route('my-place.index') }}">My Place <span>↗</span></a><a href="{{ route('india-map.index') }}">Explore the India map <span>↗</span></a></nav>
+    <nav aria-label="Explore India"><a href="{{ route('my-place.index') }}">My Place <span>↗</span></a><a href="{{ isset($catalogue) ? '#explore-india-map' : route('india-map.index') }}">Explore the India map <span>↗</span></a></nav>
 </header>
+@isset($catalogue)
+<section id="explore-india-map" class="india-explorer home-map-panel" aria-labelledby="home-map-heading">
+    <div class="home-section-heading"><h2 id="home-map-heading">Explore the India map</h2><a href="{{ route('india-map.index') }}">Open full map ↗</a></div>
+    @include('india-map-explorer', ['homeMap'=>true])
+</section>
+@endisset
 <div class="landing-duo">
     <article class="landing-card"><p class="landing-kicker">Lok Sabha (PC)</p><h2>National elections</h2>
     @if($parliament)<p class="landing-value">{{ $parliament['year'] }}</p><p>@if(isset($parliament['turnout'])){{ number_format($parliament['turnout'],2) }}% turnout · {{ number_format($parliament['turnout_count']) }} of {{ number_format($parliament['tables']) }} constituencies with comparable figures.@endif</p>@endif
