@@ -126,6 +126,17 @@ class ConstituencyOverviewTest extends TestCase
             $this->assertSame($edition, $xpath->evaluate('string(//select[@id="edition"]/option[@selected]/@value)'));
             $maps = $xpath->query('//div[@class="atlas-secondary"]/following-sibling::section[contains(@class,"atlas-state-explorers")]//*[@data-election-map]');
             $this->assertSame(2, $maps->length);
+            $partyTables = $xpath->query('//table[contains(@class,"atlas-party-history")]');
+            $this->assertCount(2, $partyTables);
+            foreach ([4, 5] as $index => $columns) {
+                $table = $partyTables->item($index);
+                $this->assertCount($columns, $xpath->query('./thead/tr/th', $table));
+                foreach ($xpath->query('./tbody/tr', $table) as $tr) {
+                    $this->assertCount($columns, $xpath->query('./th|./td', $tr));
+                }
+            }
+            $this->assertStringContainsString('Lok Sabha (PC)', $xpath->evaluate('string(//h1)'));
+
             $this->assertSame('pc', $maps->item(0)->getAttribute('data-kind'));
             $this->assertSame('ac', $maps->item(1)->getAttribute('data-kind'));
             $this->assertSame('', $maps->item(1)->getAttribute('data-selected'));

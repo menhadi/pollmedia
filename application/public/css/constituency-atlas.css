@@ -5,7 +5,7 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .atlas-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;padding:16px 0}.atlas-stats>div{padding:0 7%;border-inline-start:1px solid var(--atlas-rule)}.atlas-stats>div:first-child{padding:0;border:0}.atlas-stats dt{color:var(--atlas-muted);font-size:.83rem}.atlas-stats dd{margin:3px 0 0;font:600 clamp(1.16rem,2.6vw,1.65rem) Georgia,serif}
 .atlas-region{padding:16px 0;border-block:1px solid var(--atlas-rule)}.atlas-map-frame{background:var(--atlas-tint);border-radius:6px;text-align:center}.atlas-map-frame svg{width:min(100%,390px);height:auto;vertical-align:middle}.atlas-map-frame text{font:700 12px system-ui;fill:var(--atlas-ink);stroke:var(--atlas-paper);stroke-width:3;paint-order:stroke}.atlas-region ul{columns:2;padding-inline-start:1.15rem;margin:.4rem 0}.atlas-region:has(.atlas-map-frame[hidden]){display:block}.atlas-region table{width:100%;border-collapse:collapse}.atlas-region :is(th,td){padding:.3rem;text-align:start;border-bottom:1px solid var(--atlas-rule)}.atlas-map-explorer>summary,.seat-atlas details>summary{cursor:pointer;padding:9px 0;color:var(--chart-series-1);font-weight:650}
 .seat-atlas .panel,.seat-atlas .card,.seat-atlas .history-line{min-width:0;margin:16px 0;color:var(--atlas-ink)}.atlas-analysis{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px}.atlas-analysis table,.seat-atlas .table-scroll table{width:100%;border-collapse:collapse}.seat-atlas .table-scroll{max-width:100%;overflow-x:auto}.atlas-analysis .trend-fill{background:var(--chart-series-1)}.atlas-villages{columns:4;list-style:none;padding:0;font-size:.9rem}.atlas-villages li{break-inside:avoid;padding:3px 0}.atlas-secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.atlas-secondary>section:only-child{grid-column:1/-1}.seat-atlas .atlas-reference-links{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0}.seat-atlas .history-plot{min-width:0}.seat-atlas .atlas-registry{margin-top:22px}.seat-atlas .atlas-history-heading{margin-top:24px}
-@media(max-width:700px){.atlas-result,.atlas-region,.atlas-analysis,.atlas-secondary{grid-template-columns:minmax(0,1fr);gap:10px}.atlas-controls{justify-content:flex-start;gap:6px 18px}.atlas-controls form{min-height:44px}.atlas-villages{columns:2}.seat-atlas .panel,.seat-atlas .card,.seat-atlas .history-line{padding:12px}.seat-atlas table{font-size:.85rem}.seat-atlas .table-scroll table{min-width:0;table-layout:fixed}.seat-atlas .table-scroll :is(td,th){padding:6px 4px;overflow-wrap:anywhere}.seat-atlas .history-controls,.seat-atlas .history-legend{display:flex;flex-wrap:wrap;gap:6px}.seat-atlas .election-map-surface{max-height:390px}.seat-atlas #history table,.seat-atlas #history tbody{display:block}.seat-atlas #history thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.seat-atlas #history tbody tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:7px 0;border-bottom:1px solid var(--atlas-rule)}.seat-atlas #history tbody :is(th,td){border:0}.seat-atlas #history tbody td:last-child{grid-column:1/-1}.seat-atlas #history tbody td[data-col]::before{content:attr(data-col);display:block;font-size:.72rem;color:var(--atlas-muted)}}
+@media(max-width:700px){.atlas-result,.atlas-region,.atlas-analysis,.atlas-secondary{grid-template-columns:minmax(0,1fr);gap:10px}.atlas-controls{justify-content:flex-start;gap:6px 18px}.atlas-controls form{min-height:44px}.atlas-villages{columns:2}.seat-atlas .panel,.seat-atlas .card,.seat-atlas .history-line{padding:12px}.seat-atlas table{font-size:.85rem}.seat-atlas .table-scroll table{min-width:0;table-layout:fixed}.seat-atlas .table-scroll :is(td,th){padding:6px 4px;overflow-wrap:anywhere}.seat-atlas .history-controls,.seat-atlas .history-legend{display:flex;flex-wrap:wrap;gap:6px}.seat-atlas .election-map-surface{max-height:390px}}
 
 .seat-atlas .atlas-selected-year>td,.seat-atlas .atlas-selected-year>th{background:var(--atlas-tint)!important}.atlas-party-shares{width:100%;border-collapse:collapse}.atlas-party-shares :is(th,td){border-bottom:1px solid var(--atlas-rule);padding:6px;text-align:start}.atlas-party-shares td{font-variant-numeric:tabular-nums}.atlas-party-shares .atlas-track{display:block}.atlas-secondary nav a{display:inline-flex;gap:4px;flex-wrap:wrap;align-items:center;margin:4px 12px 4px 0}
 .seat-atlas .table-scroll{max-height:none}
@@ -15,7 +15,7 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .seat-atlas .atlas-map-explorer{margin:16px 0 24px}.atlas-map-explorer h2{margin-bottom:4px}.atlas-map-explorer .election-map{margin:8px 0}.atlas-map-explorer .election-map-surface{width:100%;height:clamp(300px,42vw,475px)}.atlas-map-explorer .election-map-surface svg{height:100%;width:100%}
 .atlas-map-explorer .election-map[data-mode="focus"] .election-map-seat{fill:var(--locator-fill)!important}
 .atlas-map-explorer .election-map-seat:is(.is-selected,:focus-visible),.atlas-map-frame a:is(:hover,:focus-visible) path{stroke:#152f36!important;stroke-width:2.4!important}
-.atlas-map-frame a{cursor:pointer}.atlas-region th a{text-decoration:underline;text-underline-offset:.17em}.seat-atlas #history tbody td:last-child{grid-column:auto}
+.atlas-map-frame a{cursor:pointer}.atlas-region th a{text-decoration:underline;text-underline-offset:.17em}
 @media(min-width:800px){.atlas-map-explorer .election-map{display:grid;grid-template-columns:minmax(0,2fr) minmax(190px,1fr);gap:6px 20px;align-items:start}.atlas-map-explorer .election-map-surface{grid-column:1;grid-row:1 / span 9}.atlas-map-explorer .election-map>:not(.election-map-surface):not(.election-map-tooltip){grid-column:2}}
 
 .atlas-map-explorer .election-map-heading{display:none}
@@ -53,3 +53,39 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .atlas-map-pair .election-map-seat.seat-filter-muted{opacity:.25}
 @media(max-width:700px){.seat-atlas .atlas-map-pair>.atlas-map-explorer{padding:12px}.atlas-map-pair .election-map-tools button{min-width:44px;min-height:44px}}
 
+
+/* Preserve a real column for each field. Only the table viewport scrolls. */
+.seat-atlas :is(.history-line,#history,#year-detail) .table-scroll{display:block;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain}
+.seat-atlas .atlas-table-scroll:focus-visible{outline:2px solid var(--site-primary);outline-offset:1px}
+.seat-atlas :is(.history-line,#history,#year-detail) .table-scroll table{display:table;table-layout:auto!important;width:100%;max-width:none}
+.seat-atlas :is(.history-line,#history,#year-detail) .table-scroll :is(td,th){white-space:normal!important;overflow-wrap:normal;word-break:normal;vertical-align:middle}
+.seat-atlas :is(.history-line,#history,#year-detail) .table-scroll thead th{position:static;line-height:1.3}
+.seat-atlas :is(.history-line,#history,#year-detail) .table-scroll .table-sort{display:inline-flex;align-items:center;justify-content:flex-start;min-width:0;max-width:100%;white-space:normal;gap:.28em}
+.seat-atlas :is(.history-line,#history,#year-detail) .table-sort::after{content:none!important}
+.seat-atlas .table-sort-indicator{flex:none}
+.seat-atlas .atlas-party-history .atlas-number,.seat-atlas #history tbody :is(td:nth-child(4),td:nth-child(5),td:nth-child(6)){white-space:nowrap!important;font-variant-numeric:tabular-nums}
+.seat-atlas .atlas-party-history .atlas-number{text-align:end}
+.seat-atlas .atlas-party-history .atlas-year-start>*{border-top:1px solid var(--atlas-rule)}
+.seat-atlas #history .table-scroll :is(td,th)::before{content:none}
+.seat-atlas #history td:nth-child(2){min-width:10em;max-width:23em}
+.seat-atlas .atlas-map-pair .election-map-surface,.seat-atlas .atlas-map-pair .election-map-surface svg{background:#eaf0ef}
+.seat-atlas .atlas-map-pair .election-map[data-mode="focus"] .election-map-seat{stroke:#183444;stroke-width:.75}
+.seat-atlas .atlas-map-pair .election-map[data-mode="focus"] .election-map-seat:is(:hover,:focus-visible,.is-selected){stroke:#183444!important;stroke-width:2!important}
+@media(max-width:700px){
+.seat-atlas :is(.history-line,#history,#year-detail) .table-scroll :is(td,th){padding:.48rem .4rem!important}
+.seat-atlas #history .table-scroll table{min-width:43rem}
+.seat-atlas .history-line .table-scroll table{min-width:22rem}
+.seat-atlas .history-line .table-scroll table.atlas-party-history{min-width:20rem}
+.seat-atlas .history-line .table-scroll table[data-ranks]{min-width:24rem}
+.seat-atlas .atlas-table-scroll tbody th:first-child{position:sticky;left:0;z-index:1;background:var(--atlas-paper);white-space:nowrap!important}
+.seat-atlas .atlas-table-scroll thead th:first-child{position:sticky;left:0;z-index:2}
+}
+
+
+.seat-atlas .atlas-scroll-hint{margin:.25rem 0;font-size:.8rem;color:var(--atlas-muted)}.seat-atlas .atlas-scroll-hint[hidden]{display:none!important}
+.seat-atlas .atlas-region>div{min-width:0}.seat-atlas .atlas-region table{table-layout:fixed;max-width:100%}.seat-atlas .atlas-region :is(td,th,.table-sort,.table-sort>span:first-child){white-space:normal!important;overflow-wrap:anywhere;min-width:0}.seat-atlas .atlas-region .table-sort{width:100%;gap:.25rem;justify-content:start}
+@media(max-width:700px){
+.seat-atlas .history-charts .history-line{padding-inline:4px}
+.seat-atlas .history-line .table-scroll table.atlas-party-history:not([data-ranks]){min-width:0}
+.seat-atlas .atlas-party-history th .table-sort{padding-inline:1px!important;gap:2px}
+}

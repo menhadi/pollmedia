@@ -2,6 +2,19 @@
     const atlas = document.querySelector('[data-constituency-atlas]');
     if (!atlas) return;
 
+    for (const scroll of atlas.querySelectorAll('.atlas-table-scroll')) {
+        const hint=document.createElement('p');
+        hint.className='atlas-scroll-hint';
+        hint.textContent=document.documentElement.lang==='hi'?'और कॉलम देखने के लिए तालिका को बाएँ या दाएँ स्क्रॉल करें।':'Scroll sideways for more columns';
+        hint.hidden=true;scroll.before(hint);
+        const measure=()=>{hint.hidden=scroll.scrollWidth<=scroll.clientWidth+1;};
+        measure();
+        const observer=new ResizeObserver(measure);
+        observer.observe(scroll);
+        const table=scroll.querySelector('table');
+        if(table)observer.observe(table);
+    }
+
     const form = atlas.querySelector('[data-atlas-year]');
     form.querySelector('select').addEventListener('change', () => form.requestSubmit());
 
