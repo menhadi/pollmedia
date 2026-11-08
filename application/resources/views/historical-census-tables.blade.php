@@ -2,7 +2,7 @@
 @section('title', 'Historical Census source tables')
 @section('content')
 <h1>Historical Census source tables</h1>
-<p>Read collected official workbook tables and PDF candidate evidence. Choose a year, recorded area and source group, then a table or district. <a href="{{ route('census-catalogue.index') }}">Return to Census indicators</a>.</p>
+<p>Read collected official workbook tables and PDF candidate evidence. Choose a year, recorded area and source group, then a table or district. <a href="{{ \App\Services\CensusPlaceNavigation::catalogueUrl() }}">Return to Census indicators</a>.</p>
 <p class="notice">{{ $index['scope_note'] }} {{ $all->count() }} sources are available here; {{ count($index['pending']) }} catalogue entries are still awaiting collection or preparation. Missing entries do not mean zero population.</p>
 <form method="get" class="card filters" action="{{ route('census.source-tables') }}">
 <div><label for="year">Census year</label><select id="year" name="year"><option value="">All available years</option>@foreach($years as $year)<option value="{{ $year }}" @selected((string)($input['year'] ?? '') === (string)$year)>{{ $year }}</option>@endforeach</select></div>

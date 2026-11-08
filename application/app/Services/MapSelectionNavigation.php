@@ -47,7 +47,7 @@ class MapSelectionNavigation
                     continue;
                 }
                 $seen[$key] = true;
-                $links[] = ['label' => ($kind === 'pc' ? 'Lok Sabha (PC)' : 'Assembly (AC)').': '.$name.' · related constituency', 'url' => route('constituency.overview', ['state' => $s['name'], 'kind' => $kind, 'name' => $name])];
+                $links[] = ['label' => ($kind === 'pc' ? 'Lok Sabha (PC)' : 'Assembly (AC)').': '.$name.' · related constituency', 'url' => ConstituencyUrls::url(['state' => $s['name'], 'kind' => $kind, 'name' => $name])];
             }
         }
         $result['navigation'] = $links;

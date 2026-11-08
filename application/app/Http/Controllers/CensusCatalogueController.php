@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CensusCatalogue;
+use App\Services\CensusPlaceNavigation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +80,9 @@ class CensusCatalogueController extends Controller
         $rows = $base->when($input['level'] ?? null, fn ($q, $value) => $q->where('level', $value))
             ->when($input['residence'] ?? null, fn ($q, $value) => $q->where('residence', $value))
             ->orderBy('state_code')->orderBy('district_code')->orderBy('name')->orderBy('id')->paginate(50)->withQueryString();
+        if (! $admin) {
+            $rows->withPath(CensusPlaceNavigation::catalogueUrl());
+        }
         $runs = $admin ? DB::table('import_runs as r')->join('import_connectors as c', 'c.id', '=', 'r.import_connector_id')
             ->whereIn('r.status', ['needs_review', 'accepted'])->whereIn('r.source_url', collect(config('census-sources'))->where('archive_only', '!=', true)->pluck('url'))
             ->select('r.id', 'r.status', 'c.name')->orderByDesc('r.id')->get() : collect();

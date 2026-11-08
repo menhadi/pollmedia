@@ -63,8 +63,8 @@ class CivicExplorerController extends Controller
         abort_unless($record, 404);
 
         $canonicalSlug = PlaceFactTables::stateSlug($record->name);
-        if ($state !== $canonicalSlug) {
-            return redirect()->route('civic.state', ['state' => $canonicalSlug, 'census' => $census] + $request->query(), 301);
+        if ($state !== $canonicalSlug || $census === 2011) {
+            return redirect()->route('civic.state', ['state' => $canonicalSlug, 'census' => $census === 2011 ? null : $census] + $request->query(), 301);
         }
 
         return $this->index($request, (int) $record->id);
@@ -101,20 +101,16 @@ class CivicExplorerController extends Controller
         }
 
         if ($anchor && (int) $anchorEdition?->year === 2011 && ! isset($input['edition'])) {
-            if ($anchor->level === 'DISTRICT') {
+            if ($anchor->level === 'DISTRICT' && app(NamedPlaceUrls::class)->isDistrictOverview($anchor, $request->query())) {
                 $dashboard = app(DistrictDashboardUrls::class)->identity($anchor->state_code, $anchor->district_code);
                 if ($dashboard) {
-                    return redirect(url($dashboard['path']), 301);
+                    return redirect()->to(app(NamedPlaceUrls::class)->link(['record' => $anchor->id] + $request->query()), 301);
                 }
             }
             if (in_array($anchor->level, ['SUB-DISTRICT', 'SUBDISTRICT', 'TEHSIL'], true)) {
-                $identity = $this->codes($anchor);
-                $canonical = DB::table('census_catalogue_rows as c')->join('census_editions as e', 'e.id', '=', 'c.edition_id')
-                    ->where('e.status', 'published')->where('e.year', 2011)->where('c.state_code', $anchor->state_code)->where('c.district_code', $anchor->district_code)
-                    ->where('c.geography->Subdistt', $identity[2])->whereIn('c.level', ['SUB-DISTRICT', 'SUBDISTRICT', 'TEHSIL'])->where('c.residence', 'Total')
-                    ->orderByRaw("CASE WHEN e.source_key LIKE 'district-pca-2011-%' THEN 0 ELSE 1 END")->orderBy('c.id')->value('c.id');
+                $canonical = app(NamedPlaceUrls::class)->preferredSubdistrict($anchor);
                 if ($canonical && (int) $canonical !== (int) $anchor->id) {
-                    return redirect()->route('civic.place', ['record' => $canonical] + $request->except('edition'), 301);
+                    return redirect()->to(app(NamedPlaceUrls::class)->link(['record' => $canonical] + $request->except('edition')), 301);
                 }
             }
         }
@@ -163,7 +159,7 @@ class CivicExplorerController extends Controller
             }
             $candidate = $matches->firstWhere('residence', $input['residence'] ?? 'Total') ?? $matches->first();
             if ($candidate) {
-                return redirect()->route('civic.place', ['record' => $candidate->id] + $request->except('state', 'year'));
+                return redirect()->route('civic.state', ['state' => PlaceFactTables::stateSlug($candidate->name), 'census' => $year === 2011 ? null : $year] + $request->except('state', 'year', 'edition'), 301);
             }
         }
         $group = $input['group'] ?? 'population';

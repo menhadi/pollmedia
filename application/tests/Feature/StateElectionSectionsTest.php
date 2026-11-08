@@ -43,6 +43,16 @@ class StateElectionSectionsTest extends TestCase
         $this->get('/india?lang=hi')->assertRedirect(route('home', ['lang' => 'hi']))->assertStatus(301);
     }
 
+    public function test_only_default_election_views_redirect(): void
+    {
+        $this->get('/india/state/uttar-pradesh?election=pc&lang=hi')
+            ->assertRedirect(route('states.show', ['state' => 'uttar-pradesh', 'lang' => 'hi']))->assertStatus(301);
+        $this->get('/india/elections/maps?state=gujarat&kind=ac&lang=hi')
+            ->assertRedirect(route('elections.maps.show', ['state' => 'gujarat', 'kind' => 'ac', 'lang' => 'hi']))->assertStatus(301);
+        $this->get('/india/elections/maps/gujarat?kind=pc')->assertStatus(301);
+        $this->get('/india/elections/maps/unknown-state')->assertNotFound();
+    }
+
     public function test_sections_keep_histories_and_year_selections_separate(): void
     {
         $analytics = app(HistoricalElectionAnalytics::class);

@@ -4,7 +4,7 @@
 <h1>India historical Census population</h1>
 <p>Official A-02 population figures for India and states / union territories, including all years recorded in the workbook.</p>
 <p class="notice">{{ $data['source']['boundary_basis'] }} These are historical figures on the source's geographic basis, not today's boundaries. India and state totals overlap and must not be added together.</p>
-<p><a href="{{ route('census-catalogue.index') }}">Explore other Census tables</a></p>
+<p><a href="{{ \App\Services\CensusPlaceNavigation::catalogueUrl() }}">Explore other Census tables</a></p>
 <form method="get" class="card filters"><div><label for="state">India / state / union territory</label><select id="state" name="state"><option value="">All recorded areas</option>@foreach($states as $option)<option value="{{ $option['state_code'] }}" @selected($state === $option['state_code'])>{{ $option['name'] }}</option>@endforeach</select></div>
 <div><label for="year">Year as recorded</label><select id="year" name="year"><option value="">All historical years</option>@foreach($years as $option)<option value="{{ $option }}" @selected($year === $option)>{{ $option }}</option>@endforeach</select></div><button>Show records</button></form>
 <section class="card"><h2>{{ $rows->count() }} source records</h2><div class="scroll"><table><thead><tr><th>Area</th><th>Year</th><th>Persons</th><th>Males</th><th>Females</th><th>Absolute change (source)</th><th>Percentage change (source)</th><th>Source row</th></tr></thead><tbody>

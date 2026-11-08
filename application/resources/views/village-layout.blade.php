@@ -20,7 +20,7 @@
 
 <body class="place-layout election-ui census-area-ui">@include('public-header')<main class="area-dashboard" data-local-dashboard>
 
-<nav class="crumb" aria-label="Breadcrumb"><a href="{{ route('india') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / <a href="{{ route('places.show',['type'=>'district','slug'=>'pilibhit']) }}">Pilibhit district</a> / <a href="{{ route('villages.index',['year'=>$census['year']]) }}">Census villages</a></nav>
+<nav class="crumb" aria-label="Breadcrumb"><a href="{{ route('home') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / <a href="{{ route('places.show',['type'=>'district','slug'=>'pilibhit']) }}">Pilibhit district</a> / <a href="{{ route('villages.index',['year'=>$census['year']]) }}">Census villages</a></nav>
 
 @yield('content')
 

@@ -10,7 +10,7 @@
 @endif
 @if($topic==='places')
 @foreach(['subdistricts'=>$tr('Subdistricts','उपजिले'),'towns'=>$tr('Towns','कस्बे')] as $kind=>$heading)
-@if($data[$kind])<h2 id="pb-{{ $kind }}">{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ route('civic.place',['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
+@if($data[$kind])<h2 id="pb-{{ $kind }}">{{ $heading }}</h2><ul class="pb-locations">@foreach($data[$kind] as $place)<li><a href="{{ app(\App\Services\NamedPlaceUrls::class)->link(['record'=>$place['id'],'lang'=>$hi?'hi':null]) }}">{{ $place['name'] }}</a></li>@endforeach</ul>@endif
 @endforeach
 @endif</section>
 @endif

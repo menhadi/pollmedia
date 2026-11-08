@@ -20,7 +20,7 @@ $scopeUrl = function (array $scope) use ($scopeState) {
         return route('district-dashboard.named', ['state' => Str::slug($scopeState), 'district' => Str::slug($scope['name'])]);
     }
     if ($scopeState && in_array($kind, ['ac', 'pc'], true)) {
-        return route('constituency.overview', ['kind' => $kind, 'state' => $scopeState, 'name' => $scope['name']]);
+        return \App\Services\ConstituencyUrls::url( ['kind' => $kind, 'state' => $scopeState, 'name' => $scope['name']]);
     }
     return null;
 };

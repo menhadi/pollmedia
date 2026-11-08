@@ -39,7 +39,8 @@ class ElectoralMapsTest extends TestCase
         foreach (app(ElectoralMapCatalogue::class)->all()['states'] as $state) {
             $this->get(route('elections.maps.show', ['state' => $state['slug']]))->assertOk()->assertSee($state['name']);
         }
-        $this->get('/india/elections/maps?state=telangana&kind=ac')->assertOk()
+        $this->get('/india/elections/maps?state=telangana&kind=ac')->assertRedirect('/india/elections/maps/telangana?kind=ac')->assertStatus(301);
+        $this->get('/india/elections/maps/telangana?kind=ac')->assertOk()
             ->assertSee('combined layer')->assertSee('andhra-pradesh.json');
         $this->get('/india/elections/maps/assam')->assertOk()->assertSee('2023 delimitation');
         $this->get('/india/elections/maps/jammu-and-kashmir')->assertOk()->assertSee('not the current 90-seat map');

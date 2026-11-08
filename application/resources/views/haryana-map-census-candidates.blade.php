@@ -87,10 +87,11 @@
 <p class="source-note">Map coverage: two SOI shapes labelled rural; 14 unnamed urban features are excluded. Both shape codes appear in the Census 2011 town inventory, despite their SOI rural classification. Neither matches Shamas Pur (063984), the single Census village. These classifications and source editions remain distinct. The SOI archive uses a later 11-district inventory; this is not the full historical Census district boundary. Accepted identifier crosswalks remain unverified; no population is assigned to shapes. Electoral membership audit remains pending.</p>
 @endif
 @php
+    app(\App\Services\NamedPlaceUrls::class)->primeCensus(collect($data['census_villages'] ?? [])->pluck('id'));
     $haryanaVillageCandidates = array_map(fn (array $row): array => [
         'code' => $row['code'],
         'name' => $row['name'],
-        'url' => route('civic.place', ['record' => $row['id']], false),
+        'url' => app(\App\Services\NamedPlaceUrls::class)->link(['record' => $row['id']], false),
     ], $data['census_villages'] ?? []);
 @endphp
 <script type="application/json" id="haryana-map-census-candidates">{!! json_encode($haryanaVillageCandidates, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) !!}</script>

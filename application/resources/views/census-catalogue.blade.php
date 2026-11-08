@@ -58,7 +58,7 @@
 @if($admin)
 <section class="card"><h2>Publication review</h2><p>{{ $edition->row_count }} records · {{ $edition->flag_count }} records with validation notes · {{ $edition->status }}</p><a href="{{ route('imports.run', $edition->import_run_id) }}">Inspect source import</a>
 @if($edition->status === 'draft')<form method="post" action="{{ route('census-catalogue.publish', $edition->id) }}">@csrf<input type="hidden" name="current" value="{{ $current }}"><p><label><input type="checkbox" name="reviewed" value="1" required> I reviewed the source, geography, scope and any † notes for publication.</label></p><button>Publish this edition</button></form>@endif
-@if($edition->status === 'published')<p><a href="{{ route('census-catalogue.index', ['edition'=>$edition->id]) }}">Open public edition</a></p><form method="post" action="{{ route('census-catalogue.withdraw', $edition->id) }}">@csrf<button>Withdraw from public view</button></form>@endif
+@if($edition->status === 'published')<p><a href="{{ \App\Services\CensusPlaceNavigation::catalogueUrl(['edition'=>$edition->id]) }}">Open public edition</a></p><form method="post" action="{{ route('census-catalogue.withdraw', $edition->id) }}">@csrf<button>Withdraw from public view</button></form>@endif
 </section>
 @endif
 @else<p class="card">No Census tables have been published in this catalogue yet.</p>@endif

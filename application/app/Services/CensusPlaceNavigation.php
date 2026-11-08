@@ -9,12 +9,28 @@ class CensusPlaceNavigation
 {
     public function publishedState(string $state, int $year): ?object
     {
-        $rows = DB::table('census_catalogue_rows as c')->join('census_editions as e', 'e.id', '=', 'c.edition_id')
-            ->where('e.status', 'published')->where('e.year', $year)->where('c.level', 'STATE')->where('c.residence', 'Total')
-            ->select('c.id', 'c.name', 'c.state_code')->orderByRaw("CASE WHEN e.source_key LIKE 'india-basic-%-total' THEN 0 ELSE 1 END")->orderBy('c.id')->get()
-            ->filter(fn ($row) => PlaceFactTables::stateSlug($row->name) === $state || ($state === 'delhi' && (int) $row->state_code === 7));
+        return $this->stateDirectory($year)[$state] ?? null;
+    }
 
-        return $rows->pluck('state_code')->unique()->count() === 1 ? $rows->first() : null;
+    /** A single published lookup for state menus, including Delhi's established alias. */
+    public function stateDirectory(int $year): array
+    {
+        return PublicRequestCache::remember('census-state-directory:'.$year, function () use ($year): array {
+            $rows = DB::table('census_catalogue_rows as c')->join('census_editions as e', 'e.id', '=', 'c.edition_id')
+                ->where('e.status', 'published')->where('e.year', $year)->where('c.level', 'STATE')->where('c.residence', 'Total')
+                ->select('c.id', 'c.name', 'c.state_code')->orderByRaw("CASE WHEN e.source_key LIKE 'india-basic-%-total' THEN 0 ELSE 1 END")->orderBy('c.id')->get();
+            $groups = $rows->groupBy(fn ($row) => PlaceFactTables::stateSlug($row->name));
+            $groups['delhi'] = $rows->filter(fn ($row) => (int) $row->state_code === 7 || PlaceFactTables::stateSlug($row->name) === 'delhi');
+
+            return $groups->filter(fn ($group) => $group->pluck('state_code')->unique()->count() === 1)->map->first()->all();
+        });
+    }
+
+    public static function catalogueUrl(array $parameters = []): string
+    {
+        $query = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
+
+        return rtrim(route('census-catalogue.index'), '/').'/'.($query === '' ? '' : '?'.$query);
     }
 
     public function record(object $place): ?int

@@ -6,7 +6,7 @@
     @if($villages->isNotEmpty())
     <table class="pb-directory-table"><thead><tr><th scope="col">{{ $label('Village','गाँव') }}</th><th scope="col">{{ $label('Population','जनसंख्या') }}</th><th scope="col">{{ $label('Households','परिवार') }}</th></tr></thead><tbody>
     @foreach($villages as $v)
-        <tr><th scope="row"><a href="{{ route('civic.place',['record'=>$v['id'],'lang'=>$hi?'hi':null]) }}">{{ $v['name'] }}</a></th>
+        <tr><th scope="row"><a href="{{ app(\App\Services\NamedPlaceUrls::class)->link(['record'=>$v['id'],'lang'=>$hi?'hi':null]) }}">{{ $v['name'] }}</a></th>
         <td>{{ $v['population']===null?'—':$number->format($v['population']) }}</td><td>{{ $v['households']===null?'—':$number->format($v['households']) }}</td></tr>
     @endforeach
     </tbody></table>

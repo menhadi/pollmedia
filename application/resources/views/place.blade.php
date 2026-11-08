@@ -27,7 +27,7 @@
 @include('community-area-issues')
 <div class="dashboard-shell {{ in_array($place->type,['pc','ac']) ? '' : 'page-without-sidebar' }}"><main class="dashboard-main">
 
-<div class="crumb"><a href="{{ route('india') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / {{ $type === 'district' ? 'Administrative geography' : 'Electoral geography' }}</div>
+<div class="crumb"><a href="{{ route('home') }}">India</a> / <a href="{{ route('states.show', ['state'=>'uttar-pradesh']) }}">Uttar Pradesh</a> / {{ $type === 'district' ? 'Administrative geography' : 'Electoral geography' }}</div>
 
 @if(in_array($type,['pc','ac']))<nav class="tabs" aria-label="Electoral navigation"><a href="{{ route('home') }}#states">India / States</a><a href="{{ route('states.show',['state'=>'uttar-pradesh','election'=>$type]) }}">Uttar Pradesh results</a><a href="#related-places">{{ $type==='pc'?'Explore linked Assembly seats':'View linked Parliament seat' }}</a></nav>@endif
 @if($type==='district')

@@ -71,6 +71,14 @@ class CivicExplorerTest extends TestCase
         $this->get(route('civic.place', ['record' => $current['DISTRICT']]))->assertOk()->assertViewHas('censusSeries', fn ($series) => array_column($series['rows'], 'year') === [2011]);
     }
 
+    public function test_default_census_year_and_directory_link_resolve_to_the_published_state(): void
+    {
+        $this->fixture();
+        $this->get('/india/census/states/state-alpha/2011?lang=hi')->assertRedirect(route('civic.state', ['state' => 'state-alpha', 'lang' => 'hi']))->assertStatus(301);
+        $this->get('/india/census/explore?state=state-alpha&group=literacy')->assertRedirect(route('civic.state', ['state' => 'state-alpha', 'group' => 'literacy']))->assertStatus(301);
+        $this->get('/india/census/explore')->assertOk()->assertSee(route('civic.state', ['state' => 'state-alpha']), false);
+    }
+
     public function test_national_census_dashboard_and_filtered_explorer_have_distinct_navigation(): void
     {
         $this->fixture();
