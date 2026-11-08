@@ -6,7 +6,7 @@
 <details class="result-coverage"><summary>{{ $election['label'] }} · Coverage &amp; winning margin</summary>
 <div><span>Mean winning margin</span><strong>{{ $election['margin']===null?'—':number_format($election['margin']) }}@if($election['margin_review_count']??0) †@endif</strong></div>
 <p class="small">{{ $election['label'] }} · turnout covers {{ $election['turnout_count'] }} of {{ $election['tables'] }} constituencies; mean margin covers {{ $election['margin_count'] }}; party vote shares cover {{ $election['party_count'] }}. † marks figures with source notes.</p>
-@if(($election['review_count']??0)||($election['party_review_count']??0)||($election['turnout_review_count']??0))<p class="coverage-note">This election includes records with data notes. <a href="{{ '#'.$kind.'-constituency-results' }}">View results and notes ↓</a></p>@endif
+@if(($election['review_count']??0)||($election['party_review_count']??0)||($election['turnout_review_count']??0))<p class="coverage-note">This election includes records with data notes. <a href="{{ '#'.$kind.'-source-notes' }}">Read source notes ↓</a></p>@endif
 </details>
 @else<p>No {{ $sectionLabel }} results are available for {{ $title }} in this collection yet.</p>@endif
 </section>

@@ -25,6 +25,7 @@ $plotRows=$chartRows->map(function($point)use($fixedParties){
  $total=collect($point['parties'])->sum('votes');
  foreach($fixedParties as $i=>$party){$point['fixed'.$i]=$total>0?collect($point['parties'])->where('party',$party)->sum('votes'):null;$point['fixed'.$i.'_share']=$total>0?100*$point['fixed'.$i]/$total:null;}
  foreach(['party0','party1','others'] as $key){$point[$key.'_share']=$total>0&&$point[$key]!==null?100*$point[$key]/$total:null;}
+ unset($point['parties']);
  return $point;
 });
 $plots=[

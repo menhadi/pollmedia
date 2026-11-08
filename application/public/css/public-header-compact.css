@@ -116,13 +116,6 @@ body .public-header.site-header #public-navigation .state-megamenu a{display:blo
 @media(min-width:1024px){
 body .public-header.site-header #public-navigation{gap:0!important}
 body .public-header.site-header #public-navigation>:not(:first-child){border-inline-start:0;padding-inline-start:8px;margin-inline-start:6px}
-.public-header .mega-tabs{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid #bccdc7;margin:6px 0 16px}
-.public-header .mega-tabs button{font:inherit;font-weight:600;min-height:42px;padding:8px 15px;background:transparent;color:var(--pm-action);border:0;border-bottom:3px solid transparent;cursor:pointer}
-.public-header .mega-tabs button[aria-selected="true"]{color:var(--pm-action);border-bottom-color:var(--pm-action);background:var(--pm-action-tint)}
-.public-header .mega-tabs button:focus-visible{outline:2px solid #19675d;outline-offset:-4px}
-.public-header .state-megamenu:has(.mega-tabs:not([hidden])) .mega-groups{display:block}
-.public-header .state-megamenu:has(.mega-tabs:not([hidden])) .mega-groups section .mega-state-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}
-.public-header .state-megamenu [role="tabpanel"]>h2{display:none}
 }
 
 body .public-header.site-header #public-navigation>.public-account-link{border:0}
@@ -135,3 +128,8 @@ body .public-header.site-header #public-navigation details[open]>summary{text-de
 body .public-header.site-header #public-navigation>a:hover,
 body .public-header.site-header #public-navigation>.topic-menu>summary:hover{background:rgb(255 255 255 / 10%)}
 body .public-header.site-header #public-navigation .state-megamenu :is(a,button):hover{background:var(--pm-action-tint);color:var(--pm-action-hover)!important}
+
+body .public-header.site-header .state-megamenu .mega-all-india{display:block;width:100%;padding:7px 0;border-bottom:1px solid #bdcfc8;color:var(--pm-action)!important;text-decoration:none}
+body .public-header.site-header .state-megamenu .mega-national{margin-bottom:10px}
+body .public-header.site-header .state-megamenu .mega-groups{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media(min-width:1024px){body .public-header.site-header .state-megamenu .mega-state-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr))}}

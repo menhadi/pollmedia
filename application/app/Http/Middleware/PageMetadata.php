@@ -4,10 +4,13 @@ namespace App\Http\Middleware;
 
 use App\Services\PublicPageCanonical;
 use App\Services\SeoPages;
+use App\Services\StateTablePreview;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as LaravelResponse;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class PageMetadata
@@ -23,6 +26,14 @@ class PageMetadata
             if (is_string($html) && stripos($html, '</head>') !== false) {
                 $assets = '<link rel="stylesheet" href="'.e(asset('css/place-topics.css')).'?v='.substr(hash_file('sha256', public_path('css/place-topics.css')), 0, 12).'"><script defer src="'.e(asset('js/place-topics.js')).'?v=6"></script>';
                 $original = $response instanceof LaravelResponse ? $response->getOriginalContent() : null;
+                if ($response->isSuccessful() && $original instanceof View
+                    && ($original->name() === 'state-election-dashboard'
+                        || ($original->name() === 'census-area-dashboard' && $original->getData()['place']->level === 'STATE'))) {
+                    $html = app(StateTablePreview::class)->render($html, $request);
+                    if ($html instanceof JsonResponse) {
+                        return $html;
+                    }
+                }
                 $response->setContent(str_ireplace('</head>', $assets.'</head>', $html));
                 if ($response instanceof LaravelResponse) {
                     $response->original = $original;
