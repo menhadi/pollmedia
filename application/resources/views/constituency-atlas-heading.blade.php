@@ -27,7 +27,7 @@
 <a href="{{ $options->first()['url'] }}">{{ $text }}</a>
 @else
 <details class="atlas-other" data-atlas-picker><summary>{{ $text }}</summary>
-<form method="get" data-atlas-switch action="{{ route('constituency.overview') }}">
+<form method="get" data-atlas-switch data-manual-submit action="{{ route('constituency.overview') }}">
 <input type="hidden" name="state" value="{{ $state }}"><input type="hidden" name="kind" value="{{ $type }}"><input type="hidden" name="lang" value="{{ app()->getLocale() }}">
 @if($known->isNotEmpty() || $options->isNotEmpty())
 <label>{{ $type==='ac'?$tr('Assembly constituency in this PC','इस लोक सभा क्षेत्र में विधान सभा क्षेत्र'):$tr('Parliamentary constituency','लोक सभा निर्वाचन क्षेत्र') }}
@@ -42,11 +42,11 @@
 @endforeach
 </nav>
 @if($kind==='ac' && count($atlasFamily['ac'])>1)
-<form method="get" data-atlas-switch action="{{ route('constituency.overview') }}">
+<form method="get" data-atlas-switch data-manual-submit action="{{ route('constituency.overview') }}">
 <input type="hidden" name="state" value="{{ $state }}"><input type="hidden" name="kind" value="ac"><input type="hidden" name="lang" value="{{ app()->getLocale() }}">
 <label>{{ $tr('Assembly seat','विधान सभा क्षेत्र') }} <select name="name" required>@foreach($atlasFamily['ac'] as $item)<option data-url="{{ $item['url'] }}" value="{{ $item['archive'] }}" @selected(!empty($item['current'])) @disabled(empty($item['url']))>{{ $item['name'] }}</option>@endforeach</select></label><button type="submit">{{ $tr('Show','देखें') }}</button></form>@endif
 
-<form method="get" action="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$state,'name'=>$name]) }}" data-atlas-year>
+<form method="get" action="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$state,'name'=>$name]) }}" data-atlas-year data-manual-submit>
 <input type="hidden" name="lang" value="{{ app()->getLocale() }}">
 @if($exactSeatOnly)<input type="hidden" name="code" value="{{ $chosen['entry']->record_code }}">@endif
 <label for="edition">{{ $tr('Election year','चुनाव वर्ष') }}</label><select name="edition" id="edition">
