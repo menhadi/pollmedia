@@ -16,42 +16,46 @@
 @foreach(['pc'=>$tr('Lok Sabha (PC)','लोक सभा (PC)'),'ac'=>$tr('Assembly (AC)','विधान सभा (AC)')] as $type=>$text)
 @php
     $known = collect($atlasFamily[$type]);
-    $options = $known->whereNotNull('url')->values();
+    $options = $known;
     if ($known->isEmpty() && $type!==$kind) {
         $options=$related->where('type',$type)->filter(fn($item)=>!empty($item->url))->map(fn($item)=>['name'=>$item->name,'archive'=>$item->name,'url'=>url($item->url).(str_contains($item->url,'?')?'&':'?').'lang='.app()->getLocale()])->values();
     }
+    $canSwitch=$options->whereNotNull('url');
+    $stateWide=$options->isEmpty();
 @endphp
-@if($type===$kind)
+@if($type===$kind && ($type==='pc' || $canSwitch->count()<2))
 <span aria-current="page">{{ $text }}</span>
-@elseif($type==='pc' && $options->count()===1)
-<a href="{{ $options->first()['url'] }}">{{ $text }}</a>
+@elseif($type==='pc' && $canSwitch->count()===1)
+<a href="{{ $canSwitch->first()['url'] }}">{{ $text }}</a>
 @else
-<details class="atlas-other" data-atlas-picker><summary>{{ $text }}</summary>
-<form method="get" data-atlas-switch data-manual-submit action="{{ route('constituency.overview') }}">
+@php
+    $stateNames=$stateWide?\Illuminate\Support\Facades\Cache::remember('atlas-options-list-v2:'.$type.':'.$state,3600,fn()=>\Illuminate\Support\Facades\DB::table('historical_constituency_index')->where('kind',$type)->whereRaw(\App\Services\ElectionPlaceIdentity::stateSql().' = ?',[mb_strtolower($state)])->distinct()->orderBy('constituency_name')->pluck('constituency_name')->all()):[];
+    $enabled=$stateWide?count($stateNames)>0:$canSwitch->isNotEmpty();
+    $label=$stateWide?$text.' · '.$state:($type==='ac'?$tr('Assembly constituency in this PC','इस लोक सभा क्षेत्र में विधान सभा क्षेत्र'):$tr('Parliamentary constituency','लोक सभा निर्वाचन क्षेत्र'));
+@endphp
+<form method="get" class="atlas-seat-control" data-atlas-switch data-manual-submit action="{{ route('constituency.overview') }}">
 <input type="hidden" name="state" value="{{ $state }}"><input type="hidden" name="kind" value="{{ $type }}"><input type="hidden" name="lang" value="{{ app()->getLocale() }}">
-@if($known->isNotEmpty() || $options->isNotEmpty())
-<label>{{ $type==='ac'?$tr('Assembly constituency in this PC','इस लोक सभा क्षेत्र में विधान सभा क्षेत्र'):$tr('Parliamentary constituency','लोक सभा निर्वाचन क्षेत्र') }}
-<select name="name" required><option value="">{{ $tr('Choose a seat','क्षेत्र चुनें') }}</option>
-@foreach(($known->isEmpty()?$options:$known) as $item)<option value="{{ $item['archive'] }}" data-url="{{ $item['url'] }}" @disabled(empty($item['url']))>{{ $item['name'] }}</option>@endforeach</select></label>
+<select name="name" aria-label="{{ $label }}" required @disabled(!$enabled)>
+<option value="">{{ $enabled?$text:$text.' · '.$tr('Unavailable','अनुपलब्ध') }}</option>
+@if($stateWide)<optgroup label="{{ $state }}">@foreach($stateNames as $seatName)<option>{{ $seatName }}</option>@endforeach</optgroup>
 @else
-@php($availableNames=\Illuminate\Support\Facades\Cache::remember('atlas-options-list-v2:'.$type.':'.$state,3600,fn()=>\Illuminate\Support\Facades\DB::table('historical_constituency_index')->where('kind',$type)->whereRaw(\App\Services\ElectionPlaceIdentity::stateSql().' = ?',[mb_strtolower($state)])->distinct()->orderBy('constituency_name')->pluck('constituency_name')->all()))
-@if($availableNames)<label>{{ $text }} · {{ $state }}<select name="name" required><option value="">{{ $tr('Browse state seats','राज्य के क्षेत्र देखें') }}</option>@foreach($availableNames as $seatName)<option>{{ $seatName }}</option>@endforeach</select></label>@else<p>{{ $tr('No archived seats in this chamber.','इस सदन के क्षेत्र उपलब्ध नहीं हैं।') }}</p>@endif
+@foreach($options as $item)
+<option value="{{ $item['archive'] }}" data-url="{{ $item['url'] }}" @selected($type===$kind && !empty($item['current'])) @disabled(empty($item['url']))>{{ $type===$kind?strtoupper($type).' · ':'' }}{{ $item['name'] }}</option>
+@endforeach
 @endif
-@if($known->isNotEmpty() || $options->isNotEmpty() || !empty($availableNames))<button type="submit">{{ $tr('Show','देखें') }}</button>@endif</form></details>
+</select>
+@if($enabled)<noscript><button type="submit">{{ $tr('Show','देखें') }}</button></noscript>@endif
+</form>
 @endif
 @endforeach
 </nav>
-@if($kind==='ac' && count($atlasFamily['ac'])>1)
-<form method="get" data-atlas-switch data-manual-submit action="{{ route('constituency.overview') }}">
-<input type="hidden" name="state" value="{{ $state }}"><input type="hidden" name="kind" value="ac"><input type="hidden" name="lang" value="{{ app()->getLocale() }}">
-<label>{{ $tr('Assembly seat','विधान सभा क्षेत्र') }} <select name="name" required>@foreach($atlasFamily['ac'] as $item)<option data-url="{{ $item['url'] }}" value="{{ $item['archive'] }}" @selected(!empty($item['current'])) @disabled(empty($item['url']))>{{ $item['name'] }}</option>@endforeach</select></label><button type="submit">{{ $tr('Show','देखें') }}</button></form>@endif
 
 <form method="get" action="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$state,'name'=>$name]) }}" data-atlas-year data-manual-submit>
 <input type="hidden" name="lang" value="{{ app()->getLocale() }}">
 @if($exactSeatOnly)<input type="hidden" name="code" value="{{ $chosen['entry']->record_code }}">@endif
 <label for="edition">{{ $tr('Election year','चुनाव वर्ष') }}</label><select name="edition" id="edition">
 @foreach($alternatives as $row)<option value="{{ $row['entry']->edition_id }}" @selected($row['entry']->edition_id===($chosen['entry']->edition_id??null))>{{ $row['entry']->year }}</option>@endforeach
-</select><button type="submit">{{ $tr('Show results','नतीजे देखें') }}</button></form>
+</select><noscript><button type="submit">{{ $tr('Show results','नतीजे देखें') }}</button></noscript></form>
 </div>
 <header class="atlas-title"><p>{{ $state }} · {{ $kind==='pc'?$tr('Lok Sabha','लोक सभा'):$tr('Vidhan Sabha','विधान सभा') }}</p><h1>{{ \Illuminate\Support\Str::title($name) }} {{ $kind==='pc'?$tr('Parliamentary Constituency','लोक सभा निर्वाचन क्षेत्र'):$tr('Assembly Constituency','विधान सभा निर्वाचन क्षेत्र') }}</h1></header>
 <section class="atlas-result" aria-labelledby="atlas-winner"><div><p class="atlas-eyebrow">{{ $chosen['entry']->year }} · {{ $tr('Election result','चुनाव परिणाम') }}</p><h2 id="atlas-winner">{{ $result['winner']??$tr('Winner unconfirmed','विजेता की पुष्टि नहीं हुई') }}{{ !empty($record['has_warning'])?' †':'' }}</h2><p>{{ $result['party']??'' }}</p>
