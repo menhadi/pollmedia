@@ -14,12 +14,12 @@
 <script defer src="{{ asset('js/election-map.js') }}?v={{ substr(hash_file('sha256', public_path('js/election-map.js')),0,12) }}"></script>
 @endonce
 <section class="election-map" data-election-map data-mode="{{ $mapMode ?? 'results' }}" data-kind="{{ $mapKind }}" data-labels="{{ ($mapLabels ?? false) ? 'true' : 'false' }}" data-year="{{ $isLocator ? '' : ($mapYear ?? '') }}" data-source="{{ asset('maps/electoral/'.$mapFile) }}?v={{ substr($mapHash,0,12) }}" data-results="{{ route('elections.maps.results',$mapContext) }}" data-state="{{ $mapState['name'] ?? '' }}" data-selected="{{ $mapSelectedName ?? '' }}" data-selected-code="{{ $mapSelectedCode ?? '' }}" data-finder="{{ route('elections.constituencies') }}">
-<div class="election-map-heading"><h3>{{ $mapState['name'] ?? 'India' }} · {{ $mapKind==='pc'?'Lok Sabha':'Assembly' }} map</h3>@unless($isLocator)<span>{{ $mapYear ?? 'Latest available results by state' }}</span>@endunless</div>
-@if($mapLabels ?? false)<p class="election-map-guide">Explore {{ $mapKind==='pc'?'Lok Sabha':'Assembly' }} constituencies · Hover for a name, click to see results.</p>@endif
+<div class="election-map-heading"><h3>{{ $mapState['name'] ?? 'India' }} · {{ $mapKind==='pc'?'Lok Sabha (PC)':'Assembly' }} map</h3>@unless($isLocator)<span>{{ $mapYear ?? 'Latest available results by state' }}</span>@endunless</div>
+@if($mapLabels ?? false)<p class="election-map-guide">Explore {{ $mapKind==='pc'?'Lok Sabha (PC)':'Assembly' }} constituencies · Hover for a name, click to see results.</p>@endif
 @if(!empty($atlasExplorer))
 <script type="application/json" data-linked-seats>{!! json_encode($atlasLinkedSeats??[],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
 <div class="atlas-map-filter" data-map-filter hidden>
-<label for="atlas-search-{{ $mapKind }}">{{ $mapKind==='pc'?$tr('Find a Lok Sabha seat','लोक सभा क्षेत्र खोजें'):$tr('Find an Assembly seat','विधान सभा क्षेत्र खोजें') }}</label>
+<label for="atlas-search-{{ $mapKind }}">{{ $mapKind==='pc'?$tr('Find a Lok Sabha (PC) seat','लोक सभा क्षेत्र खोजें'):$tr('Find an Assembly seat','विधान सभा क्षेत्र खोजें') }}</label>
 <div class="atlas-search-field"><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="6.3"/><path d="m15 15 5 5"/></svg>
 <input type="search" id="atlas-search-{{ $mapKind }}" data-seat-query role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="atlas-options-{{ $mapKind }}" autocomplete="off" placeholder="{{ $tr('Type a constituency name','निर्वाचन क्षेत्र का नाम लिखें') }}"></div>
 <ul id="atlas-options-{{ $mapKind }}" role="listbox" aria-label="{{ $mapKind==='pc'?$tr('Lok Sabha seats','लोक सभा क्षेत्र'):$tr('Assembly seats','विधान सभा क्षेत्र') }}" data-seat-options hidden></ul>

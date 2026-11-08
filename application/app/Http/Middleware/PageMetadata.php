@@ -21,7 +21,7 @@ class PageMetadata
         if (! $request->is('admin', 'admin/*', 'api/*') && str_contains(strtolower((string) $response->headers->get('Content-Type')), 'text/html')) {
             $html = $response->getContent();
             if (is_string($html) && stripos($html, '</head>') !== false) {
-                $assets = '<link rel="stylesheet" href="'.e(asset('css/place-topics.css')).'?v=6"><script defer src="'.e(asset('js/place-topics.js')).'?v=6"></script>';
+                $assets = '<link rel="stylesheet" href="'.e(asset('css/place-topics.css')).'?v='.substr(hash_file('sha256', public_path('css/place-topics.css')), 0, 12).'"><script defer src="'.e(asset('js/place-topics.js')).'?v=6"></script>';
                 $original = $response instanceof LaravelResponse ? $response->getOriginalContent() : null;
                 $response->setContent(str_ireplace('</head>', $assets.'</head>', $html));
                 if ($response instanceof LaravelResponse) {

@@ -11,7 +11,7 @@ $missing=collect($coverage)->keys()->diff($mappedRows->pluck('slug'))->map(fn($s
 @foreach($mappedRows->concat($missing) as $seat)<tr><th scope="row">@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif</th>@if($coverage)<td>{{ isset($coverage[$seat['slug']])?count($coverage[$seat['slug']]):'—' }}</td>@endif</tr>@endforeach
 </tbody></table>
 @elseif($kind==='ac' && $atlasFamily['pc'])
-<p>{{ $tr('Lok Sabha constituency','लोक सभा क्षेत्र') }} · @foreach($atlasFamily['pc'] as $seat)@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif{{ $loop->last?'':' · ' }}@endforeach</p>
+<p>{{ $tr('Lok Sabha (PC)','लोक सभा (PC)') }} · @foreach($atlasFamily['pc'] as $seat)@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif{{ $loop->last?'':' · ' }}@endforeach</p>
 @endif
 @if($mapVillages)<p class="atlas-map-stat"><strong>{{ count($mapVillages) }}</strong> {{ $tr('mapped villages','मैप किए गए गाँव') }}</p>@endif
 @if(!$coverage && !$atlasFamily['ac'])<ul data-atlas-segments></ul>@endif
