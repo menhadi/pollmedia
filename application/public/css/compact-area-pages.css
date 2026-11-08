@@ -133,3 +133,23 @@ body .compact-election .table-scroll :is(th,td){line-height:1.35}
 body .compact-election :is(.landing-pager,.election-map-tools) button:not(:disabled){background:var(--pm-action);border-color:var(--pm-action);color:#fff}
 body .compact-election :is(.landing-pager,.election-map-tools) button:not(:disabled):hover{background:var(--pm-action-hover)}
 body .compact-election .map-filter-feedback button:not(:disabled){color:var(--pm-action);border-color:var(--pm-action);background:white}
+
+/* Keep unadorned Census headers aligned with their data as well as sortable headers. */
+body .pm-state-census :is(#area-tables,.compact-directory) table thead th{
+ padding:9px 12px!important;line-height:1.35;vertical-align:middle;text-align:end;font-weight:650;
+}
+body .pm-state-census :is(#area-tables,.compact-directory) tbody :is(th,td){padding:8px 12px;text-align:end;vertical-align:top;font-variant-numeric:tabular-nums}
+body .pm-state-census :is(#area-tables,.compact-directory) table tr>:first-child{text-align:start}
+body .pm-state-census :is(#area-tables,.compact-directory) table thead button{padding:0!important;margin:0!important;width:auto;max-width:100%;text-align:inherit;justify-content:inherit;white-space:normal}
+.pm-state-census .district-seat-names{font-weight:400;margin:3px 0 0;font-size:.85rem;max-width:65ch}
+.pm-state-census .district-seat-names summary{cursor:pointer;width:fit-content;color:var(--pm-action);padding:2px 0}
+.pm-state-census .district-seat-names div{margin:4px 0;line-height:1.45;overflow-wrap:anywhere}
+body .pm-state-census #area-tables .table-wrap{min-width:0;max-width:100%;overflow:auto}
+@media(max-width:700px){
+ body .pm-state-census #area-tables table{width:100%;min-width:20rem;table-layout:fixed}
+ body .pm-state-census #area-tables th:first-child{width:32%}
+ body .pm-state-census :is(#area-tables,.compact-directory) table thead th{padding:8px 4px!important;font-size:.82rem;overflow-wrap:normal}
+ body .pm-state-census :is(#area-tables,.compact-directory) tbody :is(th,td){padding:7px 4px;font-size:.85rem}
+ body .pm-state-census #area-tables tbody th{overflow-wrap:anywhere}
+ body .pm-state-census #area-tables tbody td{white-space:nowrap}
+}

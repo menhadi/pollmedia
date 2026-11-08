@@ -7,8 +7,17 @@
 [data-topic-body] .approved-pagination button,[data-topic-body] .approved-pagination select{min-height:36px;padding:.35rem .65rem}
 
 /* Keep the global control consistent on dashboards with their own button theme. */
-html.pm-js body button.pm-top-button{background:var(--site-surface,#fff)!important;color:var(--site-primary,#185c6c)!important;border:1px solid var(--site-border,#c9d8d7)!important;border-radius:11px!important;box-shadow:0 6px 20px #183f4933!important}
-html.pm-js body button.pm-top-button:hover{background:var(--site-primary,#185c6c)!important;color:var(--site-surface,#fff)!important}
+html.pm-js body button.pm-top-button{
+ box-sizing:border-box!important;display:grid!important;place-items:center!important;grid-template:1fr / 1fr;
+ margin:0!important;padding:0!important;line-height:0!important;text-indent:0;
+ background:var(--pm-action,#185c6c)!important;color:#fff!important;border:0!important;
+ border-radius:11px!important;box-shadow:0 6px 20px #183f4933!important
+}
+html.pm-js body button.pm-top-button[hidden]{display:none!important}
+html.pm-js body button.pm-top-button>svg{display:block!important;box-sizing:border-box;width:22px;height:22px;margin:0!important;padding:0!important;stroke-width:2.4;pointer-events:none}
+html.pm-js body button.pm-top-button:hover{background:var(--pm-action-hover,#123d50)!important;color:#fff!important}
+html.pm-js body button.pm-top-button:focus-visible{outline:2px solid var(--pm-action,#185c6c);outline-offset:3px}
+
 
 html body main .district-title.pm-district-heading{background:#f4f8f8!important;color:#18363e!important}
 html body main .district-title.pm-district-heading h1{color:#18363e!important}
@@ -31,3 +40,5 @@ html body main #overview.pm-overview-table thead th:first-child{width:41%!import
 html body main #overview.pm-overview-table thead th:nth-child(2){width:25%!important}
 html body main #overview.pm-overview-table thead th button{min-width:0!important;padding:.1rem!important;white-space:normal!important;font-size:.75rem!important}
 }
+
+@media print{html.pm-js body button.pm-top-button{display:none!important}}
