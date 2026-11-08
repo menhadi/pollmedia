@@ -24,6 +24,7 @@
 @else<p>No comparable party vote totals are available for this edition.</p>@endif
 </section>
 </div>
+@include('state-winning-margins')
 @include('state-results-map')
 
 <section id="{{ $kind }}-constituency-results" class="panel state-constituency-results"><h2>All constituency results · {{ $election['year'] }}</h2>
