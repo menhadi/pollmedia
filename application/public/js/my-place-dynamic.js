@@ -44,26 +44,6 @@ if(root){
         setPicker(false);
     };
 
-    const searchToggle=document.querySelector('.mp-search-toggle');
-    const search=document.getElementById('mp-site-search');
-    if(searchToggle && search){
-        const small=window.matchMedia('(max-width:700px)');
-        const setSearch=open=>{
-            searchToggle.hidden=!small.matches;
-            search.hidden=small.matches&&!open;
-            searchToggle.setAttribute('aria-expanded',String(small.matches&&open));
-        };
-        setSearch(false);
-        small.addEventListener('change',()=>setSearch(false));
-        searchToggle.addEventListener('click',()=>{
-            setSearch(search.hidden);
-            if(!search.hidden)search.querySelector('input')?.focus();
-        });
-        search.addEventListener('keydown',event=>{
-            if(event.key==='Escape'&&small.matches){setSearch(false);searchToggle.focus();}
-        });
-    }
-
     const message=text=>{status.textContent=text;};
 
     const render=async(place=null)=>{
