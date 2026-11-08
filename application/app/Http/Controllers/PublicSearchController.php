@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Services\CensusPlaceNavigation;
 use App\Services\ConstituencyUrls;
 use App\Services\DistrictDashboardUrls;
+use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\NamedPlaceUrls;
+use App\Services\PlacePostalCodes;
 use App\Services\SirReferences;
 use Illuminate\Contracts\View\View;
-use App\Services\PlacePostalCodes;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,10 +60,10 @@ class PublicSearchController extends Controller
                     ->whereRaw("LOWER(name) LIKE ? ESCAPE '!'", [$pattern])->orderByRaw("CASE type WHEN 'pc' THEN 0 WHEN 'district' THEN 1 ELSE 2 END")->orderBy('name')->limit(20)->get();
             }
             if (in_array($kind, ['', 'pc', 'ac']) && Schema::hasTable('historical_constituency_index')) {
-                $revision = DB::table('historical_constituency_index')->max('id') ?? 0;
-                $catalogue = Cache::remember('search-election-v3:'.$cacheScope.':'.$revision, 300, function () {
+                $revision = ElectionArchive::publicIndex()->max('id') ?? 0;
+                $catalogue = Cache::remember('search-election-v4:'.$cacheScope.':'.$revision, 300, function () {
                     $stateSql = ElectionPlaceIdentity::stateSql();
-                    $rows = DB::table('historical_constituency_index')->whereNotNull('state_label')->where('state_label', '!=', '')
+                    $rows = ElectionArchive::publicIndex()->whereNotNull('state_label')->where('state_label', '!=', '')
                         ->select('kind', DB::raw($stateSql.' as state_label'), DB::raw('LOWER(constituency_name) as constituency_name'), DB::raw('MIN(year) as first_year'), DB::raw('MAX(year) as last_year'))
                         ->groupBy('kind', DB::raw($stateSql), DB::raw('LOWER(constituency_name)'))->get();
                     $latest = $rows->groupBy(fn ($row) => $row->kind.'|'.$row->state_label)->map(fn ($group) => $group->max('last_year'));

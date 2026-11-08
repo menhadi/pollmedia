@@ -2,10 +2,28 @@
 
 namespace App\Services;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class ElectionArchive
 {
+    public const PC_2019_FINAL = '2e749f2174f08a9ea1fc803d';
+
+    public const PC_2019_SUPERSEDED = '70e603b1037bf7ca8e1350b0';
+
+    public static function publicIndex(): Builder
+    {
+        return DB::table('historical_constituency_index')->where('edition_id', '!=', self::PC_2019_SUPERSEDED);
+    }
+
+    public function publicCatalogue(): array
+    {
+        $catalogue = $this->catalogue();
+        $catalogue['pc'] = array_values(array_filter($catalogue['pc'], fn (array $entry): bool => substr(hash('sha256', $entry[1]), 0, 24) !== self::PC_2019_SUPERSEDED));
+
+        return $catalogue;
+    }
+
     public function catalogue(): array
     {
         $body = file_get_contents(database_path('fixtures/eci-election-archive.json'));
@@ -53,7 +71,7 @@ class ElectionArchive
 
     public function entries(string $type, ?int $year = null): array
     {
-        $catalogue = $this->catalogue();
+        $catalogue = $this->publicCatalogue();
         $published = DB::table('election_contests as e')->join('places as p', 'p.id', '=', 'e.place_id')
             ->join('source_releases as r', 'r.id', '=', 'e.source_release_id')
             ->where('p.type', $type)->where('e.active', true)->where('r.status', 'accepted')

@@ -11,8 +11,8 @@ class SeoPages
 {
     public function catalog(string $type, string $year, string $state = '', string $search = ''): Collection
     {
-        if (in_array($type, ['pc', 'ac'], true) && DB::table('historical_constituency_index')->where('kind', $type)->exists()) {
-            $query = DB::table('historical_constituency_index')->where('kind', $type)
+        if (in_array($type, ['pc', 'ac'], true) && ElectionArchive::publicIndex()->where('kind', $type)->exists()) {
+            $query = ElectionArchive::publicIndex()->where('kind', $type)
                 ->when($year !== '', fn ($query) => $query->where('year', (int) $year))
                 ->when($state !== '', fn ($query) => $query->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($state))]))
                 ->when($search !== '', fn ($query) => $query->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($search).'%']))
@@ -75,7 +75,7 @@ class SeoPages
         $years = collect();
         $states = collect();
         if (in_array($type, ['pc', 'ac'], true)) {
-            $query = DB::table('historical_constituency_index')->where('kind', $type);
+            $query = ElectionArchive::publicIndex()->where('kind', $type);
             $states = (clone $query)->distinct()->pluck('state_label')->map(fn (string $label): string => ElectionPlaceIdentity::state($label))->unique()->sort()->values();
             $years = $query->when($state !== '', fn ($query) => $query->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($state))]))->distinct()->orderByDesc('year')->pluck('year');
         } elseif ($type === 'census') {

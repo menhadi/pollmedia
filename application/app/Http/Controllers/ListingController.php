@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ConstituencyUrls;
 use App\Services\DataCorrections;
 use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
@@ -29,7 +30,7 @@ class ListingController extends Controller
         $states = collect();
         $years = collect();
         if ($section === 'elections') {
-            $base = DB::table('historical_constituency_index')->where('kind', $input['kind'] ?? 'pc');
+            $base = ElectionArchive::publicIndex()->where('kind', $input['kind'] ?? 'pc');
             $states = (clone $base)->distinct()->pluck('state_label')->map(fn (string $state): string => ElectionPlaceIdentity::state($state))->unique()->sort()->values();
             $base->when(! empty($input['state']), fn ($query) => $query->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($input['state']))]));
             $years = (clone $base)->distinct()->orderByDesc('year')->pluck('year');
@@ -37,7 +38,7 @@ class ListingController extends Controller
             if (! empty($input['id'])) {
                 $anchor = DB::table('historical_constituency_index')->find($input['id']);
                 abort_unless($anchor, 404);
-                $entries = DB::table('historical_constituency_index')->where('kind', $anchor->kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($anchor->state_label))])->where('constituency_name', $anchor->constituency_name)->orderByDesc('year')->get();
+                $entries = ElectionArchive::publicIndex()->where('kind', $anchor->kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($anchor->state_label))])->where('constituency_name', $anchor->constituency_name)->orderByDesc('year')->get();
                 foreach ($entries as $entry) {
                     try {
                         [$data] = app(HistoricalElectionArchive::class)->load($entry->edition_id, app(ElectionArchive::class));
@@ -57,7 +58,7 @@ class ListingController extends Controller
                     $version = $record['review_id'];
                     unset($record['review'], $record['review_id'], $record['review_fingerprint'], $record['review_archive'], $record['has_warning']);
                     $record = $this->electionFields($record);
-                    $documents->push($this->document('historical_constituency_index', $entry->id, $entry->constituency_name.' · '.$entry->year, $record, hash('sha256', json_encode([$data['source_sha256'], $original, $version])), $data['source_url'], \App\Services\ConstituencyUrls::url(['kind' => $entry->kind, 'state' => ElectionPlaceIdentity::state($entry->state_label), 'name' => $entry->constituency_name, 'edition' => $entry->edition_id, 'code' => $entry->record_code]), ['code', 'status', 'winner', 'margin', 'admin_listing_correction'], $entry->edition_id));
+                    $documents->push($this->document('historical_constituency_index', $entry->id, $entry->constituency_name.' · '.$entry->year, $record, hash('sha256', json_encode([$data['source_sha256'], $original, $version])), $data['source_url'], ConstituencyUrls::url(['kind' => $entry->kind, 'state' => ElectionPlaceIdentity::state($entry->state_label), 'name' => $entry->constituency_name, 'edition' => $entry->edition_id, 'code' => $entry->record_code]), ['code', 'status', 'winner', 'margin', 'admin_listing_correction'], $entry->edition_id));
                 }
             }
         } elseif ($section === 'census') {
@@ -99,7 +100,7 @@ class ListingController extends Controller
         abort_unless(is_array($fields), 422);
         DB::transaction(function () use ($input, $fields, $request): void {
             if ($input['table'] === 'historical_constituency_index') {
-                $entry = DB::table('historical_constituency_index')->where('id', $input['id'])->lockForUpdate()->first();
+                $entry = ElectionArchive::publicIndex()->where('id', $input['id'])->lockForUpdate()->first();
                 abort_unless($entry, 404);
                 [$data] = app(HistoricalElectionArchive::class)->load($entry->edition_id, app(ElectionArchive::class));
                 $original = collect($data['records'])->firstWhere('code', $entry->record_code);
@@ -134,7 +135,7 @@ class ListingController extends Controller
                 $fields['admin_listing_correction'] = true;
                 DB::table('historical_election_reviews')->insert(['archive' => $entry->edition_id, 'code' => $entry->record_code, 'fingerprint' => $reviews->fingerprint($original, $data['source_sha256']), 'action' => 'correct', 'reason' => $input['reason'], 'reference_url' => $input['reference_url'] ?? null, 'record' => json_encode($fields, JSON_THROW_ON_ERROR), 'reviewed_by' => $request->user()->id, 'created_at' => now()]);
                 $displayName = $fields['constituency_name'] ?? $fields['name'] ?? $entry->constituency_name;
-                DB::table('historical_constituency_index')->where('id', $entry->id)->update(['constituency_name' => $displayName, 'status' => 'corrected', 'has_warning' => false]);
+                ElectionArchive::publicIndex()->where('id', $entry->id)->update(['constituency_name' => $displayName, 'status' => 'corrected', 'has_warning' => false]);
             } else {
                 if ($input['table'] === 'sir_parts') {
                     DB::table('site_settings')->insertOrIgnore(['key' => 'sir-edit-lock', 'value' => 'null', 'created_at' => now(), 'updated_at' => now()]);

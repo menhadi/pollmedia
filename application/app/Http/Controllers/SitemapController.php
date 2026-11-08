@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CensusHistory;
 use App\Services\ConstituencyUrls;
+use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
@@ -47,7 +48,7 @@ class SitemapController extends Controller
             }
         }
         $seenSeats = [];
-        foreach (DB::table('historical_constituency_index')->orderByDesc('year')->select('kind', 'state_label', 'constituency_name', 'edition_id', 'record_code')->get() as $seat) {
+        foreach (ElectionArchive::publicIndex()->orderByDesc('year')->select('kind', 'state_label', 'constituency_name', 'edition_id', 'record_code')->get() as $seat) {
             $state = ElectionPlaceIdentity::state($seat->state_label);
             $identity = $seat->kind.'|'.$state.'|'.mb_strtolower(trim($seat->constituency_name));
             if (isset($seenSeats[$identity])) {

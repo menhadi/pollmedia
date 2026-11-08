@@ -5,13 +5,12 @@ namespace App\Services;
 use App\Http\Controllers\ListingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class CommunityElectionCorrections
 {
     public function document(int $id): array
     {
-        $entry = DB::table('historical_constituency_index')->find($id) ?? abort(404);
+        $entry = ElectionArchive::publicIndex()->find($id) ?? abort(404);
         [$source] = app(HistoricalElectionArchive::class)->load($entry->edition_id, app(ElectionArchive::class));
         $original = collect($source['records'])->firstWhere('code', $entry->record_code) ?? abort(404);
         $current = app(HistoricalElectionReview::class)->apply($entry->edition_id, $original, $source['source_sha256']);

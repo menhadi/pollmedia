@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\CensusHistory;
 use App\Services\CensusPlaceNavigation;
+use App\Services\ConstituencyUrls;
 use App\Services\DataCorrections;
+use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
 use App\Services\ElectionResults;
 use Illuminate\Contracts\View\View;
@@ -22,16 +24,18 @@ class PlaceController extends Controller
         abort_unless($place, 404);
         if ($place->type === 'district') {
             $destination = app(CensusPlaceNavigation::class)->url($place);
-            if (str_contains($destination, '/india/districts/')) { return redirect($destination, 301); }
+            if (str_contains($destination, '/india/districts/')) {
+                return redirect($destination, 301);
+            }
         }
         $censusRecord = app(CensusPlaceNavigation::class)->record($place);
         if ($censusRecord) {
             return redirect()->route('civic.place', ['record' => $censusRecord]);
         }
         if (in_array($type, ['pc', 'ac']) && Schema::hasTable('historical_constituency_index') && DB::table('place_identifiers')->where('place_id', $place->id)->where('namespace', 'electoral:IN:UP:'.$type)->exists()) {
-            $entry = DB::table('historical_constituency_index')->where('kind', $type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', ['uttar pradesh'])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
+            $entry = ElectionArchive::publicIndex()->where('kind', $type)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', ['uttar pradesh'])->whereRaw('LOWER(constituency_name) = ?', [mb_strtolower($place->name)])->orderByDesc('year')->first();
             if ($entry) {
-                return redirect(\App\Services\ConstituencyUrls::url(['kind' => $type, 'state' => 'Uttar Pradesh', 'name' => $entry->constituency_name]));
+                return redirect(ConstituencyUrls::url(['kind' => $type, 'state' => 'Uttar Pradesh', 'name' => $entry->constituency_name]));
             }
         }
         $scope = [$place->id];

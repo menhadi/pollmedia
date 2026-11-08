@@ -17,9 +17,6 @@ class StateWinningMargins
         $votes = $contests->pluck('result.margin')->map(fn ($margin) => (int) $margin);
         $lowest = $votes->min();
         $highest = $votes->max();
-        $frequencies = $votes->countBy();
-        $peak = $frequencies->max();
-        $modes = $peak > 1 ? $frequencies->filter(fn ($count) => $count === $peak)->keys()->sort()->values()->all() : [];
 
         return [
             'count' => $votes->count(),
@@ -29,7 +26,6 @@ class StateWinningMargins
             'closest_wins' => $contests->where('result.margin', $lowest),
             'mean' => $votes->avg(),
             'median' => $votes->median(),
-            'modes' => $modes,
         ];
     }
 }

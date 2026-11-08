@@ -15,11 +15,11 @@ class ElectoralMapResults
             return [];
         }
         $stateSql = $this->stateSql();
-        $query = DB::table('historical_constituency_index')->where('kind', $kind)
+        $query = ElectionArchive::publicIndex()->where('kind', $kind)
             ->when($edition, fn ($q) => $q->where('edition_id', $edition))
             ->when($state, fn ($q) => $q->whereRaw($stateSql.' = ?', [str_replace('&', 'and', mb_strtolower($state))]));
         if (! $edition) {
-            $latest = DB::table('historical_constituency_index')->where('kind', $kind)
+            $latest = ElectionArchive::publicIndex()->where('kind', $kind)
                 ->selectRaw($stateSql.' AS map_state, MAX(year) AS map_year')->groupByRaw($stateSql);
             $query->joinSub($latest, 'latest_map_years', fn ($join) => $join->on('year', '=', 'latest_map_years.map_year')->whereRaw($stateSql.' = latest_map_years.map_state'));
         }

@@ -20,7 +20,7 @@ class HomeElectionSummary
 
     private function dashboardResult(bool $refresh = false, ?string $heldKey = null): array
     {
-        $groups = DB::table('historical_constituency_index')->whereIn('kind', ['pc', 'ac'])->whereNotNull('state_label')
+        $groups = ElectionArchive::publicIndex()->whereIn('kind', ['pc', 'ac'])->whereNotNull('state_label')
             ->selectRaw('kind, year, state_label, edition_id, extraction_sha256, COUNT(*) as tables_count, SUM(candidate_count) as candidates_count')
             ->groupBy('kind', 'year', 'state_label', 'edition_id', 'extraction_sha256')->orderBy('edition_id')->orderBy('state_label')->get();
         $version = DB::table('historical_election_reviews')->max('id') ?? 0;
@@ -136,7 +136,7 @@ class HomeElectionSummary
             return [];
         }
         $reviews = DB::table('historical_election_reviews')->where('archive', $edition)->orderBy('id')->get()->keyBy('fingerprint');
-        $index = DB::table('historical_constituency_index')->where('edition_id', $edition)
+        $index = ElectionArchive::publicIndex()->where('edition_id', $edition)
             ->get(['state_label', 'record_code'])->sortBy(['state_label', 'record_code'])->values();
         $fingerprint = hash('sha256', serialize([$digest, $selections->all(), $reviews->all(), $index->all(), $analysisVersion, hash_file('sha256', __FILE__)]));
         $key = 'home-edition-rollup-v1:'.hash('sha256', $edition);
@@ -264,7 +264,7 @@ class HomeElectionSummary
 
     public function seats(string $kind, string $state): array
     {
-        $base = DB::table('historical_constituency_index')->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($state))]);
+        $base = ElectionArchive::publicIndex()->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower(ElectionPlaceIdentity::state($state))]);
         $year = (clone $base)->max('year');
         $edition = (clone $base)->where('year', $year)->groupBy('edition_id')->orderByRaw('COUNT(*) DESC')->orderByDesc('edition_id')->value('edition_id');
 
