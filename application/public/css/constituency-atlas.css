@@ -29,3 +29,27 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .atlas-map-explorer .election-map[data-mode="focus"] .election-map-seat{stroke:#dbe4df;stroke-width:.65}
 .atlas-map-explorer .election-map[data-mode="focus"] .election-map-seat:is(.is-selected,:focus-visible,:hover){stroke:#fff!important;stroke-width:2.3!important;filter:drop-shadow(0 0 1.4px #142b29)}
 @media(max-width:700px){.atlas-controls{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}.atlas-controls nav{width:min(100%,21rem)}}
+.atlas-state-explorers{margin:24px 0}.atlas-state-explorers>h2{margin:0 0 12px}
+.atlas-map-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:16px;align-items:start}
+.seat-atlas .atlas-map-pair>.atlas-map-explorer{min-width:0;margin:0;padding:16px;border:1px solid var(--atlas-rule);border-radius:12px;background:var(--atlas-paper)}
+.atlas-map-pair>.atlas-map-explorer>h3{font:600 1.35rem/1.25 Georgia,serif;margin:0 0 12px;color:var(--atlas-ink)}
+.atlas-map-pair .atlas-map-explorer .election-map{position:relative;display:flex;flex-direction:column;gap:8px;margin:0;padding:0;border:0;border-radius:0;background:transparent}
+.atlas-map-pair .atlas-map-explorer .election-map-surface{order:2;height:clamp(250px,31vw,380px);width:100%;margin:0;background:var(--atlas-paper)}
+.atlas-map-pair .atlas-map-explorer .election-map-surface svg{display:block;max-width:100%;width:100%;height:100%}
+.atlas-map-pair .election-map-tools{order:3;align-self:end;display:flex;gap:3px;padding:2px;background:var(--atlas-tint);border-radius:7px}
+.atlas-map-pair .election-map-tools button{min-height:38px;min-width:38px;border:1px solid var(--atlas-rule);border-radius:5px;background:var(--atlas-paper);color:var(--atlas-ink)}
+.atlas-map-pair [data-map-status],.atlas-map-pair [data-map-legend],.atlas-map-pair [data-map-village-link],.atlas-map-pair .election-map-print-details{order:4;margin:0;font-size:.84rem}
+.atlas-map-pair .election-map [hidden]{display:none!important}
+.atlas-map-filter{position:relative;z-index:3;width:100%;align-self:stretch}.atlas-map-filter>label{display:block;margin:0 0 4px;font-size:.82rem;color:var(--atlas-muted);font-weight:650}
+.atlas-search-field{display:flex;gap:9px;align-items:center;border:1px solid color-mix(in srgb,var(--chart-series-1) 48%,var(--atlas-paper));border-radius:8px;background:var(--atlas-tint);padding:0 10px;color:var(--chart-series-1)}
+.atlas-search-field:focus-within{outline:2px solid var(--chart-series-1);outline-offset:1px}.atlas-search-field>svg{flex:none}.atlas-search-field input[type=search]{width:100%;min-width:0;margin:0;padding:0;min-height:44px;background:transparent;border:0;border-radius:0;box-shadow:none;outline:none;color:var(--atlas-ink);font:inherit;font-size:16px}
+.atlas-map-filter [data-seat-options],.atlas-map-filter [data-seat-no-match]{position:absolute;inset-inline:0;top:100%;margin:3px 0 0;border:1px solid var(--atlas-rule);border-radius:7px;background:var(--atlas-paper);box-shadow:0 5px 16px #18353420}
+.atlas-map-filter [data-seat-options]{list-style:none;max-height:225px;overflow-y:auto;overscroll-behavior:contain;padding:4px}
+.atlas-map-filter [role=option]{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:6px 8px;border-radius:4px;cursor:pointer;color:var(--atlas-ink)}
+.atlas-map-filter [role=option]:is(:hover,[aria-selected=true]){background:var(--atlas-tint)}.atlas-map-filter [role=option] small{font-size:.73rem;color:var(--chart-series-1);font-weight:650}
+.atlas-map-filter [data-seat-no-match]{padding:12px}.atlas-map-pair .election-map .election-map-seat{stroke:#63726a;stroke-width:.65}
+.atlas-map-pair .election-map .election-map-seat.is-connected{stroke:#344f49;stroke-width:1.35}
+.atlas-map-pair .election-map .election-map-seat:is(.is-selected,:focus-visible,:hover){stroke:#193c39!important;stroke-width:2.4!important}
+.atlas-map-pair .election-map-seat.seat-filter-muted{opacity:.25}
+@media(max-width:700px){.seat-atlas .atlas-map-pair>.atlas-map-explorer{padding:12px}.atlas-map-pair .election-map-tools button{min-width:44px;min-height:44px}}
+

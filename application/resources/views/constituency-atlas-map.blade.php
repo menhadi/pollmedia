@@ -16,7 +16,3 @@ $missing=collect($coverage)->keys()->diff($mappedRows->pluck('slug'))->map(fn($s
 @if($mapVillages)<p class="atlas-map-stat"><strong>{{ count($mapVillages) }}</strong> {{ $tr('mapped villages','मैप किए गए गाँव') }}</p>@endif
 @if(!$coverage && !$atlasFamily['ac'])<ul data-atlas-segments></ul>@endif
 </div></section>
-<section class="atlas-map-explorer" aria-label="{{ $tr('Explore the state map','राज्य का नक्शा देखें') }}">
-<h2>{{ $state }} · {{ $kind==='pc'?$tr('Lok Sabha map','लोक सभा का नक्शा'):$tr('Assembly map','विधान सभा का नक्शा') }}</h2><p class="atlas-caption">{{ $tr('Select a constituency on the map or choose it by name to open its page.','क्षेत्र का पेज खोलने के लिए नक्शे पर चुनें या सूची से उसका नाम चुनें।') }}</p>
-@include('election-map',['mapKind'=>$kind,'mapStateName'=>$state,'mapSelectedName'=>$name,'mapMode'=>'focus','atlasExplorer'=>true])
-</section>

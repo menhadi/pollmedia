@@ -16,8 +16,8 @@
         });
     }
     const region = atlas.querySelector('[data-atlas-region]');
-    const explorer = atlas.querySelector('.atlas-map-explorer');
-    const map = explorer.querySelector('[data-election-map]');
+    const explorer = atlas.querySelector('.atlas-map-explorer[data-current-layer]');
+    const map = explorer?.querySelector('[data-election-map]');
     if (!map?.dataset.source || !map.dataset.state || atlas.dataset.ambiguous === '1') return;
     const normalize = value => String(value ?? '').trim().toLowerCase().replace(/\s*\((sc|st|gen)\)$/i, '').trim();
     const ringList = geometry => geometry.type === 'Polygon' ? geometry.coordinates : geometry.coordinates.flat();
