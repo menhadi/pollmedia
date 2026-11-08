@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Services\HistoricalElectionAnalytics;
+use App\Services\StateTablePreview;
+use Dom\HTMLDocument;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -37,7 +40,7 @@ class StateElectionSectionsTest extends TestCase
         $this->assertSame(1, $xpath->query('//details[@id="state-methodology" and not(@open)]//details[not(@open)]//table')->length);
         $this->assertSame(1, $xpath->query('//details[contains(@class,"result-coverage") and not(@open)]')->length);
         $this->assertSame(2, $xpath->query('//main//table[contains(@class,"atlas-party-history") and thead/tr/th="Party" and thead/tr/th="Votes" and thead/tr/th="Share (%)"]')->length);
-        $this->assertSame(2, $xpath->query('//main//*[@data-default-all]')->length);
+        $this->assertSame(2, $xpath->query('//main//*[@data-party-list or @data-seat-list]')->length);
         $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
             ->assertSee('data-kind="ac"', false)->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);
         foreach (['pc' => 'Lok Sabha', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {
@@ -53,6 +56,31 @@ class StateElectionSectionsTest extends TestCase
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha (PC) results')->assertDontSee('2022 Assembly (AC) results')->assertSee('data-year="2019"', false)->assertDontSee('data-year="2022"', false)->assertSee('edition='.str_repeat('b', 24), false);
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('c', 24))->assertNotFound();
         $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 Assembly (AC) results');
+    }
+
+    public function test_long_state_tables_send_twenty_rows_then_return_the_requested_table(): void
+    {
+        $url = 'https://localhost/india/state/uttar-pradesh?election=ac';
+        $rows = '';
+        foreach (range(1, 27) as $index) {
+            $rows .= "<tr><th>Seat {$index}</th><td>{$index}</td></tr>";
+        }
+        $html = "<!doctype html><html><body><main><table><thead><tr><th>Name</th><th>Votes</th></tr></thead><tbody>{$rows}</tbody></table></main></body></html>";
+        $service = app(StateTablePreview::class);
+        $initial = HTMLDocument::createFromString($service->render($html, Request::create($url)));
+        $this->assertCount(20, $initial->querySelectorAll('tbody tr'));
+        $this->assertNull($initial->querySelector('th[data-number]:first-child'));
+        $this->assertCount(20, $initial->querySelectorAll('td[data-number]'));
+        $link = $initial->querySelector('[data-rows-url]');
+        $this->assertStringNotContainsString('Seat 27', $initial->saveHtml());
+        $reply = $service->render($html, Request::create($link->getAttribute('data-rows-url')))->getData(true);
+        $this->assertSame(27, $reply['count']);
+        $this->assertStringContainsString('Seat 27', $reply['bodies'][0]);
+        $this->assertSame([1], $reply['numericColumns']);
+        $full = HTMLDocument::createFromString($service->render($html, Request::create($link->getAttribute('href'))));
+        $this->assertCount(27, $full->querySelectorAll('tbody tr'));
+        $this->assertNull($full->querySelector('[data-rows-url]'));
+        $this->assertSame(404, $service->render($html, Request::create($url.'&table_rows=missing'))->getStatusCode());
     }
 
     public function test_current_directory_excludes_former_names_and_keeps_election_types_separate(): void

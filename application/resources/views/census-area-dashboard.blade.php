@@ -19,7 +19,9 @@ if ($isState && (int)$year===2011) {
         }
     }
 }
-$areaRows=($topic==='places'?$dashboardChildren:collect())->map(function ($row) use ($isState,$districtProfiles) {
+$stateDistrictRows=$isState && $topic==='places'?$dashboardChildren->groupBy('level'):collect();
+$previewChildren=$stateDistrictRows->isNotEmpty()?$stateDistrictRows->map(fn($group)=>\App\Services\StateTablePreview::initial($group))->collapse():$dashboardChildren;
+$areaRows=($topic==='places'?$previewChildren:collect())->map(function ($row) use ($isState,$districtProfiles) {
     $values=\App\Services\VillageMapMetrics::values(json_decode($row->values,true));
     $profile=$row->level==='DISTRICT'?$districtProfiles->get($row->district_code):null;
     return [
@@ -118,7 +120,7 @@ return \Illuminate\Support\Str::headline(str_replace('_', ' ', $field));
 @endif
 @if($areaRows->isNotEmpty())
 <section id="area-tables" class="panel"><h2>{{ $isState?'District':'Village & town' }} data</h2><label>Find a place<input type="search" data-area-table-search placeholder="Filter by name"></label>
-@foreach($areaRows->groupBy('level') as $level=>$rows)<details class="area-data-table" @if($isState) open @endif><summary>{{ \Illuminate\Support\Str::headline(strtolower($level)) }} · {{ $rows->count() }} records available</summary><div class="table-wrap" @if($isState) role="region" aria-label="{{ app()->getLocale()==='hi'?'ज़िले के जनगणना आँकड़े':'District Census figures' }}" tabindex="0" @endif><table><thead><tr><th scope="col">{{ $isState?\App\Services\PublicLanguage::text('District'):'Place' }}</th>@if($level==='VILLAGE' && $villageGps)<th>Gram Panchayat</th>@endif<th scope="col">Population</th><th scope="col">Households</th><th scope="col">Literacy age 7+</th></tr></thead><tbody>@foreach($rows as $row)<tr data-area-row><th scope="row">@if($row['url'])<a href="{{ $row['url'] }}">{{ $row['name'] }}</a>@else{{ $row['name'] }}@endif
+@foreach($areaRows->groupBy('level') as $level=>$rows)<details class="area-data-table" @if($isState) open @endif><summary>{{ \Illuminate\Support\Str::headline(strtolower($level)) }} · {{ $stateDistrictRows->get($level)?->count()??$rows->count() }} records available</summary><div class="table-wrap" @if($isState) role="region" aria-label="{{ app()->getLocale()==='hi'?'ज़िले के जनगणना आँकड़े':'District Census figures' }}" tabindex="0" @endif><table @if($isState) data-total-rows="{{ $stateDistrictRows->get($level)?->count()??$rows->count() }}" @endif><thead><tr><th scope="col">{{ $isState?\App\Services\PublicLanguage::text('District'):'Place' }}</th>@if($level==='VILLAGE' && $villageGps)<th>Gram Panchayat</th>@endif<th scope="col">Population</th><th scope="col">Households</th><th scope="col">Literacy age 7+</th></tr></thead><tbody>@foreach($rows as $row)<tr data-area-row><th scope="row">@if($row['url'])<a href="{{ $row['url'] }}">{{ $row['name'] }}</a>@else{{ $row['name'] }}@endif
 @if($row['seats']['available']??false)
 <details class="district-seat-names"><summary>{{ app()->getLocale()==='hi'?'संबंधित निर्वाचन क्षेत्र':'Linked constituencies' }}</summary>
 @foreach(['parliamentary'=>'Lok Sabha (PC)','assembly'=>'Assembly (AC)'] as $kind=>$label)

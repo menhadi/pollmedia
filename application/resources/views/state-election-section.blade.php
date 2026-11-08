@@ -27,14 +27,14 @@
 @include('state-results-map')
 
 <section id="{{ $kind }}-constituency-results" class="panel state-constituency-results"><h2>All constituency results · {{ $election['year'] }}</h2>
-<div data-seat-list data-default-all><label hidden data-seat-tools>Find a constituency<input type="search" data-seat-filter autocomplete="off"></label>
+<div data-seat-list ><label hidden data-seat-tools>Find a constituency<input type="search" data-seat-filter autocomplete="off"></label>
 
-<div class="table-scroll" role="region" aria-label="Constituency results" tabindex="0"><table><thead><tr>
+<div class="table-scroll" role="region" aria-label="Constituency results" tabindex="0"><table data-total-rows="{{ $seatRows->count() }}"><thead><tr>
 <th scope="col">Constituency</th><th scope="col">Winner</th><th scope="col">Winning party</th><th scope="col">Margin (votes)</th>
 @if($hasReportedCandidates)<th scope="col">Reported candidate</th><th scope="col">Reported party</th>@endif
 @if($hasStatus)<th scope="col">Result status</th>@endif
 </tr></thead><tbody>
-@forelse($seatRows as $seat)
+@forelse(\App\Services\StateTablePreview::initial($seatRows) as $seat)
 <tr><th scope="row"><a href="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$title,'name'=>$seat['name'],'edition'=>$edition,'code'=>$seat['code']]) }}">{{ $seat['name'] }}</a>@if($seat['has_warning']) †@endif</th>
 <td>{{ $seat['result']['winner']??'—' }}</td><td>{{ $seat['result']['party']??'—' }}</td>
 <td data-sort-value="{{ $seat['result']['margin']??'' }}">{{ isset($seat['result']['margin'])?number_format($seat['result']['margin']):'—' }}</td>
@@ -43,14 +43,14 @@
 </tr>
 @empty<tr><td colspan="{{ 4+($hasReportedCandidates?2:0)+($hasStatus?1:0) }}">Constituency details are not available for this year.</td></tr>@endforelse
 </tbody></table></div>
-@include('state-table-pager')</div>
-@foreach($election['constituency_results']??[] as $seat)@if($seat['has_warning'] && $seat['note'])<p class="small"><strong>† {{ $seat['name'] }}:</strong> {{ $seat['note'] }}</p>@endif @endforeach
+</div>
+
 @if($hasReportedCandidates)<p class="small">The reported candidate and party columns retain source information where a winner is unconfirmed.</p>@endif
 </section>
 <section id="{{ $kind }}-party-votes" class="panel state-share-table"><h2>Party vote shares · {{ $election['year'] }}</h2>
-@if($election['party_count'] < $election['tables'])<p class="coverage-note">Party vote shares require reconciled votes for all candidates in each included constituency. A verified winner or turnout alone does not establish those totals. @if($election['party_count'] > 0)Shares below cover only {{ $election['party_count'] }} of {{ $election['tables'] }} constituencies.@endif <a href="#{{ $kind }}-coverage">See coverage by year</a>.</p>@endif<div data-party-list data-default-all><label hidden data-seat-tools>{{ app()->getLocale()==='hi'?'दल खोजें':'Find a party' }}<input type="search" data-party-filter autocomplete="off"></label>
-<div class="table-scroll"><table data-sortable><thead><tr><th>Party at election</th><th>Votes</th><th scope="col">Vote share (%)</th></tr></thead><tbody>@forelse($election['parties'] as $item)<tr><th>{{ $item['party'] }}</th><td>{{ number_format($item['votes']) }}</td><td data-sort-value="{{ $item['share'] }}">{{ number_format($item['share'],2) }}%@if($election['party_review_count']??0) †@endif</td></tr>@empty<tr><td colspan="3">No comparable party totals are available for this year.</td></tr>@endforelse</tbody></table></div>
-@include('state-table-pager')
+@if($election['party_count'] < $election['tables'])<p class="coverage-note">Party vote shares require reconciled votes for all candidates in each included constituency. A verified winner or turnout alone does not establish those totals. @if($election['party_count'] > 0)Shares below cover only {{ $election['party_count'] }} of {{ $election['tables'] }} constituencies.@endif <a href="#{{ $kind }}-coverage">See coverage by year</a>.</p>@endif<div data-party-list ><label hidden data-seat-tools>{{ app()->getLocale()==='hi'?'दल खोजें':'Find a party' }}<input type="search" data-party-filter autocomplete="off"></label>
+<div class="table-scroll"><table data-sortable data-total-rows="{{ count($election['parties']) }}"><thead><tr><th>Party at election</th><th>Votes</th><th scope="col">Vote share (%)</th></tr></thead><tbody>@forelse(\App\Services\StateTablePreview::initial(collect($election['parties'])) as $item)<tr><th>{{ $item['party'] }}</th><td>{{ number_format($item['votes']) }}</td><td data-sort-value="{{ $item['share'] }}">{{ number_format($item['share'],2) }}%@if($election['party_review_count']??0) †@endif</td></tr>@empty<tr><td colspan="3">No comparable party totals are available for this year.</td></tr>@endforelse</tbody></table></div>
+
 </div>
 </section>
 <p class="state-result-links"><a href="{{ $election['source_url'] }}" target="_blank" rel="noopener">Official report ↗</a></p>

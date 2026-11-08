@@ -11,52 +11,108 @@
         if (event.target.matches('[data-go-url]') && event.target.value) location.assign(event.target.value);
         if (event.target.matches('[data-submit-choice]')) event.target.form.requestSubmit();
     });
-    const selector = '[data-party-list], [data-seat-list], [data-district-list]';
-    function mount(list) {
-        if (list.dataset.listReady) return;
-        list.dataset.listReady = 'true';
-        const body = list.querySelector('tbody');
-        if (!body?.querySelector('th')) return;
-        const input = list.querySelector('input[type=search]');
-        const status = list.querySelector('[role=status]');
-        const steps = list.querySelectorAll('[data-step]');
-        const toggle = list.querySelector('[data-show-all]');
-        const hi = document.documentElement.lang.startsWith('hi');
-        const size = list.matches('[data-district-list]') ? 5 : 12;
-        let page = 0;
-        let showAll = list.hasAttribute('data-default-all');
-        function render() {
-            const rows = Array.from(body.rows);
-            const query = input.value.trim().toLocaleLowerCase();
-            const matches = rows.filter(row => row.cells[0].textContent.toLocaleLowerCase().includes(query));
-            const start = showAll ? 0 : page * size;
-            const end = showAll ? matches.length : Math.min(start + size, matches.length);
-            const visible = new Set(matches.slice(start, end));
-            rows.forEach(row => { row.hidden = !visible.has(row); });
-            status.textContent = matches.length ? (start + 1) + '–' + end + ' / ' + matches.length : (hi ? '0 परिणाम' : '0 results');
-            steps.forEach(button => { button.hidden = showAll || matches.length <= size; });
-            steps[0].disabled = showAll || page === 0;
-            steps[1].disabled = end >= matches.length;
-            toggle.hidden = matches.length <= size;
-            toggle.setAttribute('aria-pressed', String(showAll));
-            toggle.textContent = showAll ? (hi ? 'पृष्ठों में दिखाएँ' : 'Show pages') : (hi ? 'सभी दिखाएँ' : 'Show all');
-        }
-        function firstPage() { page = 0; render(); }
-        input.addEventListener('input', firstPage);
-        steps.forEach(button => button.addEventListener('click', () => { page += Number(button.dataset.step); render(); }));
-        toggle.addEventListener('click', () => { showAll = !showAll; firstPage(); });
-        // The shared sorter reorders tbody rows. Page the new order on every sort.
-        new MutationObserver(firstPage).observe(body, {childList:true});
-        list.querySelectorAll('[data-seat-tools]').forEach(item => { item.hidden = false; });
-        render();
+    const pending = new WeakMap();
+    const hi = document.documentElement.lang.startsWith('hi');
+    function controlFor(table) {
+        return table.parentElement.querySelector('[data-table-control="'+table.dataset.stateTable+'"]');
     }
-    document.querySelectorAll(selector).forEach(mount);
-    const topicHost = document.querySelector('.pm-state-census');
-    if (topicHost) new MutationObserver(changes => {
-        for (const change of changes) for (const node of change.addedNodes) {
-            if (node.nodeType!==1) continue;
-            if (node.matches(selector)) mount(node);
-            node.querySelectorAll(selector).forEach(mount);
+    function expand(table) {
+        if (!table.hasAttribute('data-deferred')) return Promise.resolve(true);
+        if (pending.has(table)) return pending.get(table);
+        const control = controlFor(table);
+        const link = control.querySelector('a');
+        const status = control.querySelector('[role=status]');
+        status.textContent = hi ? 'लोड हो रहा है…' : 'Loading…';
+        table.setAttribute('aria-busy','true');
+        const task = (async () => {
+            try {
+                const response = await fetch(link.dataset.rowsUrl, {headers:{Accept:'application/json'}});
+                if (!response.ok) throw new Error('Table unavailable');
+                const data = await response.json();
+                if (data.table !== table.dataset.stateTable || !Array.isArray(data.bodies) || data.bodies.length !== table.tBodies.length) {
+                    throw new Error('Table changed');
+                }
+                const bodies = data.bodies.map(html => {
+                    const body = document.createElement('tbody');
+                    body.innerHTML = html;
+                    return body;
+                });
+                if (bodies.reduce((n,body)=>n+body.rows.length,0)!==data.count) throw new Error('Incomplete table');
+                Array.from(table.tHead.rows[table.tHead.rows.length-1].cells).forEach((th,index)=>{
+                    th.toggleAttribute('data-number',data.numericColumns.includes(index));
+                });
+                bodies.forEach((body,index)=>table.tBodies[index].replaceChildren(...Array.from(body.rows)));
+                table.removeAttribute('data-deferred');
+                status.textContent = hi ? 'सभी '+data.count+' पंक्तियाँ' : 'All '+data.count+' rows loaded';
+                if (document.activeElement===link) {
+                    table.tabIndex = -1;
+                    table.focus({preventScroll:true});
+                }
+                link.hidden = true;
+                return true;
+            } catch {
+                status.textContent = hi ? 'लोड नहीं हुआ। पुनः प्रयास करें।' : 'Could not load the rows. Try again.';
+                return false;
+            } finally {
+                table.removeAttribute('aria-busy');
+                pending.delete(table);
+            }
+        })();
+        pending.set(table,task);
+        return task;
+    }
+    const searchSelector = '[data-party-filter],[data-seat-filter],[data-district-list] input[type=search],[data-area-table-search]';
+    function searchTable(table,input) {
+        if (!input) return;
+        const query = input.value.trim().toLocaleLowerCase();
+        const rows = Array.from(table.tBodies[0].rows);
+        let matches = 0;
+        for (const row of rows) {
+            row.hidden = !row.cells[0].textContent.toLocaleLowerCase().includes(query);
+            if (!row.hidden) matches++;
         }
-    }).observe(topicHost, {childList:true, subtree:true});
+        if (table.hasAttribute('data-deferred')) return;
+        let status = controlFor(table)?.querySelector('[role=status]') || input.parentElement.querySelector('[data-search-count]');
+        if (!status && query) {
+            status = document.createElement('span');
+            status.dataset.searchCount = '';
+            status.setAttribute('role','status');
+            input.after(status);
+        }
+        if (status) status.textContent = query
+            ? (hi ? matches+' मिलती पंक्तियाँ' : matches+' matching rows')
+            : (hi ? 'सभी '+rows.length+' पंक्तियाँ' : 'All '+rows.length+' rows');
+    }
+    function inputFor(table) {
+        return table.closest('[data-party-list],[data-seat-list],[data-district-list],#area-tables')?.querySelector(searchSelector);
+    }
+    document.addEventListener('click',async event=>{
+        const link=event.target.closest('[data-rows-url]');
+        if (!link || event.button!==0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        const table=document.getElementById(link.getAttribute('aria-controls'));
+        if (table && await expand(table)) searchTable(table,inputFor(table));
+    });
+    document.addEventListener('click',async event=>{
+        const button=event.target.closest('thead button');
+        const table=button?.closest('table[data-deferred]');
+        if (!table) return;
+        event.preventDefault();event.stopImmediatePropagation();
+        if (await expand(table)) { searchTable(table,inputFor(table));button.click(); }
+    },true);
+    document.addEventListener('input',async event=>{
+        const input=event.target.closest(searchSelector);
+        if (!input) return;
+        const scope=input.closest('[data-party-list],[data-seat-list],[data-district-list],#area-tables');
+        if (!scope) return;
+        for (const table of scope.querySelectorAll('table[data-state-table]')) {
+            searchTable(table,input);
+            if (input.value.trim() && table.hasAttribute('data-deferred') && await expand(table)) searchTable(table,input);
+        }
+    });
+    function enableSearch(root=document) {
+        root.querySelectorAll('[data-seat-tools][hidden]').forEach(el=>el.hidden=false);
+    }
+    enableSearch();
+    document.addEventListener('pm-topic-mounted',()=>enableSearch());
 })();
