@@ -69,6 +69,6 @@ class MyPlaceDirectory
         $facts = $pilot ? app(PilibhitMyPlace::class)->facts($selected) : ($selected ? app(MyPlaceFacts::class)->village($selected, $state) : app(MyPlaceFacts::class)->district($districtIdentity));
         $dashboard = $selected ? NamedPlaceUrls::path('lgd-village', $s['name'], $d['name'], $selected['name'], $selected['code']) : ($districtIdentity['path'] ?? route('district-dashboard.named', ['state' => Str::slug($s['name']), 'district' => Str::slug($d['name'])], false));
 
-        return ['state' => $s, 'district' => $d, 'village' => $selected, 'pilot' => $pilot, 'facts' => $facts, 'dashboard' => $dashboard];
+        return ['state' => $s, 'district' => $d, 'village' => $selected, 'pilot' => $pilot, 'facts' => $facts, 'dashboard' => $dashboard, 'district_dashboard' => $districtIdentity['path'] ?? null];
     }
 }

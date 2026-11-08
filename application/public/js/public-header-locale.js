@@ -1,5 +1,5 @@
 (() => {
- const summary=Boolean(document.querySelector('[data-district-summary],[data-district-source-summary],[data-village-summary],[data-gp-summary]'));
+ const summary=Boolean(document.querySelector('[data-district-summary],[data-district-source-summary],[data-village-summary],[data-gp-summary],[data-my-place-compact]'));
  const localeRoot=summary?(document.querySelector('.public-header')||document.body):document.body;
  if(!document.documentElement.lang.startsWith('hi')&&!/^\/issues(?:\/|$)/.test(location.pathname)){
   const replace=value=>value.includes('Subdistrict/Taluka/Tehsil')?value:value.replace(/\bSubdistricts?\b(?:\s*\/\s*(?:Talukas?\s*\/\s*)?Tehsils?)?/gi,'Subdistrict/Taluka/Tehsil');
