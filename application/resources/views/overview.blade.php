@@ -33,10 +33,10 @@
 <div class="landing-duo">
     <article class="landing-card"><p class="landing-kicker">Lok Sabha (PC)</p><h2>National elections</h2>
     @if($parliament)<p class="landing-value">{{ $parliament['year'] }}</p><p>@if(isset($parliament['turnout'])){{ number_format($parliament['turnout'],2) }}% turnout · {{ number_format($parliament['turnout_count']) }} of {{ number_format($parliament['tables']) }} constituencies with comparable figures.@endif</p>@endif
-    <a href="#lok-sabha">Election history ↓</a> · <a href="#states">Browse states ↓</a></article>
+    <a href="{{ route('elections.all-india') }}">All India elections →</a> · <a href="#states">Browse states ↓</a></article>
     <article class="landing-card"><p class="landing-kicker">Census of India</p><h2>Population and places</h2>
     @if($populationPoint)<p class="landing-value">{{ number_format($populationPoint['population']/10000000,2) }} crore</p><p>Population recorded in {{ $populationPoint['year'] }}.</p>@endif
-    <a href="{{ route('census-catalogue.index') }}">Explore Census →</a></article>
+    <a href="{{ route('civic.index') }}">Explore Census →</a></article>
 </div>
 <section class="home-finder" aria-labelledby="finder-title"><div><p class="home-eyebrow">Go straight to your constituency</p><h2 id="finder-title">Find election results</h2></div><form data-home-finder data-endpoint="{{ route('home') }}"><label>Election<select name="kind"><option value="pc">Lok Sabha</option><option value="ac">State Assembly</option></select></label><label>State / Union Territory<select name="state"><option value="">Choose a state</option>@foreach($states as $item)<option value="{{ $item['name'] }}">{{ $item['name'] }}</option>@endforeach</select></label><label>Constituency<select name="seat" disabled><option value="">Choose a state first</option></select></label><button disabled>View results →</button><p class="home-finder-status" role="status"></p></form></section>
 @foreach(['pc'=>['lok-sabha','Lok Sabha elections','India’s parliamentary election history'], 'ac'=>['assembly','Assembly elections','How the states have voted']] as $kind=>[$anchor,$label,$description])

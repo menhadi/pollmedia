@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PublicPageCanonical
 {
+    public static function contentParameters(Request $request): array
+    {
+        return array_diff(array_keys($request->query()), ['lang', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']);
+    }
+
     public function apply(Request $request, Response $response): void
     {
         if (str_starts_with(strtolower($response->headers->get('Content-Disposition', '')), 'attachment') || ! $request->isMethodSafe() || $request->is('admin', 'admin/*', 'api/*', 'login', 'register', 'logout', 'account', 'account/*', 'password/*') || ! $response->isSuccessful() || ! str_contains($response->headers->get('Content-Type', ''), 'text/html')) {
@@ -36,8 +41,8 @@ class PublicPageCanonical
         $html = preg_replace('~<link\b(?=[^>]*\brel=["\']canonical["\'])[^>]*>~i', '', $html);
         $html = preg_replace('~<meta\b(?=[^>]*\bproperty=["\']og:url["\'])[^>]*>~i', '', $html);
         $tags = '<link rel="canonical" href="'.e($canonical).'"><meta property="og:url" content="'.e($canonical).'">';
-        $filters = array_diff(array_keys($request->query()), ['lang', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']);
-        if ($utility || ($filtered && $filters !== [])) {
+        $filters = self::contentParameters($request);
+        if ($utility || (($filtered || $request->routeIs('elections.all-india', 'civic.index')) && $filters !== [])) {
             $nofollow = str_contains(strtolower($response->headers->get('X-Robots-Tag', '')), 'nofollow');
             $robots = $nofollow ? 'noindex,nofollow' : 'noindex,follow';
             $html = preg_replace('~<meta\b(?=[^>]*\bname=["\']robots["\'])[^>]*>~i', '', $html);

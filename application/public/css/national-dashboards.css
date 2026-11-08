@@ -1,0 +1,38 @@
+body .india-hub{box-sizing:border-box;max-width:1200px;margin:0 auto;padding:1rem clamp(.85rem,3.5vw,2.75rem) 3rem;color:#193e4b;font:1rem/1.5 system-ui,sans-serif}
+.india-hub *{box-sizing:border-box}
+.india-hub .hub-crumb{display:flex;gap:.55rem;align-items:center;margin:0 0 .85rem;color:#536972;font-size:.9rem}
+.india-hub .hub-crumb a,.india-hub .hub-topics a,.india-hub .hub-panel a{color:#155b68}
+.india-hub .hub-hero{display:grid;grid-template-columns:1.18fr 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(1.45rem,3.9vw,3.4rem);align-items:center;background:#173e4d;color:white;border-radius:12px;border-top:5px solid #42968c}
+.india-hub .hub-hero h1,.india-hub .hub-hero h2,.india-hub .hub-hero strong{color:#fff;margin:0}
+.india-hub .hub-intro h1{font:600 clamp(2.1rem,4.7vw,3.6rem)/1.05 Georgia,serif;letter-spacing:-.035em}
+.india-hub .hub-lead-number{font-size:clamp(1.75rem,4vw,3.05rem);font-weight:680;line-height:1.1;margin:1.05rem 0 .25rem;color:#b5e4d7;font-variant-numeric:tabular-nums}
+.india-hub .hub-intro p,.india-hub .hub-chart p{color:#e3f0ed;margin:.4rem 0}
+.india-hub .hub-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.25rem}
+.india-hub .hub-actions a{padding:.55rem .85rem;border:1px solid #92b9b7;color:#fff;border-radius:5px;text-decoration:none;font-weight:650}
+.india-hub .hub-actions a:first-child{color:#123c45;background:#e0f3ed;border-color:#e0f3ed}
+.india-hub .hub-chart{min-width:0;background:#214b58;border-radius:8px;padding:clamp(.85rem,2.4vw,1.65rem)}
+.india-hub .hub-chart h2{font:600 1.17rem/1.3 system-ui,sans-serif}
+.india-hub .hub-bars,.india-hub .hub-columns,.india-hub .hub-places{list-style:none;margin:0;padding:0}
+.india-hub .hub-bars li{margin:.8rem 0 0}
+.india-hub .hub-bars a{display:flex;align-items:center;justify-content:space-between;gap:.6rem;color:white;text-decoration:none;font-size:.93rem}
+.india-hub .hub-bars li div{height:8px;background:#385e69;margin-top:.26rem;border-radius:2px}
+.india-hub .hub-bars i{display:block;height:100%;border-radius:2px;background:#9cd4c6}
+.india-hub .hub-bars li:nth-child(2) i{background:#ecc893}.india-hub .hub-bars li:nth-child(3) i{background:#beaaca}
+.india-hub .hub-columns{display:flex;gap:clamp(.25rem,1vw,.8rem);margin:.85rem 0 .4rem}
+.india-hub .hub-columns li{display:grid;flex:1;grid-template-rows:auto 5rem auto;gap:.25rem;text-align:center;font-size:.78rem;color:#fff}
+.india-hub .hub-columns i{height:var(--bar);align-self:end;background:#8bbfb7;border-radius:3px 3px 0 0}
+.india-hub .hub-columns li:last-child i{background:#edc68c}.india-hub .hub-chart p{font-size:.78rem}
+.india-hub .hub-topics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1rem 0}
+.india-hub .hub-topics section,.india-hub .hub-panel{background:#fff;border:1px solid #cfdee0;border-radius:8px;padding:1rem 1.25rem}
+.india-hub .hub-topics section{border-top:3px solid #4b7978;display:flex;align-items:flex-start;flex-direction:column}
+.india-hub .hub-topics section:nth-child(2){border-top-color:#ac8251}.india-hub .hub-topics section:nth-child(3){border-top-color:#7b748a}
+.india-hub .hub-topics h2,.india-hub .hub-panel h2,.india-hub .hub-panel summary{font:650 1.35rem/1.25 Georgia,serif;margin:0;color:#193e4b}
+.india-hub .hub-topics p{font-size:.94rem;color:#4d626a;margin:.6rem 0 1rem}
+.india-hub .hub-topics a{font-weight:650;margin-top:auto}.india-hub .hub-topics strong{font-size:1.6rem;color:#155b68}
+.india-hub .hub-panel{margin:1rem 0}.india-hub .hub-panel summary{cursor:pointer}.india-hub .hub-panel-title{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.45rem}
+.india-hub .hub-places{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 1rem;margin-top:.8rem}
+.india-hub .hub-places a{display:flex;gap:.5rem;justify-content:space-between;padding:.65rem 0;border-top:1px solid #dbe5e6;text-decoration:none}
+.india-hub a:hover{text-decoration:underline}.india-hub [id]{scroll-margin-top:6rem}
+@media(max-width:760px){.india-hub .hub-hero{grid-template-columns:minmax(0,1fr)}.india-hub .hub-topics{grid-template-columns:minmax(0,1fr);gap:.55rem}.india-hub .hub-topics section{padding:.85rem 1rem}.india-hub .hub-topics p{margin:.35rem 0 .6rem}.india-hub .hub-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:440px){.india-hub .hub-places{grid-template-columns:minmax(0,1fr)}}
+

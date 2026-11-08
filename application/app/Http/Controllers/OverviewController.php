@@ -13,17 +13,21 @@ use App\Services\IndiaVillageMap;
 use App\Services\PlaceFactTables;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class OverviewController extends Controller
 {
-    public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View|JsonResponse
+    public function index(Request $request, ElectionGeographySummary $summary, ?string $state = null): View|JsonResponse|RedirectResponse
     {
         if ($state === null && $request->has('finder')) {
             $finder = $request->validate(['kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100']);
 
             return response()->json(['seats' => app(HomeElectionSummary::class)->seats($finder['kind'], $finder['state'])]);
+        }
+        if ($state === null && $request->routeIs('india')) {
+            return redirect()->route('home', $request->query(), 301);
         }
         if ($state === null) {
             $states = $summary->states();

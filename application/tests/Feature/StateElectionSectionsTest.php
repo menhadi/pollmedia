@@ -37,6 +37,12 @@ class StateElectionSectionsTest extends TestCase
         $this->assertTrue($ids($catalogue->publicCatalogue())->contains($final));
     }
 
+    public function test_national_aliases_preserve_search_and_language(): void
+    {
+        $this->get('/india/elections?year=2019&lang=hi')->assertRedirect(route('elections.all-india', ['year' => 2019, 'lang' => 'hi']))->assertStatus(301);
+        $this->get('/india?lang=hi')->assertRedirect(route('home', ['lang' => 'hi']))->assertStatus(301);
+    }
+
     public function test_sections_keep_histories_and_year_selections_separate(): void
     {
         $analytics = app(HistoricalElectionAnalytics::class);
@@ -182,7 +188,7 @@ class StateElectionSectionsTest extends TestCase
         ]]));
         $by->shouldReceive('record')->andReturn(['candidates' => [['name' => 'Unconfirmed candidate', 'votes' => 100]]]);
         $url = '/india/elections/all-india';
-        $first = $this->get($url)->assertOk()->assertSee('45 constituency records')
+        $first = $this->get($url)->assertOk()->assertSee('45 constituency records')->assertSee('Records by election type')->assertSee('State election results')
             ->assertSee('Lok Sabha (PC)')->assertSee('Assembly (AC)')->assertSee('Special seat')->assertDontSee('Unconfirmed candidate');
         $links = function (string $html): array {
             $doc = HTMLDocument::createFromString($html, LIBXML_NOERROR, 'UTF-8');
