@@ -21,19 +21,14 @@
     $populationPoint = collect($nationalCensus['rows'])->whereNotNull('population')->sortByDesc('year')->first();
     $parliament = collect($electionDashboard['pc']['rows'])->sortByDesc('year')->first();
 @endphp
-<header class="landing-intro home-lead">
-    <div><p class="landing-kicker">India · Places and public records</p><h1>Find your place</h1>
-    <p>Explore a village, district or constituency through its people, elections and local records.</p>
-    <div class="landing-finder" data-place-search><form role="search" action="{{ route('public.search') }}">
-        <input aria-label="Search by place or PIN code" name="q" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="home-matches" autocomplete="off" type="search" required minlength="2" maxlength="100" placeholder="Place name or PIN code"><button aria-label="Search">@include('search-symbol')</button>
-    </form><div id="home-matches" class="search-suggestions" role="listbox" hidden></div><span class="visually-hidden" role="status"></span></div></div>
-    <nav aria-label="Explore India"><a href="{{ route('my-place.index') }}">My Place <span>↗</span></a><a href="{{ isset($catalogue) ? '#explore-india-map' : route('india-map.index') }}">Explore the India map <span>↗</span></a></nav>
-</header>
+
 @isset($catalogue)
 <section id="explore-india-map" class="india-explorer home-map-panel" aria-labelledby="home-map-heading">
-    <div class="home-section-heading"><h2 id="home-map-heading">Explore the India map</h2><a href="{{ route('india-map.index') }}">Open full map ↗</a></div>
+    <div class="home-section-heading"><h1 id="home-map-heading">Explore the India map</h1><a href="{{ route('india-map.index') }}">Open full map ↗</a></div>
     @include('india-map-explorer', ['homeMap'=>true])
 </section>
+@else
+<h1>India elections and Census</h1>
 @endisset
 <div class="landing-duo">
     <article class="landing-card"><p class="landing-kicker">Lok Sabha (PC)</p><h2>National elections</h2>
