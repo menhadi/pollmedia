@@ -64,11 +64,14 @@ body .compact-district .pb-panel,body .compact-national-directory .panel,body .p
 body .dashboard-shell .dashboard-main.compact-election{padding-top:4px!important}
 body .compact-election .landing-intro>.landing-controls{width:100%!important;max-width:none!important}
 @media(min-width:1000px){
- body .compact-election .landing-intro>.landing-controls{display:grid!important;grid-template-columns:minmax(15rem,1fr) max-content minmax(15rem,1fr);align-items:center!important}
- body .compact-election .landing-controls :is(label,select,form){min-width:0;max-width:100%}
- body .compact-election .landing-year>div{min-width:0;flex:1}
- body .compact-election .landing-controls label>select{flex:1}
+ body .compact-election .landing-intro>.landing-controls{display:flex!important;max-width:none!important;flex-flow:row wrap;justify-content:flex-start}
+ body .compact-election .landing-controls>:is(form,label,nav){flex:0 0 auto!important;width:auto!important}
+ body .compact-election .landing-controls label>select{flex:none!important;width:clamp(12rem,19vw,17rem)!important}
+ body .compact-election .landing-year>div{flex:none!important;width:auto!important}
+ body .compact-election .landing-year select{flex:none!important;width:clamp(7rem,12vw,11rem)!important}
 }
+body .compact-election .landing-bars meter{accent-color:var(--seat-bar,var(--area-teal))}
+body .compact-election .landing-bars meter::-webkit-meter-optimum-value{background:var(--seat-bar,var(--area-teal))}
 body .compact-election .state-map-analysis .election-map-search{grid-row:2}
 body .compact-election .state-map-analysis .election-map-tools{grid-row:3}
 body .compact-election .state-map-analysis [data-map-status]{grid-row:4}
@@ -79,3 +82,4 @@ body .pm-state-census .compact-directory :is(th,td){min-width:0!important;white-
 body .compact-directory .compact-section-title label{margin:0;padding:0}
 body .compact-directory input:focus-visible,body .compact-election :is(select,input):focus-visible{outline:2px solid var(--area-teal)!important;outline-offset:2px}
 @media(max-width:700px){body .pm-state-census .compact-directory th:first-child{width:40%}body .pm-state-census .compact-directory :is(th,td){padding:5px 3px}body .pm-state-census .compact-directory thead :is(th,button){font-size:.83rem;white-space:normal}}
+body .compact-election .state-atlas-filters>header.landing-intro{width:100%!important;max-width:none!important}

@@ -6,7 +6,7 @@
 @endphp
 @if($wins->isNotEmpty())
 <section class="panel landing-bars"><h2>Seats won by party</h2><p>Declared winners with a recorded party · {{ $wins->sum() }} constituencies</p>
-@foreach($wins as $partyName=>$seats)<div><span>{{ $partyName }}</span><meter min="0" max="{{ $wins->max() }}" value="{{ $seats }}">{{ $seats }}</meter><strong>{{ $seats }}</strong></div>@endforeach
+@foreach($wins as $partyName=>$seats)<div><span>{{ $partyName }}</span><meter data-winning-party="{{ $partyName }}" min="0" max="{{ $wins->max() }}" value="{{ $seats }}">{{ $seats }}</meter><strong>{{ $seats }}</strong></div>@endforeach
 </section>@endif
 @include('state-results-map')
 </div>
