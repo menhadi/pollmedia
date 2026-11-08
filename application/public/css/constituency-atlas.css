@@ -89,3 +89,40 @@ body.seat-atlas-page{--atlas-ink:var(--site-text,#183534);--atlas-muted:color-mi
 .seat-atlas .history-line .table-scroll table.atlas-party-history:not([data-ranks]){min-width:0}
 .seat-atlas .atlas-party-history th .table-sort{padding-inline:1px!important;gap:2px}
 }
+
+/* Title and controls share a masthead; small screens follow the reading order. */
+.atlas-mast{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"jump controls" "title title";align-items:center;column-gap:18px}
+.atlas-mast:not(:has(.atlas-map-jump)){grid-template-areas:"controls controls" "title title"}
+.atlas-mast>.atlas-controls{grid-area:controls}
+.atlas-mast>.atlas-title{grid-area:title}
+.atlas-map-jump{grid-area:jump;justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--site-primary,#185c6c);font-size:.9rem;font-weight:600;text-underline-offset:3px}
+#atlas-state-maps,#linked-villages{scroll-margin-top:1rem}
+html body.seat-atlas-page main.seat-atlas :is(select,button,input,.atlas-map-jump,.registry-paging a):is(:focus,:focus-visible){
+ outline:2px solid var(--site-primary,#185c6c)!important;outline-offset:2px;box-shadow:none!important;border-color:var(--site-primary,#185c6c)!important}
+html body.seat-atlas-page .seat-atlas .atlas-search-field:focus-within{outline:2px solid var(--site-primary,#185c6c)!important;outline-offset:2px;border-color:var(--site-primary,#185c6c)!important}
+html body.seat-atlas-page .seat-atlas .atlas-search-field input:is(:focus,:focus-visible){outline:none!important;box-shadow:none!important;border:0!important}
+.seat-atlas .atlas-map-pair .election-map[data-mode="focus"] .election-map-seat.is-selected{fill:var(--site-primary,#126c69)!important;stroke:#fff!important;stroke-width:2!important;filter:drop-shadow(0 0 1.6px #143934)}
+.seat-atlas .atlas-map-pair .election-map[data-mode="focus"] .election-map-seat.is-selected.seat-filter-muted{opacity:.75}
+.seat-atlas .atlas-registry{margin:24px 0 14px;min-width:0;padding-block:16px;border-block:1px solid var(--atlas-rule)}
+.registry-heading,.registry-paging,.registry-paging nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.registry-heading h2,.registry-heading p{margin:0}.registry-heading p,.registry-paging [role=status]{font-size:.85rem;color:var(--atlas-muted)}
+.registry-heading label{display:block;font-size:.85rem;font-weight:650;margin-bottom:4px}.registry-heading input{max-width:100%;min-height:44px;font:inherit;font-size:16px;border:1px solid var(--atlas-rule);border-radius:6px;padding:5px 10px;color:var(--atlas-ink);background:var(--atlas-paper)}
+.seat-atlas #atlas-village-table{width:100%;table-layout:fixed;border-collapse:collapse;margin:12px 0}.seat-atlas #atlas-village-table :is(th,td){text-align:start;padding:.55rem .6rem;vertical-align:middle;border-bottom:1px solid var(--atlas-rule);white-space:normal!important;overflow-wrap:anywhere}
+.seat-atlas #atlas-village-table a,.registry-paging a{color:var(--site-primary,#185c6c);text-underline-offset:3px}
+.registry-paging nav a{display:inline-flex;align-items:center;min-height:44px;padding:4px 8px;font-weight:600}
+.atlas-registry [hidden]{display:none!important}
+@media(max-width:700px){
+ .atlas-mast,.atlas-mast:not(:has(.atlas-map-jump)){display:flex;flex-direction:column;align-items:stretch;gap:0}
+ .atlas-mast .atlas-map-jump{align-self:flex-start;min-height:40px}
+ .seat-atlas .atlas-mast .atlas-title{padding:6px 0 12px}
+ .atlas-mast .atlas-controls{margin:0 0 14px}
+ .registry-heading{align-items:start}.registry-heading form,.registry-heading input{width:100%}
+ .seat-atlas #atlas-village-table tbody{display:table-row-group}
+ .seat-atlas #atlas-village-table tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .seat-atlas #atlas-village-table tbody td{display:flex;align-items:center;min-height:44px;min-width:0}
+}
+
+@media(max-width:700px){
+.seat-atlas #atlas-village-table,.seat-atlas #atlas-village-table :is(thead,tbody,thead tr,thead th){display:block;width:100%}
+.seat-atlas #atlas-village-table tbody tr{width:100%}
+}

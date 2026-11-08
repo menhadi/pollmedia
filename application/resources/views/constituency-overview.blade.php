@@ -3,6 +3,7 @@
 $hi=app()->getLocale()==='hi'; $tr=fn($en,$hindi)=>$hi?$hindi:$en;
 $winner=$latest['result']['winner']??null; $winningParty=$latest['result']['party']??null;
 $atlasFamily=$exactSeatOnly?['ac'=>[],'pc'=>[]]:app(\App\Services\DistrictConstituencyLinks::class)->seatFamily($kind,$state,$name);
+$mapStateInfo=app(\App\Services\ElectoralMapCatalogue::class)->stateFromQuery($state);
 $atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$chosen['record']]):[];
 @endphp
 <main class="seat-atlas" data-constituency-atlas data-ambiguous="{{ $exactSeatOnly?'1':'0' }}">
@@ -13,13 +14,14 @@ $atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAna
     if ($state==='Uttar Pradesh' && !$exactSeatOnly) {
         $coverageFile = database_path('fixtures/pilibhit-lgd-electoral.json');
         if(is_file($coverageFile)){
-            $coverage = \Illuminate\Support\Facades\Cache::remember('atlas-pilibhit-villages:'.filemtime($coverageFile),86400,function() use($coverageFile){
+            $coverage = \Illuminate\Support\Facades\Cache::remember('atlas-pilibhit-village-rows:'.filemtime($coverageFile),86400,function() use($coverageFile){
                 $rows = json_decode(file_get_contents($coverageFile),true,flags:JSON_THROW_ON_ERROR)['villages'];
-                return collect($rows)->where('pc','pilibhit')->groupBy('ac')->map(fn($group)=>$group->unique('lgd_code')->sortBy('name',SORT_NATURAL|SORT_FLAG_CASE)->pluck('name')->values()->all())->all();
+                return collect($rows)->where('pc','pilibhit')->groupBy('ac')->map(fn($group)=>$group->unique('lgd_code')->sortBy('name',SORT_NATURAL|SORT_FLAG_CASE)->map(fn($row)=>['name'=>$row['name'],'code'=>(string)$row['lgd_code']])->values()->all())->all();
             });
             $slug = \Illuminate\Support\Str::slug(preg_replace('/\s*\((?:SC|ST)\)$/i','',trim($name)));
             if($kind==='ac') { $mapVillages=$coverage[$slug]??[]; $coverage=[]; }
-            elseif($slug!=='pilibhit'){ $coverage=[]; }
+            elseif($slug==='pilibhit'){ $mapVillages=collect($coverage)->collapse()->unique('code')->sortBy('name',SORT_NATURAL|SORT_FLAG_CASE)->values()->all(); }
+            else{ $coverage=[]; }
         }
     }
 @endphp
@@ -43,7 +45,7 @@ $atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAna
 </tbody></table>@if(isset($historyRows) && $historyRows->count()<$rows->count())<p class="small">Identical 2019 results in the reports including and excluding Vellore are shown once. Both original editions are listed in Methodology.</p>@endif</div>@if($hasSourceReportedPolled)<p class="small">‡ Vote count from the linked source record; it is not used for a comparable turnout percentage. Open that year for its data note and official report.</p>@endif @if($rows->contains(fn (array $row): bool => $row['record'] && ! $row['result']))<p class="small">* A candidate or source table is recorded, but a winner has not been confirmed here. Check the linked official report.</p>@endif</section>
 
 
-@if($mapVillages)<section class="atlas-registry"><h2>{{ count($mapVillages) }} {{ $tr('mapped villages','मैप किए गए गाँव') }}</h2><ul class="atlas-villages">@foreach($mapVillages as $villageName)<li>{{ $villageName }}</li>@endforeach</ul></section>@endif
+
 <div class="atlas-secondary">@include('public-office-directory')
 <section id="representative" class="panel representative-card"><div class="representative-avatar" aria-hidden="true">{{ $kind==='pc'?'MP':'MLA' }}</div><div><p class="kicker">Latest available election · {{ $latest['entry']->year }}</p><h2>{{ $winner ?: 'Winner unavailable' }}@if($winner && $latest['record']['has_warning']) †@endif</h2>@if($winner)<p>{{ $winningParty??'' }} · Winner in {{ $latest['entry']->year }}</p>@endif @if($winner && $latest['record']['has_warning'])<p class="small"><a href="#year-detail">† See the result’s data note</a></p>@endif<p class="small">Election winners may differ from current representatives.</p>@if($latest['source'])<a href="{{ $latest['source'] }}" rel="noopener">Official election source ↗</a>@endif</div></section>
 @if($related->isNotEmpty())<section id="atlas-related" class="panel"><h2>Connected places</h2><nav aria-label="Connected constituencies and districts">@foreach($related as $place)<a href="{{ $place->url ?? route('places.show',['type'=>$place->type,'slug'=>substr($place->slug,strlen($place->type)+1)]) }}"><span class="kicker">{{ ['pc'=>'Lok Sabha','ac'=>'Assembly · AC','district'=>'District'][$place->type] }}</span><strong>{{ $place->name }} →</strong>@if($place->reference??false)<small>Official district reference</small>@endif</a>@endforeach</nav></section>@endif<section class="panel"><h2>Explore further</h2><nav aria-label="Related places"><a href="#history">Compare election years</a><a href="{{ route('elections.constituencies',['state'=>$state,'kind'=>$kind]) }}">More places in {{ $state }}</a><a href="{{ route('elections.history') }}">Lok Sabha results</a><a href="{{ route('elections.assembly') }}">Assembly results</a><a href="{{ route('elections.by-election-results') }}">By-election results</a></nav></section></div>
@@ -51,6 +53,9 @@ $atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAna
 @includeIf('constituency-dashboard-switcher')
 @includeIf('ut-constituency-map-context')
 @includeIf('island-constituency-map-context')
+@if($mapVillages)
+@include('constituency-village-directory')
+@endif
 <nav class="atlas-reference-links" aria-label="Reports and records"><a href="{{ \App\Services\ConstituencyUrls::url(array_filter(['kind'=>$kind,'state'=>$state,'name'=>$name,'format'=>'report','edition'=>($exactSeatOnly || (isset($reportAlternatives) && $reportAlternatives->isNotEmpty()))?$chosen['entry']->edition_id:null,'code'=>($exactSeatOnly || (isset($reportAlternatives) && $reportAlternatives->isNotEmpty()))?$chosen['entry']->record_code:null])) }}" target="_blank" rel="noopener">Historical report / PDF ↗</a><a href="{{ route('civic.state',['state'=>\App\Services\PlaceFactTables::stateSlug($state)]) }}">State population, literacy &amp; district data</a>
 @if(isset($latest['entry']->id))<a class="data-edit-listing" href="{{ route('community.election',$latest['entry']->id) }}">Edit data</a>@endif</nav>
 <details id="constituency-methodology" class="panel"><summary>Methodology &amp; disclaimer</summary>

@@ -126,6 +126,10 @@ class ConstituencyOverviewTest extends TestCase
             $this->assertSame($edition, $xpath->evaluate('string(//select[@id="edition"]/option[@selected]/@value)'));
             $maps = $xpath->query('//div[@class="atlas-secondary"]/following-sibling::section[contains(@class,"atlas-state-explorers")]//*[@data-election-map]');
             $this->assertSame(2, $maps->length);
+            $this->assertStringNotContainsString('@else', $response->getContent());
+            $this->assertStringNotContainsString('A comparison is unavailable', $response->getContent());
+            $this->assertSame(1, $xpath->query('//a[@href="#atlas-state-maps"]')->length);
+
             $partyTables = $xpath->query('//table[contains(@class,"atlas-party-history")]');
             $this->assertCount(2, $partyTables);
             foreach ([4, 5] as $index => $columns) {
