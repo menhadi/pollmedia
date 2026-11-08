@@ -20,7 +20,7 @@
 <a href="{{ $more('overview') }}">{{ $t('Open full My Place details','मेरा क्षेत्र के विस्तृत रिकॉर्ड खोलें') }} →</a></header>
 <div class="mp-grid">
 @if($metrics)<section class="place-panel mp-card" data-mp-card="census" data-scope="{{ $village?'village':'district' }}"><p class="mp-scope">{{ $localScope }} · {{ $label($facts['census_name']??($village['name']??$context['district']['name'])) }}</p>
-<h3>{{ $t('Population and households','जनसंख्या और परिवार') }}</h3><p class="mp-note">{{ $t('Census 2011','जनगणना 2011') }}</p>
+<h3>{{ $t('Population and households','जनसंख्या और परिवार') }}</h3><p class="mp-note">{{ $village?$t('Census 2011','जनगणना 2011'):$t('Census 2011 district boundaries','जनगणना 2011 की ज़िला सीमाएँ') }}</p>
 <table><tbody>@foreach($metrics as $key=>$value)<tr><th scope="row">{{ $labels[$key][$hi?1:0] }}</th><td>{{ $fmt->format($value) }}{{ $key==='literacy'?'%':'' }}</td></tr>@endforeach</tbody></table>
 @if($village || $context['district_dashboard'])<a class="mp-more" href="{{ url($village?$context['dashboard']:$context['district_dashboard']).'?'.http_build_query(['lang'=>$language]) }}">{{ $village?$t('Open village dashboard','गाँव का डैशबोर्ड खोलें'):$t('Open district dashboard','ज़िला डैशबोर्ड खोलें') }} →</a>@endif</section>@endif
 @if($validWater)
@@ -37,8 +37,13 @@
 <a class="mp-more" href="{{ route('gram-panchayats.show',['state'=>$context['state']['code'],'gp'=>$gp['gp'],'lang'=>$language]) }}">{{ $t('Open Panchayat profile','पंचायत प्रोफ़ाइल खोलें') }} →</a></section>@endif
 @if($previews['prices']->isNotEmpty())<section class="place-panel mp-card" data-mp-card="markets" data-scope="district"><p class="mp-scope">{{ $t('District','ज़िला') }} · {{ $districtName }}</p><h3>{{ $t('District mandi prices','ज़िले के मंडी भाव') }}</h3>
 <table><thead><tr><th scope="col">{{ $t('Commodity and mandi','जिंस और मंडी') }}</th><th scope="col">{{ $t('Modal price','प्रचलित भाव') }}</th></tr></thead><tbody>
-@foreach($previews['prices'] as $p)<tr><th scope="row">{{ $hi?($p['commodity_hi']??$p['commodity']):$p['commodity'] }}<small>{{ $p['market'] }} · {{ $p['date'] }}</small></th><td>₹{{ $fmt->format($p['modal']) }}<small>/ {{ $units[$p['unit']][$hi?1:0]??$p['unit'] }}</small></td></tr>@endforeach</tbody></table>
+@foreach($previews['prices'] as $p)<tr><th scope="row">{{ $hi?(($p['commodity_hi']??null)?:$p['commodity']):$p['commodity'] }}<small>{{ $p['market'] }} · {{ $p['date'] }}</small></th><td>₹{{ $fmt->format($p['modal']) }}<small>/ {{ $units[$p['unit']][$hi?1:0]??$p['unit'] }}</small></td></tr>@endforeach</tbody></table>
 <a class="mp-more" href="{{ $more('local-markets') }}">{{ $t('Explore district market records','ज़िले के मंडी रिकॉर्ड देखें') }} →</a></section>@endif
 </div>
-@if(!$metrics && !$validWater && !$previews['gp'] && $previews['prices']->isEmpty())<p class="place-panel">{{ $t('The directory confirms this selection. Open the full details to browse its place and service records.','निर्देशिका में यह स्थान दर्ज है। स्थान और सेवा रिकॉर्ड देखने के लिए विस्तृत विवरण खोलें।') }}</p>@endif
+@if(isset($context['locality']) || (!$metrics && !$validWater && !$gp && $previews['prices']->isEmpty()))
+<section class="place-panel mp-card" data-mp-card="directory"><h3>{{ $t('Selected area','चयनित क्षेत्र') }}</h3>
+<table><tbody><tr><th scope="row">{{ $t('State / Union territory','राज्य / केंद्र शासित प्रदेश') }}</th><td>{{ $label($context['state']['name']) }}</td></tr><tr><th scope="row">{{ $t('District','ज़िला') }}</th><td>{{ $districtName }}</td></tr>
+@foreach(['pc'=>$t('Lok Sabha constituency','लोकसभा क्षेत्र'),'ac'=>$t('Assembly constituency','विधानसभा क्षेत्र')] as $kind=>$caption)
+@if($part=collect($context['locality']['scopes']??[])->firstWhere('kind',$kind))<tr><th scope="row">{{ $caption }}</th><td>{{ $label($part['name']) }}</td></tr>@endif
+@endforeach</tbody></table><a class="mp-more" href="{{ $more('places') }}">{{ $t('Explore linked places','संबंधित स्थान देखें') }} →</a></section>@endif
 </div>
