@@ -93,3 +93,11 @@ body .public-header.site-header[data-menu-ready=true] #public-navigation .state-
 }
 @media print{body .public-header.site-header[data-compact-place-header]{position:static!important}html:has(.public-header.site-header){scroll-padding-top:0}}
 
+body .public-header.site-header[data-compact-place-header]{background:var(--site-header_background,#123b45)!important;color:var(--site-header_text,#fff)!important}
+body .public-header.site-header .brand-name{font-weight:800!important}
+@media(min-width:701px) and (max-width:1250px){
+body .public-header.site-header[data-menu-ready=true]{grid-template-columns:auto minmax(160px,1fr) auto auto!important;column-gap:12px!important}
+body .public-header.site-header[data-menu-ready=true]>.header-search-wrap{grid-column:2!important;grid-row:1!important}
+body .public-header.site-header[data-menu-ready=true]>.language-switch{grid-column:3!important;grid-row:1!important}
+body .public-header.site-header[data-menu-ready=true]>.public-menu-toggle{display:inline-flex!important;grid-column:4!important;grid-row:1!important}
+}
