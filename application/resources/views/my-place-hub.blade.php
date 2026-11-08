@@ -16,7 +16,7 @@
 @empty
 <p>{{ $t('No published reports were found for this selected area. This does not mean there are no problems.','इस चुने क्षेत्र की प्रकाशित रिपोर्ट नहीं मिली। इसका मतलब यह नहीं कि यहाँ कोई समस्या नहीं है।') }}</p>
 @endforelse
-</div><div class="place-actions hub-issue-actions"><a class="place-button secondary" href="{{ route('issues.index',['area'=>$hub['scope'],'reports'=>1,'lang'=>$language]) }}">{{ $t('View posted problems','प्रकाशित समस्याएँ देखें') }} <span aria-hidden="true">→</span></a></div><details class="hub-compose"><summary>{{ $t('Report a problem here','यहाँ की समस्या बताएँ') }}</summary>@include('my-place-issue-form')</details>
+</div><div class="place-actions hub-issue-actions"><a class="place-button secondary" href="{{ route('issues.index',['area'=>$hub['scope'],'reports'=>1,'lang'=>$language]) }}">{{ $t('View posted problems','प्रकाशित समस्याएँ देखें') }} <span aria-hidden="true">→</span></a></div><details class="hub-compose" id="mp-report-issue" @if(request("compose")==="1") open @endif><summary>{{ $t('Report a problem here','यहाँ की समस्या बताएँ') }}</summary>@include('my-place-issue-form')</details>
 </div></section>
 <?php endif; ?>
 <?php if (in_array($topic, ['agri-insight'], true)): ?>

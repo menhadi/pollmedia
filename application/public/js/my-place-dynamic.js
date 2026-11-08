@@ -20,7 +20,49 @@ if(root){
 
     const savedKey='pollmedia-my-place-v2',remember=root.querySelector('.hub-remember');
 
-    const present=()=>{const heading=result.querySelector('h2');if(heading){root.dataset.selected='true';root.querySelector('h1').textContent=t('My Place','मेरा क्षेत्र');const placeLabel=root.querySelector('[data-selected-place-label]');if(placeLabel)placeLabel.textContent=heading.dataset.placeHeading||heading.textContent;document.title=t('My Place','मेरा क्षेत्र')+' · '+(heading.dataset.placeHeading||heading.textContent)+' | Pollmedia';form.hidden=Boolean(result.querySelector('[data-my-place-compact]'));if(remember)remember.hidden=false;root.querySelector('[data-manual]').textContent=t('Change place','क्षेत्र बदलें');}};
+    const picker=root.querySelector('#mp-picker');
+    const changePlace=root.querySelector('[data-manual]');
+    const setPicker=open=>{
+        picker.hidden=!open;
+        changePlace.setAttribute('aria-expanded',String(open));
+        changePlace.textContent=root.dataset.selected==='true'
+            ? (open?t('Close','बंद करें'):t('Change place','क्षेत्र बदलें'))
+            : t('Choose my place','खुद क्षेत्र चुनें');
+    };
+    const present=()=>{
+        const heading=result.querySelector('[data-place-heading]');
+        if(!heading)return;
+        root.dataset.selected='true';
+        const name=heading.dataset.placeTitle||heading.textContent.trim();
+        root.querySelector('h1').textContent=name;
+        const region=heading.dataset.placeRegion??heading.dataset.placeHeading?.split(' · ').slice(1).join(' · ');
+        root.querySelector('[data-selected-place-label]').textContent=t('My Place','मेरा क्षेत्र')+(region?' · '+region:'');
+        document.title=t('My Place','मेरा क्षेत्र')+' · '+heading.dataset.placeHeading+' | Pollmedia';
+        form.hidden=true;
+        if(remember)remember.hidden=false;
+        if(picker.contains(document.activeElement))changePlace.focus();
+        setPicker(false);
+    };
+
+    const searchToggle=document.querySelector('.mp-search-toggle');
+    const search=document.getElementById('mp-site-search');
+    if(searchToggle && search){
+        const small=window.matchMedia('(max-width:700px)');
+        const setSearch=open=>{
+            searchToggle.hidden=!small.matches;
+            search.hidden=small.matches&&!open;
+            searchToggle.setAttribute('aria-expanded',String(small.matches&&open));
+        };
+        setSearch(false);
+        small.addEventListener('change',()=>setSearch(false));
+        searchToggle.addEventListener('click',()=>{
+            setSearch(search.hidden);
+            if(!search.hidden)search.querySelector('input')?.focus();
+        });
+        search.addEventListener('keydown',event=>{
+            if(event.key==='Escape'&&small.matches){setSearch(false);searchToggle.focus();}
+        });
+    }
 
     const message=text=>{status.textContent=text;};
 
@@ -49,7 +91,7 @@ if(root){
 
             history.replaceState(null,'',`/my-place?${params}`);
 
-            for(const link of document.querySelectorAll('.public-header .language-switch a, #my-place-dynamic > .place-hero .place-languages a')){
+            for(const link of document.querySelectorAll('.public-header .language-switch a')){
 
                 const nextLanguage=new URL(link.href,location.origin).searchParams.get('lang');
 
@@ -74,11 +116,13 @@ if(root){
 
     form.addEventListener('submit',event=>{event.preventDefault();if(hierarchy)render();});
 
-    form.addEventListener('change',()=>{interacted=true;++pending;++locationVersion;result.querySelector('#farmer-app')?.dispatchEvent(new Event('my-place-dispose'));result.replaceChildren();choices.replaceChildren();message(t('Choose your place, then tap Show my place.','क्षेत्र चुनें, फिर मेरा क्षेत्र देखें दबाएँ।'));});
+    form.addEventListener('change',()=>{interacted=true;++pending;++locationVersion;choices.replaceChildren();message(t('Choose your place, then tap Show my place.','क्षेत्र चुनें, फिर मेरा क्षेत्र देखें दबाएँ।'));});
 
     form.addEventListener('place-error',event=>message(event.detail));
 
-    root.querySelector('[data-manual]').addEventListener('click',async()=>{interacted=true;++pending;const version=++locationVersion;locationRequest?.abort();root.querySelector('[data-detect]').disabled=false;form.hidden=false;if(remember)remember.hidden=false;choices.replaceChildren();message(t('Choose your state, district and village.','अपना राज्य, जिला और गाँव चुनें।'));try{const ready=hierarchy||await ensureHierarchy();if(version!==locationVersion)return;if(detectedPlace){await ready.set(detectedPlace);detectedPlace=null;}if(version===locationVersion)ready.fields.state.focus();}catch(error){if(version===locationVersion)message(error.message);}});
+    root.querySelector('[data-manual]').addEventListener('click',async()=>{interacted=true;++pending;const version=++locationVersion;locationRequest?.abort();root.querySelector('[data-detect]').disabled=false;
+        if(!picker.hidden&&!form.hidden&&root.dataset.selected==='true'){setPicker(false);return;}
+        setPicker(true);form.hidden=false;if(remember)remember.hidden=false;choices.replaceChildren();message(t('Choose your state, district and village.','अपना राज्य, जिला और गाँव चुनें।'));try{const ready=hierarchy||await ensureHierarchy();if(version!==locationVersion)return;if(detectedPlace){await ready.set(detectedPlace);detectedPlace=null;}if(version===locationVersion)ready.fields.state.focus();}catch(error){if(version===locationVersion)message(error.message);}});
 
     const applyLocation=async(choice,version)=>{
 

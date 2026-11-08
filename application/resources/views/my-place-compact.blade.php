@@ -14,10 +14,25 @@
     $units=['Quintal'=>['quintal','क्विंटल'],'Kilogram'=>['kg','किलो'],'Nos'=>['item','नग'],'Bundle'=>['bundle','गट्ठर']];
 @endphp
 <div class="mp-overview" data-my-place-compact data-pilibhit-native>
-<header class="place-panel mp-heading"><p class="eyebrow">{{ $label($context['state']['name']) }} · {{ $districtName }}</p>
-<h2 data-place-heading="{{ $placeHeading }}">{{ $placeTitle }}</h2>
-@if(!empty($context['locality']))<p>{{ $t('Detected locality. The figures below cover the district.','चिह्नित इलाका। नीचे दिए गए आँकड़े पूरे ज़िले के हैं।') }}</p>@endif
-<a href="{{ $more('overview') }}">{{ $t('Open full My Place details','मेरा क्षेत्र के विस्तृत रिकॉर्ड खोलें') }} →</a></header>
+<span hidden data-place-heading="{{ $placeHeading }}" data-place-title="{{ $placeTitle }}" data-place-region="{{ collect([$districtName,$label($context['state']['name'])])->reject(fn($name)=>$name===$placeTitle)->implode(' · ') }}"></span>
+@if(!empty($context['locality']))<p class="mp-note">{{ $t('The figures below cover the district.','नीचे दिए गए आँकड़े पूरे ज़िले के हैं।') }}</p>@endif
+<section class="mp-tools" aria-label="{{ $t('Local services','स्थानीय सेवाएँ') }}" data-my-place-tools>
+    <article><h2>{{ $t('Local issues','स्थानीय समस्याएँ') }}</h2>
+    @if($issue=$previews['issue'])<p><a href="{{ route('issues.show',$issue->id) }}">{{ $issue->title }}</a></p>
+    @else<p>{{ $t('No published reports for this area yet.','इस क्षेत्र के लिए अभी कोई प्रकाशित रिपोर्ट नहीं है।') }}</p>@endif
+    <div><a href="{{ $more('local-issues').'&compose=1#mp-report-issue' }}">{{ $t('Report an issue','समस्या बताएँ') }} →</a></div></article>
+    <article><h2>{{ $t('Government schemes','सरकारी योजनाएँ') }}</h2>
+    <p>{{ $t('Explore schemes for your household or occupation.','अपने परिवार या व्यवसाय के लिए योजनाएँ देखें।') }}</p>
+    <div><a href="{{ route('my-place.schemes',collect($params)->only(['state','district','lang'])->all()) }}">{{ $t('Find schemes','योजनाएँ खोजें') }} →</a></div></article>
+    <article><h2>{{ $t('Soil & field reports','मिट्टी और खेत की रिपोर्ट') }}</h2>
+    @if($soil=$previews['soil'])<p>{{ $t('Low nitrogen in','कम नाइट्रोजन') }} <strong>{{ $fmt->format($soil['value']) }}%</strong> · {{ $fmt->format($soil['samples']) }} {{ $t('village samples','गाँव के नमूने') }} (2025–26)</p>
+    @else<p>{{ $t('Get field guidance using your crop details and photos.','फसल की जानकारी और तस्वीरों के आधार पर खेत के लिए सुझाव पाएँ।') }}</p>@endif
+    <div><a href="{{ route('farmers.index',collect($params)->only(['state','district','village','lang'])->all()) }}">{{ $t('Start a field report','खेत की रिपोर्ट बनाएँ') }} →</a>
+    @if($soil && $context['dashboard'])<a href="{{ url($context['dashboard']).'?'.http_build_query(['lang'=>$language,'view'=>'details','topic'=>'soil']) }}">{{ $t('Soil data','मिट्टी के आँकड़े') }} →</a>@endif</div></article>
+</section>
+<nav class="mp-services" aria-label="{{ $t('More local information','अन्य स्थानीय जानकारी') }}">
+<a href="{{ $more('schools-services') }}">{{ $t('Schools & services','स्कूल और सेवाएँ') }}</a>
+<a href="{{ $more('overview') }}">{{ $t('All My Place topics','मेरे क्षेत्र के सभी विषय') }} →</a></nav>
 <div class="mp-grid">
 @if($metrics)<section class="place-panel mp-card" data-mp-card="census" data-scope="{{ $village?'village':'district' }}"><p class="mp-scope">{{ $localScope }} · {{ $label($facts['census_name']??($village['name']??$context['district']['name'])) }}</p>
 <h3>{{ $t('Population and households','जनसंख्या और परिवार') }}</h3><p class="mp-note">{{ $village?$t('Census 2011','जनगणना 2011'):$t('Census 2011 district boundaries','जनगणना 2011 की ज़िला सीमाएँ') }}</p>
