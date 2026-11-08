@@ -63,6 +63,7 @@
 @if($history)<p><a href="{{ route('states.show',['state'=>$state,'election'=>$kind,'format'=>'report']) }}">Printable election history →</a></p>@endif
 @if($history)
 
+@include('state-margin-history')
 @include('place-history-charts',['stateHistory'=>$history,'showChartTables'=>true,'chartTableAnchor'=>$kind.'-coverage'])
 
 @endif

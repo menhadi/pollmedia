@@ -64,15 +64,26 @@ class StateElectionSectionsTest extends TestCase
     public function test_margin_table_keeps_zero_and_tied_seats_and_excludes_unavailable_or_uncontested_results(): void
     {
         $rows = collect([['North', 0], ['South', 0], ['East', 5], ['West', 12], ['Missing', null], ['Unopposed', 99]])
-            ->map(fn ($pair, $code) => ['name' => $pair[0], 'code' => $code + 1, 'result' => ['margin' => $pair[1], 'uncontested' => $pair[0] === 'Unopposed']]);
+            ->map(fn ($pair, $code) => ['name' => $pair[0], 'code' => $code + 1, 'result' => ['margin' => $pair[1], 'winner' => $pair[0].' winner', 'party' => 'Example party', 'uncontested' => $pair[0] === 'Unopposed']]);
         $data = ['seatRows' => $rows, 'election' => ['label' => '2024', 'tables' => 6], 'title' => 'Gujarat',
             'sectionLabel' => 'Lok Sabha (PC)', 'kind' => 'pc', 'edition' => str_repeat('a', 24)];
         $html = view('state-winning-margins', $data)->render();
         $doc = HTMLDocument::createFromString($html, LIBXML_NOERROR, 'UTF-8');
         $this->assertStringContainsString('4 of 6 constituencies', $doc->documentElement->textContent);
         $cells = fn ($n) => $doc->querySelector('tbody tr:nth-child('.$n.') td')->textContent;
-        $this->assertSame(['12', '0', '2.5', '4.3'], array_map($cells, range(1, 4)));
+        $this->assertSame(['12', '0', '0', '3', '4', '0'], array_map($cells, range(1, 6)));
         $this->assertSame(['West', 'North', 'South'], array_map(fn ($a) => $a->textContent, iterator_to_array($doc->querySelectorAll('tbody a'))));
+        $this->assertSame('South winner', $doc->querySelector('tbody tr:nth-child(3) td:nth-child(4)')->textContent);
+        $this->assertSame('Example party', $doc->querySelector('tbody tr:nth-child(3) td:nth-child(5)')->textContent);
+        $other = ['id' => str_repeat('b', 24), 'label' => '2019 edition', 'constituency_results' => $rows->slice(4)->all(), 'tables' => 2];
+        $history = view('state-margin-history', ['state' => 'gujarat', 'kind' => 'pc', 'history' => [
+            $data['election'] + ['id' => $data['edition'], 'constituency_results' => $rows->all()], $other,
+        ]])->render();
+        $historical = HTMLDocument::createFromString($history, LIBXML_NOERROR, 'UTF-8');
+        $values = fn ($n) => array_map(fn ($c) => trim($c->textContent), iterator_to_array($historical->querySelectorAll('tbody tr:nth-child('.$n.') td')));
+        $this->assertSame(['4 / 6', '12', '0', '3', '4', '0'], $values(1));
+        $this->assertSame(['0 / 2', '—', '—', '—', '—', '—'], $values(2));
+        $this->assertStringContainsString('pc_edition='.$other['id'].'#margin-summary-title', $historical->querySelector('tbody tr:nth-child(2) a')->getAttribute('href'));
         $data['seatRows'] = $rows->slice(4);
         $empty = view('state-winning-margins', $data)->render();
         $this->assertStringContainsString('0 of 6 constituencies', $empty);

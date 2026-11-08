@@ -183,5 +183,6 @@ body main:is(.compact-election,.pm-state-census) table[data-state-table] thead t
 
 body .compact-election .landing-controls .landing-switch{width:max-content;max-width:100%}
 body .compact-election .landing-controls .landing-switch a{flex:0 0 auto;white-space:nowrap}
-.compact-election .state-margin-summary table{width:100%;min-width:0;table-layout:auto}
+.compact-election :is(.state-margin-summary,.state-margin-history) .table-scroll{overflow-x:auto;max-width:100%}
+.compact-election :is(.state-margin-summary,.state-margin-history) table{width:100%;min-width:36rem;table-layout:auto}
 .compact-election .state-margin-summary :is(th,td){white-space:normal;overflow-wrap:anywhere}
