@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Services\ByElectionRecords;
+use App\Services\ElectoralMapResults;
 use App\Services\HistoricalElectionAnalytics;
+use App\Services\HistoricalElectionArchive;
 use App\Services\StateTablePreview;
 use Dom\HTMLDocument;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -98,5 +101,55 @@ class StateElectionSectionsTest extends TestCase
         $this->getJson('/india/state/maharashtra?suggest=pc&pc_q=Present')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.label', 'Present Pc')->assertJsonPath('suggestions.0.type', 'PC');
         $this->getJson('/india/state/maharashtra?suggest=ac&ac_scope=archive&ac_q=Former')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.label', 'Former Ac')->assertJsonPath('suggestions.0.type', 'Archive · AC');
         $this->get('/india/state/maharashtra?pc_q=missing')->assertOk()->assertDontSee('Present Pc')->assertDontSee('Present Ac');
+    }
+
+    public function test_national_election_table_combines_records_and_pages_without_repeating_a_source_row(): void
+    {
+        $archive = $this->mock(HistoricalElectionArchive::class);
+        foreach (['pc' => 'a', 'ac' => 'b'] as $kind => $letter) {
+            $edition = str_repeat($letter, 24);
+            $archive->shouldReceive('editions')->with($kind)->andReturn([['id' => $edition]]);
+            foreach (range(1, 22) as $code) {
+                DB::table('historical_constituency_index')->insert([
+                    'edition_id' => $edition, 'record_code' => $code, 'kind' => $kind,
+                    'year' => 2024, 'edition_label' => '2024', 'state_label' => 'Gujarat',
+                    'constituency_name' => $kind.' seat '.$code, 'status' => 'validated',
+                    'has_warning' => false, 'candidate_count' => 4, 'extraction_sha256' => str_repeat('f', 64),
+                ]);
+            }
+        }
+        $this->mock(ElectoralMapResults::class)->shouldReceive('indexedRecords')->andReturnUsing(
+            fn ($kind, $entries) => $entries->map(fn ($r) => [
+                'id' => $r->edition_id.':'.$r->record_code, 'kind' => $kind, 'state' => $r->state_label,
+                'name' => $r->constituency_name, 'winner' => null, 'party' => null, 'year' => $r->year,
+                'url' => url('/test/'.$kind.'/'.$r->record_code),
+            ])->all()
+        );
+        $by = $this->mock(ByElectionRecords::class);
+        $by->shouldReceive('index')->andReturn(collect([[
+            'id' => str_repeat('c', 24), 'kind' => 'ac', 'year' => null, 'state' => 'Gujarat',
+            'constituency' => 'Special seat', 'status' => 'needs_review', 'candidate_count' => 2,
+        ]]));
+        $by->shouldReceive('record')->andReturn(['candidates' => [['name' => 'Unconfirmed candidate', 'votes' => 100]]]);
+        $url = '/india/elections/all-india';
+        $first = $this->get($url)->assertOk()->assertSee('45 constituency records')
+            ->assertSee('Lok Sabha (PC)')->assertSee('Assembly (AC)')->assertSee('Special seat')->assertDontSee('Unconfirmed candidate');
+        $links = function (string $html): array {
+            $doc = HTMLDocument::createFromString($html, LIBXML_NOERROR, 'UTF-8');
+
+            return array_map(fn ($a) => $a->getAttribute('href'), iterator_to_array($doc->querySelectorAll('tbody th a')));
+        };
+        $seen = $links($first->getContent());
+        $this->assertCount(20, $seen);
+        foreach ([2 => 20, 3 => 5] as $page => $expected) {
+            $response = $this->getJson($url.'?rows_only=1&page='.$page)->assertOk()->assertJsonPath('total', 45);
+            $more = $links('<table><tbody>'.$response->json('rows').'</tbody></table>');
+            $this->assertCount($expected, $more);
+            $this->assertSame([], array_intersect($seen, $more));
+            $seen = array_merge($seen, $more);
+        }
+        $this->assertCount(45, array_unique($seen));
+        $this->get($url.'?type=by&year=0&state=Gujarat&q=Special')->assertOk()->assertSee('Special seat')->assertDontSee('pc seat');
+        $this->get($url.'?q=%25')->assertOk()->assertSee('No constituency records match');
     }
 }

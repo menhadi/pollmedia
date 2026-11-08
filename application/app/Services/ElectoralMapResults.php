@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -33,6 +34,12 @@ class ElectoralMapResults
                 return $latest ?? collect();
             });
         }
+
+        return $this->indexedRecords($kind, $rows);
+    }
+
+    public function indexedRecords(string $kind, Collection $rows): array
+    {
         $records = [];
         foreach ($rows->groupBy('edition_id') as $id => $entries) {
             $data = $this->editionRecords($id, $entries->first()->extraction_sha256);

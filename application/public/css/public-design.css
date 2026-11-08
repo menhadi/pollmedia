@@ -152,3 +152,9 @@ body:has(.public-header) .market-table td::before{color:#183444!important}
 body:has(.public-header) :is(.jjm-water,.jjm-section,.water-dashboard) .stat{border-radius:0!important;background:#fff!important;border:1px solid #d3e0e7!important;border-top:3px solid #267e83!important}
 body:has(.public-header) :is(.jjm-water,.jjm-section,.water-dashboard) .stat strong{color:#185c6c!important}
 body:has(.public-header) :is(.jjm-water,.jjm-section,.water-dashboard) .stat span{color:#526775!important}
+
+@media screen{
+body:has(.public-header) main table :is(th,td){text-align:left!important}
+body:has(.public-header) main table thead th>button.table-sort{display:flex;justify-content:flex-start!important;text-align:left!important}
+body:has(.public-header) main table .table-sort-indicator{order:1}
+}
