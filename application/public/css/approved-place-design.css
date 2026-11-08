@@ -149,11 +149,11 @@ body.approved-place-design .public-header.site-header #search-suggestions a{disp
 body.approved-place-design.compact-place:has(.public-header) main .compact-group table a.approved-table-edit{display:inline-flex!important;align-items:center;padding:6px 10px!important;margin:2px 4px!important;color:white!important;background:var(--approved-teal)!important;white-space:nowrap;text-decoration:none!important;border-radius:0!important}
 
 /* The four map colours also cover the older place-chart renderers. */
-body.approved-place-design .population-donut{background:conic-gradient(#4285f4 0 var(--urban-share),#34a853 var(--urban-share) 100%)!important}
-body.approved-place-design .chart-grid .map-legend>span:nth-child(1) i{background:#4285f4!important}
-body.approved-place-design .chart-grid .map-legend>span:nth-child(2) i{background:#34a853!important}
-body.approved-place-design .line-chart svg polyline{stroke:#4285f4!important;fill:none!important}
-body.approved-place-design .line-chart svg circle{fill:#4285f4!important}
+body.approved-place-design .population-donut{background:conic-gradient(var(--chart-series-1,#155748) 0 var(--urban-share),var(--chart-series-4,#314766) var(--urban-share) 100%)!important}
+body.approved-place-design .chart-grid .map-legend>span:nth-child(1) i{background:var(--chart-series-1,#155748)!important}
+body.approved-place-design .chart-grid .map-legend>span:nth-child(2) i{background:var(--chart-series-4,#314766)!important}
+body.approved-place-design .line-chart svg polyline{stroke:var(--chart-series-1,#155748)!important;fill:none!important}
+body.approved-place-design .line-chart svg circle{fill:var(--chart-series-1,#155748)!important}
 body.approved-place-design .approved-value-bar{background:linear-gradient(90deg,color-mix(in srgb,var(--approved-bar-colour) var(--approved-bar-strength),white),var(--approved-bar-colour))!important;border-radius:0!important}
 body.approved-place-design progress.approved-value-progress{appearance:none;-webkit-appearance:none;border:0;border-radius:0!important;background:#e6edef;accent-color:var(--approved-bar-colour)}
 body.approved-place-design progress.approved-value-progress::-webkit-progress-bar{background:#e6edef;border-radius:0}

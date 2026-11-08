@@ -1,5 +1,5 @@
 @php
-$colors=['#4285f4','#ea4335','#fbbc05','#34a853'];
+$colors=['var(--chart-series-1,#155748)','var(--chart-series-2,#573451)','var(--chart-series-3,#825026)','var(--chart-series-4,#314766)'];
 $chartValues=$plotRows->flatMap(fn($point)=>array_map(fn($series)=>$point[$series['key']],array_values(array_filter($plot['series'],fn($series)=>($series['axis']??null)!=='right'))))->filter(fn($value)=>$value!==null);
 $scale=$plot['unit']==='%'?100:max(1,($chartValues->max()??1)*1.08);
 $tickValues=collect(range(0,4))->map(fn($tick)=>$scale*$tick/4);

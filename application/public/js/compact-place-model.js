@@ -7,7 +7,7 @@ export function compactCountValue(value) {
 export function valueBarAppearance(value, maximum = 100) {
     if (value === null || value === undefined || String(value).trim() === '' || !Number.isFinite(Number(value)) || !Number.isFinite(Number(maximum)) || Number(maximum) <= 0) return null;
     const percent = Math.max(0, Math.min(100, Number(value) / Number(maximum) * 100));
-    const colours = ['#ea4335', '#fbbc05', '#4285f4', '#34a853'];
+    const colours = ['var(--chart-series-2,#573451)', 'var(--chart-series-3,#825026)', 'var(--chart-series-1,#155748)', 'var(--chart-series-4,#314766)'];
     return {colour: colours[Math.min(3, Math.floor(percent / 25))], strength: Math.round(45 + percent * .55)};
 }
 
