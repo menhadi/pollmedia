@@ -32,7 +32,7 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
         });
         $page = $this->get('/india/state/uttar-pradesh')->assertOk()
-            ->assertSeeInOrder(['id="pc-results"', 'class="state-atlas-map"', 'data-kind="pc"', 'Seats won by party', 'Parliament Seat winner', 'id="pc-history"'], false)
+            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'class="state-atlas-map"', 'data-kind="pc"', 'Parliament Seat winner', 'id="pc-history"'], false)
             ->assertDontSee('id="ac-results"', false)->assertSee('Official report');
         $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
             ->assertSee('data-kind="ac"', false)->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);

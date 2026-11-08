@@ -340,7 +340,7 @@ class CivicExplorerController extends Controller
         }
 
         $residencePopulation = [];
-        if ($areaDashboard && $place->level === 'STATE' && PlaceTopics::selected('census') === 'overview') {
+        if ($areaDashboard && $place->level === 'STATE' && in_array(PlaceTopics::selected('census'), ['overview', 'places'], true)) {
             $residenceEditions = [$edition->id];
             if (preg_match('/^india-basic-(\d{4})-(total|rural|urban)$/', $edition->source_key)) {
                 $residenceEditions = DB::table('census_editions')->where('status', 'published')->where('year', $year)

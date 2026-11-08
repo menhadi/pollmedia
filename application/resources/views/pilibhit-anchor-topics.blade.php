@@ -1,6 +1,5 @@
 @php
     $history = collect($data['history']['rows'] ?? [])->filter(fn($row) => is_numeric($row['population'] ?? null))->sortBy('year')->values();
-    $ndvi = $previews['satellite'];
     $units = ['Quintal'=>['quintal','क्विंटल'],'Kilogram'=>['kg','किलो'],'Nos'=>['item','नग'],'Bundle'=>['bundle','गट्ठर']];
 @endphp
 @if($history->count()>=2)
@@ -24,11 +23,9 @@
 <a class="pb-more" href="{{ $url('history') }}">{{ $tr('Explore population history','जनसंख्या का इतिहास देखें') }} →</a>
 </section>
 @endif
-@if($ndvi || $previews['offices'])
+@if($previews['offices'])
 <div class="pb-record-grid pb-anchor-pair">
-@if($ndvi)
-@include('district-summary-vegetation')
-@endif
+
 @if($previews['offices'])
 <section class="pb-panel pb-record-card" data-pb-preview="authorities"><h2>{{ $tr('District authorities','ज़िला अधिकारी') }}</h2>
 <ul class="pb-offices">@forelse($previews['offices'] as $office)<li><a href="{{ $office['url'] }}">{{ $office['title'] }}</a>
