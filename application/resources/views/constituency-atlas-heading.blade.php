@@ -11,6 +11,11 @@
     $leaders = collect($record['candidates'] ?? [])->reject(fn($c)=>!empty($c['is_nota']) || !isset($c['votes']))->sortByDesc('votes')->take(3);
     $alternatives = $rows->groupBy('entry.year')->map(fn($g)=>$g->first(fn($item)=>$item['entry']->edition_id===($chosen['entry']->edition_id??null))??$g->first(fn($item)=>$item['record']!==null)??$g->first());
 @endphp
+<div class="atlas-mast">
+@if($mapStateInfo && (array_sum($mapStateInfo['counts']??[])>0 || $mapStateInfo['slug']==='telangana'))
+<a class="atlas-map-jump" href="#atlas-state-maps">{{ $tr('State constituency maps','राज्य के निर्वाचन क्षेत्र मानचित्र') }} <span aria-hidden="true">↓</span></a>
+@endif
+<header class="atlas-title"><p>{{ $state }}</p><h1>{{ \Illuminate\Support\Str::title($name) }} {{ $kind==='pc'?$tr('Lok Sabha (PC)','लोक सभा (PC)'):$tr('Assembly Constituency','विधान सभा निर्वाचन क्षेत्र') }}</h1></header>
 <div class="atlas-controls">
 <nav aria-label="{{ $tr('Constituency type','निर्वाचन क्षेत्र का प्रकार') }}">
 @foreach(['pc'=>$tr('Lok Sabha (PC)','लोक सभा (PC)'),'ac'=>$tr('Assembly (AC)','विधान सभा (AC)')] as $type=>$text)
@@ -57,7 +62,8 @@
 @foreach($alternatives as $row)<option value="{{ $row['entry']->edition_id }}" @selected($row['entry']->edition_id===($chosen['entry']->edition_id??null))>{{ $row['entry']->year }}</option>@endforeach
 </select><noscript><button type="submit">{{ $tr('Show results','नतीजे देखें') }}</button></noscript></form>
 </div>
-<header class="atlas-title"><p>{{ $state }}</p><h1>{{ \Illuminate\Support\Str::title($name) }} {{ $kind==='pc'?$tr('Lok Sabha (PC)','लोक सभा (PC)'):$tr('Assembly Constituency','विधान सभा निर्वाचन क्षेत्र') }}</h1></header>
+
+</div>
 <section class="atlas-result" aria-labelledby="atlas-winner"><div><p class="atlas-eyebrow">{{ $chosen['entry']->year }} · {{ $tr('Election result','चुनाव परिणाम') }}</p><h2 id="atlas-winner">{{ $result['winner']??$tr('Winner unconfirmed','विजेता की पुष्टि नहीं हुई') }}{{ !empty($record['has_warning'])?' †':'' }}</h2><p>{{ $result['party']??'' }}</p>
 @if($result['uncontested']??false)<p>{{ $tr('Returned unopposed','निर्विरोध निर्वाचित') }}</p>
 @elseif(isset($result['margin']))<p class="atlas-margin"><strong>{{ $fmt->format($result['margin']) }}</strong> {{ $tr('vote winning margin','मतों से जीत') }}</p>@endif</div>

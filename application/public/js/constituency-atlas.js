@@ -28,6 +28,58 @@
             else picker.requestSubmit();
         });
     }
+    const directory=atlas.querySelector('[data-village-directory]');
+    if(directory) {
+        const form=directory.querySelector('[data-village-search]');
+        const field=form.elements.village_q;
+        const rows=JSON.parse(directory.querySelector('[data-village-rows]').textContent);
+        const body=directory.querySelector('tbody');
+        const status=directory.querySelector('[data-village-status]');
+        const back=directory.querySelector('[data-village-prev]');
+        const next=directory.querySelector('[data-village-next]');
+        const size=Number(directory.dataset.size);
+        let page=Number(directory.dataset.page);
+        form.querySelector('button').hidden=true;
+        const queryUrl=(number)=>{
+            const url=new URL(location.href);
+            if(field.value.trim())url.searchParams.set('village_q',field.value.trim());else url.searchParams.delete('village_q');
+            if(number>1)url.searchParams.set('village_page',number);else url.searchParams.delete('village_page');
+            url.hash='linked-villages';
+            return url;
+        };
+        const render=()=>{
+            const query=field.value.trim().normalize('NFC').toLocaleLowerCase();
+            const matches=rows.filter(row=>[row.name,row.label].some(value=>value && value.normalize('NFC').toLocaleLowerCase().includes(query)));
+            const last=Math.max(1,Math.ceil(matches.length/size));
+            page=Math.min(last,Math.max(1,page));
+            const first=(page-1)*size;
+            const batch=document.createDocumentFragment();
+            let tr;
+            matches.slice(first,first+size).forEach((v,i)=>{
+                if(i%4===0){tr=document.createElement('tr');batch.append(tr);}
+                const cell=document.createElement('td'),link=document.createElement('a');
+                link.href=directory.dataset.urlPattern.replace('VILLAGECODE',encodeURIComponent(v.code));
+                link.textContent=v.label??v.name;cell.append(link);tr.append(cell);
+            });
+            body.replaceChildren(batch);
+            directory.querySelector('[data-village-empty]').hidden=Boolean(matches.length);
+            status.textContent=matches.length?(first+1)+'–'+Math.min(first+size,matches.length)+' / '+matches.length.toLocaleString('en-IN'):'0 / 0';
+            back.href=queryUrl(Math.max(1,page-1));next.href=queryUrl(Math.min(last,page+1));
+            if(document.activeElement===next && page===last && page>1)back.focus({preventScroll:true});
+            if(document.activeElement===back && page===1 && page<last)next.focus({preventScroll:true});
+            back.hidden=page<=1;next.hidden=page>=last;
+        };
+        let timer;
+        const save=()=>history.replaceState(history.state,'',queryUrl(page));
+        field.addEventListener('input',()=>{page=1;render();clearTimeout(timer);timer=setTimeout(save,200);});
+        form.addEventListener('submit',e=>{e.preventDefault();page=1;render();save();});
+        for(const [control,step] of [[back,-1],[next,1]]) control.addEventListener('click',e=>{
+            if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+            e.preventDefault();page+=step;render();save();
+        });
+    }
+
+
     const region = atlas.querySelector('[data-atlas-region]');
     const explorer = atlas.querySelector('.atlas-map-explorer[data-current-layer]');
     const map = explorer?.querySelector('[data-election-map]');

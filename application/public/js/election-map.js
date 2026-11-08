@@ -191,6 +191,29 @@
             const label = svgElement('text',{x:xx,y:Math.max(18,yy),'text-anchor':'middle',class:'election-map-current-label','pointer-events':'none'});
             label.textContent = seatText(feature,matches.get(feature.id)); svg.append(label);
         });
+        if (explorer) {
+            const labels=Array.from(svg.querySelectorAll('.election-map-current-label'),node=>({
+                node,x:Number(node.getAttribute('x')),y:Number(node.getAttribute('y'))
+            }));
+            if(labels.length){
+                const sizeLabels=()=>{
+                    const scale=svg.getScreenCTM()?.a;
+                    if(!(scale>0))return;
+                    const view=svg.viewBox.baseVal, pad=5/scale;
+                    for(const {node,x,y} of labels){
+                        node.style.fontSize=(15/scale)+'px';node.style.fontWeight='500';
+                        node.style.strokeWidth=(3/scale)+'px';
+                        const half=node.getComputedTextLength()/2;
+                        const left=view.x+half+pad,right=view.x+view.width-half-pad;
+                        node.setAttribute('x',String(Math.min(right,Math.max(left,x))));
+                        node.setAttribute('y',String(Math.min(view.y+view.height-pad,Math.max(view.y+17/scale,y))));
+                        node.style.visibility=(x<view.x||x>view.x+view.width||y<view.y||y>view.y+view.height)?'hidden':'visible';
+                    }
+                };
+                sizeLabels();new ResizeObserver(sizeLabels).observe(svg);
+                new MutationObserver(sizeLabels).observe(svg,{attributes:true,attributeFilter:['viewBox']});
+            }
+        }
         const nameLayer = svgElement('g',{'pointer-events':'none','aria-hidden':'true',class:'election-map-names'});
         if (root.dataset.labels === 'true') svg.append(nameLayer);
         function drawNames(zoom=1) {
