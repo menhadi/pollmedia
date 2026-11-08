@@ -341,8 +341,14 @@ class CivicExplorerController extends Controller
 
         $residencePopulation = [];
         if ($areaDashboard && $place->level === 'STATE' && PlaceTopics::selected('census') === 'overview') {
-            $residenceRows = $this->scope(clone $base, $codes, $depth, $year)->where('level', 'STATE')
-                ->whereIn('residence', ['Rural', 'Urban'])->get(['residence', 'values'])->groupBy('residence');
+            $residenceEditions = [$edition->id];
+            if (preg_match('/^india-basic-(\d{4})-(total|rural|urban)$/', $edition->source_key)) {
+                $residenceEditions = DB::table('census_editions')->where('status', 'published')->where('year', $year)
+                    ->whereIn('source_key', ["india-basic-{$year}-rural", "india-basic-{$year}-urban"])->pluck('id');
+            }
+            $residenceRows = DB::table('census_catalogue_rows')->whereIn('edition_id', $residenceEditions)
+                ->where('state_code', $place->state_code)->where('level', 'STATE')
+                ->whereIn('residence', ['Rural', 'Urban'])->orderBy('residence')->get(['residence', 'values'])->groupBy('residence');
             foreach ($residenceRows as $category => $rows) {
                 $value = $rows->count() === 1 ? (json_decode($rows->first()->values, true)['TOT_P'] ?? null) : null;
                 if (is_numeric($value)) {

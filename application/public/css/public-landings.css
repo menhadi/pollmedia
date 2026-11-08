@@ -43,3 +43,13 @@ body.pm-landing .dashboard-shell:has(.landing-state){display:block;max-width:120
 .public-census-catalogue.pm-landing{max-width:1160px;margin-inline:auto}
 @media(max-width:700px){body .home-lead,.landing-duo{grid-template-columns:1fr}.home-lead nav a{padding:10px 0}.landing-duo{gap:10px}.landing-controls{align-items:stretch}.landing-controls label{max-width:100%}.landing-state .state-year-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.landing-state .table-scroll table{width:max-content;min-width:100%;table-layout:auto}.landing-intro,.landing-card{overflow-wrap:break-word}}
 
+
+body .public-census-catalogue header.landing-intro{display:block}
+body .pm-state-census .area-intro.landing-intro{background:#e8f2ef!important;color:#173d36!important;padding:clamp(18px,3vw,36px)!important;border-top:4px solid #267563}
+body .pm-state-census .area-intro.landing-intro :is(h1,.eyebrow){color:#173d36!important}
+body .pm-state-census #area-overview{grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr))}
+body .landing-state .landing-controls{align-items:flex-end}
+.landing-year label{display:block}.landing-year>div{display:flex;align-items:stretch;gap:6px}.landing-year select{flex:1}
+body .landing-state .state-election-section{margin-top:0;padding-top:0;border-top:0}
+body .landing-intro .landing-switch{display:flex;flex-wrap:nowrap;gap:0;align-items:stretch}
+@media(max-width:700px){body .landing-state{min-width:0}body .landing-state .landing-controls{display:grid;gap:10px}body .landing-state .landing-switch a{flex:1;text-align:center;padding:9px 5px;font-size:.95rem}.landing-year{min-width:0}.landing-year select{width:0}.landing-state .landing-links{margin-bottom:8px}}
