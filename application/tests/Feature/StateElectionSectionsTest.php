@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Services\HistoricalElectionAnalytics;
+use App\Services\PlaceFactTables;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -10,6 +11,13 @@ use Tests\TestCase;
 class StateElectionSectionsTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->mock(PlaceFactTables::class)
+            ->shouldReceive('state')->andReturn(['name' => 'State', 'sections' => []]);
+    }
 
     public function test_sections_keep_histories_and_year_selections_separate(): void
     {
@@ -23,22 +31,24 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn($pc);
             $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
         });
-        $page = $this->get('/india/state/uttar-pradesh')->assertOk()->assertSeeInOrder(['id="pc-history"', 'id="pc-results"', 'id="ac-history"', 'id="ac-results"'], false)->assertSee('2024 Lok Sabha results')->assertSee('2022 State Assembly results')->assertSee('name="pc_edition"', false)->assertSee('name="ac_edition"', false);
-        $page->assertSee('All constituency results · 2024')->assertSee('All constituency results · 2022')->assertSee('Parliament Seat winner')->assertSee('Assembly Seat winner')->assertSee('Official report')->assertDontSee('All constituency results for')->assertDontSee('Constituency winners and margins');
-        $page->assertSeeInOrder(['href="#ac-history"', 'id="pc-history"', 'data-mode="focus" data-kind="pc"', 'data-history-chart', 'id="ac-history"', 'data-mode="focus" data-kind="ac"'], false);
-        $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()->assertSeeInOrder(['id="pc-history"', 'id="ac-history"', 'data-mode="focus" data-kind="ac"'], false);
+        $page = $this->get('/india/state/uttar-pradesh')->assertOk()
+            ->assertSeeInOrder(['id="pc-results"', 'Seats won by party', 'Parliament Seat winner', 'id="pc-history"'], false)
+            ->assertDontSee('id="ac-results"', false)->assertSee('Official report');
+        $assembly = $this->get('/india/state/uttar-pradesh?election=ac')->assertOk()
+            ->assertSee('Assembly Seat winner')->assertSee('id="ac-history"', false)->assertDontSee('id="pc-results"', false);
         foreach (['pc' => 'Lok Sabha', 'ac' => 'State Assembly · AC'] as $reportKind => $reportLabel) {
             $report = $this->get('/india/state/uttar-pradesh?format=report&election='.$reportKind)->assertOk()->assertSee($reportLabel)->assertSee('Print / Save as PDF')->assertSee('Sources and coverage by election year')->assertSee('Methodology & disclaimer', false)->assertDontSee('<select', false)->assertDontSee('<details', false)->assertDontSee('data-history-chart');
             $this->assertSame(4, substr_count($report->getContent(), 'class="report-plot"'));
             $report->assertSeeInOrder(['Chart values', 'Sources and coverage by election year', 'Methodology & disclaimer'], false);
         }
         preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $page->getContent(), $charts);
-        $this->assertCount(8, $charts[1]);
+        $this->assertCount(4, $charts[1]);
         $this->assertSame([2019, 2024], array_column(json_decode($charts[1][0], true)['rows'], 'year'));
-        $this->assertSame([2022], array_column(json_decode($charts[1][4], true)['rows'], 'year'));
-        $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha results')->assertSee('2022 State Assembly results')->assertSee('data-year="2019"', false)->assertSee('data-year="2022"', false)->assertSee('edition='.str_repeat('b', 24), false);
+        preg_match_all('/class="history-chart-data">(.*?)<\/script>/s', $assembly->getContent(), $assemblyCharts);
+        $this->assertSame([2022], array_column(json_decode($assemblyCharts[1][0], true)['rows'], 'year'));
+        $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('b', 24).'&ac_edition='.str_repeat('c', 24))->assertOk()->assertSee('2019 Lok Sabha (PC) results')->assertDontSee('2022 Assembly (AC) results')->assertSee('data-year="2019"', false)->assertDontSee('data-year="2022"', false)->assertSee('edition='.str_repeat('b', 24), false);
         $this->get('/india/state/uttar-pradesh?pc_edition='.str_repeat('c', 24))->assertNotFound();
-        $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 State Assembly results');
+        $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 Assembly (AC) results');
     }
 
     public function test_current_directory_excludes_former_names_and_keeps_election_types_separate(): void
@@ -50,11 +60,11 @@ class StateElectionSectionsTest extends TestCase
             $mock->shouldReceive('forState')->with('Maharashtra', 'pc')->andReturn([]);
             $mock->shouldReceive('forState')->with('Maharashtra', 'ac')->andReturn([]);
         });
-        $this->get('/india/state/maharashtra')->assertOk()->assertSee('Present Pc')->assertSee('Present Ac')->assertDontSee('Former Pc')->assertDontSee('Former Ac')->assertSee('data-fragment-form', false);
-        $this->get('/india/state/maharashtra?pc_scope=archive')->assertOk()->assertSee('Former Pc')->assertSee('Present Ac')->assertDontSee('Present Pc')->assertDontSee('Former Ac');
-        $this->get('/india/state/maharashtra?ac_scope=archive')->assertOk()->assertSee('Former Ac')->assertSee('Present Pc')->assertDontSee('Present Ac');
+        $this->get('/india/state/maharashtra')->assertOk()->assertSee('Present Pc')->assertDontSee('Present Ac')->assertDontSee('Former Pc')->assertDontSee('Former Ac')->assertSee('data-fragment-form', false);
+        $this->get('/india/state/maharashtra?pc_scope=archive')->assertOk()->assertSee('Former Pc')->assertDontSee('Present Ac')->assertDontSee('Present Pc')->assertDontSee('Former Ac');
+        $this->get('/india/state/maharashtra?election=ac&ac_scope=archive')->assertOk()->assertSee('Former Ac')->assertDontSee('Present Pc')->assertDontSee('Present Ac');
         $this->getJson('/india/state/maharashtra?suggest=pc&pc_q=Present')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.label', 'Present Pc')->assertJsonPath('suggestions.0.type', 'PC');
         $this->getJson('/india/state/maharashtra?suggest=ac&ac_scope=archive&ac_q=Former')->assertOk()->assertJsonCount(1, 'suggestions')->assertJsonPath('suggestions.0.label', 'Former Ac')->assertJsonPath('suggestions.0.type', 'Archive · AC');
-        $this->get('/india/state/maharashtra?pc_q=missing')->assertOk()->assertDontSee('Present Pc')->assertSee('Present Ac');
+        $this->get('/india/state/maharashtra?pc_q=missing')->assertOk()->assertDontSee('Present Pc')->assertDontSee('Present Ac');
     }
 }

@@ -3,17 +3,29 @@
 @section('content')
 @if(! $admin)
 <style>.public-census-catalogue,.public-census-catalogue .card,.public-census-catalogue .filters>div{min-width:0;max-width:100%;box-sizing:border-box}.public-census-catalogue .filters>div{flex:0 1 auto}.public-census-catalogue select{max-width:100%;width:100%}.public-census-catalogue .scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}.public-census-catalogue :is(p,td){overflow-wrap:anywhere}@media(max-width:700px){.public-census-catalogue .filters>div{flex-basis:100%}}</style>
-<div class="public-census-catalogue">
+<link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}"><div class="public-census-catalogue pm-landing">
 @endif
+@if(! $admin)
+@php($nationalSeries=app(\App\Services\CensusProfileSummary::class)->series())
+<header class="landing-intro"><p class="landing-kicker">Census of India</p><h1>India Census data</h1>
+<p>Find population, households and literacy for a state, district or village.</p>
+<a class="landing-action" href="{{ route('civic.index') }}">Choose a place →</a></header>
+<div class="landing-duo"><section class="landing-card"><h2>India’s population</h2>
+@foreach(collect($nationalSeries['rows'])->whereNotNull('population')->sortByDesc('year')->take(3)->reverse() as $point)<div class="landing-stat"><span>{{ $point['year'] }}</span><strong>{{ number_format($point['population']) }}</strong></div>@endforeach
+<a href="{{ route('census.national-history') }}">Population history and boundaries →</a></section>
+<section class="landing-card"><h2>Source tables</h2><p>Compare measures within one Census edition. Names and boundaries can change between years.</p>
+<a href="#catalogue-editions">Choose a year and table ↓</a><p><a href="{{ route('census.source-tables') }}">Browse original columns and definitions →</a></p></section></div>
+@else
 <p><a href="{{ route('civic.index') }}">Browse state → district → tehsil → village / town profiles →</a></p><h1>India Census data</h1><p>Explore recorded population and household figures using official Census geography. Census boundaries and names can differ between years and from today's administrative areas.</p>
 <p><a href="{{ route('census.national-history') }}">Historical population: 1901 to 2011, with original source notes</a></p>
 <p><a href="{{ route('census.source-tables') }}">Historical Census source tables: original columns, definitions and district filters</a></p>
+@endif
 @if($admin)
 <details class="card"><summary>Prepare an imported table</summary><p>Preparation creates a private preview. Publish extracted data with any discrepancy notes; baseline acceptance is a separate review action. Large tables can also be prepared with <code>php -d memory_limit=512M artisan census:prepare --publish</code>.</p>
 @forelse($runs as $run)<form method="post" action="{{ route('census-catalogue.prepare', $run->id) }}" class="row">@csrf<p>#{{ $run->id }} · {{ $run->name }} · {{ $run->status }} · <a href="{{ route('imports.run', $run->id) }}">Review source import</a></p><button>Prepare preview</button></form>@empty<p>No supported extracted imports are ready.</p>@endforelse
 </details>
 @endif
-<form class="card filters" method="get"><div><label for="edition">Census year and source table</label><select name="edition" id="edition">@foreach($editions as $option)<option value="{{ $option->id }}" @selected($edition?->id === $option->id)>{{ $option->year }} · {{ $option->name }} · {{ $option->status === 'superseded' ? 'Earlier snapshot' : $option->status }} · #{{ $option->id }}</option>@endforeach</select></div><button @disabled($editions->isEmpty())>Load table</button></form>
+<form id="catalogue-editions" class="card filters" method="get"><div><label for="edition">Census year and source table</label><select name="edition" id="edition">@foreach($editions as $option)<option value="{{ $option->id }}" @selected($edition?->id === $option->id)>{{ $option->year }} · {{ $option->name }} · {{ $option->status === 'superseded' ? 'Earlier snapshot' : $option->status }} · #{{ $option->id }}</option>@endforeach</select></div><button @disabled($editions->isEmpty())>Load table</button></form>
 @if($edition)
 @if($directoryFields)
 <section class="card"><h2>Original Census source values</h2><p>{{ $directoryFields[$field] }} · {{ $field }}. Values describe the selected Census year. Select a measure to view its original source cells. Missing values remain missing.</p></section>

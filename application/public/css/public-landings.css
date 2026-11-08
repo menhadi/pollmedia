@@ -1,0 +1,45 @@
+/* Shared visual hierarchy for the public entry pages. */
+.landing-intro,.landing-card,.landing-bars,.landing-duo>*{min-width:0;box-sizing:border-box}
+body .landing-intro{background:#e8f2ef;color:#183d39;border:1px solid #c4d8d1;border-top:4px solid #267563;border-radius:12px;padding:clamp(20px,4vw,48px);margin:12px 0 18px}
+body .landing-intro h1{font-family:Georgia,'Noto Serif',serif;font-size:clamp(2.25rem,5vw,4.2rem);line-height:1.07;letter-spacing:-.035em;margin:.28em 0;color:#163e37}
+body .landing-intro p{color:#354d48;max-width:60ch;margin:.6rem 0}
+body .landing-intro .landing-kicker,.landing-card .landing-kicker{margin:0;color:#386057;font-weight:700;font-size:.8rem;letter-spacing:.07em;text-transform:uppercase}
+body .home-lead{display:grid;grid-template-columns:minmax(0,2fr) minmax(155px,1fr);gap:clamp(18px,4vw,64px);align-items:end}
+.home-lead nav{display:grid;align-content:end}
+.home-lead nav a{display:flex;justify-content:space-between;gap:1em;padding:14px 0;border-top:1px solid #abc7bf}
+.landing-finder{max-width:650px;position:relative;margin:20px 0 0}
+.landing-finder form{display:flex;background:white;border:1px solid #7c9f93;border-radius:8px;overflow:hidden}
+.landing-finder input{box-sizing:border-box;min-width:0;flex:1;width:100%;font:inherit;padding:12px;border:0;color:#143a32;background:white}
+body .landing-finder button,.landing-controls button,.landing-action{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;background:#175d50;color:#fff;border:0;min-height:44px}
+.landing-finder .search-suggestions{position:absolute;top:100%;left:0;right:0;background:#fff;z-index:10}
+.landing-finder:focus-within{outline:2px solid #267563;outline-offset:2px;border-radius:8px}
+.landing-duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0 24px}
+body .landing-card,body .landing-bars{padding:clamp(16px,2vw,28px);border:1px solid #cbded6;border-radius:10px;background:white;color:#213c37}
+body .landing-card h2,body .landing-bars h3{font-family:Georgia,serif;font-size:clamp(1.35rem,2.5vw,2rem);margin:0 0 12px;color:#173d36}
+.landing-card:nth-child(2){border-color:#d8d0bf}
+body .landing-card .landing-value{font:600 clamp(1.8rem,3vw,2.75rem)/1.2 Georgia,serif;margin:12px 0 4px;color:#165c50}
+.landing-card a,.landing-intro nav a,.landing-links a,.pm-state-census main a{color:#155c51;text-underline-offset:3px}
+.landing-stat{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #d7e3dd;font-variant-numeric:tabular-nums}
+.landing-stat:last-of-type{margin-bottom:12px}
+.landing-controls,.landing-links,.landing-switch,.landing-pager{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.landing-controls label,[data-seat-tools] label{font-weight:600}
+.landing-controls label{display:grid;gap:4px}
+.landing-controls select,[data-seat-filter]{max-width:100%;min-width:0;padding:10px 12px;font:inherit;color:#153d35;border:1px solid #88a79c;border-radius:6px;background:#fff}
+.landing-switch{gap:0;border:1px solid #73998d;border-radius:6px;overflow:hidden;background:#fff}
+.landing-switch a{padding:11px 14px;text-decoration:none}
+body .landing-switch a[aria-current=page]{background:#19594b;color:white}
+.landing-links{align-items:center;margin:12px 0 20px}
+body.pm-landing .dashboard-shell:has(.landing-state){display:block;max-width:1200px;margin-inline:auto}
+.landing-state .state-election-section{min-width:0}
+.landing-state .table-scroll,.public-census-catalogue .scroll{overflow:auto;max-width:100%;overscroll-behavior-inline:contain}
+.landing-bars{margin:16px 0}
+.landing-bars>div{display:grid;align-items:center;grid-template-columns:minmax(5ch,9ch) minmax(30px,24rem) auto;gap:10px;margin:6px 0}
+.landing-bars meter{width:100%;height:16px;accent-color:#296455}.landing-bars meter::-webkit-meter-optimum-value{background:#296455}
+.landing-pager{align-items:center;margin-block:12px}.landing-pager button{min-height:38px}
+[data-seat-tools][hidden],[data-seat-list] tr[hidden]{display:none!important}
+[data-seat-tools] input{display:block;margin-block:5px 12px}
+.pm-state-census .landing-intro form{margin-top:12px;color:#173d36}
+.pm-state-census .landing-controls a,.pm-state-census .landing-intro .eyebrow{color:#285e51}
+.public-census-catalogue.pm-landing{max-width:1160px;margin-inline:auto}
+@media(max-width:700px){body .home-lead,.landing-duo{grid-template-columns:1fr}.home-lead nav a{padding:10px 0}.landing-duo{gap:10px}.landing-controls{align-items:stretch}.landing-controls label{max-width:100%}.landing-state .state-year-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.landing-state .table-scroll table{width:max-content;min-width:100%;table-layout:auto}.landing-intro,.landing-card{overflow-wrap:break-word}}
+
