@@ -7,14 +7,44 @@
 $isState = $place->level === 'STATE';
 $isVillage = in_array($place->level,['VILLAGE','TOWN'],true);
 $areaRawValues=$areaPresentation['values'];
-$areaRows = ($topic==='places' ? $dashboardChildren : collect())->map(function ($row) use ($year) { $values=\App\Services\VillageMapMetrics::values(json_decode($row->values,true)); $destination=(int)$year===2011 && $row->level==='DISTRICT'?app(\App\Services\DistrictDashboardUrls::class)->identity($row->state_code,$row->district_code):null; return ['id'=>$row->id,'name'=>preg_replace('/\s+district$/i','',$destination['name']??$row->name),'seats'=>$destination?app(\App\Services\DistrictConstituencyLinks::class)->forDistrict($destination['name'],$destination['state_name']):null,'level'=>$row->level,'code'=>$row->district_code,'village_code'=>$row->level==='VILLAGE'?(int)(json_decode($row->geography,true)['Town/Village']??0):null,'url'=>$destination?url($destination['path']):app(\App\Services\NamedPlaceUrls::class)->census($row->id)] + $values; });
+$districtCatalogue=app(\App\Services\DistrictDashboardUrls::class);
+$districtProfiles=collect();
+if ($isState && (int)$year===2011) {
+    foreach ($districtOptions as $option) {
+        $profile=$districtCatalogue->identity($option->state_code,$option->district_code);
+        if ($profile) {
+            $profile['source_name']=\Illuminate\Support\Str::title($option->name);
+            $profile['url']=url($profile['path']).(app()->getLocale()==='hi'?'?lang=hi':'');
+            $districtProfiles->put($option->district_code,$profile);
+        }
+    }
+}
+$areaRows=($topic==='places'?$dashboardChildren:collect())->map(function ($row) use ($isState,$districtProfiles) {
+    $values=\App\Services\VillageMapMetrics::values(json_decode($row->values,true));
+    $profile=$row->level==='DISTRICT'?$districtProfiles->get($row->district_code):null;
+    return [
+        'id'=>$row->id,
+        'name'=>preg_replace('/\s+district$/i','',$profile['name']??$row->name),
+        'seats'=>$profile?app(\App\Services\DistrictConstituencyLinks::class)->forDistrict($profile['name'],$profile['state_name']):null,
+        'level'=>$row->level,
+        'code'=>$row->district_code,
+        'village_code'=>$row->level==='VILLAGE'?(int)(json_decode($row->geography,true)['Town/Village']??0):null,
+        'url'=>$isState?($profile['url']??null):app(\App\Services\NamedPlaceUrls::class)->census($row->id),
+    ]+$values;
+});
 $areaValues=\App\Services\VillageMapMetrics::values($areaRawValues);
 $areaStateSlug=\App\Services\PlaceFactTables::stateSlug($place->name);
 $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)->forCensusVillages($areaRows->pluck('village_code')->all()) : [];
 @endphp
 <main class="area-dashboard {{ $isState?'pm-state-census':'' }}"><header class="area-intro district-title {{ $isState?'landing-intro':'' }}"><p class="eyebrow">Census {{ $year }} · {{ $isState?'State / Union territory':($isVillage?'Village / town':'Subdistrict') }}</p><h1>{{ $isState && in_array($topic,['overview','places'],true)?\Illuminate\Support\Str::title($title).' '.\App\Services\PublicLanguage::text('Districts'):$title }}</h1>
-@if($isState)<form class="landing-controls" action="{{ route('civic.index') }}"><input type="hidden" name="state" value="{{ $areaStateSlug }}"><label>Census year<select name="year" data-submit-choice>@foreach($years as $option)<option value="{{ $option }}" @selected((int)$year===(int)$option)>{{ $option }}</option>@endforeach</select></label><button>View year</button>@if($districtOptions->isNotEmpty())<label>{{ app()->getLocale()==='hi'?'ज़िला':'District' }}<select data-go-url aria-label="{{ app()->getLocale()==='hi'?'ज़िला चुनें':'Choose a district' }}"><option value="">{{ app()->getLocale()==='hi'?'सभी ज़िले':'All districts' }}</option>@foreach($districtOptions as $option)<option value="{{ ((int)$year===2011 ? route('district-dashboard',['state'=>$option->state_code,'district'=>$option->district_code,'lang'=>app()->getLocale()==='hi'?'hi':null]) : route('civic.place',['record'=>$option->id,'lang'=>app()->getLocale()==='hi'?'hi':null])) }}">{{ \Illuminate\Support\Str::title($option->name) }}</option>@endforeach</select></label>@endif
-<a href="{{ route('civic.index',['year'=>$year]) }}">Choose another place →</a></form>@endif</header>
+@if($isState)<form class="landing-controls" action="{{ route('civic.index') }}"><input type="hidden" name="state" value="{{ $areaStateSlug }}"><label>Census year<select name="year" data-submit-choice>@foreach($years as $option)<option value="{{ $option }}" @selected((int)$year===(int)$option)>{{ $option }}</option>@endforeach</select></label><button>View year</button>@if($districtProfiles->isNotEmpty())
+<label>{{ app()->getLocale()==='hi'?'ज़िला':'District' }}<select data-go-url aria-label="{{ app()->getLocale()==='hi'?'ज़िला चुनें':'Choose a district' }}">
+<option value="">{{ app()->getLocale()==='hi'?'सभी ज़िले':'All districts' }}</option>
+@foreach($districtProfiles as $profile)<option value="{{ $profile['url'] }}">{{ $profile['source_name'] }}</option>@endforeach
+</select></label>
+@endif
+
+</form>@endif</header>
 @include('place-topic-nav',['topicGroup'=>'census','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['census'],fn($k)=>($k!=='elections'||$isState)&&($k!=='markets'||$place->level==='VILLAGE')&&(!in_array($k,['water','soil','rainfall'],true)||($place->level==='VILLAGE'&&(int)$year===2011)||($isState&&$k!=='rainfall'&&(int)$year===2011))) )])
 <div data-topic-body>
 @if(in_array($topic,['people','water','soil'],true) && $isState && (int)$year===2011 && $residence==='Total')
@@ -88,7 +118,15 @@ return \Illuminate\Support\Str::headline(str_replace('_', ' ', $field));
 @endif
 @if($areaRows->isNotEmpty())
 <section id="area-tables" class="panel"><h2>{{ $isState?'District':'Village & town' }} data</h2><label>Find a place<input type="search" data-area-table-search placeholder="Filter by name"></label>
-@foreach($areaRows->groupBy('level') as $level=>$rows)<details class="area-data-table" @if($isState) open @endif><summary>{{ \Illuminate\Support\Str::headline(strtolower($level)) }} · {{ $rows->count() }} records available</summary><div class="table-wrap"><table><thead><tr><th>Place</th>@if($level==='VILLAGE' && $villageGps)<th>Gram Panchayat</th>@endif<th>Population</th><th>Households</th><th>Literacy age 7+</th></tr></thead><tbody>@foreach($rows as $row)<tr data-area-row><th scope="row"><a href="{{ $row['url'] }}">{{ $row['name'] }}</a>@if($row['seats']['available']??false)<small class="area-seat-note">@foreach(['parliamentary'=>'Lok Sabha','assembly'=>'Assembly'] as $kind=>$seatLabel)<span>{{ $seatLabel }}: @foreach($row['seats'][$kind] as $seat)<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>{{ $loop->last?'':', ' }}@endforeach</span>@endforeach</small>@endif</th>@if($level==='VILLAGE' && $villageGps)<td>@include('gram-panchayat-cell',['gp'=>$villageGps[$row['village_code']]??null])</td>@endif<td>{{ isset($row['population'])?number_format($row['population']):'Unavailable' }}</td><td>{{ isset($row['households'])?number_format($row['households']):'Unavailable' }}</td><td>{{ isset($row['literacy'])?number_format($row['literacy'],2).'%':'Unavailable' }}</td></tr>@endforeach</tbody></table></div></details>@endforeach</section>
+@foreach($areaRows->groupBy('level') as $level=>$rows)<details class="area-data-table" @if($isState) open @endif><summary>{{ \Illuminate\Support\Str::headline(strtolower($level)) }} · {{ $rows->count() }} records available</summary><div class="table-wrap" @if($isState) role="region" aria-label="{{ app()->getLocale()==='hi'?'ज़िले के जनगणना आँकड़े':'District Census figures' }}" tabindex="0" @endif><table><thead><tr><th scope="col">{{ $isState?\App\Services\PublicLanguage::text('District'):'Place' }}</th>@if($level==='VILLAGE' && $villageGps)<th>Gram Panchayat</th>@endif<th scope="col">Population</th><th scope="col">Households</th><th scope="col">Literacy age 7+</th></tr></thead><tbody>@foreach($rows as $row)<tr data-area-row><th scope="row">@if($row['url'])<a href="{{ $row['url'] }}">{{ $row['name'] }}</a>@else{{ $row['name'] }}@endif
+@if($row['seats']['available']??false)
+<details class="district-seat-names"><summary>{{ app()->getLocale()==='hi'?'संबंधित निर्वाचन क्षेत्र':'Linked constituencies' }}</summary>
+@foreach(['parliamentary'=>'Lok Sabha (PC)','assembly'=>'Assembly (AC)'] as $kind=>$label)
+@if(!empty($row['seats'][$kind]))<div><b>{{ $label }}</b> · {{ collect($row['seats'][$kind])->pluck('name')->implode(', ') }}</div>@endif
+@endforeach
+</details>
+@endif
+</th>@if($level==='VILLAGE' && $villageGps)<td>@include('gram-panchayat-cell',['gp'=>$villageGps[$row['village_code']]??null])</td>@endif<td>{{ isset($row['population'])?number_format($row['population']):'Unavailable' }}</td><td>{{ isset($row['households'])?number_format($row['households']):'Unavailable' }}</td><td>{{ isset($row['literacy'])?number_format($row['literacy'],2).'%':'Unavailable' }}</td></tr>@endforeach</tbody></table></div></details>@endforeach</section>
 @endif
 
 @if($parents->isNotEmpty() || $linked->isNotEmpty() || $authorities->isNotEmpty())

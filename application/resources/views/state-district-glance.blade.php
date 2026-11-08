@@ -17,7 +17,8 @@
 <table><thead><tr><th>{{ $hi?'ज़िला':'District' }}</th><th>{{ $hi?'जनसंख्या':'Population' }}</th><th>{{ $hi?'साक्षरता, आयु 7+':'Literacy, age 7+' }}</th></tr></thead><tbody>
 @foreach($districtRows as $row)
 @php($metrics=\App\Services\VillageMapMetrics::values(json_decode($row->values,true)))
-<tr><th scope="row"><a href="{{ ((int)$year===2011 ? route('district-dashboard',['state'=>$row->state_code,'district'=>$row->district_code,'lang'=>app()->getLocale()==='hi'?'hi':null]) : route('civic.place',['record'=>$row->id,'lang'=>$hi?'hi':null])) }}">{{ \Illuminate\Support\Str::title($row->name) }}</a></th><td>{{ isset($metrics['population'])?number_format($metrics['population']):'—' }}</td><td>{{ isset($metrics['literacy'])?number_format($metrics['literacy'],2).'%':'—' }}</td></tr>
+@php($profile=$districtProfiles->get($row->district_code))
+<tr><th scope="row">@if($profile)<a href="{{ $profile['url'] }}">{{ $profile['source_name'] }}</a>@else{{ \Illuminate\Support\Str::title($row->name) }}@endif</th><td>{{ isset($metrics['population'])?number_format($metrics['population']):'—' }}</td><td>{{ isset($metrics['literacy'])?number_format($metrics['literacy'],2).'%':'—' }}</td></tr>
 @endforeach
 </tbody></table>
 @include('state-table-pager')
