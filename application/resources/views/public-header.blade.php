@@ -55,7 +55,7 @@
 
 <link rel="stylesheet" href="{{ asset('css/public-header-compact.css').'?v='.substr(hash_file('sha256',public_path('css/public-header-compact.css')),0,12) }}">
 
-@if(app()->getLocale()==='hi')<script type="application/json" id="public-hindi-dictionary" data-place-names-url="{{ route('language.hindi.names') }}">@php($headerTranslations = empty($summaryLayout) ? config('public_translations', []) : \Illuminate\Support\Arr::only(config('public_translations', []), ['State','District','Subdistrict','Village','Town','Gram Panchayat','Assembly constituency','Parliamentary constituency','Search','Census','Searching…','No suggestions. Press Search to view available results.','Suggestions unavailable. Press Search to continue.']))@json($headerTranslations)</script>@endif
+@if(app()->getLocale()==='hi')<script type="application/json" id="public-hindi-dictionary" data-place-names-url="{{ route('language.hindi.names') }}">@php($headerTranslations = (empty($summaryLayout) || !empty($fullHeaderDictionary)) ? config('public_translations', []) : \Illuminate\Support\Arr::only(config('public_translations', []), ['State','District','Subdistrict','Village','Town','Gram Panchayat','Assembly constituency','Parliamentary constituency','Search','Census','Searching…','No suggestions. Press Search to view available results.','Suggestions unavailable. Press Search to continue.']))@json($headerTranslations)</script>@endif
 
 <script src="{{ asset('js/public-header-locale.js').'?v='.substr(hash_file('sha256',public_path('js/public-header-locale.js')),0,12) }}" defer></script>
 

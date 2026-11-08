@@ -91,6 +91,44 @@ class ConstituencyOverviewTest extends TestCase
         }
     }
 
+    public function test_year_picker_updates_the_summary_and_keeps_chart_tables_visible(): void
+    {
+        $editions = [2024 => str_repeat('a', 24), 2019 => str_repeat('b', 24)];
+        foreach ($editions as $year => $edition) {
+            DB::table('historical_constituency_index')->insert([
+                'edition_id' => $edition, 'record_code' => 1, 'kind' => 'pc', 'year' => $year,
+                'edition_label' => (string) $year, 'state_label' => 'Uttar Pradesh', 'constituency_name' => 'Lucknow',
+                'status' => 'validated', 'has_warning' => false, 'candidate_count' => 2, 'extraction_sha256' => str_repeat('c', 64),
+            ]);
+        }
+        $this->mock(HistoricalElectionArchive::class, function ($mock) use ($editions) {
+            $mock->shouldReceive('load')->andReturnUsing(function ($edition) use ($editions) {
+                $year = array_search($edition, $editions, true);
+                $votes = $year === 2024 ? 160 : 120;
+
+                return [['source_url' => 'https://eci.gov.in', 'source_sha256' => str_repeat('c', 64), 'records' => [[
+                    'code' => 1, 'status' => 'validated', 'number_of_seats' => 1, 'electors' => 300,
+                    'votes_polled' => 200, 'valid_candidate_votes' => 200, 'winner' => "Winner $year", 'margin' => 2 * $votes - 200,
+                    'candidates' => [
+                        ['candidate_name' => "Winner $year", 'party_at_election' => 'A', 'votes' => $votes],
+                        ['candidate_name' => 'Runner-up', 'party_at_election' => 'B', 'votes' => 200 - $votes],
+                    ],
+                ]]]];
+            });
+        });
+        $url = '/india/constituencies/pc/uttar-pradesh/lucknow';
+        foreach ($editions as $year => $edition) {
+            $response = $this->get($year === 2024 ? $url : $url.'?edition='.$edition)->assertOk();
+            $doc = new \DOMDocument;
+            @$doc->loadHTML($response->getContent());
+            $xpath = new \DOMXPath($doc);
+            $this->assertSame("Winner $year", trim($xpath->evaluate('string(//*[@id="atlas-winner"])')));
+            $this->assertSame($edition, $xpath->evaluate('string(//select[@id="edition"]/option[@selected]/@value)'));
+            $this->assertGreaterThan(0, $xpath->query('//*[@data-history-chart]//table')->length);
+            $this->assertSame(0, $xpath->query('//details[contains(@class,"chart-values")]//table')->length);
+        }
+    }
+
     public function test_search_groups_years_and_overview_defaults_to_history(): void
     {
         foreach ([2019, 2024] as $year) {

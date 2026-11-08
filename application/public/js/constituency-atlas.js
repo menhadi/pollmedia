@@ -10,6 +10,7 @@
     const explorer = atlas.querySelector('.atlas-map-explorer');
     const map = explorer.querySelector('[data-election-map]');
     if (!map?.dataset.source || !map.dataset.state || atlas.dataset.ambiguous === '1') return;
+    explorer.open = false;
     const normalize = value => String(value ?? '').trim().toLowerCase().replace(/\s*\((sc|st|gen)\)$/i, '').trim();
     const ringList = geometry => geometry.type === 'Polygon' ? geometry.coordinates : geometry.coordinates.flat();
     const svgNode = (type, attrs) => {
@@ -20,11 +21,11 @@
 
     async function renderReference() {
         const response = await fetch(map.dataset.source);
-        if (!response.ok) return;
+        if (!response.ok) { explorer.open=true; return; }
         const {features, metadata} = await response.json();
         const inState = features.filter(f => normalize(f.properties.state) === normalize(map.dataset.state) && ['Polygon','MultiPolygon'].includes(f.geometry?.type) && !f.properties.geometry_warning);
         const matches = inState.filter(f => f.properties.kind === map.dataset.kind && normalize(f.properties.name) === normalize(map.dataset.selected));
-        if (matches.length !== 1) return;
+        if (matches.length !== 1) { explorer.open=true; return; }
         const seat = matches[0], pcCode = seat.properties.kind === 'pc' ? seat.properties.code : seat.properties.parent_pc_code;
         const pc = pcCode == null ? null : inState.find(f => f.properties.kind === 'pc' && String(f.properties.code) === String(pcCode));
         const children = pc ? inState.filter(f => f.properties.kind === 'ac' && String(f.properties.parent_pc_code) === String(pcCode)) : [];
@@ -35,7 +36,7 @@
             west=Math.min(west,x);east=Math.max(east,x);south=Math.min(south,y);north=Math.max(north,y);
         }
         const cosine=Math.cos((south+north)*Math.PI/360),width=(east-west)*cosine,height=north-south;
-        if (!(width>0 && height>0)) return;
+        if (!(width>0 && height>0)) { explorer.open=true; return; }
         const scale=Math.min(336/width,226/height);
         const project=([x,y])=>[(360-width*scale)/2+(x-west)*cosine*scale,(250-height*scale)/2+(north-y)*scale];
         const svg=region.querySelector('svg');
@@ -63,7 +64,6 @@
         }
         region.querySelector('.atlas-map-frame').hidden=false;
         region.querySelector('[data-atlas-map-source]').textContent=['DataMeet reference map',metadata?.pc_license,metadata?.ac_license].filter(Boolean).join(' · ');
-        if (!explorer.contains(document.activeElement)) explorer.open=false;
     }
-    renderReference().catch(()=>{ /* The statewide explorer remains available. */ });
+    renderReference().catch(()=>{ explorer.open=true; });
 })();
