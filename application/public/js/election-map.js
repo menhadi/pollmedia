@@ -279,6 +279,9 @@
             [['Selected constituency','var(--site-primary)'],['Other constituencies','var(--palette-d5dfd5)']].forEach(([label,color])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=color;item.append(swatch,document.createTextNode(label));legend.append(item);});
         }else{
             const parties=[...new Set(records.map(r=>r.party).filter(Boolean))].sort();
+            root.closest('.state-map-analysis')?.querySelectorAll('[data-winning-party]').forEach(bar=>{
+                bar.style.setProperty('--seat-bar','color-mix(in srgb,'+partyColor(bar.dataset.winningParty,colors)+' 72%, #214239)');
+            });
             [...parties,null].forEach(party=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor=partyColor(party,colors);swatch.setAttribute('aria-hidden','true');item.append(swatch,document.createTextNode(party||'Result not available'));legend.append(item);});
             if(root.dataset.selected){const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.backgroundColor='var(--site-accent)';item.append(swatch,document.createTextNode('Selected constituency'));legend.append(item);}
         }
