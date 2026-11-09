@@ -4,7 +4,7 @@ $hi=app()->getLocale()==='hi'; $tr=fn($en,$hindi)=>$hi?$hindi:$en;
 $winner=$latest['result']['winner']??null; $winningParty=$latest['result']['party']??null;
 $atlasFamily=$exactSeatOnly?['ac'=>[],'pc'=>[]]:app(\App\Services\DistrictConstituencyLinks::class)->seatFamily($kind,$state,$name);
 $mapStateInfo=app(\App\Services\ElectoralMapCatalogue::class)->stateFromQuery($state);
-$atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$chosen['record']]):[];
+$atlasAnalytics=!$selectedByElection && isset($chosen['record'])?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$chosen['record']]):[];
 @endphp
 <main class="seat-atlas" data-constituency-atlas data-ambiguous="{{ $exactSeatOnly?'1':'0' }}">
 @include('constituency-atlas-heading')
@@ -26,7 +26,10 @@ $atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAna
     }
 @endphp
 @include('constituency-atlas-map')
-<h2>{{ $selectedByElection ? $tr('General election analysis','आम चुनाव विश्लेषण') : $tr('Election analysis','चुनाव विश्लेषण') }}</h2>
+<h2>{{ $tr('Election analysis','चुनाव विश्लेषण') }}</h2>
+@if($selectedByElection)
+<div class="atlas-analysis">@include('constituency-by-election-result')</div>
+@else
 <div class="atlas-analysis"><section id="year-detail" class="panel"><h2>{{ \App\Services\PublicLanguage::text('Election results') }}</h2>@if($chosen && $chosen['record'])@php $selected=$chosen['record']; @endphp
 <h3>{{ $chosen['entry']->year }} {{ $tr('general election results','आम चुनाव परिणाम') }}</h3>@if($chosen['result']['uncontested']??false)<p>Uncontested: {{ $chosen['result']['winner'] }} was returned without a poll. Votes and winning margin are not reported.</p>@elseif(!$chosen['result'])<p class="notice">* @if(!empty($selected['candidates']))Candidate rows below are shown as recorded;@else Candidate rows could not be extracted reliably;@endif a winner has not been confirmed here. <a href="{{ $chosen['source'] }}">Check the official report ↗</a></p>@endif
 @if($selected['has_warning'])<p class="notice">† {{ $selected['display_data_note']??$selected['error']??'This report needs review. Figures below retain the source values.' }} @if(($selected['source_discrepancy']['field']??'')==='reported_total')Workbook total: {{ number_format($selected['source_discrepancy']['workbook_value']) }}; candidate rows and official summary: {{ number_format($selected['source_discrepancy']['summary_value']) }}. @elseif(($selected['source_discrepancy']['field']??'')==='candidate_total')Candidate rows: {{ number_format($selected['source_discrepancy']['candidate_sum']) }}; official summary: {{ number_format($selected['source_discrepancy']['summary_value']) }}. @elseif(($selected['source_discrepancy']['field']??'')==='elector_components')Source elector components: {{ number_format($selected['source_discrepancy']['component_value']) }}; official summary total: {{ number_format($selected['source_discrepancy']['summary_value']) }}. @endif @if(isset($selected['summary_totals']['valid_candidate_votes'],$selected['valid_candidate_votes']) && $selected['summary_totals']['valid_candidate_votes']!==$selected['valid_candidate_votes'] && ($selected['source_warning_code']??'')!=='workbook_pdf_summary')Detailed candidate votes: {{ number_format($selected['valid_candidate_votes']) }}; report summary: {{ number_format($selected['summary_totals']['valid_candidate_votes']) }}. @endif<a href="{{ $chosen['source'] }}">Check the official report ↗</a></p>@endif
@@ -35,6 +38,8 @@ $atlasAnalytics=isset($chosen['record'])?app(\App\Services\HistoricalElectionAna
 
 @if($chosen && $chosen['record'])@include('constituency-election-analysis',['selected'=>$chosen['record'],'atlasSummary'=>true])@endif
 </div>
+@endif
+@if($selectedByElection)<h2>{{ $tr('General election history','आम चुनाव इतिहास') }}</h2>@endif
 @include('place-history-charts',['showChartTables'=>true])
 @php $hasSourceReportedPolled=false; @endphp
 @if($modernSeatScope ?? false)<p class="notice">This dashboard covers {{ $name }} AC {{ $rows->first()['entry']->record_code }} from 2012 onwards. Older same-name records contain distinct same-name seats and are not merged into this history. Their original source records remain available in the <a href="{{ route('elections.constituencies',['kind'=>$kind,'state'=>$state,'q'=>$name]) }}">election directory</a>. Boundary equivalence across editions is unverified.</p>@endif
