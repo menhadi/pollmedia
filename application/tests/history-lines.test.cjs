@@ -139,3 +139,27 @@ test('turnout right axis fits its data instead of using zero to 100',()=>{
     percentage.events.focus();
     assert.match(nodes['.history-readout'].textContent,/68 %/);
 });
+
+test('party shares separated by a missing election remain visible without bridging the gap', () => {
+    const data = {unit:'%', series:[{key:'share', label:'Party'}], rows:[
+        {year:2009, share:22}, {year:2014, share:31}, {year:2019, share:null}, {year:2024, share:0}
+    ]};
+    const nodes = Object.fromEntries(['.history-chart-data', '[data-chart-from]', '[data-chart-to]',
+        '.history-plot', '.history-readout', '.history-legend', 'h3'].map(key => [key, new Element()]));
+    nodes['.history-chart-data'].textContent = JSON.stringify(data);
+    nodes['[data-chart-from]'].value = '2009';
+    nodes['[data-chart-to]'].value = '2024';
+    const document = {documentElement:{lang:'en'}, querySelectorAll:() => [{dataset:{selectedYear:'2019'}, querySelector:key => nodes[key]}],
+        createElementNS:(_, tag) => new Element(tag), createElement:tag => new Element(tag), createTextNode:text => ({textContent:text})};
+    vm.runInNewContext(readFileSync(path.join(__dirname, '../public/js/history-lines.js'), 'utf8'),
+        {document, ResizeObserver:class {observe(){}}, Intl});
+    const marks = nodes['.history-plot'].children[0].children;
+    const line = marks.find(mark => mark.tag === 'path' && mark.attributes.fill === 'none');
+    assert.deepEqual(line.attributes.d.match(/[ML]/g), ['M', 'L', 'M']);
+    const points = marks.filter(mark => mark.tag === 'circle');
+    assert.equal(points.length, 1);
+    const target = marks.find(mark => mark.attributes['aria-label']?.startsWith('2024'));
+    assert.equal(points[0].attributes.cx, target.attributes.x + 12);
+    assert.equal(points[0].attributes.cy, target.attributes.y + 12);
+    assert.ok(!marks.some(mark => mark.attributes['aria-label']?.startsWith('2019')));
+});
