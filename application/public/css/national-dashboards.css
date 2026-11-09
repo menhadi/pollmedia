@@ -36,3 +36,37 @@ body .india-hub{box-sizing:border-box;max-width:1200px;margin:0 auto;padding:1re
 @media(max-width:760px){.india-hub .hub-hero{grid-template-columns:minmax(0,1fr)}.india-hub .hub-topics{grid-template-columns:minmax(0,1fr);gap:.55rem}.india-hub .hub-topics section{padding:.85rem 1rem}.india-hub .hub-topics p{margin:.35rem 0 .6rem}.india-hub .hub-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:440px){.india-hub .hub-places{grid-template-columns:minmax(0,1fr)}}
 
+
+body .india-hub .hub-records{margin:1.25rem 0;background:#fff;border:1px solid #cbdcde;border-radius:12px;overflow:hidden;padding:clamp(.8rem,2.2vw,1.6rem)}
+.india-hub .records-heading{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem 1rem;flex-wrap:wrap;margin-bottom:1rem}
+.india-hub .records-heading h2,.india-hub .visible-directory h2{margin:0;font:650 clamp(1.4rem,2.8vw,2.05rem)/1.15 Georgia,serif;color:#173f4c}
+.india-hub .records-heading>span,.india-hub .hub-panel-title>span{font-size:.85rem;color:#435f69;font-weight:600}
+body .india-hub .records-filters{display:grid;grid-template-columns:minmax(7rem,.65fr) minmax(8rem,.9fr) minmax(10rem,1fr) minmax(10rem,1fr) auto;align-items:end;gap:.65rem;padding:.9rem;margin:0 0 .9rem;background:#edf4f3;border:1px solid #d9e6e4;border-radius:7px}
+body .india-hub .records-filters label{display:grid;min-width:0;gap:.22rem;color:#31525e;font-size:.85rem;font-weight:650}
+body .india-hub .records-filters :is(select,input){min-width:0;width:100%;padding:.52rem .6rem;border:1px solid #9db6bb;border-radius:4px;color:#183e49;background:white;font:inherit;min-height:42px}
+body .india-hub .records-filters button,.india-hub [data-more-areas]{padding:.55rem .85rem;min-height:42px;background:#175c69;color:white;border:0;border-radius:4px;cursor:pointer;font:600 .9rem/1.2 system-ui,sans-serif}
+.india-hub [data-more-areas]{margin-top:.7rem}.india-hub .national-scroll{overflow-x:auto;border:1px solid #d4e1e2;border-radius:6px;max-width:100%}
+.india-hub .records-table,.india-hub .candidate-breakdown table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.92rem}
+body .india-hub .records-table thead th{background:#173f4c!important;color:white!important;padding:.72rem .7rem!important;line-height:1.25;text-align:left}
+body .india-hub .records-table tbody :is(th,td){padding:.7rem!important;line-height:1.3;vertical-align:middle;border:0;border-bottom:1px solid #dde7e7;text-align:left}
+.india-hub .records-table tbody tr:nth-child(even){background:#f4f8f7}
+.india-hub .records-table tbody th a{color:#155e69;text-decoration-thickness:1px;text-underline-offset:3px}
+.india-hub .record-type{display:inline-block;white-space:nowrap;padding:.19rem .45rem;background:#e7efee;color:#244650;border-radius:4px;font-size:.8rem;font-weight:650}.india-hub .type-ac{background:#f5ecdc;color:#694c22}.india-hub .type-by{background:#eee7f2;color:#604568}
+.india-hub .visible-directory h3{color:#45636a;font:700 .9rem/1.4 system-ui,sans-serif;margin:1.2rem 0 .3rem}
+.india-hub .visible-directory .hub-places{grid-template-columns:repeat(4,minmax(0,1fr));gap:.25rem .85rem}
+.india-hub .visible-directory .hub-places a{height:100%;align-items:center}
+.india-hub .hub-disclaimer{margin:1.2rem 0}.india-hub .hub-disclaimer summary,.india-hub .candidate-breakdown summary{cursor:pointer;color:#35545f;font-weight:650}
+.india-hub .hub-disclaimer p{max-width:78ch}.india-hub .candidate-breakdown{padding:.8rem 0}.india-hub .candidate-breakdown summary{margin-bottom:.45rem}
+.india-hub .census-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin-top:.8rem}
+.india-hub .census-metrics section{background:#edf4f2;border-left:3px solid #43867c;border-radius:4px;padding:.9rem 1rem}
+.india-hub .census-metrics section:nth-child(2){border-left-color:#8c7293}.india-hub .census-metrics section:last-child{border-left-color:#a47f42}
+.india-hub .census-metrics span{font-size:.82rem;color:#49636a}.india-hub .census-metrics strong{display:block;font:650 clamp(1.12rem,2.5vw,1.8rem)/1.3 Georgia,serif;color:#183f49}
+body .india-hub .census-filters{grid-template-columns:minmax(7rem,.5fr) minmax(10rem,1fr) auto}
+.india-hub .hub-records[aria-busy=true] .records-heading>span{opacity:.55}
+@media(max-width:900px){body .india-hub .records-filters{grid-template-columns:repeat(2,minmax(0,1fr))}body .india-hub .records-filters button{justify-self:start}.india-hub .visible-directory .hub-places{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.india-hub .records-table{min-width:40rem}.india-hub.census-hub .records-table{min-width:34rem}.india-hub .census-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.india-hub .census-metrics section:last-child{grid-column:1/-1}.india-hub .records-table tbody th:first-child{position:sticky;left:0;background:#f5f9f8;max-width:9.5rem;box-shadow:1px 0 #d6e4e2}.india-hub .records-table thead th:first-child{position:sticky;left:0}.india-hub .visible-directory .hub-places a{min-height:44px}.india-hub .hub-records{min-width:0}}
+
+
+.india-hub .census-topics{display:flex;flex-wrap:wrap;gap:.35rem;margin:.55rem 0 .8rem}
+.india-hub .census-topics a{border:1px solid #b7cccd;color:#205764;font-weight:600;text-decoration:none;border-radius:4px;padding:.4rem .7rem}
+.india-hub .census-topics a[aria-current=page]{background:#195a65;border-color:#195a65;color:#fff}

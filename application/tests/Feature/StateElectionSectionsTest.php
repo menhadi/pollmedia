@@ -217,5 +217,12 @@ class StateElectionSectionsTest extends TestCase
         $this->assertCount(45, array_unique($seen));
         $this->get($url.'?type=by&year=0&state=Gujarat&q=Special')->assertOk()->assertSee('Special seat')->assertDontSee('pc seat');
         $this->get($url.'?q=%25')->assertOk()->assertSee('No constituency records match');
+        $panel = $this->get($url.'?panel=1&year=0&type=by&state=Gujarat')->assertOk();
+        $doc = HTMLDocument::createFromString($panel->getContent(), LIBXML_NOERROR, 'UTF-8');
+        $choices = fn (string $field) => array_map(fn ($option) => $option->textContent, iterator_to_array($doc->querySelectorAll('select[name="'.$field.'"] option')));
+        $this->assertSame(['All elections', 'By-election'], $choices('type'));
+        $this->assertSame(['All constituencies', 'Special seat'], $choices('seat'));
+        $this->assertNull($doc->querySelector('thead th:nth-child(8)'));
+        $this->get($url.'?year=0&type=by&state=Gujarat&seat=Special%20seat')->assertOk()->assertSee('Unconfirmed candidate')->assertSee('Recorded votes');
     }
 }

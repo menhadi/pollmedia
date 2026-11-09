@@ -1,32 +1,92 @@
 (() => {
     const root = document.querySelector('[data-national-elections]');
-    const more = root?.querySelector('[data-national-more]');
-    if (!more) return;
-    const table = root.querySelector('table');
-    const status = root.querySelector('[data-national-status]');
-    let busy = false;
-    more.addEventListener('click', async event => {
-        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-        event.preventDefault();
-        if (busy) return;
-        busy = true;
-        table.setAttribute('aria-busy','true');
-        const url = new URL(more.href);
-        url.searchParams.set('rows_only','1');
+    if (!root) return;
+    const section = () => root.querySelector('#national-records');
+    let pending;
+    let activeSearch = location.search;
+    function start() {
+        pending?.abort();
+        pending = new AbortController();
+        section().setAttribute('aria-busy', 'true');
+        return pending;
+    }
+    async function update(url, focusName, scroll = false) {
+        const job = start();
+        const request = new URL(url);
+        request.searchParams.set('panel', '1');
         try {
-            const response = await fetch(url,{headers:{Accept:'application/json'}});
-            if (!response.ok) throw new Error('Records unavailable');
-            const page = await response.json();
-            const batch = document.createElement('tbody');
-            batch.innerHTML = page.rows;
-            table.tBodies[0].append(...Array.from(batch.rows));
-            status.textContent = root.dataset.first+'–'+page.last+' / '+page.total;
-            if (page.next) more.href=page.next;
-            else { status.tabIndex=-1; status.focus({preventScroll:true}); more.remove(); }
-        } catch {
-            status.textContent = document.documentElement.lang==='hi'?'लोड नहीं हुआ। पुनः प्रयास करें।':'Could not load records. Try again.';
+            const response = await fetch(request, {signal: job.signal});
+            if (!response.ok) throw new Error();
+            const replacement = new DOMParser().parseFromString(await response.text(), 'text/html').getElementById('national-records');
+            if (!replacement) throw new Error();
+            if (job !== pending) return;
+            section().replaceWith(replacement);
+            history.pushState(null, '', url);
+            activeSearch = location.search;
+            replacement.querySelector('[name="' + focusName + '"]')?.focus({preventScroll: true});
+            if (scroll) (replacement.querySelector('.candidate-breakdown') || replacement).scrollIntoView({block: 'start'});
+        } catch (error) {
+            if (!job.signal.aborted) location.assign(url);
         } finally {
-            table.removeAttribute('aria-busy'); busy=false;
+            if (pending === job) section().removeAttribute('aria-busy');
         }
+    }
+    function filterUrl(form) {
+        const url = new URL(form.action);
+        for (const [name,value] of new FormData(form)) {
+            if (value !== '') url.searchParams.set(name,value);
+        }
+        return url;
+    }
+    root.addEventListener('change', event => {
+        const field = event.target;
+        const form = field.closest('[data-record-filters]');
+        if (!form || field.tagName !== 'SELECT') return;
+        const reset = field.name === 'year' ? ['type', 'state', 'seat'] : field.name === 'seat' ? [] : ['seat'];
+        for (const name of reset) {
+            if (form.elements[name]) {
+                form.elements[name].value = '';
+                form.elements[name].disabled = true;
+            }
+        }
+        if (form.elements.q) form.elements.q.value = '';
+        update(filterUrl(form), field.name);
+    });
+    root.addEventListener('submit', event => {
+        if (!event.target.matches('[data-record-filters]')) return;
+        event.preventDefault();
+        update(filterUrl(event.target), 'q');
+    });
+    root.addEventListener('click', async event => {
+        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        const link = event.target.closest('a[data-record-link], a[data-national-more]');
+        if (!link) return;
+        event.preventDefault();
+        if (link.hasAttribute('data-record-link')) return update(new URL(link.href), 'seat', true);
+        if (section().getAttribute('aria-busy') === 'true') return;
+        // Fetch the next panel so selected-seat breakdowns are appended with their rows.
+        const job = start();
+        const url = new URL(link.href);
+        url.searchParams.set('panel','1');
+        try {
+            const response = await fetch(url, {signal:job.signal});
+            if (!response.ok) throw new Error();
+            const next = new DOMParser().parseFromString(await response.text(),'text/html').getElementById('national-records');
+            if (!next || job !== pending) return;
+            section().querySelector('.records-table tbody').append(...next.querySelector('.records-table tbody').rows);
+            section().append(...next.querySelectorAll('.candidate-breakdown'));
+            const status = section().querySelector('[data-national-status]');
+            status.textContent = next.querySelector('[data-national-status]').textContent.replace(/^[\d,]+–/, Number(section().dataset.first).toLocaleString()+'–');
+            const more = next.querySelector('[data-national-more]');
+            if (more) link.href=more.href;
+            else {status.tabIndex=-1;status.focus({preventScroll:true});link.remove();}
+        } catch (error) {
+            if (!job.signal.aborted) location.assign(link.href);
+        } finally {
+            if (pending === job) section().removeAttribute('aria-busy');
+        }
+    });
+    window.addEventListener('popstate', () => {
+        if (location.search !== activeSearch) location.reload();
     });
 })();
