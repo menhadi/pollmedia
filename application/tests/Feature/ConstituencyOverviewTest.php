@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Services\ArchiveFiles;
+use App\Services\ByElectionRecords;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyByElections;
 use App\Services\ElectionArchive;
 use App\Services\ElectionGeographySummary;
 use App\Services\HistoricalElectionAnalytics;
@@ -12,11 +14,44 @@ use App\Services\HistoricalElectionReview;
 use Database\Seeders\PilibhitSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 class ConstituencyOverviewTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_by_election_links_use_the_named_seat_and_highlight_only_its_own_result(): void
+    {
+        $edition = str_repeat('a', 24);
+        foreach (['Nandyal', 'Other seat', 'Repeated', 'Repeated', 'Likabali (ST)'] as $offset => $name) {
+            DB::table('historical_constituency_index')->insert([
+                'edition_id' => $edition, 'record_code' => $offset + 1, 'kind' => 'ac', 'year' => 2019,
+                'edition_label' => '2019 Assembly', 'state_label' => 'Andhra Pradesh', 'constituency_name' => $name,
+                'status' => 'validated', 'has_warning' => false, 'candidate_count' => 0, 'extraction_sha256' => str_repeat('c', 64),
+            ]);
+        }
+        $id = str_repeat('b', 24);
+        $entry = ['id' => $id, 'kind' => 'ac', 'year' => 2017, 'state' => 'Andhra Pradesh', 'constituency' => 'Nandyal', 'period' => 'Jan–Dec 2017'];
+        $record = $entry + ['candidates' => [['name' => 'Candidate One', 'party' => 'AA', 'votes' => 11], ['name' => 'Candidate Two', 'party' => null, 'votes' => null]], 'source_url' => 'https://www.eci.gov.in/', 'notes' => []];
+        $by = $this->mock(ByElectionRecords::class);
+        $by->shouldReceive('index')->andReturn(collect([$entry]));
+        $by->shouldReceive('record')->with($entry)->andReturn($record);
+        $this->mock(HistoricalElectionArchive::class)->shouldReceive('load')->andThrow(new HttpException(404));
+        $resolver = app(ConstituencyByElections::class);
+        $path = route('constituency.named', ['kind' => 'ac', 'state' => 'andhra-pradesh', 'name' => 'nandyal']);
+        $this->assertSame($path.'?by_election='.$id.'#by-election-result', $resolver->url($entry));
+        $this->assertStringContainsString('/likabali-st?', $resolver->url(array_replace($entry, ['constituency' => '(ST) Likabali'])));
+        foreach ([['constituency' => 'Repeated'], ['constituency' => 'Likabali (SC)'], ['kind' => 'pc']] as $change) {
+            $this->assertNull($resolver->url(array_replace($entry, $change)));
+        }
+        $this->get('/india/elections/by-elections/results?year=2017&record='.$id)->assertStatus(301)
+            ->assertRedirect($path.'?by_election='.$id.'#by-election-result');
+        $this->get($path)->assertOk()->assertSee('id="by-election-history"', false)->assertDontSee('Candidate One');
+        $this->get($path.'?by_election='.$id)->assertOk()->assertSee('id="by-election-result"', false)
+            ->assertSee('Candidate One')->assertSee('Candidate Two')->assertSee('aria-current="page"', false);
+        $this->get(str_replace('/nandyal', '/other-seat', $path).'?by_election='.$id)->assertNotFound();
+    }
 
     public function test_only_the_including_vellore_edition_is_displayed_even_when_source_values_differ(): void
     {

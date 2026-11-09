@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use App\Services\ElectionGeographySummary;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ByElectionResultTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_results_preserve_missing_votes_notes_and_official_source(): void
     {
         Storage::fake('local');

@@ -12,6 +12,7 @@ class AllIndiaElectionTable
         private HistoricalElectionArchive $archive,
         private ElectoralMapResults $results,
         private ByElectionRecords $byElections,
+        private ConstituencyByElections $byElectionSeats,
     ) {}
 
     public function page(array $filters): array
@@ -136,7 +137,7 @@ class AllIndiaElectionTable
             'state' => $entry['state'], 'name' => $entry['constituency'], 'edition' => $entry['period'] ?? null,
             'winner' => $winner['name'] ?? null, 'party' => $winner['party'] ?? null,
             'candidates' => $entry['candidate_count'] ?? null, 'status' => $entry['status'],
-            'url' => route('elections.by-election-results', ['year' => (int) $entry['year'], 'record' => $entry['id']]),
+            'url' => $this->byElectionSeats->url($entry) ?? route('elections.by-election-results', ['year' => (int) $entry['year'], 'record' => $entry['id']]),
         ];
     }
 }

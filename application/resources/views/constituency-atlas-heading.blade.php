@@ -59,11 +59,15 @@
 <input type="hidden" name="lang" value="{{ app()->getLocale() }}">
 @if($exactSeatOnly)<input type="hidden" name="code" value="{{ $chosen['entry']->record_code }}">@endif
 <label for="edition">{{ $tr('Election year','चुनाव वर्ष') }}</label><select name="edition" id="edition">
-@foreach($alternatives as $row)<option value="{{ $row['entry']->edition_id }}" @selected($row['entry']->edition_id===($chosen['entry']->edition_id??null))>{{ $row['entry']->year }}</option>@endforeach
+@foreach($alternatives as $row)<option value="{{ $row['entry']->edition_id }}" @selected(empty($selectedByElection) && $row['entry']->edition_id===($chosen['entry']->edition_id??null))>{{ $row['entry']->year }}</option>@endforeach
+@foreach($byElections as $by)<option value="by-{{ $by['id'] }}" data-url="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$state,'name'=>$name,'by_election'=>$by['id'],'lang'=>$hi?'hi':null]) }}#by-election-result" @selected(($selectedByElection['id']??null)===$by['id'])>{{ $by['year'] }} · {{ $tr('By-election','उपचुनाव') }}{{ $byElections->where('year',$by['year'])->count()>1?' · '.$by['period']:'' }}</option>@endforeach
 </select><noscript><button type="submit">{{ $tr('Show results','नतीजे देखें') }}</button></noscript></form>
 </div>
 
 </div>
+@if($selectedByElection)
+@include('constituency-by-election-result')
+@else
 <section class="atlas-result" aria-labelledby="atlas-winner"><div><p class="atlas-eyebrow">{{ $chosen['entry']->year }} · {{ $tr('Election result','चुनाव परिणाम') }}</p><h2 id="atlas-winner">{{ $result['winner']??$tr('Winner unconfirmed','विजेता की पुष्टि नहीं हुई') }}{{ !empty($record['has_warning'])?' †':'' }}</h2><p>{{ $result['party']??'' }}</p>
 @if($result['uncontested']??false)<p>{{ $tr('Returned unopposed','निर्विरोध निर्वाचित') }}</p>
 @elseif(isset($result['margin']))<p class="atlas-margin"><strong>{{ $fmt->format($result['margin']) }}</strong> {{ $tr('vote winning margin','मतों से जीत') }}</p>@endif</div>
@@ -74,3 +78,4 @@
 <dl class="atlas-stats">@foreach([[$tr('Registered electors','पंजीकृत मतदाता'),$metrics['electors']??$record['electors']??null],[$tr('Votes polled','पड़े मत'),$polled],[$tr('Turnout','मतदान प्रतिशत'),$metrics['turnout']??null]] as [$metric,$value])<div><dt>{{ $metric }}</dt><dd>{{ is_numeric($value)?($loop->last?number_format($value,2).'%':$fmt->format($value)):'—' }}{{ $loop->index===1 && !isset($metrics['polled']) && $polled!==null?' ‡':'' }}</dd></div>@endforeach</dl>
 @if(!empty($record['has_warning']))<p class="atlas-caption">† {{ $record['display_data_note']??$record['error']??$tr('The source flags this result for review.','स्रोत में इस परिणाम पर टिप्पणी है।') }}</p>@endif
 @if(!isset($metrics['polled']) && $polled!==null)<p class="atlas-caption">‡ {{ $tr('Source-reported votes polled. Comparable turnout is unavailable.','स्रोत में दर्ज मतदान। तुलनीय मतदान प्रतिशत उपलब्ध नहीं है।') }}</p>@endif
+@endif
