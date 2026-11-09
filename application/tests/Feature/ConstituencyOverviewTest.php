@@ -21,6 +21,30 @@ class ConstituencyOverviewTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_by_election_summary_distinguishes_reported_winners_and_recorded_votes(): void
+    {
+        $record = ['status' => 'extracted', 'candidates' => [
+            ['name' => 'A', 'party' => 'X', 'votes' => 70], ['name' => 'B', 'party' => 'Y', 'votes' => 0],
+            ['name' => 'None of the above', 'party' => 'NOTA', 'votes' => 2, 'nota' => true],
+        ]];
+        $figures = ByElectionRecords::figures($record);
+        $this->assertNull($figures['declared']);
+        $this->assertSame('A', $figures['leading']['name']);
+        $this->assertSame([72, 2, 2], [$figures['total'], $figures['candidates'], $figures['nota_votes']]);
+        $this->assertSame(0, $figures['groups']['Y']);
+        $record['candidates'][0]['role'] = 'reported_winner';
+        $record['candidates'][1]['votes'] = null;
+        $partial = ByElectionRecords::figures($record);
+        $this->assertSame('A', $partial['declared']['name']);
+        $this->assertNull($partial['total']);
+        $this->assertNull($partial['leading']);
+        $this->assertTrue($partial['groups']->isEmpty());
+        $record['candidates'][1]['votes'] = 70;
+        $this->assertNull(ByElectionRecords::figures($record)['leading']);
+        $record['status'] = 'needs_review';
+        $this->assertNull(ByElectionRecords::figures($record)['total']);
+    }
+
     public function test_by_election_links_use_the_named_seat_and_highlight_only_its_own_result(): void
     {
         $edition = str_repeat('a', 24);

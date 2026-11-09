@@ -65,17 +65,32 @@
 </div>
 
 </div>
-@if($selectedByElection)
-@include('constituency-by-election-result')
-@else
-<section class="atlas-result" aria-labelledby="atlas-winner"><div><p class="atlas-eyebrow">{{ $chosen['entry']->year }} · {{ $tr('Election result','चुनाव परिणाम') }}</p><h2 id="atlas-winner">{{ $result['winner']??$tr('Winner unconfirmed','विजेता की पुष्टि नहीं हुई') }}{{ !empty($record['has_warning'])?' †':'' }}</h2><p>{{ $result['party']??'' }}</p>
-@if($result['uncontested']??false)<p>{{ $tr('Returned unopposed','निर्विरोध निर्वाचित') }}</p>
+@php
+    $by = $selectedByElection !== null;
+    $featured = $by ? ($byFigures['declared'] ?? $byFigures['leading']) : null;
+    $headline = $by ? ($featured['name'] ?? $tr('Recorded result','दर्ज परिणाम')) : ($result['winner'] ?? $tr('Winner unconfirmed','विजेता की पुष्टि नहीं हुई'));
+    $party = $by ? ($featured['party'] ?? '') : ($result['party'] ?? '');
+    $chartLeaders = $by ? $byFigures['leaders'] : $leaders;
+    $denominator = $by ? $byFigures['total'] : ($comparable ? $polled : null);
+    $stats = $by
+        ? [[$tr('Listed candidates','सूचीबद्ध उम्मीदवार'),$byFigures['candidates']],[$tr('Votes in listed rows','सूचीबद्ध पंक्तियों के मत'),$byFigures['total']],[$tr('NOTA votes','नोटा मत'),$byFigures['nota_votes']]]
+        : [[$tr('Registered electors','पंजीकृत मतदाता'),$metrics['electors']??$record['electors']??null],[$tr('Votes polled','पड़े मत'),$polled],[$tr('Turnout','मतदान प्रतिशत'),$metrics['turnout']??null]];
+@endphp
+<section class="atlas-result" @if($by) id="by-election-result" @endif aria-labelledby="atlas-winner">
+<div><p class="atlas-eyebrow">{{ $by ? $selectedByElection['year'] : $chosen['entry']->year }} · {{ $by ? $tr('By-election','उपचुनाव') : $tr('Election result','चुनाव परिणाम') }}</p>
+@if($by && $featured)<p class="atlas-caption">{{ $byFigures['declared'] ? $tr('Reported winner','दर्ज विजेता') : $tr('Highest recorded candidate vote count','सर्वाधिक दर्ज उम्मीदवार मत') }}</p>@endif
+<h2 id="atlas-winner">@if($by && $featured)<span translate="no">{{ $headline }}</span>@else{{ $headline }}{{ ! $by && !empty($record['has_warning'])?' †':'' }}@endif</h2>
+<p @if($by) translate="no" @endif>{{ $party }}</p>
+@if($by)
+@if(is_numeric($featured['votes']??null))<p class="atlas-margin"><strong>{{ $fmt->format($featured['votes']) }}</strong> {{ $tr('recorded votes','दर्ज मत') }}</p>@endif
+@elseif($result['uncontested']??false)<p>{{ $tr('Returned unopposed','निर्विरोध निर्वाचित') }}</p>
 @elseif(isset($result['margin']))<p class="atlas-margin"><strong>{{ $fmt->format($result['margin']) }}</strong> {{ $tr('vote winning margin','मतों से जीत') }}</p>@endif</div>
-@if($leaders->isNotEmpty() && empty($result['uncontested']))<div><h3>{{ $tr('Leading candidates','प्रमुख उम्मीदवार') }}</h3><p class="atlas-caption">{{ $comparable?$tr('Share of votes polled','पड़े मतों में हिस्सा'):$tr('Recorded votes','दर्ज मत') }}</p>
-@foreach($leaders as $c)<div class="atlas-rank"><div><span>{{ $c['display_name']??$c['candidate_name'] }} <small>· {{ $c['party_at_election']??'—' }}</small></span><b>{{ $comparable?number_format(100*$c['votes']/$metrics['polled'],2).'%':$fmt->format($c['votes']) }}</b></div>
-@if($comparable)<div class="atlas-track"><i style="width:{{ min(100,100*$c['votes']/$metrics['polled']) }}%;background:var(--chart-series-{{ $loop->iteration }})"></i></div>@endif</div>@endforeach
+@if($chartLeaders->isNotEmpty() && ($by || empty($result['uncontested'])))
+<div><h3>{{ $tr('Leading candidates','प्रमुख उम्मीदवार') }}</h3>
+<p class="atlas-caption">{{ $denominator > 0 ? ($by ? $tr('Share of votes in listed rows','सूचीबद्ध मतों में हिस्सा') : $tr('Share of votes polled','पड़े मतों में हिस्सा')) : $tr('Recorded votes','दर्ज मत') }}</p>
+@foreach($chartLeaders as $c)<div class="atlas-rank"><div><span @if($by) translate="no" @endif>{{ $by ? ($c['name']??'—') : ($c['display_name']??$c['candidate_name']) }} <small>· {{ $by ? ($c['party']??'—') : ($c['party_at_election']??'—') }}</small></span><b>{{ $denominator > 0 ? number_format(100*$c['votes']/$denominator,2).'%' : $fmt->format($c['votes']) }}</b></div>
+@if($denominator > 0)<div class="atlas-track"><i style="width:{{ min(100,100*$c['votes']/$denominator) }}%;background:var(--chart-series-{{ $loop->iteration }})"></i></div>@endif</div>@endforeach
 </div>@endif</section>
-<dl class="atlas-stats">@foreach([[$tr('Registered electors','पंजीकृत मतदाता'),$metrics['electors']??$record['electors']??null],[$tr('Votes polled','पड़े मत'),$polled],[$tr('Turnout','मतदान प्रतिशत'),$metrics['turnout']??null]] as [$metric,$value])<div><dt>{{ $metric }}</dt><dd>{{ is_numeric($value)?($loop->last?number_format($value,2).'%':$fmt->format($value)):'—' }}{{ $loop->index===1 && !isset($metrics['polled']) && $polled!==null?' ‡':'' }}</dd></div>@endforeach</dl>
-@if(!empty($record['has_warning']))<p class="atlas-caption">† {{ $record['display_data_note']??$record['error']??$tr('The source flags this result for review.','स्रोत में इस परिणाम पर टिप्पणी है।') }}</p>@endif
-@if(!isset($metrics['polled']) && $polled!==null)<p class="atlas-caption">‡ {{ $tr('Source-reported votes polled. Comparable turnout is unavailable.','स्रोत में दर्ज मतदान। तुलनीय मतदान प्रतिशत उपलब्ध नहीं है।') }}</p>@endif
-@endif
+<dl class="atlas-stats">@foreach($stats as [$metric,$value])<div><dt>{{ $metric }}</dt><dd>{{ is_numeric($value)?(! $by && $loop->last?number_format($value,2).'%':$fmt->format($value)):'—' }}{{ ! $by && $loop->index===1 && !isset($metrics['polled']) && $polled!==null?' ‡':'' }}</dd></div>@endforeach</dl>
+@if(! $by && !empty($record['has_warning']))<p class="atlas-caption">† {{ $record['display_data_note']??$record['error']??$tr('The source flags this result for review.','स्रोत में इस परिणाम पर टिप्पणी है।') }}</p>@endif
+@if(! $by && !isset($metrics['polled']) && $polled!==null)<p class="atlas-caption">‡ {{ $tr('Source-reported votes polled. Comparable turnout is unavailable.','स्रोत में दर्ज मतदान। तुलनीय मतदान प्रतिशत उपलब्ध नहीं है।') }}</p>@endif

@@ -197,7 +197,9 @@ class ConstituencyOverviewController extends Controller
             $selectedByElection = app(ByElectionRecords::class)->record($selectedEntry);
         }
 
-        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('byElections', 'selectedByElection', 'directoryPeople', 'kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly', 'modernSeatScope', 'reportAlternatives', 'chartSourceRows', 'chartReport', 'reportAlternativeLabels', 'reportComparisonNote', 'selectedReportOmitsNota'));
+        $byFigures = $selectedByElection ? ByElectionRecords::figures($selectedByElection) : null;
+
+        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('byElections', 'selectedByElection', 'byFigures', 'directoryPeople', 'kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly', 'modernSeatScope', 'reportAlternatives', 'chartSourceRows', 'chartReport', 'reportAlternativeLabels', 'reportComparisonNote', 'selectedReportOmitsNota'));
     }
 
     /** Exact inspected source records only; report alternatives are not deduplicated or merged. */
