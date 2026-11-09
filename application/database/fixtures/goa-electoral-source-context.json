@@ -658,8 +658,9 @@
     "archive_sha256": "34567e61cf0aa81406996a15131fa2c95c9c6bb889fc50e94cb517d2fe11112b"
   },
   "pc_source": {
-    "url": "https://www.writinglaw.com/wp-content/uploads/2019/10/Delimitation-of-Parliamentary-Constituencies-Order-2008.pdf#page=115",
+    "url": "https://www.eci.gov.in/Documents/Delimitation/DelimitationofParliamentaryAssemblyConstituenciesOrder-2008%28English%29.pdf#page=115",
+    "publication_sha256": "9e1ac49aa952febc8e4f57ed23abd28218a21887f355f8dad1502ab5c0d65e69",
     "edition": "ECI Order2008 PartB Goa,page114(PDF115)",
-    "note": "Preserved ECI document, mirror host; old administrative extent reference23March2005."
+    "note": "ECI order. Administrative extents refer to 23 March 2005."
   }
 }

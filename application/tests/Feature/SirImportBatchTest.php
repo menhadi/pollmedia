@@ -23,12 +23,15 @@ class SirImportBatchTest extends TestCase
         $pdf = '%PDF-1.4 test-'.uniqid();
         $hash = hash('sha256', $pdf);
         $data = $this->package($hash);
+        $data['source_url'] = 'https://drive.google.com/example';
+        $data['source_landing_url'] = 'https://pilibhit.nic.in/meeting-blo-bla/';
         $json = json_encode($data);
         $upload = fn () => ['records_file' => UploadedFile::fake()->createWithContent('records.json', $json), 'pdf_file' => UploadedFile::fake()->createWithContent('original.pdf', $pdf), 'sha256' => hash('sha256', $json)];
         try {
             $this->get('https://localhost/admin/sir/imports')->assertOk();
             $this->post('https://localhost/admin/sir/imports', $upload())->assertSessionHasNoErrors();
             $this->assertDatabaseHas('sir_import_batches', ['status' => 'imported', 'records_count' => 1]);
+            $this->assertDatabaseHas('sir_records', ['edition_key' => $hash, 'source_url' => $data['source_landing_url']]);
             $id = DB::table('sir_records')->value('id');
             DB::table('sir_records')->where('id', $id)->update(['name' => 'Manual correction', 'extraction_status' => 'reviewed']);
             DB::table('sir_extraction_reviews')->insert(['record_id' => $id, 'record_hash' => str_repeat('a', 64), 'pdf_sha256' => $hash, 'before_snapshot' => '{}', 'suggestion' => '{}', 'model' => 'administrator', 'provider' => 'manual', 'status' => 'approved', 'requested_by' => auth()->id()]);

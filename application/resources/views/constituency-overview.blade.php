@@ -71,7 +71,7 @@ $atlasAnalytics=!$selectedByElection && isset($chosen['record'])?app(\App\Servic
 <details id="constituency-methodology" class="panel"><summary>Methodology &amp; disclaimer</summary>
 <section><h3>Original report editions & verification</h3><ul>@foreach($rows as $row)<li><a href="{{ \App\Services\ConstituencyUrls::url(['kind'=>$kind,'state'=>$state,'name'=>$name,'edition'=>$row['entry']->edition_id,'code'=>$row['entry']->record_code]) }}#year-detail">{{ $row['entry']->edition_label }}</a>@if($row['source']) · <a href="{{ $row['source'] }}">Official source ↗</a>@endif</li>@endforeach</ul></section>
 <h3>Map sources and coverage</h3>
-<p>The constituency outlines are drawn from the <a href="https://github.com/datameet/maps">DataMeet boundary collection</a>. The parliamentary layer uses the 2019 reference map (CC0 1.0); the Assembly layer uses <a href="https://creativecommons.org/licenses/by/2.5/in/">CC BY 2.5 India</a>. Pollmedia projects, colours and labels these outlines for display. Historical constituency boundaries may differ.</p>
+<p>Parliamentary outlines use the 2019 reference boundaries. Historical boundaries may differ. Assembly outlines use the <a href="https://github.com/datameet/maps/tree/b3fbbde595310b397a55d718e0958ce249a4fa1f/assembly-constituencies">DataMeet Assembly constituency map</a> (<a href="https://creativecommons.org/licenses/by/2.5/in/">CC BY 2.5 India</a>), adapted for display.</p>
 @if($coverage || $mapVillages)<p>Village coverage: Local Government Directory, 16 September 2026.</p>@endif
 @include('election-methodology',['isStateHistory'=>false])
 

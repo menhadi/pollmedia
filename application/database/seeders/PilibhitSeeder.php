@@ -87,9 +87,7 @@ class PilibhitSeeder extends Seeder
                 // Seed only this historical evidence snapshot; do not reactivate it after a future replacement.
                 DB::table('office_assignments')->insertOrIgnore(['office_id' => $office, 'person_id' => $person, 'source_release_id' => $evidence, 'verified_at' => $checked, 'status' => 'last_verified']);
                 if ($personKey === 'jitin-prasada') {
-                    foreach (['Official profile' => 'https://sansad.in/ls/members/biography/4065?from=members', 'Wikipedia' => 'https://en.wikipedia.org/wiki/Jitin_Prasada'] as $kind => $url) {
-                        $this->row('public_profiles', ['person_id' => $person, 'kind' => $kind], ['url' => $url, 'verified_at' => $checked, 'identity_evidence' => 'Name and Pilibhit Lok Sabha constituency corroborated against official directory']);
-                    }
+                    $this->row('public_profiles', ['person_id' => $person, 'kind' => 'Official profile'], ['url' => 'https://sansad.in/ls/members/biography/4065?from=members', 'verified_at' => $checked, 'identity_evidence' => 'Name and Pilibhit Lok Sabha constituency corroborated against official directory']);
                 }
             }
         });

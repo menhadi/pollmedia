@@ -61,4 +61,4 @@
 @else
 <p>Select the electoral source district to view its ACs and shared PCs. Different source spellings require explicit selection. This selector changes electoral context only, not the map.</p>
 @endif
-<p><a href="{{ $electoral['district_source']['url'] }}">ECI 2008 order · preserved third-party hosted copy</a> · <a href="{{ $electoral['official_roster_check']['url'] }}">Official CEO 2024 constituency roster</a></p><p>Archive links retain their own election editions and original names. Unresolved spelling differences are shown explicitly; no constituency is assigned solely by approximate name matching.</p></section>
+<p><a href="{{ $electoral['district_source']['url'] }}">ECI 2008 delimitation order</a> · <a href="{{ $electoral['official_roster_check']['url'] }}">Official CEO 2024 constituency roster</a></p><p>Archive links retain their own election editions and original names. Unresolved spelling differences are shown explicitly; no constituency is assigned solely by approximate name matching.</p></section>
