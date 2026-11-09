@@ -61,4 +61,4 @@
 @else
 <p>Select the electoral source district to view its ACs and shared PCs. Different source spellings require explicit selection. This selector changes electoral context only, not the map.</p>
 @endif
-<p><a href="{{ $electoral['district_source']['url'] }}">Official district / AC snapshot · 1 July 2026</a> · <a href="{{ $electoral['pc_source']['url'] }}">ECI 2008 PC membership · preserved mirror</a></p><p>Archive links retain their own election editions and original names. Unresolved spelling differences are shown explicitly; no constituency is assigned solely by approximate name matching.</p></section>
+<p><a href="{{ $electoral['district_source']['url'] }}">Official district / AC snapshot · 1 July 2026</a> · <a href="{{ $electoral['pc_source']['url'] }}">ECI 2008 parliamentary constituency order</a></p><p>Archive links retain their own election editions and original names. Unresolved spelling differences are shown explicitly; no constituency is assigned solely by approximate name matching.</p></section>

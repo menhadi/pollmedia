@@ -95,7 +95,12 @@ class ImportSirRecords extends Command
             $host = strtolower(parse_url($data['source_url'], PHP_URL_HOST) ?? '');
             $landingHost = strtolower(parse_url($data['source_landing_url'] ?? '', PHP_URL_HOST) ?? '');
             $officialLanding = str_ends_with($landingHost, '.gov.in') || str_ends_with($landingHost, '.nic.in');
-            if (! (str_ends_with($host, '.gov.in') || str_ends_with($host, '.nic.in') || ($host === 'drive.google.com' && $officialLanding))) {
+            if ($landingHost !== '' && ! $officialLanding) {
+                throw new \RuntimeException('An official government publication page is required.');
+            }
+            if ($host === 'drive.google.com' && $officialLanding) {
+                $data['source_url'] = $data['source_landing_url'];
+            } elseif (! (str_ends_with($host, '.gov.in') || str_ends_with($host, '.nic.in'))) {
                 throw new \RuntimeException('An official government source URL is required.');
             }
             if (! empty($data['pc_source_url'])) {

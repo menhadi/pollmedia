@@ -21,7 +21,7 @@ class PilibhitTest extends TestCase
     public function test_district_and_pc_do_not_share_demographic_totals(): void
     {
         $this->get('/india/district/pilibhit')->assertOk()->assertSee('2,031,007')->assertSee('362,573')->assertSee('Citizen participation');
-        $this->get('/india/pc/pilibhit')->assertOk()->assertDontSee('2,031,007')->assertSee('Jitin Prasada')->assertSee('Wikipedia')->assertSee('Constituency development totals have not been validated');
+        $this->get('/india/pc/pilibhit')->assertOk()->assertDontSee('2,031,007')->assertSee('Jitin Prasada')->assertDontSee('wikipedia.org')->assertSee('sansad.in')->assertSee('Constituency development totals have not been validated');
     }
 
     public function test_seed_is_idempotent_and_sir_is_filtered(): void
