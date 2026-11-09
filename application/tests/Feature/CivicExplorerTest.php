@@ -87,6 +87,12 @@ class CivicExplorerTest extends TestCase
             ->assertViewIs('national-census')->assertSee('All India Census')->assertSee('Population by Census year')
             ->assertSee('State Alpha')->assertSee('Population records')->assertDontSee(route('census.national-history'), false);
         $this->assertFalse($page->headers->has('X-Robots-Tag'));
+        DB::table('census_catalogue_rows')->where('id', $ids['STATE'])->update(['name' => 'Uttar Pradesh']);
+        $this->get('/india/census/explore?census_year=1901&census_area=09')->assertOk()
+            ->assertViewHas('stateLinks', fn ($links) => $links['09']['state'] === 'uttar-pradesh' && $links['09']['census'] === null);
+        $this->get('/india/census/explore?census_year=2011&census_area=00')->assertOk()
+            ->assertViewHas('stateLinks', fn ($links) => $links === []);
+
         $this->get('/india/census/explore?census_year=2011&census_topic=households')->assertOk()
             ->assertViewIs('national-census')->assertViewHas('censusTopic', 'households');
         $this->get('/india/census/explore?census_year=1901&census_topic=households')->assertOk()

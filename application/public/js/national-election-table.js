@@ -12,6 +12,8 @@
     }
     async function update(url, focusName, scroll = false) {
         const job = start();
+        const mapEdition = new URL(location.href).searchParams.get('map_edition');
+        if (mapEdition) url.searchParams.set('map_edition', mapEdition);
         const request = new URL(url);
         request.searchParams.set('panel', '1');
         try {
@@ -24,7 +26,7 @@
             history.pushState(null, '', url);
             activeSearch = location.search;
             replacement.querySelector('[name="' + focusName + '"]')?.focus({preventScroll: true});
-            if (scroll) (replacement.querySelector('.candidate-breakdown') || replacement).scrollIntoView({block: 'start'});
+            if (scroll) replacement.scrollIntoView({block: 'start'});
         } catch (error) {
             if (!job.signal.aborted) location.assign(url);
         } finally {
@@ -53,7 +55,21 @@
         update(filterUrl(form), field.name);
     });
     root.addEventListener('submit', event => {
-        if (!event.target.matches('[data-record-filters]')) return;
+        const form = event.target;
+        if (form.matches('[data-map-edition-form]')) {
+            event.preventDefault();
+            const url = new URL(location.href);
+            url.searchParams.set('map_edition', form.elements.map_edition.value);
+            url.hash = 'national-lok-sabha-map';
+            location.assign(url);
+            return;
+        }
+        if (form.matches('[data-by-year-form]')) {
+            event.preventDefault();
+            update(filterUrl(form), 'year', true);
+            return;
+        }
+        if (!form.matches('[data-record-filters]')) return;
         event.preventDefault();
         update(filterUrl(event.target), 'q');
     });
@@ -64,7 +80,6 @@
         event.preventDefault();
         if (link.hasAttribute('data-record-link')) return update(new URL(link.href), 'seat', true);
         if (section().getAttribute('aria-busy') === 'true') return;
-        // Fetch the next panel so selected-seat breakdowns are appended with their rows.
         const job = start();
         const url = new URL(link.href);
         url.searchParams.set('panel','1');
@@ -74,7 +89,6 @@
             const next = new DOMParser().parseFromString(await response.text(),'text/html').getElementById('national-records');
             if (!next || job !== pending) return;
             section().querySelector('.records-table tbody').append(...next.querySelector('.records-table tbody').rows);
-            section().append(...next.querySelectorAll('.candidate-breakdown'));
             const status = section().querySelector('[data-national-status]');
             status.textContent = next.querySelector('[data-national-status]').textContent.replace(/^[\d,]+–/, Number(section().dataset.first).toLocaleString()+'–');
             const more = next.querySelector('[data-national-more]');

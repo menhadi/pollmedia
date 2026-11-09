@@ -7,6 +7,7 @@
 <section id="national-records" class="hub-records" data-first="{{ $first }}" aria-labelledby="results-heading">
 <div class="records-heading"><h2 id="results-heading">{{ $tr('Constituency records','निर्वाचन क्षेत्र रिकॉर्ड') }}</h2><span data-count>{{ number_format($total) }} {{ $tr($total===1?'constituency record':'constituency records','निर्वाचन क्षेत्र रिकॉर्ड') }}</span></div>
 <form class="records-filters" method="get" action="{{ route('elections.all-india') }}#national-records" data-record-filters>
+@if(filled($filters['map_edition']??null))<input type="hidden" name="map_edition" value="{{ $filters['map_edition'] }}">@endif
 @if($hi)<input type="hidden" name="lang" value="hi">@endif
 <label>{{ $tr('Year','वर्ष') }}<select name="year"><option value="">{{ $tr('All years','सभी वर्ष') }}</option>@foreach($years as $y)<option value="{{ $y }}" @selected(isset($filters['year']) && (int)$filters['year']===$y)>{{ $y ?: $tr('Year unreported','वर्ष अनुपलब्ध') }}</option>@endforeach</select></label>
 <label>{{ $tr('Election type','चुनाव प्रकार') }}<select name="type"><option value="">{{ $tr('All elections','सभी चुनाव') }}</option>@foreach($labels as $key=>$label)@if($types->contains($key))<option value="{{ $key }}" @selected(($filters['type']??null)===$key)>{{ $label }}</option>@endif
@@ -28,14 +29,4 @@
 <span role="status" data-national-status>{{ $rows->isEmpty()?'0':number_format($first).'–'.number_format($last) }} / {{ number_format($total) }}</span>
 @if($nextUrl)<a data-national-more href="{{ $nextUrl }}#national-records">{{ $tr('Load more','और दिखाएँ') }}</a>@endif
 </nav>
-@if(isset($filters['seat']))
-@foreach($rows as $row)
-@if(!empty($row['candidate_rows']))
-<details class="candidate-breakdown" @if($rows->count()===1) open @endif><summary>{{ $row['name'] }} · {{ $row['year'] ?: '—' }} · {{ $tr('Candidates','उम्मीदवार') }}</summary>
-<div class="national-scroll" tabindex="0"><table><thead><tr><th>{{ $tr('Candidate','उम्मीदवार') }}</th><th>{{ $tr('Party','दल') }}</th><th>{{ $tr('Recorded votes','दर्ज मत') }}</th></tr></thead><tbody>
-@foreach($row['candidate_rows'] as $candidate)<tr><th scope="row">{{ $candidate['name'] ?? '—' }}</th><td>{{ $candidate['party'] ?? '—' }}</td><td>{{ is_numeric($candidate['votes']??null)?number_format($candidate['votes']):'—' }}</td></tr>@endforeach
-</tbody></table></div></details>
-@endif
-@endforeach
-@endif
 </section>

@@ -218,11 +218,29 @@ class CivicExplorerController extends Controller
             $topicFields = array_filter($topicFields, fn ($keys) => $abstract->contains(fn ($values) => isset($values[$keys[0]])));
             $censusTopic = isset($topicFields[$choices['census_topic'] ?? '']) ? $choices['census_topic'] : 'population';
 
+            $navigation = app(CensusPlaceNavigation::class);
+            $profileYears = array_unique([$censusYear, 2011]);
+            $profiles = [];
+            foreach ($profileYears as $profileYear) {
+                foreach ($navigation->stateDirectory($profileYear) as $slug => $record) {
+                    $identity = $record->state_code.':'.$slug;
+                    $profiles[$identity] ??= ['state' => PlaceFactTables::stateSlug($record->name), 'census' => $profileYear === 2011 ? null : $profileYear];
+                }
+            }
+            $stateLinks = [];
+            foreach ($populationRows as $area) {
+                $slug = PlaceFactTables::stateSlug($area['name']);
+                $identity = $area['state_code'].':'.$slug;
+                if ($area['state_code'] !== '00' && isset($profiles[$identity])) {
+                    $stateLinks[$area['state_code']] = $profiles[$identity];
+                }
+            }
+
             return view('national-census', [
                 'year' => $year, 'stateOptions' => $stateOptions, 'nationalSeries' => $summary->series(),
                 'censusYears' => $censusYears, 'censusYear' => $censusYear, 'areas' => $areas,
                 'abstract' => $abstract, 'topicFields' => $topicFields, 'censusTopic' => $censusTopic,
-                'censusArea' => $censusArea, 'populationRows' => $populationRows, 'boundaryBasis' => $data['source']['boundary_basis'] ?? null,
+                'stateLinks' => $stateLinks, 'censusArea' => $censusArea, 'populationRows' => $populationRows, 'boundaryBasis' => $data['source']['boundary_basis'] ?? null,
             ]);
         }
 

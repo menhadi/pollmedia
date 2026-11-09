@@ -205,6 +205,8 @@ class StateElectionSectionsTest extends TestCase
 
             return array_map(fn ($a) => $a->getAttribute('href'), iterator_to_array($doc->querySelectorAll('tbody th a')));
         };
+        $first->assertSeeInOrder(['id="national-records"', 'id="national-lok-sabha-map"', 'id="national-by-elections"', 'id="election-states"'], false);
+        $this->assertStringContainsString('/test/pc/', $links($first->getContent())[0]);
         $seen = $links($first->getContent());
         $this->assertCount(20, $seen);
         foreach ([2 => 20, 3 => 5] as $page => $expected) {
@@ -223,6 +225,6 @@ class StateElectionSectionsTest extends TestCase
         $this->assertSame(['All elections', 'By-election'], $choices('type'));
         $this->assertSame(['All constituencies', 'Special seat'], $choices('seat'));
         $this->assertNull($doc->querySelector('thead th:nth-child(8)'));
-        $this->get($url.'?year=0&type=by&state=Gujarat&seat=Special%20seat')->assertOk()->assertSee('Unconfirmed candidate')->assertSee('Recorded votes');
+        $this->get($url.'?year=0&type=by&state=Gujarat&seat=Special%20seat')->assertOk()->assertDontSee('Unconfirmed candidate')->assertDontSee('candidate-breakdown')->assertSee(route('elections.by-election-results', ['year' => 0, 'record' => str_repeat('c', 24)]));
     }
 }

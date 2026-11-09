@@ -55,7 +55,9 @@
 @endif
 </tr></thead><tbody>
 @forelse($populationRows as $area)
-<tr><th scope="row">{{ $area['state_code']==='00'?$tr('All India','अखिल भारत'):$area['name'] }}</th>
+<tr><th scope="row">@if(isset($stateLinks[$area['state_code']]))
+<a href="{{ route('civic.state',$stateLinks[$area['state_code']]+$lang) }}">{{ $area['name'] }}</a>
+@else{{ $area['state_code']==='00'?$tr('All India','अखिल भारत'):$area['name'] }}@endif</th>
 @if($censusTopic==='population')
 @foreach(['persons','males','females'] as $key)<td>{{ is_numeric($area[$key]??null)?number_format($area[$key]):'—' }}</td>@endforeach
 <td>{{ is_numeric(trim($area['percentage']??''))?number_format((float)$area['percentage'],2).'%':'—' }}</td>
