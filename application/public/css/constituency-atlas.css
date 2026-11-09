@@ -133,3 +133,5 @@ html body.seat-atlas-page .seat-atlas .atlas-search-field input:is(:focus,:focus
 .seat-by-history nav{display:flex;flex-wrap:wrap;gap:.55rem}.seat-by-history nav a{display:inline-flex;gap:.5rem;align-items:center;flex-wrap:wrap;color:#205761;padding:.55rem .7rem;border:1px solid #c9d9da;border-radius:.35rem;text-decoration:none}
 .seat-by-history nav a:is(:hover,:focus-visible),.seat-by-history nav a[aria-current=page]{background:#edf4f2;border-color:#65908f}
 .seat-by-notes{margin:.75rem 0 0}.seat-by-notes summary{cursor:pointer}
+
+.seat-atlas .seat-by-result .atlas-table-scroll{display:block;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain}
