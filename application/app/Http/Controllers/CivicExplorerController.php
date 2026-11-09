@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class CivicExplorerController extends Controller
@@ -187,11 +188,41 @@ class CivicExplorerController extends Controller
                     return $option;
                 })->sortBy('display_name')->values();
         }
-        if (! $record && $request->routeIs('civic.index') && ! PublicPageCanonical::contentParameters($request)) {
+        $nationalParameters = array_diff(PublicPageCanonical::contentParameters($request), ['census_year', 'census_area', 'census_topic']);
+        if (! $record && $request->routeIs('civic.index') && ! $nationalParameters) {
+            $summary = app(CensusProfileSummary::class);
+            $data = $summary->decadalSource();
+            $areaRows = collect($data['records'])->where('district_code', '000');
+            $censusYears = $areaRows->pluck('year')->unique()->sortDesc()->values();
+            $choices = $request->validate([
+                'census_year' => ['nullable', 'integer', Rule::in($censusYears->all())],
+                'census_area' => ['nullable', 'string', 'max:8'],
+                'census_topic' => ['nullable', 'in:population,households,literacy,work'],
+            ]);
+            $censusYear = (int) ($choices['census_year'] ?? $censusYears->first());
+            $areas = $areaRows->where('year', $censusYear)->sortBy('state_code')->values();
+            $censusArea = $choices['census_area'] ?? null;
+            $populationRows = $censusArea === null ? $areas : $areas->whereStrict('state_code', $censusArea)->values();
+
+            $abstract = DB::table('census_catalogue_rows as c')->join('census_editions as e', 'e.id', '=', 'c.edition_id')
+                ->where('e.status', 'published')->where('e.source_key', 'india-basic-'.$censusYear.'-total')
+                ->where('e.year', $censusYear)->where('c.residence', 'Total')->whereIn('c.level', ['INDIA', 'STATE'])
+                ->when($censusArea !== null, fn ($q) => $q->where('c.state_code', $censusArea))
+                ->get(['c.state_code', 'c.values'])->groupBy('state_code')
+                ->filter(fn ($rows) => $rows->count() === 1)
+                ->map(fn ($rows) => json_decode($rows->first()->values, true, flags: JSON_THROW_ON_ERROR));
+            $topicFields = [
+                'households' => ['No_HH'], 'literacy' => ['P_LIT', 'M_LIT', 'F_LIT'],
+                'work' => ['TOT_WORK_P', 'MAINWORK_P', 'MARGWORK_P'],
+            ];
+            $topicFields = array_filter($topicFields, fn ($keys) => $abstract->contains(fn ($values) => isset($values[$keys[0]])));
+            $censusTopic = isset($topicFields[$choices['census_topic'] ?? '']) ? $choices['census_topic'] : 'population';
+
             return view('national-census', [
-                'year' => $year,
-                'stateOptions' => $stateOptions,
-                'nationalSeries' => app(CensusProfileSummary::class)->series(),
+                'year' => $year, 'stateOptions' => $stateOptions, 'nationalSeries' => $summary->series(),
+                'censusYears' => $censusYears, 'censusYear' => $censusYear, 'areas' => $areas,
+                'abstract' => $abstract, 'topicFields' => $topicFields, 'censusTopic' => $censusTopic,
+                'censusArea' => $censusArea, 'populationRows' => $populationRows, 'boundaryBasis' => $data['source']['boundary_basis'] ?? null,
             ]);
         }
 

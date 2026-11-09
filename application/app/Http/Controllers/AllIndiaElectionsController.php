@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AllIndiaElectionsController extends Controller
 {
@@ -16,18 +17,20 @@ class AllIndiaElectionsController extends Controller
         return redirect()->route('elections.all-india', $request->query(), 301);
     }
 
-    public function __invoke(Request $request, AllIndiaElectionTable $table): View|JsonResponse
+    public function __invoke(Request $request, AllIndiaElectionTable $table): View|JsonResponse|Response
     {
         $filters = $request->validate([
             'type' => 'nullable|in:pc,ac,by',
             'year' => 'nullable|integer|min:0|max:9999',
             'state' => 'nullable|string|max:120',
             'q' => 'nullable|string|max:120',
+            'seat' => 'nullable|string|max:200',
+            'panel' => 'nullable|in:1',
             'rows_only' => 'nullable|in:1',
             'page' => 'nullable|integer|min:1|max:100000',
         ]);
 
-        unset($filters['rows_only']);
+        unset($filters['rows_only'], $filters['panel']);
         $data = $table->page($filters);
         $page = $data['current'];
         $link = fn ($n) => route('elections.all-india', array_merge($filters, ['page' => $n, 'lang' => app()->getLocale() === 'hi' ? 'hi' : null]));
@@ -42,8 +45,11 @@ class AllIndiaElectionsController extends Controller
             ]);
         }
 
-        $data['isOverview'] = $page === 1 && ! collect($filters)->except('page')->contains(fn ($value) => $value !== null && $value !== '');
-        $data['stateDirectory'] = $data['isOverview'] ? app(ElectionGeographySummary::class)->states() : collect();
+        if ($request->boolean('panel')) {
+            return response()->view('national-election-records', $data)->header('X-Robots-Tag', 'noindex, follow');
+        }
+
+        $data['stateDirectory'] = app(ElectionGeographySummary::class)->states();
 
         return view('all-india-elections', $data);
     }

@@ -81,11 +81,20 @@ class CivicExplorerTest extends TestCase
 
     public function test_national_census_dashboard_and_filtered_explorer_have_distinct_navigation(): void
     {
-        $this->fixture();
+        $ids = $this->fixture();
+        DB::table('census_catalogue_rows')->where('id', $ids['STATE'])->update(['values' => json_encode(['TOT_P' => 0, 'No_HH' => 0])]);
         $page = $this->get('/india/census/explore?utm_source=directory')->assertOk()
             ->assertViewIs('national-census')->assertSee('All India Census')->assertSee('Population by Census year')
-            ->assertSee('State Alpha')->assertSee(route('census.national-history'), false);
+            ->assertSee('State Alpha')->assertSee('Population records')->assertDontSee(route('census.national-history'), false);
         $this->assertFalse($page->headers->has('X-Robots-Tag'));
+        $this->get('/india/census/explore?census_year=2011&census_topic=households')->assertOk()
+            ->assertViewIs('national-census')->assertViewHas('censusTopic', 'households');
+        $this->get('/india/census/explore?census_year=1901&census_topic=households')->assertOk()
+            ->assertViewHas('censusTopic', 'population');
+        $this->get('/india/census/explore?census_year=2001&census_area=00')->assertOk()->assertViewIs('national-census')
+            ->assertViewHas('populationRows', fn ($rows) => $rows->count() === 1 && $rows->first()['year'] === 2001 && $rows->first()['state_code'] === '00')
+            ->assertSee('Historical records &amp; disclaimer', false);
+
         $this->get('/india/census/explore?year=2011&group=population')->assertOk()
             ->assertViewIs('civic-explorer')->assertHeader('X-Robots-Tag', 'noindex, follow');
     }

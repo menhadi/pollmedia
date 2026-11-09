@@ -7,9 +7,16 @@ use Illuminate\Support\Str;
 
 class CensusProfileSummary
 {
+    private ?array $decadal = null;
+
+    public function decadalSource(): array
+    {
+        return $this->decadal ??= json_decode(file_get_contents(database_path('fixtures/census-india-decadal.json')), true, flags: JSON_THROW_ON_ERROR);
+    }
+
     public function series(?object $place = null, array $records = [], int $year = 2011): array
     {
-        $source = json_decode(file_get_contents(database_path('fixtures/census-india-decadal.json')), true, flags: JSON_THROW_ON_ERROR);
+        $source = $this->decadalSource();
         $points = [];
         $historySource = null;
         if ($place === null || ($year === 2011 && in_array($place->level, ['STATE', 'DISTRICT'], true) && (empty($records) || $records[0]->residence === 'Total'))) {
