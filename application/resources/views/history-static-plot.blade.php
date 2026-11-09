@@ -32,19 +32,25 @@ $y=fn($value)=>240-$value/$scale*220;
 @endforeach
 @foreach($plot['series'] as $series)
 @php
-$color=$colors[$loop->index % count($colors)]; $path='';$area='';$previous=null;$start=null;
-foreach($plotRows as $point){
+$color=$colors[$loop->index % count($colors)]; $path='';$area='';$previous=null;$start=null; $isolated=[];
+foreach($plotRows as $position=>$point){
     $value=$point[$series['key']];
     if($value===null){if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}$previous=null;continue;}
     $xx=$x($point['year']);$yy=($series['axis']??null)==='right'?240-($value-$rightMin)/max(1,$rightMax-$rightMin)*220:$y($value);
     if($previous!==null){$path.='L'.$xx.','.$yy.' ';$area.='L'.$xx.','.$yy.' ';}
     else{$path.='M'.$xx.','.$yy.' ';$area.='M'.$xx.','.$yy.' ';$start=$xx;}
+    if($previous===null && ($plotRows->get($position+1)[$series['key']]??null)===null){
+        $isolated[]=[$xx,$yy];
+    }
     $previous=[$xx,$yy];
 }
 if($previous!==null){$area.='L'.$previous[0].',240 L'.$start.',240 Z ';}
 @endphp
 @if(($series['axis']??null)!=='right')<path d="{{ $area }}" fill="{{ $color }}" fill-opacity="0.09" stroke="none"/>@endif
 <path d="{{ $path }}" fill="none" stroke="{{ $color }}" stroke-width="2.5" @if($series['key']==='others_share') stroke-dasharray="6 4" @endif/>
+@foreach($isolated as [$cx,$cy])
+<circle class="history-single-point" cx="{{ $cx }}" cy="{{ $cy }}" r="5" fill="{{ $color }}" stroke="#fff" stroke-width="2"/>
+@endforeach
 @endforeach
 </svg>
 @else<p>No usable figures are available for this chart.</p>@endif

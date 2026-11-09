@@ -28,6 +28,7 @@ $plotRows=$chartRows->map(function($point)use($fixedParties){
  unset($point['parties']);
  return $point;
 });
+$missingStatePartyYears=$isStateHistory?$plotRows->whereNull('party0_share')->pluck('year')->implode(', '):'';
 $plots=[
  ['title'=>'Top three parties across the years','unit'=>'%','series'=>array_map(fn($party,$i)=>['key'=>'fixed'.$i.'_share','votes_key'=>'fixed'.$i,'label'=>$party],$fixedParties,array_keys($fixedParties))],
  ['title'=>'Party vote shares by year','unit'=>'%','series'=>[['key'=>'party0_share','votes_key'=>'party0','name_key'=>'party0_name','label'=>'1st party'],['key'=>'party1_share','votes_key'=>'party1','name_key'=>'party1_name','label'=>'2nd party'],['key'=>'others_share','votes_key'=>'others','label'=>'Others']]],
@@ -62,6 +63,9 @@ $plots=[
 <p class="small">These three party labels are selected by total recorded votes across all available years and stay fixed when you change the year range. Independents and NOTA are excluded from selection.</p>
 @elseif($loop->index===1)
 <p class="small">The two leading parties are ranked separately each year. Independents and any recorded NOTA votes are included in Others, so an independent winner appears there. These lines rank parties, not candidates. A zero labelled “No qualifying party” means that rank is absent from the available party results; missing results remain gaps.</p>
+@endif
+@if($loop->index<2 && $missingStatePartyYears!=='')
+<p class="small coverage-note">{{ app()->getLocale()==='hi'?'इन वर्षों के लिए तुलनीय दलवार मत प्रतिशत उपलब्ध नहीं है':'Comparable party vote shares are unavailable for' }} {{ $missingStatePartyYears }}.</p>
 @endif
 @if(count($plot['series']) === 0)
 <p class="small history-empty-state" role="status">No eligible party series is available for this chart. Independents and NOTA are excluded from selection; unavailable results remain blank.</p>

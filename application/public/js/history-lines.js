@@ -72,7 +72,7 @@
                     svg.append(element('text',{x:x(row.year),y:bottom+24,'text-anchor':'middle'},String(row.year)));
                 }
             });
-            const highlighted = rows.findIndex(row => String(row.year) === chart.dataset.selectedYear);
+            const highlighted = rows.findIndex(row => String(row.year) === chart.dataset?.selectedYear);
             if (highlighted >= 0) {
                 const xx = x(rows[highlighted].year);
                 svg.append(element('line', {x1:xx,x2:xx,y1:top,y2:bottom,stroke:'currentColor','stroke-dasharray':'2 4',opacity:.55}));
@@ -92,11 +92,15 @@
                 closeArea();
                 if (item.axis !== 'right') svg.append(element('path',{d:area,fill:color,'fill-opacity':0.09,stroke:'none','pointer-events':'none'}));
                 svg.append(element('path',{d:path,fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':(item.dashed ?? (item.axis==='right'||item.key==='others_share'||index>=colors.length))?'6 4':'none'}));
-                const availableRows = rows.filter(row => Number.isFinite(row[item.key]));
-                if (availableRows.length === 1) {
-                    const point = availableRows[0];
-                    svg.append(element('circle',{cx:x(point.year),cy:y(point[item.key], item),r:5,fill:color,stroke:'#fff','stroke-width':2,'pointer-events':'none',class:'history-single-point'}));
-                }
+                rows.forEach((row, position) => {
+                    if (!Number.isFinite(row[item.key])) return;
+                    const hasNeighbour = Number.isFinite(rows[position - 1]?.[item.key])
+                        || Number.isFinite(rows[position + 1]?.[item.key]);
+                    if (!hasNeighbour) {
+                        svg.append(element('circle', {cx:x(row.year), cy:y(row[item.key], item), r:5,
+                            fill:color, stroke:'#fff', 'stroke-width':2, 'pointer-events':'none', class:'history-single-point'}));
+                    }
+                });
                 if (data.singleValueBar && rows.length === 1 && Number.isFinite(rows[0][item.key])) {
                     const value=rows[0][item.key], baseline=y(0, item), yy=y(value, item);
                     svg.append(element('rect',{x:x(rows[0].year)-18+index*8,y:Math.min(yy,baseline),width:24,height:Math.max(2,Math.abs(baseline-yy)),fill:color,'fill-opacity':0.7,class:'history-single-value'}));
