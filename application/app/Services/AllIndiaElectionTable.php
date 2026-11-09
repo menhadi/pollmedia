@@ -21,9 +21,11 @@ class AllIndiaElectionTable
         $year = $filters['year'] ?? null;
         $state = $filters['state'] ?? null;
         $name = mb_strtolower(trim($filters['q'] ?? ''));
-        $base = DB::table('historical_constituency_index')->where(function ($editions) {
-            foreach (['pc', 'ac'] as $kind) {
-                $ids = array_column($this->archive->editions($kind), 'id');
+        $mapEditions = $this->archive->editions('pc');
+        $assemblyEditions = $this->archive->editions('ac');
+        $base = DB::table('historical_constituency_index')->where(function ($editions) use ($mapEditions, $assemblyEditions) {
+            foreach (['pc' => $mapEditions, 'ac' => $assemblyEditions] as $kind => $entries) {
+                $ids = array_column($entries, 'id');
                 $editions->orWhere(fn ($group) => $group->where('kind', $kind)->whereIn('edition_id', $ids));
             }
         });
@@ -76,12 +78,12 @@ class AllIndiaElectionTable
                 continue;
             }
             if ($kind === 'by') {
-                $items = $by->slice($start[$kind], $limit)->map(fn ($r) => $this->byElectionRow($r, $seat !== null))->values()->all();
+                $items = $by->slice($start[$kind], $limit)->map(fn ($r) => $this->byElectionRow($r))->values()->all();
             } else {
                 $entries = (clone $general)->where('kind', $kind)->orderByDesc('year')
                     ->orderBy('state_label')->orderBy('constituency_name')->orderBy('edition_id')->orderBy('record_code')
                     ->offset($start[$kind])->limit($limit)->get();
-                $details = collect($this->results->indexedRecords($kind, $entries, $seat !== null))->keyBy('id');
+                $details = collect($this->results->indexedRecords($kind, $entries))->keyBy('id');
                 $items = $entries->map(function ($entry) use ($details) {
                     $row = $details[$entry->edition_id.':'.$entry->record_code];
 
@@ -95,7 +97,7 @@ class AllIndiaElectionTable
         $rows = collect($rows)->sortBy([['position', 'asc'], ['order', 'asc']])->values();
         $hasMore = $current * self::PAGE_SIZE < $total;
 
-        return compact('annual', 'seats', 'types', 'states', 'years', 'nationalCounts', 'counts', 'rows', 'filters', 'current', 'total', 'hasMore');
+        return compact('mapEditions', 'annual', 'seats', 'types', 'states', 'years', 'nationalCounts', 'counts', 'rows', 'filters', 'current', 'total', 'hasMore');
     }
 
     /** Number of records consumed from each stream after interleaving its first $length records. */
@@ -123,17 +125,14 @@ class AllIndiaElectionTable
         return $offsets;
     }
 
-    private function byElectionRow(array $entry, bool $withCandidates): array
+    private function byElectionRow(array $entry): array
     {
         $record = $this->byElections->record($entry);
         $declared = collect($record['candidates'] ?? [])->where('role', 'reported_winner');
         $winner = $declared->count() === 1 ? $declared->first() : null;
 
         return [
-            'id' => $entry['id'], 'candidate_rows' => $withCandidates ? collect($record['candidates'] ?? [])->map(fn ($candidate) => [
-                'name' => $candidate['name'] ?? null, 'party' => $candidate['party'] ?? null, 'votes' => $candidate['votes'] ?? null,
-            ])->all() : [],
-            'type' => 'by', 'kind' => $entry['kind'], 'year' => $entry['year'],
+            'id' => $entry['id'], 'type' => 'by', 'kind' => $entry['kind'], 'year' => $entry['year'],
             'state' => $entry['state'], 'name' => $entry['constituency'], 'edition' => $entry['period'] ?? null,
             'winner' => $winner['name'] ?? null, 'party' => $winner['party'] ?? null,
             'candidates' => $entry['candidate_count'] ?? null, 'status' => $entry['status'],

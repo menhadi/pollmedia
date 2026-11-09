@@ -16,6 +16,26 @@
 <nav class="hub-crumb" aria-label="Breadcrumb"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a> › {{ $tr('Elections','चुनाव') }}</nav>
 @include('national-election-overview')
 @include('national-election-records')
+@if($mapEdition)
+<section id="national-lok-sabha-map" class="hub-panel national-map-panel" aria-labelledby="national-map-title">
+<div class="hub-panel-title"><h2 id="national-map-title">{{ $tr('Lok Sabha constituency map','लोक सभा निर्वाचन क्षेत्र मानचित्र') }}</h2>
+<form method="get" action="{{ route('elections.all-india') }}#national-lok-sabha-map" class="hub-jump-form" data-map-edition-form>
+@foreach(array_filter(array_merge($filters,$lang),fn($value,$key)=>$key!=='map_edition' && $value!==null && $value!=='',ARRAY_FILTER_USE_BOTH) as $key=>$value)<input type="hidden" name="{{ $key }}" value="{{ $value }}">@endforeach
+<label>{{ $tr('Election year','चुनाव वर्ष') }}<select name="map_edition">@foreach($mapEditions as $entry)<option value="{{ $entry['id'] }}" @selected($entry['id']===$mapEdition['id'])>{{ $entry['label']??$entry['year']??'—' }}</option>@endforeach</select></label><button type="submit">{{ $tr('Show map','मानचित्र देखें') }}</button>
+</form></div>
+@include('election-map',['mapKind'=>'pc','mapStateName'=>'','mapEdition'=>$mapEdition['id'],'mapYear'=>$mapEdition['year']??null])
+</section>
+@endif
+@php($byYears=$annual->filter(fn($counts)=>($counts['by']??0)>0))
+<section id="national-by-elections" class="hub-panel national-by-panel" aria-labelledby="national-by-title">
+<div class="hub-panel-title"><h2 id="national-by-title">{{ $tr('By-elections','उपचुनाव') }}</h2><span>{{ number_format($nationalCounts['by']??0) }} {{ $tr('records','रिकॉर्ड') }}</span></div>
+@if($byYears->isNotEmpty())
+<ul class="hub-by-years">@foreach($byYears->take(6) as $year=>$counts)<li><a data-record-link href="{{ route('elections.all-india',['year'=>$year,'type'=>'by']+$lang) }}#national-records"><strong>{{ $year ?: $tr('Year unreported','वर्ष अनुपलब्ध') }}</strong><span>{{ number_format($counts['by']) }} {{ $tr('records','रिकॉर्ड') }} <span aria-hidden="true">→</span></span></a></li>@endforeach</ul>
+<form method="get" action="{{ route('elections.all-india') }}#national-records" data-by-year-form class="hub-jump-form"><input type="hidden" name="type" value="by">
+@if($hi)<input type="hidden" name="lang" value="hi">@endif
+@if(isset($filters['map_edition']))<input type="hidden" name="map_edition" value="{{ $filters['map_edition'] }}">@endif
+<label>{{ $tr('By-election year','उपचुनाव वर्ष') }}<select name="year"><option value="">{{ $tr('All years','सभी वर्ष') }}</option>@foreach($byYears as $year=>$counts)<option value="{{ $year }}">{{ $year ?: $tr('Year unreported','वर्ष अनुपलब्ध') }}</option>@endforeach</select></label><button type="submit">{{ $tr('Show results','परिणाम देखें') }}</button></form>
+@endif</section>
 <section id="election-states" class="hub-panel visible-directory"><h2>{{ $tr('State election results','राज्य चुनाव परिणाम') }}</h2>
 @foreach(['State'=>$tr('States','राज्य'),'Union Territory'=>$tr('Union territories','केंद्र शासित प्रदेश')] as $group=>$caption)
 <h3>{{ $caption }}</h3><ul class="hub-places">@foreach($stateDirectory->where('kind',$group) as $area)<li><a href="{{ route('states.show',['state'=>$area['slug']]+$lang) }}">{{ $area['name'] }} <span aria-hidden="true">→</span></a></li>@endforeach</ul>

@@ -26,6 +26,7 @@ class AllIndiaElectionsController extends Controller
             'q' => 'nullable|string|max:120',
             'seat' => 'nullable|string|max:200',
             'panel' => 'nullable|in:1',
+            'map_edition' => 'nullable|regex:/^[a-f0-9]{24}$/',
             'rows_only' => 'nullable|in:1',
             'page' => 'nullable|integer|min:1|max:100000',
         ]);
@@ -49,6 +50,10 @@ class AllIndiaElectionsController extends Controller
             return response()->view('national-election-records', $data)->header('X-Robots-Tag', 'noindex, follow');
         }
 
+        $editions = collect($data['mapEditions']);
+        $requestedMap = $filters['map_edition'] ?? null;
+        $data['mapEdition'] = $requestedMap ? $editions->firstWhere('id', $requestedMap) : $editions->first();
+        abort_if($requestedMap && ! $data['mapEdition'], 404);
         $data['stateDirectory'] = app(ElectionGeographySummary::class)->states();
 
         return view('all-india-elections', $data);

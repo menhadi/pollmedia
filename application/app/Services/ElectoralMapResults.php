@@ -38,7 +38,7 @@ class ElectoralMapResults
         return $this->indexedRecords($kind, $rows);
     }
 
-    public function indexedRecords(string $kind, Collection $rows, bool $withCandidates = false): array
+    public function indexedRecords(string $kind, Collection $rows): array
     {
         $records = [];
         foreach ($rows->groupBy('edition_id') as $id => $entries) {
@@ -53,13 +53,6 @@ class ElectoralMapResults
                     'party' => $result['party'] ?? null, 'winner' => $result['winner'] ?? null,
                     'url' => ConstituencyUrls::url(['kind' => $kind, 'state' => $recordState,
                         'name' => $entry->constituency_name, 'edition' => $id, 'code' => $entry->record_code])];
-                if ($withCandidates) {
-                    $row['candidate_rows'] = collect($record['candidates'] ?? [])->map(fn ($candidate) => [
-                        'name' => $candidate['display_name'] ?? $candidate['candidate_name'] ?? null,
-                        'party' => $candidate['party_at_election'] ?? null,
-                        'votes' => ($result['uncontested'] ?? false) && ($candidate['votes'] ?? null) === 0 ? null : ($candidate['votes'] ?? null),
-                    ])->all();
-                }
                 $records[] = $row;
             }
         }
