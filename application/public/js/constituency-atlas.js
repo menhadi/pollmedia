@@ -16,7 +16,11 @@
     }
 
     const form = atlas.querySelector('[data-atlas-year]');
-    form.querySelector('select').addEventListener('change', () => form.requestSubmit());
+    form.querySelector('select').addEventListener('change', event => {
+        const url = event.target.selectedOptions[0]?.dataset.url;
+        if (url && new URL(url, location.href).origin === location.origin) location.assign(url);
+        else form.requestSubmit();
+    });
 
     for (const picker of atlas.querySelectorAll('[data-atlas-switch]')) {
         const select=picker.querySelector('select');

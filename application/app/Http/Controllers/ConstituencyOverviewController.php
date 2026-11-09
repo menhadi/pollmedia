@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ByElectionRecords;
 use App\Services\ConstituencyArchiveHistory;
+use App\Services\ConstituencyByElections;
 use App\Services\ConstituencyUrls;
 use App\Services\ElectionArchive;
 use App\Services\ElectionPlaceIdentity;
@@ -30,7 +32,10 @@ class ConstituencyOverviewController extends Controller
 
     public function index(Request $request, HistoricalElectionArchive $history, ElectionArchive $archives, HistoricalElectionReview $reviews, HistoricalElectionAnalytics $analytics): View|RedirectResponse
     {
-        $input = $request->validate(['format' => 'nullable|in:report', 'kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'code' => 'nullable|integer|min:1|max:999999']);
+        if ($request->routeIs('constituency.named') && is_string($request->query('edition')) && preg_match('/^by-([a-f0-9]{24})$/D', $request->query('edition'), $match)) {
+            return redirect()->to($request->url().'?'.http_build_query(['by_election' => $match[1]] + $request->only('lang')).'#by-election-result');
+        }
+        $input = $request->validate(['by_election' => 'nullable|regex:/^[a-f0-9]{24}$/', 'format' => 'nullable|in:report', 'kind' => 'required|in:pc,ac', 'state' => 'required|string|max:100', 'name' => 'required|string|max:160', 'edition' => 'nullable|regex:/^[a-f0-9]{24}$/', 'code' => 'nullable|integer|min:1|max:999999']);
         $kind = $input['kind'];
         $state = ElectionPlaceIdentity::state($input['state']);
         $name = $input['name'];
@@ -64,6 +69,7 @@ class ConstituencyOverviewController extends Controller
         $ambiguousName = $entries->groupBy('edition_id')->contains(fn ($group): bool => $group->count() > 1);
         $exactSeatOnly = false;
         if ($ambiguousName) {
+            abort_if(isset($input['by_election']), 404);
             if (! isset($input['edition'], $input['code'])) {
                 return view('constituency-history-choices', compact('kind', 'state', 'name', 'entries'));
             }
@@ -183,7 +189,15 @@ class ConstituencyOverviewController extends Controller
 
         $directoryPeople = app(PublicOfficeDirectory::class)->forPlaces($placeIds->count() === 1 ? $placeIds->map(fn ($id): int => (int) $id)->all() : []);
 
-        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('directoryPeople', 'kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly', 'modernSeatScope', 'reportAlternatives', 'chartSourceRows', 'chartReport', 'reportAlternativeLabels', 'reportComparisonNote', 'selectedReportOmitsNota'));
+        $byElections = $exactSeatOnly ? collect() : app(ConstituencyByElections::class)->forSeat($kind, $state, $name);
+        $selectedByElection = null;
+        if (isset($input['by_election'])) {
+            $selectedEntry = $byElections->firstWhere('id', $input['by_election']);
+            abort_unless($selectedEntry && ! isset($input['edition']) && ! isset($input['format']), 404);
+            $selectedByElection = app(ByElectionRecords::class)->record($selectedEntry);
+        }
+
+        return view(($input['format'] ?? null) === 'report' ? 'constituency-history-report' : 'constituency-overview', compact('byElections', 'selectedByElection', 'directoryPeople', 'kind', 'state', 'name', 'rows', 'historyRows', 'chosen', 'latest', 'related', 'exactSeatOnly', 'modernSeatScope', 'reportAlternatives', 'chartSourceRows', 'chartReport', 'reportAlternativeLabels', 'reportComparisonNote', 'selectedReportOmitsNota'));
     }
 
     /** Exact inspected source records only; report alternatives are not deduplicated or merged. */

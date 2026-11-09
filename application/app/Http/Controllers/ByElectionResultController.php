@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Services\ByElectionRecords;
+use App\Services\ConstituencyByElections;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ByElectionResultController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
         $source = app(ByElectionRecords::class);
         $all = $source->index();
@@ -28,6 +31,14 @@ class ByElectionResultController extends Controller
             && (! isset($input['kind']) || $record['kind'] === $input['kind']))->values();
         $selected = isset($input['record']) ? $choices->firstWhere('id', $input['record']) : $choices->first();
         abort_if(isset($input['record']) && ! $selected, 404);
+        if (isset($input['record']) && ! isset($input['format'])) {
+            $url = app(ConstituencyByElections::class)->url($selected);
+            if ($url !== null) {
+                $path = Str::before($url, '#');
+
+                return redirect()->to($path.(app()->getLocale() === 'hi' ? '&lang=hi' : '').'#by-election-result', 301);
+            }
+        }
         $record = $selected ? $source->record($selected) : null;
 
         if (isset($input['format'])) {
