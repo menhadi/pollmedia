@@ -89,6 +89,17 @@ class ConstituencyArchiveHistory
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
+        // Jammu & Kashmir reports spell AC47 Bhaderwah as Bhadarwah in 1977-1987,
+        // and the 2024 edition lists the same seat as Bhadarwah under the new code 51.
+        if ($kind === 'ac' && in_array(mb_strtolower(trim($state ?? '')), ['jammu & kashmir', 'jammu and kashmir'], true)
+            && in_array(self::generalCategoryNames($name)[0], ['bhaderwah', 'bhaderwah (sc)'], true)) {
+            return [
+                ['names' => ['bhadarwah (sc)'], 'code' => 47, 'edition' => '80f75fa4725b7bd73f593912'],
+                ['names' => ['bhadarwah (sc)'], 'code' => 47, 'edition' => '2f28536c3658989c7519ffc4'],
+                ['names' => ['bhadarwah (sc)'], 'code' => 47, 'edition' => '0cdaa92b57575eaccc2d59c5'],
+                ['names' => ['bhadarwah'], 'code' => 51, 'edition' => '1e7b04dde5cfe815dbb49020'],
+            ];
+        }
         // ECI schedules (2014 p59, 2024 p112) name AC1 Yoksam-Tashiding BL;
         // the 2024 result uses Yuksom. The 2019 schedule p101 confirms that exact-year BL label too.
         if ($kind === 'ac' && mb_strtolower(trim($state ?? '')) === 'sikkim'
