@@ -151,7 +151,8 @@
         const scale=Math.min(336/width,226/height);
         const project=([x,y])=>[(360-width*scale)/2+(x-west)*cosine*scale,(250-height*scale)/2+(north-y)*scale];
         const pageFor = f => {
-            const row=acRows.find(row=>Number(row.code)===Number(f.properties.code) && normalize(row.name)===normalize(f.properties.name));
+            const name=normalize(f.properties.name);
+            const row=acRows.find(row=>normalize(row.name)===name) ?? acRows.find(row=>Number(row.code)===Number(f.properties.code));
             return row?.url;
         };
         const colours=window.constituencyMapColours(parts);
