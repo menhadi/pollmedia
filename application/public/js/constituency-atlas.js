@@ -103,20 +103,53 @@
         const inState = features.filter(f => normalize(f.properties.state) === normalize(map.dataset.state) && ['Polygon','MultiPolygon'].includes(f.geometry?.type) && !f.properties.geometry_warning);
         const matches = inState.filter(f => f.properties.kind === map.dataset.kind && normalize(f.properties.name) === normalize(map.dataset.selected));
         if (matches.length !== 1) return;
-        const seat = matches[0], pcCode = seat.properties.kind === 'pc' ? seat.properties.code : seat.properties.parent_pc_code;
-        const pc = pcCode == null ? null : inState.find(f => f.properties.kind === 'pc' && String(f.properties.code) === String(pcCode));
-        const children = pc ? inState.filter(f => f.properties.kind === 'ac' && String(f.properties.parent_pc_code) === String(pcCode)) : [];
+        const seat = matches[0];
+        const bboxOf = feature => {
+            let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;
+            for (const ring of ringList(feature.geometry)) for (const [x,y] of ring) {
+                west=Math.min(west,x);east=Math.max(east,x);south=Math.min(south,y);north=Math.max(north,y);
+            }
+            return [west,south,east,north];
+        };
+        const centreOf = feature => { const [west,south,east,north]=bboxOf(feature); return [(west+east)/2,(south+north)/2]; };
+        const holds = (outer,inner) => {
+            const [x,y]=centreOf(inner);
+            let inside=false;
+            for (const ring of ringList(outer.geometry)) {
+                for (let i=0,j=ring.length-1;i<ring.length;j=i++) {
+                    const [xi,yi]=ring[i],[xj,yj]=ring[j];
+                    if (((yi>y)!==(yj>y)) && (x<(xj-xi)*(y-yi)/(yj-yi)+xi)) inside=!inside;
+                }
+            }
+            return inside;
+        };
+        const areaOf = feature => { const [west,south,east,north]=bboxOf(feature); return (east-west)*(north-south); };
+        const acRows = JSON.parse(region.querySelector('[data-atlas-ac-pages]').textContent);
+        const pc = seat.properties.kind === 'pc'
+            ? seat
+            : (inState.filter(f => f.properties.kind === 'pc' && holds(f,seat)).sort((a,b)=>areaOf(a)-areaOf(b))[0]
+                ?? inState.find(f => f.properties.kind === 'pc' && String(f.properties.code) === String(seat.properties.parent_pc_code))
+                ?? null);
+        const acs = inState.filter(f => f.properties.kind === 'ac');
+        const children = [];
+        if (pc) {
+            for (const row of acRows) {
+                const name = normalize(row.name), candidates = acs.filter(f => normalize(f.properties.name) === name);
+                if (!candidates.length) continue;
+                const chosen = candidates.length === 1 ? candidates[0] : (candidates.find(f => holds(pc,f)) ?? candidates[0]);
+                if (!children.includes(chosen)) children.push(chosen);
+            }
+            if (!children.length) children.push(...acs.filter(f => holds(pc,f)));
+        }
         const parts = children.length ? children : [seat];
         const outlines = pc && children.length ? [...children,pc] : parts;
-        let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;
-        for (const f of outlines) for (const ring of ringList(f.geometry)) for (const [x,y] of ring) {
-            west=Math.min(west,x);east=Math.max(east,x);south=Math.min(south,y);north=Math.max(north,y);
-        }
+        const boxes = outlines.map(bboxOf);
+        const west = Math.min(...boxes.map(box=>box[0])), south = Math.min(...boxes.map(box=>box[1]));
+        const east = Math.max(...boxes.map(box=>box[2])), north = Math.max(...boxes.map(box=>box[3]));
         const cosine=Math.cos((south+north)*Math.PI/360),width=(east-west)*cosine,height=north-south;
         if (!(width>0 && height>0)) return;
         const scale=Math.min(336/width,226/height);
         const project=([x,y])=>[(360-width*scale)/2+(x-west)*cosine*scale,(250-height*scale)/2+(north-y)*scale];
-        const acRows=JSON.parse(region.querySelector('[data-atlas-ac-pages]').textContent);
         const pageFor = f => {
             const row=acRows.find(row=>Number(row.code)===Number(f.properties.code) && normalize(row.name)===normalize(f.properties.name));
             return row?.url;

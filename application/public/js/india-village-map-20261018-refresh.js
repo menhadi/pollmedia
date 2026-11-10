@@ -64,7 +64,21 @@ export function electoralName(value) {
 }
 
 export function electoralChildren(features, pc) {
-    return features.filter(feature => feature.properties.kind === 'ac' && electoralName(feature.properties.state) === electoralName(pc.properties.state) && String(feature.properties.parent_pc_code) === String(pc.properties.code));
+    const sameState=features.filter(feature=>feature.properties.kind==='ac'&&electoralName(feature.properties.state)===electoralName(pc.properties.state));
+    const byParent=sameState.filter(feature=>String(feature.properties.parent_pc_code)===String(pc.properties.code));
+    if(byParent.length&&byParent.every(feature=>geometryHoldsCentre(pc.geometry,feature.geometry)))return byParent;
+    const spatial=sameState.filter(feature=>geometryHoldsCentre(pc.geometry,feature.geometry));
+    return spatial.length?spatial:byParent;
+}
+
+function geometryRings(geometry){return geometry.type==='Polygon'?geometry.coordinates:geometry.coordinates.flat();}
+
+function geometryCentre(geometry){let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;for(const ring of geometryRings(geometry))for(const [x,y] of ring){west=Math.min(west,x);east=Math.max(east,x);south=Math.min(south,y);north=Math.max(north,y);}return [(west+east)/2,(south+north)/2];}
+
+function geometryHoldsCentre(outer,inner){
+    const [x,y]=geometryCentre(inner);let inside=false;
+    for(const ring of geometryRings(outer))for(let i=0,j=ring.length-1;i<ring.length;j=i++){const [xi,yi]=ring[i],[xj,yj]=ring[j];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))inside=!inside;}
+    return inside;
 }
 
 export function metricIndices(count, records, metric, min, max, missing, membership) {
