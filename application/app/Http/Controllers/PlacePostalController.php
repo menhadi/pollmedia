@@ -12,12 +12,13 @@ class PlacePostalController extends Controller
 {
     public function index(Request $request, PlacePostalCodes $postal): View
     {
-        $validated = $request->validate(['pin' => ['nullable', 'regex:/^[1-9][0-9]{5}$/D'], 'page' => ['nullable', 'integer', 'min:1', 'max:20000']]);
+        $validated = $request->validate(['pin' => ['nullable', 'regex:/^[1-9][0-9]{5}$/D'], 'page' => ['nullable', 'integer', 'min:1', 'max:20000'], 'q' => ['nullable', 'string', 'max:100']]);
         $pin = (string) ($validated['pin'] ?? '');
-        $results = $postal->search($pin, (int) ($validated['page'] ?? 1));
+        $query = trim((string) ($validated['q'] ?? ''));
+        $results = $postal->search($pin, (int) ($validated['page'] ?? 1), $query);
         $results['rows'] = app(PostalPlaceNavigation::class)->rows($results['rows']);
 
-        return view('postal-areas', compact('pin', 'results'));
+        return view('postal-areas', compact('pin', 'results', 'query'));
     }
 
     public function show(string $kind, string $code, PlacePostalCodes $postal): View

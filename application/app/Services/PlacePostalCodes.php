@@ -100,7 +100,7 @@ class PlacePostalCodes
         return $suggestions;
     }
 
-    public function search(string $pin, int $page = 1): array
+    public function search(string $pin, int $page = 1, string $query = ''): array
     {
         $empty = ['rows' => [], 'total' => 0, 'available' => false, 'page' => $page];
         if (! preg_match('/^[1-9][0-9]{5}$/D', $pin)) {
@@ -111,11 +111,20 @@ class PlacePostalCodes
             if (! $db) {
                 return $empty;
             }
-            $count = $db->prepare('SELECT count(*) FROM (SELECT kind,code FROM places WHERE pin=? GROUP BY kind,code)');
-            $count->execute([$pin]);
-            $statement = $db->prepare('SELECT kind,code,state,district,subdistrict,name,state_name,district_name,subdistrict_name FROM places WHERE pin=? GROUP BY kind,code ORDER BY kind,state_name,district_name,name,code LIMIT 50 OFFSET ?');
-            $statement->bindValue(1, $pin);
-            $statement->bindValue(2, (max(1, $page) - 1) * 50, PDO::PARAM_INT);
+            $query = trim($query);
+            $filter = $query === '' ? '' : ' AND lower(name) LIKE ?';
+            $bindings = [$pin];
+            if ($query !== '') {
+                $bindings[] = '%'.mb_strtolower($query).'%';
+            }
+            $count = $db->prepare('SELECT count(*) FROM (SELECT kind,code FROM places WHERE pin=?'.$filter.' GROUP BY kind,code)');
+            $count->execute($bindings);
+            $statement = $db->prepare('SELECT kind,code,state,district,subdistrict,name,state_name,district_name,subdistrict_name FROM places WHERE pin=?'.$filter.' GROUP BY kind,code ORDER BY kind,state_name,district_name,name,code LIMIT 50 OFFSET ?');
+            $index = 1;
+            foreach ($bindings as $binding) {
+                $statement->bindValue($index++, $binding);
+            }
+            $statement->bindValue($index, (max(1, $page) - 1) * 50, PDO::PARAM_INT);
             $statement->execute();
 
             return ['rows' => $statement->fetchAll(PDO::FETCH_ASSOC), 'total' => (int) $count->fetchColumn(), 'available' => true, 'page' => $page];

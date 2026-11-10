@@ -6,7 +6,7 @@
 @if($place['panchayat'])
 <tr><th scope="row">Gram panchayat</th><td><a href="{{ $place['panchayat']['url'] }}">{{ $place['panchayat']['name'] }}</a></td></tr>
 @endif
-@foreach(['subdistrict'=>'Taluka / Subdistrict','district'=>'District'] as $level=>$label)
+@foreach(['subdistrict'=>'Taluka / tehsil','district'=>'District'] as $level=>$label)
 <tr><th scope="row">{{ $label }}</th><td>
 @if(!empty($place['parent_links'][$level]))
 @foreach(collect($place['parent_links'][$level])->unique(fn ($parent) => mb_strtolower((string) $parent['name'])) as $parent)
