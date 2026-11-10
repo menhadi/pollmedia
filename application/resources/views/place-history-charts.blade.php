@@ -5,20 +5,12 @@ $isStateHistory=isset($stateHistory);
 $chartInputRows=$isStateHistory?collect($stateHistory)->map(fn($summary)=>['entry'=>(object)['year'=>$summary['year']],'summary'=>$summary]):($chartSourceRows??$rows);
 $chartRows=$chartInputRows->sortBy('entry.year')->values()->map(function($row){
  $summary=$row['summary']??($row['record']?app(\App\Services\HistoricalElectionAnalytics::class)->summarize([$row['record']]):[]);
- // Publish party shares when the official summary confirms the winner, runner-up and
- // valid-vote total and the candidate rows reconcile with it.
+ // Publish party shares from the candidate rows whenever they carry votes, including records
+ // still under review; those points keep the source-note marker.
  if(empty($summary['parties']??[]) && !empty($row['record'])){
-  $record=$row['record']; $totals=is_array($record['summary_totals']??null)?$record['summary_totals']:[];
-  $valid=$totals['valid_candidate_votes']??null; $result=is_array($record['summary_result']??null)?$record['summary_result']:null;
-  $candidates=collect($record['candidates']??[])->reject(fn($c)=>!empty($c['is_nota'])||strtoupper(trim((string)($c['party_at_election']??'')))==='NOTA'||!is_numeric($c['votes']??null))->sortByDesc(fn($c)=>(int)$c['votes'])->values();
-  $sum=$candidates->sum(fn($c)=>(int)$c['votes']);
-  if(is_numeric($valid)&&$valid>0&&$result&&$candidates->count()>1
-   && abs($sum-(int)$valid)<=max(1,(int)round($valid*0.005))
-   && (int)($result['winner_votes']??-1)===(int)($candidates[0]['votes']??-2)
-   && (int)($result['runner_votes']??-1)===(int)($candidates[1]['votes']??-3)
-   && strtoupper(trim((string)($result['winner_party']??'')))===strtoupper(trim((string)($candidates[0]['party_at_election']??'')))
-   && strtoupper(trim((string)($result['runner_party']??'')))===strtoupper(trim((string)($candidates[1]['party_at_election']??'')))){
-   $summary['parties']=$candidates->map(fn($c)=>['party'=>$c['party_at_election'],'votes'=>(int)$c['votes']])->all();
+  $candidates=collect($row['record']['candidates']??[])->reject(fn($c)=>!empty($c['is_nota'])||strtoupper(trim((string)($c['party_at_election']??'')))==='NOTA'||!is_numeric($c['votes']??null))->filter(fn($c)=>trim((string)($c['party_at_election']??''))!=='');
+  if($candidates->isNotEmpty()){
+   $summary['parties']=$candidates->map(fn($c)=>['party'=>trim((string)$c['party_at_election']),'votes'=>(int)$c['votes']])->all();
    $summary['party_review_count']=1;
   }
  }

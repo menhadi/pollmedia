@@ -89,16 +89,52 @@ class ConstituencyArchiveHistory
      */
     public static function historyAliasRules(string $kind, ?string $state, string $name): array
     {
-        // Jammu & Kashmir reports spell AC47 Bhaderwah as Bhadarwah in 1977-1987,
-        // and the 2024 edition lists the same seat as Bhadarwah under the new code 51.
-        if ($kind === 'ac' && in_array(mb_strtolower(trim($state ?? '')), ['jammu & kashmir', 'jammu and kashmir'], true)
-            && in_array(self::generalCategoryNames($name)[0], ['bhaderwah', 'bhaderwah (sc)'], true)) {
-            return [
-                ['names' => ['bhadarwah (sc)'], 'code' => 47, 'edition' => '80f75fa4725b7bd73f593912'],
-                ['names' => ['bhadarwah (sc)'], 'code' => 47, 'edition' => '2f28536c3658989c7519ffc4'],
-                ['names' => ['bhadarwah (sc)'], 'code' => 47, 'edition' => '0cdaa92b57575eaccc2d59c5'],
-                ['names' => ['bhadarwah'], 'code' => 51, 'edition' => '1e7b04dde5cfe815dbb49020'],
+        // Jammu & Kashmir reports use several spellings for the same seat number across
+        // editions (Bhaderwah/Bhadarwah, Badgam/Budgam, Chadura/Chadoora, Idgah/Eidgah,
+        // Beerwa/Beerwah). Link the recorded spellings by record code so either page shows
+        // the full history instead of splitting it between two spellings.
+        if ($kind === 'ac' && in_array(mb_strtolower(trim($state ?? '')), ['jammu & kashmir', 'jammu and kashmir'], true)) {
+            $variants = [
+                'bhaderwah' => [
+                    ['names' => ['bhaderwah'], 'code' => 29],
+                    ['names' => ['bhaderwah', 'bhaderwah (sc)'], 'code' => 47],
+                    ['names' => ['bhadarwah', 'bhadarwah (sc)'], 'code' => 47],
+                    ['names' => ['bhaderwah'], 'code' => 54],
+                    ['names' => ['bhadarwah'], 'code' => 51],
+                ],
+                'budgam' => [
+                    ['names' => ['badgam'], 'code' => 56],
+                    ['names' => ['badgam'], 'code' => 25],
+                    ['names' => ['badgam', 'budgam'], 'code' => 27],
+                ],
+                'chadoora' => [
+                    ['names' => ['chadura'], 'code' => 27],
+                    ['names' => ['chadura', 'chadoora'], 'code' => 26],
+                    ['names' => ['chadoora'], 'code' => 31],
+                ],
+                'eidgah' => [
+                    ['names' => ['idgah', 'eidgah'], 'code' => 20],
+                    ['names' => ['eidgah'], 'code' => 25],
+                ],
+                'beerwah' => [
+                    ['names' => ['beerwa', 'beerwah'], 'code' => 23],
+                    ['names' => ['beerwah'], 'code' => 28],
+                ],
+                'langate' => [
+                    ['names' => ['langet'], 'code' => 3],
+                    ['names' => ['langate'], 'code' => 5],
+                    ['names' => ['langate'], 'code' => 6],
+                ],
             ];
+            $spellings = ['bhadarwah' => 'bhaderwah', 'bhadarwah (sc)' => 'bhaderwah', 'badgam' => 'budgam',
+                'chadura' => 'chadoora', 'idgah' => 'eidgah', 'beerwa' => 'beerwah', 'langet' => 'langate'];
+            $base = self::generalCategoryNames($name)[0];
+            if (isset($variants[$base])) {
+                return $variants[$base];
+            }
+            if (isset($spellings[$base], $variants[$spellings[$base]])) {
+                return $variants[$spellings[$base]];
+            }
         }
         // ECI schedules (2014 p59, 2024 p112) name AC1 Yoksam-Tashiding BL;
         // the 2024 result uses Yuksom. The 2019 schedule p101 confirms that exact-year BL label too.
