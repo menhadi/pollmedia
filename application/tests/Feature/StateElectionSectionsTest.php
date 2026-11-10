@@ -97,6 +97,24 @@ class StateElectionSectionsTest extends TestCase
         $this->get('/india/state/uttar-pradesh?election=ac&edition='.str_repeat('c', 24))->assertOk()->assertSee('2022 Assembly (AC) results');
     }
 
+    public function test_archive_scope_without_indexed_records_renders_an_empty_directory(): void
+    {
+        $analytics = app(HistoricalElectionAnalytics::class);
+        $summary = function (int $year, string $id, string $name) use ($analytics): array {
+            return $analytics->summarize([['code' => 1, 'status' => 'validated', 'has_warning' => false, 'constituency_name' => $name, 'number_of_seats' => 1, 'electors' => 1000, 'votes_polled' => 800, 'candidates' => [['candidate_name' => $name.' winner', 'party_at_election' => 'A', 'votes' => 600], ['candidate_name' => 'Runner up', 'party_at_election' => 'B', 'votes' => 200]]]])
+                + ['id' => str_repeat($id, 24), 'year' => $year, 'label' => $year.' source report', 'state' => 'Uttar Pradesh', 'source_url' => 'https://www.eci.gov.in/'.$id, 'review_count' => 0];
+        };
+        $pc = [$summary(2024, 'a', 'Parliament Seat')];
+        $ac = [$summary(2022, 'c', 'Assembly Seat')];
+        $this->mock(HistoricalElectionAnalytics::class, function ($mock) use ($pc, $ac) {
+            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'pc')->andReturn($pc);
+            $mock->shouldReceive('forState')->with('Uttar Pradesh', 'ac')->andReturn($ac);
+        });
+
+        $this->get('/india/state/uttar-pradesh?election=ac&ac_scope=archive')->assertOk();
+        $this->get('/india/state/uttar-pradesh?election=pc&pc_scope=archive')->assertOk();
+    }
+
     public function test_margin_table_keeps_zero_and_tied_seats_and_excludes_unavailable_or_uncontested_results(): void
     {
         $rows = collect([['North', 0], ['South', 0], ['East', 5], ['West', 12], ['Missing', null], ['Unopposed', 99]])

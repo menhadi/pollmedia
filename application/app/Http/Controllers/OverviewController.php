@@ -86,7 +86,8 @@ class OverviewController extends Controller
                 $seatDirectories[$seatKind] = ElectionArchive::publicIndex()
                     ->where('kind', $seatKind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($title)])
                     ->when($seatScopes[$seatKind] === 'current', fn ($builder) => $builder->where('edition_id', $latestEdition))
-                    ->when($seatScopes[$seatKind] === 'archive', fn ($builder) => $builder->where('year', '<', $seatLatestYears[$seatKind]))
+                    ->when($seatScopes[$seatKind] === 'archive' && $seatLatestYears[$seatKind] !== null, fn ($builder) => $builder->where('year', '<', $seatLatestYears[$seatKind]))
+                    ->when($seatScopes[$seatKind] === 'archive' && $seatLatestYears[$seatKind] === null, fn ($builder) => $builder->whereRaw('1 = 0'))
                     ->when($seatQueries[$seatKind] !== '', fn ($builder) => $builder->whereRaw('LOWER(constituency_name) LIKE ?', ['%'.mb_strtolower($seatQueries[$seatKind]).'%']))
                     ->selectRaw('LOWER(constituency_name) as name, MIN(year) as first_year, MAX(year) as last_year')
                     ->groupByRaw('LOWER(constituency_name)')->when($seatScopes[$seatKind] === 'current', fn ($builder) => $builder->groupBy('record_code'))->orderBy('name')->paginate(24, ['*'], $seatKind.'_page')->withQueryString()->fragment($seatKind.'-constituencies');

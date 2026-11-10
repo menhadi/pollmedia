@@ -103,6 +103,26 @@ class HistoricalElectionPublicTest extends TestCase
             ->assertOk()->assertSee('Candidate One')->assertSee('2 preserved original files are not yet accessible');
     }
 
+    public function test_constituency_report_accepts_both_votes_polled_discrepancy_key_sets(): void
+    {
+        Storage::fake('local');
+        [$id] = $this->edition();
+        $path = 'election-archive/'.$id.'/extraction.json';
+        $data = json_decode(Storage::disk('local')->get($path), true);
+        $data['records'][0]['detail_votes_polled'] = 245400;
+        $data['records'][0]['votes_polled'] = 246520;
+        $data['records'][0]['source_discrepancy'] = ['field' => 'votes_polled', 'detail_votes_polled' => 245400, 'summary_votes_polled' => 246520, 'summary_missing_votes' => 1120];
+        Storage::disk('local')->put($path, json_encode($data));
+        $filters = ['edition' => $id, 'state' => 'S24', 'code' => 451];
+
+        $this->get(route('elections.history', $filters + ['format' => 'report']))
+            ->assertOk()
+            ->assertSee('Detailed votes polled: 245,400; official summary: 246,520.');
+        $this->get(route('elections.history', $filters))
+            ->assertOk()
+            ->assertSee('Detailed votes polled: 245,400; official summary: 246,520.');
+    }
+
     public function test_constituency_report_preserves_source_votes_and_review_warning(): void
     {
         Storage::fake('local');
