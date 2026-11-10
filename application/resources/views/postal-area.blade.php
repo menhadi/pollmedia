@@ -9,15 +9,12 @@
 @foreach(['subdistrict'=>'Taluka / Subdistrict','district'=>'District'] as $level=>$label)
 <tr><th scope="row">{{ $label }}</th><td>
 @if(!empty($place['parent_links'][$level]))
-@foreach($place['parent_links'][$level] as $parent)
-<div>
+@foreach(collect($place['parent_links'][$level])->unique(fn ($parent) => mb_strtolower((string) $parent['name'])) as $parent)
 @if($parent['url'])
 <a href="{{ $parent['url'] }}">{{ $parent['name'] }}</a>
 @else
 {{ $parent['name'] }}
 @endif
-<small class="postal-source-record">LGD coverage association</small>
-</div>
 @endforeach
 @elseif($place[$level.'_url'])
 <a href="{{ $place[$level.'_url'] }}">{{ $place[$level.'_name'] }} →</a>
