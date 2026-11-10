@@ -184,8 +184,15 @@
             const ys=ring.map(p=>p[1]),y=(Math.min(...ys)+Math.max(...ys))/2;
             const xs=[];ring.forEach(([ax,ay],i)=>{const [bx,by]=ring[(i+1)%ring.length];if((ay>y)!==(by>y))xs.push(ax+(bx-ax)*(y-ay)/(by-ay));});xs.sort((a,b)=>a-b);
             let mid=0,span=0;for(let i=0;i+1<xs.length;i+=2){if(xs[i+1]-xs[i]>span){span=xs[i+1]-xs[i];mid=(xs[i+1]+xs[i])/2;}}
-            if(span<14 || used.some(p=>Math.abs(p[0]-mid)<23 && Math.abs(p[1]-y)<12))continue;
-            used.push([mid,y]);const label=svgNode('text',{x:mid,y,'text-anchor':'middle','dominant-baseline':'central','pointer-events':'none'});label.textContent=f.properties.code;svg.append(label);
+            // Nudge the number until it clears the previous labels so every seat stays numbered.
+            const offsets=[[0,0],[0,-14],[0,14],[-22,0],[22,0],[-22,-14],[22,-14],[-22,14],[22,14],[0,-26],[0,26]];
+            let spot=null;
+            for(const [dx,dy] of offsets){
+                const x=Math.max(12,Math.min(348,mid+dx)),yy=Math.max(12,Math.min(238,y+dy));
+                if(!used.some(p=>Math.abs(p[0]-x)<17 && Math.abs(p[1]-yy)<11)){spot=[x,yy];break;}
+            }
+            if(!spot||span<3)continue;
+            used.push(spot);const label=svgNode('text',{x:spot[0],y:spot[1],'text-anchor':'middle','dominant-baseline':'central','pointer-events':'none'});label.textContent=f.properties.code;svg.append(label);
         }
         region.querySelector('.atlas-map-frame').hidden=false;
     }

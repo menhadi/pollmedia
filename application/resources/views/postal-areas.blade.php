@@ -5,16 +5,15 @@
 <form class="postal-search" method="get" action="{{ route('postal-areas.index') }}"><label for="postal-pin">Postal PIN code<input id="postal-pin" name="pin" inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6" placeholder="e.g. 262001" value="{{ $pin }}" required></label><button type="submit">Find places <span aria-hidden="true">→</span></button></form>
 @if($pin !== '')
 @if(!$results['available'])<div class="postal-card postal-empty">The imported postal directory is currently unavailable.</div>@else
-<div class="postal-section-heading"><h2>Villages &amp; urban areas</h2><p>Area, panchayat, taluka, district and constituencies</p></div>
-<section class="postal-card" aria-label="Places linked to PIN {{ $pin }}">
-<form class="postal-table-tools" method="get" action="{{ route('postal-areas.index') }}" role="search">
+<div class="postal-table-bar">
+<h2>Villages &amp; urban areas</h2>
+<form class="postal-area-search" method="get" action="{{ route('postal-areas.index') }}" role="search">
 <input type="hidden" name="pin" value="{{ $pin }}">
-<label class="postal-table-search" for="postal-area-search">Search all areas
-<input id="postal-area-search" name="q" type="search" value="{{ $query }}" placeholder="Area, village or urban body" autocomplete="off" maxlength="100">
-</label>
-<span class="postal-table-count">@if($query !== ''){{ number_format($results['total']) }} matching {{ $results['total'] === 1 ? 'area' : 'areas' }}@endif</span>
-<button type="submit" class="postal-table-search-button">Search</button>
+<input id="postal-area-search" name="q" type="search" value="{{ $query }}" placeholder="Search area, village or urban body" aria-label="Search areas by name" autocomplete="off" maxlength="100">
+<button type="submit">Search</button>
 </form>
+</div>
+<section class="postal-card" aria-label="Places linked to PIN {{ $pin }}">
 @if($results['rows'])
 <div class="postal-table-scroll" tabindex="0" role="region" aria-label="Place hierarchy table; scroll horizontally on small screens">
 <table class="postal-table">
