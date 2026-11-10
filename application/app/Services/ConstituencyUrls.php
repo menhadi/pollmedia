@@ -19,16 +19,22 @@ class ConstituencyUrls
         if (count(array_unique(array_map(self::identity(...), $matches))) > 1) {
             $nameSlug .= '-'.substr(sha1(self::identity($parameters['name'])), 0, 12);
         }
-        $identity = ['kind' => $parameters['kind'], 'state' => Str::slug($state), 'name' => $nameSlug];
+        $identity = ['kind' => $parameters['kind'], 'state' => self::slug($state), 'name' => $nameSlug];
 
         return route('constituency.named', $identity + array_diff_key($parameters, $identity), $absolute);
     }
 
+    /** Slugs must treat "&" as "and", matching the state slugs used across the site. */
+    private static function slug(string $value): string
+    {
+        return Str::slug(str_ireplace('&', 'and', $value));
+    }
+
     public static function resolve(string $kind, string $state, string $name, ?string $sourceName = null): ?array
     {
-        $states = app(self::class)->states ??= Cache::remember('constituency-url-states-v3', 600, fn () => ElectionArchive::publicIndex()->distinct()->pluck('state_label')->map(fn ($value) => ElectionPlaceIdentity::state($value))->unique(fn ($value) => mb_strtolower(trim($value)))->values()->all());
-        $matches = array_values(array_filter($states, fn ($value) => Str::slug($value) === $state));
-        if (count($matches) !== 1) {
+        $states = app(self::class)->states ??= Cache::remember('constituency-url-states-v4', 600, fn () => ElectionArchive::publicIndex()->distinct()->pluck('state_label')->map(fn ($value) => ElectionPlaceIdentity::state($value))->unique(fn ($value) => mb_strtolower(trim($value)))->values()->all());
+        $matches = array_values(array_filter($states, fn ($value) => self::slug($value) === $state || Str::slug($value) === $state));
+        if ($matches === []) {
             return null;
         }
         $stateName = $matches[0];
@@ -36,7 +42,7 @@ class ConstituencyUrls
         if ($sourceName !== null) {
             $matches = array_values(array_filter($matches, fn ($value) => self::identity($value) === self::identity($sourceName)));
         }
-        $identities = array_unique(array_map(fn ($value) => self::identity($value), $matches));
+        $identities = array_unique(array_map(fn ($value) => self::looseIdentity($value), $matches));
         if (count($identities) !== 1) {
             return null;
         }
@@ -53,6 +59,10 @@ class ConstituencyUrls
             foreach (self::names($kind, $state) as $name) {
                 $nameSlug = Str::slug($name);
                 $catalogue->slugNames[$key][$nameSlug][] = $name;
+                $ampersandSlug = self::slug($name);
+                if ($ampersandSlug !== $nameSlug) {
+                    $catalogue->slugNames[$key][$ampersandSlug][] = $name;
+                }
                 $catalogue->slugNames[$key][$nameSlug.'-'.substr(sha1(self::identity($name)), 0, 12)][] = $name;
             }
         }
@@ -83,8 +93,24 @@ class ConstituencyUrls
         return mb_strtolower(trim($name));
     }
 
+    /** Compare names ignoring punctuation, spacing, "and"/"&" and SC/ST markers such as "North-East" vs "NORTH EAST" or "(SC)" vs "(S.C)". */
+    private static function looseIdentity(string $name): string
+    {
+        $value = mb_strtolower(trim($name));
+        $value = preg_replace('/(?<=[\s\(\[]|^)s\.?\s*[ct]\.?[\s\)\]]*$/u', '', $value);
+        $value = preg_replace('/[^a-z0-9]+/u', ' ', $value);
+        $value = preg_replace('/(^|\s)and(\s|$)/', ' ', $value);
+
+        return preg_replace('/\s+/', '', $value);
+    }
+
     private static function names(string $kind, string $state): array
     {
-        return Cache::remember('constituency-url-names-v2-'.sha1($kind.'|'.$state), 600, fn () => ElectionArchive::publicIndex()->where('kind', $kind)->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])->distinct()->pluck('constituency_name')->all());
+        return Cache::remember('constituency-url-names-v3-'.sha1($kind.'|'.$state), 600, function () use ($kind, $state): array {
+            $normalised = "REPLACE(".ElectionPlaceIdentity::stateSql().", ' & ', ' and ')";
+            $target = str_replace(' & ', ' and ', mb_strtolower($state));
+
+            return ElectionArchive::publicIndex()->where('kind', $kind)->whereRaw($normalised.' = ?', [$target])->distinct()->pluck('constituency_name')->all();
+        });
     }
 }

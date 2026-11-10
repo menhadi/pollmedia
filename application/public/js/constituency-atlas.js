@@ -102,8 +102,7 @@
         const {features} = await response.json();
         const inState = features.filter(f => normalize(f.properties.state) === normalize(map.dataset.state) && ['Polygon','MultiPolygon'].includes(f.geometry?.type) && !f.properties.geometry_warning);
         const matches = inState.filter(f => f.properties.kind === map.dataset.kind && normalize(f.properties.name) === normalize(map.dataset.selected));
-        if (matches.length !== 1) return;
-        const seat = matches[0];
+        if (!matches.length) return;
         const bboxOf = feature => {
             let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;
             for (const ring of ringList(feature.geometry)) for (const [x,y] of ring) {
@@ -125,12 +124,20 @@
         };
         const areaOf = feature => { const [west,south,east,north]=bboxOf(feature); return (east-west)*(north-south); };
         const acRows = JSON.parse(region.querySelector('[data-atlas-ac-pages]').textContent);
+        const acs = inState.filter(f => f.properties.kind === 'ac');
+        // Some state files carry two vintages of the same seat name. Prefer the shape that
+        // actually contains the listed assembly segments instead of giving up on the map.
+        const seat = matches.length === 1 ? matches[0] : matches
+            .map(candidate => ({ candidate, inside: acRows.reduce((count, row) => {
+                const name = normalize(row.name);
+                return count + (acs.some(ac => normalize(ac.properties.name) === name && holds(candidate, ac)) ? 1 : 0);
+            }, 0) }))
+            .sort((a, b) => b.inside - a.inside || areaOf(a.candidate) - areaOf(b.candidate))[0].candidate;
         const pc = seat.properties.kind === 'pc'
             ? seat
             : (inState.filter(f => f.properties.kind === 'pc' && holds(f,seat)).sort((a,b)=>areaOf(a)-areaOf(b))[0]
                 ?? inState.find(f => f.properties.kind === 'pc' && String(f.properties.code) === String(seat.properties.parent_pc_code))
                 ?? null);
-        const acs = inState.filter(f => f.properties.kind === 'ac');
         const children = [];
         if (pc) {
             for (const row of acRows) {
