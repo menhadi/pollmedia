@@ -58,16 +58,25 @@ class ConstituencyUrls
             $catalogue->slugNames[$key] = [];
             foreach (self::names($kind, $state) as $name) {
                 $nameSlug = Str::slug($name);
-                $catalogue->slugNames[$key][$nameSlug][] = $name;
-                $ampersandSlug = self::slug($name);
-                if ($ampersandSlug !== $nameSlug) {
-                    $catalogue->slugNames[$key][$ampersandSlug][] = $name;
+                foreach (array_unique([$nameSlug, self::slug($name), self::looseIdentity($name)]) as $variant) {
+                    if ($variant === '') {
+                        continue;
+                    }
+                    $catalogue->slugNames[$key][$variant][] = $name;
                 }
                 $catalogue->slugNames[$key][$nameSlug.'-'.substr(sha1(self::identity($name)), 0, 12)][] = $name;
             }
         }
 
-        return $catalogue->slugNames[$key][$slug] ?? [];
+        $loose = self::looseIdentity($slug);
+        $found = $catalogue->slugNames[$key][$slug] ?? $catalogue->slugNames[$key][$loose] ?? [];
+        if ($found === [] && $loose !== '') {
+            // Slugs such as "prathipadusc" come from names written without a space before "(SC)".
+            $trimmed = preg_replace('/(sc|st)$/', '', $loose);
+            $found = $trimmed !== $loose ? ($catalogue->slugNames[$key][$trimmed] ?? []) : [];
+        }
+
+        return $found;
     }
 
     public static function legacyPaths(string $kind, string $state, string $name, array $parameters = []): array
@@ -97,7 +106,10 @@ class ConstituencyUrls
     private static function looseIdentity(string $name): string
     {
         $value = mb_strtolower(trim($name));
-        $value = preg_replace('/(?<=[\s\(\[]|^)s\.?\s*[ct]\.?[\s\)\]]*$/u', '', $value);
+        do {
+            $previous = $value;
+            $value = preg_replace('/\(\s*s\.?\s*c\.?\s*\)|\(\s*s\.?\s*t\.?\s*\)|\bs\.?\s*c\.?\s*$|\bs\.?\s*t\.?\s*$/u', ' ', $value);
+        } while ($value !== $previous);
         $value = preg_replace('/[^a-z0-9]+/u', ' ', $value);
         $value = preg_replace('/(^|\s)and(\s|$)/', ' ', $value);
 

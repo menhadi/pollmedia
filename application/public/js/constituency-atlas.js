@@ -149,6 +149,17 @@
             if (!children.length) children.push(...acs.filter(f => holds(pc,f)));
         }
         const parts = children.length ? children : [seat];
+        // Mirror the map numbers into the coverage table so both agree.
+        region.querySelectorAll('table tbody th[data-ac-name]').forEach(cell => {
+            if (cell.querySelector('.atlas-seat-code')) return;
+            const name = normalize(cell.dataset.acName);
+            const feature = parts.find(f => normalize(f.properties.name) === name);
+            if (!feature) return;
+            const code = document.createElement('span');
+            code.className = 'atlas-seat-code';
+            code.textContent = feature.properties.code;
+            cell.prepend(code, ' ');
+        });
         const outlines = pc && children.length ? [...children,pc] : parts;
         const boxes = outlines.map(bboxOf);
         const west = Math.min(...boxes.map(box=>box[0])), south = Math.min(...boxes.map(box=>box[1]));

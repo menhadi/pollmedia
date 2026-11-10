@@ -134,3 +134,4 @@ html body.seat-atlas-page .seat-atlas .atlas-search-field input:is(:focus,:focus
 .seat-by-notes{margin:.75rem 0 0}.seat-by-notes summary{cursor:pointer}
 
 .seat-atlas #year-detail .atlas-table-scroll{display:block;max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-x:contain}
+.atlas-seat-code{display:inline-block;min-width:1.7em;margin-right:.35em;color:var(--site-muted,#5a6b73);font-variant-numeric:tabular-nums;font-weight:600}

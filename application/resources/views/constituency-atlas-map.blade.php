@@ -8,7 +8,7 @@
 $mappedRows=collect($atlasFamily['ac'])->map(fn($seat)=>$seat+['slug'=>\Illuminate\Support\Str::slug(preg_replace('/\s*\((SC|ST)\)$/i','',$seat['name']))]);
 $missing=collect($coverage)->keys()->diff($mappedRows->pluck('slug'))->map(fn($slug)=>['slug'=>$slug,'name'=>\Illuminate\Support\Str::headline($slug),'url'=>null]);
 @endphp
-@foreach($mappedRows->concat($missing) as $seat)<tr><th scope="row">@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif</th>@if($coverage)<td>{{ isset($coverage[$seat['slug']])?count($coverage[$seat['slug']]):'—' }}</td>@endif</tr>@endforeach
+@foreach($mappedRows->concat($missing) as $seat)<tr><th scope="row" data-ac-name="{{ $seat['name'] }}">@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif</th>@if($coverage)<td>{{ isset($coverage[$seat['slug']])?count($coverage[$seat['slug']]):'—' }}</td>@endif</tr>@endforeach
 </tbody></table>
 @elseif($kind==='ac' && $atlasFamily['pc'])
 <p>{{ $tr('Lok Sabha (PC)','लोक सभा (PC)') }} · @foreach($atlasFamily['pc'] as $seat)@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif{{ $loop->last?'':' · ' }}@endforeach</p>
