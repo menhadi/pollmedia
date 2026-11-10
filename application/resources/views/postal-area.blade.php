@@ -3,7 +3,51 @@
 <header class="postal-hero"><div><p class="postal-eyebrow">{{ $place['kind'] === 'village' ? 'Village' : 'Urban local body' }}</p><h1>{{ $place['name'] }}</h1><p class="postal-intro">Postal information and available administrative links for this area.</p></div></header>
 <section class="postal-card"><table class="postal-table postal-identity"><tbody>
 <tr><th scope="row">Area / Village</th><td>@if($villageUrl)<a href="{{ $villageUrl }}">{{ $place['name'] }} →</a>@else{{ $place['name'] }}@endif</td></tr>
-@foreach(['subdistrict'=>'Taluka / Subdistrict','district'=>'District','state'=>'State / UT'] as $level=>$label)<tr><th scope="row">{{ $label }}</th><td>@if(!empty($place['parent_links'][$level]))@foreach($place['parent_links'][$level] as $parent)<div>@if($parent['url'])<a href="{{ $parent['url'] }}">{{ $parent['name'] }}</a>@else{{ $parent['name'] }}@endif <small class="postal-source-record">LGD coverage association</small></div>@endforeach@elseif($place[$level.'_url'])<a href="{{ $place[$level.'_url'] }}">{{ $place[$level.'_name'] }} →</a>@elseif($place[$level.'_name']){{ $place[$level.'_name'] }}@else<span class="postal-unavailable">Not provided by the postal source</span>@endif</td></tr>@endforeach
+@if($place['panchayat'])
+<tr><th scope="row">Gram panchayat</th><td><a href="{{ $place['panchayat']['url'] }}">{{ $place['panchayat']['name'] }}</a></td></tr>
+@endif
+@foreach(['subdistrict'=>'Taluka / Subdistrict','district'=>'District'] as $level=>$label)
+<tr><th scope="row">{{ $label }}</th><td>
+@if(!empty($place['parent_links'][$level]))
+@foreach($place['parent_links'][$level] as $parent)
+<div>
+@if($parent['url'])
+<a href="{{ $parent['url'] }}">{{ $parent['name'] }}</a>
+@else
+{{ $parent['name'] }}
+@endif
+<small class="postal-source-record">LGD coverage association</small>
+</div>
+@endforeach
+@elseif($place[$level.'_url'])
+<a href="{{ $place[$level.'_url'] }}">{{ $place[$level.'_name'] }} →</a>
+@elseif($place[$level.'_name'])
+{{ $place[$level.'_name'] }}
+@else
+<span class="postal-unavailable">Not provided by the postal source</span>
+@endif
+</td></tr>
+@endforeach
+@foreach(['ac'=>'Assembly constituency (AC)','pc'=>'Parliamentary constituency (PC)'] as $kind=>$label)
+<tr><th scope="row">{{ $label }}</th><td>
+@if($place[$kind])
+@if($place[$kind]['url'])
+<a href="{{ $place[$kind]['url'] }}">{{ $place[$kind]['name'] }} →</a>
+@else
+{{ $place[$kind]['name'] }}
+@endif
+@else
+<span class="postal-unavailable">—</span>
+@endif
+</td></tr>
+@endforeach
+<tr><th scope="row">State / UT</th><td>
+@if($place['state_url'])
+<a href="{{ $place['state_url'] }}">{{ $place['state_name'] }} →</a>
+@else
+{{ $place['state_name'] }}
+@endif
+</td></tr>
 <tr><th scope="row">Official LGD code</th><td>{{ $place['code'] }}</td></tr>
 </tbody></table></section>
 @if($villageUrl)<p><a class="postal-button" href="{{ $villageUrl }}">Open village dashboard →</a></p>@endif

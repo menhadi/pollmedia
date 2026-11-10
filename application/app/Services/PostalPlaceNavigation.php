@@ -13,6 +13,9 @@ class PostalPlaceNavigation
 
     private ?array $districtPages = null;
 
+    /** @var array<string, array{name: string, url: string}|null> */
+    private array $panchayats = [];
+
     public function __construct(private ?string $directoryPath = null) {}
 
     private function database(): ?PDO
@@ -28,14 +31,30 @@ class PostalPlaceNavigation
         $states = $db ? $db->query('SELECT code,name FROM states')->fetchAll(PDO::FETCH_KEY_PAIR) : [];
         $village = $db?->prepare('SELECT d.*,a.district AS district_code,a.subdistrict AS subdistrict_code FROM directory d JOIN ancestry a ON a.lgd=d.lgd AND a.state=d.state WHERE d.lgd=?');
         $subdistrict = $db?->prepare('SELECT count(DISTINCT d.subdistrict) FROM directory d JOIN ancestry a ON a.lgd=d.lgd AND a.state=d.state WHERE a.state=? AND a.district=? AND a.subdistrict=?');
+        $hasMapping = $db && (int) $db->query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name IN ('seats','membership')")->fetchColumn() === 2;
+        $seatQuery = $hasMapping ? $db->prepare('SELECT kind,code,name FROM seats WHERE state=?') : null;
+        $memberQuery = $hasMapping ? $db->prepare("SELECT ac,pc FROM membership WHERE state=? AND entity_type=? AND entity_code=? ORDER BY CASE WHEN ac IS NULL OR ac='' OR ac='0' THEN 1 ELSE 0 END, CASE WHEN coverage='Partly Covered' THEN 1 ELSE 0 END LIMIT 1") : null;
+        $seats = [];
         $subdistricts = [];
         foreach ($rows as &$row) {
             $row['place_url'] = route('postal-areas.show', ['kind' => $row['kind'], 'code' => $row['code']]);
             $row['state_url'] = isset($states[$row['state']]) ? $this->stateUrl($row['state'], $states[$row['state']]) : null;
             $row['district_url'] = null;
             $row['subdistrict_url'] = null;
+            $row['ac'] = null;
+            $row['pc'] = null;
+            $row['panchayat'] = null;
             $row['current_identity_linked'] = false;
             $row['parent_links'] = [];
+            if ($db && $seatQuery && $memberQuery && ! isset($seats[$row['state']])) {
+                $seatQuery->execute([$row['state']]);
+                $list = ['ac' => [], 'pc' => []];
+                foreach ($seatQuery->fetchAll(PDO::FETCH_ASSOC) as $seat) {
+                    $list[$seat['kind']][(string) $seat['code']] = $seat['name'];
+                }
+                $seats[$row['state']] = $list;
+            }
+            $row['panchayat'] = $row['kind'] === 'village' ? $this->panchayat((string) $row['state'], (string) $row['code']) : null;
             if ($row['kind'] === 'local-body' && $db) {
                 foreach (app(UrbanPostalParents::class)->forBody((string) $row['code'], (string) $row['state']) as $parent) {
                     $scope = $db->prepare($parent['level'] === 'subdistrict'
@@ -54,6 +73,30 @@ class PostalPlaceNavigation
                         ? $this->districtUrl($row['state'], $parent['code'], $row['state_name'], $parent['name'])
                         : route('map-selection.page', ['state' => $row['state'], 'district' => $parent['district'], 'subdistrict' => $parent['code']])) : route('postal-areas.geography', ['state' => $row['state'], 'level' => $parent['level'], 'code' => $parent['code']]);
                     $row['parent_links'][$parent['level']][] = $parent;
+                }
+            }
+            if ($memberQuery) {
+                $candidates = $row['kind'] === 'village'
+                    ? [['Village', (string) $row['code']], ['SubDistrict', (string) ($row['subdistrict'] ?? '')], ['District', (string) ($row['district'] ?? '')]]
+                    : [['Localbody', (string) $row['code']], ['SubDistrict', (string) ($row['subdistrict'] ?? '')], ['District', (string) ($row['district'] ?? '')]];
+                $members = null;
+                foreach ($candidates as [$entityType, $entityCode]) {
+                    if ($entityCode === '') {
+                        continue;
+                    }
+                    $memberQuery->execute([$row['state'], $entityType, $entityCode]);
+                    $members = $memberQuery->fetch(PDO::FETCH_ASSOC) ?: null;
+                    if ($members) {
+                        break;
+                    }
+                }
+                foreach (['ac', 'pc'] as $kind) {
+                    $seatCode = (string) ($members[$kind] ?? '');
+                    $seatName = $seats[$row['state']][$kind][$seatCode] ?? null;
+                    if ($seatCode === '' || $seatCode === '0' || $seatName === null) {
+                        continue;
+                    }
+                    $row[$kind] = $this->seatUrl($kind, (string) ($row['state_name'] ?? ''), $seatName);
                 }
             }
             if ($row['kind'] !== 'village' || ! $village) {
@@ -85,6 +128,32 @@ class PostalPlaceNavigation
         }
 
         return $rows;
+    }
+
+    /** @return array{name: string, url: string|null}|null */
+    private function seatUrl(string $kind, string $stateName, string $name): ?array
+    {
+        if ($stateName === '') {
+            return null;
+        }
+        if (! Schema::hasTable('historical_constituency_index')) {
+            return ['name' => $name, 'url' => null];
+        }
+        $resolved = ConstituencyUrls::resolve($kind, Str::slug($stateName), Str::slug($name));
+
+        return ['name' => $name, 'url' => $resolved ? ConstituencyUrls::url(['kind' => $kind, 'state' => $stateName, 'name' => $name]) : null];
+    }
+
+    /** @return array{name: string, url: string}|null */
+    private function panchayat(string $state, string $code): ?array
+    {
+        $key = $state.':'.$code;
+        if (! array_key_exists($key, $this->panchayats)) {
+            $gp = app(GramPanchayatDirectory::class)->forVillage((int) $state, (int) $code);
+            $this->panchayats[$key] = $gp ? ['name' => $gp['name'], 'url' => route('gram-panchayats.show', ['state' => $state, 'gp' => $gp['gp']])] : null;
+        }
+
+        return $this->panchayats[$key];
     }
 
     private function stateUrl(string $code, string $name): string

@@ -27,9 +27,13 @@ class PostalPlaceNavigationTest extends TestCase
         $this->path = tempnam(sys_get_temp_dir(), 'postal-navigation-');
         $db = new PDO('sqlite:'.$this->path);
         $db->exec("CREATE TABLE states(code TEXT,name TEXT); CREATE TABLE directory(lgd TEXT,state TEXT,name TEXT,district TEXT,subdistrict TEXT); CREATE TABLE ancestry(lgd TEXT,state TEXT,district TEXT,subdistrict TEXT);
+            CREATE TABLE seats(state TEXT,kind TEXT,code TEXT,name TEXT); CREATE TABLE membership(state TEXT,ac TEXT,pc TEXT,entity_type TEXT,entity_code TEXT,coverage TEXT);
             INSERT INTO states VALUES ('9','Uttar Pradesh');
             INSERT INTO directory VALUES ('100','9','Example Village','Pilibhit','Example Taluka');
-            INSERT INTO ancestry VALUES ('100','9','173','1');");
+            INSERT INTO ancestry VALUES ('100','9','173','1');
+            INSERT INTO seats VALUES ('9','ac','7','Example AC'),('9','pc','3','Example PC');
+            INSERT INTO membership VALUES ('9','7','3','Village','100','Fully Covered');
+            INSERT INTO membership VALUES ('9','0','3','District','173','Fully Covered');");
         $this->navigation = new PostalPlaceNavigation($this->path);
     }
 
@@ -71,6 +75,18 @@ class PostalPlaceNavigationTest extends TestCase
         $this->assertNull($row['district_url']);
         $this->assertNull($row['subdistrict_url']);
         $this->assertNotNull($row['state_url']);
+    }
+
+    public function test_rows_expose_assembly_parliamentary_and_panchayat_columns(): void
+    {
+        $row = $this->navigation->rows([$this->row()])[0];
+        $this->assertSame('Example AC', $row['ac']['name']);
+        $this->assertSame('Example PC', $row['pc']['name']);
+        $this->assertArrayHasKey('panchayat', $row);
+
+        $districtOnly = $this->navigation->rows([$this->row(['code' => '999', 'district' => '173'])])[0];
+        $this->assertNull($districtOnly['ac']);
+        $this->assertSame('Example PC', $districtOnly['pc']['name']);
     }
 
     public function test_state_directory_has_individual_district_links(): void
