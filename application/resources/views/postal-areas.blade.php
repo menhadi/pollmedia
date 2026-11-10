@@ -79,6 +79,5 @@
 @else<div class="postal-empty">No areas are listed for this PIN in the imported LGD release.</div>@endif
 <nav class="postal-pagination" aria-label="Results pages"><span>@if($results['rows'])Showing {{ number_format(($results['page']-1)*50+1) }}–{{ number_format(($results['page']-1)*50+count($results['rows'])) }} of {{ number_format($results['total']) }}@else{{ number_format($results['total']) }} linked areas @endif</span><div>@if($results['page'] > 1)<a rel="prev" href="{{ route('postal-areas.index', ['pin'=>$pin,'page'=>$results['page']-1]) }}">← Previous</a>@endif @if($results['page'] * 50 < $results['total'])<a rel="next" href="{{ route('postal-areas.index', ['pin'=>$pin,'page'=>$results['page']+1]) }}">Next →</a>@endif</div></nav>
 </section>
-<div class="postal-notes"><p>Source: official LGD village and local-body PIN mappings. Current village links require matching LGD village, state, district and subdistrict codes. Linked dashboards retain their own source dates and boundary editions.</p><p>Urban district and taluka associations come from the separate official LGD local-body coverage directory (2 November 2026). A coverage association may include only part of a district or taluka. Multiple associations remain visible; missing relationships are not inferred from a PIN.</p></div>
 @endif @endif
 </main>@include('public-footer')</body></html>
