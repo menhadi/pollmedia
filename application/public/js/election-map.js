@@ -164,7 +164,8 @@
             if(document.documentElement.lang==='hi') url.searchParams.set('lang','hi');
             return url.href;
         };
-        const features = source.status === 'fulfilled' ? source.value.features.filter(f => f.properties.kind === root.dataset.kind) : [];
+        const all = source.status === 'fulfilled' ? source.value.features : [];
+        let features = all.filter(f => f.properties.kind === root.dataset.kind);
         const matches = new Map(), paths = new Map();
         const explorer=root.closest('.atlas-map-explorer');
         const family=JSON.parse(root.querySelector('[data-linked-seats]')?.textContent || '[]');
@@ -188,6 +189,27 @@
             else if (candidates.length === 1 && candidates[0].official_code != null && codes.get(stateKey(f.properties.state)+':'+normalize(f.properties.name)+':'+f.properties.code) === 1) {matches.set(f.id,candidates[0]);}
         });
         const rings = feature => feature.geometry.type === 'Polygon' ? feature.geometry.coordinates : feature.geometry.coordinates.flat();
+        // Combined-source files (for example Andhra Pradesh before 2014) can carry seats whose
+        // present-day state is unverified. Keep them only when an election record or a parent
+        // constituency shape accounts for them, so maps never draw another state's seats.
+        const reviewNotes = f => { const n = f.properties.review_notes; return Array.isArray(n) ? n : (n ? [n] : []); };
+        if (features.some(f => reviewNotes(f).some(n => /present-day state assignment unverified/i.test(String(n))))) {
+            const parents = all.filter(f => f.properties.kind === 'pc' && f.geometry);
+            const centre = f => {
+                const ring = rings(f).reduce((best, r) => r.length > best.length ? r : best, []);
+                if (!ring.length) return null;
+                let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;
+                for (const [x,y] of ring) { west=Math.min(west,x);east=Math.max(east,x);south=Math.min(south,y);north=Math.max(north,y); }
+                return [(west+east)/2,(south+north)/2];
+            };
+            const inside = (point, pc) => { const [x,y]=point; let hit=false; for (const ring of rings(pc)) for (let i=0,j=ring.length-1;i<ring.length;j=i++) { const [xi,yi]=ring[i],[xj,yj]=ring[j]; if (((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi)) hit=!hit; } return hit; };
+            features = features.filter(f => {
+                if (f.properties.kind !== 'ac' || matches.has(f.id)) return true;
+                if (!reviewNotes(f).some(n => /present-day state assignment unverified/i.test(String(n)))) return true;
+                const point = centre(f);
+                return point ? parents.some(pc => inside(point, pc)) : true;
+            });
+        }
         let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
         features.forEach(f => rings(f).forEach(ring => ring.forEach(([x,y]) => {if(Number.isFinite(x)&&Number.isFinite(y)){minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);}})));
         const width=(maxX-minX)*Math.cos(25*Math.PI/180),height=maxY-minY;
