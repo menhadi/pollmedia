@@ -44,16 +44,22 @@ STATE_ALIASES = {
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('application', type=Path)
-    parser.add_argument('--states', required=True, help='comma separated catalogue state names')
+    parser.add_argument('--states', help='comma separated catalogue state names')
+    parser.add_argument('--manifest', type=Path, help='append manifest produced by append_nwdp_gaps.py')
     parser.add_argument('--prefix', default='maps/nwdp-')
     args = parser.parse_args()
 
     app = args.application
     catalogue = json.loads((app / 'storage/app/india-map/catalogue.json').read_text())
-    wanted = {name.strip() for name in args.states.split(',') if name.strip()}
-    layers = [layer for layer in catalogue['layers']
-              if layer['file'].startswith(args.prefix) and layer['state'] in wanted]
-    if not layers:
+    if args.manifest:
+        manifest = json.loads(args.manifest.read_text())
+        by_file = {layer['file']: layer for layer in catalogue['layers']}
+        plan = [(by_file[entry['file']], entry['appended'], entry['sha256']) for entry in manifest['files']]
+    else:
+        wanted = {name.strip() for name in (args.states or '').split(',') if name.strip()}
+        plan = [(layer, None, layer['sha256']) for layer in catalogue['layers']
+                if layer['file'].startswith(args.prefix) and layer['state'] in wanted]
+    if not plan:
         raise SystemExit('no matching layers')
 
     links = sqlite3.connect(app / 'storage/app/electoral-villages/links.sqlite')
@@ -84,21 +90,22 @@ def main():
         return None
 
     written = {'code': 0, 'name': 0, 'skipped_linked': 0, 'unmatched': 0}
-    evidence_rows = []
-    for layer in layers:
+    for layer, indices, sha in plan:
         state = state_code(layer['state'])
         if state is None:
             print('skip state', layer['state'])
             continue
         file = layer['file']
-        sha = layer['sha256']
         path = app / 'storage/app/india-map/snapshot' / file
         if not path.exists():
             path = app / 'public' / file
         geometry = json.loads(path.read_text())
         supplement.execute('INSERT OR REPLACE INTO layers VALUES (?,?,?,?)',
                            (file, sha, layer['source'], (layer.get('metadata') or {}).get('source_edition')))
-        for index, feature in enumerate(geometry['features']):
+        features = geometry['features']
+        targets = range(len(features)) if indices is None else [i for i in indices if 0 <= i < len(features)]
+        for index in targets:
+            feature = features[index]
             properties = feature['properties']
             code = str(properties.get('source_code') or '')
             district = district_key(properties.get('district') or layer['district'])
@@ -135,7 +142,7 @@ def main():
 
     metadata = json.loads(supplement.execute('SELECT json FROM metadata').fetchone()[0])
     metadata.setdefault('nwdp_ingested_layers', [])
-    metadata['nwdp_ingested_layers'] = sorted({*metadata['nwdp_ingested_layers'], *[layer['file'] for layer in layers]})
+    metadata['nwdp_ingested_layers'] = sorted({*metadata['nwdp_ingested_layers'], *[layer['file'] for layer, _, _ in plan]})
     metadata['nwdp_linked_shapes'] = metadata.get('nwdp_linked_shapes', 0) + written['code'] + written['name']
     metadata['total_display_shapes'] = supplement.execute('select count(*) from shapes').fetchone()[0]
     supplement.execute('DELETE FROM metadata')
