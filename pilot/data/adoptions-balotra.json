@@ -1,0 +1,758 @@
+{
+ "district": "Balotra",
+ "parents": [
+  "Barmer"
+ ],
+ "notification": {
+  "title": "Rajasthan Gazette Extraordinary, Notification No. P.9(18)raj-1/2022-(2), 5 August 2023 (effective 7 August 2023)",
+  "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf",
+  "quote": "Balotra district formed by reorganising Barmer district; sub-districts Balotra, Siwana, Baytu and Sindhari"
+ },
+ "stats": {
+  "targets": 951,
+  "matched": 65,
+  "adopted": 37,
+  "name_mismatch": 7,
+  "parent_unlinked": 21,
+  "ambiguous": 30,
+  "no_namesake": 856
+ },
+ "decisions": [
+  {
+   "new_lgd": "960861",
+   "name": "Nayapura",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87404",
+   "canonical_name": "Nayapura",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87404",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "947898",
+   "name": "Hanuman Nagar",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "88394",
+   "canonical_name": "Hanuman Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88394",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "HANUMAN SAGAR"
+   ]
+  },
+  {
+   "new_lgd": "946643",
+   "name": "Bhaduon Ki Dhani",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87167",
+   "canonical_name": "Bhaduon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87167",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946646",
+   "name": "Bhojasar",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87203",
+   "canonical_name": "Bhojasar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87203",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946661",
+   "name": "Kumharo Ki Dhani",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87613",
+   "canonical_name": "Kumharo Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87613",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "945777",
+   "name": "Beniwalsar",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "88829",
+   "canonical_name": "Beniwalsar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88829",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937509",
+   "name": "Godaro Ki Dhani",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87015",
+   "canonical_name": "Godaro Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87015",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "937336",
+   "name": "Gogaji Ka Mandir",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "86933",
+   "canonical_name": "Gogaji Ka Mandir",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "86933",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "915824",
+   "name": "Dolaniyon Ki Dhani",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "88254",
+   "canonical_name": "Dolaniyon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88254",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "952401",
+   "name": "Godaro Ki Dhani",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87015",
+   "canonical_name": "Godaro Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87015",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "946836",
+   "name": "Jagmal Ka Tala",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "88567",
+   "canonical_name": "Jagmal Ka Tala",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88567",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946271",
+   "name": "Mahadev Nagar",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "87916",
+   "canonical_name": "Mahadev Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87916",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "946282",
+   "name": "Saharanpur",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "88843",
+   "canonical_name": "Saharanpur",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88843",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946652",
+   "name": "Hudasar",
+   "subdistrict": "Dhorimanna",
+   "canonical_lgd": "88671",
+   "canonical_name": "Hudasar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88671",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946729",
+   "name": "Siyagon Ki Dhani",
+   "subdistrict": "Gida",
+   "canonical_lgd": "86915",
+   "canonical_name": "Siyagon Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "86915",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "946761",
+   "name": "Bajrangpura",
+   "subdistrict": "Gida",
+   "canonical_lgd": "88732",
+   "canonical_name": "Bajrangpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88732",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946780",
+   "name": "Azad Nagar",
+   "subdistrict": "Gida",
+   "canonical_lgd": "88704",
+   "canonical_name": "Azad Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88704",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "AJADNAGAR"
+   ]
+  },
+  {
+   "new_lgd": "946837",
+   "name": "Beniwalon Ki Dhani",
+   "subdistrict": "Gida",
+   "canonical_lgd": "87073",
+   "canonical_name": "Beniwalon Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87073",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "946882",
+   "name": "Hemnagar",
+   "subdistrict": "Gida",
+   "canonical_lgd": "87779",
+   "canonical_name": "Hemnagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87779",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "947349",
+   "name": "Ambedkar Nagar",
+   "subdistrict": "Gida",
+   "canonical_lgd": "87103",
+   "canonical_name": "Ambedkar Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87103",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "960063",
+   "name": "Rajgarh",
+   "subdistrict": "Gida",
+   "canonical_lgd": "88836",
+   "canonical_name": "Rajgarh",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88836",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "952316",
+   "name": "Ummed Nagar",
+   "subdistrict": "Gida",
+   "canonical_lgd": "88804",
+   "canonical_name": "Ummed Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88804",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "939726",
+   "name": "Hanuman Nagar.",
+   "subdistrict": "Gida",
+   "canonical_lgd": "88394",
+   "canonical_name": "Hanuman Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88394",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "HANUMAN SAGAR"
+   ]
+  },
+  {
+   "new_lgd": "937374",
+   "name": "Hanuman Nagar",
+   "subdistrict": "Gida",
+   "canonical_lgd": "88394",
+   "canonical_name": "Hanuman Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88394",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "HANUMAN SAGAR"
+   ]
+  },
+  {
+   "new_lgd": "946747",
+   "name": "Ladhaniyon Ki Dhani",
+   "subdistrict": "Gida",
+   "canonical_lgd": "87137",
+   "canonical_name": "Ladhaniyon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87137",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "946752",
+   "name": "Meghwalon Ki Dhani",
+   "subdistrict": "Gida",
+   "canonical_lgd": "87732",
+   "canonical_name": "Meghwalon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87732",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937352",
+   "name": "Darjiyon Ki Dhani",
+   "subdistrict": "Gida",
+   "canonical_lgd": "87192",
+   "canonical_name": "Darjiyon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87192",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960687",
+   "name": "Naiyon Ki Dhani",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "87180",
+   "canonical_name": "Naiyon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87180",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960923",
+   "name": "Ramsar",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "88516",
+   "canonical_name": "Ramsar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88516",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960525",
+   "name": "Aalam Nagar",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "88024",
+   "canonical_name": "Aalam Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "88024",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960656",
+   "name": "Hanuman Nagar",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "88394",
+   "canonical_name": "Hanuman Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88394",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "HANUMAN SAGAR"
+   ]
+  },
+  {
+   "new_lgd": "946722",
+   "name": "Hudasar",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "88671",
+   "canonical_name": "Hudasar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88671",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "947253",
+   "name": "Mahadev Nagar",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "87916",
+   "canonical_name": "Mahadev Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87916",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "937439",
+   "name": "Manpura",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "89056",
+   "canonical_name": "Manpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "89056",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "916036",
+   "name": "Godaron Ki Basti",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "87040",
+   "canonical_name": "Godaron Ki Basti",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87040",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "952040",
+   "name": "Vishnoiyon Ki Dhani",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "87698",
+   "canonical_name": "Vishnoiyon Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87698",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "956469",
+   "name": "Sherpura",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "88691",
+   "canonical_name": "Sherpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88691",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "952027",
+   "name": "Gogaji Ka Mandir",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "86933",
+   "canonical_name": "Gogaji Ka Mandir",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "86933",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "902410",
+   "name": "Ishwarpura",
+   "subdistrict": "Gudha Malani",
+   "canonical_lgd": "88716",
+   "canonical_name": "Ishwarpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88716",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960048",
+   "name": "Pratapgarh",
+   "subdistrict": "Kalyanpur",
+   "canonical_lgd": "88160",
+   "canonical_name": "Pratapgarh",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "88160",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937507",
+   "name": "Mahadev Nagar",
+   "subdistrict": "Kalyanpur",
+   "canonical_lgd": "87916",
+   "canonical_name": "Mahadev Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87916",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "961585",
+   "name": "Eklavya Nagar",
+   "subdistrict": "Pachpadra",
+   "canonical_lgd": "87719",
+   "canonical_name": "Eklavya Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87719",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960141",
+   "name": "Hanuman Nagar",
+   "subdistrict": "Pachpadra",
+   "canonical_lgd": "88394",
+   "canonical_name": "Hanuman Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88394",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "HANUMAN SAGAR"
+   ]
+  },
+  {
+   "new_lgd": "961218",
+   "name": "Dev Nagar",
+   "subdistrict": "Pachpadra",
+   "canonical_lgd": "87636",
+   "canonical_name": "Dev Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87636",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "937499",
+   "name": "Goliya",
+   "subdistrict": "Pachpadra",
+   "canonical_lgd": "87584",
+   "canonical_name": "Goliya",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87584",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "946692",
+   "name": "Jasnathpura",
+   "subdistrict": "Patodi",
+   "canonical_lgd": "87070",
+   "canonical_name": "Jasnathpura",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87070",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "960074",
+   "name": "Karni Nagar",
+   "subdistrict": "Patodi",
+   "canonical_lgd": "86718",
+   "canonical_name": "Karni Nagar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "86718",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "KARNINAGAR"
+   ]
+  },
+  {
+   "new_lgd": "960090",
+   "name": "Chimanpura",
+   "subdistrict": "Patodi",
+   "canonical_lgd": "88556",
+   "canonical_name": "Chimanpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88556",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "961181",
+   "name": "Pabusar",
+   "subdistrict": "Patodi",
+   "canonical_lgd": "86863",
+   "canonical_name": "Pabusar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "86863",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937492",
+   "name": "Bairdon Ki Dhani",
+   "subdistrict": "Patodi",
+   "canonical_lgd": "87197",
+   "canonical_name": "Bairdon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87197",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "915699",
+   "name": "Mahadev Nagar",
+   "subdistrict": "Samdari",
+   "canonical_lgd": "87916",
+   "canonical_name": "Mahadev Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87916",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "961574",
+   "name": "Pabusar",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "86863",
+   "canonical_name": "Pabusar",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "86863",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "947317",
+   "name": "Raikon Ki Dhani",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "88396",
+   "canonical_name": "Raikon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88396",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "954361",
+   "name": "Hemnagar",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "87779",
+   "canonical_name": "Hemnagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87779",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "954950",
+   "name": "Khumaniyon Ki Dhani",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "87031",
+   "canonical_name": "Khumaniyon Ki Dhani",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87031",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "937293",
+   "name": "Laxmi Nagar",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "88139",
+   "canonical_name": "Laxmi Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "88139",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937295",
+   "name": "Jasnathpura",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "87070",
+   "canonical_name": "Jasnathpura",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87070",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "937297",
+   "name": "Mahadevpura.",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "87870",
+   "canonical_name": "Mahadevpura",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87870",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "946670",
+   "name": "Bhambhuon Ki Dhani",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "87168",
+   "canonical_name": "Bhambhuon Ki Dhani",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "87168",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "960082",
+   "name": "Hardanpura",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "88850",
+   "canonical_name": "Hardanpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88850",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "915583",
+   "name": "Borla",
+   "subdistrict": "Sindhari",
+   "canonical_lgd": "89050",
+   "canonical_name": "Borla",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "89050",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "954947",
+   "name": "Bheemgarh",
+   "subdistrict": "Siwana",
+   "canonical_lgd": "88054",
+   "canonical_name": "Bheemgarh",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "88054",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937400",
+   "name": "Manpura",
+   "subdistrict": "Siwana",
+   "canonical_lgd": "89056",
+   "canonical_name": "Manpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "89056",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937401",
+   "name": "Mahadev Nagar",
+   "subdistrict": "Siwana",
+   "canonical_lgd": "87916",
+   "canonical_name": "Mahadev Nagar",
+   "canonical_district": "Balotra",
+   "canonical_census2011": "87916",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": false
+  },
+  {
+   "new_lgd": "937403",
+   "name": "Vishanpura",
+   "subdistrict": "Siwana",
+   "canonical_lgd": "88360",
+   "canonical_name": "Vishanpura",
+   "canonical_district": "Barmer",
+   "canonical_census2011": "88360",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

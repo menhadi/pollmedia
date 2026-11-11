@@ -159,8 +159,18 @@ class ElectoralVillageMap
         }
         $statement = $database->prepare('SELECT s.file,s.feature_index,l.sha256 FROM shapes s JOIN layers l ON l.file=s.file WHERE s.lgd=? AND '.$predicate.' ORDER BY s.file,s.feature_index');
         $statement->execute([$code, ...$states]);
+        $shapes = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        if ($shapes === [] && $database->query("SELECT 1 FROM main.sqlite_master WHERE type='table' AND name='code_aliases'")->fetchColumn()) {
+            $alias = $database->prepare('SELECT canonical_lgd FROM code_aliases WHERE new_lgd=?');
+            $alias->execute([$code]);
+            $canonical = $alias->fetchColumn();
+            if ($canonical && (string) $canonical !== (string) $code) {
+                return $this->villageShapes($database, (string) $canonical);
+            }
+        }
+
+        return $shapes;
     }
 
     public function mapVillage(string $code, IndiaVillageMap $map): array
