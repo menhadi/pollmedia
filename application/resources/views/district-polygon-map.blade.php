@@ -1,9 +1,11 @@
 @php
 $catalogueLayers = collect(app(\App\Services\IndiaVillageMap::class)->catalogue()['layers']);
-$isPilibhitDistrict = (request()->attributes->get('district_identity')['state'] ?? request()->route('state')) === '09' && ($data['census_district_code'] ?? '') === '151';
+$districtIdentity = request()->attributes->get('district_identity');
+$isPilibhitDistrict = ($districtIdentity['state'] ?? request()->route('state')) === '09' && ($data['census_district_code'] ?? '') === '151';
 $pilibhitLayer = $isPilibhitDistrict ? $catalogueLayers->first(fn ($layer) => $layer['file'] === 'maps/pilibhit-villages.geojson') : null;
-$polygonFile = $pilibhitLayer['file'] ?? ($isPilibhitDistrict ? 'maps/pilibhit-district-pilot.json' : $sourceMap);
-$polygonLayer = $pilibhitLayer ?: ($polygonFile ? $catalogueLayers->first(fn ($layer) => $layer['file'] === $polygonFile) : null);
+$catalogueDistrictLayer = $catalogueLayers->first(fn ($layer) => $layer['state'] === ($districtIdentity['state_name'] ?? $data['state_name'] ?? null) && $layer['district'] === ($data['name'] ?? null));
+$polygonFile = $pilibhitLayer['file'] ?? ($isPilibhitDistrict ? 'maps/pilibhit-district-pilot.json' : ($sourceMap ?? $catalogueDistrictLayer['file'] ?? null));
+$polygonLayer = $pilibhitLayer ?: (($catalogueDistrictLayer && $catalogueDistrictLayer['file'] === $polygonFile) ? $catalogueDistrictLayer : ($polygonFile ? $catalogueLayers->first(fn ($layer) => $layer['file'] === $polygonFile) : null));
 @endphp
 @include('map-mobile-assets')
 @if($polygonFile)
