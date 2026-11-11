@@ -11,10 +11,9 @@ class PlaceLabels
      * Official place-type labels for every source feature in a district layer.
      *
      * Each label names the place exactly as the official record that defines it:
-     * Census 2011 for towns, the LGD village directory for villages, and the
-     * source layer classification for features that are neither. A feature whose
-     * type cannot be established from an official record is left unclassified
-     * rather than guessed.
+     * Census 2011 for towns, the LGD village directory for villages, the source
+     * attribute for forest land, and Other for a polygon whose type is not
+     * published. Nothing is inferred beyond the record it cites.
      *
      * @param  array<string, mixed>  $layer
      * @return array<int, array{level: string|null, name: string|null, code: string|null, source: string|null}>
@@ -68,8 +67,8 @@ class PlaceLabels
                     'name' => $directoryByCensus[$sourceCode] ?? $censusVillages[$sourceCode],
                     'code' => $sourceCode,
                     'source' => isset($directoryByCensus[$sourceCode]) ? 'LGD village directory (Census 2011 code)' : 'Census 2011 village directory'],
-                ($feature['category'] ?? '') === 'OTHERS' || $this->isForest((string) ($feature['name'] ?? '')) => ['level' => 'OTHER', 'name' => (string) ($feature['name'] ?? ''), 'code' => $code, 'source' => 'SOI source attribute'],
-                default => ['level' => null, 'name' => null, 'code' => $code, 'source' => null],
+                ($feature['category'] ?? '') === 'OTHERS' || $this->isForest((string) ($feature['name'] ?? '')) => ['level' => 'FOREST', 'name' => (string) ($feature['name'] ?? ''), 'code' => $code, 'source' => 'SOI source attribute'],
+                default => ['level' => 'OTHER', 'name' => $feature['name'] !== null && $feature['name'] !== '' ? (string) $feature['name'] : null, 'code' => $code, 'source' => 'SOI source polygon (type not published)'],
             };
         }
 
