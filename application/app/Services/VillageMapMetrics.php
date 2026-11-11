@@ -178,6 +178,9 @@ class VillageMapMetrics
         $identities = $links ? app(WaterMapData::class)->publishedIdentities($result['records'], $links, $identities ?? []) : ($identities ?? []);
         $result['records'] = WaterMapData::merge($result['records'], app(WaterMapData::class)->records($identities), $identities);
         $result['records'] = self::withIdentities($result['records'], $identities ?? []);
+        if ($nationalLayer) {
+            $result['labels'] = app(PlaceLabels::class)->forLayer($nationalLayer, $links);
+        }
 
         return $result;
     }

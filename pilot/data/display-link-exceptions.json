@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "authorisation": "Project owner decision, 11 November 2026: attach the retained Survey of India urban feature 804204 to LGD 131660 and label places from the official records that define them.",
+  "policy": "Curated exception links only, each backed by an official record that identifies the retained source polygon as the same settlement. No fuzzy, name-only or nearest-shape inference. Unavailable polygons stay unavailable.",
+  "entries": [
+    {
+      "file": "maps/pilibhit-villages.geojson",
+      "feature_index": 918,
+      "source_code": "804204",
+      "lgd": "131660",
+      "state": "9",
+      "basis": "Explicit crosswalk: Census 2011 records code 131660 as TOWN 'Pakriya Naugwan Mustqil (CT)' (Urban) with ward 0001, and the retained Survey of India feature 804204 'Pakariya Naugwan (NP)' covers the same settlement; LGD village 131660 carries the same code and name. Attached by project owner decision 2026-11-11; boundary edition unverified.",
+      "evidence": {
+        "lgd_village": {
+          "lgd": "131660",
+          "name": "Pakriya Naugwan Mustqil (Ct)",
+          "state_lgd_code": "9",
+          "district": "Pilibhit",
+          "subdistrict": "Pilibhit",
+          "district_lgd_code": "173",
+          "subdistrict_lgd_code": "790",
+          "census2011_code": "131660",
+          "coverage": "Fully Covered (AC 1033)"
+        },
+        "census_2011": [
+          {
+            "record_id": 973584,
+            "name": "Pakriya Naugwan Mustqil (CT)",
+            "level": "TOWN",
+            "residence": "Urban",
+            "state_code": "09",
+            "district_code": "151",
+            "subdistrict_code": "00790",
+            "town_village_code": "131660",
+            "source_row": 542,
+            "source_url": "https://censusindia.gov.in/nada/index.php/catalog/6342/download/9419/DDW_PCA0920_2011_MDDS%20with%20UI.xlsx"
+          },
+          {
+            "record_id": 15828,
+            "name": "Pakriya Naugwan Mustqil (CT)",
+            "level": "TOWN",
+            "residence": "Urban",
+            "state_code": "09",
+            "district_code": "151",
+            "town_village_code": "131660",
+            "source_row": 2500,
+            "source_url": "https://censusindia.gov.in/nada/index.php/catalog/42559/download/46185/2011-IndiaStateDistSbDistTwn-0000.xlsx"
+          }
+        ],
+        "survey_of_india_feature": {
+          "layer": "maps/pilibhit-villages.geojson",
+          "feature_index": 918,
+          "source_code": "804204",
+          "source_name": "Pakariya Naugwan (NP)",
+          "category": "URBAN",
+          "source_url": "https://surveyofindia.gov.in/documents/UTTAR_PRADESH.zip",
+          "layer_sha256": "5711c0233a8ba1320f6e38e7c60c33cd5dc8462ab0d5457997ec8ccb64df0633"
+        },
+        "level": "TOWN",
+        "label_source": "Census 2011 town directory"
+      }
+    }
+  ]
+}
