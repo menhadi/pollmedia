@@ -1,6 +1,6 @@
 (() => {
     const PALETTE = ['#cfe3d8', '#e6dcc3', '#d6e0ee', '#e9d6d6', '#dfe6cf', '#d9d3e8', '#cfe0e0', '#e8e0d0', '#d3e4dd', '#e4d8e6', '#dfe3c9', '#d8dfe8'];
-    const AC_PC_PALETTE = ['#ea4335', '#fbbc05', '#4285f4', '#a142f4', '#34a853'];
+    const AC_PC_PALETTE = ['#8fbfaa', '#a896c6', '#93bacf', '#d9a063', '#b0a2cc', '#a3c6d6'];
 
     const slug = (value) => String(value ?? '')
         .normalize('NFKD')
@@ -149,9 +149,16 @@
         });
 
         let onHover = null;
+        const subdistrictOrder = [...new Set(entries.map((entry) => entry.subdistrict).filter(Boolean))]
+            .sort((a, b) => a.localeCompare(b));
+        const colourForEntry = (entry) => {
+            if (!isVillage) return colourFor(entry.state, palette);
+            const position = subdistrictOrder.indexOf(entry.subdistrict);
+            return palette[(position < 0 ? 0 : position) % palette.length];
+        };
 
         for (const entry of entries) {
-            const fill = colourFor(isVillage ? (entry.subdistrict || entry.name) : entry.state, palette);
+            const fill = colourForEntry(entry);
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('d', pathFor(entry.feature.geometry));
             path.setAttribute('fill', fill);
@@ -195,8 +202,7 @@
             const villageSelect = layout.querySelector('[data-map-village]');
             const districtSelect = layout.querySelector('[data-map-district]');
             const shortcuts = layout.querySelector('[data-map-shortcuts]');
-            const subdistricts = [...new Set(entries.map((entry) => entry.subdistrict).filter(Boolean))]
-                .sort((a, b) => a.localeCompare(b));
+            const subdistricts = subdistrictOrder;
 
             const subdistrictPagesNode = container.querySelector('[data-map-subdistrict-pages]');
             let subdistrictPages = [];
