@@ -10,6 +10,9 @@
 </dl>
 <p class="compact-meta">{{ $hi?'जनगणना':'Census' }} {{ $year }} · {{ \App\Services\PublicLanguage::text($residence) }}@if(isset($areaValues['households'])) · {{ number_format($areaValues['households']) }} {{ $hi?'परिवार':'households' }}@endif</p>
 @include('residence-breakdown',['populationTotal'=>$residence==='Total'?($areaValues['population']??null):null,'ruralCount'=>$residencePopulation['Rural']??null,'urbanCount'=>$residencePopulation['Urban']??null])
+@if(!empty($showDistrictMap))
+@include('state-district-map')
+@endif
 @if($topic==='overview' && $districtRows->isNotEmpty())
 <section class="compact-directory" data-local-data-browser data-district-list>
 <div class="compact-section-title"><h2>{{ $hi?'ज़िला निर्देशिका':'District directory' }}</h2><label hidden data-seat-tools><input type="search" aria-label="{{ $hi?'ज़िला खोजें':'Find a district' }}" placeholder="{{ $hi?'ज़िला खोजें':'Find a district' }}"></label></div>

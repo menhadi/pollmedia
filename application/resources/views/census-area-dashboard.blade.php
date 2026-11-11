@@ -62,10 +62,7 @@ $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)
 @include('community-area-issues')
 <?php endif; ?>
 @if($isState && in_array($topic,['overview','places'],true))
-@include('state-district-glance')
-@if((int)$year === 2011)
-@include('state-district-map')
-@endif
+@include('state-district-glance',['showDistrictMap'=>$isState && $topic==='overview' && (int)$year===2011])
 @if($topic==='overview')
 <section class="landing-card"><h2>Population history</h2>
 @foreach(collect($censusSeries['rows'])->whereNotNull('population')->sortByDesc('year')->take(3)->reverse() as $point)<div class="landing-stat"><span>{{ $point['year'] }}</span><strong>{{ number_format($point['population']) }}{{ !empty($point['notes'])?' †':'' }}</strong></div>@endforeach
