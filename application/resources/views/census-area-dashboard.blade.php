@@ -61,7 +61,7 @@ $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)
 <?php $issueArea = app(\App\Services\CommunityAreaIssues::class)->censusContext($place, $censusMapContext); ?>
 @include('community-area-issues')
 <?php endif; ?>
-@if($isState && in_array($topic,['overview','places'],true))
+@if($isState && in_array($topic,['overview'],true))
 @include('state-district-glance',['showDistrictMap'=>$isState && $topic==='overview' && (int)$year===2011])
 @if($topic==='overview')
 <section class="landing-card"><h2>Population history</h2>
