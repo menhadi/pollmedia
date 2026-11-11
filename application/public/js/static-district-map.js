@@ -21,7 +21,56 @@
 
     const ringsOf = (geometry) => (geometry.type === 'Polygon' ? geometry.coordinates : geometry.coordinates.flat());
 
+    const districtColours = (features) => {
+        const adjacency = features.map(() => new Set());
+        if (features.length > 1) {
+            const shared = new Map();
+            features.forEach((feature, index) => {
+                for (const ring of ringsOf(feature.geometry)) {
+                    for (const [x, y] of ring) {
+                        const key = x.toFixed(5) + ',' + y.toFixed(5);
+                        let list = shared.get(key);
+                        if (!list) { list = []; shared.set(key, list); }
+                        if (list[list.length - 1] !== index) list.push(index);
+                    }
+                }
+            });
+            for (const list of shared.values()) {
+                if (list.length < 2) continue;
+                for (let i = 0; i < list.length; i += 1) {
+                    for (let j = i + 1; j < list.length; j += 1) {
+                        adjacency[list[i]].add(list[j]);
+                        adjacency[list[j]].add(list[i]);
+                    }
+                }
+            }
+        }
+
+        const order = features.map((_, index) => index).sort((a, b) => adjacency[b].size - adjacency[a].size);
+        const colours = new Array(features.length).fill(null);
+        for (const index of order) {
+            const used = new Set();
+            for (const neighbour of adjacency[index]) {
+                if (colours[neighbour] !== null) used.add(colours[neighbour]);
+            }
+            let colour = 0;
+            while (used.has(colour) && colour < AC_PC_PALETTE.length) colour += 1;
+            colours[index] = colour % AC_PC_PALETTE.length;
+        }
+
+        return colours;
+    };
+
     const label = (value) => String(value ?? '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+    const openLocation = (href) => {
+        if (window.parent && window.parent !== window) {
+            window.top.location.href = href;
+            return;
+        }
+
+        window.location.href = href;
+    };
 
     const villageDirectoryLink = (name) => {
         const wanted = label(name);
@@ -151,8 +200,9 @@
         let onHover = null;
         const subdistrictOrder = [...new Set(entries.map((entry) => entry.subdistrict).filter(Boolean))]
             .sort((a, b) => a.localeCompare(b));
+        const districtPalette = districtColours(features);
         const colourForEntry = (entry) => {
-            if (!isVillage) return colourFor(entry.state, palette);
+            if (!isVillage) return palette[districtPalette[entry.index] ?? 0];
             const position = subdistrictOrder.indexOf(entry.subdistrict);
             return palette[(position < 0 ? 0 : position) % palette.length];
         };
@@ -167,7 +217,7 @@
             path.setAttribute('tabindex', '0');
             path.setAttribute('aria-label', isVillage ? `${entry.name}, ${entry.subdistrict || entry.state}` : `${entry.name}, ${entry.state}`);
 
-            const open = () => { window.location.href = entry.href; };
+            const open = () => { openLocation(entry.href); };
 
             path.addEventListener('pointerenter', (event) => { showTooltip(entry.feature, event); if (onHover) onHover(entry); });
             path.addEventListener('pointermove', (event) => showTooltip(entry.feature, event));
@@ -269,7 +319,7 @@
 
             if (districtSelect) {
                 districtSelect.addEventListener('change', () => {
-                    if (districtSelect.value) window.location.href = districtSelect.value;
+                    if (districtSelect.value) openLocation(districtSelect.value);
                 });
             }
 
@@ -298,34 +348,85 @@
                 villageSelect.addEventListener('change', () => {
                     const option = villageSelect.selectedOptions[0];
                     const href = option?.dataset.href;
-                    if (href) window.location.href = href;
+                    if (href) openLocation(href);
                 });
             }
 
             if (status) status.textContent = describe(entries);
             renderShortcuts('');
-        } else if (status) {
-            status.textContent = `${features.length} districts shown. Select a district to open its summary page.`;
+        } else {
+            const stateSelect = layout.querySelector('[data-map-state-select]');
+            const districtSelect = layout.querySelector('[data-map-district-select]');
+            const shortcuts = layout.querySelector('[data-map-shortcuts]');
+            const ordered = [...entries].sort((a, b) => a.name.localeCompare(b.name));
+
+            const shortcutLink = (text, href) => {
+                const link = document.createElement('a');
+                link.href = href;
+                link.textContent = text;
+                return link;
+            };
+
+            const renderShortcuts = (hovered) => {
+                if (!shortcuts) return;
+                shortcuts.replaceChildren();
+                const stateLabel = container.dataset.state || 'state';
+                const stateHref = container.dataset.statePath
+                    || (container.dataset.stateLink || '/india/census/states/{state}').replace('{state}', slug(stateLabel));
+                shortcuts.append(shortcutLink(`Open ${stateLabel} census`, stateHref));
+                if (hovered) shortcuts.append(shortcutLink(`Open ${hovered.name} district`, hovered.href));
+            };
+
+            onHover = (entry) => renderShortcuts(entry);
+
+            if (stateSelect) {
+                const states = [...new Set((data.features || [])
+                    .filter((feature) => ['Polygon', 'MultiPolygon'].includes(feature.geometry?.type))
+                    .map((feature) => feature.properties.state || ''))]
+                    .filter(Boolean)
+                    .sort((a, b) => a.localeCompare(b));
+                for (const state of states) {
+                    const option = document.createElement('option');
+                    option.value = state;
+                    option.textContent = state.replace(/^The /, '');
+                    stateSelect.append(option);
+                }
+                if (stateFilter) {
+                    const wantedState = slug(stateFilter);
+                    const match = [...stateSelect.options].find((option) => slug(option.value) === wantedState);
+                    if (match) stateSelect.value = match.value;
+                }
+                stateSelect.addEventListener('change', () => {
+                    if (!stateSelect.value) return;
+                    const template = container.dataset.stateLink || '/india/census/states/{state}';
+                    openLocation(template.replace('{state}', slug(stateSelect.value)));
+                });
+            }
+
+            if (districtSelect) {
+                districtSelect.replaceChildren();
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = ordered.length ? 'Choose a district' : 'No districts available';
+                districtSelect.append(placeholder);
+                for (const entry of ordered) {
+                    const option = document.createElement('option');
+                    option.value = entry.href;
+                    option.textContent = entry.name;
+                    districtSelect.append(option);
+                }
+                districtSelect.disabled = ordered.length === 0;
+                districtSelect.addEventListener('change', () => {
+                    if (districtSelect.value) openLocation(districtSelect.value);
+                });
+            }
+
+            if (status) status.textContent = `${features.length} districts shown. Select a district or click the map to open its page.`;
+            renderShortcuts(null);
         }
 
-        const select = container.querySelector('[data-map-state-select]');
         const reset = container.querySelector('[data-map-reset]');
-        if (select) {
-            const states = [...new Set((data.features || []).map((feature) => feature.properties.state || ''))].filter(Boolean)
-                .sort((a, b) => a.localeCompare(b));
-            for (const state of states) {
-                const option = document.createElement('option');
-                option.value = state;
-                option.textContent = state.replace(/^The /, '');
-                select.append(option);
-            }
-            select.addEventListener('change', () => {
-                if (!select.value) return;
-                window.location.href = container.dataset.stateLink.replace('{state}', slug(select.value));
-            });
-            if (stateFilter) select.value = stateFilter;
-        }
-        if (reset) reset.addEventListener('click', () => { window.location.href = container.dataset.homeLink || '/'; });
+        if (reset) reset.addEventListener('click', () => { openLocation(container.dataset.homeLink || '/'); });
     }
 
     const start = () => document.querySelectorAll('[data-static-map]').forEach((container) => build(container));
