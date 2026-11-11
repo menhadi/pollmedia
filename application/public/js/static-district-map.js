@@ -108,8 +108,16 @@
         if (pagesNode) {
             try { knownPages = new Set(JSON.parse(pagesNode.textContent || '[]')); } catch (error) { knownPages = new Set(); }
         }
+        const linksNode = container.querySelector('[data-map-links]');
+        let villageLinks = {};
+        if (linksNode) {
+            try { villageLinks = JSON.parse(linksNode.textContent || '{}'); } catch (error) { villageLinks = {}; }
+        }
+        const villageBase = container.dataset.villageBase || '';
+        let featureIndex = -1;
 
         for (const feature of features) {
+            featureIndex += 1;
             const state = feature.properties.state || '';
             const name = feature.properties.name || '';
             const fill = colourFor(container.dataset.mode === 'village' ? (feature.properties.subdistrict || name) : state);
@@ -122,9 +130,12 @@
             path.setAttribute('aria-label', `${name}, ${state}`);
 
             const districtPath = linkTemplate.replace('{state}', slug(state)).replace('{district}', slug(name));
+            const linkedLgd = villageLinks[featureIndex] || null;
             const directoryLink = container.dataset.mode === 'village' ? villageDirectoryLink(name) : null;
             const href = container.dataset.mode === 'village'
-                ? (directoryLink || window.location.pathname + '?q=' + encodeURIComponent(name) + '#places')
+                ? (linkedLgd
+                    ? villageBase + slug(name) + '-' + linkedLgd
+                    : (directoryLink || window.location.pathname + '?q=' + encodeURIComponent(name) + '#places'))
                 : (knownPages.size === 0 || knownPages.has(districtPath)
                     ? districtPath
                     : (container.dataset.stateLink || '/india/state/{state}').replace('{state}', slug(state)));
