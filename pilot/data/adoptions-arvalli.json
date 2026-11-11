@@ -1,0 +1,43 @@
+{
+ "district": "Arvalli",
+ "parents": [
+  "Sabar Kantha"
+ ],
+ "notification": {
+  "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Arvalli formed from Sabar Kantha.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 9,
+  "matched": 2,
+  "adopted": 2,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 7
+ },
+ "decisions": [
+  {
+   "new_lgd": "961522",
+   "name": "Fatepur",
+   "subdistrict": "Bayad",
+   "canonical_lgd": "511005",
+   "canonical_name": "Fatepur",
+   "canonical_district": "Arvalli",
+   "canonical_census2011": "511005",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "961529",
+   "name": "Rampur",
+   "subdistrict": "Bhiloda",
+   "canonical_lgd": "510902",
+   "canonical_name": "Rampur",
+   "canonical_district": "Arvalli",
+   "canonical_census2011": "510902",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

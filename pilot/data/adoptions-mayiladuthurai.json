@@ -1,0 +1,20 @@
+{
+ "district": "Mayiladuthurai",
+ "parents": [
+  "Nagapattinam"
+ ],
+ "notification": {
+  "title": "Tamil Nadu notifications (Chengalpattu and Kallakurichi 2019, Mayiladuthurai 2020). Mayiladuthurai formed from Nagapattinam.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 18,
+  "matched": 0,
+  "adopted": 0,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 18
+ },
+ "decisions": []
+}

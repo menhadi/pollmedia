@@ -1,0 +1,20 @@
+{
+ "district": "Vijayanagara",
+ "parents": [
+  "Ballari"
+ ],
+ "notification": {
+  "title": "Karnataka notification, Vijayanagara created from Ballari, 2020. Vijayanagara formed from Ballari.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 28,
+  "matched": 0,
+  "adopted": 0,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 28
+ },
+ "decisions": []
+}

@@ -1,0 +1,65 @@
+{
+ "district": "Devbhumi Dwarka",
+ "parents": [
+  "Jamnagar"
+ ],
+ "notification": {
+  "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Devbhumi Dwarka formed from Jamnagar.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 21,
+  "matched": 4,
+  "adopted": 4,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 17
+ },
+ "decisions": [
+  {
+   "new_lgd": "908765",
+   "name": "Manpar",
+   "subdistrict": "Bhanvad",
+   "canonical_lgd": "513719",
+   "canonical_name": "Manpar",
+   "canonical_district": "Jamnagar",
+   "canonical_census2011": "513719",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "908766",
+   "name": "Vijaypur",
+   "subdistrict": "Bhanvad",
+   "canonical_lgd": "513924",
+   "canonical_name": "Vijaypur",
+   "canonical_district": "Jamnagar",
+   "canonical_census2011": "513924",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "908762",
+   "name": "Udepur",
+   "subdistrict": "Kalyanpur",
+   "canonical_lgd": "514161",
+   "canonical_name": "Udepur",
+   "canonical_district": "Jamnagar",
+   "canonical_census2011": "514161",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "908747",
+   "name": "Gokalpar",
+   "subdistrict": "Khambhalia",
+   "canonical_lgd": "513965",
+   "canonical_name": "Gokalpar",
+   "canonical_district": "Devbhumi Dwarka",
+   "canonical_census2011": "513965",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "district": "Niwari",
+ "parents": [
+  "Tikamgarh"
+ ],
+ "notification": {
+  "title": "Madhya Pradesh district reorganisation notifications (Agar-Malwa 2013, Niwari 2018, Mauganj and Pandhurna 2023). Niwari formed from Tikamgarh.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 22,
+  "matched": 2,
+  "adopted": 2,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 20
+ },
+ "decisions": [
+  {
+   "new_lgd": "950277",
+   "name": "Sawant Nagar",
+   "subdistrict": "Orchha",
+   "canonical_lgd": "457258",
+   "canonical_name": "Sawant Nagar",
+   "canonical_district": "Tikamgarh",
+   "canonical_census2011": "457258",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "950281",
+   "name": "Dhimarpura",
+   "subdistrict": "Orchha",
+   "canonical_lgd": "456440",
+   "canonical_name": "Dhimarpura",
+   "canonical_district": "Niwari",
+   "canonical_census2011": "456440",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

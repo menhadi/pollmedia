@@ -1,0 +1,21 @@
+{
+ "district": "Botad",
+ "parents": [
+  "Bhavnagar",
+  "Ahmedabad"
+ ],
+ "notification": {
+  "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Botad formed from Bhavnagar, Ahmedabad.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 4,
+  "matched": 0,
+  "adopted": 0,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 1,
+  "no_namesake": 3
+ },
+ "decisions": []
+}

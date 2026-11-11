@@ -1,0 +1,102 @@
+{
+ "district": "Kotputli-Behror",
+ "parents": [
+  "Jaipur",
+  "Alwar"
+ ],
+ "notification": {
+  "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Kotputli-Behror formed from Jaipur, Alwar.",
+  "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+ },
+ "stats": {
+  "targets": 59,
+  "matched": 7,
+  "adopted": 6,
+  "name_mismatch": 1,
+  "parent_unlinked": 0,
+  "ambiguous": 2,
+  "no_namesake": 50
+ },
+ "decisions": [
+  {
+   "new_lgd": "946106",
+   "name": "Kanpura",
+   "subdistrict": "Bansur",
+   "canonical_lgd": "79446",
+   "canonical_name": "Kanpura",
+   "canonical_district": "Jaipur",
+   "canonical_census2011": "79446",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "929607",
+   "name": "Balpura",
+   "subdistrict": "Bansur",
+   "canonical_lgd": "71870",
+   "canonical_name": "Balpura",
+   "canonical_district": "Kotputli-Behror",
+   "canonical_census2011": "71870",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "910773",
+   "name": "Gandhi Nagar",
+   "subdistrict": "Paota",
+   "canonical_lgd": "79068",
+   "canonical_name": "Gandhi Nagar",
+   "canonical_district": "Kotputli-Behror",
+   "canonical_census2011": "79068",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937168",
+   "name": "Rela",
+   "subdistrict": "Paota",
+   "canonical_lgd": "73729",
+   "canonical_name": "Rela",
+   "canonical_district": "Alwar",
+   "canonical_census2011": "73729",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true,
+   "polygon_names": [
+    "RAILA"
+   ]
+  },
+  {
+   "new_lgd": "901194",
+   "name": "Ambedkar Nagar",
+   "subdistrict": "Paota",
+   "canonical_lgd": "73468",
+   "canonical_name": "Ambedkar Nagar",
+   "canonical_district": "Alwar",
+   "canonical_census2011": "73468",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "936815",
+   "name": "Hirapura",
+   "subdistrict": "Viratnagar",
+   "canonical_lgd": "81155",
+   "canonical_name": "Hirapura",
+   "canonical_district": "Jaipur",
+   "canonical_census2011": "81155",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "936814",
+   "name": "Malera",
+   "subdistrict": "Viratnagar",
+   "canonical_lgd": "79459",
+   "canonical_name": "Malera",
+   "canonical_district": "Jaipur",
+   "canonical_census2011": "79459",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

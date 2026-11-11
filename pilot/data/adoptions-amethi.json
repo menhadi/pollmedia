@@ -1,0 +1,33 @@
+{
+ "district": "Amethi",
+ "parents": [
+  "Sultanpur",
+  "Rae Bareli"
+ ],
+ "notification": {
+  "title": "Uttar Pradesh district reorganisation (Amethi 2010 from Sultanpur and Rae Bareli; Hapur 2011 from Ghaziabad). Amethi formed from Sultanpur, Rae Bareli.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 2,
+  "matched": 1,
+  "adopted": 1,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 1
+ },
+ "decisions": [
+  {
+   "new_lgd": "942685",
+   "name": "Fatte Pur",
+   "subdistrict": "Musafirkhana",
+   "canonical_lgd": "168707",
+   "canonical_name": "Fatte Pur",
+   "canonical_district": "Amethi",
+   "canonical_census2011": "168707",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+{
+ "district": "Chengalpattu",
+ "parents": [
+  "Kancheepuram"
+ ],
+ "notification": {
+  "title": "Tamil Nadu notifications (Chengalpattu and Kallakurichi 2019, Mayiladuthurai 2020). Chengalpattu formed from Kancheepuram.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 99,
+  "matched": 4,
+  "adopted": 4,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 1,
+  "no_namesake": 94
+ },
+ "decisions": [
+  {
+   "new_lgd": "951844",
+   "name": "Venbakkam",
+   "subdistrict": "Chengalpattu",
+   "canonical_lgd": "629913",
+   "canonical_name": "Venbakkam",
+   "canonical_district": "Chengalpattu",
+   "canonical_census2011": "629913",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "951846",
+   "name": "Kadambur",
+   "subdistrict": "Chengalpattu",
+   "canonical_lgd": "630008",
+   "canonical_name": "Kadambur",
+   "canonical_district": "Chengalpattu",
+   "canonical_census2011": "630008",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "932653",
+   "name": "Ravathanallur",
+   "subdistrict": "Maduranthakam",
+   "canonical_lgd": "629783",
+   "canonical_name": "Ravathanallur",
+   "canonical_district": "Kancheepuram",
+   "canonical_census2011": "629783",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "933211",
+   "name": "Hasthinapuram",
+   "subdistrict": "Pallavaram",
+   "canonical_lgd": "629430",
+   "canonical_name": "Hasthinapuram",
+   "canonical_district": "Chengalpattu",
+   "canonical_census2011": "629430",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

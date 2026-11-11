@@ -1,0 +1,67 @@
+{
+ "district": "Beawar",
+ "parents": [
+  "Ajmer",
+  "Pali",
+  "Bhilwara"
+ ],
+ "notification": {
+  "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Beawar formed from Ajmer, Pali, Bhilwara.",
+  "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+ },
+ "stats": {
+  "targets": 50,
+  "matched": 4,
+  "adopted": 4,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 7,
+  "no_namesake": 39
+ },
+ "decisions": [
+  {
+   "new_lgd": "927936",
+   "name": "Nayanagar",
+   "subdistrict": "Beawar",
+   "canonical_lgd": "96299",
+   "canonical_name": "Nayanagar",
+   "canonical_district": "Bhilwara",
+   "canonical_census2011": "96299",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "927939",
+   "name": "Narsinghpura",
+   "subdistrict": "Beawar",
+   "canonical_lgd": "90932",
+   "canonical_name": "Narsinghpura",
+   "canonical_district": "Pali",
+   "canonical_census2011": "90932",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "959934",
+   "name": "Khera",
+   "subdistrict": "Raipur",
+   "canonical_lgd": "91492",
+   "canonical_name": "Khera",
+   "canonical_district": "Ajmer",
+   "canonical_census2011": "91492",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "937209",
+   "name": "Devnagar.",
+   "subdistrict": "Raipur",
+   "canonical_lgd": "90571",
+   "canonical_name": "Devnagar",
+   "canonical_district": "Beawar",
+   "canonical_census2011": "90571",
+   "method": "unique name and sub-district inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

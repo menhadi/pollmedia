@@ -1,0 +1,20 @@
+{
+ "district": "Hapur",
+ "parents": [
+  "Ghaziabad"
+ ],
+ "notification": {
+  "title": "Uttar Pradesh district reorganisation (Amethi 2010 from Sultanpur and Rae Bareli; Hapur 2011 from Ghaziabad). Hapur formed from Ghaziabad.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 15,
+  "matched": 0,
+  "adopted": 0,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 15
+ },
+ "decisions": []
+}

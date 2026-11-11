@@ -1,0 +1,32 @@
+{
+ "district": "Agar-Malwa",
+ "parents": [
+  "Shajapur"
+ ],
+ "notification": {
+  "title": "Madhya Pradesh district reorganisation notifications (Agar-Malwa 2013, Niwari 2018, Mauganj and Pandhurna 2023). Agar-Malwa formed from Shajapur.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 23,
+  "matched": 1,
+  "adopted": 1,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 22
+ },
+ "decisions": [
+  {
+   "new_lgd": "948266",
+   "name": "Jhikdiya",
+   "subdistrict": "Nalkheda",
+   "canonical_lgd": "472947",
+   "canonical_name": "Jhikdiya",
+   "canonical_district": "Shajapur",
+   "canonical_census2011": "472947",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

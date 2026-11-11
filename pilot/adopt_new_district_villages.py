@@ -74,12 +74,15 @@ def main():
         by_name_sub.setdefault((norm(row[2]), norm(row[3])), []).append(row)
 
     targets = [row for row in rows if row[1] == entry['district'] and (row[4] or '0') == '0' and str(row[0]) not in linked]
+    if targets:
+        placeholders = ','.join(['?'] * len(targets))
+        links.execute('DELETE FROM code_aliases WHERE new_lgd IN (' + placeholders + ')',
+                      [str(row[0]) for row in targets])
     decisions = []
     stats = {'targets': len(targets), 'matched': 0, 'adopted': 0, 'name_mismatch': 0,
              'parent_unlinked': 0, 'ambiguous': 0, 'no_namesake': 0}
     links.execute('CREATE TABLE IF NOT EXISTS code_aliases(new_lgd TEXT PRIMARY KEY, canonical_lgd TEXT NOT NULL, '
                   'basis TEXT, source_url TEXT, created_at TEXT)')
-    links.execute('DELETE FROM code_aliases')
     for lgd, district, subdistrict, name, census in targets:
         hits = by_name_sub.get((norm(subdistrict), norm(name)), [])
         method = 'unique name and sub-district inside the official parent districts'

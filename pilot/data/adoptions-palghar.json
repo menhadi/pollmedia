@@ -1,0 +1,98 @@
+{
+ "district": "Palghar",
+ "parents": [
+  "Thane"
+ ],
+ "notification": {
+  "title": "Maharashtra district reorganisation notification, Palghar created from Thane, 1 August 2014. Palghar formed from Thane.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 98,
+  "matched": 7,
+  "adopted": 7,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 1,
+  "no_namesake": 90
+ },
+ "decisions": [
+  {
+   "new_lgd": "943979",
+   "name": "Agashi",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "553289",
+   "canonical_name": "Agashi",
+   "canonical_district": "Thane",
+   "canonical_census2011": "553289",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "943985",
+   "name": "Karmale",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "552569",
+   "canonical_name": "Karmale",
+   "canonical_district": "Thane",
+   "canonical_census2011": "552569",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "944006",
+   "name": "Kiravali",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "552075",
+   "canonical_name": "Kiravali",
+   "canonical_district": "Palghar",
+   "canonical_census2011": "552075",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "944009",
+   "name": "Koshimbe",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "552516",
+   "canonical_name": "Koshimbe",
+   "canonical_district": "Thane",
+   "canonical_census2011": "552516",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "944148",
+   "name": "Navghar",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "552327",
+   "canonical_name": "Navghar",
+   "canonical_district": "Palghar",
+   "canonical_census2011": "552327",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "944183",
+   "name": "Mulgaon",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "553058",
+   "canonical_name": "Mulgaon",
+   "canonical_district": "Thane",
+   "canonical_census2011": "553058",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  },
+  {
+   "new_lgd": "944198",
+   "name": "Shirsad",
+   "subdistrict": "Vasai",
+   "canonical_lgd": "552147",
+   "canonical_name": "Shirsad",
+   "canonical_district": "Palghar",
+   "canonical_census2011": "552147",
+   "method": "unique name inside the official parent districts",
+   "canonical_linked": true
+  }
+ ]
+}

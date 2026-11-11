@@ -1,0 +1,20 @@
+{
+ "district": "Pathankot",
+ "parents": [
+  "Gurdaspur"
+ ],
+ "notification": {
+  "title": "Punjab notifications (Pathankot 2011, Fazilka 2011, Malerkotla 2021). Pathankot formed from Gurdaspur.",
+  "url": ""
+ },
+ "stats": {
+  "targets": 14,
+  "matched": 0,
+  "adopted": 0,
+  "name_mismatch": 0,
+  "parent_unlinked": 0,
+  "ambiguous": 0,
+  "no_namesake": 14
+ },
+ "decisions": []
+}

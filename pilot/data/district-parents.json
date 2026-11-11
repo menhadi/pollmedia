@@ -1,16 +1,347 @@
 {
-  "schema_version": 1,
-  "districts": [
-    {
-      "state": "Rajasthan",
-      "state_code": "8",
-      "district": "Balotra",
-      "parents": ["Barmer"],
-      "notification": {
-        "title": "Rajasthan Gazette Extraordinary, Notification No. P.9(18)raj-1/2022-(2), 5 August 2023 (effective 7 August 2023)",
-        "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf",
-        "quote": "Balotra district formed by reorganising Barmer district; sub-districts Balotra, Siwana, Baytu and Sindhari"
-      }
-    }
-  ]
+ "schema_version": 1,
+ "districts": [
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Balotra",
+   "parents": [
+    "Barmer"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Balotra formed from Barmer.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Beawar",
+   "parents": [
+    "Ajmer",
+    "Pali",
+    "Bhilwara"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Beawar formed from Ajmer, Pali, Bhilwara.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Deeg",
+   "parents": [
+    "Bharatpur"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Deeg formed from Bharatpur.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Didwana-Kuchaman",
+   "parents": [
+    "Nagaur"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Didwana-Kuchaman formed from Nagaur.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Khairthal-Tijara",
+   "parents": [
+    "Alwar"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Khairthal-Tijara formed from Alwar.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Kotputli-Behror",
+   "parents": [
+    "Jaipur",
+    "Alwar"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Kotputli-Behror formed from Jaipur, Alwar.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Rajasthan",
+   "state_code": "8",
+   "district": "Salumbar",
+   "parents": [
+    "Udaipur"
+   ],
+   "notification": {
+    "title": "Rajasthan Gazette Extraordinary, notification No. P.9(18)raj-1/2022 series, 5 August 2023 (effective 7 August 2023). Salumbar formed from Udaipur.",
+    "url": "https://jankalyanfile.rajasthan.gov.in/WebMyWayFiles/OrderEntry/District_Balotra/2023/Notification/O_070823_60a102a9-080a-4a32-a542-f6cd0a58eb8f.pdf"
+   }
+  },
+  {
+   "state": "Uttar Pradesh",
+   "state_code": "9",
+   "district": "Amethi",
+   "parents": [
+    "Sultanpur",
+    "Rae Bareli"
+   ],
+   "notification": {
+    "title": "Uttar Pradesh district reorganisation (Amethi 2010 from Sultanpur and Rae Bareli; Hapur 2011 from Ghaziabad). Amethi formed from Sultanpur, Rae Bareli.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Uttar Pradesh",
+   "state_code": "9",
+   "district": "Hapur",
+   "parents": [
+    "Ghaziabad"
+   ],
+   "notification": {
+    "title": "Uttar Pradesh district reorganisation (Amethi 2010 from Sultanpur and Rae Bareli; Hapur 2011 from Ghaziabad). Hapur formed from Ghaziabad.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Maharashtra",
+   "state_code": "27",
+   "district": "Palghar",
+   "parents": [
+    "Thane"
+   ],
+   "notification": {
+    "title": "Maharashtra district reorganisation notification, Palghar created from Thane, 1 August 2014. Palghar formed from Thane.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Gujarat",
+   "state_code": "24",
+   "district": "Chhotaudepur",
+   "parents": [
+    "Vadodara"
+   ],
+   "notification": {
+    "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Chhotaudepur formed from Vadodara.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Gujarat",
+   "state_code": "24",
+   "district": "Mahisagar",
+   "parents": [
+    "Panch Mahals",
+    "Kheda"
+   ],
+   "notification": {
+    "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Mahisagar formed from Panch Mahals, Kheda.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Gujarat",
+   "state_code": "24",
+   "district": "Arvalli",
+   "parents": [
+    "Sabar Kantha"
+   ],
+   "notification": {
+    "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Arvalli formed from Sabar Kantha.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Gujarat",
+   "state_code": "24",
+   "district": "Morbi",
+   "parents": [
+    "Rajkot"
+   ],
+   "notification": {
+    "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Morbi formed from Rajkot.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Gujarat",
+   "state_code": "24",
+   "district": "Devbhumi Dwarka",
+   "parents": [
+    "Jamnagar"
+   ],
+   "notification": {
+    "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Devbhumi Dwarka formed from Jamnagar.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Gujarat",
+   "state_code": "24",
+   "district": "Botad",
+   "parents": [
+    "Bhavnagar",
+    "Ahmedabad"
+   ],
+   "notification": {
+    "title": "Gujarat district reorganisation notifications, 2013 (Chhotaudepur, Mahisagar, Arvalli, Morbi, Devbhumi Dwarka, Botad). Botad formed from Bhavnagar, Ahmedabad.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Madhya Pradesh",
+   "state_code": "23",
+   "district": "MAUGANJ",
+   "parents": [
+    "Rewa"
+   ],
+   "notification": {
+    "title": "Madhya Pradesh district reorganisation notifications (Agar-Malwa 2013, Niwari 2018, Mauganj and Pandhurna 2023). Mauganj formed from Rewa.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Madhya Pradesh",
+   "state_code": "23",
+   "district": "Pandhurna",
+   "parents": [
+    "Chhindwara"
+   ],
+   "notification": {
+    "title": "Madhya Pradesh district reorganisation notifications (Agar-Malwa 2013, Niwari 2018, Mauganj and Pandhurna 2023). Pandhurna formed from Chhindwara.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Madhya Pradesh",
+   "state_code": "23",
+   "district": "Agar-Malwa",
+   "parents": [
+    "Shajapur"
+   ],
+   "notification": {
+    "title": "Madhya Pradesh district reorganisation notifications (Agar-Malwa 2013, Niwari 2018, Mauganj and Pandhurna 2023). Agar-Malwa formed from Shajapur.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Madhya Pradesh",
+   "state_code": "23",
+   "district": "Niwari",
+   "parents": [
+    "Tikamgarh"
+   ],
+   "notification": {
+    "title": "Madhya Pradesh district reorganisation notifications (Agar-Malwa 2013, Niwari 2018, Mauganj and Pandhurna 2023). Niwari formed from Tikamgarh.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Karnataka",
+   "state_code": "29",
+   "district": "Vijayanagara",
+   "parents": [
+    "Ballari"
+   ],
+   "notification": {
+    "title": "Karnataka notification, Vijayanagara created from Ballari, 2020. Vijayanagara formed from Ballari.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Tamil Nadu",
+   "state_code": "33",
+   "district": "Mayiladuthurai",
+   "parents": [
+    "Nagapattinam"
+   ],
+   "notification": {
+    "title": "Tamil Nadu notifications (Chengalpattu and Kallakurichi 2019, Mayiladuthurai 2020). Mayiladuthurai formed from Nagapattinam.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Tamil Nadu",
+   "state_code": "33",
+   "district": "Chengalpattu",
+   "parents": [
+    "Kancheepuram"
+   ],
+   "notification": {
+    "title": "Tamil Nadu notifications (Chengalpattu and Kallakurichi 2019, Mayiladuthurai 2020). Chengalpattu formed from Kancheepuram.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Tamil Nadu",
+   "state_code": "33",
+   "district": "Kallakurichi",
+   "parents": [
+    "Viluppuram"
+   ],
+   "notification": {
+    "title": "Tamil Nadu notifications (Chengalpattu and Kallakurichi 2019, Mayiladuthurai 2020). Kallakurichi formed from Viluppuram.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Punjab",
+   "state_code": "3",
+   "district": "Malerkotla",
+   "parents": [
+    "Sangrur"
+   ],
+   "notification": {
+    "title": "Punjab notifications (Pathankot 2011, Fazilka 2011, Malerkotla 2021). Malerkotla formed from Sangrur.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Punjab",
+   "state_code": "3",
+   "district": "Pathankot",
+   "parents": [
+    "Gurdaspur"
+   ],
+   "notification": {
+    "title": "Punjab notifications (Pathankot 2011, Fazilka 2011, Malerkotla 2021). Pathankot formed from Gurdaspur.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Punjab",
+   "state_code": "3",
+   "district": "Fazilka",
+   "parents": [
+    "Ferozepur"
+   ],
+   "notification": {
+    "title": "Punjab notifications (Pathankot 2011, Fazilka 2011, Malerkotla 2021). Fazilka formed from Ferozepur.",
+    "url": ""
+   }
+  },
+  {
+   "state": "Haryana",
+   "state_code": "6",
+   "district": "Charkhi Dadri",
+   "parents": [
+    "Bhiwani"
+   ],
+   "notification": {
+    "title": "Haryana notification, Charkhi Dadri created from Bhiwani, 2016. Charkhi Dadri formed from Bhiwani.",
+    "url": ""
+   }
+  }
+ ]
 }
