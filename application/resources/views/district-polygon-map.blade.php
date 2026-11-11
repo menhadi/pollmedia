@@ -1,9 +1,12 @@
 @php
 $catalogueLayers = collect(app(\App\Services\IndiaVillageMap::class)->catalogue()['layers']);
 $districtIdentity = request()->attributes->get('district_identity');
+$normaliseName = fn ($value): string => preg_replace('/[^a-z0-9]+/', '', strtolower(str_replace('&', 'and', (string) $value)));
+$sameState = fn ($left, $right): bool => $normaliseName($left) === $normaliseName($right)
+    || (str_contains($normaliseName($left), 'dadra') && str_contains($normaliseName($right), 'dadra'));
 $isPilibhitDistrict = ($districtIdentity['state'] ?? request()->route('state')) === '09' && ($data['census_district_code'] ?? '') === '151';
 $pilibhitLayer = $isPilibhitDistrict ? $catalogueLayers->first(fn ($layer) => $layer['file'] === 'maps/pilibhit-villages.geojson') : null;
-$catalogueDistrictLayer = $catalogueLayers->first(fn ($layer) => $layer['state'] === ($districtIdentity['state_name'] ?? $data['state_name'] ?? null) && $layer['district'] === ($data['name'] ?? null));
+$catalogueDistrictLayer = $catalogueLayers->first(fn ($layer) => $sameState($layer['state'], $districtIdentity['state_name'] ?? $data['state_name'] ?? '') && $normaliseName($layer['district']) === $normaliseName($data['name'] ?? ''));
 $polygonFile = $pilibhitLayer['file'] ?? ($isPilibhitDistrict ? 'maps/pilibhit-district-pilot.json' : ($sourceMap ?? $catalogueDistrictLayer['file'] ?? null));
 $polygonLayer = $pilibhitLayer ?: (($catalogueDistrictLayer && $catalogueDistrictLayer['file'] === $polygonFile) ? $catalogueDistrictLayer : ($polygonFile ? $catalogueLayers->first(fn ($layer) => $layer['file'] === $polygonFile) : null));
 @endphp
