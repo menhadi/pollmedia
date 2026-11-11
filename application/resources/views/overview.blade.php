@@ -8,7 +8,8 @@
 <script src="{{ asset('js/home-dashboard.js') }}?v={{ substr(hash_file('sha256',public_path('js/home-dashboard.js')),0,12) }}" defer></script>
 
 <link rel="stylesheet" href="{{ asset('css/public-landings.css') }}?v={{ substr(hash_file('sha256',public_path('css/public-landings.css')),0,12) }}">@isset($catalogue)
-@include('india-map-assets')
+<link rel="stylesheet" href="{{ asset('css/static-district-map.css') }}?v={{ substr(hash_file('sha256',public_path('css/static-district-map.css')),0,12) }}">
+<script src="{{ asset('js/static-district-map.js') }}?v={{ substr(hash_file('sha256',public_path('js/static-district-map.js')),0,12) }}" defer></script>
 @endisset
 </head><body class="election-ui home-dashboard pm-landing">@include('public-header')
 @php $issueService=app(\App\Services\CommunityAreaIssues::class); $issueArea=$issueService->context('india','India'); @endphp
@@ -23,9 +24,9 @@
 @endphp
 
 @isset($catalogue)
-<section id="explore-india-map" class="india-explorer home-map-panel" aria-labelledby="home-map-heading">
+<section id="explore-india-map" class="home-map-panel" aria-labelledby="home-map-heading">
     <div class="home-section-heading"><h1 id="home-map-heading">Explore the India map</h1><a href="{{ route('india-map.index') }}">Open full map ↗</a></div>
-    @include('india-map-explorer', ['homeMap'=>true])
+    @include('static-district-map', ['mapIntro' => 'Select a district to open its summary page. Each state keeps one colour.'])
 </section>
 @else
 <h1>India elections and Census</h1>
