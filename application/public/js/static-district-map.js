@@ -1,6 +1,6 @@
 (() => {
     const PALETTE = ['#cfe3d8', '#e6dcc3', '#d6e0ee', '#e9d6d6', '#dfe6cf', '#d9d3e8', '#cfe0e0', '#e8e0d0', '#d3e4dd', '#e4d8e6', '#dfe3c9', '#d8dfe8'];
-    const DASHBOARD_PALETTE = ['#176858', '#2f8f73', '#57a98d', '#7fc3a8', '#a7dbc4', '#cbe9d9'];
+    const AC_PC_PALETTE = ['#ea4335', '#fbbc05', '#4285f4', '#a142f4', '#34a853'];
 
     const slug = (value) => String(value ?? '')
         .normalize('NFKD')
@@ -40,7 +40,7 @@
         const stateFilter = container.dataset.state || '';
         const mode = container.dataset.mode || 'district';
         const isVillage = mode === 'village';
-        const palette = isVillage ? DASHBOARD_PALETTE : PALETTE;
+        const palette = isVillage ? AC_PC_PALETTE : PALETTE;
         const linkTemplate = container.dataset.link || '/india/districts/{state}/{district}';
 
         let data;
@@ -148,6 +148,8 @@
             return { feature, index, state, name, subdistrict, href, linked: Boolean(linkedLgd), bounds: [x0, y0, x1, y1] };
         });
 
+        let onHover = null;
+
         for (const entry of entries) {
             const fill = colourFor(isVillage ? (entry.subdistrict || entry.name) : entry.state, palette);
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -160,9 +162,10 @@
 
             const open = () => { window.location.href = entry.href; };
 
-            path.addEventListener('pointerenter', (event) => showTooltip(entry.feature, event));
+            path.addEventListener('pointerenter', (event) => { showTooltip(entry.feature, event); if (onHover) onHover(entry); });
             path.addEventListener('pointermove', (event) => showTooltip(entry.feature, event));
             path.addEventListener('pointerleave', hideTooltip);
+            path.addEventListener('focus', () => { if (onHover) onHover(entry); });
             path.addEventListener('click', open);
             path.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
@@ -190,8 +193,39 @@
         if (isVillage) {
             const subdistrictSelect = layout.querySelector('[data-map-subdistrict]');
             const villageSelect = layout.querySelector('[data-map-village]');
+            const districtSelect = layout.querySelector('[data-map-district]');
+            const shortcuts = layout.querySelector('[data-map-shortcuts]');
             const subdistricts = [...new Set(entries.map((entry) => entry.subdistrict).filter(Boolean))]
                 .sort((a, b) => a.localeCompare(b));
+
+            const subdistrictPagesNode = container.querySelector('[data-map-subdistrict-pages]');
+            let subdistrictPages = [];
+            if (subdistrictPagesNode) {
+                try { subdistrictPages = JSON.parse(subdistrictPagesNode.textContent || '[]'); } catch (error) { subdistrictPages = []; }
+            }
+
+            const shortcutLink = (text, href) => {
+                const link = document.createElement('a');
+                link.href = href;
+                link.textContent = text;
+                return link;
+            };
+
+            let activeSubdistrict = '';
+
+            const renderShortcuts = (subdistrict, hovered) => {
+                if (!shortcuts) return;
+                shortcuts.replaceChildren();
+                const districtName = container.dataset.districtName || 'district';
+                shortcuts.append(shortcutLink(`Open ${districtName} district`, container.dataset.districtPath || window.location.pathname));
+
+                if (subdistrict) {
+                    const match = subdistrictPages.find((row) => label(row.name) === label(subdistrict));
+                    if (match) shortcuts.append(shortcutLink(`Open ${match.name} subdistrict`, match.url));
+                }
+
+                if (hovered) shortcuts.append(shortcutLink(`Open ${hovered.name}`, hovered.href));
+            };
 
             const describe = (shown) => {
                 const linked = shown.filter((entry) => entry.linked).length;
@@ -227,6 +261,14 @@
                 if (status) status.textContent = describe(shown);
             };
 
+            if (districtSelect) {
+                districtSelect.addEventListener('change', () => {
+                    if (districtSelect.value) window.location.href = districtSelect.value;
+                });
+            }
+
+            onHover = (entry) => renderShortcuts(activeSubdistrict, entry);
+
             if (subdistrictSelect) {
                 for (const subdistrict of subdistricts) {
                     const option = document.createElement('option');
@@ -237,9 +279,11 @@
 
                 subdistrictSelect.addEventListener('change', () => {
                     const value = subdistrictSelect.value;
+                    activeSubdistrict = value;
                     const subset = value ? entries.filter((entry) => entry.subdistrict === value) : [];
                     zoomTo(subset);
                     fillVillages(value);
+                    renderShortcuts(value);
                     if (!value && status) status.textContent = describe(entries);
                 });
             }
@@ -253,6 +297,7 @@
             }
 
             if (status) status.textContent = describe(entries);
+            renderShortcuts('');
         } else if (status) {
             status.textContent = `${features.length} districts shown. Select a district to open its summary page.`;
         }
