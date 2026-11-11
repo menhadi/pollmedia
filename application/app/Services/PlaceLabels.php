@@ -68,12 +68,22 @@ class PlaceLabels
                     'name' => $directoryByCensus[$sourceCode] ?? $censusVillages[$sourceCode],
                     'code' => $sourceCode,
                     'source' => isset($directoryByCensus[$sourceCode]) ? 'LGD village directory (Census 2011 code)' : 'Census 2011 village directory'],
-                ($feature['category'] ?? '') === 'OTHERS' => ['level' => 'OTHER', 'name' => (string) ($feature['name'] ?? ''), 'code' => $code, 'source' => 'SOI source classification'],
+                ($feature['category'] ?? '') === 'OTHERS' || $this->isForest((string) ($feature['name'] ?? '')) => ['level' => 'OTHER', 'name' => (string) ($feature['name'] ?? ''), 'code' => $code, 'source' => 'SOI source attribute'],
                 default => ['level' => null, 'name' => null, 'code' => $code, 'source' => null],
             };
         }
 
         return $labels;
+    }
+
+    /**
+     * Forest and reserved-forest polygons are named as such in the source
+     * attribute table. They are land use, not settlements, so they carry no
+     * LGD or Census identity; the polygon itself is the official record.
+     */
+    private function isForest(string $name): bool
+    {
+        return (bool) preg_match('/forest|\bR\.?\s?F\.?\b|\bP\.?\s?F\.?\b/i', $name);
     }
 
     /**
