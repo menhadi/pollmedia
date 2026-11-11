@@ -49,9 +49,6 @@ $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)
 </form>@endif</header>
 @include('place-topic-nav',['topicGroup'=>'census','topicOptions'=>array_values(array_filter(\App\Services\PlaceTopics::GROUPS['census'],fn($k)=>($k!=='elections'||$isState)&&($k!=='markets'||$place->level==='VILLAGE')&&(!in_array($k,['water','soil','rainfall'],true)||($place->level==='VILLAGE'&&(int)$year===2011)||($isState&&$k!=='rainfall'&&(int)$year===2011))) )])
 <div data-topic-body>
-@if($isState && (int)$year === 2011 && in_array($topic, ['overview','places'], true))
-@include('state-district-map')
-@endif
 @if(in_array($topic,['people','water','soil'],true) && $isState && (int)$year===2011 && $residence==='Total')
 @include('place-fact-tables',['onlyTopic'=>$topic,'facts'=>app(\App\Services\PlaceFactTables::class)->state($areaStateSlug,$place->name)])
 @elseif($place->level==='VILLAGE' && (int)$year===2011 && $topic==='soil')
@@ -66,6 +63,9 @@ $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)
 <?php endif; ?>
 @if($isState && in_array($topic,['overview','places'],true))
 @include('state-district-glance')
+@if((int)$year === 2011)
+@include('state-district-map')
+@endif
 @if($topic==='overview')
 <section class="landing-card"><h2>Population history</h2>
 @foreach(collect($censusSeries['rows'])->whereNotNull('population')->sortByDesc('year')->take(3)->reverse() as $point)<div class="landing-stat"><span>{{ $point['year'] }}</span><strong>{{ number_format($point['population']) }}{{ !empty($point['notes'])?' †':'' }}</strong></div>@endforeach
