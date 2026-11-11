@@ -23,3 +23,6 @@
 .india-explorer #area-navigation:empty{display:none}
 
 .india-explorer #metric-guidance{margin:0;padding:16px 20px;background:#fff4d9;color:#704b0b;border-bottom:1px solid #edd396;font-size:14px;font-weight:600}
+
+/* Dark canvas: the base map is drawn from source polygons only, no OSM tiles. */
+.india-explorer #india-map{background:#0b1f2a}.india-explorer .maplibregl-canvas{background:#0b1f2a!important}.india-explorer .map-panel{background:#0b1f2a}

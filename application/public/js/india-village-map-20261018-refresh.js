@@ -86,7 +86,7 @@ export function metricIndices(count, records, metric, min, max, missing, members
  return (membership||Array.from({length:count},(_,i)=>i)).filter(i=>{const v=values.get(i);return !metric||(v==null?missing:(min===''||v>=Number(min))&&(max===''||v<=Number(max)));});
 }
 
-export const mapMetricColours=['#ea4335','#fbbc05','#4285f4','#a142f4','#34a853'];
+export const mapMetricColours=['#22d3ee','#fbbf24','#fb7185','#a78bfa','#34d399'];
 
 export function constituencyValues(feature,official,groups) {
     const cache=constituencyValues.keys??=new WeakMap();
@@ -215,11 +215,11 @@ async function start(section) {
         const active=metric.value&&!villageMetricCount();
         if(active){
             const b=overviewBreaks[metric.value]||[1,5,10,50];
-            map.setPaintProperty('admin-boundaries','fill-color',['case',['==',['get',`overview_${metric.value}`],null],'#9ca3af',['step',['coalesce',['get',`overview_${metric.value}`],0],(isSoil(metric.value)?[...colours].reverse():colours)[0],...b.flatMap((value,index)=>[value,(isSoil(metric.value)?[...colours].reverse():colours)[index+1]])]]);
+            map.setPaintProperty('admin-boundaries','fill-color',['case',['==',['get',`overview_${metric.value}`],null],'#64748b',['step',['coalesce',['get',`overview_${metric.value}`],0],(isSoil(metric.value)?[...colours].reverse():colours)[0],...b.flatMap((value,index)=>[value,(isSoil(metric.value)?[...colours].reverse():colours)[index+1]])]]);
             map.setPaintProperty('admin-boundaries','fill-opacity',0.75);
             map.setFilter('admin-boundaries',['case',['==',['get',`overview_${metric.value}`],null],missing.checked,['all',minimum.value===''?true:['>=',['get',`overview_${metric.value}`],Number(minimum.value)],maximum.value===''?true:['<=',['get',`overview_${metric.value}`],Number(maximum.value)]]]);
         }else{
-            map.setPaintProperty('admin-boundaries','fill-color','#b3d6c8');map.setPaintProperty('admin-boundaries','fill-opacity',['case',['boolean',['get','context'],false],0.13,0.5]);map.setFilter('admin-boundaries',null);
+            map.setPaintProperty('admin-boundaries','fill-color','#2dd4bf');map.setPaintProperty('admin-boundaries','fill-opacity',['case',['boolean',['get','context'],false],0.13,0.5]);map.setFilter('admin-boundaries',null);
         }
     }
     function paintElectoralOverview(){
@@ -227,11 +227,11 @@ async function start(section) {
         const active=metric.value&&!villageMetricCount();
         if(active){
             const b=overviewBreaks[metric.value]||[1,5,10,50];
-            map.setPaintProperty('electoral-boundaries','fill-color',['case',['==',['get',`overview_${metric.value}`],null],'#9ca3af',['step',['coalesce',['get',`overview_${metric.value}`],0],(isSoil(metric.value)?[...colours].reverse():colours)[0],...b.flatMap((value,index)=>[value,(isSoil(metric.value)?[...colours].reverse():colours)[index+1]])]]);
+            map.setPaintProperty('electoral-boundaries','fill-color',['case',['==',['get',`overview_${metric.value}`],null],'#64748b',['step',['coalesce',['get',`overview_${metric.value}`],0],(isSoil(metric.value)?[...colours].reverse():colours)[0],...b.flatMap((value,index)=>[value,(isSoil(metric.value)?[...colours].reverse():colours)[index+1]])]]);
             map.setPaintProperty('electoral-boundaries','fill-opacity',0.75);
             map.setFilter('electoral-boundaries',['case',['==',['get',`overview_${metric.value}`],null],missing.checked,['all',minimum.value===''?true:['>=',['get',`overview_${metric.value}`],Number(minimum.value)],maximum.value===''?true:['<=',['get',`overview_${metric.value}`],Number(maximum.value)]]]);
         }else{
-            map.setPaintProperty('electoral-boundaries','fill-color','#b3d6c8');map.setPaintProperty('electoral-boundaries','fill-opacity',villageMetricCount()?0.12:0.35);map.setFilter('electoral-boundaries',null);
+            map.setPaintProperty('electoral-boundaries','fill-color','#2dd4bf');map.setPaintProperty('electoral-boundaries','fill-opacity',villageMetricCount()?0.12:0.35);map.setFilter('electoral-boundaries',null);
         }
     }
     let electoral2001=null;const electoral2001Fields=new Map(),electoral2001Pending=new Map();
@@ -284,7 +284,7 @@ async function start(section) {
     function paintMetrics(layer){
         const e=metricLayers.get(layer.id),id=`villages-${layer.id}`;if(!e||!map.getLayer(id))return;
         const enabled=metric.value&&layer.kind!=='district';
-        map.setPaintProperty(id,'fill-color',enabled?['case',['==',['feature-state',metric.value],null],'#9ca3af',['step',['coalesce',['feature-state',metric.value],0],(isSoil(metric.value)?[...colours].reverse():colours)[0],...(breaks[metric.value]||[1,5,10,50]).flatMap((v,i)=>[v,(isSoil(metric.value)?[...colours].reverse():colours)[i+1]])]]:layer.kind==='district'?'#71879d':'#168b78');
+        map.setPaintProperty(id,'fill-color',enabled?['case',['==',['feature-state',metric.value],null],'#64748b',['step',['coalesce',['feature-state',metric.value],0],(isSoil(metric.value)?[...colours].reverse():colours)[0],...(breaks[metric.value]||[1,5,10,50]).flatMap((v,i)=>[v,(isSoil(metric.value)?[...colours].reverse():colours)[i+1]])]]:layer.kind==='district'?'#38bdf8':'#2dd4bf');
         if(enabled&&isNativeCensusField(metric.value))map.setPaintProperty(id,'fill-color',nativeVillageColours(metric.value,breaks[metric.value]||[1,5,10,50],colours));map.setPaintProperty(id,'fill-opacity',enabled?0.72:0.22);
         map.setFilter(id,['in',['id'],['literal',metricIndices(e.count,e.records,enabled?metric.value:'',minimum.value,maximum.value,missing.checked,layer.indices)]]);
     }
@@ -365,7 +365,7 @@ async function start(section) {
 
         }
         scheduleRainfall();scheduleSoil();scheduleSatellite();minimum.disabled=maximum.disabled=missing.disabled=!metric.value;legend.replaceChildren();
-        if(metric.value){const b=(villageMetricCount()?breaks:overviewBreaks)[metric.value]||[1,5,10,50];for(let i=0;i<5;i++){const item=node('span',i===0?`< ${b[0]}`:i===4?`>= ${b[3]}`:`${b[i-1]} - < ${b[i]}`),swatch=node('i');swatch.style.background=(isSoil(metric.value)?[...colours].reverse():colours)[i];item.prepend(swatch);legend.append(item);}const item=node('span','Unavailable'),swatch=node('i');swatch.style.background='#9ca3af';item.prepend(swatch);legend.append(item);}else legend.textContent='Choose a measure to colour village and town polygons.';
+        if(metric.value){const b=(villageMetricCount()?breaks:overviewBreaks)[metric.value]||[1,5,10,50];for(let i=0;i<5;i++){const item=node('span',i===0?`< ${b[0]}`:i===4?`>= ${b[3]}`:`${b[i-1]} - < ${b[i]}`),swatch=node('i');swatch.style.background=(isSoil(metric.value)?[...colours].reverse():colours)[i];item.prepend(swatch);legend.append(item);}const item=node('span','Unavailable'),swatch=node('i');swatch.style.background='#64748b';item.prepend(swatch);legend.append(item);}else legend.textContent='Choose a measure to colour village and town polygons.';
 
         for(const e of metricLayers.values()){paintMetrics(e.layer);loadMetrics(e.layer);}
         paintOverview();loadOverview();paintElectoralOverview();loadElectoralOverview();metricCoverage();
@@ -441,7 +441,7 @@ async function start(section) {
             if(!map.getSource('admin-boundaries')){
                 map.addSource('admin-boundaries',{type:'geojson',data:collection});
                 map.addLayer({id:'admin-boundaries',type:'fill',source:'admin-boundaries',paint:{'fill-color':['match',['get','state_code'],'9','#8ec5e8','23','#bba8ec','8','#f4c37b','27','#91d3bd','19','#e6adcb','#97c9df'],'fill-opacity':['case',['boolean',['get','context'],false],0.13,0.5]}});
-                map.addLayer({id:'admin-lines',type:'line',source:'admin-boundaries',paint:{'line-color':'#404040','line-opacity':0.65,'line-width':0.6}});
+                map.addLayer({id:'admin-lines',type:'line',source:'admin-boundaries',paint:{'line-color':'#e2e8f0','line-opacity':0.55,'line-width':0.6}});
                 map.on('click','admin-boundaries',async event=>{
                     if(finderPath!=='admin')return;const settlementLayers=[...loaded].map(id=>`villages-${id}`).filter(id=>map.getLayer(id));if(settlementLayers.length&&map.queryRenderedFeatures(event.point,{layers:settlementLayers}).length)return;const selected=adminFeatures.find(f=>String(f.id)===String(event.features[0].properties.display_id));if(!selected)return;
                     const p=selected.properties;if(p.context){status.textContent='Choose a subdistrict from the filter or click a linked subdistrict area.';return;}
@@ -553,7 +553,7 @@ async function start(section) {
             if (controller.signal.aborted) return;
             const id = `villages-${layer.id}`;
             map.addSource(id,{type:'geojson',data:geometry,generateId:true});
-            map.addLayer({id,type:'fill',source:id,paint:{'fill-color':layer.kind === 'district' ? '#71879d' : '#168b78','fill-opacity':0.22,'fill-outline-color':'rgba(64,64,64,0.65)'}});
+            map.addLayer({id,type:'fill',source:id,paint:{'fill-color':layer.kind === 'district' ? '#38bdf8' : '#2dd4bf','fill-opacity':0.22,'fill-outline-color':'rgba(226,232,240,0.35)'}});
             map.addLayer({id:`${id}-selected`,type:'line',source:id,filter:['==',['id'],-1],paint:{'line-color':'#475569','line-width':1.5}});
             map.on('click',id,async event => {
                 const version = ++generation;
@@ -652,7 +652,7 @@ async function start(section) {
         }
         async function nearby(feature,version){const bounds=new maplibregl.LngLatBounds();const visit=c=>{if(typeof c[0]==='number')bounds.extend(c.slice(0,2));else c.forEach(visit);};visit(feature.geometry.coordinates);const layers=visibleLayers(catalogue.layers,[bounds.getWest(),bounds.getSouth(),bounds.getEast(),bounds.getNorth()],'');const wanted=new Set(layers.map(l=>l.id));prune(wanted);await Promise.allSettled(layers.map(ensure));if(version===revision)status.textContent=`${layers.length} nearby SOI source layers \u00b7 geographic context, electoral membership unverified.`;}
         const setLevel=async()=>{++revision;prune(new Set());if(mode.value==='pc'){reset();return;}if(mode.value==='ac'){if(currentPC){await selectPC(currentPC);return;}const source=state.value?await sourceFor(state.value):await fetchJson(`${section.dataset.electoralBase}/india-ac.json`);assemblies=source.features.filter(f=>f.properties.kind==='ac');options(acSelect,assemblies,'Choose an assembly constituency');acSelect.disabled=assemblies.length===0;mapFeatures(assemblies,'ac');outline(null);message.textContent=`${assemblies.length} source AC boundaries \u00b7 click an AC.`;return;}if(mode.value==='wards'){if(!currentAC){message.textContent='Choose a PC and AC first to see ward records.';return;}const seat=officialSeat(currentAC);if(!seat){message.textContent='Official ward membership unavailable for this AC.';return;}const data=await fetchJson(`${section.dataset.membership}?${new URLSearchParams({state:seat.state,kind:'ac',code:seat.code})}`);details.replaceChildren(node('h2',`${currentAC.properties.name} \u00b7 wards`));const reference=node('details');reference.className='reference-notes';reference.append(node('summary','Membership & ward reference'));const startCount=details.childNodes.length;wardList(data);for(const child of [...details.childNodes].slice(startCount))reference.append(child);details.append(reference);mapFeatures([currentAC],'ac');outline(currentAC);status.textContent='Ward records listed. Separate ward polygons are unavailable in the existing source maps.';return;}if(currentAC){await selectAC(currentAC);return;}explore();};
-        map.addSource('electoral-boundaries',{type:'geojson',data:{type:'FeatureCollection',features:[]}});map.addLayer({id:'electoral-boundaries',type:'fill',source:'electoral-boundaries',paint:{'fill-color':'#e0b867','fill-opacity':0.35}});map.addLayer({id:'electoral-boundaries-line',type:'line',source:'electoral-boundaries',paint:{'line-color':'#404040','line-opacity':0.65,'line-width':0.6}});
+        map.addSource('electoral-boundaries',{type:'geojson',data:{type:'FeatureCollection',features:[]}});map.addLayer({id:'electoral-boundaries',type:'fill',source:'electoral-boundaries',paint:{'fill-color':'#fbbf24','fill-opacity':0.35}});map.addLayer({id:'electoral-boundaries-line',type:'line',source:'electoral-boundaries',paint:{'line-color':'#e2e8f0','line-opacity':0.55,'line-width':0.6}});
         map.addSource('electoral-selection',{type:'geojson',data:{type:'FeatureCollection',features:[]}});map.addLayer({id:'electoral-selection',type:'line',source:'electoral-selection',paint:{'line-color':'#475569','line-width':1.5}});
         map.on('click','electoral-boundaries',event=>{if(['villages','wards'].includes(mode.value))return;const feature=event.features[0];const pool=mode.value==='pc'?pcs.features:assemblies;const selected=pool.find(f=>f.id===feature.properties.electoral_id);if(selected)(selected.properties.kind==='pc'?selectPC(selected):selectAC(selected));});
         map.on('mouseenter','electoral-boundaries',()=>{map.getCanvas().style.cursor='pointer';});map.on('mouseleave','electoral-boundaries',()=>{map.getCanvas().style.cursor='';});
@@ -728,7 +728,7 @@ async function start(section) {
     district.addEventListener('change',async()=>{electoral?.explore();++generation;const layer=byId.get(district.value);if(layer?.kind==='district'){results.replaceChildren();searchStatus.textContent='Village polygons unavailable for this source district.';await select(layer.context_place);return;}runSearch();if(layer&&ready){prune(new Set([layer.id]));fit(layer.bbox);try{await ensure(layer);status.textContent=`${layer.shapes.toLocaleString('en-IN')} indexed shapes \u00b7 ${layer.district} \u00b7 click a village`;}catch(error){if(error.name!=='AbortError')mapWarning(error.message);}}});
     try {
         if (!globalThis.maplibregl) throw new Error('Map graphics unavailable. Village search still works.');
-        map = new maplibregl.Map({container:'india-map',center:[80,23],zoom:3.5,style:stateOnly?{version:8,sources:{},layers:[{id:'background',type:'background',paint:{'background-color':'#f6f8f7'}}]}:{version:8,sources:{streets:{type:'raster',tiles:['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],tileSize:256,attribution:'\u00a9 OpenStreetMap contributors'}},layers:[{id:'background',type:'background',paint:{'background-color':'#f6f8f7'}},{id:'streets',type:'raster',source:'streets',paint:{'raster-opacity':1,'raster-saturation':0}}]}});
+        map = new maplibregl.Map({container:'india-map',center:[80,23],zoom:3.5,style:{version:8,sources:{},layers:[{id:'background',type:'background',paint:{'background-color':'#0b1f2a'}}]}});
         map.addControl(new maplibregl.NavigationControl(),'top-right');
         map.addControl({onAdd(){const group=node('div'),button=node('button','Fit');group.className='maplibregl-ctrl maplibregl-ctrl-group map-fit';button.type='button';button.title='Fit selected area';button.setAttribute('aria-label','Fit selected area');button.addEventListener('click',()=>fitSelection());group.append(button);this.container=group;return group;},onRemove(){this.container.remove();}},'top-right');
         let initialContextReady=!section.dataset.initialState;
@@ -736,7 +736,7 @@ async function start(section) {
         map.on('load',async()=>{
             ready=true;
             map.addSource('coverage',{type:'geojson',data:{type:'FeatureCollection',features:catalogue.layers.map(layer=>({type:'Feature',geometry:{type:'Point',coordinates:[(layer.bbox[0]+layer.bbox[2])/2,(layer.bbox[1]+layer.bbox[3])/2]},properties:{layer:layer.id,state:layer.state,kind:layer.kind||'settlement'}}))}});
-            map.addLayer({id:'coverage',type:'circle',source:'coverage',maxzoom:8,layout:{visibility:'none'},paint:{'circle-color':['match',['get','kind'],'district','#71879d','#087d6d'],'circle-radius':5,'circle-stroke-width':1,'circle-stroke-color':'#ffffff'}});
+            map.addLayer({id:'coverage',type:'circle',source:'coverage',maxzoom:8,layout:{visibility:'none'},paint:{'circle-color':['match',['get','kind'],'district','#38bdf8','#087d6d'],'circle-radius':5,'circle-stroke-width':1,'circle-stroke-color':'#ffffff'}});
             map.on('click','coverage',event=>{const layer=byId.get(event.features[0].properties.layer);state.value=layer.state;populateDistricts();district.value=layer.id;district.dispatchEvent(new Event('change'));});
             map.on('moveend',async()=>{
                 if (finderPath==='admin'||electoral?.active) return;
