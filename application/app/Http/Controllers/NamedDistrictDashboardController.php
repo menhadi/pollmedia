@@ -14,6 +14,10 @@ class NamedDistrictDashboardController extends Controller
         abort_unless($identity, 404);
         request()->attributes->set('district_identity', $identity);
 
+        if ($identity['map_only'] ?? false) {
+            return view('district-map-only', ['district' => $identity]);
+        }
+
         return $identity['state'] === '19'
             ? app(WestBengalDistrictDashboardController::class)->index($identity['district'])
             : app(DistrictDashboardController::class)->index($identity['state'], $identity['district']);
