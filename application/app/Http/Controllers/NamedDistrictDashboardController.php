@@ -15,7 +15,7 @@ class NamedDistrictDashboardController extends Controller
         request()->attributes->set('district_identity', $identity);
 
         if ($identity['map_only'] ?? false) {
-            return view('district-map-only', ['district' => $identity]);
+            return app(MapOnlyDistrictDashboardController::class)->show($identity);
         }
 
         return $identity['state'] === '19'

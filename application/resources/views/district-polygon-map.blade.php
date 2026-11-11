@@ -7,7 +7,8 @@ $sameState = fn ($left, $right): bool => $normaliseName($left) === $normaliseNam
 $isPilibhitDistrict = ($districtIdentity['state'] ?? request()->route('state')) === '09' && ($data['census_district_code'] ?? '') === '151';
 $pilibhitLayer = $isPilibhitDistrict ? $catalogueLayers->first(fn ($layer) => $layer['file'] === 'maps/pilibhit-villages.geojson') : null;
 $catalogueDistrictLayer = $catalogueLayers->first(fn ($layer) => $sameState($layer['state'], $districtIdentity['state_name'] ?? $data['state_name'] ?? '') && $normaliseName($layer['district']) === $normaliseName($data['name'] ?? ''));
-$polygonFile = $pilibhitLayer['file'] ?? ($isPilibhitDistrict ? 'maps/pilibhit-district-pilot.json' : ($sourceMap ?? $catalogueDistrictLayer['file'] ?? null));
+$nwdpDistrictLayer = ($catalogueDistrictLayer && str_starts_with($catalogueDistrictLayer['file'], 'maps/nwdp-')) ? $catalogueDistrictLayer : null;
+$polygonFile = $pilibhitLayer['file'] ?? ($isPilibhitDistrict ? 'maps/pilibhit-district-pilot.json' : ($nwdpDistrictLayer['file'] ?? $sourceMap ?? $catalogueDistrictLayer['file'] ?? null));
 $polygonLayer = $pilibhitLayer ?: (($catalogueDistrictLayer && $catalogueDistrictLayer['file'] === $polygonFile) ? $catalogueDistrictLayer : ($polygonFile ? $catalogueLayers->first(fn ($layer) => $layer['file'] === $polygonFile) : null));
 @endphp
 @include('map-mobile-assets')
