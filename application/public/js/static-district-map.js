@@ -20,6 +20,17 @@
 
     const ringsOf = (geometry) => (geometry.type === 'Polygon' ? geometry.coordinates : geometry.coordinates.flat());
 
+    const label = (value) => String(value ?? '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+    const villageDirectoryLink = (name) => {
+        const wanted = label(name);
+        for (const link of document.querySelectorAll('a[href*="/census/villages/"]')) {
+            if (label(link.textContent) === wanted) return link.getAttribute('href');
+        }
+
+        return null;
+    };
+
     async function build(container) {
         const status = container.querySelector('[data-map-status]');
         const tooltip = container.querySelector('[data-map-tooltip]');
@@ -80,7 +91,8 @@
             const strong = document.createElement('strong');
             strong.textContent = name;
             const small = document.createElement('small');
-            small.textContent = state;
+            small.textContent = container.dataset.mode === 'village' ? (feature.properties.subdistrict || state) : state;
+            tooltip.dataset.kind = container.dataset.mode || 'district';
             tooltip.append(strong, small);
             tooltip.hidden = false;
             const bounds = container.getBoundingClientRect();
@@ -100,7 +112,7 @@
         for (const feature of features) {
             const state = feature.properties.state || '';
             const name = feature.properties.name || '';
-            const fill = colourFor(state);
+            const fill = colourFor(container.dataset.mode === 'village' ? (feature.properties.subdistrict || name) : state);
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('d', pathFor(feature.geometry));
             path.setAttribute('fill', fill);
@@ -110,9 +122,12 @@
             path.setAttribute('aria-label', `${name}, ${state}`);
 
             const districtPath = linkTemplate.replace('{state}', slug(state)).replace('{district}', slug(name));
-            const href = knownPages.size === 0 || knownPages.has(districtPath)
-                ? districtPath
-                : (container.dataset.stateLink || '/india/state/{state}').replace('{state}', slug(state));
+            const directoryLink = container.dataset.mode === 'village' ? villageDirectoryLink(name) : null;
+            const href = container.dataset.mode === 'village'
+                ? (directoryLink || window.location.pathname + '?q=' + encodeURIComponent(name) + '#places')
+                : (knownPages.size === 0 || knownPages.has(districtPath)
+                    ? districtPath
+                    : (container.dataset.stateLink || '/india/state/{state}').replace('{state}', slug(state)));
             const open = () => { window.location.href = href; };
 
             path.addEventListener('pointerenter', (event) => showTooltip(feature, event));

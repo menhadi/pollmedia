@@ -27,7 +27,7 @@
 <meta name="description" content="{{ $title }} · {{ $tr('District figures, places and published records','ज़िले के आँकड़े, स्थान और प्रकाशित रिकॉर्ड') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
 <link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9">
-<script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script><link rel="stylesheet" href="{{ asset('css/compact-area-pages.css') }}?v={{ substr(hash_file('sha256',public_path('css/compact-area-pages.css')),0,12) }}"></head>
+<script defer src="{{ asset('js/pilibhit-summary.js') }}?v=1"></script><link rel="stylesheet" href="{{ asset('css/compact-area-pages.css') }}?v={{ substr(hash_file('sha256',public_path('css/compact-area-pages.css')),0,12) }}"><link rel="stylesheet" href="{{ asset('css/static-district-map.css') }}?v={{ substr(hash_file('sha256',public_path('css/static-district-map.css')),0,12) }}"><script src="{{ asset('js/static-district-map.js') }}?v={{ substr(hash_file('sha256',public_path('js/static-district-map.js')),0,12) }}" defer></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard compact-district" data-district-summary data-pilibhit-native data-pb-lang="{{ $hi?'hi':'en' }}">
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb','स्थान क्रम') }}"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a><span>›</span><a href="{{ route('civic.state',['state'=>$stateSlug,'lang'=>$hi?'hi':null]) }}">{{ $stateName }}</a><span>›</span><span>{{ $pilot?$tr('Pilibhit','पीलीभीत'):$data['name'] }}</span></nav>
@@ -54,7 +54,7 @@
 @foreach([[$tr('Female per 1,000 male','प्रति 1,000 पुरुषों पर महिलाएँ'),$total['male']>0 && $total['female']!==null?$fmt(round(1000*$total['female']/$total['male'])):'—'],[$tr('Population aged 0–6','आयु 0–6 की जनसंख्या'),$fmt($total['children'])],[$tr('Male literacy age 7+','पुरुष साक्षरता, आयु 7+'),$pct($total['male_literacy'])],[$tr('Female literacy age 7+','महिला साक्षरता, आयु 7+'),$pct($total['female_literacy'])],[$tr('Worker participation','कार्य सहभागिता'),$pct($share($total['workers'],$total['population']))]] as [$name,$value])
 @continue($value==='—')<tr><th scope="row">{{ $name }}</th><td>{{ $value }}</td></tr>
 @endforeach</tbody></table></details></section>
-<div class="compact-district-directory">
+@include('district-village-map')<div class="compact-district-directory">
 @include('district-summary-place-directory')
 @if(!empty($previews['satellite']))
 @include('district-summary-vegetation',['ndvi'=>$previews['satellite']])
