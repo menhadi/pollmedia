@@ -28,16 +28,28 @@
 @if($villageMapFile)
 <section class="static-map-panel district-village-map" aria-label="{{ $villageDistrictName }} village map">
     <h2>{{ $villageDistrictName }} villages</h2>
-    <p class="static-map-intro">Select a village polygon to open its page.</p>
-    <div class="static-map"
-         data-static-map
-         data-mode="village"
-         data-village-base="/india/villages/{{ $stateSlug }}/{{ $districtSlug }}/"
-         data-src="{{ asset($villageMapFile) }}?v={{ filemtime(public_path($villageMapFile)) }}">
-        <svg role="group" aria-label="{{ $villageDistrictName }} village map"></svg>
-        <div class="static-map-tooltip" data-map-tooltip hidden></div>
-        <p class="static-map-status" data-map-status role="status">Loading village map…</p>
-        <script type="application/json" data-map-links>@json($villageLinks)</script>
+    <div class="static-map-layout">
+        <aside class="static-map-filters" aria-label="Village filters">
+            <label for="village-subdistrict">Sub-district / taluka</label>
+            <select id="village-subdistrict" data-map-subdistrict>
+                <option value="">All sub-districts</option>
+            </select>
+            <label for="village-select">Village</label>
+            <select id="village-select" data-map-village disabled>
+                <option value="">Choose a sub-district first</option>
+            </select>
+            <p class="static-map-status" data-map-status role="status">Loading village map...</p>
+            <p class="static-map-hint">Pick a value here or click a village on the map.</p>
+        </aside>
+        <div class="static-map"
+             data-static-map
+             data-mode="village"
+             data-village-base="/india/villages/{{ $stateSlug }}/{{ $districtSlug }}/"
+             data-src="{{ asset($villageMapFile) }}?v={{ filemtime(public_path($villageMapFile)) }}">
+            <svg role="group" aria-label="{{ $villageDistrictName }} village map"></svg>
+            <div class="static-map-tooltip" data-map-tooltip hidden></div>
+            <script type="application/json" data-map-links>@json($villageLinks)</script>
+        </div>
     </div>
 </section>
 @endif

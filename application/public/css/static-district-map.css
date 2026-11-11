@@ -15,4 +15,12 @@
 .static-map-legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin:10px 0 0;font-size:.75rem;color:#516675}
 .static-map-legend span{display:inline-flex;align-items:center;gap:6px}
 .static-map-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
-@media(max-width:640px){.static-map{padding:8px}.static-map svg{max-height:62vh}.static-map-toolbar{gap:8px}}
+.static-map-layout{display:grid;grid-template-columns:260px minmax(0,1fr);border:1px solid #d5dfda;border-radius:16px;overflow:hidden;background:#fff}
+.static-map-filters{padding:22px;border-right:1px solid #d5dfda;background:#fff}
+.static-map-filters label{display:block;font-weight:600;font-size:13px;margin-bottom:16px;color:#173d37}
+.static-map-filters select{display:block;width:100%;padding:11px;border:1px solid #b9cbc2;border-radius:7px;background:#fff;color:#173d37;margin-top:6px;font:inherit}
+.static-map-filters select:disabled{background:#f1f5f3;color:#91a39d;cursor:not-allowed}
+.static-map-filters .static-map-status{font-size:12px;color:#596d65;margin:0 0 6px}
+.static-map-hint{font-size:12px;color:#596d65;margin:0}
+.static-map-layout .static-map{border:0;border-radius:0;background:#f4f7f8}
+@media(max-width:760px){.static-map-layout{grid-template-columns:1fr}.static-map-filters{border-right:0;border-bottom:1px solid #d5dfda}.static-map{padding:8px}.static-map svg{max-height:62vh}.static-map-toolbar{gap:8px}}
