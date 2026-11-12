@@ -12,6 +12,8 @@ $missing=collect($coverage)->keys()->diff($mappedRows->pluck('slug'))->map(fn($s
 </tbody></table>
 @elseif($kind==='ac' && $atlasFamily['pc'])
 <p>{{ $tr('Lok Sabha (PC)','लोक सभा (PC)') }} · @foreach($atlasFamily['pc'] as $seat)@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif{{ $loop->last?'':' · ' }}@endforeach</p>
+@else
+<p class="atlas-empty">{{ $tr('Boundary and linked-constituency detail is not published for this seat yet.','सीट की सीमा और संबंधित निर्वाचन क्षेत्र का विवरण अभी प्रकाशित नहीं है।') }} <a href="{{ route('elections.constituencies',['state'=>$state,'kind'=>$kind]) }}">{{ $tr('Browse the state constituency list','राज्य की निर्वाचन क्षेत्र सूची देखें') }} →</a></p>
 @endif
 @if($mapVillages)<p class="atlas-map-stat"><strong>{{ count($mapVillages) }}</strong> {{ $tr('mapped villages','मैप किए गए गाँव') }}</p>@endif
 @if(!$coverage && !$atlasFamily['ac'])<ul data-atlas-segments></ul>@endif

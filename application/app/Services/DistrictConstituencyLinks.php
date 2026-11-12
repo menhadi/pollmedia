@@ -82,22 +82,56 @@ class DistrictConstituencyLinks
     public function seatFamily(string $kind, string $state, string $name): array
     {
         $empty = ['ac' => [], 'pc' => []];
-        $fixture = $state === 'Sikkim' && is_file(database_path('fixtures/sikkim-electoral-geography.json'))
+        $base = $state === 'Sikkim' && is_file(database_path('fixtures/sikkim-electoral-geography.json'))
             ? json_decode(file_get_contents(database_path('fixtures/sikkim-electoral-geography.json')), true, flags: JSON_THROW_ON_ERROR)
             : $this->fixture($state);
-        if (! $fixture) {
-            $fixture = $this->boundaryFamilyIndex($state);
+        $sources = [];
+        if ($state === 'Assam' && ($membership = $this->assamMembershipIndex())) {
+            $sources[] = $membership;
         }
+        if ($base) {
+            $sources[] = $base;
+        }
+        $boundary = null;
+        foreach ($sources as $fixture) {
+            $family = $this->familyFromFixture($kind, $state, $name, $fixture);
+            if ($family !== null) {
+                return $family;
+            }
+        }
+        $boundary ??= $this->boundaryFamilyIndex($state);
+        $family = $boundary ? $this->familyFromFixture($kind, $state, $name, $boundary) : null;
+
+        return $family ?? $empty;
+    }
+
+    /** @return array{ac: array<int, mixed>, pc: array<int, mixed>}|null */
+    private function familyFromFixture(string $kind, string $state, string $name, array $fixture): ?array
+    {
         $assembly = collect($fixture['district_rows'] ?? [])->unique('code');
         $pcs = collect($fixture['pcs'] ?? []);
         $normalize = fn (string $s): string => mb_strtolower($this->archiveName($kind, $s, $state));
         $current = ($kind === 'pc' ? $pcs : $assembly)->filter(fn ($row) => $normalize($row['name']) === $normalize($name));
         if ($current->count() !== 1) {
-            return $empty;
+            $stateSlug = Str::slug($state);
+            $target = ConstituencyUrls::resolve($kind, $stateSlug, Str::slug($this->archiveName($kind, $name, $state)));
+            if ($target) {
+                $loose = ($kind === 'pc' ? $pcs : $assembly)->filter(function (array $row) use ($kind, $stateSlug, $target): bool {
+                    $resolved = ConstituencyUrls::resolve($kind, $stateSlug, Str::slug($row['name']));
+
+                    return $resolved && $resolved['name'] === $target['name'];
+                });
+                if ($loose->count() === 1) {
+                    $current = $loose;
+                }
+            }
+        }
+        if ($current->count() !== 1) {
+            return null;
         }
         $seat = $current->first();
-        $parents = $kind === 'pc' ? $current : $pcs->filter(fn ($pc) => in_array($seat['code'], $pc['ac_codes'], true));
-        $segments = $assembly->whereIn('code', $parents->pluck('ac_codes')->flatten());
+        $parents = $kind === 'pc' ? $current : $pcs->filter(fn ($pc) => in_array($seat['code'], array_map('intval', $pc['ac_codes']), true));
+        $segments = $assembly->whereIn('code', $parents->pluck('ac_codes')->flatten()->map(fn ($code): int => (int) $code));
         $family = [];
         foreach (['pc' => $parents, 'ac' => $segments] as $type => $items) {
             $family[$type] = [];
@@ -110,12 +144,48 @@ class DistrictConstituencyLinks
                         break;
                     }
                 }
-                $family[$type][] = ['name' => $item['name'], 'code' => $item['code'], 'archive' => $match['name'] ?? null, 'current' => $type === $kind && $item['code'] === $seat['code'],
+                $family[$type][] = ['name' => $item['name'], 'code' => $item['code'], 'archive' => $match['name'] ?? null, 'current' => $type === $kind && (int) $item['code'] === (int) $seat['code'],
                     'url' => $match ? ConstituencyUrls::url($match + ['lang' => app()->getLocale()], false) : null];
             }
         }
 
         return $family;
+    }
+
+    /** 2023 Assam delimitation order: constituency-to-parliamentary membership. */
+    private function assamMembershipIndex(): array
+    {
+        $path = database_path('fixtures/assam-2023-source-membership.json');
+        if (! is_file($path)) {
+            return [];
+        }
+
+        return Cache::remember('atlas-assam-2023:'.filemtime($path), 86400, function () use ($path): array {
+            $data = json_decode(file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
+            $pcs = collect($data['pcs'] ?? [])->map(function (array $row): array {
+                $codes = is_array($row['ac_codes'] ?? null) ? $row['ac_codes'] : (preg_split('/\s+/', trim((string) ($row['ac_codes'] ?? ''))) ?: []);
+
+                return ['code' => (int) $row['code'], 'name' => $row['source_name'], 'ac_codes' => array_values(array_map('intval', array_filter($codes)))];
+            })->all();
+            $acs = collect($data['acs'] ?? [])->map(fn (array $row): array => [
+                'code' => (int) $row['code'],
+                'name' => $row['source_name'],
+                'district' => $row['source_district'],
+            ])->all();
+
+            return [
+                'pcs' => $pcs,
+                'district_rows' => $acs,
+                'district_url' => $data['source_url'] ?? null,
+                'district_source_label' => 'Assam delimitation order 2023',
+                'district_source_date' => $data['notification_date'] ?? null,
+                'district_sha256' => $data['source_sha256'] ?? null,
+                'pc_url' => $data['source_url'] ?? null,
+                'pc_source_label' => 'Assam delimitation order 2023',
+                'pc_source_date' => $data['notification_date'] ?? null,
+                'pc_sha256' => $data['source_sha256'] ?? null,
+            ];
+        });
     }
 
     /** Use only recorded parent PC codes in the reference layer when a delimitation table is unavailable. */
