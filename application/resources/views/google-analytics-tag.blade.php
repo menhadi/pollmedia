@@ -1,4 +1,3 @@
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ $measurementId }}"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -8,5 +7,11 @@ gtag('config', @json($measurementId), {
     page_referrer: document.referrer ? document.referrer.split('?')[0].split('#')[0] : '',
     allow_google_signals: false,
     allow_ad_personalization_signals: false
+});
+window.addEventListener('load', function () {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id={{ $measurementId }}';
+    document.head.appendChild(script);
 });
 </script>
