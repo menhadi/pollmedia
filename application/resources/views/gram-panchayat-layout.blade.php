@@ -5,7 +5,7 @@
     <title>{{ $title }} | Pollmedia</title>
     <link rel="stylesheet" href="{{ asset('css/electoral-village-map.css') }}">
     <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">
     @include('site-theme')
     <link rel="stylesheet" href="{{ asset('css/place-layout.css') }}">
     @if(isset($record))
