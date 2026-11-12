@@ -1,8 +1,8 @@
 @php
     $tr=fn($en,$hindi)=>$hi?$hindi:$en;
     $num=new \NumberFormatter('en_IN',\NumberFormatter::DECIMAL);
-    $params=['state'=>$record['state'],'gp'=>$record['gp'],'lang'=>$hi?'hi':null];
-    $detail=fn($topic)=>route('gram-panchayats.show',$params+['view'=>'details','topic'=>$topic]);
+    $gpUrls=app(\App\Services\GramPanchayatUrls::class);
+    $detail=fn($topic)=>$gpUrls->link($record['state'], $record['name'], $record['gp'], ['view'=>'details','topic'=>$topic,'lang'=>$hi?'hi':null]);
     $districts=collect($members)->pluck('district_name')->unique()->implode(', ');
     $hasPopulation=collect($rows)->contains(fn($row)=>$row['population']!==null);
     $hasHouseholds=collect($rows)->contains(fn($row)=>$row['households']!==null);
@@ -11,7 +11,7 @@
 <title>{{ $record['name'] }} · {{ $tr('Gram Panchayat','ग्राम पंचायत') }} · Pollmedia</title>
 <meta name="description" content="{{ $record['name'] }} · {{ $districts }} · {{ $tr('Panchayat records and linked villages','पंचायत रिकॉर्ड और संबंधित गाँव') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9"><link rel="stylesheet" href="{{ asset('css/panchayat-summary.css') }}"><link rel="stylesheet" href="{{ asset('css/static-district-map.css') }}?v={{ substr(hash_file('sha256',public_path('css/static-district-map.css')),0,12) }}"><script src="{{ asset('js/static-district-map.js') }}?v={{ substr(hash_file('sha256',public_path('js/static-district-map.js')),0,12) }}" defer></script></head>
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9"><link rel="stylesheet" href="{{ asset('css/panchayat-summary.css') }}"><link rel="stylesheet" href="{{ asset('css/gram-panchayat-consistent.css') }}?v={{ substr(hash_file('sha256',public_path('css/gram-panchayat-consistent.css')),0,12) }}"><link rel="stylesheet" href="{{ asset('css/static-district-map.css') }}?v={{ substr(hash_file('sha256',public_path('css/static-district-map.css')),0,12) }}"><script src="{{ asset('js/static-district-map.js') }}?v={{ substr(hash_file('sha256',public_path('js/static-district-map.js')),0,12) }}" defer></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-gp-summary data-pilibhit-native>
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb','स्थान क्रम') }}"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a><span>›</span><span>{{ $members[0]['state_name'] }}</span><span>›</span><span>{{ $districts }}</span></nav>

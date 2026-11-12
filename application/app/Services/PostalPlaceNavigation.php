@@ -150,7 +150,7 @@ class PostalPlaceNavigation
         $key = $state.':'.$code;
         if (! array_key_exists($key, $this->panchayats)) {
             $gp = app(GramPanchayatDirectory::class)->forVillage((int) $state, (int) $code);
-            $this->panchayats[$key] = $gp ? ['name' => $gp['name'], 'url' => route('gram-panchayats.show', ['state' => $state, 'gp' => $gp['gp']])] : null;
+            $this->panchayats[$key] = $gp ? ['name' => $gp['name'], 'url' => app(GramPanchayatUrls::class)->link($state, $gp['name'], $gp['gp'])] : null;
         }
 
         return $this->panchayats[$key];

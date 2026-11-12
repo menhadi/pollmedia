@@ -17,7 +17,7 @@
 <article class="gp-identity" translate="no"><p class="gp-eyebrow">{{ $t('Panchayat overview','पंचायत परिचय') }}</p><h3>{{ $gp['name'] }}</h3>
 <dl class="panchayat-status"><div><dt>{{ $t('Panchayat identifier','पंचायत पहचान') }}</dt><dd>{{ $gp['code'] }}</dd><small>{{ $gp['namespace'] }}</small></div>
 @if($gp['blocks'])<div><dt>{{ $t('Block','ब्लॉक') }}</dt><dd>{{ implode(' · ',$gp['blocks']) }}</dd></div>@endif
-@if(!empty($gp['profile_state']))<div><a href="{{ route('gram-panchayats.show',['state'=>$gp['profile_state'],'gp'=>$gp['code'],'lang'=>$language]) }}">{{ $t('Open Panchayat profile','पंचायत प्रोफ़ाइल खोलें') }}</a></div>@endif
+@if(!empty($gp['profile_state']))<div><a href="{{ app(\App\Services\GramPanchayatUrls::class)->link($gp['profile_state'], $gp['name'] ?? null, $gp['code'], ['lang'=>$language]) }}">{{ $t('Open Panchayat profile','पंचायत प्रोफ़ाइल खोलें') }}</a></div>@endif
 @if($gp['villages'])<div><dt>{{ $t('Linked villages','जुड़े गाँव') }}</dt><dd>{{ count($gp['villages']) }}</dd></div>@endif</dl>
 @if($gp['checked_on'])<p class="place-note">{{ $t('Directory checked','निर्देशिका जाँच') }}: {{ $gp['checked_on'] }}</p>@endif
 @if($gp['villages'])

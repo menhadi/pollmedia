@@ -1,0 +1,31 @@
+/* Gram Panchayat pages follow the district and assembly page typography. */
+main[data-local-dashboard] > h1.village-heading,
+[data-gp-summary] h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:31px!important;line-height:1.13!important;letter-spacing:-1.085px!important;color:#18344c!important;background:none!important;border-left:0!important;padding:0!important;margin:6px 0 12px!important}
+[data-gp-summary] .pb-scope{color:#49626a;font-size:15px;margin-top:2px}
+main[data-local-dashboard] .eyebrow{color:#10756e;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+body:has(main[data-local-dashboard]) .village-breadcrumb-bar{background:transparent!important;border:0!important;padding:0!important;margin:0 0 10px!important}
+body:has(main[data-local-dashboard]) .village-breadcrumb-bar .location-breadcrumbs :is(a,span,li){color:#49626a!important}
+body:has(main[data-local-dashboard]) .village-breadcrumb-bar .location-breadcrumbs a{color:#10756e!important}
+
+body:has(.public-header) .gp-dashboard .panel{background:#fff!important;border:1px solid #d2dfdf!important;border-radius:10px!important;padding:18px 22px 16px!important;margin:18px 0!important}
+body:has(.public-header) .gp-dashboard .panel h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;color:#18344c!important;font-size:22px!important;letter-spacing:-.6px!important;margin:0 0 8px!important}
+body:has(.public-header) .gp-dashboard .panel h3{color:#18344c!important;font-size:17px!important;margin:14px 0 6px!important}
+body:has(.public-header) .gp-dashboard table{width:100%!important;border-collapse:collapse!important;font-size:15px!important}
+body:has(.public-header) .gp-dashboard table thead th{background:#075e50!important;color:#fff!important;font-weight:600!important;text-align:left!important;padding:10px 12px!important;border:0!important;border-bottom:1px solid #0b5f59!important;letter-spacing:.01em;font-size:13px!important}
+body:has(.public-header) .gp-dashboard table tbody :is(th,td){padding:9px 12px!important;border:0!important;border-bottom:1px solid #e2ebe7!important;text-align:left!important;vertical-align:top!important;font-weight:400!important;color:#18344c!important;white-space:normal!important}
+body:has(.public-header) .gp-dashboard table tbody th{font-weight:600!important}
+body:has(.public-header) .gp-dashboard table tbody tr:nth-child(even)>:is(th,td){background:#f3f8f5!important}
+body:has(.public-header) .gp-dashboard table tbody a{color:#10756e!important;text-underline-offset:2px}
+body:has(.public-header) .gp-dashboard .metrics{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(13rem,100%),1fr))!important;gap:14px!important;margin:18px 0!important}
+body:has(.public-header) .gp-dashboard .metrics article{background:#fff!important;border:1px solid #d2dfdf!important;border-top:4px solid #075e50!important;border-radius:12px!important;padding:16px 18px!important;display:grid!important;gap:4px!important;margin:0!important}
+body:has(.public-header) .gp-dashboard .metrics span{color:#49626a!important;font-size:13px!important;font-weight:600!important}
+body:has(.public-header) .gp-dashboard .metrics strong{color:#075e50!important;font-size:26px!important;line-height:1.2!important;font-variant-numeric:tabular-nums;margin:0!important}
+body:has(.public-header) .gp-dashboard .table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #e2ebe7}
+body:has(.public-header) .gp-dashboard .panel small,body:has(.public-header) .gp-dashboard .panel .notice{color:#49626a!important}
+
+body:has(.public-header) .gp-page h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:31px!important;line-height:1.13!important;letter-spacing:-1.085px!important;color:#18344c!important;margin:6px 0 12px!important}
+body:has(.public-header) .gp-page h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;color:#18344c!important;letter-spacing:-.4px}
+body:has(.public-header) .gp-page{color:#18344c!important}
+body:has(.public-header) .gp-page a{color:#075e50!important}
+body:has(.public-header) .gp-page button{background:#075e50!important;border-color:#075e50!important;color:#fff!important}
+body:has(.public-header) .gp-page .gp-code{color:#49626a!important}

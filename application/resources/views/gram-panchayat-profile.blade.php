@@ -3,7 +3,8 @@
     $t=fn($en,$hindi)=>$hi?$hindi:$en;
     $title=$record['name'].' · '.$t('Gram Panchayat','ग्राम पंचायत');
     $districts=collect($villages)->groupBy('district');
-    $profileParams=['state'=>$record['state'],'gp'=>$record['gp'],'lang'=>$hi?'hi':null];
+    $gpUrls=app(\App\Services\GramPanchayatUrls::class);
+    $profileUrl=fn(array $query=[])=>$gpUrls->link($record['state'], $record['name'], $record['gp'], $query);
 @endphp
 @extends('gram-panchayat-layout',compact('hi','title','record'))
 @section('directory-content')
@@ -16,7 +17,7 @@
 </div>
 <p class="eyebrow">{{ $t('Gram Panchayat','ग्राम पंचायत') }}</p>
 <h1 class="village-heading" translate="no">{{ $record['name'] }}</h1>
-<p><a href="{{ route('gram-panchayats.show',$profileParams) }}">← {{ $t('Panchayat summary','पंचायत का सारांश') }}</a></p>
+<p><a href="{{ $profileUrl(['lang'=>$hi?'hi':null]) }}">← {{ $t('Panchayat summary','पंचायत का सारांश') }}</a></p>
 <?php $topic = \App\Services\PlaceTopics::selected('gp'); ?>
 @include('place-topic-nav',['topicGroup'=>'gp'])
 <div data-topic-body>
@@ -32,7 +33,7 @@
 <div class="table-wrap"><table><thead><tr><th>{{ $t('Village','गाँव') }}</th><th>LGD</th><th>{{ $t('Subdistrict','उपजिला') }}</th><th>{{ $t('District','जिला') }}</th></tr></thead><tbody>
 @foreach($villages as $v)
 <?php $area=['scope'=>'lgd','state'=>$record['state'],'district'=>$v['district'],'lang'=>$hi?'hi':null]; ?>
-<tr><th scope="row"><a href="{{ route('gram-panchayats.show',$profileParams+['village'=>$v['village'],'topic'=>'village-data']) }}#linked-village-data">{{ $v['name'] }}</a></th>
+<tr><th scope="row"><a href="{{ $profileUrl(['village'=>$v['village'],'topic'=>'village-data','lang'=>$hi?'hi':null]) }}#linked-village-data">{{ $v['name'] }}</a></th>
 <td>{{ $v['village'] }}</td><td><a href="{{ route('gram-panchayats.area',$area+['subdistrict'=>$v['subdistrict']]) }}">{{ $v['subdistrict_name'] }}</a></td>
 <td><a href="{{ route('gram-panchayats.area',$area) }}">{{ $v['district_name'] }}</a></td></tr>
 @endforeach
@@ -63,7 +64,7 @@
     <h2 translate="no">{{ $member['name'] }}</h2>
     <p>{{ $t('The records below describe this village.','नीचे दिए गए रिकॉर्ड इस गाँव के हैं।') }} LGD {{ $member['village'] }}</p>
     @if(count($villages)>1)
-    <form method="get" action="{{ route('gram-panchayats.show',['state'=>$record['state'],'gp'=>$record['gp']]) }}#linked-village-data">
+    <form method="get" action="{{ $profileUrl(['lang'=>$hi?'hi':null]) }}#linked-village-data">
         @if($hi)<input type="hidden" name="lang" value="hi">@endif
         <input type="hidden" name="topic" value="village-data"><input type="hidden" name="vtopic" value="{{ \App\Services\PlaceTopics::selected('member') }}">
         <label>{{ $t('Village','गाँव') }} <select name="village">@foreach($villages as $v)<option value="{{ $v['village'] }}" @selected($member['village']===$v['village'])>{{ $v['name'] }} · {{ $v['village'] }}</option>@endforeach</select></label>

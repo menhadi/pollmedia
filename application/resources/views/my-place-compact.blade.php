@@ -49,7 +49,7 @@
 @foreach(array_slice($previews['payments'],0,3) as $p)<tr><th scope="row">{{ $p['year'] }}</th><td translate="no">{{ $p['unit']==='INR'?'₹':'' }}{{ $p['source_amount'] }}</td></tr>@endforeach</tbody></table>
 <p class="mp-note">{{ $t('Whole Panchayat','पूरी पंचायत') }}@if(collect(array_slice($previews['payments'],0,3))->contains(fn($p)=>$p['unit']===null)) · {{ $t('Source unit unconfirmed','स्रोत की इकाई अपुष्ट') }}@endif</p>
 @else<h3>{{ $t('Linked Gram Panchayat','संबंधित ग्राम पंचायत') }}</h3><p>{{ $label($gp['name']) }}</p>@endif
-<a class="mp-more" href="{{ route('gram-panchayats.show',['state'=>$context['state']['code'],'gp'=>$gp['gp'],'lang'=>$language]) }}">{{ $t('Open Panchayat profile','पंचायत प्रोफ़ाइल खोलें') }} →</a></section>@endif
+<a class="mp-more" href="{{ app(\App\Services\GramPanchayatUrls::class)->link($context['state']['code'], $gp['name'] ?? null, $gp['gp'], ['lang'=>$language]) }}">{{ $t('Open Panchayat profile','पंचायत प्रोफ़ाइल खोलें') }} →</a></section>@endif
 @if($previews['prices']->isNotEmpty())<section class="place-panel mp-card" data-mp-card="markets" data-scope="district"><p class="mp-scope">{{ $t('District','ज़िला') }} · {{ $districtName }}</p><h3>{{ $t('District mandi prices','ज़िले के मंडी भाव') }}</h3>
 <table><thead><tr><th scope="col">{{ $t('Commodity and mandi','जिंस और मंडी') }}</th><th scope="col">{{ $t('Modal price','प्रचलित भाव') }}</th></tr></thead><tbody>
 @foreach($previews['prices'] as $p)<tr><th scope="row">{{ $hi?(($p['commodity_hi']??null)?:$p['commodity']):$p['commodity'] }}<small>{{ $p['market'] }} · {{ $p['date'] }}</small></th><td>₹{{ $fmt->format($p['modal']) }}<small>/ {{ $units[$p['unit']][$hi?1:0]??$p['unit'] }}</small></td></tr>@endforeach</tbody></table>

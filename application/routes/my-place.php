@@ -25,5 +25,7 @@ Route::get('/my-place/panchayat-records', [MyPlacePanchayatController::class, 'i
 
 Route::get('/india/gram-panchayats/area/{scope}/{state}/{district}/{subdistrict?}', [MyPlacePanchayatController::class, 'area'])
     ->whereIn('scope', ['lgd', 'census'])->whereNumber('state')->whereNumber('district')->whereNumber('subdistrict')->name('gram-panchayats.area');
+Route::get('/india/gram-panchayats/{state}/{gpName}-{gp}', [MyPlacePanchayatController::class, 'profileBySlug'])
+    ->where('state', '[a-z0-9-]+')->where('gpName', '[a-z0-9-]+')->whereNumber('gp')->name('gram-panchayats.show');
 Route::get('/india/gram-panchayats/{state}/{gp}', [MyPlacePanchayatController::class, 'profile'])
-    ->whereNumber('state')->whereNumber('gp')->name('gram-panchayats.show');
+    ->whereNumber('state')->whereNumber('gp')->name('gram-panchayats.show.legacy');

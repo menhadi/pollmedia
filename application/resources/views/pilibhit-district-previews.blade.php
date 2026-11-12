@@ -20,7 +20,7 @@
 @endif
 <table class="pb-sample"><thead><tr><th scope="col">{{ $tr('Panchayat','पंचायत') }}</th>@if(isset($previews['directory']['villages']))<th scope="col">{{ $tr('Villages','गाँव') }}</th>@endif</tr></thead>
 <tbody>@foreach($previews['directory']['rows'] as $gp)
-<tr><th scope="row">@if(isset($gp['state'],$gp['gp']))<a href="{{ route('gram-panchayats.show',['state'=>$gp['state'],'gp'=>$gp['gp'],'lang'=>$hi?'hi':null]) }}">{{ $gp['name'] }}</a>@elseif($pilot && isset($gp['code']))<a href="{{ route('gram-panchayats.show',['state'=>9,'gp'=>$gp['code'],'lang'=>$hi?'hi':null]) }}">{{ $gp['name'] }}</a>@else{{ $gp['name'] }}@endif</th>@if(isset($gp['villages']))<td>{{ $fmt($gp['villages']) }}</td>@endif</tr>
+<tr><th scope="row">@if(isset($gp['state'],$gp['gp']))<a href="{{ app(\App\Services\GramPanchayatUrls::class)->link($gp['state'], $gp['name'] ?? null, $gp['gp'], ['lang'=>$hi?'hi':null]) }}">{{ $gp['name'] }}</a>@elseif($pilot && isset($gp['code']))<a href="{{ app(\App\Services\GramPanchayatUrls::class)->link(9, $gp['name'] ?? null, $gp['code'], ['lang'=>$hi?'hi':null]) }}">{{ $gp['name'] }}</a>@else{{ $gp['name'] }}@endif</th>@if(isset($gp['villages']))<td>{{ $fmt($gp['villages']) }}</td>@endif</tr>
 @endforeach</tbody></table>
 @elseif($key==='elections' && $previews['elections'])
 <p><strong>{{ $fmt($previews['elections']['assembly']) }}</strong> {{ $tr('Assembly seats','विधानसभा क्षेत्र') }} · {{ $fmt($previews['elections']['parliamentary']) }} {{ $tr($previews['elections']['parliamentary']===1?'linked Lok Sabha seat':'linked Lok Sabha seats','संबंधित लोकसभा क्षेत्र') }}</p>

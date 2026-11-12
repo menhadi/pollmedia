@@ -19,7 +19,7 @@
 </form>
 @if($listing['items'])
 <ul class="gp-list">@foreach($listing['items'] as $gp)
-<li><a href="{{ route('gram-panchayats.show',['state'=>$gp['state'],'gp'=>$gp['gp'],'lang'=>$hi?'hi':null]) }}">{{ $gp['name'] }}</a> <span class="gp-code">{{ $gp['gp'] }}</span></li>
+<li><a href="{{ app(\App\Services\GramPanchayatUrls::class)->link($gp['state'], $gp['name'] ?? null, $gp['gp'], ['lang'=>$hi?'hi':null]) }}">{{ $gp['name'] }}</a> <span class="gp-code">{{ $gp['gp'] }}</span></li>
 @endforeach</ul>
 @else
 <p>{{ $hi?'इस चयन के लिए कोई सत्यापित पंचायत नहीं मिली।':'No verified Gram Panchayats found for this selection.' }}</p>

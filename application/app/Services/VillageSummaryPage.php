@@ -161,6 +161,6 @@ final class VillageSummaryPage
     {
         $row = app(GramPanchayatDirectory::class)->forVillage((int) $state, (int) $code);
 
-        return $row ? ['name' => $row['name'], 'url' => route('gram-panchayats.show', ['state' => $state, 'gp' => $row['gp'], 'lang' => $hi ? 'hi' : null])] : null;
+        return $row ? ['name' => $row['name'], 'url' => app(GramPanchayatUrls::class)->link($state, $row['name'], $row['gp'], ['lang' => $hi ? 'hi' : null])] : null;
     }
 }

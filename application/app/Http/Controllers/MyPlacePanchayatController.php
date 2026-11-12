@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Services\ElectoralVillageMap;
 use App\Services\GramPanchayatDirectory;
+use App\Services\GramPanchayatUrls;
 use App\Services\MyPlaceDirectory;
 use App\Services\MyPlaceFacts;
 use App\Services\MyPlacePanchayat;
 use App\Services\PanchayatSummaryPage;
 use App\Services\PlaceTopics;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -37,9 +39,21 @@ class MyPlacePanchayatController extends Controller
         return view('gram-panchayat-area', compact('scope', 'state', 'district', 'subdistrict', 'listing', 'q', 'page', 'areaName', 'subdistricts'));
     }
 
-    public function profile(Request $request, GramPanchayatDirectory $directory, ElectoralVillageMap $map, int $state, int $gp): View
+    public function profileBySlug(Request $request, GramPanchayatDirectory $directory, ElectoralVillageMap $map, string $state, string $gpName, int $gp): View|RedirectResponse
+    {
+        $code = app(GramPanchayatUrls::class)->stateCode($state);
+        abort_unless($code !== null && $code !== '', 404);
+
+        return $this->profile($request, $directory, $map, (int) $code, $gp);
+    }
+
+    public function profile(Request $request, GramPanchayatDirectory $directory, ElectoralVillageMap $map, int $state, int $gp): View|RedirectResponse
     {
         $profile = $directory->profile($state, $gp);
+        $canonical = app(GramPanchayatUrls::class)->link($state, $profile['record']['name'] ?? null, $gp);
+        if (parse_url($canonical, PHP_URL_PATH) !== $request->getPathInfo()) {
+            return redirect()->to($canonical.($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);
+        }
         $chosen = $request->query('village');
         abort_if($chosen !== null && (! is_string($chosen) || ! ctype_digit($chosen)), 404);
         $member = $chosen === null ? $profile['villages'][0] : collect($profile['villages'])->firstWhere('village', $chosen);
