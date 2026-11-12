@@ -1,6 +1,6 @@
-<section class="atlas-region" aria-label="Constituency map" data-atlas-region>
+<section class="atlas-region" aria-label="Constituency map" data-atlas-region data-atlas-parent="{{ $kind==='ac' ? ($atlasFamily['pc'][0]['name'] ?? '') : '' }}">
 <script type="application/json" data-atlas-ac-pages>{!! json_encode($atlasFamily['ac'],JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) !!}</script>
-<div class="atlas-map-frame" hidden><svg viewBox="0 0 360 250" aria-label="{{ $name }} constituency reference map" role="group"></svg></div>
+<div class="atlas-map-frame" hidden><svg viewBox="0 0 360 250" aria-label="{{ $name }} constituency reference map" role="group"></svg></div><p class="atlas-empty atlas-map-missing" data-atlas-map-missing hidden>Boundary outline is not available for this seat in the reference map.</p>
 <div><h2>{{ $tr('Constituency coverage','निर्वाचन क्षेत्र का विस्तार') }}</h2>
 @if($coverage || ($kind==='pc' && $atlasFamily['ac']))
 <table><thead><tr><th>{{ $tr('Assembly segment','विधान सभा क्षेत्र') }}</th>@if($coverage)<th>{{ $tr('Mapped villages','मैप किए गए गाँव') }}</th>@endif</tr></thead><tbody>

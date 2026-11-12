@@ -88,7 +88,11 @@
     const explorer = atlas.querySelector('.atlas-map-explorer[data-current-layer]');
     const map = explorer?.querySelector('[data-election-map]');
     if (!map?.dataset.source || !map.dataset.state || atlas.dataset.ambiguous === '1') return;
-    const normalize = value => String(value ?? '').trim().toLowerCase().replace(/&/g,'and').replace(/\s*\((sc|st|gen)\)$/i, '').trim();
+    const nameAliases = { bhongir: 'bhuvanagiri', janjgirchampa: 'janjgir' };
+    const normalize = value => {
+        const name = String(value ?? '').trim().toLowerCase().replace(/&/g,'and').replace(/\s*\((sc|st|gen)\)$/i, '').trim();
+        return nameAliases[name.replace(/[^a-z0-9]+/g, '')] || name;
+    };
     const similarity = (a, b) => {
         if (a === b) return 1;
         if (a.length < 2 || b.length < 2) return 0;
@@ -111,6 +115,21 @@
         const {features} = await response.json();
         const inState = features.filter(f => normalize(f.properties.state) === normalize(map.dataset.state) && ['Polygon','MultiPolygon'].includes(f.geometry?.type));
         const matches = inState.filter(f => f.properties.kind === map.dataset.kind && normalize(f.properties.name) === normalize(map.dataset.selected));
+        const parentName = normalize(region.dataset.atlasParent || '');
+        if (parentName && matches.length > 1) {
+            const parent = inState.find(f => f.properties.kind === 'pc' && normalize(f.properties.name) === parentName);
+            if (parent) { const narrowed = matches.filter(f => String(f.properties.parent_pc_code) === String(parent.properties.code)); if (narrowed.length) matches.splice(0, matches.length, ...narrowed); }
+        }
+        const familyRows = JSON.parse(region.querySelector('[data-atlas-ac-pages]').textContent);
+        if (!matches.length && map.dataset.kind === 'pc' && familyRows.length) {
+            const familyNames = new Set(familyRows.map(row => normalize(row.name)));
+            const allAcs = inState.filter(f => f.properties.kind === 'ac');
+            const candidates = inState.filter(f => f.properties.kind === 'pc').map(pc => ({
+                pc,
+                hits: allAcs.filter(ac => normalize(ac.properties.parent_pc_code) === normalize(pc.properties.code) && familyNames.has(normalize(ac.properties.name))).length,
+            })).filter(row => row.hits > 0).sort((a, b) => b.hits - a.hits);
+            if (candidates[0] && (!candidates[1] || candidates[0].hits > candidates[1].hits)) matches.push(candidates[0].pc);
+        }
         if (!matches.length && map.dataset.selected) {
             const target = normalize(map.dataset.selected);
             const scored = inState.filter(f => f.properties.kind === map.dataset.kind)
@@ -118,7 +137,11 @@
                 .sort((a, b) => b.score - a.score);
             if (scored[0] && scored[0].score >= 0.8 && (!scored[1] || scored[0].score - scored[1].score >= 0.05)) matches.push(scored[0].feature);
         }
-        if (!matches.length) return;
+        if (!matches.length) {
+            const missing = region.querySelector('[data-atlas-map-missing]');
+            if (missing) missing.hidden = false;
+            return;
+        }
         const bboxOf = feature => {
             let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;
             for (const ring of ringList(feature.geometry)) for (const [x,y] of ring) {
