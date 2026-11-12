@@ -1,6 +1,6 @@
 /* Gram Panchayat pages follow the district and assembly page typography. */
 main[data-local-dashboard] > h1.village-heading,
-[data-gp-summary] h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:31px!important;line-height:1.13!important;letter-spacing:-1.085px!important;color:#18344c!important;background:none!important;border-left:0!important;padding:0!important;margin:6px 0 12px!important}
+[data-gp-summary] h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:clamp(1.65rem,3.1vw,2.55rem)!important;line-height:1.13!important;letter-spacing:-.035em!important;color:#18344c!important;background:none!important;border-left:0!important;padding:0!important;margin:6px 0 12px!important}
 [data-gp-summary] .pb-scope{color:#49626a;font-size:15px;margin-top:2px}
 main[data-local-dashboard] .eyebrow{color:#10756e;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
 body:has(main[data-local-dashboard]) .village-breadcrumb-bar{background:transparent!important;border:0!important;padding:0!important;margin:0 0 10px!important}
@@ -23,7 +23,7 @@ body:has(.public-header) .gp-dashboard .metrics strong{color:#075e50!important;f
 body:has(.public-header) .gp-dashboard .table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #e2ebe7}
 body:has(.public-header) .gp-dashboard .panel small,body:has(.public-header) .gp-dashboard .panel .notice{color:#49626a!important}
 
-body:has(.public-header) .gp-page h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:31px!important;line-height:1.13!important;letter-spacing:-1.085px!important;color:#18344c!important;margin:6px 0 12px!important}
+body:has(.public-header) .gp-page h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:clamp(1.65rem,3.1vw,2.55rem)!important;line-height:1.13!important;letter-spacing:-.035em!important;color:#18344c!important;margin:6px 0 12px!important}
 body:has(.public-header) .gp-page h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;color:#18344c!important;letter-spacing:-.4px}
 body:has(.public-header) .gp-page{color:#18344c!important}
 body:has(.public-header) .gp-page a{color:#075e50!important}
