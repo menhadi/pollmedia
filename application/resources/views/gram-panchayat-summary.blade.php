@@ -11,7 +11,7 @@
 <title>{{ $record['name'] }} · {{ $tr('Gram Panchayat','ग्राम पंचायत') }} · Pollmedia</title>
 <meta name="description" content="{{ $record['name'] }} · {{ $districts }} · {{ $tr('Panchayat records and linked villages','पंचायत रिकॉर्ड और संबंधित गाँव') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9"><link rel="stylesheet" href="{{ asset('css/panchayat-summary.css') }}"></head>
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9"><link rel="stylesheet" href="{{ asset('css/panchayat-summary.css') }}"><link rel="stylesheet" href="{{ asset('css/static-district-map.css') }}?v={{ substr(hash_file('sha256',public_path('css/static-district-map.css')),0,12) }}"><script src="{{ asset('js/static-district-map.js') }}?v={{ substr(hash_file('sha256',public_path('js/static-district-map.js')),0,12) }}" defer></script></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-gp-summary data-pilibhit-native>
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb','स्थान क्रम') }}"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a><span>›</span><span>{{ $members[0]['state_name'] }}</span><span>›</span><span>{{ $districts }}</span></nav>
@@ -48,8 +48,8 @@
 @endforeach
 @endif<a class="pb-more" href="{{ $detail('records') }}">{{ $tr('Explore Panchayat records','पंचायत रिकॉर्ड देखें') }} →</a></section>@endif
 </div>
-<section class="pb-panel pb-wide" data-gp-panel="villages"><h2>{{ $tr('Linked villages','संबंधित गाँव') }}</h2>
-@if($hasPopulation || $hasHouseholds)<p>{{ $tr('Residents and households are 2011 Census figures for each linked place. Panchayat membership is from the current directory.','निवासी और परिवार प्रत्येक संबंधित स्थान के 2011 की जनगणना के आँकड़े हैं। पंचायत की सदस्यता वर्तमान निर्देशिका के अनुसार है।') }}</p>@endif
+@include('panchayat-village-map')
+<section class="pb-panel pb-wide" data-gp-panel="villages"><h2>{{ $tr('Linked villages','संबंधित गाँव') }}</h2>@if($hasPopulation || $hasHouseholds)<p>{{ $tr('Residents and households are 2011 Census figures for each linked place. Panchayat membership is from the current directory.','निवासी और परिवार प्रत्येक संबंधित स्थान के 2011 की जनगणना के आँकड़े हैं। पंचायत की सदस्यता वर्तमान निर्देशिका के अनुसार है।') }}</p>@endif
 <table class="pb-metrics gp-members"><thead><tr><th scope="col">{{ $tr('Village','गाँव') }}</th>
 @if($hasPopulation)<th scope="col">{{ $tr('Residents','निवासी') }}</th>@endif
 @if($hasHouseholds)<th scope="col">{{ $tr('Households','परिवार') }}</th>@endif

@@ -73,6 +73,9 @@ $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)
 <section id="area-overview" class="metrics">@foreach(['population'=>'Population','households'=>'Households','literacy'=>'Literacy age 7+'] as $key=>$label)<article><span>{{ $label }}</span><strong>{{ isset($areaValues[$key])?number_format($areaValues[$key],$key==='literacy'?2:0).($key==='literacy'?'%':''):'Unavailable' }}</strong><small>Census {{ $year }} · {{ $residence }}</small></article>@endforeach @unless($isState)<article><span>{{ $isVillage?'Females per 1,000 males':($isState?'Districts in this source':'Villages & towns in this source') }}</span><strong>{{ $isVillage?((($areaRawValues['TOT_M']??0)>0 && isset($areaRawValues['TOT_F']))?number_format(1000*$areaRawValues['TOT_F']/$areaRawValues['TOT_M']):'Unavailable'):$areaRows->count() }}</strong><small>{{ $isVillage?'Census '.$year.' · '.$residence:'Unique source identities' }}</small></article>@endunless</section>
 <?php endif; ?>
 @endif
+@if(in_array($place->level, ['SUB-DISTRICT','SUBDISTRICT','TEHSIL'], true) && $topic==='overview' && (int)$year===2011)
+@include('subdistrict-village-map')
+@endif
 
 <?php if (in_array($topic, ['map'], true)): ?>
 @if($isState)

@@ -54,11 +54,17 @@
                 if (colours[neighbour] !== null) used.add(colours[neighbour]);
             }
             let colour = 0;
-            while (used.has(colour) && colour < AC_PC_PALETTE.length) colour += 1;
-            colours[index] = colour % AC_PC_PALETTE.length;
+            while (used.has(colour)) colour += 1;
+            colours[index] = colour;
         }
 
         return colours;
+    };
+
+    const colourAt = (index, palette) => {
+        if (index < palette.length) return palette[index];
+        const hue = Math.round((index * 137.508) % 360);
+        return `hsl(${hue} 26% 64%)`;
     };
 
     const label = (value) => String(value ?? '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -102,9 +108,33 @@
             return;
         }
 
+        const pagesNode = container.querySelector('[data-map-pages]');
+        let knownPages = new Set();
+        if (pagesNode) {
+            try { knownPages = new Set(JSON.parse(pagesNode.textContent || '[]')); } catch (error) { knownPages = new Set(); }
+        }
+        const linksNode = container.querySelector('[data-map-links]');
+        let villageLinks = {};
+        if (linksNode) {
+            try { villageLinks = JSON.parse(linksNode.textContent || '{}'); } catch (error) { villageLinks = {}; }
+        }
+        const idsNode = container.querySelector('[data-map-village-ids]');
+        let villageIds = [];
+        if (idsNode) {
+            try { villageIds = (JSON.parse(idsNode.textContent || '[]') || []).map(String); } catch (error) { villageIds = []; }
+        }
+        const villageBase = container.dataset.villageBase || '';
+
         const wanted = stateFilter ? slug(stateFilter) : '';
-        let features = (data.features || []).filter((feature) => ['Polygon', 'MultiPolygon'].includes(feature.geometry?.type));
-        if (wanted) features = features.filter((feature) => slug(feature.properties.state) === wanted);
+        let items = (data.features || [])
+            .map((feature, index) => ({ feature, index }))
+            .filter(({ feature }) => ['Polygon', 'MultiPolygon'].includes(feature.geometry?.type));
+        if (wanted) items = items.filter(({ feature }) => slug(feature.properties.state) === wanted);
+        if (isVillage && villageIds.length) {
+            items = items.filter(({ index }) => villageIds.includes(String(villageLinks[index] ?? '')));
+        }
+        const features = items.map(({ feature }) => feature);
+        const sourceIndexes = items.map(({ index }) => index);
         if (!features.length) {
             if (status) status.textContent = 'No boundaries are available for this selection.';
             return;
@@ -158,19 +188,8 @@
         };
         const hideTooltip = () => { if (tooltip) tooltip.hidden = true; };
 
-        const pagesNode = container.querySelector('[data-map-pages]');
-        let knownPages = new Set();
-        if (pagesNode) {
-            try { knownPages = new Set(JSON.parse(pagesNode.textContent || '[]')); } catch (error) { knownPages = new Set(); }
-        }
-        const linksNode = container.querySelector('[data-map-links]');
-        let villageLinks = {};
-        if (linksNode) {
-            try { villageLinks = JSON.parse(linksNode.textContent || '{}'); } catch (error) { villageLinks = {}; }
-        }
-        const villageBase = container.dataset.villageBase || '';
-
-        const entries = features.map((feature, index) => {
+        const entries = features.map((feature, position) => {
+            const index = sourceIndexes[position];
             const state = feature.properties.state || '';
             const name = feature.properties.name || '';
             const subdistrict = feature.properties.subdistrict || feature.properties.source_subdistrict || '';
@@ -194,15 +213,16 @@
                 }
             }
 
-            return { feature, index, state, name, subdistrict, href, linked: Boolean(linkedLgd), bounds: [x0, y0, x1, y1] };
+            return { feature, index, position, state, name, subdistrict, href, linked: Boolean(linkedLgd), bounds: [x0, y0, x1, y1] };
         });
 
         let onHover = null;
         const subdistrictOrder = [...new Set(entries.map((entry) => entry.subdistrict).filter(Boolean))]
             .sort((a, b) => a.localeCompare(b));
-        const districtPalette = districtColours(features);
+        const adjacentColours = districtColours(features);
+        const colourByAdjacency = container.dataset.colour === 'adjacent';
         const colourForEntry = (entry) => {
-            if (!isVillage) return palette[districtPalette[entry.index] ?? 0];
+            if (!isVillage || colourByAdjacency) return colourAt(adjacentColours[entry.position] ?? 0, palette);
             const position = subdistrictOrder.indexOf(entry.subdistrict);
             return palette[(position < 0 ? 0 : position) % palette.length];
         };
@@ -354,6 +374,15 @@
 
             if (status) status.textContent = describe(entries);
             renderShortcuts('');
+
+            const presetSubdistrict = container.dataset.presetSubdistrict || '';
+            if (presetSubdistrict && subdistrictSelect) {
+                const match = [...subdistrictSelect.options].find((option) => slug(option.value) === slug(presetSubdistrict));
+                if (match) {
+                    subdistrictSelect.value = match.value;
+                    subdistrictSelect.dispatchEvent(new Event('change'));
+                }
+            }
         } else {
             const stateSelect = layout.querySelector('[data-map-state-select]');
             const districtSelect = layout.querySelector('[data-map-district-select]');

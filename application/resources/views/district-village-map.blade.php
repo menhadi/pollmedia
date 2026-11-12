@@ -1,6 +1,10 @@
 @php
-    $villageDistrictName = $data['name'] ?? ($identity['district_name'] ?? ($identity['name'] ?? ''));
-    $villageStateName = $data['state_name'] ?? ($identity['state_name'] ?? '');
+    $villageDistrictName = $villageDistrictName ?? ($data['name'] ?? ($identity['district_name'] ?? ($identity['name'] ?? '')));
+    $villageStateName = $villageStateName ?? ($data['state_name'] ?? ($identity['state_name'] ?? ''));
+    $villageSubdistrictName = $villageSubdistrictName ?? null;
+    $villageIds = $villageIds ?? [];
+    $villageHeading = $villageHeading ?? ($villageDistrictName.' villages');
+    $villageColour = ($villageSubdistrictName || $villageIds) ? 'adjacent' : 'subdistrict';
     $districtSlug = \Illuminate\Support\Str::slug($villageDistrictName);
     $stateSlug = \Illuminate\Support\Str::slug($villageStateName);
     $candidates = [
@@ -24,11 +28,11 @@
             $villageLinks = [];
         }
     }
-    $currentDistrictPath = $identity['path'] ?? (request()->attributes->get('district_identity')['path'] ?? url()->current());
+    $currentDistrictPath = $villageDistrictPath ?? ($identity['path'] ?? (request()->attributes->get('district_identity')['path'] ?? url()->current()));
     $districtDirectory = collect(app(\App\Services\DistrictDashboardUrls::class)->all())
         ->sortBy([['state_name', 'asc'], ['name', 'asc']])
         ->groupBy('state_name');
-    $subdistrictPages = collect($data['subdistricts'] ?? [])
+    $subdistrictPages = $subdistrictPages ?? collect($data['subdistricts'] ?? [])
         ->filter(fn ($place): bool => is_array($place) && isset($place['name'], $place['id']))
         ->map(fn (array $place): array => [
             'name' => $place['name'],
@@ -37,20 +41,23 @@
         ->values();
 @endphp
 @if($villageMapFile)
-<section class="static-map-panel district-village-map" aria-label="{{ $villageDistrictName }} village map">
-    <h2>{{ $villageDistrictName }} villages</h2>
+<section class="static-map-panel district-village-map" aria-label="{{ $villageHeading }}">
+    <h2>{{ $villageHeading }}</h2>
     <div class="static-map-layout">
         <div class="static-map"
              data-static-map
              data-mode="village"
+             data-colour="{{ $villageColour }}"
+             @if($villageSubdistrictName)data-preset-subdistrict="{{ $villageSubdistrictName }}"@endif
              data-village-base="/india/villages/{{ $stateSlug }}/{{ $districtSlug }}/"
              data-district-path="{{ $currentDistrictPath }}"
              data-district-name="{{ $villageDistrictName }}"
              data-src="{{ asset($villageMapFile) }}?v={{ filemtime(public_path($villageMapFile)) }}">
-            <svg role="group" aria-label="{{ $villageDistrictName }} village map"></svg>
+            <svg role="group" aria-label="{{ $villageHeading }}"></svg>
             <div class="static-map-tooltip" data-map-tooltip hidden></div>
             <script type="application/json" data-map-links>@json($villageLinks)</script>
             <script type="application/json" data-map-subdistrict-pages>@json($subdistrictPages)</script>
+            <script type="application/json" data-map-village-ids>@json(array_values($villageIds))</script>
         </div>
         <aside class="static-map-filters" aria-label="Village filters">
             <label for="village-district">District</label>
