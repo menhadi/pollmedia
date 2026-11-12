@@ -93,7 +93,9 @@
     const normalize = value => {
         let name = String(value ?? '').trim().toLowerCase().replace(/&/g,'and').replace(/\s*\((sc|st|gen)\)/gi, '').trim();
         for (const [pattern, replacement] of directionWords) name = name.replace(pattern, replacement);
-        return nameAliases[name.replace(/[^a-z0-9]+/g, '')] || name;
+        name = name.replace(/[^a-z0-9]+/g, '');
+
+        return nameAliases[name] || name;
     };
     const similarity = (a, b) => {
         if (a === b) return 1;
