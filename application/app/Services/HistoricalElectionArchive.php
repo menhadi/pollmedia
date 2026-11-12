@@ -24,11 +24,17 @@ class HistoricalElectionArchive
 
     public function editions(string $kind = 'pc'): array
     {
-        return collect($this->entries($kind))
-            ->map(fn (array $entry): array => ['id' => substr(hash('sha256', $entry[1]), 0, 24), 'label' => ElectionArchive::displayLabel($entry[0]), 'year' => (int) substr($entry[0], 0, 4)])
-            ->reject(fn (array $entry): bool => $entry['id'] === ElectionArchive::PC_2019_SUPERSEDED)
-            ->filter(fn (array $entry): bool => app(ArchiveFiles::class)->exists('election-archive/'.$entry['id'].'/extraction.json'))
-            ->sortByDesc('year')->values()->all();
+        $entries = $this->entries($kind);
+
+        return Cache::remember('archive-editions-v1|'.$kind.'|'.sha1(json_encode($entries)), 600, function () use ($entries): array {
+            $files = app(ArchiveFiles::class);
+
+            return collect($entries)
+                ->map(fn (array $entry): array => ['id' => substr(hash('sha256', $entry[1]), 0, 24), 'label' => ElectionArchive::displayLabel($entry[0]), 'year' => (int) substr($entry[0], 0, 4)])
+                ->reject(fn (array $entry): bool => $entry['id'] === ElectionArchive::PC_2019_SUPERSEDED)
+                ->filter(fn (array $entry): bool => $files->exists('election-archive/'.$entry['id'].'/extraction.json'))
+                ->sortByDesc('year')->values()->all();
+        });
     }
 
     public function load(string $archive, ElectionArchive $service, ?int $code = null): array

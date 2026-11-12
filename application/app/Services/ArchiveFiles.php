@@ -13,6 +13,9 @@ class ArchiveFiles
 {
     private array $temporary = [];
 
+    /** @var array<string, object|null> Per-request memo of archive metadata; the rows do not change while a request runs. */
+    private array $metadata = [];
+
     public function __construct(private PdfStorage $pdfs) {}
 
     public function __call(string $method, array $arguments): mixed
@@ -20,9 +23,20 @@ class ArchiveFiles
         return Storage::disk('local')->$method(...$arguments);
     }
 
+    private function remembered(string $key, callable $lookup): ?object
+    {
+        if (! array_key_exists($key, $this->metadata)) {
+            $this->metadata[$key] = $lookup();
+        }
+
+        return $this->metadata[$key];
+    }
+
     private function record(string $path): ?object
     {
-        return $this->pdfs->allowed($path) ? DB::table('pdf_storage_files')->where('path_hash', hash('sha256', $path))->first() : null;
+        return $this->pdfs->allowed($path)
+            ? $this->remembered('pdf|'.$path, fn () => DB::table('pdf_storage_files')->where('path_hash', hash('sha256', $path))->first())
+            : null;
     }
 
     private function jsonRecord(string $path, bool $includeBody = false, ?string $digestSuffix = null): ?object
@@ -33,18 +47,20 @@ class ArchiveFiles
             return null;
         }
 
-        $query = DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))
-            ->select($includeBody ? ['*'] : ['path', 'sha256', 'bytes']);
-        if ($digestSuffix !== null) {
-            $source = $query->selectRaw("pg_catalog.convert_to(body, pg_catalog.current_setting('client_encoding')) AS fingerprint_body")->offset(0);
-            $query = DB::query()->fromSub($source, 'verified_archive_bytes')->select(['path', 'sha256', 'bytes'])
-                ->selectRaw("pg_catalog.octet_length(fingerprint_body) AS fingerprint_bytes, pg_catalog.encode(pg_catalog.sha256(fingerprint_body), 'hex') AS fingerprint_sha256");
-            if ($digestSuffix !== '') {
-                $query->selectRaw("pg_catalog.encode(pg_catalog.sha256(fingerprint_body || pg_catalog.convert_to(?, pg_catalog.current_setting('client_encoding'))), 'hex') AS derived_sha256", [$digestSuffix]);
+        return $this->remembered('json|'.(int) $includeBody.'|'.($digestSuffix ?? '~').'|'.$path, function () use ($path, $includeBody, $digestSuffix): ?object {
+            $query = DB::table('archive_json_files')->where('path_hash', hash('sha256', $path))
+                ->select($includeBody ? ['*'] : ['path', 'sha256', 'bytes']);
+            if ($digestSuffix !== null) {
+                $source = $query->selectRaw("pg_catalog.convert_to(body, pg_catalog.current_setting('client_encoding')) AS fingerprint_body")->offset(0);
+                $query = DB::query()->fromSub($source, 'verified_archive_bytes')->select(['path', 'sha256', 'bytes'])
+                    ->selectRaw("pg_catalog.octet_length(fingerprint_body) AS fingerprint_bytes, pg_catalog.encode(pg_catalog.sha256(fingerprint_body), 'hex') AS fingerprint_sha256");
+                if ($digestSuffix !== '') {
+                    $query->selectRaw("pg_catalog.encode(pg_catalog.sha256(fingerprint_body || pg_catalog.convert_to(?, pg_catalog.current_setting('client_encoding'))), 'hex') AS derived_sha256", [$digestSuffix]);
+                }
             }
-        }
 
-        return $query->first();
+            return $query->first();
+        });
     }
 
     private function originalRecord(string $path): ?object
@@ -55,7 +71,7 @@ class ArchiveFiles
             return null;
         }
 
-        return DB::table('archive_original_files')->where('path_hash', hash('sha256', $path))->first();
+        return $this->remembered('orig|'.$path, fn () => DB::table('archive_original_files')->where('path_hash', hash('sha256', $path))->first());
     }
 
     public function exists(string $path): bool

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class ConstituencyByElections
 {
@@ -49,10 +50,12 @@ class ConstituencyByElections
             return null;
         }
         $scope = $kind.'|'.$state;
-        $this->directories[$scope] ??= ElectionArchive::publicIndex()->where('kind', $kind)
+        $this->directories[$scope] ??= collect(Cache::remember('by-election-directory-v2|'.$scope, 600, fn () => ElectionArchive::publicIndex()->where('kind', $kind)
             ->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)])
             ->get(['edition_id', 'year', 'constituency_name'])
-            ->groupBy(fn ($row) => $this->identity($row->constituency_name));
+            ->groupBy(fn ($row) => $this->identity($row->constituency_name))
+            ->map(fn ($rows) => $rows->map(fn ($row) => (array) $row)->values()->all())
+            ->all()))->map(fn (array $rows) => collect($rows)->map(fn (array $row) => (object) $row));
         $matches = $this->directories[$scope]->get($key);
         if (! $matches || $matches->duplicates('edition_id')->isNotEmpty()) {
             return null;
