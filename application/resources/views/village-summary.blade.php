@@ -9,7 +9,7 @@
 <title>{{ $name }} · {{ $tr('Village summary','गाँव का सारांश') }} · Pollmedia</title>
 <meta name="description" content="{{ $name }} · {{ $district }} · {{ $tr('Village figures and links to detailed records','गाँव के आँकड़े और विस्तृत रिकॉर्ड') }}">
 <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">@include('site-theme')
-<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9"></head>
+<link rel="stylesheet" href="{{ asset('css/pilibhit-summary.css') }}?v=9"><link rel="stylesheet" href="{{ asset('css/village-consistent.css') }}?v={{ substr(hash_file('sha256',public_path('css/village-consistent.css')),0,12) }}"></head>
 <body class="election-ui pb-site">@include('public-header',['summaryLayout'=>true])
 <main class="pb-dashboard" data-village-summary data-pilibhit-native>
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb','स्थान क्रम') }}"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a>

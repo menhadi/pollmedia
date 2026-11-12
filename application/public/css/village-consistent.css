@@ -1,0 +1,25 @@
+/* LGD village pages follow the district design system. */
+[data-village-summary] h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:clamp(1.65rem,3.1vw,2.55rem)!important;line-height:1.13!important;letter-spacing:-.035em!important;color:#18344c!important;margin:4px 0 8px!important}
+[data-village-summary] .pb-scope{color:#49626a;font-size:15px;margin-top:2px}
+[data-village-summary] .pb-crumb,[data-village-summary] .pb-view-switch{margin:3px 0}
+[data-village-summary] .pb-panel h2{font:600 clamp(1.1rem,2vw,1.48rem)/1.18 Georgia,"Times New Roman",serif!important;color:#18344c!important;letter-spacing:0!important;margin:0 0 5px!important}
+[data-village-summary] .pb-panel h3{font-family:Georgia,"Times New Roman",serif!important;color:#18344c!important}
+[data-village-summary] .pb-view-switch a{color:#10756e!important;font-weight:600}
+
+body.census-area-ui main[data-local-dashboard]:not(.gp-dashboard)>h1.village-heading{background:none!important;border:0!important;padding:0!important;margin:6px 0 10px!important;color:var(--site-text,#182b25)!important;font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:clamp(1.65rem,3.1vw,2.55rem)!important;line-height:1.13!important;letter-spacing:-.035em!important}
+body.census-area-ui main[data-local-dashboard]:not(.gp-dashboard) .village-breadcrumb-bar{background:transparent!important;border:0!important;padding:0!important;margin:0 0 10px!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) .village-breadcrumb-bar .location-breadcrumbs :is(a,span,li){color:var(--site-muted,#53665e)!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) .village-breadcrumb-bar .location-breadcrumbs a{color:var(--site-primary,#075e50)!important}
+body.census-area-ui main[data-local-dashboard]:not(.gp-dashboard)>p>a[href*="/contribute/village/"]{display:inline-block;margin:2px 0 10px;padding:9px 15px;background:var(--site-primary,#075e50)!important;border:1px solid var(--site-primary,#075e50)!important;border-radius:0!important;color:#fff!important;font-weight:700;text-decoration:none}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) :is(section.panel,section.coverage){background:#fff!important;border:1px solid #d2dfdf!important;border-radius:10px!important;padding:18px 22px!important;margin:18px 0!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) :is(section.panel,section.coverage) h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;color:#18344c!important;font-size:22px!important;letter-spacing:-.4px!important;margin:0 0 8px!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) :is(section.panel,section.coverage) h3{font-family:Georgia,"Times New Roman",serif!important;color:#18344c!important;font-size:17px!important;margin:14px 0 6px!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) table{width:100%!important;border-collapse:collapse!important;font-size:14px!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) table thead th{background:#183f52!important;color:#fff!important;font-weight:600!important;text-align:left!important;padding:8px 9px!important;font-size:12px!important;border:0!important;border-bottom:1px solid #345969!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) table tbody :is(th,td){padding:8px 9px!important;font-size:14px!important;border:0!important;border-bottom:1px solid #e2ebe7!important;text-align:left!important;color:#18344c!important;font-weight:400!important;background:transparent!important;white-space:normal!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) table tbody th{font-weight:600!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) table tbody tr:nth-child(even)>:is(th,td){background:#f3f8f5!important}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) table tbody a{color:#10756e!important;text-underline-offset:2px}
+body:has(.public-header) main[data-local-dashboard]:not(.gp-dashboard) .table-wrap{overflow-x:auto;border-radius:0!important}
+body.census-area-ui main[data-local-dashboard]:not(.gp-dashboard) details>summary{font-weight:700;color:var(--site-primary,#075e50);cursor:pointer}
+body.census-area-ui main[data-local-dashboard]:not(.gp-dashboard) .coverage p{color:#49626a}
