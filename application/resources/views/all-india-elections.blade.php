@@ -9,7 +9,7 @@
 @include('seo-metadata',['breadcrumbs'=>['Pollmedia'=>url('/'),$title=>route('elections.all-india')],'canonical'=>route('elections.all-india',$lang),'seoTitle'=>$title.' · Pollmedia','seoDescription'=>'Search parliamentary, Assembly and by-election constituency records in one national table.'])
 @include('site-theme')
 <link rel="stylesheet" href="{{ asset('css/national-election-table.css') }}?v={{ substr(hash_file('sha256',public_path('css/national-election-table.css')),0,12) }}">
-<script defer src="{{ asset('js/national-election-table.js') }}?v={{ substr(hash_file('sha256',public_path('js/national-election-table.js')),0,12) }}"></script>
+<script defer src="{{ asset('js/national-election-table.js') }}?v={{ substr(hash_file('sha256',public_path('js/national-election-table.js')),0,12) }}"></script><script defer src="{{ asset('js/sortable-tables.js') }}?v={{ substr(hash_file('sha256',public_path('js/sortable-tables.js')),0,12) }}"></script>
 <link rel="stylesheet" href="{{ asset('css/national-dashboards.css') }}?v={{ substr(hash_file('sha256',public_path('css/national-dashboards.css')),0,12) }}">
 </head><body>@include('public-header',['summaryLayout'=>true])
 <main class="national-elections india-hub" data-national-elections data-first="{{ $first }}">
@@ -23,7 +23,7 @@
 @foreach(array_filter(array_merge($filters,$lang),fn($value,$key)=>$key!=='map_edition' && $value!==null && $value!=='',ARRAY_FILTER_USE_BOTH) as $key=>$value)<input type="hidden" name="{{ $key }}" value="{{ $value }}">@endforeach
 <label>{{ $tr('Election year','चुनाव वर्ष') }}<select name="map_edition">@foreach($mapEditions as $entry)<option value="{{ $entry['id'] }}" @selected($entry['id']===$mapEdition['id'])>{{ $entry['label']??$entry['year']??'—' }}</option>@endforeach</select></label><button type="submit">{{ $tr('Show map','मानचित्र देखें') }}</button>
 </form></div>
-@include('election-map',['mapKind'=>'pc','mapStateName'=>'','mapEdition'=>$mapEdition['id'],'mapYear'=>$mapEdition['year']??null])
+@include('election-map',['mapKind'=>'pc','mapStateName'=>'','mapEdition'=>$mapEdition['id'],'mapYear'=>$mapEdition['year']??null,'nationalFilters'=>true])
 </section>
 @endif
 @php($byYears=$annual->filter(fn($counts)=>($counts['by']??0)>0))

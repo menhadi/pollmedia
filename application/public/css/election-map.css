@@ -20,3 +20,15 @@
 .election-map[data-mode=focus] .election-map-seat:not(.is-selected){fill:#ead59e;stroke:#9c895a}.election-map[data-mode=focus] .election-map-seat:not(.is-selected):hover,.election-map[data-mode=focus] .election-map-seat:not(.is-selected):focus-visible{fill:#185c52;stroke:#fff}.election-map-seat-name{fill:#263b32;stroke:#fff5dc;stroke-opacity:.9;font-weight:700}
 
 .election-map[data-mode=focus][data-state=Karnataka] .election-map-seat:not(.is-selected){fill:var(--locator-fill,#ead59e)}
+
+/* National map: map on the left, state and constituency filters on the right. */
+.national-map-split{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.national-map-canvas{min-width:0;position:relative}
+.national-map-rail{display:grid;gap:14px;background:#fff;border:1px solid #d2dfdf;border-radius:10px;padding:18px;min-width:0}
+.national-map-rail h4{font-family:Georgia,"Times New Roman",serif;font-weight:600;color:#18344c;font-size:18px;margin:0}
+.national-map-rail label{display:grid;gap:6px;font-size:13px;font-weight:600;color:#18344c}
+.national-map-rail select{width:100%;min-height:42px;padding:8px 10px;border:1px solid #c3d4d1;border-radius:8px;background:#fff;color:#18344c;font:inherit;font-size:14px}
+.national-map-rail .election-map-search{display:grid;gap:6px}
+.national-map-hint{font-size:12px;color:#49626a;margin:0}
+.national-map-rail [data-map-status]{margin:0;font-size:12px;color:#49626a}
+@media(max-width:900px){.national-map-split{grid-template-columns:1fr}}

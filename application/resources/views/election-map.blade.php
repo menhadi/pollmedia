@@ -37,6 +37,22 @@
 <ul id="atlas-options-{{ $mapKind }}" role="listbox" aria-label="{{ $mapKind==='pc'?$tr('Lok Sabha seats','लोक सभा क्षेत्र'):$tr('Assembly seats','विधान सभा क्षेत्र') }}" data-seat-options hidden></ul>
 <p data-seat-no-match role="status" hidden>{{ $tr('No matching constituency','कोई मिलान नहीं मिला') }}</p></div>
 @endif
+@if(empty($stateMapFilters) && !empty($nationalFilters))
+<div class="national-map-split">
+<div class="national-map-canvas">
+<div class="election-map-surface"><svg role="group" aria-label="{{ $mapState['name'] ?? 'India' }} {{ strtoupper($mapKind) }} constituency map" viewBox="0 0 600 600"></svg></div>
+<div class="election-map-tooltip" data-map-tooltip role="tooltip" hidden></div>
+<div class="election-map-tools" aria-label="Map controls"><button type="button" data-map-zoom="in" aria-label="Zoom in">+</button><button type="button" data-map-zoom="out" aria-label="Zoom out">−</button><button type="button" data-map-zoom="reset">Reset map</button></div>
+</div>
+<aside class="national-map-rail" aria-label="Map filters">
+<h4>{{ app()->getLocale()==='hi'?'मानचित्र फ़िल्टर':'Map filters' }}</h4>
+<label>{{ app()->getLocale()==='hi'?'राज्य / केंद्र शासित प्रदेश':'State / Union territory' }}<select data-national-state onchange="if(this.value)location.href=this.value"><option value="">{{ app()->getLocale()==='hi'?'सभी राज्य':'All states' }}</option>@foreach(app(\App\Services\ElectionGeographySummary::class)->states() as $area)<option value="{{ route('states.show',['state'=>$area['slug']]) }}">{{ $area['name'] }}</option>@endforeach</select></label>
+<label class="election-map-search">Open a constituency<select data-map-seats disabled><option>Loading constituencies…</option></select></label>
+<p class="national-map-hint">{{ app()->getLocale()==='hi'?'राज्य चुनकर उसका नक्शा खोलें, या निर्वाचन क्षेत्र चुनें।':'Pick a state to open its map, or choose a constituency to see its results.' }}</p>
+<p data-map-status role="status">Loading the map…</p>
+</aside>
+</div>
+@else
 <label class="election-map-search" @if($isLocator && empty($atlasExplorer) && empty($stateMapFilters)) hidden @endif>Open a constituency<select data-map-seats disabled><option>Loading constituencies…</option></select></label>
 <div class="election-map-tools" aria-label="Map controls"><button type="button" data-map-zoom="in" aria-label="Zoom in">+</button><button type="button" data-map-zoom="out" aria-label="Zoom out">−</button><button type="button" data-map-zoom="reset">Reset map</button></div>
 @empty($stateMapFilters)
@@ -44,6 +60,7 @@
 <div class="election-map-tooltip" data-map-tooltip role="tooltip" hidden></div>
 @endempty
 <p data-map-status role="status">Loading the map…</p>
+@endif
 <div data-map-legend @if($isLocator) hidden @endif class="election-map-legend" aria-label="Map colours"></div>
 <div data-map-selection @if($isLocator) hidden @endif class="election-map-selection" aria-live="polite">Select a constituency to open its election history.</div>
 @if(!empty($stateMapFilters))

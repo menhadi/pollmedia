@@ -7,5 +7,5 @@ return ['palette' => ['936000' => '#936000', '487000' => '#487000', '00665d' => 
     'header_background' => '#123d35', 'header_text' => '#def1e4', 'contact_email' => 'contact@pollmedia.org',
     'socials' => ['Facebook' => 'https://www.facebook.com/122102117355488967', 'X' => 'https://x.com/xpollmedia', 'Instagram' => '', 'YouTube' => '', 'LinkedIn' => ''],
     'header_template' => 'standard', 'footer_template' => 'columns', 'footer_text' => 'Explore available civic records with their original sources. Coverage and review status vary by dataset.',
-    'links' => [['label' => 'States', 'url' => '/india#states'], ['label' => 'Census', 'url' => '/india/census/explore'], ['label' => 'Elections', 'url' => '/india/elections/lok-sabha'], ['label' => 'Sources', 'url' => '/sources']], 'css' => '',
+    'links' => [['label' => 'States', 'url' => '/india#states'], ['label' => 'Census', 'url' => '/india/census/explore'], ['label' => 'Elections', 'url' => '/india/elections/all-india'], ['label' => 'Sources', 'url' => '/sources']], 'css' => '',
 ]];
