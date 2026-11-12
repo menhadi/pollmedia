@@ -1,6 +1,7 @@
 import {paginate} from './place-table-pagination.js?v=1';
 import {placeHierarchy, placeOptions} from '/js/place-hierarchy.js';
 import {pageSlice, uniquePlaceLinks, valueBarAppearance, compactCountValue} from './compact-place-model.js?v=20261108-atlas';
+const gpSlug=(value)=>String(value||'').normalize('NFKD').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
 
 const main = document.querySelector('main.dashboard-main, main');
 const hi = document.documentElement.lang.startsWith('hi');
@@ -237,7 +238,7 @@ function panchayatList(records) {
         const slice=pageSlice(matches,page,8);page=slice.page;
         list.replaceChildren(...slice.rows.map(record=>{
             const item=make('li'),link=make('a','',record.name);
-            link.href='/india/gram-panchayats/'+record.state+'/'+record.gp+(hi?'?lang=hi':'');item.append(link);return item;
+            link.href='/india/gram-panchayats/'+(record.state_slug||record.state)+'/'+gpSlug(record.name)+'-'+record.gp+(hi?'?lang=hi':'');item.append(link);return item;
         }));
         status.textContent=slice.total?String(slice.start)+'–'+slice.end+' / '+slice.total:text('No matching Panchayats','कोई पंचायत नहीं मिली');
         previous.disabled=page===1;next.disabled=page>=slice.pages;memory.save(search.value,page);
@@ -283,7 +284,7 @@ function explorer(root,scopeMain=true) {
         [text('State','राज्य'),all.filter(link=>/\/india\/(?:census\/states|state|states)\//.test(link.pathname))],
         [text('Districts','जिले'),all.filter(link=>/\/india\/(?:districts|district|census\/districts)\//.test(link.pathname))],
         [text('Subdistricts','तहसीलें'),[...root.querySelectorAll('#subdistricts tbody a[href]')]],
-        [gpTitle,all.filter(link=>/^\/india\/gram-panchayats\/\d+\/\d+$/.test(link.pathname))],
+        [gpTitle,all.filter(link=>/^\/india\/gram-panchayats\/[a-z0-9-]+\/[a-z0-9-]+$/.test(link.pathname))],
         [text('Villages and towns','गाँव और कस्बे'),[...root.querySelectorAll('#villages tbody tr > :first-child a[href],#towns tbody a[href]'),...all.filter(link=>/\/india\/(?:villages?|towns|census\/(?:villages|towns))\//.test(link.pathname))]],
     ];
     for(const [title,links] of adminGroups){const list=title===gpTitle && panchayats.length?panchayatList(panchayats):linkList(links,title===gpTitle || title===text('Villages and towns','गाँव और कस्बे'));if(!list)continue;const branch=make('details','approved-tree-node');branch.open=true;branch.append(make('summary','',title),list);adminPanel.append(branch);}

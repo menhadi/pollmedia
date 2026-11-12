@@ -1,6 +1,11 @@
 @php
     $gpSub = ($gpSubdistrict ?? null) ?: null;
     $gpChoices = app(\App\Services\GramPanchayatDirectory::class)->areaChoices($gpScope, $gpState, $gpDistrict, $gpSub);
+    $gpChoices = array_map(function (array $gp): array {
+        $gp['state_slug'] = app(\App\Services\GramPanchayatUrls::class)->stateSlug($gp['state']);
+
+        return $gp;
+    }, $gpChoices);
     $gpHi = ($language ?? app()->getLocale()) === 'hi' || request('lang') === 'hi';
     $gpParams = array_filter(['scope'=>$gpScope,'state'=>$gpState,'district'=>$gpDistrict,'subdistrict'=>$gpSub,'lang'=>$gpHi?'hi':null]);
 @endphp
