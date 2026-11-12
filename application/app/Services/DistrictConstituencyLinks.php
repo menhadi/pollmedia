@@ -127,6 +127,23 @@ class DistrictConstituencyLinks
             }
         }
         if ($current->count() !== 1) {
+            $pool = $kind === 'pc' ? $pcs : $assembly;
+            $target = mb_strtolower(preg_replace('/[^a-z0-9]+/u', '', str_replace('&', 'and', $normalize($name))));
+            $scored = [];
+            foreach ($pool as $row) {
+                $candidate = mb_strtolower(preg_replace('/[^a-z0-9]+/u', '', str_replace('&', 'and', $normalize((string) ($row['name'] ?? '')))));
+                if ($candidate === '' || $target === '') {
+                    continue;
+                }
+                similar_text($target, $candidate, $pct);
+                $scored[] = ['row' => $row, 'pct' => $pct];
+            }
+            usort($scored, fn (array $a, array $b): int => $b['pct'] <=> $a['pct']);
+            if (($scored[0]['pct'] ?? 0) >= 84 && (($scored[0]['pct'] ?? 0) - ($scored[1]['pct'] ?? 0)) >= 4) {
+                $current = collect([$scored[0]['row']]);
+            }
+        }
+        if ($current->count() !== 1) {
             return null;
         }
         $seat = $current->first();
@@ -148,6 +165,8 @@ class DistrictConstituencyLinks
                     'url' => $match ? ConstituencyUrls::url($match + ['lang' => app()->getLocale()], false) : null];
             }
         }
+
+        $family['selected'] = $seat['name'];
 
         return $family;
     }
@@ -208,7 +227,7 @@ class DistrictConstituencyLinks
             $children = [];
             foreach ($data['features'] ?? [] as $feature) {
                 $row = $feature['properties'];
-                if (strcasecmp(trim($row['state'] ?? ''), $layer['name']) !== 0 || ! empty($row['geometry_warning'])) {
+                if (strcasecmp(trim($row['state'] ?? ''), $layer['name']) !== 0) {
                     continue;
                 }
                 $entry = ['code' => $row['code'], 'name' => $row['name']];

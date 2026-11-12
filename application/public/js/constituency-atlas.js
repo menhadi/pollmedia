@@ -88,7 +88,16 @@
     const explorer = atlas.querySelector('.atlas-map-explorer[data-current-layer]');
     const map = explorer?.querySelector('[data-election-map]');
     if (!map?.dataset.source || !map.dataset.state || atlas.dataset.ambiguous === '1') return;
-    const normalize = value => String(value ?? '').trim().toLowerCase().replace(/\s*\((sc|st|gen)\)$/i, '').trim();
+    const normalize = value => String(value ?? '').trim().toLowerCase().replace(/&/g,'and').replace(/\s*\((sc|st|gen)\)$/i, '').trim();
+    const similarity = (a, b) => {
+        if (a === b) return 1;
+        if (a.length < 2 || b.length < 2) return 0;
+        const grams = value => { const map = new Map(); for (let i = 0; i < value.length - 1; i += 1) { const gram = value.slice(i, i + 2); map.set(gram, (map.get(gram) || 0) + 1); } return map; };
+        const left = grams(a), right = grams(b);
+        let shared = 0;
+        for (const [gram, count] of left) shared += Math.min(count, right.get(gram) || 0);
+        return (2 * shared) / (a.length + b.length - 2);
+    };
     const ringList = geometry => geometry.type === 'Polygon' ? geometry.coordinates : geometry.coordinates.flat();
     const svgNode = (type, attrs) => {
         const el = document.createElementNS('http://www.w3.org/2000/svg', type);
@@ -100,8 +109,15 @@
         const response = await fetch(map.dataset.source);
         if (!response.ok) return;
         const {features} = await response.json();
-        const inState = features.filter(f => normalize(f.properties.state) === normalize(map.dataset.state) && ['Polygon','MultiPolygon'].includes(f.geometry?.type) && !f.properties.geometry_warning);
+        const inState = features.filter(f => normalize(f.properties.state) === normalize(map.dataset.state) && ['Polygon','MultiPolygon'].includes(f.geometry?.type));
         const matches = inState.filter(f => f.properties.kind === map.dataset.kind && normalize(f.properties.name) === normalize(map.dataset.selected));
+        if (!matches.length && map.dataset.selected) {
+            const target = normalize(map.dataset.selected);
+            const scored = inState.filter(f => f.properties.kind === map.dataset.kind)
+                .map(f => ({ feature: f, score: similarity(target, normalize(f.properties.name)) }))
+                .sort((a, b) => b.score - a.score);
+            if (scored[0] && scored[0].score >= 0.8 && (!scored[1] || scored[0].score - scored[1].score >= 0.05)) matches.push(scored[0].feature);
+        }
         if (!matches.length) return;
         const bboxOf = feature => {
             let west=Infinity,south=Infinity,east=-Infinity,north=-Infinity;

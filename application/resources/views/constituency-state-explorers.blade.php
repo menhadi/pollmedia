@@ -6,7 +6,7 @@
 @php
     $layerAvailable=($mapStateInfo['counts'][$layer]??0)>0 || ($layer==='ac' && $mapStateInfo['slug']==='telangana');
     $linked=$exactSeatOnly?[]:($atlasFamily[$layer]??[]);
-    $selectedMapName=$exactSeatOnly?'':($kind===$layer?$name:(count($linked)===1?$linked[0]['name']:''));
+    $selectedMapName=$exactSeatOnly?'':($atlasFamily['selected'] ?? ($kind===$layer?$name:(count($linked)===1?$linked[0]['name']:'')));
 @endphp
 @if($layerAvailable)
 <section class="atlas-map-explorer" data-layer="{{ $layer }}" @if($layer===$kind) data-current-layer @endif aria-labelledby="atlas-{{ $layer }}-title">

@@ -10,6 +10,8 @@ $missing=collect($coverage)->keys()->diff($mappedRows->pluck('slug'))->map(fn($s
 @endphp
 @foreach($mappedRows->concat($missing) as $seat)<tr><th scope="row" data-ac-name="{{ $seat['name'] }}">@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif</th>@if($coverage)<td>{{ isset($coverage[$seat['slug']])?count($coverage[$seat['slug']]):'—' }}</td>@endif</tr>@endforeach
 </tbody></table>
+@elseif($kind==='pc' && $atlasFamily['pc'])
+<p>Lok Sabha (PC) / @foreach($atlasFamily['pc'] as $seat)@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif @unless($loop->last) / @endunless @endforeach</p>
 @elseif($kind==='ac' && $atlasFamily['pc'])
 <p>{{ $tr('Lok Sabha (PC)','लोक सभा (PC)') }} · @foreach($atlasFamily['pc'] as $seat)@if($seat['url'])<a href="{{ $seat['url'] }}">{{ $seat['name'] }}</a>@else{{ $seat['name'] }}@endif{{ $loop->last?'':' · ' }}@endforeach</p>
 @else
