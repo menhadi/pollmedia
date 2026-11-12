@@ -101,6 +101,48 @@ class AllIndiaElectionTable
         return compact('mapEditions', 'annual', 'seats', 'types', 'states', 'years', 'nationalCounts', 'counts', 'rows', 'filters', 'current', 'total', 'hasMore');
     }
 
+    /** Constituency name suggestions from the whole published table, not just the current page. */
+    public function suggestions(array $filters, int $limit = 10): array
+    {
+        $typed = mb_strtolower(trim((string) ($filters['q'] ?? '')));
+        if (mb_strlen($typed) < 2) {
+            return [];
+        }
+        $type = $filters['type'] ?? '';
+        $year = $filters['year'] ?? null;
+        $state = $filters['state'] ?? null;
+        $mapEditions = $this->archive->editions('pc');
+        $assemblyEditions = $this->archive->editions('ac');
+        $base = DB::table('historical_constituency_index')->where(function ($editions) use ($mapEditions, $assemblyEditions) {
+            foreach (['pc' => $mapEditions, 'ac' => $assemblyEditions] as $kind => $entries) {
+                $ids = array_column($entries, 'id');
+                $editions->orWhere(fn ($group) => $group->where('kind', $kind)->whereIn('edition_id', $ids));
+            }
+        })->when($year !== null, fn ($query) => $query->where('year', $year))
+            ->when($state, fn ($query) => $query->whereRaw(ElectionPlaceIdentity::stateSql().' = ?', [mb_strtolower($state)]))
+            ->when($type !== '' && $type !== 'by', fn ($query) => $query->where('kind', $type))
+            ->whereRaw("lower(constituency_name) like ? escape '!'", ['%'.strtr($typed, ['!' => '!!', '%' => '!%', '_' => '!_']).'%']);
+        $names = $type === 'by'
+            ? collect()
+            : $base->distinct()->orderBy('constituency_name')->limit($limit)->pluck('constituency_name');
+        if ($type === '' || $type === 'by') {
+            $by = $this->byElections->index()
+                ->filter(fn (array $row): bool => ($year === null || (int) $row['year'] === (int) $year)
+                    && str_contains(mb_strtolower($row['constituency'] ?? ''), $typed))
+                ->pluck('constituency');
+            $names = $names->merge($by)->filter()->unique(fn ($name): string => mb_strtolower(trim((string) $name)))->sort(SORT_NATURAL | SORT_FLAG_CASE)->take($limit)->values();
+        }
+        $query = array_filter($filters, fn ($value): bool => $value !== null && $value !== '');
+        unset($query['q'], $query['page'], $query['seat'], $query['suggest']);
+
+        return $names->map(fn (string $name): array => [
+            'label' => \Illuminate\Support\Str::title($name),
+            'type' => 'Constituency',
+            'period' => null,
+            'url' => route('elections.all-india', $query + ['q' => $name, 'lang' => app()->getLocale() === 'hi' ? 'hi' : null]),
+        ])->values()->all();
+    }
+
     /** Number of records consumed from each stream after interleaving its first $length records. */
     private function prefix(array $counts, int $length): array
     {

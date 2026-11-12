@@ -17,11 +17,12 @@ class ElectionArchive
     public static function displayLabel(string $label): string
     {
         $label = trim($label);
+        $label = preg_replace('/\s*\((?:Including|Excluding)\s+Vellore\s+PC\)\s*$/i', '', $label) ?? $label;
         if (preg_match('/^(\d{4})\s+Vol\.?\s+[IVX]+(?:\s*,\s*[IVX]+)*$/i', $label, $matches) === 1) {
             return $matches[1];
         }
 
-        return $label;
+        return trim($label);
     }
 
     public static function publicIndex(): Builder

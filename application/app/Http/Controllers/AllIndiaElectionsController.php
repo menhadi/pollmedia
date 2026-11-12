@@ -28,10 +28,15 @@ class AllIndiaElectionsController extends Controller
             'panel' => 'nullable|in:1',
             'map_edition' => 'nullable|regex:/^[a-f0-9]{24}$/',
             'rows_only' => 'nullable|in:1',
+            'suggest' => 'nullable|in:1',
             'page' => 'nullable|integer|min:1|max:100000',
         ]);
 
-        unset($filters['rows_only'], $filters['panel']);
+        if ($request->boolean('suggest')) {
+            return response()->json(['suggestions' => $table->suggestions($filters)]);
+        }
+
+        unset($filters['rows_only'], $filters['panel'], $filters['suggest']);
         $data = $table->page($filters);
         $page = $data['current'];
         $link = fn ($n) => route('elections.all-india', array_merge($filters, ['page' => $n, 'lang' => app()->getLocale() === 'hi' ? 'hi' : null]));

@@ -3,10 +3,11 @@
     $tr = fn ($en,$hn) => $hi ? $hn : $en;
     $lang = $hi ? ['lang'=>'hi'] : [];
     $labels = ['pc'=>$tr('Lok Sabha (PC)','लोक सभा (पीसी)'), 'ac'=>$tr('Assembly (AC)','विधान सभा (एसी)'), 'by'=>$tr('By-election','उपचुनाव')];
+    $suggestUrl = route('elections.all-india', array_filter(array_merge($filters, ['suggest' => 1]), fn ($value) => $value !== null && $value !== ''));
 @endphp
 <section id="national-records" class="hub-records" data-first="{{ $first }}" aria-labelledby="results-heading">
 <div class="records-heading"><h2 id="results-heading">{{ $tr('Constituency records','निर्वाचन क्षेत्र रिकॉर्ड') }}</h2><span data-count>{{ number_format($total) }} {{ $tr($total===1?'constituency record':'constituency records','निर्वाचन क्षेत्र रिकॉर्ड') }}</span></div>
-<form class="records-filters" method="get" action="{{ route('elections.all-india') }}#national-records" data-record-filters>
+<form class="records-filters" method="get" action="{{ route('elections.all-india') }}#national-records" data-record-filters data-place-search data-suggest-url="{{ $suggestUrl }}" data-suggest-query="q" data-manual-submit>
 @if(filled($filters['map_edition']??null))<input type="hidden" name="map_edition" value="{{ $filters['map_edition'] }}">@endif
 @if($hi)<input type="hidden" name="lang" value="hi">@endif
 <label>{{ $tr('Year','वर्ष') }}<select name="year"><option value="">{{ $tr('All years','सभी वर्ष') }}</option>@foreach($years as $y)<option value="{{ $y }}" @selected(isset($filters['year']) && (int)$filters['year']===$y)>{{ $y ?: $tr('Year unreported','वर्ष अनुपलब्ध') }}</option>@endforeach</select></label>
@@ -17,8 +18,9 @@
 <label>{{ $tr('Constituency','निर्वाचन क्षेत्र') }}<select name="seat"><option value="">{{ $tr('All constituencies','सभी निर्वाचन क्षेत्र') }}</option>@foreach($seats as $name)<option @selected(($filters['seat']??null)===$name)>{{ $name }}</option>@endforeach</select></label>
 @endif
 @if((!isset($filters['year']) && !isset($filters['state']) && !isset($filters['seat'])) || filled($filters['q']??null))
-<label>{{ $tr('Constituency search','निर्वाचन क्षेत्र खोज') }}<input type="search" name="q" maxlength="120" value="{{ $filters['q']??'' }}" placeholder="{{ $tr('Seat name','क्षेत्र का नाम') }}"></label>
+<label>{{ $tr('Constituency search','निर्वाचन क्षेत्र खोज') }}<input type="search" id="national-record-query" name="q" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="national-record-suggestions" autocomplete="off" maxlength="120" value="{{ $filters['q']??'' }}" placeholder="{{ $tr('Seat name','क्षेत्र का नाम') }}"></label>
 @endif
+<div id="national-record-suggestions" class="search-suggestions" role="listbox" hidden></div><span class="visually-hidden" role="status"></span>
 <button type="submit">{{ $tr('Show results','परिणाम देखें') }}</button>
 </form>
 <div class="national-scroll" role="region" aria-labelledby="results-heading" tabindex="0"><table class="records-table">

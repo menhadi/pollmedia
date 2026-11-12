@@ -33,7 +33,7 @@
 <a class="public-account-link" href="{{ route('community.login') }}"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="6" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 17v-2a6 6 0 0 1 12 0v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Sign in</a>
 
 @endauth
-@foreach($site['links'] as $link)@if(!in_array($link['url'],['/india#states','/india/census/explore','/india/elections/lok-sabha','/india/sir','/india/map','/sources']))<a href="{{ $link['url'] }}">{{ \App\Services\PublicLanguage::text($link['label']) }}</a>@endif @endforeach
+@foreach($site['links'] as $link)@if(!in_array($link['url'],['/india#states','/india/census/explore','/india/elections/lok-sabha','/india/elections/all-india','/india/sir','/india/map','/sources']))<a href="{{ $link['url'] }}">{{ \App\Services\PublicLanguage::text($link['label']) }}</a>@endif @endforeach
 
 
 

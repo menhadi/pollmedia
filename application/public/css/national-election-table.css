@@ -21,3 +21,11 @@ body .national-elections table :is(th,td){padding:8px!important;text-align:left!
 .national-elections .records-table thead .table-sort-indicator{color:#e2edf1!important}
 .national-elections .records-table tbody :is(th,td){font-size:14px!important;padding:9px 12px!important}body:has(.public-header) .national-elections .records-table thead th{line-height:0!important;font-size:0!important;height:48px!important;padding:0 12px!important}
 body:has(.public-header) .national-elections .records-table thead .table-sort{font-size:12px!important;line-height:1.2!important;height:48px!important}
+/* Whole-table search suggestions inside the records filter form. */
+.national-elections .records-filters{position:relative}
+.national-elections .records-filters .search-suggestions{position:absolute;z-index:40;left:0;right:0;top:calc(100% - 8px);max-width:520px;max-height:320px;overflow:auto;background:#fff;border:1px solid #bdcfc9;box-shadow:0 12px 28px #183f5226;border-radius:0}
+.national-elections .records-filters .search-suggestions a{display:grid;gap:2px;padding:10px 12px;border-bottom:1px solid #e2ebe7;color:#18344c;text-decoration:none}
+.national-elections .records-filters .search-suggestions a:last-child{border-bottom:0}
+.national-elections .records-filters .search-suggestions a:hover,.national-elections .records-filters .search-suggestions a[aria-selected=true]{background:#eef6f3}
+.national-elections .records-filters .search-suggestions strong{font-weight:650}
+.national-elections .records-filters .search-suggestions small{color:#49626a}

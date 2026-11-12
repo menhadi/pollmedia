@@ -133,3 +133,11 @@ body .public-header.site-header .state-megamenu .mega-all-india{display:block;wi
 body .public-header.site-header .state-megamenu .mega-national{margin-bottom:10px}
 body .public-header.site-header .state-megamenu .mega-groups{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 @media(min-width:1024px){body .public-header.site-header .state-megamenu .mega-state-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr))}}
+
+/* Keep the brand clear of the search field and identical across pages. */
+.public-header.site-header .brand{flex:none;min-width:max-content;white-space:nowrap}
+.public-header.site-header .brand-name{font-size:30px!important;line-height:1.1!important;letter-spacing:-.5px!important;font-weight:800!important}
+.public-header.site-header .brand-mark{width:44px!important;height:44px!important}
+@media(max-width:1023px){.public-header.site-header .brand-name{font-size:28px!important}.public-header.site-header .brand-mark{width:36px!important;height:36px!important}}
+@media(min-width:1400px){.public-header.site-header{grid-template-columns:max-content minmax(320px,1fr) max-content max-content!important;column-gap:20px!important}.public-header.site-header>.header-search-wrap{max-width:560px!important;width:100%!important}}
+@media(min-width:1024px) and (max-width:1399px){.public-header.site-header{grid-template-columns:max-content minmax(220px,1fr) max-content max-content!important;column-gap:12px!important}.public-header.site-header>.header-search-wrap{max-width:420px!important;width:100%!important}}

@@ -17,7 +17,7 @@
 @if($results && $results->total())
 <p>{{ number_format($results->total()) }} election records match. Each link opens candidate figures, the official source and any data notes.</p>
 <div class="scroll"><table><thead><tr><th>Election</th><th>State as recorded</th><th>Constituency</th><th>Candidate rows</th><th>Data notes</th></tr></thead><tbody>
-@foreach($results as $result)<tr><td>{{ $result->edition_label }} · {{ strtoupper($result->kind) }}</td><td>{{ $result->state_label ?? 'State not identified' }}</td><td><a href="{{ route($result->kind === 'pc' ? 'elections.history' : 'elections.assembly', ['edition' => $result->edition_id, 'state' => $result->state_label, 'code' => $result->record_code]) }}">{{ $result->constituency_name }}</a></td><td>{{ number_format($result->candidate_count) }}</td><td>{{ $result->has_warning ? 'Needs review †' : 'No unresolved data note' }}</td></tr>@endforeach
+@foreach($results as $result)<tr><td>{{ \App\Services\ElectionArchive::displayLabel($result->edition_label) }} · {{ strtoupper($result->kind) }}</td><td>{{ $result->state_label ?? 'State not identified' }}</td><td><a href="{{ route($result->kind === 'pc' ? 'elections.history' : 'elections.assembly', ['edition' => $result->edition_id, 'state' => $result->state_label, 'code' => $result->record_code]) }}">{{ $result->constituency_name }}</a></td><td>{{ number_format($result->candidate_count) }}</td><td>{{ $result->has_warning ? 'Needs review †' : 'No unresolved data note' }}</td></tr>@endforeach
 </tbody></table></div>
 {{ $results->links() }}
 @endif
