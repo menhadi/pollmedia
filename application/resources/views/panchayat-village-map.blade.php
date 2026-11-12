@@ -3,9 +3,20 @@
     $firstMember = $members[0] ?? null;
     $gpStateName = $firstMember['state_name'] ?? '';
     $gpDistrictName = $firstMember['district_name'] ?? '';
+    $gpDistrictAliases = [
+        'ahilyanagar' => 'ahmednagar',
+        'prayagraj' => 'allahabad',
+        'bengaluru' => 'bangalore',
+        'bengaluru-rural' => 'bangalore-rural',
+        'mysuru' => 'mysore',
+        'hubballi-dharwad' => 'dharwad',
+        'calicut' => 'kozhikode',
+    ];
+    $gpDistrictSlug = \Illuminate\Support\Str::slug($gpDistrictName);
+    $gpFileSlug = $gpDistrictAliases[$gpDistrictSlug] ?? $gpDistrictSlug;
     $gpIdentity = collect(app(\App\Services\DistrictDashboardUrls::class)->all())
         ->first(fn (array $row): bool => \Illuminate\Support\Str::slug($row['state_name']) === \Illuminate\Support\Str::slug($gpStateName)
-            && \Illuminate\Support\Str::slug($row['name']) === \Illuminate\Support\Str::slug($gpDistrictName));
+            && in_array(\Illuminate\Support\Str::slug($row['name']), [$gpDistrictSlug, $gpFileSlug], true));
     $gpVillageIds = array_values(array_unique(array_map('strval', array_filter(array_column($members, 'village')))));
     $gpSubdistricts = array_values(array_unique(array_filter(array_column($members, 'subdistrict_name'))));
     $gpPresetSubdistrict = count($gpSubdistricts) === 1 ? $gpSubdistricts[0] : null;
@@ -17,6 +28,7 @@
         'villageSubdistrictName' => $gpPresetSubdistrict,
         'villageHeading' => $gpName.' villages',
         'villageDistrictPath' => $gpIdentity['path'] ?? null,
+        'villageMapSlug' => $gpFileSlug,
         'villageIds' => $gpVillageIds,
     ])
 @endif

@@ -6,12 +6,13 @@
     $villageHeading = $villageHeading ?? ($villageDistrictName.' villages');
     $villageColour = ($villageSubdistrictName || $villageIds) ? 'adjacent' : 'subdistrict';
     $districtSlug = \Illuminate\Support\Str::slug($villageDistrictName);
+    $villageMapSlug = $villageMapSlug ?? $districtSlug;
     $stateSlug = \Illuminate\Support\Str::slug($villageStateName);
     $candidates = [
-        'maps/'.$districtSlug.'-villages.geojson',
-        'maps/'.$stateSlug.'-'.$districtSlug.'-villages.geojson',
-        'maps/bihar-'.$districtSlug.'-villages.geojson',
-        'maps/west-bengal-'.$districtSlug.'-villages.geojson',
+        'maps/'.$villageMapSlug.'-villages.geojson',
+        'maps/'.$stateSlug.'-'.$villageMapSlug.'-villages.geojson',
+        'maps/bihar-'.$villageMapSlug.'-villages.geojson',
+        'maps/west-bengal-'.$villageMapSlug.'-villages.geojson',
     ];
     $villageMapFile = collect($candidates)->first(fn (string $path): bool => is_file(public_path($path)));
     $villageLinks = [];
