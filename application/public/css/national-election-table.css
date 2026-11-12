@@ -29,3 +29,7 @@ body:has(.public-header) .national-elections .records-table thead .table-sort{fo
 .national-elections .records-filters .search-suggestions a:hover,.national-elections .records-filters .search-suggestions a[aria-selected=true]{background:#eef6f3}
 .national-elections .records-filters .search-suggestions strong{font-weight:650}
 .national-elections .records-filters .search-suggestions small{color:#49626a}
+/* Keep the records filters at the same type size as other pages. */
+.national-elections :is(select,input[type=search],input[type=text],button){font-size:16px!important}
+.national-elections :is(select,input[type=search],input[type=text]){padding:9px 12px!important;min-height:44px}
+body{margin:0}

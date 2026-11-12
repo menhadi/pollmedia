@@ -141,3 +141,5 @@ body .public-header.site-header .state-megamenu .mega-groups{display:grid;grid-t
 @media(max-width:1023px){.public-header.site-header .brand-name{font-size:28px!important}.public-header.site-header .brand-mark{width:36px!important;height:36px!important}}
 @media(min-width:1400px){.public-header.site-header{grid-template-columns:max-content minmax(320px,1fr) max-content max-content!important;column-gap:20px!important}.public-header.site-header>.header-search-wrap{max-width:560px!important;width:100%!important}}
 @media(min-width:1024px) and (max-width:1399px){.public-header.site-header{grid-template-columns:max-content minmax(220px,1fr) max-content max-content!important;column-gap:12px!important}.public-header.site-header>.header-search-wrap{max-width:420px!important;width:100%!important}}
+/* One header inset on every page. */
+.public-header.site-header{padding-left:18px!important;padding-right:18px!important}
