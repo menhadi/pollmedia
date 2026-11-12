@@ -26,7 +26,11 @@ body.census-area-ui main .area-intro.district-title>h1+p{margin-top:0!important}
 .census-area-ui .pm-topic-links a:hover{background:#eef6f3!important;border-color:var(--site-primary,#075e50)!important}
 .census-area-ui .pm-topic-links a[aria-current=page]{background:var(--site-primary,#075e50)!important;border-color:var(--site-primary,#075e50)!important;color:#fff!important;box-shadow:0 2px 8px #075e5038}
 .census-area-ui .pm-topic-links a:focus-visible{outline:3px solid var(--site-accent,#b47916);outline-offset:2px}
-.census-area-ui .compact-summary-table :is(td,th){font-size:14px!important;padding:10px 14px!important}
+.census-area-ui .compact-summary-table tbody :is(td,th){font-size:14px!important;padding:8px 9px!important}
+.census-area-ui .compact-summary-table thead th{font-size:12px!important;padding:0 9px!important;height:48px!important}
+.census-area-ui .compact-summary-table thead .table-sort{height:48px!important;min-height:0!important;padding:0!important;color:#fff!important;align-items:center!important}
+.census-area-ui .compact-summary-table thead .table-sort :is(span,strong,b){color:#fff!important;font-size:12px!important}
+.census-area-ui .compact-summary-table thead .table-sort-indicator{color:#e2edf1!important;line-height:1!important;font-size:10px!important}
 .census-area-ui .compact-summary-table strong{font-size:15px!important;line-height:1.3!important;font-weight:700!important}
 .census-area-ui .compact-summary-table small{font-size:12px!important}
-.census-area-ui .compact-summary-table :is(td,th).compact-numeric{font-variant-numeric:tabular-nums}
+.census-area-ui .compact-summary-table tbody td.compact-numeric{font-variant-numeric:tabular-nums}
