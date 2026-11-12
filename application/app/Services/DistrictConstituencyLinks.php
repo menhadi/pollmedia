@@ -255,7 +255,7 @@ class DistrictConstituencyLinks
 
     private function archiveName(string $kind, string $name, string $state): string
     {
-        $name = trim(preg_replace('/\s*\((?:SC|ST)\)\s*$/i', '', $name));
+        $name = trim(preg_replace('/\s*\((?:SC|ST|GEN)\)/i', '', $name));
 
         if ($state === 'Tamil Nadu' && $kind === 'ac' && $name === 'Tiruvottiyur') {
             $name = 'Thiruvottiyur';

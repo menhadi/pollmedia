@@ -88,9 +88,11 @@
     const explorer = atlas.querySelector('.atlas-map-explorer[data-current-layer]');
     const map = explorer?.querySelector('[data-election-map]');
     if (!map?.dataset.source || !map.dataset.state || atlas.dataset.ambiguous === '1') return;
-    const nameAliases = { bhongir: 'bhuvanagiri', janjgirchampa: 'janjgir' };
+    const nameAliases = { bhongir: 'bhuvanagiri', janjgirchampa: 'janjgir', laxmipur: 'lakshmipur', nagaon: 'nowgong', darrangudalguri: 'mangaldoi', diphu: 'autonomousdistrict', kaziranga: 'kaliabor', sonitpur: 'tezpur' };
+    const directionWords = [[/uttar/g, 'north'], [/madhya/g, 'central'], [/purba/g, 'east'], [/paschim/g, 'west'], [/dakshin/g, 'south']];
     const normalize = value => {
-        const name = String(value ?? '').trim().toLowerCase().replace(/&/g,'and').replace(/\s*\((sc|st|gen)\)$/i, '').trim();
+        let name = String(value ?? '').trim().toLowerCase().replace(/&/g,'and').replace(/\s*\((sc|st|gen)\)/gi, '').trim();
+        for (const [pattern, replacement] of directionWords) name = name.replace(pattern, replacement);
         return nameAliases[name.replace(/[^a-z0-9]+/g, '')] || name;
     };
     const similarity = (a, b) => {
@@ -136,6 +138,21 @@
                 .map(f => ({ feature: f, score: similarity(target, normalize(f.properties.name)) }))
                 .sort((a, b) => b.score - a.score);
             if (scored[0] && scored[0].score >= 0.8 && (!scored[1] || scored[0].score - scored[1].score >= 0.05)) matches.push(scored[0].feature);
+        }
+        if (!matches.length && map.dataset.kind === 'ac' && parentName) {
+            let parentPc = inState.find(f => f.properties.kind === 'pc' && normalize(f.properties.name) === parentName);
+            if (!parentPc) {
+                const scored = inState.filter(f => f.properties.kind === 'pc').map(f => ({ feature: f, score: similarity(parentName, normalize(f.properties.name)) })).sort((a, b) => b.score - a.score);
+                if (scored[0] && scored[0].score >= 0.8 && (!scored[1] || scored[0].score - scored[1].score >= 0.05)) parentPc = scored[0].feature;
+            }
+            if (parentPc) {
+                matches.push(parentPc);
+                const note = region.querySelector('[data-atlas-map-missing]');
+                if (note) {
+                    note.textContent = 'Assembly segment outline is not available in the reference map; showing the parliamentary constituency outline.';
+                    note.hidden = false;
+                }
+            }
         }
         if (!matches.length) {
             const missing = region.querySelector('[data-atlas-map-missing]');
