@@ -23,7 +23,7 @@ body:has(.public-header) .gp-dashboard .metrics{display:grid!important;grid-temp
 body:has(.public-header) .gp-dashboard .metrics article{background:#fff!important;border:1px solid #d2dfdf!important;border-top:4px solid #075e50!important;border-radius:12px!important;padding:16px 18px!important;display:grid!important;gap:4px!important;margin:0!important}
 body:has(.public-header) .gp-dashboard .metrics span{color:#49626a!important;font-size:13px!important;font-weight:600!important}
 body:has(.public-header) .gp-dashboard .metrics strong{color:#075e50!important;font-size:26px!important;line-height:1.2!important;font-variant-numeric:tabular-nums;margin:0!important}
-body:has(.public-header) .gp-dashboard .table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #e2ebe7}
+body:has(.public-header) .gp-dashboard .table-wrap{overflow-x:auto;border-radius:0!important;border:1px solid #e2ebe7}
 body:has(.public-header) .gp-dashboard .panel small,body:has(.public-header) .gp-dashboard .panel .notice{color:#49626a!important}
 
 body:has(.public-header) .gp-page h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:600!important;font-size:clamp(1.65rem,3.1vw,2.55rem)!important;line-height:1.13!important;letter-spacing:-.035em!important;color:#18344c!important;margin:6px 0 12px!important}
