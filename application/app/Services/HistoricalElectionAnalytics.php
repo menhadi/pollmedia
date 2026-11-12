@@ -121,7 +121,7 @@ class HistoricalElectionAnalytics
         }
         if ($kind === 'pc' || $state === 'Uttar Pradesh') {
             foreach (app(ElectionArchive::class)->publicCatalogue()[$kind] as [$label, $url]) {
-                $entries[$url] = $label;
+                $entries[$url] = ElectionArchive::displayLabel($label);
             }
         }
         $result = [];
@@ -161,6 +161,7 @@ class HistoricalElectionAnalytics
                 }
             }
             if ($summary) {
+                $summary['label'] = $label;
                 $result[] = $summary;
             }
         }

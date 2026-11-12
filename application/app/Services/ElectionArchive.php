@@ -11,6 +11,19 @@ class ElectionArchive
 
     public const PC_2019_SUPERSEDED = '70e603b1037bf7ca8e1350b0';
 
+    /**
+     * Election pages show the year only; archive pages keep the source volume label.
+     */
+    public static function displayLabel(string $label): string
+    {
+        $label = trim($label);
+        if (preg_match('/^(\d{4})\s+Vol\.?\s+[IVX]+(?:\s*,\s*[IVX]+)*$/i', $label, $matches) === 1) {
+            return $matches[1];
+        }
+
+        return $label;
+    }
+
     public static function publicIndex(): Builder
     {
         return DB::table('historical_constituency_index')->where('edition_id', '!=', self::PC_2019_SUPERSEDED);

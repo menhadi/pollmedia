@@ -352,7 +352,7 @@ class ConstituencyArchiveHistory
         $catalogue = app(ElectionArchive::class);
         $editions = [];
         foreach ($catalogue->publicCatalogue()[$kind] as [$label, $url]) {
-            $editions[substr(hash('sha256', $url), 0, 24)] = ['url' => $url, 'year' => (int) substr($label, 0, 4), 'label' => $label];
+            $editions[substr(hash('sha256', $url), 0, 24)] = ['url' => $url, 'year' => (int) substr($label, 0, 4), 'label' => $kind === 'pc' ? ElectionArchive::displayLabel($label) : $label];
         }
         if ($kind === 'ac') {
             foreach ($catalogue->nationalAssemblyEntries() as $source) {
