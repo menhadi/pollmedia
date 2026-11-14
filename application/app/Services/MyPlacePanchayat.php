@@ -67,11 +67,27 @@ class MyPlacePanchayat
         $directory = collect($directory)->sortBy('name')->values()->all();
         $selected = $selection ? collect($directory)->firstWhere('code', $selection) : (count($directory) === 1 ? $directory[0] : null);
 
+        $nationalSummary = $selected ? $this->nationalSummary($context, $selected['code']) : null;
+        if ($nationalSummary && collect($reports)->contains(fn ($report) => $report['panchayat_code'] === $selected['code'] && $report['financial_year'] === $nationalSummary['summary']['financial_year'] && ! empty($report['months']))) {
+            $nationalSummary = null;
+        }
+
         return ['directory' => $directory, 'selected' => $selected, 'reports' => $selected ? array_values(array_filter($reports, fn ($row) => $row['panchayat_code'] === $selected['code'])) : [],
             'allocations' => $selected ? $this->stateAllocations($context, $selected) : [],
             'payment_totals' => $selected ? app(MyPlacePanchayatPaymentTotals::class)->forSelection($context, $selected) : [],
             'additional_reports' => $this->sourceOnlyPanchayats($context),
+            'national_summary' => $nationalSummary,
             'reason' => ! empty($context['village']) ? 'village-link-unavailable' : 'district-records-unavailable'];
+    }
+
+    private function nationalSummary(array $context, string $code): ?array
+    {
+        $configured = config('services.egramswaraj.reports_path');
+        if ($configured !== null && $configured !== database_path('fixtures/egramswaraj-accounts.json') && config('services.egramswaraj.national_index_path') === null) {
+            return null;
+        }
+
+        return app(NationalPanchayatSummaries::class)->forSelection($context, $code);
     }
 
     private function directorySource(array $context): array
@@ -153,17 +169,20 @@ class MyPlacePanchayat
     public function profileRecords(array $record, array $districts): array
     {
         $reports = $payments = $allocations = [];
+        $nationalSummary = null;
         $code = (string) $record['gp'];
         $selected = ['code' => $code, 'name' => $record['name'], 'namespace' => 'LGD Gram Panchayat'];
         foreach (array_unique($districts) as $district) {
             $context = ['state' => ['code' => (string) $record['state']], 'district' => ['code' => (string) $district], 'village' => null];
             array_push($reports, ...$this->reports($context, $code));
+            $nationalSummary ??= $this->nationalSummary($context, $code);
             array_push($payments, ...app(MyPlacePanchayatPaymentTotals::class)->forSelection($context, $selected));
             array_push($allocations, ...$this->stateAllocations($context, $selected));
         }
 
         return [
             'reports' => collect($reports)->unique()->values()->all(),
+            'national_summary' => collect($reports)->contains(fn ($report) => $report['financial_year'] === ($nationalSummary['summary']['financial_year'] ?? null) && ! empty($report['months'])) ? null : $nationalSummary,
             'payment_totals' => collect($payments)->unique()->groupBy('year')->filter(fn ($rows) => $rows->count() === 1)->map->first()->sortByDesc('year')->values()->all(),
             'allocations' => collect($allocations)->unique()->values()->all(),
         ];

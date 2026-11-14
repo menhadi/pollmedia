@@ -43,6 +43,7 @@
 <?php endif; ?>
 <?php if (in_array($topic, ['records'], true)): ?>
 <section class="panel" id="panchayat-records"><h2>{{ $t('Panchayat records','पंचायत रिकॉर्ड') }}</h2>
+@if(!empty($own['national_summary']))@include('national-panchayat-monthly',['nationalSummary'=>$own['national_summary']])@endif
 @include('my-place-panchayat-payment-totals',['panchayat'=>$own])
 @include('my-place-panchayat-allocations',['panchayat'=>$own])
 @if($reports)
@@ -54,7 +55,7 @@
 @if($years->count()>1)<form method="get"><input type="hidden" name="topic" value="records">@if($hi)<input type="hidden" name="lang" value="hi">@endif<label>{{ $t('Financial year','वित्तीय वर्ष') }} <select name="year">@foreach($years as $y)<option @selected($selectedYear===$y)>{{ $y }}</option>@endforeach</select></label> <button>{{ $t('Show year','वर्ष देखें') }}</button></form>@endif
 @include('my-place-panchayat',['hub'=>['panchayat_reports'=>$reports],'context'=>['village'=>null]])
 @include('my-place-panchayat-activities',['panchayat'=>['reports'=>$reports]])
-@elseif(!$own['payment_totals'] && !$own['allocations'])
+@elseif(!$own['payment_totals'] && !$own['allocations'] && empty($own['national_summary']))
 <p>{{ $t('Panchayat accounts and activity reports are awaiting publication for this Panchayat.','इस पंचायत के खाते और गतिविधि रिपोर्ट प्रकाशित होना बाकी है।') }}</p>
 @endif
 </section>

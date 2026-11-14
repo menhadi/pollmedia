@@ -41,10 +41,12 @@ class MyPlacePanchayatController extends Controller
             $matches = collect(app(MyPlaceDirectory::class)->districts((string) $state))->filter(fn ($row) => mb_strtolower(trim($row['name'])) === mb_strtolower(trim($areaName)))->values();
             $sourceDistrict = $matches->count() === 1 ? (string) $matches[0]['code'] : null;
         }
+        $listingStates = array_values(array_unique(array_map('strval', array_column($listing['items'], 'state'))));
+        $monthlyState = $scope === 'lgd' ? (string) $state : (count($listingStates) === 1 ? $listingStates[0] : null);
         $additionalReports = $sourceDistrict && ! $subdistrict ? app(MyPlacePanchayat::class)->sourceOnlyPanchayats(['state' => ['code' => (string) $state], 'district' => ['code' => $sourceDistrict], 'village' => null]) : [];
         $additionalReports = array_values(array_filter($additionalReports, fn ($row) => $q === '' || str_contains(mb_strtolower($row['name']), mb_strtolower($q)) || $row['code'] === $q));
 
-        return view('gram-panchayat-area', compact('scope', 'state', 'district', 'subdistrict', 'listing', 'q', 'page', 'areaName', 'subdistricts', 'additionalReports'));
+        return view('gram-panchayat-area', compact('scope', 'state', 'district', 'subdistrict', 'listing', 'q', 'page', 'areaName', 'subdistricts', 'additionalReports', 'monthlyState'));
     }
 
     public function profileBySlug(Request $request, GramPanchayatDirectory $directory, ElectoralVillageMap $map, string $state, string $gpName, int $gp): View|RedirectResponse

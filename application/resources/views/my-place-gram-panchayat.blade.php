@@ -26,6 +26,7 @@
 </ul>
 @endif
 </article>
+@if(!empty($panchayat['national_summary']))@include('national-panchayat-monthly',['nationalSummary'=>$panchayat['national_summary']])@endif
 @include('my-place-panchayat-payment-totals')
 @include('my-place-panchayat-allocations')
 @include('my-place-panchayat',['hub'=>['panchayat_reports'=>$panchayat['reports']]])

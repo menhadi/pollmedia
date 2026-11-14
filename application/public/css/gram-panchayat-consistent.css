@@ -44,3 +44,13 @@ body:has(.public-header) .gp-dashboard table tbody :is(th,td){font-size:16px!imp
 .gp-dashboard .approved-pagination>span:first-child{margin-right:auto}
 .gp-dashboard .approved-pagination :is(button,select){padding:9px 13px;min-height:42px;border:1px solid var(--site-primary,#075e50);border-radius:0!important;font:600 15px/1.4 system-ui}
 .gp-dashboard .approved-pagination button:disabled{opacity:.5}
+
+/* National monthly summaries keep readable columns on narrow screens. */
+.national-summary-scroll{width:100%;max-width:100%;overflow-x:auto}
+.national-summary-scroll table{width:100%;min-width:60rem!important;table-layout:auto!important;font-size:1rem!important}
+.national-summary-scroll th,.national-summary-scroll td{font-size:1rem!important;line-height:1.5!important;padding:.7rem .9rem!important;word-break:normal!important;overflow-wrap:normal!important;white-space:normal!important}
+.national-summary-scroll th button,.national-summary-scroll th span{white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important}
+.national-summary-scroll .table-sort-indicator,.national-summary-scroll td:last-child{white-space:nowrap!important}
+.national-summary-scroll th:first-child{min-width:12rem}
+.national-summary-scroll th:not(:first-child){min-width:7rem}
+.national-summary-scroll .place-note{display:block;max-width:24rem;white-space:normal;font-size:.9rem}

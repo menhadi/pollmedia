@@ -6,6 +6,7 @@
 @extends('gram-panchayat-layout',compact('hi','title'))
 @section('directory-content')
 <h1>{{ $title }}</h1>
+<p><a href="{{ route('panchayat-accounts.index',['state'=>$monthlyState??null]) }}">Monthly accounts →</a></p>
 <p>{{ $areaName ?? (($hi?'जनगणना 2011 जिला':'Census 2011 district').' '.$district.($subdistrict?' · '.($hi?'उपजिला':'subdistrict').' '.$subdistrict:'')) }}</p>
 @if($subdistricts)
 <details><summary>{{ $hi?'उपजिले चुनें':'Browse by subdistrict' }}</summary><ul class="gp-list">

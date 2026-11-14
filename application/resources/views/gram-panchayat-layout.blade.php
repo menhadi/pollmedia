@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
     <title>{{ $title }} | Pollmedia</title>
-    @if(isset($record))<link rel="canonical" href="{{ app(\App\Services\GramPanchayatUrls::class)->link($record['state'], $record['name'], $record['gp']) }}">@endif
+    @if(isset($canonicalUrl))<link rel="canonical" href="{{ $canonicalUrl }}">@elseif(isset($record))<link rel="canonical" href="{{ app(\App\Services\GramPanchayatUrls::class)->link($record['state'], $record['name'], $record['gp']) }}">@endif
     <link rel="stylesheet" href="{{ asset('css/electoral-village-map.css') }}">
     <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">

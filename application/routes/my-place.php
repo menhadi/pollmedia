@@ -4,6 +4,7 @@ use App\Http\Controllers\MyPlaceController;
 use App\Http\Controllers\MyPlaceHubController;
 use App\Http\Controllers\MyPlacePanchayatController;
 use App\Http\Controllers\MyPlaceSchoolsController;
+use App\Http\Controllers\NationalPanchayatAccountsController;
 use App\Http\Controllers\SchemeFinderController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,6 @@ Route::get('/india/gram-panchayats/{state}/{gpName}-{gp}', [MyPlacePanchayatCont
     ->where('state', '[a-z0-9-]+')->where('gpName', '[a-z0-9-]+')->whereNumber('gp')->name('gram-panchayats.show');
 Route::get('/india/gram-panchayats/{state}/{gp}', [MyPlacePanchayatController::class, 'profile'])
     ->whereNumber('state')->whereNumber('gp')->name('gram-panchayats.show.legacy');
+
+Route::get('/india/panchayat-accounts', [NationalPanchayatAccountsController::class, 'index'])->name('panchayat-accounts.index');
+Route::get('/india/panchayat-accounts/{state}/{gp}', [NationalPanchayatAccountsController::class, 'show'])->whereNumber('state')->whereNumber('gp')->name('panchayat-accounts.show');

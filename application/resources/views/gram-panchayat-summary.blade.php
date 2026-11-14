@@ -9,7 +9,7 @@
     $activities = collect($own['reports'])->flatMap(fn ($report) => array_map(fn ($activity) => $activity + ['financial_year' => $report['financial_year'], 'source_url' => $report['sources']['activities']['url'] ?? null], $report['activities'] ?? []));
     $employment = app(\App\Services\RuralEmployment::class)->forPanchayat((int) $record['state'], (int) $record['gp']);
     $accountReports = collect($own['reports'])->filter(fn ($report) => !empty($report['receipts']) || !empty($report['payments']) || !empty($report['contra']) || !empty($report['journal']));
-    $hasRecords = $own['payment_totals'] || $own['allocations'] || $own['reports'];
+    $hasRecords = $own['payment_totals'] || $own['allocations'] || $own['reports'] || !empty($own['national_summary']);
     $mapMarkup = $section === 'overview' ? view('panchayat-village-map', compact('record', 'members'))->render() : '';
     $mapUrl = trim($mapMarkup) !== '' ? '#panchayat-map' : $profileUrl(['view' => 'details', 'topic' => 'village-data', 'vtopic' => 'map']).'#linked-village-data';
 @endphp
@@ -108,6 +108,7 @@
 @foreach($own['allocations'] as $allocation)@foreach($allocation['installments'] as $instalment)<tr><th scope="row">{{ $allocation['year'] }}</th><td>{{ $instalment['label'] }}</td><td translate="no">{{ $allocation['unit'] === 'INR' ? '₹' : '' }}{{ $instalment['amount'] }}@if($allocation['unit'] === null)<small>{{ $tr('Unit unconfirmed', 'इकाई अपुष्ट') }}</small>@endif</td><td><a href="{{ $allocation['source_url'] }}" target="_blank" rel="noopener noreferrer">{{ $tr('Official report', 'आधिकारिक रिपोर्ट') }} ↗</a></td></tr>@endforeach @endforeach
 </tbody></table></div>@endif
 @include('panchayat-monthly-vouchers', ['reports' => $own['reports'], 'hi' => $hi])
+@if(!empty($own['national_summary']))@include('national-panchayat-monthly',['nationalSummary'=>$own['national_summary']])@endif
 @if($accountReports->isNotEmpty())<h3>{{ $tr('Account records', 'लेखा रिकॉर्ड') }}</h3><div class="gp-table-scroll"><table id="gp-account-records" data-gp-paginate><thead><tr><th scope="col">{{ $tr('Financial year', 'वित्तीय वर्ष') }}</th><th scope="col">{{ $tr('Record', 'रिकॉर्ड') }}</th><th scope="col">{{ $tr('Entries', 'प्रविष्टियाँ') }}</th><th scope="col">{{ $tr('Reference', 'संदर्भ') }}</th></tr></thead><tbody>
 @foreach($accountReports as $report)@foreach(['receipts' => ['Receipt vouchers', 'प्राप्ति वाउचर'], 'payments' => ['Payment vouchers', 'भुगतान वाउचर'], 'contra' => ['Transfers', 'अंतरण'], 'journal' => ['Journal entries', 'जर्नल प्रविष्टियाँ']] as $kind => $label)@if(!empty($report[$kind]))<tr><th scope="row">{{ $report['financial_year'] }}</th><td>{{ $label[$hi ? 1 : 0] }}</td><td>{{ $num->format(count($report[$kind])) }}</td><td><a href="{{ $detail('records') }}&year={{ $report['financial_year'] }}">{{ $tr('View records', 'रिकॉर्ड देखें') }} →</a></td></tr>@endif @endforeach @endforeach
 </tbody></table></div>@endif
