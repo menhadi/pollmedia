@@ -8,7 +8,7 @@ import {satelliteForLayer,mergeSatellite,vegetationMeaning,satelliteDisclaimer} 
 import {soilMetrics,isSoil,loadSoil,loadSoilConstituencies,linkSoil,soilDisclaimer,soilCycleControl,soilOverview,soilValues,soilCode,soilSampleCount} from './soil-map.js?v=20261014-electoral-1';
 import {RainfallClient} from './rainfall-client.js?v=20261014-1';
 import {mergeRainfallRecords} from './rainfall-grid.js?v=20261014-1';
-import {yearControl,loadHistory,datedRecords,censusValues,censusMetric,renderDirectory,rawCensusValue} from './census-map-year-20261017-zoom-v24.js?v=home-click-20261114';
+import {yearControl,loadHistory,datedRecords,censusValues,censusMetric,renderDirectory,rawCensusValue} from './census-map-year-20261017-zoom-v24.js?v=home-two-years-20261114';
 export function overlaps(a, b) {
     return a[0] <= b[2] && a[2] >= b[0] && a[1] <= b[3] && a[3] >= b[1];
 }
