@@ -22,7 +22,7 @@
 <p>This dated Census record is linked to current LGD village {{ $mapVillageCode }}. The maps show available source boundaries; they do not establish the village's {{ $year }} boundary or comparability across years.</p>
 <div class="links"><a class="button" href="{{ route('india-map.index', ['village' => $mapVillageCode]) }}">Show village on India map →</a><a class="button" href="{{ route('district-dashboard.named', ['state' => 'uttar-pradesh', 'district' => 'pilibhit', 'village' => $mapVillageCode]) }}#map">Show village on Pilibhit district map →</a></div>
 @else
-<p>A unique verified current village link is pending. The district map provides regional context.</p><a class="button" href="{{ route('district-dashboard', ['state' => '09', 'district' => '151']) }}#map">Explore the district map →</a>
+<p>A unique verified current village link is pending. The district map provides regional context.</p><a class="button" href="{{ route('district-dashboard', ['state' => '09', 'district' => '151']) }}#map">Explore the district →</a>
 @endif
 </section>
 <?php endif; ?>

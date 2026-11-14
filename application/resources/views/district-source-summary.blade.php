@@ -39,7 +39,7 @@
 <section class="pb-panel pb-wide"><h2>{{ $tr('District map','ज़िले का नक्शा') }}</h2>
 @if($features!==null)<p><strong>{{ number_format($features) }}</strong> {{ $tr('features in this map layer','इस मानचित्र परत में आकृतियाँ') }}</p>
 @else<p>{{ $tr('District boundary from the source map','स्रोत मानचित्र में ज़िले की सीमा') }}</p>@endif
-<a class="pb-more" href="{{ $map }}">{{ $tr('Explore the map and its coverage','मानचित्र और उसका कवरेज देखें') }} →</a></section>
+<a class="pb-more" href="{{ $map }}">{{ $tr('Explore this area and its coverage','इस क्षेत्र और उसका कवरेज देखें') }} →</a></section>
 @endif
 @if($ndvi)<div class="pb-record-grid pb-anchor-pair">@include('district-summary-vegetation')</div>@endif
 @if(!empty($constituencyLinks['assembly']))<section class="pb-panel pb-wide"><h2>{{ $tr('Assembly constituencies','विधानसभा क्षेत्र') }}</h2>

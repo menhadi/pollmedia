@@ -24,7 +24,7 @@
 
 @isset($catalogue)
 <section id="explore-india-map" class="india-explorer home-map-panel" aria-labelledby="home-map-heading">
-    <div class="home-section-heading"><h1 id="home-map-heading">Explore the India map</h1><a href="{{ route('india-map.index') }}">Open full map ↗</a></div>
+    <div class="home-section-heading"><h1 id="home-map-heading">Explore India</h1><a href="{{ route('india-map.index') }}">Explore India ↗</a></div>
     @include('india-map-explorer', ['homeMap'=>true])
 </section>
 @else
