@@ -174,10 +174,11 @@ def monthly(path, plan):
             result.append(dict(month=period, **dict(zip(["receipts","payments","contra","journal"], map(int, counts)))))
             for link in row[0]["links"]:
                 q = parse_qs(urlparse(link).query)
-                if urlparse(link).hostname != "egramswaraj.gov.in" or urlparse(link).path != "/voucherWiseReport.do" or any(q.get(k) != [str(v)] for k,v in {"state":9,"district":164,"block":2021,"village":plan["gp_cd"],"finYear":YEAR,"month":month_number}.items()):
+                if urlparse(link).hostname != "egramswaraj.gov.in" or urlparse(link).path != "/voucherWiseReport.do" or any(q.get(k) != [str(v)] for k,v in {"state":9,"district":164,"block":plan.get("parent_cd",2021),"village":plan["gp_cd"],"finYear":YEAR,"month":month_number}.items()):
                     raise ValueError("Monthly voucher link has mismatched geography or period")
                 requests.append({"gp":str(plan["gp_cd"]),"month":period,"url":link})
-    if len(result) != len({r["month"] for r in result}) or len(result) != 8:
+    expected = {f"2026-{month:02d}" for month in range(4, min(int(report_date[5:7]), 11) + 1)}
+    if {r["month"] for r in result} != expected or len(result) != len(expected):
         raise ValueError("Incomplete or duplicate monthly rows")
     return result, report_date, requests
 

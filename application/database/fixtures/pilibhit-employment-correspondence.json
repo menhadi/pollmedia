@@ -32,7 +32,33 @@
       "gp": "81724",
       "name": "Aspur",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "ASPUR",
+            "gp": "81724",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131357",
+            "name": "Nawada Das",
+            "current_panchayats": [
+              {
+                "code": "267621",
+                "name": "Nawada Daas"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001003",
@@ -60,7 +86,33 @@
       "gp": "81723",
       "name": "Arauli",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "ARAULI",
+            "gp": "81723",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131375",
+            "name": "Amkhiriya",
+            "current_panchayats": [
+              {
+                "code": "266647",
+                "name": "Amkhidiya"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001004",
@@ -98,7 +150,16 @@
       "invalid_village_references": [],
       "gp": "82094",
       "reason": "Official mapping points to a Panchayat in a different current block",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001132",
@@ -110,7 +171,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001006",
@@ -147,7 +217,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001008",
@@ -290,7 +369,33 @@
       "gp": "81732",
       "name": "Barha Vikram",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "BARHA VIKRAM",
+            "gp": "81732",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131372",
+            "name": "Basantpur",
+            "current_panchayats": [
+              {
+                "code": "266712",
+                "name": "Basantpur"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001139",
@@ -395,7 +500,33 @@
       "gp": "81742",
       "name": "Bhura",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "BHURA",
+            "gp": "81742",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131254",
+            "name": "Khirka",
+            "current_panchayats": [
+              {
+                "code": "81727",
+                "name": "Bahruwa"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001021",
@@ -442,7 +573,33 @@
       "gp": "81739",
       "name": "Bhauni",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "BHAUNI",
+            "gp": "81739",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131350",
+            "name": "Gaibojh",
+            "current_panchayats": [
+              {
+                "code": "266855",
+                "name": "Gayabhoj"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001023",
@@ -592,7 +749,43 @@
       "gp": "81744",
       "name": "Chahlora",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "CHAHLORA",
+            "gp": "81744",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131284",
+            "name": "Hasan Nagar",
+            "current_panchayats": [
+              {
+                "code": "266689",
+                "name": "Hasan Nagar"
+              }
+            ]
+          },
+          {
+            "village": "131288",
+            "name": "Dandia",
+            "current_panchayats": [
+              {
+                "code": "266687",
+                "name": "Dandiya"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001032",
@@ -625,7 +818,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001036",
@@ -695,7 +897,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001138",
@@ -707,7 +918,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001040",
@@ -871,7 +1091,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001048",
@@ -935,7 +1164,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001050",
@@ -1395,7 +1633,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001070",
@@ -1494,7 +1741,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001076",
@@ -1679,7 +1935,53 @@
       "gp": "81785",
       "name": "Rafiapur",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "RAFIAPUR",
+            "gp": "81785",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131272",
+            "name": "Araji Baurakh",
+            "current_panchayats": [
+              {
+                "code": "266694",
+                "name": "Aaraji Bhorakh"
+              }
+            ]
+          },
+          {
+            "village": "131273",
+            "name": "Araji Din Nagar",
+            "current_panchayats": [
+              {
+                "code": "266694",
+                "name": "Aaraji Bhorakh"
+              }
+            ]
+          },
+          {
+            "village": "131430",
+            "name": "Deen Nagar Khajuaa",
+            "current_panchayats": [
+              {
+                "code": "82127",
+                "name": "Kallia"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001086",
@@ -1752,7 +2054,33 @@
       "gp": "81789",
       "name": "Sakhaula",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "SAKHAULA",
+            "gp": "81789",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131294",
+            "name": "Simria Gausu",
+            "current_panchayats": [
+              {
+                "code": "268965",
+                "name": "Simariya Gaisu"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001090",
@@ -1796,7 +2124,33 @@
       "gp": "81792",
       "name": "Saraini Turkunia",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "SARAINI TURKUNIA",
+            "gp": "81792",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131317",
+            "name": "Chathia Nyaz (Ahmad)",
+            "current_panchayats": [
+              {
+                "code": "267626",
+                "name": "Chatiya Niyaz Ahmad"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001094",
@@ -1871,7 +2225,16 @@
       "conflicting_villages": [],
       "invalid_village_references": [],
       "reason": "No official correspondence rows for this employment Panchayat",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [],
+        "conflict_details": [],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001121",
@@ -1959,7 +2322,33 @@
       "gp": "81796",
       "name": "Suktia",
       "reason": "Employment geography includes villages now belonging to other Panchayats",
-      "was_unmatched": true
+      "was_unmatched": true,
+      "secondary_review": {
+        "reviewed_on": "2026-11-14",
+        "source_url": "https://panchayatiraj.up.nic.in/pblc_pg/Reports/PB2FormReport?District=PILIBHIT&ReportType=Filled",
+        "source_sha256": "c44b38a58434420ecc025803702c890465775aab21ec3cfa8c2868f062c66943",
+        "official_name_matches": [],
+        "official_code_matches": [
+          {
+            "name": "SUKTIA",
+            "gp": "81796",
+            "block": "AMARIYA"
+          }
+        ],
+        "conflict_details": [
+          {
+            "village": "131336",
+            "name": "Dheram",
+            "current_panchayats": [
+              {
+                "code": "266677",
+                "name": "Dheram"
+              }
+            ]
+          }
+        ],
+        "decision": "Held: state Panchayat identity directory does not establish a corrected employment-code/village correspondence. Existing contradictory or missing employment mapping is not overridden by name similarity."
+      }
     },
     {
       "employment_gp": "3126001103",

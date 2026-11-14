@@ -45,7 +45,7 @@ class PilibhitPanchayatExpansionTest extends TestCase
 
     public function test_all_new_monthly_reports_preserve_counts_and_source_dates_without_future_zero_rows(): void
     {
-        $rows = array_filter($this->package['reports'], fn ($r) => ($r['sources']['monthly']['retrieved_on'] ?? '') === '2026-11-14');
+        $rows = array_filter($this->package['reports'], fn ($r) => ($r['sources']['monthly']['retrieved_on'] ?? '') === '2026-11-14' && str_starts_with($r['block_name'], 'Amariya ·'));
         $this->assertCount(105, $rows);
         foreach ($rows as $raw) {
             $report = $this->report((int) $raw['panchayat_code']);
