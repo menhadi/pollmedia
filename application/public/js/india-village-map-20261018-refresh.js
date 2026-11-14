@@ -8,7 +8,7 @@ import {satelliteForLayer,mergeSatellite,vegetationMeaning,satelliteDisclaimer} 
 import {soilMetrics,isSoil,loadSoil,loadSoilConstituencies,linkSoil,soilDisclaimer,soilCycleControl,soilOverview,soilValues,soilCode,soilSampleCount} from './soil-map.js?v=20261014-electoral-1';
 import {RainfallClient} from './rainfall-client.js?v=20261014-1';
 import {mergeRainfallRecords} from './rainfall-grid.js?v=20261014-1';
-import {yearControl,loadHistory,datedRecords,censusValues,censusMetric,renderDirectory,rawCensusValue} from './census-map-year-20261017-zoom-v24.js?v=groundwater-20261029';
+import {yearControl,loadHistory,datedRecords,censusValues,censusMetric,renderDirectory,rawCensusValue} from './census-map-year-20261017-zoom-v24.js?v=home-click-20261114';
 export function overlaps(a, b) {
     return a[0] <= b[2] && a[2] >= b[0] && a[1] <= b[3] && a[3] >= b[1];
 }
@@ -733,6 +733,12 @@ async function start(section) {
         map.addControl({onAdd(){const group=node('div'),button=node('button','Fit');group.className='maplibregl-ctrl maplibregl-ctrl-group map-fit';button.type='button';button.title='Fit selected area';button.setAttribute('aria-label','Fit selected area');button.addEventListener('click',()=>fitSelection());group.append(button);this.container=group;return group;},onRemove(){this.container.remove();}},'top-right');
         let initialContextReady=!section.dataset.initialState;
         window.addEventListener('census-map-capture',async event=>{const deadline=Date.now()+15000;while((!ready||!initialContextReady||map.isMoving()||!adminFeatures.length)&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,150));await Promise.allSettled([overviewPromise,overview2001Promise,...nativePending.values()]);while(map.getSource('admin-boundaries')&&!map.isSourceLoaded('admin-boundaries')&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,100));if(!map.getCanvas()){event.detail.resolve(null);return;}map.once('render',()=>{try{const canvas=document.createElement('canvas'),source=map.getCanvas();canvas.width=source.width;canvas.height=source.height;canvas.getContext('2d').drawImage(source,0,0);const lo=map.project([68,22]).x,hi=map.project([97.5,22]).x,w=map.getContainer().clientWidth;canvas.dataset.comparisonMin=String(Math.max(2,(Math.min(lo,hi)-20)/w*100));canvas.dataset.comparisonMax=String(Math.min(98,(Math.max(lo,hi)+20)/w*100));if(state.value){canvas.dataset.comparisonMin='3';canvas.dataset.comparisonMax='97';}event.detail.resolve(canvas);}catch{event.detail.resolve(null);}});map.triggerRepaint();});
+        const positionHomeDivider=()=>{
+            if(!document.body.classList.contains('home-dashboard'))return;
+            const width=map.getContainer().clientWidth;if(!width)return;
+            window.dispatchEvent(new CustomEvent('census-map-delhi-position',{detail:{percent:map.project([77.209,28.614]).x/width*100}}));
+        };
+        map.on('moveend',positionHomeDivider);map.on('resize',positionHomeDivider);map.on('load',positionHomeDivider);
         map.on('load',async()=>{
             ready=true;
             map.addSource('coverage',{type:'geojson',data:{type:'FeatureCollection',features:catalogue.layers.map(layer=>({type:'Feature',geometry:{type:'Point',coordinates:[(layer.bbox[0]+layer.bbox[2])/2,(layer.bbox[1]+layer.bbox[3])/2]},properties:{layer:layer.id,state:layer.state,kind:layer.kind||'settlement'}}))}});

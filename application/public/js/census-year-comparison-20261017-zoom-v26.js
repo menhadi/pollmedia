@@ -1,6 +1,7 @@
 export function yearPlayback(year, metric) {
  const surface=document.getElementById('india-map')||document.getElementById('district-polygons');
  if(!surface)return;
+ const home=document.body.classList.contains('home-dashboard');let delhiPercent=41;
  const isIndia=()=>!document.querySelector('[data-polygon-map]')&&!document.querySelector('#state-filter')?.value&&!document.querySelector('[data-scope]');
  const svg=surface.tagName.toLowerCase()==='svg',parent=svg?surface.parentElement:surface;parent.style.position='relative';
  if(svg){surface.style.position='relative';surface.style.zIndex='0';}
@@ -19,13 +20,20 @@ export function yearPlayback(year, metric) {
  const measure=()=>metric.selectedOptions[0]?.textContent?.replace(/^Census 20\d\d\s*[·|]\s*/,'')||'Selected measure';
  const labelYears=()=>{for(const value of ['2001','2011'])labels[value].textContent=`${value} · ${measure()}`;};
  const layout=()=>{};
- let selection=null;let left=null,right=null,position=50,automatic=false,playing=true,busy=false,version=0,frame=null,timer=null,movement=0;
+ if(home){
+  parent.append(heading,footer);
+  heading.style.cssText+=';position:absolute;inset:10px 10px auto;z-index:7;background:transparent;border:0;padding:0;min-height:0;pointer-events:none';
+  footer.style.cssText+=';position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:8;width:max-content;max-width:calc(100% - 24px);padding:8px 10px;box-sizing:border-box;box-shadow:0 2px 8px #0002';
+  footer.dataset.interaction='idle';
+ }
+
+ let selection=null;let left=null,right=null,position=50,automatic=false,playing=!home,busy=false,version=0,frame=null,timer=null,movement=0;
  const supported=()=>['literacy','population','households'].includes(metric.value)||/^(vd_|pca_|c11_)/.test(metric.value);
  const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  const loading=()=> (svg&&surface.dataset.comparisonReady!=='true')||/loading/i.test((document.getElementById('map-status')||document.getElementById('polygon-status'))?.textContent||'')||/loading/i.test(document.getElementById('metric-legend')?.textContent||'');
  const showPosition=value=>{position=value;slider.value=String(Math.round(value));const x=extent.min+(extent.max-extent.min)*value/100;if(left)left.style.clipPath=`inset(0 ${value===0?100:value===100?0:100-x}% 0 0)`;rail.style.left=`${x}%`;handle.setAttribute('aria-valuetext',`${Math.round(value)}% Census 2001`);for(const value of ['2001','2011']){const active=position===(value==='2001'?100:0);buttons[value].setAttribute('aria-pressed',String(active));buttons[value].style.background=active?'#155e57':'transparent';buttons[value].style.color=active?'white':'#334155';};};
  const stop=()=>{playing=false;clearTimeout(timer);cancelAnimationFrame(frame);movement++;};
- const clear=(preservePlayback=false)=>{const resume=playing;heading.style.display=supported()?"flex":"none";footer.style.display=supported()?"grid":"none";stop();if(preservePlayback)playing=resume;version++;left?.remove();right?.remove();left=right=null;plane.hidden=true;slider.hidden=true;notice.hidden=true;rail.hidden=true;for(const label of Object.values(labels))label.hidden=true;};
+ const clear=(preservePlayback=false)=>{const resume=playing;heading.style.display=supported()?"flex":"none";footer.style.display=supported()?"grid":"none";stop();if(preservePlayback)playing=resume;version++;left?.remove();right?.remove();left=right=null;plane.hidden=true;slider.hidden=true;notice.hidden=true;rail.hidden=!home;for(const label of Object.values(labels))label.hidden=true;if(home){heading.style.display='none';showPosition((delhiPercent-extent.min)/(extent.max-extent.min)*100);}};
  const capture=()=>svg?Promise.resolve(surface.cloneNode(true)):new Promise(resolve=>{let done=false;const finish=value=>{if(!done){done=true;resolve(value);}};window.dispatchEvent(new CustomEvent('census-map-capture',{detail:{resolve:finish}}));setTimeout(()=>finish(null),20000);});
  const ready=async()=>{const end=Date.now()+60000;while(loading()&&Date.now()<end)await wait(80);return !loading();};
  const setYear=async value=>{automatic=true;year.value=value;year.dispatchEvent(new CustomEvent('change',{bubbles:true,detail:{comparison:selection}}));metric.dispatchEvent(new Event('change',{bubbles:true}));automatic=false;return ready();};
@@ -44,9 +52,9 @@ export function yearPlayback(year, metric) {
    right=images['2011'];left=images['2001'];
    if(left.dataset.comparisonMin){extent={min:Number(left.dataset.comparisonMin),max:Number(left.dataset.comparisonMax)};}else if(svg){const box=surface.getBoundingClientRect(),paths=surface.querySelector('g')?.getBoundingClientRect();if(paths&&paths.width){extent={min:Math.max(2,(paths.left-box.left-15)/box.width*100),max:Math.min(98,(paths.right-box.left+15)/box.width*100)};}}
    layout();heading.style.display="flex";footer.style.display="grid";rail.hidden=false;for(const label of Object.values(labels))label.hidden=false;
-   plane.replaceChildren();for(const image of [right,left]){image.removeAttribute('id');image.setAttribute('aria-hidden','true');image.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;margin:0';plane.prepend(image);}plane.append(left);plane.hidden=false;slider.hidden=false;showPosition(isIndia()?40:50);notice.textContent='← Drag the divider or choose a year →';return true;
+   plane.replaceChildren();for(const image of [right,left]){image.removeAttribute('id');image.setAttribute('aria-hidden','true');image.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;margin:0';plane.prepend(image);}plane.append(left);plane.hidden=false;slider.hidden=false;showPosition(home?Math.max(0,Math.min(100,(delhiPercent-extent.min)/(extent.max-extent.min)*100)):isIndia()?40:50);notice.textContent='← Drag the divider or choose a year →';return true;
   }catch(error){plane.replaceChildren();plane.hidden=true;notice.textContent=error.message;playing=false;return false;}
-  finally{busy=false;for(const button of Object.values(buttons))button.disabled=false;if(version!==token&&supported())timer=setTimeout(prepare,500);else if(playing&&left&&right)timer=setTimeout(cycle,500);}
+  finally{busy=false;for(const button of Object.values(buttons))button.disabled=false;if(!home&&version!==token&&supported())timer=setTimeout(prepare,500);else if(playing&&left&&right)timer=setTimeout(cycle,500);}
  };
  for(const value of ['2001','2011'])buttons[value].addEventListener('click',async()=>{stop();if(!left||!right){if(!await prepare())return;}notice.textContent=`${value} · ${measure()} · drag ↔ to compare`;await move(value==='2001'?100:0);await setYear(value);});
  let dragging=false;
@@ -58,8 +66,25 @@ export function yearPlayback(year, metric) {
  const viewportObserver=svg?new MutationObserver(()=>{const viewBox=surface.getAttribute('viewBox');for(const image of [left,right])if(image&&viewBox)image.setAttribute('viewBox',viewBox);}):null;if(viewportObserver)viewportObserver.observe(surface,{attributes:true,attributeFilter:['viewBox']});window.addEventListener('pagehide',()=>viewportObserver?.disconnect(),{once:true});
  const interact=event=>{if(!event.isTrusted||controls.contains(event.target)||event.target===slider||event.target===handle)return;if(event.type==='wheel'||event.type==='keydown'){if(surface.contains(event.target)){if(svg)stop();else clear();}return;}if(surface.contains(event.target)){stop();}else if(event.target.closest('select,input,button,summary'))stop();};
  for(const type of ['pointerdown','wheel','keydown','touchstart'])document.addEventListener(type,interact,{capture:true,passive:true});
- document.addEventListener('change',event=>{if((!automatic||event.isTrusted)&&event.target!==slider){clear();if(supported())timer=setTimeout(prepare,1200);}},true);
- metric.addEventListener('change',()=>{if(automatic)return;clear();controls.hidden=!supported();if(supported())timer=setTimeout(prepare,700);});year.addEventListener('change',()=>{if(!automatic)clear();});
- window.addEventListener('census-comparison-refresh',()=>{clear(true);if(supported())timer=setTimeout(prepare,1000);});let viewportWidth=window.innerWidth;window.addEventListener('resize',()=>{if(Math.abs(window.innerWidth-viewportWidth)<2)return;viewportWidth=window.innerWidth;clear(true);if(supported())timer=setTimeout(prepare,250);});window.addEventListener('pagehide',clear);
- controls.hidden=!supported();timer=setTimeout(prepare,150);
+ document.addEventListener('change',event=>{if((!automatic||event.isTrusted)&&event.target!==slider){clear();if(!home&&supported())timer=setTimeout(prepare,1200);}},true);
+ metric.addEventListener('change',()=>{if(automatic)return;clear();controls.hidden=!supported();if(!home&&supported())timer=setTimeout(prepare,700);});year.addEventListener('change',()=>{if(!automatic)clear();});
+ window.addEventListener('census-comparison-refresh',()=>{clear(true);if(!home&&supported())timer=setTimeout(prepare,1000);});let viewportWidth=window.innerWidth;window.addEventListener('resize',()=>{if(Math.abs(window.innerWidth-viewportWidth)<2)return;viewportWidth=window.innerWidth;clear(true);if(!home&&supported())timer=setTimeout(prepare,250);});window.addEventListener('pagehide',clear);
+ if(home){
+  let draggedDivider=false;
+  handle.addEventListener('pointerdown',()=>{draggedDivider=false;});
+  handle.addEventListener('pointermove',()=>{if(dragging)draggedDivider=true;});
+  handle.addEventListener('click',async()=>{if(draggedDivider)return;stop();playing=true;footer.dataset.interaction='active';if(left&&right)cycle();else await prepare();});
+  year.addEventListener('change',event=>{if(!automatic&&event.isTrusted){playing=true;footer.dataset.interaction='active';timer=setTimeout(prepare,0);}});
+  window.addEventListener('census-map-delhi-position',event=>{
+   if(!Number.isFinite(event.detail?.percent))return;
+   delhiPercent=Math.max(2,Math.min(98,event.detail.percent));
+   if(footer.dataset.interaction==='idle'){showPosition((delhiPercent-extent.min)/(extent.max-extent.min)*100);rail.hidden=!supported();}
+  });
+  for(const button of Object.values(buttons))button.addEventListener('click',()=>{footer.dataset.interaction='active';});
+  plane.hidden=true;notice.hidden=true;slider.hidden=true;rail.hidden=!supported();heading.style.display='none';
+  handle.title='Click to animate the Census comparison, or drag the divider';
+  handle.setAttribute('aria-label','Start Census comparison or drag divider');
+  showPosition((delhiPercent-extent.min)/(extent.max-extent.min)*100);
+ }
+ controls.hidden=!supported();if(!home)timer=setTimeout(prepare,150);
 }
