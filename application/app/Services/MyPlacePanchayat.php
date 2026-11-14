@@ -269,7 +269,7 @@ class MyPlacePanchayat
     private function activities(array $report): array
     {
         return collect(is_array($report['activities'] ?? null) ? $report['activities'] : [])
-            ->filter(function ($row) {
+            ->filter(function ($row) use ($report) {
                 if (! is_array($row) || ! is_string($row['code'] ?? null) || ! preg_match('/^\d+$/D', $row['code'])) {
                     return false;
                 }
@@ -279,16 +279,40 @@ class MyPlacePanchayat
                     }
                 }
 
-                return true;
+                return ! array_key_exists('source_evidence', $row) || $this->activitySource($row, $report) !== null;
             })->groupBy('code')->filter(fn ($group) => $group->count() === 1)
             ->map(function ($group) use ($report) {
                 $row = $group[0];
                 $record = array_intersect_key($row, array_flip(['code', 'name', 'focus_area', 'type', 'status', 'output_type', 'plan_type']));
                 $record['cost'] = is_string($row['cost'] ?? null) && preg_match('/^\d{1,15}(\.\d{1,4})?$/D', $row['cost']) ? $row['cost'] : null;
                 $record['details'] = $this->activityDetails($row, $report);
+                if ($source = $this->activitySource($row, $report)) {
+                    $record['source_url'] = $source['url'];
+                    $record['source_date'] = $source['retrieved_on'];
+                }
 
                 return $record;
             })->values()->all();
+    }
+
+    private function activitySource(array $activity, array $report): ?array
+    {
+        $source = $activity['source_evidence'] ?? null;
+        if (! is_array($source) || ! $this->source($source['url'] ?? null)
+            || parse_url($source['url'], PHP_URL_PATH) !== '/activitySectionData.do'
+            || ($source['activity_code'] ?? null) !== ($activity['code'] ?? null)
+            || ($source['panchayat_code'] ?? null) !== (string) $report['panchayat_code']
+            || ($source['financial_year'] ?? null) !== $report['financial_year']
+            || ! is_string($source['plan_id'] ?? null) || ! preg_match('/^[1-9][0-9]*$/D', $source['plan_id'])
+            || ! is_string($source['sha256'] ?? null) || ! preg_match('/^[a-f0-9]{64}$/D', $source['sha256'])
+            || ! $this->date($source['retrieved_on'] ?? null)
+            || $source['retrieved_on'] > ($report['sources']['activities']['report_date'] ?? '')
+            || $source['retrieved_on'] > now('Asia/Kolkata')->toDateString()) {
+            return null;
+        }
+        parse_str(parse_url($source['url'], PHP_URL_QUERY) ?? '', $query);
+
+        return ($query['activityCd'] ?? null) === $activity['code'] ? $source : null;
     }
 
     private function activityDetails(array $activity, array $report): ?array

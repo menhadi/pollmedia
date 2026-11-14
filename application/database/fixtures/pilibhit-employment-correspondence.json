@@ -1,0 +1,2304 @@
+{
+  "schema": 1,
+  "source_url": "https://vbgramgrep.dord.gov.in/VBGRAMG/LGD_Mapping_Staus1.aspx",
+  "source_sha256": "820e2a54505e9c2f589b993fdd6e1944ffd0fbcd054ab939c0fae3edfaf97bc8",
+  "reviewed_on": "2026-11-14",
+  "records": [
+    {
+      "employment_gp": "3126001001",
+      "employment_name": "AASPUR",
+      "status": "held",
+      "lgd_candidates": [
+        "81724"
+      ],
+      "source_rows": [
+        "85641",
+        "85642",
+        "85643",
+        "85644",
+        "85645"
+      ],
+      "matched_villages": [
+        "131364",
+        "131365"
+      ],
+      "conflicting_villages": [
+        "131357"
+      ],
+      "invalid_village_references": [
+        "267621",
+        "81724"
+      ],
+      "gp": "81724",
+      "name": "Aspur",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001003",
+      "employment_name": "ADOLI",
+      "status": "held",
+      "lgd_candidates": [
+        "81723"
+      ],
+      "source_rows": [
+        "85646",
+        "85647",
+        "85648",
+        "85649"
+      ],
+      "matched_villages": [
+        "131346"
+      ],
+      "conflicting_villages": [
+        "131375"
+      ],
+      "invalid_village_references": [
+        "266647",
+        "81723"
+      ],
+      "gp": "81723",
+      "name": "Arauli",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001004",
+      "employment_name": "AMARIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81720"
+      ],
+      "source_rows": [
+        "85650"
+      ],
+      "matched_villages": [
+        "131318"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81720",
+      "name": "Amaria",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001005",
+      "employment_name": "AMKHEDA",
+      "status": "held",
+      "lgd_candidates": [
+        "82094"
+      ],
+      "source_rows": [
+        "85651"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "82094",
+      "reason": "Official mapping points to a Panchayat in a different current block",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001132",
+      "employment_name": "AMKIDIYA",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001006",
+      "employment_name": "ANDRAYAN",
+      "status": "verified",
+      "lgd_candidates": [
+        "81722"
+      ],
+      "source_rows": [
+        "85652",
+        "85653",
+        "85654"
+      ],
+      "matched_villages": [
+        "131353",
+        "131354",
+        "131355"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81722",
+      "name": "Andrayan Mustqil",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001137",
+      "employment_name": "ARAJI BORAKH",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001008",
+      "employment_name": "BADE PURA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81734"
+      ],
+      "source_rows": [
+        "85655",
+        "85656",
+        "85657",
+        "85658"
+      ],
+      "matched_villages": [
+        "131209",
+        "131212",
+        "131213"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81734"
+      ],
+      "gp": "81734",
+      "name": "Barhepura",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001124",
+      "employment_name": "BAGNERA- BAGNERI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81725"
+      ],
+      "source_rows": [
+        "85659"
+      ],
+      "matched_villages": [
+        "131191"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81725",
+      "name": "Bagnera Bagneri",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001010",
+      "employment_name": "BAGVA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81726"
+      ],
+      "source_rows": [
+        "85660"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81726"
+      ],
+      "gp": "81726",
+      "name": "Bagwa",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001013",
+      "employment_name": "BALLIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81728"
+      ],
+      "source_rows": [
+        "85661",
+        "85662",
+        "85663",
+        "85664"
+      ],
+      "matched_villages": [
+        "131194",
+        "131202",
+        "131203",
+        "131208"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81728",
+      "name": "Balliya",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001014",
+      "employment_name": "BANSKHERA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81729"
+      ],
+      "source_rows": [
+        "85665"
+      ],
+      "matched_villages": [
+        "131205"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81729",
+      "name": "Banskhera",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001016",
+      "employment_name": "BARHA BIKRAM",
+      "status": "held",
+      "lgd_candidates": [
+        "81732"
+      ],
+      "source_rows": [
+        "85666",
+        "85667",
+        "85668"
+      ],
+      "matched_villages": [
+        "131368",
+        "131369"
+      ],
+      "conflicting_villages": [
+        "131372"
+      ],
+      "invalid_village_references": [],
+      "gp": "81732",
+      "name": "Barha Vikram",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001139",
+      "employment_name": "BASANT PUR",
+      "status": "verified",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "Existing unique exact name and accepted current hierarchy retained; no conflicting official correspondence rows",
+      "was_unmatched": false,
+      "gp": "266712",
+      "name": "Basantpur"
+    },
+    {
+      "employment_gp": "3126001017",
+      "employment_name": "BHAGA DANDI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81736"
+      ],
+      "source_rows": [
+        "85669"
+      ],
+      "matched_villages": [
+        "131367"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81736",
+      "name": "Bhagi Dandi",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001018",
+      "employment_name": "BHANGA MO GANJ",
+      "status": "verified",
+      "lgd_candidates": [
+        "81735"
+      ],
+      "source_rows": [
+        "85670",
+        "85671"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81735"
+      ],
+      "gp": "81735",
+      "name": "Bhaga Mohammadganj Mustqil",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001019",
+      "employment_name": "BHARAT PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81737"
+      ],
+      "source_rows": [
+        "85672",
+        "85673",
+        "85674"
+      ],
+      "matched_villages": [
+        "131265",
+        "131266",
+        "131267"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81737",
+      "name": "Bharatpur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001131",
+      "employment_name": "BHARUA",
+      "status": "held",
+      "lgd_candidates": [
+        "81742"
+      ],
+      "source_rows": [
+        "85675",
+        "85676"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [
+        "131254"
+      ],
+      "invalid_village_references": [
+        "81742"
+      ],
+      "gp": "81742",
+      "name": "Bhura",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001021",
+      "employment_name": "BHAUNA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81738"
+      ],
+      "source_rows": [
+        "85677",
+        "85678"
+      ],
+      "matched_villages": [
+        "131361"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81738"
+      ],
+      "gp": "81738",
+      "name": "Bhauna",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001022",
+      "employment_name": "BHAUNEE",
+      "status": "held",
+      "lgd_candidates": [
+        "81739"
+      ],
+      "source_rows": [
+        "85679",
+        "85680"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [
+        "131350"
+      ],
+      "invalid_village_references": [
+        "81739"
+      ],
+      "gp": "81739",
+      "name": "Bhauni",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001023",
+      "employment_name": "BHIKAREE PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81740"
+      ],
+      "source_rows": [
+        "85681"
+      ],
+      "matched_villages": [
+        "131301"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81740",
+      "name": "Bhikharipur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001027",
+      "employment_name": "BHINDARA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81741"
+      ],
+      "source_rows": [
+        "85682",
+        "85683",
+        "85684"
+      ],
+      "matched_villages": [
+        "131247",
+        "131248",
+        "131250"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81741",
+      "name": "Bhindara",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001029",
+      "employment_name": "BHOODA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81742"
+      ],
+      "source_rows": [
+        "85685",
+        "85686"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81742"
+      ],
+      "gp": "81742",
+      "name": "Bhura",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001130",
+      "employment_name": "BILASPUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81743"
+      ],
+      "source_rows": [
+        "85687",
+        "85688"
+      ],
+      "matched_villages": [
+        "131320"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81743"
+      ],
+      "gp": "81743",
+      "name": "Bilaspur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001030",
+      "employment_name": "BIRHANI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81733"
+      ],
+      "source_rows": [
+        "85689",
+        "85690",
+        "85691",
+        "85692",
+        "85693",
+        "85694"
+      ],
+      "matched_villages": [
+        "131218",
+        "131219",
+        "131220",
+        "131221"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81733"
+      ],
+      "gp": "81733",
+      "name": "Birhani",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001031",
+      "employment_name": "CHAHLAURA",
+      "status": "held",
+      "lgd_candidates": [
+        "81744"
+      ],
+      "source_rows": [
+        "85695",
+        "85696",
+        "85697",
+        "85698"
+      ],
+      "matched_villages": [
+        "131286",
+        "131287"
+      ],
+      "conflicting_villages": [
+        "131284",
+        "131288"
+      ],
+      "invalid_village_references": [],
+      "gp": "81744",
+      "name": "Chahlora",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001032",
+      "employment_name": "CHAKA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81745"
+      ],
+      "source_rows": [
+        "85699"
+      ],
+      "matched_villages": [
+        "131347"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81745",
+      "name": "Chaka",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001145",
+      "employment_name": "CHATHIA NYAZ AHMAD",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001036",
+      "employment_name": "CHATHIYA BHAISAHA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81746"
+      ],
+      "source_rows": [
+        "85700"
+      ],
+      "matched_villages": [
+        "131214"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81746",
+      "name": "Chithiya Bhaisaha",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001135",
+      "employment_name": "DANDIYA",
+      "status": "verified",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "Existing unique exact name and accepted current hierarchy retained; no conflicting official correspondence rows",
+      "was_unmatched": false,
+      "gp": "266687",
+      "name": "Dandiya"
+    },
+    {
+      "employment_gp": "3126001039",
+      "employment_name": "DANG",
+      "status": "held",
+      "lgd_candidates": [
+        "81747"
+      ],
+      "source_rows": [
+        "85701",
+        "85702"
+      ],
+      "matched_villages": [
+        "131377"
+      ],
+      "conflicting_villages": [
+        "131378"
+      ],
+      "invalid_village_references": [],
+      "gp": "81747",
+      "name": "Dang",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001134",
+      "employment_name": "DEENARPUR",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001138",
+      "employment_name": "DHAKIA BADLU",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001040",
+      "employment_name": "DHANKUNA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81749"
+      ],
+      "source_rows": [
+        "85703"
+      ],
+      "matched_villages": [
+        "131297"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81749",
+      "name": "Dhankuna",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001041",
+      "employment_name": "DHANKUNI",
+      "status": "held",
+      "lgd_candidates": [
+        "81750"
+      ],
+      "source_rows": [
+        "85704",
+        "85705",
+        "85706"
+      ],
+      "matched_villages": [
+        "131299",
+        "131300"
+      ],
+      "conflicting_villages": [
+        "131295"
+      ],
+      "invalid_village_references": [],
+      "gp": "81750",
+      "name": "Dhankuni",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001133",
+      "employment_name": "DHERAM",
+      "status": "verified",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "Existing unique exact name and accepted current hierarchy retained; no conflicting official correspondence rows",
+      "was_unmatched": false,
+      "gp": "266677",
+      "name": "Dheram"
+    },
+    {
+      "employment_gp": "3126001044",
+      "employment_name": "DHUNDREE",
+      "status": "verified",
+      "lgd_candidates": [
+        "81751"
+      ],
+      "source_rows": [
+        "85707"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81751"
+      ],
+      "gp": "81751",
+      "name": "Dhundhari",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001043",
+      "employment_name": "DIYORANYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81748"
+      ],
+      "source_rows": [
+        "85708"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81748"
+      ],
+      "gp": "81748",
+      "name": "Deorania",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001045",
+      "employment_name": "FAREDIA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81752"
+      ],
+      "source_rows": [
+        "85709",
+        "85710",
+        "85711",
+        "85712",
+        "85713"
+      ],
+      "matched_villages": [
+        "131234",
+        "131239"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81752"
+      ],
+      "gp": "81752",
+      "name": "Fardia",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001046",
+      "employment_name": "FULAIEYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "239117"
+      ],
+      "source_rows": [
+        "85714",
+        "85715"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "239117"
+      ],
+      "gp": "239117",
+      "name": "Fulaieya",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001143",
+      "employment_name": "GAYA BOJH",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001048",
+      "employment_name": "GIRDHOR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81753"
+      ],
+      "source_rows": [
+        "85716",
+        "85717",
+        "85718"
+      ],
+      "matched_villages": [
+        "131252",
+        "131253"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81753"
+      ],
+      "gp": "81753",
+      "name": "Gidhaur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001049",
+      "employment_name": "GULAR BHOJ",
+      "status": "verified",
+      "lgd_candidates": [
+        "81754"
+      ],
+      "source_rows": [
+        "85719",
+        "85720",
+        "85721"
+      ],
+      "matched_villages": [
+        "131310",
+        "131312"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81754"
+      ],
+      "gp": "81754",
+      "name": "Gular Bojh",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001142",
+      "employment_name": "GULARIA DULHAN",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001050",
+      "employment_name": "HARDAS PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81756"
+      ],
+      "source_rows": [
+        "85722",
+        "85723"
+      ],
+      "matched_villages": [
+        "131216"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81756"
+      ],
+      "gp": "81756",
+      "name": "Hardaspur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001051",
+      "employment_name": "HARHARPUR HASAN",
+      "status": "held",
+      "lgd_candidates": [
+        "81757"
+      ],
+      "source_rows": [
+        "85724",
+        "85725",
+        "85726",
+        "85727"
+      ],
+      "matched_villages": [
+        "131344"
+      ],
+      "conflicting_villages": [
+        "131342"
+      ],
+      "invalid_village_references": [
+        "266682"
+      ],
+      "gp": "81757",
+      "name": "Harharpur Hasan",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001052",
+      "employment_name": "HARRAY PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81755"
+      ],
+      "source_rows": [
+        "85728"
+      ],
+      "matched_villages": [
+        "131236"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81755",
+      "name": "Har Raipur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001136",
+      "employment_name": "HASAN NAGAR",
+      "status": "verified",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "Existing unique exact name and accepted current hierarchy retained; no conflicting official correspondence rows",
+      "was_unmatched": false,
+      "gp": "266689",
+      "name": "Hasan Nagar"
+    },
+    {
+      "employment_gp": "3126001053",
+      "employment_name": "JAGAT",
+      "status": "verified",
+      "lgd_candidates": [
+        "81758"
+      ],
+      "source_rows": [
+        "85729",
+        "85730",
+        "85731",
+        "85732"
+      ],
+      "matched_villages": [
+        "131322",
+        "131323",
+        "131325"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81758"
+      ],
+      "gp": "81758",
+      "name": "Jagat",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001047",
+      "employment_name": "JANGROLI  ASHA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81759"
+      ],
+      "source_rows": [
+        "85733"
+      ],
+      "matched_villages": [
+        "131308"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81759",
+      "name": "Jangrauli Asha",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001054",
+      "employment_name": "JATPURA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81760"
+      ],
+      "source_rows": [
+        "85734"
+      ],
+      "matched_villages": [
+        "131283"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81760",
+      "name": "Jatpura(Amaria)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001055",
+      "employment_name": "JITHANIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81761"
+      ],
+      "source_rows": [
+        "85735",
+        "85736"
+      ],
+      "matched_villages": [
+        "131226",
+        "131229"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81761",
+      "name": "Jithania",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001057",
+      "employment_name": "KAIMOR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81763"
+      ],
+      "source_rows": [
+        "85737"
+      ],
+      "matched_villages": [
+        "131231"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81763",
+      "name": "Kaimor",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001058",
+      "employment_name": "KALIYAN PUR CHAKRATIRTH",
+      "status": "verified",
+      "lgd_candidates": [
+        "81764"
+      ],
+      "source_rows": [
+        "85738"
+      ],
+      "matched_villages": [
+        "131387"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81764",
+      "name": "Kalyanpur Chakratirth",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001059",
+      "employment_name": "KARGAINA PEERA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81766"
+      ],
+      "source_rows": [
+        "85739",
+        "85740"
+      ],
+      "matched_villages": [
+        "131339",
+        "131349"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81766",
+      "name": "Kargaina Peera",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001060",
+      "employment_name": "KARGAINA-KARGAINI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81765"
+      ],
+      "source_rows": [
+        "85741"
+      ],
+      "matched_villages": [
+        "131340"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81765",
+      "name": "Kargaina Kargaini",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001063",
+      "employment_name": "KATMATA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81767"
+      ],
+      "source_rows": [
+        "85742",
+        "85743",
+        "85744",
+        "85745"
+      ],
+      "matched_villages": [
+        "131200",
+        "131201",
+        "131224",
+        "131227"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81767",
+      "name": "Katmata",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001064",
+      "employment_name": "KENCHU TANDA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81762"
+      ],
+      "source_rows": [
+        "85746"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81762"
+      ],
+      "gp": "81762",
+      "name": "Kaichu Tanda",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001065",
+      "employment_name": "KHAMARIYA DALEL GANJ",
+      "status": "verified",
+      "lgd_candidates": [
+        "81768"
+      ],
+      "source_rows": [
+        "85747"
+      ],
+      "matched_villages": [
+        "131381"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81768",
+      "name": "Khamria Dalelganj",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001072",
+      "employment_name": "KURRI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81769"
+      ],
+      "source_rows": [
+        "85748",
+        "85749"
+      ],
+      "matched_villages": [
+        "131306"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81769"
+      ],
+      "gp": "81769",
+      "name": "Kurri Mustqil",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001066",
+      "employment_name": "MADHOPUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81770"
+      ],
+      "source_rows": [
+        "85750"
+      ],
+      "matched_villages": [
+        "131351"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81770",
+      "name": "Madhaupur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001067",
+      "employment_name": "MAHACHANDI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81771"
+      ],
+      "source_rows": [
+        "85751"
+      ],
+      "matched_villages": [
+        "131276"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81771",
+      "name": "Mahchandi",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001128",
+      "employment_name": "MAJHALIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81772"
+      ],
+      "source_rows": [
+        "85752",
+        "85753",
+        "85754",
+        "85755"
+      ],
+      "matched_villages": [
+        "131331",
+        "131332"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81772"
+      ],
+      "gp": "81772",
+      "name": "Majhalia (Mustqil)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001069",
+      "employment_name": "MUDALIYA GOUSU",
+      "status": "verified",
+      "lgd_candidates": [
+        "81773"
+      ],
+      "source_rows": [
+        "85756"
+      ],
+      "matched_villages": [
+        "131204"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81773",
+      "name": "Mudlia Gausu",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001140",
+      "employment_name": "MUDSENA BUX",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001070",
+      "employment_name": "MUDSENA MADARI",
+      "status": "held",
+      "lgd_candidates": [
+        "81774"
+      ],
+      "source_rows": [
+        "85757",
+        "85758"
+      ],
+      "matched_villages": [
+        "131370"
+      ],
+      "conflicting_villages": [
+        "131371"
+      ],
+      "invalid_village_references": [],
+      "gp": "81774",
+      "name": "Mudsena Madari",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001071",
+      "employment_name": "MUGLAKHERA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81775"
+      ],
+      "source_rows": [
+        "85759"
+      ],
+      "matched_villages": [
+        "131314"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81775",
+      "name": "Mugla Khera",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001074",
+      "employment_name": "NABADA SHYAMPUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81777"
+      ],
+      "source_rows": [
+        "85760"
+      ],
+      "matched_villages": [
+        "131382"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81777",
+      "name": "Navada Shyampur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001129",
+      "employment_name": "NAGRIYA COLONY",
+      "status": "verified",
+      "lgd_candidates": [
+        "81776"
+      ],
+      "source_rows": [
+        "85761",
+        "85762"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81776"
+      ],
+      "gp": "81776",
+      "name": "Nagria (Mustqil)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001144",
+      "employment_name": "NAVADA DAS",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001076",
+      "employment_name": "NAVADA KANJA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81778"
+      ],
+      "source_rows": [
+        "85763"
+      ],
+      "matched_villages": [
+        "131386"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81778",
+      "name": "Nawada Kanja",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001077",
+      "employment_name": "NIBAR AINTHPUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81781"
+      ],
+      "source_rows": [
+        "85764",
+        "85765",
+        "85766",
+        "85767",
+        "85768"
+      ],
+      "matched_villages": [
+        "131279",
+        "131281"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81781"
+      ],
+      "gp": "81781",
+      "name": "Niwar Aithpur (Mustqil)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001078",
+      "employment_name": "NISABA NISAIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81779"
+      ],
+      "source_rows": [
+        "85769",
+        "85770"
+      ],
+      "matched_villages": [
+        "131206",
+        "131207"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81779",
+      "name": "Nisawa Nisaiya",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001079",
+      "employment_name": "NISARA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81780"
+      ],
+      "source_rows": [
+        "85771"
+      ],
+      "matched_villages": [
+        "131380"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81780",
+      "name": "Nisra",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001081",
+      "employment_name": "PANSOLI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81782"
+      ],
+      "source_rows": [
+        "85772",
+        "85773"
+      ],
+      "matched_villages": [
+        "131390",
+        "131391"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81782",
+      "name": "Pansoli Mustqil",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001082",
+      "employment_name": "PAREVA BAISYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81783"
+      ],
+      "source_rows": [
+        "85774"
+      ],
+      "matched_villages": [
+        "131366"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81783",
+      "name": "Parewa Vaishya",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001127",
+      "employment_name": "PINJARA BAMANPURI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81784"
+      ],
+      "source_rows": [
+        "85775"
+      ],
+      "matched_villages": [
+        "131333"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81784",
+      "name": "Pinjra Vamanpuri",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001085",
+      "employment_name": "RAFIYAPUR",
+      "status": "held",
+      "lgd_candidates": [
+        "81785"
+      ],
+      "source_rows": [
+        "85776",
+        "85777",
+        "85778",
+        "85779"
+      ],
+      "matched_villages": [
+        "131275"
+      ],
+      "conflicting_villages": [
+        "131272",
+        "131273",
+        "131430"
+      ],
+      "invalid_village_references": [],
+      "gp": "81785",
+      "name": "Rafiapur",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001086",
+      "employment_name": "ROHATANIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81786"
+      ],
+      "source_rows": [
+        "85780",
+        "85781",
+        "85782"
+      ],
+      "matched_villages": [
+        "131289",
+        "131290"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81786"
+      ],
+      "gp": "81786",
+      "name": "Rauhatania",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001087",
+      "employment_name": "SADDER PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81787"
+      ],
+      "source_rows": [
+        "85783",
+        "85784"
+      ],
+      "matched_villages": [
+        "131225"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81787"
+      ],
+      "gp": "81787",
+      "name": "Saddarpur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001126",
+      "employment_name": "SAKHOLA",
+      "status": "held",
+      "lgd_candidates": [
+        "81789"
+      ],
+      "source_rows": [
+        "85785",
+        "85786"
+      ],
+      "matched_villages": [
+        "131296"
+      ],
+      "conflicting_villages": [
+        "131294"
+      ],
+      "invalid_village_references": [],
+      "gp": "81789",
+      "name": "Sakhaula",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001090",
+      "employment_name": "SARADAR NAGAR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81793"
+      ],
+      "source_rows": [
+        "85787"
+      ],
+      "matched_villages": [
+        "131359"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81793",
+      "name": "Sardar Nagar",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001091",
+      "employment_name": "SARAINEE TIRKUNIYA",
+      "status": "held",
+      "lgd_candidates": [
+        "81792"
+      ],
+      "source_rows": [
+        "85788",
+        "85789"
+      ],
+      "matched_villages": [
+        "131316"
+      ],
+      "conflicting_villages": [
+        "131317"
+      ],
+      "invalid_village_references": [],
+      "gp": "81792",
+      "name": "Saraini Turkunia",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001094",
+      "employment_name": "SARENDA PATTI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81791"
+      ],
+      "source_rows": [
+        "85790"
+      ],
+      "matched_villages": [
+        "131352"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81791",
+      "name": "Sarainda Patti",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001096",
+      "employment_name": "SEHGAWAN NAGRIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81788"
+      ],
+      "source_rows": [
+        "85791"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81788"
+      ],
+      "gp": "81788",
+      "name": "Sahgawan Nagria",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001097",
+      "employment_name": "SEMAR KHEDA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81790"
+      ],
+      "source_rows": [
+        "85792"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81790"
+      ],
+      "gp": "81790",
+      "name": "Semar Khera",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001141",
+      "employment_name": "SIMARIYA GAUSU",
+      "status": "held",
+      "lgd_candidates": [],
+      "source_rows": [],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "reason": "No official correspondence rows for this employment Panchayat",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001121",
+      "employment_name": "SIRSA",
+      "status": "held",
+      "lgd_candidates": [
+        "82155"
+      ],
+      "source_rows": [
+        "85793"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "82155",
+      "reason": "Official mapping points to a Panchayat in a different current block",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001098",
+      "employment_name": "SIRSI",
+      "status": "verified",
+      "lgd_candidates": [
+        "81795"
+      ],
+      "source_rows": [
+        "85794"
+      ],
+      "matched_villages": [
+        "131348"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81795",
+      "name": "Sirsi",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001099",
+      "employment_name": "SOORAJPURA MU",
+      "status": "verified",
+      "lgd_candidates": [
+        "81797"
+      ],
+      "source_rows": [
+        "85795",
+        "85796",
+        "85797"
+      ],
+      "matched_villages": [
+        "131242"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81797"
+      ],
+      "gp": "81797",
+      "name": "Surajpur Ehatmali",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001100",
+      "employment_name": "SUKATIYA",
+      "status": "held",
+      "lgd_candidates": [
+        "81796"
+      ],
+      "source_rows": [
+        "85798",
+        "85799",
+        "85800"
+      ],
+      "matched_villages": [
+        "131313",
+        "131338"
+      ],
+      "conflicting_villages": [
+        "131336"
+      ],
+      "invalid_village_references": [],
+      "gp": "81796",
+      "name": "Suktia",
+      "reason": "Employment geography includes villages now belonging to other Panchayats",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001103",
+      "employment_name": "SUSVAR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81798"
+      ],
+      "source_rows": [
+        "85801",
+        "85802"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81798"
+      ],
+      "gp": "81798",
+      "name": "Suswar",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001105",
+      "employment_name": "TANDA VIJAISEE",
+      "status": "verified",
+      "lgd_candidates": [
+        "81799"
+      ],
+      "source_rows": [
+        "85803",
+        "85804",
+        "85805",
+        "85806",
+        "85807",
+        "85808"
+      ],
+      "matched_villages": [
+        "131270"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81799"
+      ],
+      "gp": "81799",
+      "name": "Tanda Bijaisi Sahrai",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001106",
+      "employment_name": "TODAR PUR MU.",
+      "status": "verified",
+      "lgd_candidates": [
+        "81802"
+      ],
+      "source_rows": [
+        "85809",
+        "85810",
+        "85811"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81802"
+      ],
+      "gp": "81802",
+      "name": "Tondarpur (Mustqil)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001002",
+      "employment_name": "TODARPUR AH.",
+      "status": "verified",
+      "lgd_candidates": [
+        "81801"
+      ],
+      "source_rows": [
+        "85812"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81801"
+      ],
+      "gp": "81801",
+      "name": "Tondarpur (Ehatmali)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001108",
+      "employment_name": "TRIKUNIYA NASEER",
+      "status": "verified",
+      "lgd_candidates": [
+        "81800"
+      ],
+      "source_rows": [
+        "85813",
+        "85814",
+        "85815"
+      ],
+      "matched_villages": [
+        "131235",
+        "131238"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81800"
+      ],
+      "gp": "81800",
+      "name": "Tirkunia Nasir",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001109",
+      "employment_name": "TUMARIA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81803"
+      ],
+      "source_rows": [
+        "85816",
+        "85817"
+      ],
+      "matched_villages": [
+        "131315"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81803"
+      ],
+      "gp": "81803",
+      "name": "Tumria",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001110",
+      "employment_name": "TURAKPUR BADVAR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81804"
+      ],
+      "source_rows": [
+        "85818",
+        "85819"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81804"
+      ],
+      "gp": "81804",
+      "name": "Turkpur Urf Barhwar(Mustqil)",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001112",
+      "employment_name": "UADAY PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81806"
+      ],
+      "source_rows": [
+        "85820"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81806"
+      ],
+      "gp": "81806",
+      "name": "Udaypur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001114",
+      "employment_name": "UALKARIYA DHAKIYA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81808"
+      ],
+      "source_rows": [
+        "85821",
+        "85822"
+      ],
+      "matched_villages": [
+        "131261"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81808"
+      ],
+      "gp": "81808",
+      "name": "Ulkari Dhakia",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001115",
+      "employment_name": "UDRA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81805"
+      ],
+      "source_rows": [
+        "85823",
+        "85824",
+        "85825",
+        "85826",
+        "85827"
+      ],
+      "matched_villages": [
+        "131195",
+        "131196",
+        "131197",
+        "131199",
+        "131223"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [],
+      "gp": "81805",
+      "name": "Udara",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001116",
+      "employment_name": "UGAN PUR",
+      "status": "verified",
+      "lgd_candidates": [
+        "81807"
+      ],
+      "source_rows": [
+        "85828",
+        "85829"
+      ],
+      "matched_villages": [
+        "131293"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81807"
+      ],
+      "gp": "81807",
+      "name": "Uganpur",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": false
+    },
+    {
+      "employment_gp": "3126001119",
+      "employment_name": "VARADUNVA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81730"
+      ],
+      "source_rows": [
+        "85830",
+        "85831"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81730"
+      ],
+      "gp": "81730",
+      "name": "Baradunwa",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001120",
+      "employment_name": "VARAT BOJH",
+      "status": "verified",
+      "lgd_candidates": [
+        "81731"
+      ],
+      "source_rows": [
+        "85832",
+        "85833"
+      ],
+      "matched_villages": [
+        "131384"
+      ],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81731"
+      ],
+      "gp": "81731",
+      "name": "Barat Bojh",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "Matched accepted village codes",
+      "was_unmatched": true
+    },
+    {
+      "employment_gp": "3126001125",
+      "employment_name": "VISAINA",
+      "status": "verified",
+      "lgd_candidates": [
+        "81809"
+      ],
+      "source_rows": [
+        "85834"
+      ],
+      "matched_villages": [],
+      "conflicting_villages": [],
+      "invalid_village_references": [
+        "81809"
+      ],
+      "gp": "81809",
+      "name": "Visain",
+      "reason": "Explicit official employment-to-LGD Panchayat code, independently checked against current district and block",
+      "village_evidence": "GP code verified; official village fields unusable; links use the accepted current LGD directory only",
+      "was_unmatched": true
+    }
+  ],
+  "counts": {
+    "held": 26,
+    "verified": 79
+  },
+  "remaining_76": {
+    "held": 21,
+    "verified": 55
+  }
+}
