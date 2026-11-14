@@ -345,6 +345,9 @@ class MyPlacePanchayat
                 if ($source = $this->activitySource($row, $report)) {
                     $record['source_url'] = $source['url'];
                     $record['source_date'] = $source['retrieved_on'];
+                    if ($record['details'] === null && is_array($row['section_details'] ?? null)) {
+                        $record['details'] = $this->verifiedSectionDetails($row['section_details'], $source);
+                    }
                 }
 
                 return $record;
@@ -369,6 +372,18 @@ class MyPlacePanchayat
         parse_str(parse_url($source['url'], PHP_URL_QUERY) ?? '', $query);
 
         return ($query['activityCd'] ?? null) === $activity['code'] ? $source : null;
+    }
+
+    private function verifiedSectionDetails(array $detail, array $source): array
+    {
+        $result = ['retrieved_on' => $source['retrieved_on'], 'plan_id' => $source['plan_id'],
+            'technical_status' => null, 'administrative_status' => null, 'progress_status' => null,
+            'expenditure_status' => null, 'asset' => [], 'training' => [], 'funding' => []];
+        foreach (['description', 'theme'] as $field) {
+            $result[$field] = is_string($detail[$field] ?? null) && mb_strlen($detail[$field]) <= 4000 && trim($detail[$field]) !== '' ? $detail[$field] : null;
+        }
+
+        return $result;
     }
 
     private function activityDetails(array $activity, array $report): ?array

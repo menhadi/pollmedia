@@ -27,6 +27,16 @@ class PilibhitFullDetailCoverageTest extends TestCase
                 $report = $reports[0];
                 $this->assertCount(count($raw['activities'] ?? []), $report['activities'], $entry['panchayat_code'].' activities');
                 $totals['activities'] += count($report['activities']);
+                $rawActivities = array_column($raw['activities'] ?? [], null, 'code');
+                foreach ($report['activities'] as $activity) {
+                    $sourceRow = $rawActivities[$activity['code']];
+                    if (isset($sourceRow['section_details']) && empty($sourceRow['details'])) {
+                        $this->assertSame($sourceRow['source_evidence']['plan_id'], $activity['details']['plan_id']);
+                        $this->assertSame($sourceRow['section_details']['description'], $activity['details']['description']);
+                        $this->assertSame($sourceRow['section_details']['theme'], $activity['details']['theme']);
+                    }
+                }
+
                 $rawVouchers = 0;
                 $normalizedVouchers = 0;
                 foreach (['payments', 'receipts', 'contra', 'journal'] as $kind) {

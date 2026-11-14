@@ -81,6 +81,26 @@ class PanchayatDetailShardsTest extends TestCase
         $this->assertSame(2, $this->rows()[0]['months'][0]['payments']);
     }
 
+    public function test_activity_description_theme_and_plan_are_bound_to_the_verified_source(): void
+    {
+        $this->report['sources']['activities'] = ['url' => 'https://egramswaraj.gov.in/getActivityList.do?planCd=6000001', 'report_date' => '2026-11-14'];
+        $this->report['activities'] = [['code' => '123456', 'name' => 'School repair', 'focus_area' => 'Education', 'type' => 'Community Works',
+            'status' => 'Activity Approved', 'output_type' => 'Asset', 'plan_type' => 'Part of Main Plan',
+            'section_details' => ['description' => 'Repair school building', 'theme' => 'Child friendly village'],
+            'source_evidence' => ['activity_code' => '123456', 'panchayat_code' => '81720', 'financial_year' => '2026-2027',
+                'plan_id' => '6000001', 'sha256' => str_repeat('a', 64), 'retrieved_on' => '2026-11-14',
+                'url' => 'https://egramswaraj.gov.in/activitySectionData.do?activityCd=123456']]];
+        $this->save();
+        $details = $this->rows()[0]['activities'][0]['details'];
+        $this->assertSame('Repair school building', $details['description']);
+        $this->assertSame('Child friendly village', $details['theme']);
+        $this->assertSame('6000001', $details['plan_id']);
+        $this->assertNull($details['technical_status']);
+        $this->report['activities'][0]['source_evidence']['panchayat_code'] = '81721';
+        $this->save();
+        $this->assertSame([], $this->rows()[0]['activities']);
+    }
+
     public function test_malformed_manifest_metadata_falls_back_without_a_page_error(): void
     {
         $original = $this->manifest;

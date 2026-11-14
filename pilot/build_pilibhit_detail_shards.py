@@ -163,6 +163,8 @@ def build(captures, before, civil, identities, output, activities=True):
                 except (ValueError,KeyError,json.JSONDecodeError) as error:
                     status["held"].append({"activity":act,"reason":str(error)});continue
                 verified+=1
+                if act in existing and not existing[act].get("details") and "section_details" not in existing[act] and existing[act].get("source_evidence",{}).get("sha256")==row["source_evidence"]["sha256"]:
+                    existing[act]["section_details"]=row["section_details"]
                 if act not in existing:
                     report.setdefault("activities",[]).append(row);existing[act]=row;new+=1
             prior=report["sources"].get("activities")
@@ -181,6 +183,33 @@ def build(captures, before, civil, identities, output, activities=True):
         if dest.stat().st_size>2*1024*1024:raise ValueError("Oversized GP shard")
         manifest["reports"].append({"panchayat_code":code,"financial_year":YEAR,"state_lgd":"9","district_lgd":"173","village_lgd_codes":report["mapping"]["village_lgd_codes"],"file":file,"sha256":digest(dest)})
         review.append(status)
+    if activities and (captures/"supplementary-plans.json").is_file():
+        main_by_gp={str(p["gp_cd"]):p for p in plans}
+        reviews={r["gp"]:r for r in review}
+        entries={r["panchayat_code"]:r for r in manifest["reports"]}
+        for plan in json.loads((captures/"supplementary-plans.json").read_text()):
+            code=str(plan["gp_cd"]);main=main_by_gp.get(code)
+            if not main or plan["plantype"]!="Supplementary Plan" or any(plan[k]!=main[k] for k in ["zp_cd","parent_cd","parent_name","gp_cd"]):
+                raise ValueError("Supplementary plan Panchayat/block does not match verified main plan")
+            path=captures/("official-activities-"+code+"-"+str(plan["plan_cd"])+".json")
+            labels=json.loads(path.read_text())
+            if len(labels)!=len(set(labels)):raise ValueError("Repeated supplementary activity membership")
+            entry=entries[code];file=output/entry["file"];data=json.loads(file.read_text());report=data["report"]
+            known={a["code"] for a in report.get("activities",[])}
+            added=0
+            for label in labels:
+                match=re.fullmatch(r"(.*?)\s*\(([0-9]+)\)\s*",label)
+                if not match:raise ValueError("Invalid supplementary activity membership")
+                row=activity(captures/("official-activity-"+match[2]+".json"),label,plan)
+                row["source_evidence"]["plan_membership_sha256"]=digest(path)
+                if row["code"] not in known:
+                    report.setdefault("activities",[]).append(row);known.add(row["code"]);added+=1
+            report.setdefault("activity_plan_sources",[]).append({"plan_id":str(plan["plan_cd"]),"type":plan["plantype"],"url":BASE+"getActivityList.do?planCd="+str(plan["plan_cd"])+"&activityStts=0","sha256":digest(path),"retrieved_on":DAY})
+            file.write_text(json.dumps(data,ensure_ascii=False,separators=(",",":"))+"\n")
+            entry["sha256"]=digest(file)
+            for key in ["activity_membership","verified_activity_details","new_activities"]:
+                totals[key]+=added;reviews[code][key]+=added
+            totals["supplementary_plans"]+=1
     manifest["reports"].sort(key=lambda x:int(x["panchayat_code"]))
     eligible={str(p["gp_cd"]) for p in plans}
     manifest["unavailable"]=[{"panchayat_code":row[4],"name":row[2],"block":row[1],

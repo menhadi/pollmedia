@@ -198,6 +198,8 @@ def activity(path, label, plan):
         result[target] = value.strip()
     cost = data.get("totalCost")
     result["cost"] = str(cost) if isinstance(cost,(int,Decimal)) and cost >= 0 else None
+    result["section_details"] = {target:data[key].strip() if isinstance(data.get(key),str) and data[key].strip() else None
+                                 for target,key in {"description":"activityDesc","theme":"themeName"}.items()}
     result["source_evidence"] = {"activity_code":match[2],"panchayat_code":str(plan["gp_cd"]),"financial_year":YEAR,"plan_id":str(plan["plan_cd"]),
                                 "url":BASE+"activitySectionData.do?activityCd="+match[2],"sha256":digest(path),"retrieved_on":DAY}
     return result
