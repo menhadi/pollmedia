@@ -1,6 +1,44 @@
-[data-gp-summary] .pb-record-card table{margin-bottom:.75rem}
-[data-gp-summary] table :is(th,td){overflow-wrap:anywhere;white-space:normal}
-[data-gp-summary] .pb-record-card>small{color:#475f65;margin-bottom:.7rem}
-[data-gp-summary] .gp-members td{font-variant-numeric:tabular-nums}
-@media(max-width:650px){[data-gp-summary] table{table-layout:fixed}[data-gp-summary] .gp-members th:first-child{width:46%}}
-
+[data-gp-summary]{--gp-accent:#10756e}
+[data-gp-summary] .gp-page-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+[data-gp-summary] .gp-page-heading .pb-scope{margin-bottom:12px}
+[data-gp-summary] .gp-view-tabs,[data-gp-summary] .gp-section-nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+[data-gp-summary] .gp-view-tabs a,[data-gp-summary] .gp-section-nav a,[data-gp-summary] .gp-action,[data-gp-summary] .approved-pagination button,[data-gp-summary] .approved-pagination select{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:1px solid #b9ceca;border-radius:0;background:#fff;color:#09675f;text-decoration:none;font:600 15px/1.35 "Segoe UI",system-ui,sans-serif;padding:9px 14px;cursor:pointer}
+[data-gp-summary] .gp-view-tabs a[aria-current=page],[data-gp-summary] .gp-section-nav a:hover,[data-gp-summary] .gp-action:hover{background:var(--gp-accent);color:#fff;border-color:var(--gp-accent)}
+[data-gp-summary] .gp-section-nav a{font-size:14px;min-height:38px;padding:7px 11px}
+[data-gp-summary] .gp-section-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+body.pb-site:has(.public-header) main[data-gp-summary] .pb-panel{border-radius:0!important}
+[data-gp-summary] .gp-table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+body.pb-site:has(.public-header) main[data-gp-summary] table{width:100%;font-size:16px;table-layout:auto}
+body.pb-site:has(.public-header) main[data-gp-summary] table thead th{background:#e6efed!important;color:#16353d!important;font-size:15px!important;font-weight:650!important;line-height:1.4!important;padding:12px!important;white-space:normal;word-break:normal;overflow-wrap:normal}
+body.pb-site:has(.public-header) main[data-gp-summary] table tbody :is(th,td){padding:10px 12px!important;font-size:16px!important;line-height:1.5!important;text-align:start;color:#16353d!important;white-space:normal;word-break:normal;overflow-wrap:break-word}
+body.pb-site:has(.public-header) main[data-gp-summary] table tbody tr:nth-child(even)>:is(th,td){background:#f2f7f6!important}
+[data-gp-summary] .gp-members{min-width:590px}
+[data-gp-summary] .gp-members :is(td,th):nth-last-child(-n+2){text-align:end!important;font-variant-numeric:tabular-nums}
+[data-gp-summary] table time{display:block;font-size:13px;color:#49626a}
+[data-gp-summary] .gp-service-links,[data-gp-summary] .gp-related-list{list-style:none;padding:0;margin:8px 0}
+[data-gp-summary] .gp-service-links li{border-bottom:1px solid #e1eae8}
+[data-gp-summary] .gp-service-links a{display:block;padding:10px 0;font-size:16px;line-height:1.5}
+[data-gp-summary] .gp-related-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+[data-gp-summary] .gp-related-list span{display:block;color:#49626a;font-size:13px}
+[data-gp-summary] .gp-village-search{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
+[data-gp-summary] .gp-village-search input{min-width:0;max-width:100%;padding:10px;border:1px solid #b9ceca;border-radius:0;font:inherit}
+[data-gp-summary] .gp-pagination,[data-gp-summary] .approved-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px}
+[data-gp-summary] .gp-pagination>span:first-child,[data-gp-summary] .approved-pagination>span:first-child{margin-right:auto}
+[data-gp-summary] [data-approved-page-hidden]{display:none!important}
+[data-gp-summary] .approved-pagination button:disabled{opacity:.5;cursor:default}
+[data-gp-summary] .gp-methodology summary{font-weight:650;cursor:pointer;color:#09675f}
+[data-gp-summary] .gp-methodology p{margin:12px 0}
+[data-gp-summary] h3{margin-top:22px;margin-bottom:8px;font-size:18px}
+[data-gp-summary] .gp-empty{padding:18px 0}
+[data-gp-summary] #panchayat-map{margin-top:16px}
+@media(max-width:650px){
+[data-gp-summary] .gp-page-heading{align-items:flex-start}
+[data-gp-summary] .gp-page-heading>.gp-action{font-size:13px;flex-shrink:0;padding:8px}
+[data-gp-summary] .pb-crumb{flex-wrap:wrap}
+[data-gp-summary] .gp-related-list{grid-template-columns:1fr}
+[data-gp-summary] table:not(.gp-members){min-width:480px}
+[data-gp-summary] #panchayat-overview table{min-width:0}
+[data-gp-summary] .gp-village-search label{flex-basis:100%}
+[data-gp-summary] .gp-village-search input{flex:1}
+[data-gp-summary] .approved-pagination>span:first-child{flex-basis:100%}
+}
