@@ -81,7 +81,7 @@ def merge_vouchers(report, rows, captures):
             if proof and not identical[0].get("record_source"):
                 identical[0]["record_source"]=proof
             continue
-        if any(x["date"]==row["date"] and x.get("amount_paise")!=row["amount_paise"] for x in previous):
+        if any(x["date"]==row["date"] and x.get("amount_paise")!=row["amount_paise"] and (not proof or not record_id(x) or record_id(x)==record_id({"record_source":proof})) for x in previous):
             held.append({"kind":kind,"voucher":row["voucher"],"reason":"Published voucher has a different amount; existing fact retained"});continue
         if previous and any(not x.get("record_source") for x in previous):
             held.append({"kind":kind,"voucher":row["voucher"],"reason":"Existing voucher identity needs corroboration before adding reused number"});continue

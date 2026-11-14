@@ -140,17 +140,17 @@ def review_correspondence(source, employment, gps, villages, prior):
 
 def monthly(path, plan):
     doc = html(path)
-    for phrase in ["Month wise Summary Report", "Financial Year:-2026-2027", "District:-Pilibhit", "Report Completed"]:
+    for phrase in ["Month wise Summary Report", "Financial Year:-2026-2027", "District:-"+plan.get("zp_name","Pilibhit"), "Report Completed"]:
         if phrase not in doc.body:
             raise ValueError("Missing monthly report context: " + phrase)
     match = re.search(r"Village Panchayat & Equivalent:-(.+?)(?= Month Receipts)", doc.body)
-    if not match or norm(match[1]) != norm(plan["gp_nam"]):
+    if not match or norm(match[1]) not in {norm(name) for name in [plan["gp_nam"],*plan.get("gp_aliases",[])] if isinstance(name,str) and norm(name)}:
         raise ValueError("Monthly report Panchayat name does not match the official code directory: " + str(plan["gp_cd"]) + " / " + str(match[1] if match else None))
     match = re.search(r"on [A-Za-z]+, ([A-Za-z]+ [0-9]+, [0-9]{4})", doc.body)
     if not match:
         raise ValueError("Missing monthly source-generation date")
     report_date = datetime.strptime(match[1], "%B %d, %Y").date().isoformat()
-    if report_date > DAY:
+    if report_date > plan.get("captured_on", DAY):
         raise ValueError("Future monthly report")
     result, requests = [], []
     month_names = {"April":4,"May":5,"June":6,"July":7,"August":8,"September":9,"October":10,"November":11,"December":12,"January":1,"Januaury":1,"February":2,"March":3}
@@ -174,7 +174,7 @@ def monthly(path, plan):
             result.append(dict(month=period, **dict(zip(["receipts","payments","contra","journal"], map(int, counts)))))
             for link in row[0]["links"]:
                 q = parse_qs(urlparse(link).query)
-                if urlparse(link).hostname != "egramswaraj.gov.in" or urlparse(link).path != "/voucherWiseReport.do" or any(q.get(k) != [str(v)] for k,v in {"state":9,"district":164,"block":plan.get("parent_cd",2021),"village":plan["gp_cd"],"finYear":YEAR,"month":month_number}.items()):
+                if urlparse(link).hostname != "egramswaraj.gov.in" or urlparse(link).path != "/voucherWiseReport.do" or any(q.get(k) != [str(v)] for k,v in {"state":9,"district":plan.get("zp_cd",164),"block":plan.get("parent_cd",2021),"village":plan["gp_cd"],"finYear":YEAR,"month":month_number}.items()):
                     raise ValueError("Monthly voucher link has mismatched geography or period")
                 requests.append({"gp":str(plan["gp_cd"]),"month":period,"url":link})
     expected = {f"2026-{month:02d}" for month in range(4, min(int(report_date[5:7]), 11) + 1)}
@@ -183,7 +183,9 @@ def monthly(path, plan):
     return result, report_date, requests
 
 def activity(path, label, plan):
-    data = json.loads(path.read_text(), parse_float=Decimal)
+    data = json.loads(path.read_text(encoding="utf-8-sig"), parse_float=Decimal)
+    if not isinstance(data,dict):
+        raise ValueError("Missing activity section object")
     match = re.fullmatch(r"(.*?)\s*\(([0-9]+)\)\s*", label)
     if not match or int(match[2]) != data.get("activityCd") or data.get("plnUntCd") != plan["gp_cd"] or data.get("fnclYr") != 2026:
         raise ValueError("Activity identity, Panchayat or financial year mismatch")
@@ -197,11 +199,11 @@ def activity(path, label, plan):
             raise ValueError("Missing activity field " + key)
         result[target] = value.strip()
     cost = data.get("totalCost")
-    result["cost"] = str(cost) if isinstance(cost,(int,Decimal)) and cost >= 0 else None
+    result["cost"] = (format(cost,"f") if isinstance(cost,Decimal) else str(cost)) if isinstance(cost,(int,Decimal)) and not isinstance(cost,bool) and cost >= 0 else None
     result["section_details"] = {target:data[key].strip() if isinstance(data.get(key),str) and data[key].strip() else None
                                  for target,key in {"description":"activityDesc","theme":"themeName"}.items()}
     result["source_evidence"] = {"activity_code":match[2],"panchayat_code":str(plan["gp_cd"]),"financial_year":YEAR,"plan_id":str(plan["plan_cd"]),
-                                "url":BASE+"activitySectionData.do?activityCd="+match[2],"sha256":digest(path),"retrieved_on":DAY}
+                                "url":BASE+"activitySectionData.do?activityCd="+match[2],"sha256":digest(path),"retrieved_on":plan.get("captured_on", DAY)}
     return result
 
 def expand(captures, civil_path, package):
@@ -355,7 +357,7 @@ def voucher_entries(path, request):
     if not reported:
         raise ValueError("Missing voucher report generation date")
     date=datetime.strptime(reported[1],"%d %b %Y").date().isoformat()
-    if date>DAY:
+    if date>request.get("captured_on", DAY):
         raise ValueError("Future voucher report")
     result=[]
     for row_index,row in enumerate(table):

@@ -38,6 +38,25 @@ class PanchayatDetailMergeTest(unittest.TestCase):
         self.assertEqual(len(r["payments"]),2);self.assertTrue(same_facts(old,r["payments"][0]))
         self.assertEqual(r["payments"][0]["record_source"]["url"],self.row()["_detail_url"])
 
+    def test_distinct_verified_source_ids_preserve_same_day_reused_numbers_with_different_amounts(self):
+        r={"panchayat_code":"81720"}
+        rows=[self.row(amount=100,identity="1"),self.row(amount=200,identity="2")]
+        with patch("build_pilibhit_detail_shards.detail_proof",side_effect=self.proof):
+            count,held,requests=merge_vouchers(r,copy.deepcopy(rows),Path("."))
+            before=copy.deepcopy(r)
+            repeated=merge_vouchers(r,copy.deepcopy(rows),Path("."))
+        self.assertEqual(count,2);self.assertEqual(held,[]);self.assertEqual(requests,[])
+        self.assertEqual([x["amount_paise"] for x in r["payments"]],[100,200])
+        self.assertEqual(repeated,(0,[],[]));self.assertEqual(r,before)
+
+    def test_same_verified_source_id_cannot_publish_a_changed_amount(self):
+        row=self.row();proof,_=self.proof(row)
+        r={"panchayat_code":"81720","payments":[{"voucher":"P/1","date":"2026-04-01","amount_paise":100,"source_key":"vouchers_2026_04","record_source":proof}]}
+        before=copy.deepcopy(r)
+        with patch("build_pilibhit_detail_shards.detail_proof",side_effect=self.proof):
+            count,held,requests=merge_vouchers(r,[self.row(amount=200)],Path("."))
+        self.assertEqual(count,0);self.assertEqual(len(held),1);self.assertEqual(r,before)
+
     def test_unavailable_detail_proof_never_publishes_ambiguous_rows(self):
         with tempfile.TemporaryDirectory() as d:
             r={"panchayat_code":"81720"}

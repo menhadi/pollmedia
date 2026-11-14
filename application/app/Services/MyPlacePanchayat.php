@@ -200,13 +200,14 @@ class MyPlacePanchayat
     private function detailedReports(array $base, array $context, ?string $code, string $basePath): array
     {
         $configured = config('services.egramswaraj.shard_manifest_path');
-        if ($configured === null && $basePath !== database_path('fixtures/egramswaraj-accounts.json')) {
+        if ($configured === null && $basePath !== database_path('fixtures/egramswaraj-accounts.json') && ((string) $context['district']['code'] === '173' || config('services.egramswaraj.district_shards_index_path') === null)) {
             return $base;
         }
         if ($code === null && empty($context['village'])) {
             return $base;
         }
-        $path = $configured ?? database_path('fixtures/egramswaraj-details/manifest.json');
+        $path = $configured ?? ((string) $context['district']['code'] === '173'
+            ? database_path('fixtures/egramswaraj-details/manifest.json') : $this->districtDetailsManifest($context));
         if (! is_string($path) || ! is_file($path) || ! is_readable($path) || filesize($path) > 1024 * 1024) {
             return $base;
         }
@@ -250,6 +251,36 @@ class MyPlacePanchayat
 
         return array_merge(array_values(array_filter($base, fn ($row) => ! is_array($row)
             || ! isset($verified[($row['panchayat_code'] ?? '').':'.($row['financial_year'] ?? '')]))), array_values($verified));
+    }
+
+    private function districtDetailsManifest(array $context): ?string
+    {
+        $district = (string) ($context['district']['code'] ?? '');
+        if ((string) ($context['state']['code'] ?? '') !== '9' || ! preg_match('/^[1-9][0-9]{0,5}$/D', $district)) {
+            return null;
+        }
+        $index = config('services.egramswaraj.district_shards_index_path', database_path('fixtures/egramswaraj-details/up-districts.json'));
+        if (! is_string($index) || ! is_file($index) || ! is_readable($index) || filesize($index) > 100000) {
+            return null;
+        }
+        $data = json_decode(file_get_contents($index), true);
+        $entry = is_array($data) && ($data['schema'] ?? null) === 1 && ($data['publication_enabled'] ?? false) === true
+            ? ($data['districts'][$district] ?? null) : null;
+        $expected = '9-'.$district.'/manifest.json';
+        if (! is_array($entry) || ($entry['file'] ?? null) !== $expected || ! is_string($entry['sha256'] ?? null)
+            || ! preg_match('/^[a-f0-9]{64}$/D', $entry['sha256'])) {
+            return null;
+        }
+        $root = dirname($index);
+        $directory = $root.DIRECTORY_SEPARATOR.'9-'.$district;
+        $path = $root.DIRECTORY_SEPARATOR.$expected;
+        if (! is_file($path) || ! is_readable($path) || filesize($path) > 1024 * 1024
+            || dirname(realpath($directory)) !== realpath($root) || dirname(realpath($path)) !== realpath($directory)
+            || ! hash_equals($entry['sha256'], hash_file('sha256', $path))) {
+            return null;
+        }
+
+        return $path;
     }
 
     private function matches(array $report, array $context): bool
