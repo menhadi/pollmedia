@@ -4,11 +4,11 @@
   "districts": {
     "130": {
       "file": "9-130/manifest.json",
-      "sha256": "98e042637606e24e5c9f0ac3553636909ae6e3761de8c270a42d3e6a9d68a229"
+      "sha256": "31f01a85d29aca04e648a1db0362fd659045f14d778f6d40825ee5bdc7255b59"
     },
     "180": {
       "file": "9-180/manifest.json",
-      "sha256": "812ac80b5ecfdf565b5d247fffc414fcb48291b77ce4a4e6993b92a55b4c8290"
+      "sha256": "b584579b7469869ced19cc400b1fa1c2c19fa9711138e87c82121ebc4d75ffb4"
     }
   }
 }

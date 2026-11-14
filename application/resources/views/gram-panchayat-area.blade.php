@@ -26,4 +26,10 @@
 @endif
 <nav>@if($page>1)<a href="{{ route('gram-panchayats.area',$params+['q'=>$q,'page'=>$page-1]) }}">{{ $hi?'पिछला पृष्ठ':'Previous page' }}</a>@endif
 @if($listing['more'])<a href="{{ route('gram-panchayats.area',$params+['q'=>$q,'page'=>$page+1]) }}">{{ $hi?'अगला पृष्ठ':'Next page' }}</a>@endif</nav>
+@if($additionalReports ?? [])
+<h2>{{ $hi?'अतिरिक्त स्रोत रिकॉर्ड':'Additional source records' }}</h2>
+<table><thead><tr><th>{{ $hi?'पंचायत':'Panchayat' }}</th><th>{{ $hi?'स्रोत टिप्पणी':'Source note' }}</th></tr></thead><tbody>
+@foreach($additionalReports as $sourceReport)<tr><td><a href="{{ $sourceReport['url'] }}">{{ $sourceReport['name'] }}</a></td><td>{{ $sourceReport['note'] }}</td></tr>@endforeach
+</tbody></table>
+@endif
 @endsection

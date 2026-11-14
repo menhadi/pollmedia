@@ -203,6 +203,14 @@ def district_build(captures,output,district,roster,index,existing,with_activitie
             if dest.stat().st_size>2*1024*1024:raise ValueError("GP shard exceeds safe request limit")
             entries.append({"panchayat_code":code,"financial_year":YEAR,"state_lgd":"9","district_lgd":district,"village_lgd_codes":report["mapping"]["village_lgd_codes"],"file":file,"sha256":digest(dest)})
         reviews.append(status)
+    published_codes={r["panchayat_code"] for r in entries}
+    for (code,year),report in existing.items():
+        mapping=report.get("mapping",{})
+        if year!=YEAR or code in published_codes or mapping.get("source_only") is not True or mapping.get("state_lgd")!="9" or mapping.get("district_lgd")!=district:continue
+        if mapping.get("village_lgd_codes")!=[]:raise ValueError("Source-only record unexpectedly has village links")
+        file="9-"+district+"-"+code+"-"+YEAR+".json";dest=output/file
+        dest.write_text(json.dumps({"schema":1,"report":report},ensure_ascii=False,separators=(",",":"))+"\n")
+        entries.append({"panchayat_code":code,"financial_year":YEAR,"state_lgd":"9","district_lgd":district,"village_lgd_codes":[],"file":file,"sha256":digest(dest),"source_only":True,"name":report["name"],"note":report["source_notes"][0]})
     manifest={"schema":1,"publication_enabled":True,"scope":{"state":"9","district":district},"captured_on":max(all_days) if all_days else None,"reports":sorted(entries,key=lambda r:int(r["panchayat_code"]))}
     (output/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,separators=(",",":"))+"\n")
     (output/"coverage-review.json").write_text(json.dumps(reviews,ensure_ascii=False,indent=2)+"\n")

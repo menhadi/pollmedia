@@ -62,3 +62,10 @@
 @else
 <p class="local-data-empty">{{ $context['village'] ? $t('A verified Gram Panchayat link is not yet available for this village.','इस गाँव का पुष्ट ग्राम पंचायत संबंध अभी उपलब्ध नहीं है।') : $t('Panchayat records are not yet available for this district.','इस जिले के पंचायत रिकॉर्ड अभी उपलब्ध नहीं हैं।') }}</p>
 @endif
+
+@if(!empty($panchayat['additional_reports']))
+<h3>{{ $t('Additional source records','अतिरिक्त स्रोत रिकॉर्ड') }}</h3>
+<table><thead><tr><th>{{ $t('Panchayat','पंचायत') }}</th><th>{{ $t('Source note','स्रोत टिप्पणी') }}</th></tr></thead><tbody>
+@foreach($panchayat['additional_reports'] as $sourceReport)<tr><td><a href="{{ $sourceReport['url'] }}">{{ $sourceReport['name'] }}</a></td><td>{{ $sourceReport['note'] }}</td></tr>@endforeach
+</tbody></table>
+@endif

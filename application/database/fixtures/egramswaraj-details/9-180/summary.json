@@ -6,7 +6,10 @@
   "verified_activity_details": 67949,
   "new_activities": 67949,
   "activity_plans": 1149,
-  "published_panchayats": 1068,
+  "published_panchayats": 1077,
   "identity_verified": 1068,
-  "held_components": 3
+  "held_components": 0,
+  "source_only_panchayats": 9,
+  "source_noted_components": 3,
+  "source_reported_voucher_entries": 0
 }

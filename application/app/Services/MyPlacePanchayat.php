@@ -70,6 +70,7 @@ class MyPlacePanchayat
         return ['directory' => $directory, 'selected' => $selected, 'reports' => $selected ? array_values(array_filter($reports, fn ($row) => $row['panchayat_code'] === $selected['code'])) : [],
             'allocations' => $selected ? $this->stateAllocations($context, $selected) : [],
             'payment_totals' => $selected ? app(MyPlacePanchayatPaymentTotals::class)->forSelection($context, $selected) : [],
+            'additional_reports' => $this->sourceOnlyPanchayats($context),
             'reason' => ! empty($context['village']) ? 'village-link-unavailable' : 'district-records-unavailable'];
     }
 
@@ -283,6 +284,60 @@ class MyPlacePanchayat
         return $path;
     }
 
+    public function sourceOnlyPanchayats(array $context): array
+    {
+        if (! empty($context['village']) || ! empty($context['gp_subdistrict'])) {
+            return [];
+        }
+        $path = $this->districtDetailsManifest($context);
+        if ($path === null) {
+            return [];
+        }
+        $manifest = json_decode(file_get_contents($path), true);
+        if (! is_array($manifest) || ($manifest['schema'] ?? null) !== 1 || ($manifest['publication_enabled'] ?? false) !== true) {
+            return [];
+        }
+        $result = [];
+        foreach ($manifest['reports'] ?? [] as $entry) {
+            if (! is_array($entry) || ($entry['source_only'] ?? false) !== true || ($entry['village_lgd_codes'] ?? null) !== []
+                || ($entry['state_lgd'] ?? null) !== (string) $context['state']['code']
+                || ($entry['district_lgd'] ?? null) !== (string) $context['district']['code']
+                || ! preg_match('/^[1-9][0-9]{4,6}$/D', $entry['panchayat_code'] ?? '')
+                || ! is_string($entry['name'] ?? null) || mb_strlen($entry['name']) > 300
+                || ! is_string($entry['note'] ?? null) || mb_strlen($entry['note']) > 1000) {
+                continue;
+            }
+            $result[] = ['code' => $entry['panchayat_code'], 'name' => $entry['name'], 'note' => $entry['note'],
+                'url' => route('my-place.panchayat-records', ['state' => $context['state']['code'], 'district' => $context['district']['code'], 'panchayat' => $entry['panchayat_code']])];
+        }
+
+        return $result;
+    }
+
+    private function sourceReportedVouchers(array $report, array $sources, int $year): array
+    {
+        $result = [];
+        foreach (is_array($report['source_reported_vouchers'] ?? null) ? $report['source_reported_vouchers'] : [] as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+            $key = $row['source_key'] ?? '';
+            $source = $sources[$key] ?? null;
+            if (! $source || ! str_starts_with($key, 'vouchers_') || ($row['source_note'] ?? null) !== 'report-date-discrepancy'
+                || ! in_array($row['kind'] ?? null, ['receipts', 'payments', 'contra', 'journal'], true)
+                || ! $this->date($row['date'] ?? null) || $row['date'] < $year.'-04-01' || $row['date'] > ($year + 1).'-03-31'
+                || substr($row['date'], 0, 7) !== str_replace('_', '-', substr($key, 9, 7))
+                || ! is_string($row['voucher'] ?? null) || $row['voucher'] === '' || $this->count($row['amount_paise'] ?? null) === null) {
+                continue;
+            }
+            $result[] = ['date' => $row['date'], 'voucher' => $row['voucher'], 'kind' => $row['kind'], 'amount_paise' => $row['amount_paise'],
+                'source_url' => $source['url'], 'report_date' => $source['report_date'],
+                'note' => $row['date'] > $source['report_date'] ? 'Entry date is later than the source report date.' : 'This source report contains a date discrepancy.'];
+        }
+
+        return $result;
+    }
+
     private function matches(array $report, array $context): bool
     {
         $mapping = $report['mapping'] ?? [];
@@ -309,7 +364,7 @@ class MyPlacePanchayat
         $year = (int) substr($report['financial_year'], 0, 4);
         $sources = [];
         foreach (($report['sources'] ?? []) as $kind => $source) {
-            if (! in_array($kind, ['monthly', 'payments', 'receipts', 'contra', 'journal', 'accounting', 'activities', 'activity_details'], true)
+            if (! in_array($kind, ['monthly', 'payments', 'receipts', 'contra', 'journal', 'accounting', 'activities', 'activity_details', 'availability'], true)
                 && ! preg_match('/^vouchers_20\d{2}_(0[1-9]|1[0-2])(?:_snapshot_[a-f0-9]{16})?$/D', $kind)) {
                 continue;
             }
@@ -346,6 +401,8 @@ class MyPlacePanchayat
             'block_name' => is_string($report['block_name'] ?? null) ? $report['block_name'] : null, 'panchayat_code' => $report['panchayat_code'],
             'financial_year' => $report['financial_year'], 'sources' => $sources, 'months' => $months, ...$transactions,
             'financial_summary' => $this->financialSummary($transactions),
+            'source_notes' => array_values(array_filter(is_array($report['source_notes'] ?? null) ? $report['source_notes'] : [], fn ($note) => is_string($note) && $note !== '' && mb_strlen($note) <= 1000)),
+            'source_reported_vouchers' => $this->sourceReportedVouchers($report, $sources, $year),
             'activities' => isset($sources['activities']) ? $this->activities($report) : [],
             'opening_balance_entered' => isset($sources['accounting']) && is_bool($report['opening_balance_entered'] ?? null) ? $report['opening_balance_entered'] : null,
             'month_book_closed' => isset($sources['accounting']) && is_bool($report['month_book_closed'] ?? null) ? $report['month_book_closed'] : null,

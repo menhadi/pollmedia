@@ -19,6 +19,13 @@
                 @if($report['native_name'] && $report['native_name']!==$report['name'])<p>{{ $report['native_name'] }}</p>@endif
                 <p class="place-note">{{ $report['block_name'] }} · {{ $t('Financial year','वित्त वर्ष') }} {{ $report['financial_year'] }}</p>
             </header>
+            @foreach($report['source_notes'] ?? [] as $sourceNote)<p class="place-note" data-source-note>{{ $sourceNote }}</p>@endforeach
+            @if(!empty($report['source_reported_vouchers']))
+            <div class="panchayat-table"><table><caption>{{ $t('Source-reported vouchers · date note','स्रोत के वाउचर · तारीख की टिप्पणी') }}</caption>
+            <thead><tr><th>{{ $t('Date','तारीख') }}</th><th>{{ $t('Voucher','वाउचर') }}</th><th>{{ $t('Type','प्रकार') }}</th><th>{{ $t('Amount','राशि') }}</th><th>{{ $t('Source note','स्रोत टिप्पणी') }}</th><th>{{ $t('Reference','संदर्भ') }}</th></tr></thead><tbody>
+            @foreach($report['source_reported_vouchers'] as $entry)<tr data-source-reported-voucher><td>{{ $entry['date'] }}</td><td>{{ $entry['voucher'] }}</td><td>{{ $entry['kind'] }}</td><td>₹{{ number_format($entry['amount_paise']/100,2) }}</td><td>{{ $entry['note'] }}</td><td><a href="{{ $entry['source_url'] }}" target="_blank" rel="noopener noreferrer">{{ $t('Official report','आधिकारिक रिपोर्ट') }}</a> · {{ $entry['report_date'] }}</td></tr>@endforeach
+            </tbody></table></div>
+            @endif
             @if($summary['totals'])
             <div class="gp-money-grid">
                 @foreach($amountLabels as $kind=>$label)

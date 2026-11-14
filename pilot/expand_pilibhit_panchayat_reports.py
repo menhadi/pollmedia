@@ -346,7 +346,7 @@ def money(text):
         raise ValueError("Missing or invalid rupee amount")
     return int(Decimal(value)*100)
 
-def voucher_entries(path, request):
+def voucher_entries(path, request, allow_reported_date_discrepancy=False):
     doc=html(path)
     if "Voucher Wise Summary Report" not in doc.body or "Voucher Amount (in Rs.)" not in doc.body:
         raise ValueError("Unrecognised voucher report or amount unit")
@@ -371,7 +371,7 @@ def voucher_entries(path, request):
             if entered=="Voucher Date":
                 continue
             parsed=datetime.strptime(entered,"%d/%m/%Y").date().isoformat()
-            if parsed[:7]!=request["month"] or parsed>date or not voucher:
+            if parsed[:7]!=request["month"] or (parsed>date and not allow_reported_date_discrepancy) or not voucher:
                 raise ValueError("Voucher date, period or identity mismatch")
             links=row[number_index]["links"]
             detail=None

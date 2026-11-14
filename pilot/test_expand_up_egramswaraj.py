@@ -64,6 +64,20 @@ class UpEgramTest(unittest.TestCase):
             p=captures/"official-plans-1541.json";rows=json.loads(p.read_text());rows[0]["parent_cd"]=1542;p.write_text(json.dumps(rows))
             self.assertEqual(verified_roster(captures,fixtures),[])
 
+    def test_refresh_preserves_published_source_only_records_without_inventing_village_links(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);captures,fixtures=self.fixtures(root);roster=verified_roster(captures,fixtures)
+            text=samples.PilibhitExpansionTest().monthly_html("Alpha").replace("District:-Pilibhit","District:-Bareilly")
+            (captures/"official-monthly-69232.html").write_text(text)
+            index={"official-monthly-69232.html":{"day":"2026-11-14","url":"https://egramswaraj.gov.in/FileRedirect.jsp?FD=FinancialYear2026-2027/9&name=69232.html"}}
+            previous={"name":"Unmapped official GP","panchayat_code":"69233","financial_year":"2026-2027","mapping":{"source_only":True,"state_lgd":"9","district_lgd":"130","village_lgd_codes":[]},"source_notes":["Village linkage pending"],"sources":{"availability":{"url":"https://egramswaraj.gov.in/","report_date":"2026-11-14"}}}
+            out=root/"out";summary,_=district_build(captures,out,"130",roster,index,{("69233","2026-2027"):previous},False)
+            self.assertEqual(summary["published_panchayats"],2)
+            restored=json.loads((out/"9-130-69233-2026-2027.json").read_text())["report"]
+            self.assertEqual(restored,previous)
+            entry=next(x for x in json.loads((out/"manifest.json").read_text())["reports"] if x["panchayat_code"]=="69233")
+            self.assertTrue(entry["source_only"]);self.assertEqual(entry["village_lgd_codes"],[])
+
     def test_unavailable_activity_list_does_not_erase_verified_monthly_data(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d);captures,fixtures=self.fixtures(root);roster=verified_roster(captures,fixtures)

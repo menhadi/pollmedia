@@ -4,34 +4,39 @@
     "district": "Bareilly",
     "gp": "53375",
     "name": "BEHTA JANU",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "130",
     "district": "Bareilly",
     "gp": "53416",
     "name": "NAGARIA SATAN",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "130",
     "district": "Bareilly",
     "gp": "268109",
     "name": "ABADANPUR",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "130",
     "district": "Bareilly",
     "gp": "53503",
     "name": "BAHORE NAGLA",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "130",
     "district": "Bareilly",
     "gp": "268537",
     "name": "YAKOOBPUR",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   }
 ]

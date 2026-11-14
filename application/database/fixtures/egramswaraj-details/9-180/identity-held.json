@@ -4,62 +4,71 @@
     "district": "Shahjahanpur",
     "gp": "86819",
     "name": "BANDA",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "86898",
     "name": "CHINAUR",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "268059",
     "name": "AHMADPUR NIWAZPUR",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "271048",
     "name": "JALALNAGAR CHUNGI VAHAR URF SAHAMATGANJ GAUTIYA",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "86989",
     "name": "LALPUR",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "87110",
     "name": "SAHABGANJ",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "242954",
     "name": "RAFIYABAD KALAN",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "87349",
     "name": "HAMJAPUR",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   },
   {
     "district_lgd": "180",
     "district": "Shahjahanpur",
     "gp": "87369",
     "name": "NIGOHI",
-    "reason": "Missing or ambiguous accepted village membership"
+    "reason": "Missing or ambiguous accepted village membership",
+    "publication_status": "published-with-source-note"
   }
 ]

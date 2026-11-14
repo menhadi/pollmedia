@@ -2592,7 +2592,8 @@
     "activity_membership": 66,
     "verified_activity_details": 66,
     "new_activities": 66,
-    "activity_plans": 1
+    "activity_plans": 1,
+    "publication_status": "published-with-source-note"
   },
   {
     "gp": "86969",
@@ -9933,7 +9934,8 @@
     "activity_membership": 61,
     "verified_activity_details": 61,
     "new_activities": 61,
-    "activity_plans": 1
+    "activity_plans": 1,
+    "publication_status": "published-with-source-note"
   },
   {
     "gp": "87300",
@@ -14684,7 +14686,8 @@
     "activity_membership": 71,
     "verified_activity_details": 71,
     "new_activities": 71,
-    "activity_plans": 1
+    "activity_plans": 1,
+    "publication_status": "published-with-source-note"
   },
   {
     "gp": "87573",

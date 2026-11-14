@@ -23,6 +23,7 @@ class UpDistrictFullDetailCoverageTest extends TestCase
             file_put_contents($baseline, json_encode(['schema' => 1, 'publication' => ['enabled' => true, 'evidence' => ['official' => true]], 'reports' => []]));
             config(['services.egramswaraj.reports_path' => $baseline, 'services.egramswaraj.shard_manifest_path' => null, 'services.egramswaraj.district_shards_index_path' => $directory.'/up-districts.json']);
             try {
+                $manifest['reports'] = array_values(array_filter($manifest['reports'], fn ($entry) => ! empty($entry['village_lgd_codes'])));
                 $this->assertCount($expected, $manifest['reports']);
                 $totals = ['activities' => 0, 'vouchers' => 0];
                 foreach ($manifest['reports'] as $entry) {
