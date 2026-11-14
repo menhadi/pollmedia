@@ -6,7 +6,7 @@ class MyPlacePanchayat
 {
     public function data(array $context, ?string $selection = null): array
     {
-        $reports = $this->reports($context);
+        $reports = $this->reports($context, $selection);
         $directory = [];
         $usesLocalDirectory = false;
         $source = $this->directorySource($context);
@@ -182,6 +182,7 @@ class MyPlacePanchayat
             return [];
         }
 
+        $package['reports'] = $this->detailedReports($package['reports'], $context, $code, $path);
         $reports = [];
         foreach ($package['reports'] as $report) {
             if (! is_array($report) || ($code !== null && (string) ($report['panchayat_code'] ?? '') !== $code) || ! $this->matches($report, $context)) {
@@ -194,6 +195,61 @@ class MyPlacePanchayat
         return collect($reports)->filter(fn ($group) => count($group) === 1)
             ->map(fn ($group) => $this->normalize($group[0]))->filter(fn ($report) => $report['sources'] !== [])
             ->sortBy('name')->values()->all();
+    }
+
+    private function detailedReports(array $base, array $context, ?string $code, string $basePath): array
+    {
+        $configured = config('services.egramswaraj.shard_manifest_path');
+        if ($configured === null && $basePath !== database_path('fixtures/egramswaraj-accounts.json')) {
+            return $base;
+        }
+        if ($code === null && empty($context['village'])) {
+            return $base;
+        }
+        $path = $configured ?? database_path('fixtures/egramswaraj-details/manifest.json');
+        if (! is_string($path) || ! is_file($path) || ! is_readable($path) || filesize($path) > 1024 * 1024) {
+            return $base;
+        }
+        $manifest = json_decode(file_get_contents($path), true);
+        if (! is_array($manifest) || ($manifest['schema'] ?? null) !== 1
+            || ($manifest['publication_enabled'] ?? false) !== true || ! is_array($manifest['reports'] ?? null)) {
+            return $base;
+        }
+        $replacements = [];
+        foreach ($manifest['reports'] as $entry) {
+            if (! is_array($entry) || ! is_string($entry['panchayat_code'] ?? null) || ! preg_match('/^[1-9][0-9]{4,6}$/D', $entry['panchayat_code'])
+                || ! is_string($entry['financial_year'] ?? null) || ! preg_match('/^20[0-9]{2}-20[0-9]{2}$/D', $entry['financial_year'])
+                || ! is_string($entry['state_lgd'] ?? null) || ! is_string($entry['district_lgd'] ?? null)
+                || ! is_array($entry['village_lgd_codes'] ?? null)
+                || ($code !== null && (string) $entry['panchayat_code'] !== $code)
+                || (string) ($entry['state_lgd'] ?? '') !== (string) $context['state']['code']
+                || (string) ($entry['district_lgd'] ?? '') !== (string) $context['district']['code']
+                || (! empty($context['village']) && ! in_array((string) $context['village']['code'], $entry['village_lgd_codes'] ?? [], true))) {
+                continue;
+            }
+            $expected = $entry['state_lgd'].'-'.$entry['district_lgd'].'-'.$entry['panchayat_code'].'-'.$entry['financial_year'].'.json';
+            $file = dirname($path).DIRECTORY_SEPARATOR.$expected;
+            if (($entry['file'] ?? null) !== $expected || ! is_string($entry['sha256'] ?? null) || ! preg_match('/^[a-f0-9]{64}$/D', $entry['sha256'])
+                || ! is_file($file) || ! is_readable($file) || filesize($file) > 2 * 1024 * 1024
+                || dirname(realpath($file)) !== realpath(dirname($path))
+                || ! hash_equals($entry['sha256'], hash_file('sha256', $file))) {
+                continue;
+            }
+            $data = json_decode(file_get_contents($file), true);
+            $report = is_array($data) && ($data['schema'] ?? null) === 1 ? ($data['report'] ?? null) : null;
+            if (! is_array($report) || ! $this->matches($report, $context)
+                || $report['panchayat_code'] !== (string) $entry['panchayat_code']
+                || $report['financial_year'] !== $entry['financial_year']
+                || ($report['mapping']['village_lgd_codes'] ?? []) !== ($entry['village_lgd_codes'] ?? [])) {
+                continue;
+            }
+            $key = $report['panchayat_code'].':'.$report['financial_year'];
+            $replacements[$key][] = $report;
+        }
+        $verified = collect($replacements)->filter(fn ($rows) => count($rows) === 1)->map(fn ($rows) => $rows[0])->all();
+
+        return array_merge(array_values(array_filter($base, fn ($row) => ! is_array($row)
+            || ! isset($verified[($row['panchayat_code'] ?? '').':'.($row['financial_year'] ?? '')]))), array_values($verified));
     }
 
     private function matches(array $report, array $context): bool
@@ -223,7 +279,7 @@ class MyPlacePanchayat
         $sources = [];
         foreach (($report['sources'] ?? []) as $kind => $source) {
             if (! in_array($kind, ['monthly', 'payments', 'receipts', 'contra', 'journal', 'accounting', 'activities', 'activity_details'], true)
-                && ! preg_match('/^vouchers_20\d{2}_(0[1-9]|1[0-2])$/D', $kind)) {
+                && ! preg_match('/^vouchers_20\d{2}_(0[1-9]|1[0-2])(?:_snapshot_[a-f0-9]{16})?$/D', $kind)) {
                 continue;
             }
             if (is_array($source) && $this->date($source['report_date'] ?? null) && $this->source($source['url'] ?? null)) {
@@ -410,7 +466,7 @@ class MyPlacePanchayat
 
             return $this->date($row['date'] ?? null) !== null && $row['date'] <= $source['report_date']
                 && $row['date'] >= $year.'-04-01' && $row['date'] <= ($year + 1).'-03-31'
-                && (! str_starts_with($key, 'vouchers_') || substr($row['date'], 0, 7) === str_replace('_', '-', substr($key, 9)))
+                && (! str_starts_with($key, 'vouchers_') || substr($row['date'], 0, 7) === str_replace('_', '-', substr($key, 9, 7)))
                 && is_string($row['voucher'] ?? null) && $row['voucher'] !== '';
         })->groupBy('voucher')->flatMap(function ($group) use ($report, $kind) {
             if ($group->count() === 1) {
