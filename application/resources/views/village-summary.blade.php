@@ -18,6 +18,7 @@
 <h1>{{ $name }}</h1><p class="pb-scope">{{ $tr('Village summary','गाँव का सारांश') }}</p>
 <p class="pb-view-switch"><a href="{{ $detail }}">{{ $tr('Open full village records','गाँव के विस्तृत रिकॉर्ड खोलें') }} →</a></p>
 @if($year && !$metrics && !$lgd)<p>{{ $tr('Village record from the','गाँव का रिकॉर्ड ·') }} {{ $year }} {{ $tr('Census','जनगणना') }}</p>@endif
+@include('local-board-place-link', ['boardArea' => $localBoardArea ?? (!empty($lgd['lgd']) ? 'village:'.$lgd['lgd'] : null)])
 <div class="pb-record-grid pb-anchor-pair">
 @if(!empty($archive) && $archive['observations']->isNotEmpty())<section class="pb-panel pb-record-card" data-village-panel="reported"><h2>{{ $tr('Reported figures','दर्ज आँकड़े') }}</h2><table><tbody>
 @foreach($archive['observations'] as $row)<tr><th scope="row">{{ $row->label }}<small>{{ $row->period }}</small></th><td>{{ $row->value }} {{ $row->unit }}</td></tr>@endforeach

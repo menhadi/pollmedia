@@ -56,10 +56,20 @@ class MyPlacePanchayatController extends Controller
         }
         $chosen = $request->query('village');
         abort_if($chosen !== null && (! is_string($chosen) || ! ctype_digit($chosen)), 404);
-        $member = $chosen === null ? $profile['villages'][0] : collect($profile['villages'])->firstWhere('village', $chosen);
-        abort_unless($member, 404);
-        if (PlaceTopics::selected('gp') === 'overview' && $request->query('view') !== 'details' && $chosen === null) {
+        $topic = PlaceTopics::selected('gp');
+        if ($chosen === null && in_array($topic, ['overview', 'villages'], true)) {
+            if ($request->query('view') === 'details' || $topic === 'villages') {
+                $query = array_filter(['lang' => $request->query('lang') === 'hi' ? 'hi' : null]);
+
+                return redirect()->to($canonical.($query ? '?'.http_build_query($query) : '').($topic === 'villages' ? '#member-villages' : '#panchayat-overview'), 301);
+            }
+
             return app(PanchayatSummaryPage::class)->show($profile);
+        }
+        $member = $chosen === null ? ($profile['villages'][0] ?? null) : collect($profile['villages'])->firstWhere('village', $chosen);
+        abort_unless($member, 404);
+        if ($chosen !== null && $topic === 'overview') {
+            return redirect()->to($canonical.'?'.http_build_query(array_filter(['topic' => 'village-data', 'village' => $chosen, 'lang' => $request->query('lang') === 'hi' ? 'hi' : null])), 301);
         }
         $village = null;
         if (PlaceTopics::selected('gp') === 'village-data') {

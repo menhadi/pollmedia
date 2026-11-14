@@ -17,27 +17,28 @@
 </div>
 <p class="eyebrow">{{ $t('Gram Panchayat','ग्राम पंचायत') }}</p>
 <h1 class="village-heading" translate="no">{{ $record['name'] }}</h1>
-<p><a href="{{ $profileUrl(['lang'=>$hi?'hi':null]) }}">← {{ $t('Panchayat summary','पंचायत का सारांश') }}</a></p>
+@if(\App\Services\PlaceTopics::selected('gp') === 'records')<p>{{ $t('Accounts & vouchers', 'लेखे और वाउचर') }}</p>@endif
+@include('local-board-place-link', ['boardArea' => 'gp:'.$record['state'].':'.$record['gp']])
+<p><a href="{{ $profileUrl(['lang'=>$hi?'hi':null]) }}">← {{ $t('Panchayat overview','पंचायत का सारांश') }}</a></p>
 <?php $topic = \App\Services\PlaceTopics::selected('gp'); ?>
 @include('place-topic-nav',['topicGroup'=>'gp'])
 <div data-topic-body>
 <?php if (in_array($topic, ['overview'], true)): ?>
 <section class="metrics" id="panchayat-overview" aria-label="{{ $t('Panchayat overview','पंचायत सारांश') }}">
-    <article><span>{{ $t('Panchayat LGD code','पंचायत LGD कोड') }}</span><strong>{{ $record['gp'] }}</strong></article>
     <article><span>{{ $t('Verified linked villages','सत्यापित गाँव') }}</span><strong>{{ number_format(count($villages)) }}</strong></article>
-    <article><span>{{ $t('Subdistricts','उपजिले') }}</span><strong>{{ collect($villages)->unique('subdistrict')->count() }}</strong></article>
+    <article><span>{{ $t('Subdistrict/Taluka/Tehsil','उपज़िला/तालुका/तहसील') }}</span><strong>{{ collect($villages)->unique('subdistrict')->count() }}</strong></article>
 </section>
 <?php endif; ?>
 <?php if (in_array($topic, ['villages'], true)): ?>
 <section class="panel" id="member-villages"><h2>{{ $t('Linked villages','संबंधित गाँव') }}</h2>
-<div class="table-wrap"><table><thead><tr><th>{{ $t('Village','गाँव') }}</th><th>LGD</th><th>{{ $t('Subdistrict','उपजिला') }}</th><th>{{ $t('District','जिला') }}</th></tr></thead><tbody>
+<div class="table-wrap"><table><thead><tr><th>{{ $t('Village','गाँव') }}</th><th>{{ $t('Subdistrict/Taluka/Tehsil','उपज़िला/तालुका/तहसील') }}</th><th>{{ $t('District','जिला') }}</th></tr></thead><tbody>
 @foreach($villages as $v)
 <?php $area=['scope'=>'lgd','state'=>$record['state'],'district'=>$v['district'],'lang'=>$hi?'hi':null]; ?>
 <tr><th scope="row"><a href="{{ $profileUrl(['village'=>$v['village'],'topic'=>'village-data','lang'=>$hi?'hi':null]) }}#linked-village-data">{{ $v['name'] }}</a></th>
-<td>{{ $v['village'] }}</td><td><a href="{{ route('gram-panchayats.area',$area+['subdistrict'=>$v['subdistrict']]) }}">{{ $v['subdistrict_name'] }}</a></td>
+<td><a href="{{ route('gram-panchayats.area',$area+['subdistrict'=>$v['subdistrict']]) }}">{{ $v['subdistrict_name'] }}</a></td>
 <td><a href="{{ route('gram-panchayats.area',$area) }}">{{ $v['district_name'] }}</a></td></tr>
 @endforeach
-</tbody></table></div><p><a href="https://lgdirectory.gov.in/downloadDirectory.do">Local Government Directory</a> · {{ (int)$record['state']===9?'16 September 2026':'5 November 2026' }}</p>
+</tbody></table></div><details class="gp-methodology"><summary>Sources</summary><p><a href="https://lgdirectory.gov.in/downloadDirectory.do">Local Government Directory</a> · {{ (int)$record['state']===9?'16 September 2026':'5 November 2026' }}</p></details>
 </section>
 <?php endif; ?>
 <?php if (in_array($topic, ['records'], true)): ?>
@@ -62,12 +63,11 @@
 <section id="linked-village-data" class="gp-member-section">
     <div class="panel gp-member-heading"><p class="eyebrow">{{ $t('Linked village data','संबंधित गाँव के आँकड़े') }}</p>
     <h2 translate="no">{{ $member['name'] }}</h2>
-    <p>{{ $t('The records below describe this village.','नीचे दिए गए रिकॉर्ड इस गाँव के हैं।') }} LGD {{ $member['village'] }}</p>
     @if(count($villages)>1)
     <form method="get" action="{{ $profileUrl(['lang'=>$hi?'hi':null]) }}#linked-village-data">
         @if($hi)<input type="hidden" name="lang" value="hi">@endif
         <input type="hidden" name="topic" value="village-data"><input type="hidden" name="vtopic" value="{{ \App\Services\PlaceTopics::selected('member') }}">
-        <label>{{ $t('Village','गाँव') }} <select name="village">@foreach($villages as $v)<option value="{{ $v['village'] }}" @selected($member['village']===$v['village'])>{{ $v['name'] }} · {{ $v['village'] }}</option>@endforeach</select></label>
+        <label>{{ $t('Village','गाँव') }} <select name="village">@foreach($villages as $v)<option value="{{ $v['village'] }}" @selected($member['village']===$v['village'])>{{ $v['name'] }}</option>@endforeach</select></label>
         <button>{{ $t('Show village records','गाँव के रिकॉर्ड देखें') }}</button>
     </form>
     @endif

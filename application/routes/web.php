@@ -355,5 +355,6 @@ Route::middleware([AdminTransport::class, RequireAdministrator::class])->group(f
 Route::get('/satellite-content', [MapStorageController::class, 'asset'])->name('map-storage.asset');
 
 require __DIR__.'/community.php';
+require __DIR__.'/local-board.php';
 
 Route::get('/api/language/hi/names', HindiPlaceNameController::class)->middleware('throttle:180,1')->name('language.hindi.names');

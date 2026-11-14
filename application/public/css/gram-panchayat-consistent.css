@@ -32,3 +32,15 @@ body:has(.public-header) .gp-page{color:#18344c!important}
 body:has(.public-header) .gp-page a{color:#075e50!important}
 body:has(.public-header) .gp-page button{background:#075e50!important;border-color:#075e50!important;color:#fff!important}
 body:has(.public-header) .gp-page .gp-code{color:#49626a!important}
+
+/* Detailed accounts use the same place controls and full-height tables. */
+body:has(.public-header) .gp-dashboard table thead th,body:has(.public-header) .gp-dashboard table thead .table-sort :is(span,b,strong){font-size:15px!important;color:var(--site-header_text,#fff)!important}
+body:has(.public-header) .gp-dashboard table thead th{background:var(--site-header_background,#183f52)!important;padding:12px!important;white-space:normal!important;word-break:normal!important;overflow-wrap:normal!important}
+body:has(.public-header) .gp-dashboard table tbody :is(th,td){font-size:16px!important;padding:10px 12px!important;word-break:normal!important;overflow-wrap:break-word!important}
+.gp-dashboard :is(.panchayat-table,.gp-activity-scroll,.table-wrap){max-height:none!important;overflow-y:visible!important;overflow-x:auto!important}
+.gp-dashboard :is(button,.button){background:var(--site-primary,#075e50);color:#fff;border-radius:0!important}
+.gp-dashboard [data-approved-page-hidden]{display:none!important}
+.gp-dashboard .approved-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:14px 0}
+.gp-dashboard .approved-pagination>span:first-child{margin-right:auto}
+.gp-dashboard .approved-pagination :is(button,select){padding:9px 13px;min-height:42px;border:1px solid var(--site-primary,#075e50);border-radius:0!important;font:600 15px/1.4 system-ui}
+.gp-dashboard .approved-pagination button:disabled{opacity:.5}

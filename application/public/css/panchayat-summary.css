@@ -42,3 +42,10 @@ body.pb-site:has(.public-header) main[data-gp-summary] table tbody tr:nth-child(
 [data-gp-summary] .gp-village-search input{flex:1}
 [data-gp-summary] .approved-pagination>span:first-child{flex-basis:100%}
 }
+
+/* Use the shared place palette and heading typography. */
+[data-gp-summary]{--gp-accent:var(--site-primary,#075e50)}
+[data-gp-summary][data-gp-section="overview"] .pb-panel :is(h2,h3){font-family:Georgia,"Times New Roman",serif!important;color:var(--site-text,#18344c)!important}
+[data-gp-summary] .gp-action{background:var(--site-primary,#075e50)!important;color:#fff!important;border-color:var(--site-primary,#075e50)!important}
+body.pb-site:has(.public-header) main[data-gp-summary] table thead th{background:var(--site-header_background,#183f52)!important;color:var(--site-header_text,#fff)!important}
+[data-gp-summary] .gp-view-tabs a[aria-current=page]{background:var(--site-primary,#075e50);border-color:var(--site-primary,#075e50)}

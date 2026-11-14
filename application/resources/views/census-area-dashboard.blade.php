@@ -39,6 +39,7 @@ $areaStateSlug=\App\Services\PlaceFactTables::stateSlug($place->name);
 $villageGps=(int)$year===2011 ? app(\App\Services\GramPanchayatDirectory::class)->forCensusVillages($areaRows->pluck('village_code')->all()) : [];
 @endphp
 <main class="area-dashboard {{ $isState?'pm-state-census':'' }}"><header class="area-intro district-title {{ $isState?'landing-intro':'' }}"><p class="eyebrow">Census {{ $year }} · {{ $isState?'State / Union territory':($isVillage?'Village / town':'Subdistrict') }}</p><h1>{{ $isState && in_array($topic,['overview','places'],true)?\Illuminate\Support\Str::title($title).' '.\App\Services\PublicLanguage::text('Districts'):$title }}</h1>
+@include('local-board-place-link', ['boardArea' => app(\App\Services\LocalBoardLocations::class)->censusKey($place, (int) $year)])
 @if($isState)<form class="landing-controls" action="{{ route('civic.index') }}"><input type="hidden" name="state" value="{{ $areaStateSlug }}"><label>Census year<select name="year" data-submit-choice>@foreach($years as $option)<option value="{{ $option }}" @selected((int)$year===(int)$option)>{{ $option }}</option>@endforeach</select></label><button>View year</button>@if($districtProfiles->isNotEmpty())
 <label>{{ app()->getLocale()==='hi'?'ज़िला':'District' }}<select data-go-url aria-label="{{ app()->getLocale()==='hi'?'ज़िला चुनें':'Choose a district' }}">
 <option value="">{{ app()->getLocale()==='hi'?'सभी ज़िले':'All districts' }}</option>

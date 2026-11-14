@@ -6,6 +6,7 @@
 
 <a class="public-primary-link" href="{{ route('my-place.index', ['lang' => app()->getLocale()]) }}">{{ app()->getLocale() === 'hi' ? 'मेरा क्षेत्र' : 'My place' }}</a>
 
+<a class="public-primary-link" href="{{ route('local-board.index') }}">{{ app()->getLocale() === 'hi' ? 'काम और सेवाएँ' : 'Jobs & services' }}</a>
 @foreach(['elections'=>'Elections','census'=>'Census'] as $topic=>$label)
 
 <details class="topic-menu"><summary>{{ \App\Services\PublicLanguage::text($label) }} <svg class="menu-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></summary><div class="state-megamenu"><div class="mega-national">

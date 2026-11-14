@@ -33,6 +33,7 @@
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb','स्थान क्रम') }}"><a href="{{ route('home') }}">{{ $tr('India','भारत') }}</a><span>›</span><a href="{{ route('civic.state',['state'=>$stateSlug,'lang'=>$hi?'hi':null]) }}">{{ $stateName }}</a><span>›</span><span>{{ $pilot?$tr('Pilibhit','पीलीभीत'):$data['name'] }}</span></nav>
 <h1>{{ $title }}</h1><p class="pb-scope">{{ $stateName }} · {{ $tr('District dashboard','ज़िला डैशबोर्ड') }}</p>
 <p class="pb-view-switch"><a href="{{ $path.'?'.http_build_query(array_filter(['view'=>'details','topic'=>$topic==='places'?'places':null,'lang'=>$hi?'hi':null])) }}">{{ $tr('Open full district dashboard','विस्तृत ज़िला डैशबोर्ड खोलें') }} →</a></p>
+@include('local-board-place-link', ['boardArea' => app(\App\Services\LocalBoardLocations::class)->districtKey($identity['state_name'], $identity['name'])])
 <nav class="pb-tabs" data-place-topics="district" data-active-topic="{{ $topic }}" aria-label="{{ $tr('District topics','ज़िले के विषय') }}">
 @foreach(['overview','water','people','places'] as $key)@continue(empty($visible[$key]))<a data-topic="{{ $key }}" href="{{ $url($key) }}" @if($key===$topic) aria-current="page" @endif>{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach
 <details><summary>{{ $tr('More','अन्य') }}</summary><div>@foreach($extra as $key)@continue(empty($visible[$key]))<a data-topic="{{ $key }}" href="{{ $key==='panchayats'?$gpUrl:$url($key) }}">{{ \App\Services\PlaceTopics::LABELS[$key][$hi?1:0] }}</a>@endforeach</div></details>

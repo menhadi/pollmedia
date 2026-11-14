@@ -35,15 +35,16 @@
 </head>
 <body class="election-ui pb-site">
 @include('public-header', ['summaryLayout' => true])
-<main class="pb-dashboard" data-gp-summary data-pilibhit-native>
+<main class="pb-dashboard" data-gp-summary data-gp-section="{{ $section }}" data-pilibhit-native>
 <nav class="pb-crumb" aria-label="{{ $tr('Breadcrumb', 'स्थान क्रम') }}">
 <a href="{{ route('home') }}">{{ $tr('India', 'भारत') }}</a>
 @foreach($related as $place)@if($place['kind'] !== 'subdistrict')<span>›</span><a href="{{ $place['url'] }}">{{ $place['name'] }}</a>@endif @endforeach
 </nav>
-<header class="gp-page-heading"><div><h1>{{ $record['name'] }}</h1><p class="pb-scope">{{ $tr('Gram Panchayat', 'ग्राम पंचायत') }}</p></div><a class="gp-action" href="{{ $detail('overview') }}">{{ $tr('Full records', 'पूरे रिकॉर्ड') }} →</a></header>
+<header class="gp-page-heading"><div><h1>{{ $record['name'] }}</h1><p class="pb-scope">{{ $tr('Gram Panchayat', 'ग्राम पंचायत') }}</p></div>@if($hasRecords)<a class="gp-action" href="{{ $detail('records') }}">{{ $tr('Accounts & vouchers', 'लेखे और वाउचर') }} →</a>@endif</header>
 <nav class="gp-view-tabs" aria-label="{{ $tr('Place views', 'स्थान के पृष्ठ') }}">
 <a href="{{ $profileUrl() }}" @if($section === 'overview') aria-current="page" @endif>{{ $tr('Overview & data', 'सारांश और आँकड़े') }}</a>
 <a href="{{ $profileUrl(['section' => 'issues']) }}" @if($section === 'issues') aria-current="page" @endif>{{ $tr('Community issues', 'स्थानीय समस्याएँ') }}</a>
+<a href="{{ route('local-board.index', ['area' => 'gp:'.$record['state'].':'.$record['gp'], 'lang' => $hi ? 'hi' : null]) }}">{{ $tr('Jobs & services', 'काम और सेवाएँ') }}</a>
 </nav>
 @if($section === 'issues')
 <section class="pb-panel pb-wide" id="community-issues">
@@ -72,7 +73,7 @@
 </section>
 <section class="pb-panel pb-record-card" id="local-services"><h2>{{ $tr('Local services', 'स्थानीय सेवाएँ') }}</h2>
 <ul class="gp-service-links">
-<li><a href="https://nrega.dord.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('MGNREGA · job cards, works & wages', 'मनरेगा · जॉब कार्ड, कार्य और मजदूरी') }} ↗</a></li>
+<li><a href="https://nrega.dord.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('MGNREGA · job-card, work & wage status', 'मनरेगा · जॉब कार्ड, कार्य और मजदूरी') }} ↗</a></li>
 <li><a href="https://www.ncs.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('Find work or hire · National Career Service', 'काम खोजें या भर्ती करें · राष्ट्रीय करियर सेवा') }} ↗</a></li>
 <li><a href="https://www.myscheme.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('Find government schemes · myScheme', 'सरकारी योजनाएँ खोजें · myScheme') }} ↗</a></li>
 <li><a href="{{ (int) $record['state'] === 9 ? 'https://jansunwai.up.nic.in/' : 'https://pgportal.gov.in/' }}" target="_blank" rel="noopener noreferrer">{{ $tr('Official complaint & tracking', 'सरकारी शिकायत और स्थिति') }} ↗</a></li>
@@ -115,6 +116,7 @@
 <p>{{ $tr('Village membership comes from the Local Government Directory. Population and households are historical village Census figures, not a current Panchayat population estimate. Unmatched figures remain blank.', 'गाँवों की सदस्यता स्थानीय शासन निर्देशिका से है। जनसंख्या और परिवार गाँव की ऐतिहासिक जनगणना के आँकड़े हैं, वर्तमान पंचायत की जनसंख्या का अनुमान नहीं। बेमेल आँकड़े खाली रहते हैं।') }}</p>
 <p>{{ $tr('Panchayat payments, allocations and captured vouchers are separate source records. They are not added together or presented as a bank balance. Activity approval does not establish completion. Detailed records retain costs, units, dates and evidence.', 'पंचायत भुगतान, आवंटन और उपलब्ध वाउचर अलग स्रोत रिकॉर्ड हैं। इन्हें जोड़कर बैंक शेष नहीं दिखाया जाता। कार्य की स्वीकृति का अर्थ पूरा होना नहीं है। विस्तृत रिकॉर्ड में लागत, इकाई, तारीख और प्रमाण सुरक्षित हैं।') }}</p>
 <p>{{ $tr('Service links open official portals; Pollmedia does not submit applications or government complaints through these links. Community issues are reports from the linked villages, not confirmation of government action.', 'सेवा लिंक आधिकारिक पोर्टल खोलते हैं; Pollmedia इनके माध्यम से आवेदन या सरकारी शिकायत जमा नहीं करता। स्थानीय समस्याएँ संबंधित गाँवों की रिपोर्ट हैं, सरकारी कार्रवाई की पुष्टि नहीं।') }}</p>
+<p>{{ $tr('Financial coverage varies by Panchayat and year. A national directory entry does not imply that payment or activity records are available. MGNREGA links open the official portal; job-card and wage records have not been imported into Pollmedia.', 'वित्तीय जानकारी पंचायत और वर्ष के अनुसार अलग है। राष्ट्रीय निर्देशिका में नाम होने का अर्थ भुगतान या कार्य के रिकॉर्ड उपलब्ध होना नहीं है। मनरेगा लिंक आधिकारिक पोर्टल खोलते हैं; जॉब कार्ड और मजदूरी के रिकॉर्ड अभी Pollmedia में आयात नहीं किए गए हैं।') }}</p>
 <a href="https://lgdirectory.gov.in/downloadDirectory.do" target="_blank" rel="noopener noreferrer">{{ $tr('Local Government Directory', 'स्थानीय शासन निर्देशिका') }} ↗</a>
 </details>
 @endif

@@ -30,7 +30,7 @@ final class VillageSummaryPage
         }
         $metrics = ['population' => $values['TOT_P'] ?? $values['T_P'] ?? null, 'households' => $values['No_HH'] ?? $values['HOUSEHOLDS'] ?? $values['T_HH'] ?? null, 'literacy' => CensusAreaPresentation::rates($values)['literacy'], 'children' => $values['P_06'] ?? null, 'workers' => $values['TOT_WORK_P'] ?? null];
 
-        return $this->page($row->name, $identity['name'] ?? $labels['District _Name'] ?? null, $identity['state_name'] ?? $labels['State_Name'] ?? null, $year, $metrics, $lgd, $identity);
+        return $this->page($row->name, $identity['name'] ?? $labels['District _Name'] ?? null, $identity['state_name'] ?? $labels['State_Name'] ?? null, $year, $metrics, $lgd, $identity)->with('localBoardArea', $lgd ? 'village:'.$lgd['lgd'] : app(LocalBoardLocations::class)->censusKey($row, $year));
     }
 
     public function linkedVillage(string $code, string $censusState): ?array

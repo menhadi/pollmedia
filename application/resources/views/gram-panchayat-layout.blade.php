@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
     <title>{{ $title }} | Pollmedia</title>
+    @if(isset($record))<link rel="canonical" href="{{ app(\App\Services\GramPanchayatUrls::class)->link($record['state'], $record['name'], $record['gp']) }}">@endif
     <link rel="stylesheet" href="{{ asset('css/electoral-village-map.css') }}">
     <link rel="stylesheet" href="{{ asset('css/election-dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/census-area-dashboard.css') }}?v={{ substr(hash_file('sha256',public_path('css/census-area-dashboard.css')),0,12) }}">
@@ -15,6 +16,7 @@
     @endif
     <link rel="stylesheet" href="{{ asset('css/gram-panchayat-directory.css') }}?v={{ substr(hash_file('sha256',public_path('css/gram-panchayat-directory.css')),0,12) }}">
     <link rel="stylesheet" href="{{ asset('css/gram-panchayat-consistent.css') }}?v={{ substr(hash_file('sha256',public_path('css/gram-panchayat-consistent.css')),0,12) }}">
+@if(isset($record))<script type="module" src="{{ asset('js/panchayat-summary.js') }}?v={{ substr(hash_file('sha256', public_path('js/panchayat-summary.js')), 0, 12) }}"></script>@endif
 </head>
 <body class="place-layout election-ui census-area-ui">
 @include('public-header')

@@ -4,6 +4,7 @@
 @section('content')
 @include('community-style')
 <section class="contributor-dashboard">
+<p><a class="data-button" href="{{ route('local-board.mine') }}">My jobs & services</a></p>
 <div class="data-heading"><div><p class="data-kicker">Your Pollmedia account</p><h1>My contributions</h1><p class="data-note">{{ auth()->user()->email }}</p></div><form action="{{ route('community.logout') }}" method="post">@csrf<button class="data-button">Sign out</button></form></div>
 @if(session('status'))<p role="status" class="notice">{{ session('status') }}</p>@endif
 @if($errors->any())<div role="alert" class="data-errors">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>@endif
