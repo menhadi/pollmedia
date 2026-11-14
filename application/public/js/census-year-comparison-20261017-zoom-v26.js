@@ -36,11 +36,23 @@ export function yearPlayback(year, metric) {
 
  }
 
+ // Keep one pair of transparent year controls inside every comparison map.
+ parent.append(heading,footer);
+ heading.replaceChildren(buttons['2001'],buttons['2011']);
+ heading.style.cssText='position:absolute;inset:12px 64px auto 12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;z-index:7;background:transparent;border:0;padding:0;min-height:0;pointer-events:none';
+ for(const value of ['2001','2011']){
+  buttons[value].replaceChildren(labels[value]);
+  buttons[value].style.cssText='display:block;pointer-events:auto;background:transparent;color:#185c6c;border:0;border-bottom:2px solid transparent;border-radius:0;padding:7px 9px;max-width:46%;font:700 14px system-ui;cursor:pointer;box-shadow:none;text-shadow:0 1px 3px #fff,0 0 5px #fff';
+  labels[value].style.cssText='display:block;background:transparent;max-width:none;font:inherit;color:inherit;line-height:1.35;pointer-events:none';
+ }
+ controls.remove();
+ footer.style.cssText='position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:8;display:grid;justify-items:center;width:max-content;max-width:calc(100% - 24px);padding:0;border:0;background:transparent;box-shadow:none;pointer-events:none';
+ notice.style.cssText='font:600 12px/1.4 system-ui;color:#183444;text-align:center;background:transparent;text-shadow:0 1px 3px #fff,0 0 5px #fff';
  let selection=null;let left=null,right=null,position=50,automatic=false,playing=!home,busy=false,version=0,frame=null,timer=null,movement=0;
  const supported=()=>['literacy','population','households'].includes(metric.value)||/^(vd_|pca_|c11_)/.test(metric.value);
  const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
  const loading=()=> (svg&&surface.dataset.comparisonReady!=='true')||/loading/i.test((document.getElementById('map-status')||document.getElementById('polygon-status'))?.textContent||'')||/loading/i.test(document.getElementById('metric-legend')?.textContent||'');
- const showPosition=value=>{position=value;slider.value=String(Math.round(value));const x=extent.min+(extent.max-extent.min)*value/100;if(left)left.style.clipPath=`inset(0 ${value===0?100:value===100?0:100-x}% 0 0)`;rail.style.left=`${x}%`;handle.setAttribute('aria-valuetext',`${Math.round(value)}% Census 2001`);for(const value of ['2001','2011']){const active=position===(value==='2001'?100:0);buttons[value].setAttribute('aria-pressed',String(active));buttons[value].style.background=active?'#185c6c':'transparent';buttons[value].style.color=active?'white':'#334155';};};
+ const showPosition=value=>{position=value;slider.value=String(Math.round(value));const x=extent.min+(extent.max-extent.min)*value/100;if(left)left.style.clipPath=`inset(0 ${value===0?100:value===100?0:100-x}% 0 0)`;rail.style.left=`${x}%`;handle.setAttribute('aria-valuetext',`${Math.round(value)}% Census 2001`);for(const value of ['2001','2011']){const active=position===(value==='2001'?100:0);buttons[value].setAttribute('aria-pressed',String(active));buttons[value].style.background='transparent';buttons[value].style.color=active?'#185c6c':'#183444';buttons[value].style.borderBottomColor=active?'#185c6c':'transparent';};};
  const stop=()=>{playing=false;clearTimeout(timer);cancelAnimationFrame(frame);movement++;};
  const clear=(preservePlayback=false)=>{const resume=playing;heading.style.display=supported()?"flex":"none";footer.style.display=supported()?"grid":"none";stop();if(preservePlayback)playing=resume;version++;left?.remove();right?.remove();left=right=null;plane.hidden=true;slider.hidden=true;notice.hidden=true;rail.hidden=!home;for(const label of Object.values(labels))label.hidden=true;if(home){heading.style.display='none';showPosition((delhiPercent-extent.min)/(extent.max-extent.min)*100);}};
  const capture=()=>svg?Promise.resolve(surface.cloneNode(true)):new Promise(resolve=>{let done=false;const finish=value=>{if(!done){done=true;resolve(value);}};window.dispatchEvent(new CustomEvent('census-map-capture',{detail:{resolve:finish}}));setTimeout(()=>finish(null),20000);});
