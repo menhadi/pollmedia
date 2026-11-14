@@ -1,0 +1,1881 @@
+{
+  "schema": 1,
+  "publication": {
+    "enabled": true,
+    "basis": "User-authorized public numerical facts from inspected official reports; reviewed exact hierarchy correspondence",
+    "government_endorsement": false
+  },
+  "job_card_lookup": "https://mnregaweb4.nic.in/netnrega/workers/wrkinfo.aspx?lang=en",
+  "scope": {
+    "state": "9",
+    "district": "173",
+    "employment_block": "3126001",
+    "name": "Amariya, Pilibhit",
+    "financial_rows": 105,
+    "published_panchayats": 29,
+    "unresolved_names": [
+      "AASPUR",
+      "ADOLI",
+      "AMARIYA",
+      "AMKHEDA",
+      "AMKIDIYA",
+      "ANDRAYAN",
+      "ARAJI BORAKH",
+      "BADE PURA",
+      "BAGVA",
+      "BARHA BIKRAM",
+      "BHAGA DANDI",
+      "BHANGA MO GANJ",
+      "BHARUA",
+      "BHAUNEE",
+      "BHIKAREE PUR",
+      "BHOODA",
+      "CHAHLAURA",
+      "CHATHIA NYAZ AHMAD",
+      "CHATHIYA BHAISAHA",
+      "DEENARPUR",
+      "DHAKIA BADLU",
+      "DHUNDREE",
+      "DIYORANYA",
+      "FAREDIA",
+      "GAYA BOJH",
+      "GIRDHOR",
+      "GULAR BHOJ",
+      "GULARIA DULHAN",
+      "HARRAY PUR",
+      "JANGROLI ASHA",
+      "JATPURA",
+      "JITHANIYA",
+      "KALIYAN PUR CHAKRATIRTH",
+      "KENCHU TANDA",
+      "KHAMARIYA DALEL GANJ",
+      "KURRI",
+      "MADHOPUR",
+      "MAHACHANDI",
+      "MAJHALIYA",
+      "MUDALIYA GOUSU",
+      "MUDSENA BUX",
+      "NABADA SHYAMPUR",
+      "NAGRIYA COLONY",
+      "NAVADA DAS",
+      "NAVADA KANJA",
+      "NIBAR AINTHPUR",
+      "NISABA NISAIYA",
+      "NISARA",
+      "PANSOLI",
+      "PAREVA BAISYA",
+      "PINJARA BAMANPURI",
+      "RAFIYAPUR",
+      "ROHATANIYA",
+      "SADDER PUR",
+      "SAKHOLA",
+      "SARADAR NAGAR",
+      "SARAINEE TIRKUNIYA",
+      "SARENDA PATTI",
+      "SEHGAWAN NAGRIYA",
+      "SEMAR KHEDA",
+      "SIMARIYA GAUSU",
+      "SOORAJPURA MU",
+      "SUKATIYA",
+      "SUSVAR",
+      "TANDA VIJAISEE",
+      "TODAR PUR MU.",
+      "TODARPUR AH.",
+      "TRIKUNIYA NASEER",
+      "TUMARIA",
+      "TURAKPUR BADVAR",
+      "UADAY PUR",
+      "UALKARIYA DHAKIYA",
+      "UDRA",
+      "VARADUNVA",
+      "VARAT BOJH",
+      "VISAINA"
+    ]
+  },
+  "reports": [
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81725",
+      "name": "Bagnera Bagneri",
+      "official_name": "BAGNERA- BAGNERI",
+      "employment_gp": "3126001124",
+      "block": "Amariya",
+      "villages": [
+        "131191"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "3.04",
+        "skilled_wage_expenditure": "0.03",
+        "material_expenditure": "0",
+        "total_expenditure": "3.15",
+        "unskilled_wage_due": "0.09",
+        "skilled_wage_due": "0.04",
+        "material_due": "0",
+        "total_due": "0.13"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": [
+        {
+          "code": "3126001124/DP/958486255824219055",
+          "name": "Sarvjanik sthal par vriksharopan karya",
+          "musters": [
+            {
+              "number": "2218",
+              "reported_payment_date": "2026-09-19",
+              "amount_paise": 420000
+            },
+            {
+              "number": "2365",
+              "reported_payment_date": "2026-09-28",
+              "amount_paise": 870000
+            },
+            {
+              "number": "2576",
+              "reported_payment_date": "2026-10-13",
+              "amount_paise": 270000
+            }
+          ],
+          "amount_paise": 1560000
+        },
+        {
+          "code": "3126001124/IC/958486255823689138",
+          "name": "Bihari Lal ke khet se bhagvandas ke khet tak kachcha nala khudan karya",
+          "musters": [
+            {
+              "number": "2616",
+              "reported_payment_date": "2026-10-14",
+              "amount_paise": 2460000
+            },
+            {
+              "number": "2617",
+              "reported_payment_date": "2026-10-14",
+              "amount_paise": 300000
+            },
+            {
+              "number": "3441",
+              "reported_payment_date": "2026-10-14",
+              "amount_paise": 840000
+            }
+          ],
+          "amount_paise": 3600000
+        },
+        {
+          "code": "3126001124/IF/IAY/5412810",
+          "name": "Individual housing work (PMAY-G)",
+          "musters": [
+            {
+              "number": "2745",
+              "reported_payment_date": "2026-10-22",
+              "amount_paise": 450000
+            }
+          ],
+          "amount_paise": 450000
+        },
+        {
+          "code": "3126001124/IF/IAY/5413919",
+          "name": "Individual housing work (PMAY-G)",
+          "musters": [
+            {
+              "number": "2746",
+              "reported_payment_date": "2026-10-22",
+              "amount_paise": 450000
+            }
+          ],
+          "amount_paise": 450000
+        },
+        {
+          "code": "3126001124/RC/VB/YD/958486255824289628",
+          "name": "SHIV DAYAL KE KHET SE BHAGWAN DAS KE KHET TAK CHAKMARG PAR MITTY KARYA BAGNERA BAGNERI",
+          "musters": [
+            {
+              "number": "5077",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 1560000
+            },
+            {
+              "number": "5078",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 1530000
+            },
+            {
+              "number": "5079",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 1950000
+            },
+            {
+              "number": "5080",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 1440000
+            },
+            {
+              "number": "5081",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 1560000
+            },
+            {
+              "number": "5082",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 1050000
+            },
+            {
+              "number": "5103",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 420000
+            },
+            {
+              "number": "5145",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 180000
+            }
+          ],
+          "amount_paise": 9690000
+        },
+        {
+          "code": "3126001124/RC/VB/YD/958486255824289701",
+          "name": "VEERBAL KE KHET SE NALE TAK CHAKMARG PAR MITTY KARYA BAGNERA BAGNERI",
+          "musters": [
+            {
+              "number": "3656",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 1260000
+            },
+            {
+              "number": "3657",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 690000
+            },
+            {
+              "number": "3658",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 510000
+            },
+            {
+              "number": "3659",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 1050000
+            },
+            {
+              "number": "3660",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 840000
+            },
+            {
+              "number": "3661",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 720000
+            },
+            {
+              "number": "3662",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 720000
+            },
+            {
+              "number": "3663",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 810000
+            },
+            {
+              "number": "3664",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 540000
+            },
+            {
+              "number": "3665",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 180000
+            },
+            {
+              "number": "4169",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 780000
+            },
+            {
+              "number": "4170",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1170000
+            },
+            {
+              "number": "4171",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 2220000
+            },
+            {
+              "number": "4172",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 660000
+            },
+            {
+              "number": "4173",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1230000
+            },
+            {
+              "number": "4174",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1290000
+            }
+          ],
+          "amount_paise": 14670000
+        }
+      ],
+      "work_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/MW_3126001124_GP_2627_eng.html",
+      "work_capture_sha256": "779cf9220c599d1863480a72a79162a0a88501038d9ed305504dd2aefdcfc260"
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81728",
+      "name": "Balliya",
+      "official_name": "BALLIYA",
+      "employment_gp": "3126001013",
+      "block": "Amariya",
+      "villages": [
+        "131193",
+        "131194",
+        "131202",
+        "131203",
+        "131208"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "17.53",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "17.77",
+        "unskilled_wage_due": "0.06",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.06"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": [
+        {
+          "code": "3126001013/DP/VB/958486255824328483",
+          "name": "BALLIYA ME AMRAT SAROVAR PAR VRAKSHAROPAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "1855",
+              "reported_payment_date": "2026-09-19",
+              "amount_paise": 2070000
+            },
+            {
+              "number": "2078",
+              "reported_payment_date": "2026-09-19",
+              "amount_paise": 330000
+            },
+            {
+              "number": "2401",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 330000
+            },
+            {
+              "number": "2417",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 330000
+            }
+          ],
+          "amount_paise": 3060000
+        },
+        {
+          "code": "3126001013/DP/VB/958486255824328493",
+          "name": "BILHERAMAFI ME GRAM SAMAJ KI BHUMI PAR VRAKSHAROPAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "1864",
+              "reported_payment_date": "2026-09-17",
+              "amount_paise": 3780000
+            }
+          ],
+          "amount_paise": 3780000
+        },
+        {
+          "code": "3126001013/DP/VB/958486255824328497",
+          "name": "BALLIYA ME KHAJULIYA BALE TALAB PAR VRAKSHAROPAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "1856",
+              "reported_payment_date": "2026-09-17",
+              "amount_paise": 2100000
+            }
+          ],
+          "amount_paise": 2100000
+        },
+        {
+          "code": "3126001013/FP/YD/958486255823619257",
+          "name": "BILHERA MAFI ME PULIYA SE HARVANT SINGH KE KHET TAK KACHCHA NALA KHUDAN KARY BALLIYA",
+          "musters": [
+            {
+              "number": "2493",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3720000
+            },
+            {
+              "number": "2494",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 1770000
+            }
+          ],
+          "amount_paise": 5490000
+        },
+        {
+          "code": "3126001013/IC/VB/YD/958486255823763790",
+          "name": "BALLIYA ME NAHAR SE BAGH TAK KACCHA NALA SAFAI KHUDAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "3596",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1620000
+            },
+            {
+              "number": "3597",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1740000
+            },
+            {
+              "number": "3598",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1650000
+            },
+            {
+              "number": "3599",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1530000
+            },
+            {
+              "number": "3600",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1650000
+            },
+            {
+              "number": "3601",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 960000
+            },
+            {
+              "number": "3678",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1170000
+            },
+            {
+              "number": "3679",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1320000
+            },
+            {
+              "number": "4528",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 240000
+            },
+            {
+              "number": "4529",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 270000
+            },
+            {
+              "number": "4530",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 270000
+            },
+            {
+              "number": "4531",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 210000
+            },
+            {
+              "number": "4532",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 210000
+            },
+            {
+              "number": "4533",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 270000
+            },
+            {
+              "number": "4534",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 150000
+            }
+          ],
+          "amount_paise": 13260000
+        },
+        {
+          "code": "3126001013/IC/VB/YD/958486255823763792",
+          "name": "BALLIYA ME NAHAR SE MEJOR SINGH KE KHET TAK KACCHA NALA SAFAI KHUDAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "3139",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 2310000
+            },
+            {
+              "number": "3140",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1950000
+            },
+            {
+              "number": "3141",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 2280000
+            },
+            {
+              "number": "3142",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1980000
+            },
+            {
+              "number": "3143",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1050000
+            },
+            {
+              "number": "3144",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1470000
+            },
+            {
+              "number": "3145",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1860000
+            },
+            {
+              "number": "3146",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 2010000
+            },
+            {
+              "number": "3147",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 960000
+            },
+            {
+              "number": "3296",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 2190000
+            },
+            {
+              "number": "3297",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 540000
+            },
+            {
+              "number": "4580",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 900000
+            },
+            {
+              "number": "4581",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1050000
+            },
+            {
+              "number": "4582",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1320000
+            },
+            {
+              "number": "4583",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1170000
+            },
+            {
+              "number": "4584",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1200000
+            },
+            {
+              "number": "4585",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 180000
+            },
+            {
+              "number": "4586",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 1200000
+            },
+            {
+              "number": "4587",
+              "reported_payment_date": "2026-10-29",
+              "amount_paise": 870000
+            }
+          ],
+          "amount_paise": 26490000
+        },
+        {
+          "code": "3126001013/IC/VB/YD/958486255823763793",
+          "name": "BILAHRA MAFI ME NAHAR SE JAGEER SINGH KE KHET TAK KACCHA NALA SAFAI KHUDAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "2684",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 2880000
+            },
+            {
+              "number": "2685",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 1170000
+            }
+          ],
+          "amount_paise": 4050000
+        },
+        {
+          "code": "3126001013/IC/VB/YD/958486255823763794",
+          "name": "KESAR PUR ME NAHAR SE HARBHAJAN SINGH KE KHET TAK KACCHA NALA SAFAI KHUDAN KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "2509",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3180000
+            },
+            {
+              "number": "2510",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3270000
+            },
+            {
+              "number": "2511",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3480000
+            },
+            {
+              "number": "2512",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3390000
+            },
+            {
+              "number": "2513",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3240000
+            },
+            {
+              "number": "2514",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 3150000
+            },
+            {
+              "number": "3181",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 750000
+            },
+            {
+              "number": "3182",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 780000
+            },
+            {
+              "number": "3183",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 630000
+            },
+            {
+              "number": "3184",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 600000
+            },
+            {
+              "number": "3185",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 750000
+            },
+            {
+              "number": "3186",
+              "reported_payment_date": "2026-10-17",
+              "amount_paise": 690000
+            }
+          ],
+          "amount_paise": 23910000
+        },
+        {
+          "code": "3126001013/IC/YD/958486255823752871",
+          "name": "BALPUR MAFI ME DARSHAN SINGH KE KHET SE RAKSHPAL SINGH KE KHET TAK KACCHA NALA KHUDAN BALLIYA",
+          "musters": [
+            {
+              "number": "1589",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 4200000
+            },
+            {
+              "number": "1590",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3840000
+            },
+            {
+              "number": "1591",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3990000
+            },
+            {
+              "number": "1592",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3210000
+            },
+            {
+              "number": "1593",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 4350000
+            },
+            {
+              "number": "1594",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 4050000
+            },
+            {
+              "number": "1595",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3600000
+            },
+            {
+              "number": "1616",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3510000
+            },
+            {
+              "number": "1617",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3720000
+            },
+            {
+              "number": "1618",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 2550000
+            },
+            {
+              "number": "1619",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3210000
+            },
+            {
+              "number": "1620",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3660000
+            },
+            {
+              "number": "1621",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 3690000
+            },
+            {
+              "number": "1622",
+              "reported_payment_date": "2026-09-18",
+              "amount_paise": 2040000
+            }
+          ],
+          "amount_paise": 49620000
+        },
+        {
+          "code": "3126001013/RC/VB/YD/958486255824286452",
+          "name": "BALLIYA ME NAHER SE BOOTA SINGH KE KHET TAK CHAKMARG PAR MITTY KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "4714",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 3000000
+            },
+            {
+              "number": "4715",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 4020000
+            },
+            {
+              "number": "4716",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 3630000
+            },
+            {
+              "number": "4717",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 3990000
+            },
+            {
+              "number": "4718",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 4170000
+            },
+            {
+              "number": "4719",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 3900000
+            },
+            {
+              "number": "4720",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 3840000
+            },
+            {
+              "number": "4721",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 3270000
+            },
+            {
+              "number": "4722",
+              "reported_payment_date": "2026-11-03",
+              "amount_paise": 300000
+            }
+          ],
+          "amount_paise": 30120000
+        },
+        {
+          "code": "3126001013/RC/VB/YD/958486255824286458",
+          "name": "BALLIYA ME RAJENDRA SINGH KE KHET SE TARSEM SINGH KE KHET TAK CHAKMARG PAR MITTY KARYA BALLIYA",
+          "musters": [
+            {
+              "number": "2680",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 2850000
+            },
+            {
+              "number": "2681",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 2610000
+            },
+            {
+              "number": "2682",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 3540000
+            },
+            {
+              "number": "2683",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1050000
+            },
+            {
+              "number": "3735",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1440000
+            },
+            {
+              "number": "3736",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 1500000
+            },
+            {
+              "number": "3737",
+              "reported_payment_date": "2026-10-26",
+              "amount_paise": 450000
+            }
+          ],
+          "amount_paise": 13440000
+        }
+      ],
+      "work_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/MW_3126001013_GP_2627_eng.html",
+      "work_capture_sha256": "ceb7f0a3a7ac96c34d64c51da505b9f71a395be0e4a72b057bc6be25c6b21bf5"
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81729",
+      "name": "Banskhera",
+      "official_name": "BANSKHERA",
+      "employment_gp": "3126001014",
+      "block": "Amariya",
+      "villages": [
+        "131205"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0",
+        "unskilled_wage_due": "0",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "266712",
+      "name": "Basantpur",
+      "official_name": "BASANT PUR",
+      "employment_gp": "3126001139",
+      "block": "Amariya",
+      "villages": [
+        "131372"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.02",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.02",
+        "unskilled_wage_due": "0",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81737",
+      "name": "Bharatpur",
+      "official_name": "BHARAT PUR",
+      "employment_gp": "3126001019",
+      "block": "Amariya",
+      "villages": [
+        "131265",
+        "131266",
+        "131267"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.16",
+        "unskilled_wage_due": "0.72",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.72"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81738",
+      "name": "Bhauna",
+      "official_name": "BHAUNA",
+      "employment_gp": "3126001021",
+      "block": "Amariya",
+      "villages": [
+        "131361",
+        "131362"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.43",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.43",
+        "unskilled_wage_due": "0.08",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.08"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81741",
+      "name": "Bhindara",
+      "official_name": "BHINDARA",
+      "employment_gp": "3126001027",
+      "block": "Amariya",
+      "villages": [
+        "131247",
+        "131248",
+        "131250"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.46",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.62",
+        "unskilled_wage_due": "0.82",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.82"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81743",
+      "name": "Bilaspur",
+      "official_name": "BILASPUR",
+      "employment_gp": "3126001130",
+      "block": "Amariya",
+      "villages": [
+        "131319",
+        "131320"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.76",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.92",
+        "unskilled_wage_due": "0.04",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.04"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81733",
+      "name": "Birhani",
+      "official_name": "BIRHANI",
+      "employment_gp": "3126001030",
+      "block": "Amariya",
+      "villages": [
+        "131198",
+        "131218",
+        "131219",
+        "131220",
+        "131221"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.92",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "2.15",
+        "unskilled_wage_due": "1.17",
+        "skilled_wage_due": "0.08",
+        "material_due": "0",
+        "total_due": "1.25"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81745",
+      "name": "Chaka",
+      "official_name": "CHAKA",
+      "employment_gp": "3126001032",
+      "block": "Amariya",
+      "villages": [
+        "131347"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.3",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.3",
+        "unskilled_wage_due": "1.44",
+        "skilled_wage_due": "0.05",
+        "material_due": "0",
+        "total_due": "1.49"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "266687",
+      "name": "Dandiya",
+      "official_name": "DANDIYA",
+      "employment_gp": "3126001135",
+      "block": "Amariya",
+      "villages": [
+        "131288"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "2.5",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "2.5",
+        "unskilled_wage_due": "2.12",
+        "skilled_wage_due": "0.04",
+        "material_due": "0.04",
+        "total_due": "2.21"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81747",
+      "name": "Dang",
+      "official_name": "DANG",
+      "employment_gp": "3126001039",
+      "block": "Amariya",
+      "villages": [
+        "131377"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.4",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.4",
+        "unskilled_wage_due": "1.32",
+        "skilled_wage_due": "0.04",
+        "material_due": "0",
+        "total_due": "1.36"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81749",
+      "name": "Dhankuna",
+      "official_name": "DHANKUNA",
+      "employment_gp": "3126001040",
+      "block": "Amariya",
+      "villages": [
+        "131297"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.31",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.31",
+        "unskilled_wage_due": "2.08",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "2.08"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81750",
+      "name": "Dhankuni",
+      "official_name": "DHANKUNI",
+      "employment_gp": "3126001041",
+      "block": "Amariya",
+      "villages": [
+        "131299",
+        "131300"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.03",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.03",
+        "unskilled_wage_due": "1.5",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "1.5"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "266677",
+      "name": "Dheram",
+      "official_name": "DHERAM",
+      "employment_gp": "3126001133",
+      "block": "Amariya",
+      "villages": [
+        "131336"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.01",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.01",
+        "unskilled_wage_due": "0.3",
+        "skilled_wage_due": "0.05",
+        "material_due": "0",
+        "total_due": "0.35"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "239117",
+      "name": "Fulaieya",
+      "official_name": "FULAIEYA",
+      "employment_gp": "3126001046",
+      "block": "Amariya",
+      "villages": [
+        "131192"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0",
+        "unskilled_wage_due": "0",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81756",
+      "name": "Hardaspur",
+      "official_name": "HARDAS PUR",
+      "employment_gp": "3126001050",
+      "block": "Amariya",
+      "villages": [
+        "131216",
+        "131217"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "2.47",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "2.71",
+        "unskilled_wage_due": "2.31",
+        "skilled_wage_due": "0",
+        "material_due": "0.04",
+        "total_due": "2.36"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81757",
+      "name": "Harharpur Hasan",
+      "official_name": "HARHARPUR HASAN",
+      "employment_gp": "3126001051",
+      "block": "Amariya",
+      "villages": [
+        "131344"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.14",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.29",
+        "unskilled_wage_due": "1.12",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "1.12"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "266689",
+      "name": "Hasan Nagar",
+      "official_name": "HASAN NAGAR",
+      "employment_gp": "3126001136",
+      "block": "Amariya",
+      "villages": [
+        "131284"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "5.01",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "5.01",
+        "unskilled_wage_due": "3.98",
+        "skilled_wage_due": "0",
+        "material_due": "0.04",
+        "total_due": "4.03"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81758",
+      "name": "Jagat",
+      "official_name": "JAGAT",
+      "employment_gp": "3126001053",
+      "block": "Amariya",
+      "villages": [
+        "131322",
+        "131323",
+        "131324",
+        "131325"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.16",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.24",
+        "unskilled_wage_due": "1.2",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "1.2"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81763",
+      "name": "Kaimor",
+      "official_name": "KAIMOR",
+      "employment_gp": "3126001057",
+      "block": "Amariya",
+      "villages": [
+        "131231"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.66",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.82",
+        "unskilled_wage_due": "1.27",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "1.27"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81765",
+      "name": "Kargaina Kargaini",
+      "official_name": "KARGAINA-KARGAINI",
+      "employment_gp": "3126001060",
+      "block": "Amariya",
+      "villages": [
+        "131340"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.94",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "1.18",
+        "unskilled_wage_due": "1.27",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "1.27"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81766",
+      "name": "Kargaina Peera",
+      "official_name": "KARGAINA PEERA",
+      "employment_gp": "3126001059",
+      "block": "Amariya",
+      "villages": [
+        "131339",
+        "131349"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.41",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.41",
+        "unskilled_wage_due": "0.43",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.43"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81767",
+      "name": "Katmata",
+      "official_name": "KATMATA",
+      "employment_gp": "3126001063",
+      "block": "Amariya",
+      "villages": [
+        "131200",
+        "131201",
+        "131224",
+        "131227"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "6.74",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "6.74",
+        "unskilled_wage_due": "0.07",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.07"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81774",
+      "name": "Mudsena Madari",
+      "official_name": "MUDSENA MADARI",
+      "employment_gp": "3126001070",
+      "block": "Amariya",
+      "villages": [
+        "131370"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.1",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.1",
+        "unskilled_wage_due": "0",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81775",
+      "name": "Mugla Khera",
+      "official_name": "MUGLAKHERA",
+      "employment_gp": "3126001071",
+      "block": "Amariya",
+      "villages": [
+        "131314"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.14",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.14",
+        "unskilled_wage_due": "0.04",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.04"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81794",
+      "name": "Sirsa",
+      "official_name": "SIRSA",
+      "employment_gp": "3126001121",
+      "block": "Amariya",
+      "villages": [
+        "131211"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "0.64",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "0.64",
+        "unskilled_wage_due": "0.47",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "0.47"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81795",
+      "name": "Sirsi",
+      "official_name": "SIRSI",
+      "employment_gp": "3126001098",
+      "block": "Amariya",
+      "villages": [
+        "131348"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "1.93",
+        "skilled_wage_expenditure": "0.06",
+        "material_expenditure": "0",
+        "total_expenditure": "2.14",
+        "unskilled_wage_due": "1.23",
+        "skilled_wage_due": "0.02",
+        "material_due": "0",
+        "total_due": "1.25"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    },
+    {
+      "state": "9",
+      "district": "173",
+      "gp": "81807",
+      "name": "Uganpur",
+      "official_name": "UGAN PUR",
+      "employment_gp": "3126001116",
+      "block": "Amariya",
+      "villages": [
+        "131291",
+        "131292",
+        "131293"
+      ],
+      "mapping": {
+        "verified": true,
+        "method": "Unique exact normalized Panchayat name within independently verified Uttar Pradesh / Pilibhit / Amariya hierarchy; punctuation and spaces only ignored; no fuzzy matches",
+        "civil_directory_sha256": "cf13eee6b2811db3b10fc3daebce2e2b6bd94fc580c888eca8dc4e9ac50a1dc6",
+        "employment_directory_capture_sha256": "08e0877db2b7bb109b7749bba3c28ce2a15c5fb751ff82c69a63fab9121dfc46"
+      },
+      "financial_year": "2026-2027",
+      "scheme": "VB-G RAM G",
+      "as_of": "2026-11-14",
+      "captured_on": "2026-11-14",
+      "unit": "INR_lakh_rounded_2dp",
+      "finance": {
+        "unskilled_wage_expenditure": "3.26",
+        "skilled_wage_expenditure": "0",
+        "material_expenditure": "0",
+        "total_expenditure": "3.49",
+        "unskilled_wage_due": "3.46",
+        "skilled_wage_due": "0",
+        "material_due": "0",
+        "total_due": "3.46"
+      },
+      "finance_source": "https://vbgramgrep.dord.gov.in/VBGRAMG/writereaddata/citizen_out/funddisreport_3126001_eng_2627_.html",
+      "finance_capture_sha256": "013965132c14083e83b6b590b4d90b5fd984e14e6a0b06eb26efa201e8aeec13",
+      "works": []
+    }
+  ]
+}

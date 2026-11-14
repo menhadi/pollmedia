@@ -48,4 +48,6 @@
 @if($soil)<section class="pb-panel pb-record-card" data-village-panel="soil"><h2>{{ $tr('Soil tests','मृदा परीक्षण') }}</h2><p class="pb-sub">2025–26</p>
 <p><strong>{{ $fmt(round($soil['value'],1)) }}%</strong> {{ $tr('of tested samples had low nitrogen','परीक्षित नमूनों में नाइट्रोजन कम थी') }} · {{ $fmt($soil['samples']) }} {{ $tr('samples','नमूने') }}</p>
 <a class="pb-more" href="{{ $topic('soil') }}">{{ $tr('View soil records','मृदा रिकॉर्ड देखें') }} →</a></section>@endif
-</div></main>@include('public-footer')</body></html>
+</div>
+@include('rural-employment', ['employment' => !empty($lgd['lgd']) ? app(\App\Services\RuralEmployment::class)->forVillage((int)($lgd['state'] ?? 0), (int)$lgd['lgd']) : null])
+</main>@include('public-footer')</body></html>

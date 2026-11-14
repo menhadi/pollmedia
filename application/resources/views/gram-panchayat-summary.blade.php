@@ -7,6 +7,7 @@
     $districts = collect($members)->pluck('district_name')->unique()->implode(', ');
     $stateName = $members[0]['state_name'] ?? '';
     $activities = collect($own['reports'])->flatMap(fn ($report) => array_map(fn ($activity) => $activity + ['financial_year' => $report['financial_year'], 'source_url' => $report['sources']['activities']['url'] ?? null], $report['activities'] ?? []));
+    $employment = app(\App\Services\RuralEmployment::class)->forPanchayat((int) $record['state'], (int) $record['gp']);
     $hasRecords = $own['payment_totals'] || $own['allocations'] || $own['reports'];
     $mapMarkup = $section === 'overview' ? view('panchayat-village-map', compact('record', 'members'))->render() : '';
     $mapUrl = trim($mapMarkup) !== '' ? '#panchayat-map' : $profileUrl(['view' => 'details', 'topic' => 'village-data', 'vtopic' => 'map']).'#linked-village-data';
@@ -59,6 +60,7 @@
 <a href="#panchayat-overview">{{ $tr('Overview', 'सारांश') }}</a><a href="{{ $mapUrl }}">{{ $tr('Map', 'मानचित्र') }}</a><a href="#member-villages">{{ $tr('Villages', 'गाँव') }}</a>
 @if($hasRecords)<a href="#panchayat-records">{{ $tr('Accounts', 'लेखे') }}</a>@endif
 @if($activities->isNotEmpty())<a href="#development-works">{{ $tr('Development works', 'विकास कार्य') }}</a>@endif
+@if($employment)<a href="#rural-employment">{{ $tr('MGNREGA', 'मनरेगा') }}</a>@endif
 <a href="#local-services">{{ $tr('Local services', 'स्थानीय सेवाएँ') }}</a><a href="#related-places">{{ $tr('Related places', 'संबंधित स्थान') }}</a><a href="#methodology">{{ $tr('Sources', 'स्रोत') }}</a>
 </nav>
 <div class="pb-record-grid pb-anchor-pair">
@@ -73,7 +75,7 @@
 </section>
 <section class="pb-panel pb-record-card" id="local-services"><h2>{{ $tr('Local services', 'स्थानीय सेवाएँ') }}</h2>
 <ul class="gp-service-links">
-<li><a href="https://nrega.dord.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('MGNREGA · job-card, work & wage status', 'मनरेगा · जॉब कार्ड, कार्य और मजदूरी') }} ↗</a></li>
+<li><a href="{{ \App\Services\RuralEmployment::WORKER_LOOKUP }}" target="_blank" rel="noopener noreferrer">{{ $tr('MGNREGA · job-card, work & wage status', 'मनरेगा · जॉब कार्ड, कार्य और मजदूरी') }} ↗</a></li>
 <li><a href="https://www.ncs.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('Find work or hire · National Career Service', 'काम खोजें या भर्ती करें · राष्ट्रीय करियर सेवा') }} ↗</a></li>
 <li><a href="https://www.myscheme.gov.in/" target="_blank" rel="noopener noreferrer">{{ $tr('Find government schemes · myScheme', 'सरकारी योजनाएँ खोजें · myScheme') }} ↗</a></li>
 <li><a href="{{ (int) $record['state'] === 9 ? 'https://jansunwai.up.nic.in/' : 'https://pgportal.gov.in/' }}" target="_blank" rel="noopener noreferrer">{{ $tr('Official complaint & tracking', 'सरकारी शिकायत और स्थिति') }} ↗</a></li>
@@ -94,6 +96,7 @@
 </table></div>
 @if($villagesPage->hasPages())<nav class="gp-pagination" aria-label="{{ $tr('Village pages', 'गाँव के पृष्ठ') }}"><span>{{ $villagesPage->firstItem() }}–{{ $villagesPage->lastItem() }} / {{ $num->format($villagesPage->total()) }}</span>@if($villagesPage->previousPageUrl())<a class="gp-action" href="{{ $villagesPage->previousPageUrl() }}">{{ $tr('Previous', 'पिछला') }}</a>@endif<span>{{ $villagesPage->currentPage() }} / {{ $villagesPage->lastPage() }}</span>@if($villagesPage->nextPageUrl())<a class="gp-action" href="{{ $villagesPage->nextPageUrl() }}">{{ $tr('Next', 'अगला') }}</a>@endif</nav>@endif
 </section>
+@include('rural-employment', ['employment' => $employment])
 @if($hasRecords)<section class="pb-panel pb-wide" id="panchayat-records"><div class="gp-section-heading"><h2>{{ $tr('Panchayat accounts', 'पंचायत के लेखे') }}</h2><a href="{{ $detail('records') }}">{{ $tr('Vouchers & detailed records', 'वाउचर और विस्तृत रिकॉर्ड') }} →</a></div>
 @if($own['payment_totals'])<h3>{{ $tr('Reported payments', 'दर्ज भुगतान') }}</h3>
 <div class="gp-table-scroll"><table id="gp-payments" data-gp-paginate><thead><tr><th scope="col">{{ $tr('Financial year', 'वित्तीय वर्ष') }}</th><th scope="col">{{ $tr('Reported total', 'दर्ज कुल') }}</th><th scope="col">{{ $tr('Reference', 'संदर्भ') }}</th></tr></thead><tbody>

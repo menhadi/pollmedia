@@ -11,5 +11,8 @@
 @include('community-area-issues')
 <?php endif; ?>
 @include('lgd-village-dashboard-records')
+@if($topic === 'overview')
+@include('rural-employment', ['employment' => app(\App\Services\RuralEmployment::class)->forVillage((int)($village['state'] ?? 0), (int)$village['lgd'])])
+@endif
 </div>
 </main>@include('community-edit-tools')<script type="module" src="{{ asset('js/census-local-dashboard.js') }}?v={{ substr(hash_file('sha256',public_path('js/census-local-dashboard.js')),0,12) }}"></script>@include('public-footer')</body></html>

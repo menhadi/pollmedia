@@ -12,6 +12,7 @@ use App\Services\MyPlaceFacts;
 use App\Services\MyPlacePanchayat;
 use App\Services\PanchayatSummaryPage;
 use App\Services\PlaceBreadcrumbs;
+use App\Services\RuralEmployment;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\ViewErrorBag;
@@ -117,7 +118,7 @@ class PanchayatSummaryPageTest extends TestCase
         $this->assertStringNotContainsString('₹12500', $html);
         $this->assertStringContainsString('id="methodology"', $html);
         $this->assertStringNotContainsString('id="methodology" open', $html);
-        $this->assertStringContainsString('https://nrega.dord.gov.in/', $html);
+        $this->assertStringContainsString(RuralEmployment::WORKER_LOOKUP, $html);
         $this->assertStringContainsString('https://jansunwai.up.nic.in/', $html);
     }
 
