@@ -1,0 +1,28 @@
+name: eGramSwaraj connectivity probe
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  public-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Test public source access without credentials
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,sys,urllib.request
+          targets=[('activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd=131388325'),('plan','https://egramswaraj.gov.in/getActivityList.do?planCd=6086963&activityStts=0')]
+          success=True
+          for kind,url in targets:
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'PollmediaPublicRecords/1.0'})
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      body=response.read(1048576)
+                      value=json.loads(body)
+                      valid=(isinstance(value,dict) and value.get('activityCd')==131388325 and value.get('plnUntCd')==10532) if kind=='activity' else isinstance(value,list)
+                      print(json.dumps({'kind':kind,'status':response.status,'bytes':len(body),'sha256':hashlib.sha256(body).hexdigest(),'valid':valid}))
+                      success=success and valid
+              except Exception as error:
+                  print(json.dumps({'kind':kind,'error':str(error)}));success=False
+          sys.exit(0 if success else 1)
+          PY
