@@ -23,5 +23,5 @@ class CollectionConcurrencyTest(unittest.TestCase):
             plan=list(c.execute("EXPLAIN QUERY PLAN SELECT count(*) FROM jobs WHERE state=? AND gp=? AND kind='activity' AND status!='deferred'",('3','10074')))
             self.assertTrue(any('jobs_focused_activity_count' in row[3] for row in plan));c.close()
     def test_backlog_reduces_payment_budget_without_stopping_activities(self):
-        self.assertEqual(12,payment_budget(0));self.assertEqual(12,payment_budget(7));self.assertEqual(8,payment_budget(8));self.assertEqual(8,payment_budget(100))
+        self.assertEqual(8,payment_budget(0));self.assertEqual(8,payment_budget(7));self.assertEqual(4,payment_budget(8));self.assertEqual(4,payment_budget(100));self.assertEqual(12,payment_budget(0,12));self.assertEqual(4,payment_budget(8,12))
 if __name__=='__main__':unittest.main()

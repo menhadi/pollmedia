@@ -1,7 +1,8 @@
 """Resumable network bridge with two bounded download lanes and one publisher.
 
 All source captures and authoritative queue state remain on the live server.
-Financial downloads use up to twelve connections and activities use eight.
+Financial downloads default to eight connections after a live comparison;
+an explicit bounded option permits twelve for future source conditions.
 Source errors and capture backlogs reduce payment concurrency automatically. Only
 one thread imports/publishes captures, at low server CPU and I/O priority.
 """
@@ -31,11 +32,11 @@ def capture_files(root,limit=4):
             if group and len(chosen)<limit:chosen.append(group.popleft())
     return chosen
 
-def payment_budget(backlog):
-    return 8 if backlog>=8 else 12
+def payment_budget(backlog,maximum=8):
+    return min(4,maximum) if backlog>=8 else maximum
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--identity',required=True);p.add_argument('--collector',type=Path,required=True);p.add_argument('--limit',type=int,default=2000);a=p.parse_args();a.root.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--identity',required=True);p.add_argument('--collector',type=Path,required=True);p.add_argument('--limit',type=int,default=2000);p.add_argument('--financial-concurrency',type=int,choices=[4,8,12],default=8);a=p.parse_args();a.root.mkdir(parents=True,exist_ok=True)
     lock=open(a.root/'collector.lock','a+b');lock.seek(0);lock.write(b'1');lock.flush();lock.seek(0)
     if os.name=='nt':
         import msvcrt
@@ -114,7 +115,7 @@ def main():
                 if shutil.disk_usage(a.root).free<2*1024**3:raise RuntimeError('Collector disk reserve reached; batch remains resumable')
                 manifest=a.root/(batch['batch']+'.json');run(scp+[HOST+':'+batch['manifest'],str(manifest)])
                 prefix='capture-'+pool+'-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
-                slots=12 if pool=='financial' else 8
+                slots=a.financial_concurrency if pool=='financial' else 8
                 log=open(a.root/(prefix+'.log'),'w');heartbeat(pool,'collecting',batch=batch['batch'],requests=batch['requests'],connections=slots)
                 child=subprocess.Popen(['pwsh','-NoProfile','-File',str(a.collector),'-Root',str(a.root),'-Manifest',manifest.name,'-Prefix',prefix,'-Concurrency',str(slots),'-BatchSize','250' if pool=='financial' else '500','-FlushSeconds','120']+(['-TargetFile',str(a.root/'financial-concurrency.txt')] if pool=='financial' else []),stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
                 with state_lock:children[pool]=child
