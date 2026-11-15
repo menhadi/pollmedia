@@ -26,3 +26,26 @@ jobs:
                   print(json.dumps({'kind':kind,'error':str(error)}));success=False
           sys.exit(0 if success else 1)
           PY
+  windows-client:
+    runs-on: windows-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check the Windows HTTP client independently of the computer
+        shell: pwsh
+        run: |
+          $client=[System.Net.Http.HttpClient]::new()
+          $client.Timeout=[TimeSpan]::FromSeconds(20)
+          $client.DefaultRequestHeaders.UserAgent.ParseAdd('PollmediaPublicRecords/1.0')
+          $passed=$true
+          foreach($url in @('https://egramswaraj.gov.in/activitySectionData.do?activityCd=131388325','https://egramswaraj.gov.in/getActivityList.do?planCd=6086963&activityStts=0')){
+            try {
+              $response=$client.GetAsync($url).GetAwaiter().GetResult()
+              $response.EnsureSuccessStatusCode() | Out-Null
+              $body=$response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+              $data=$body | ConvertFrom-Json
+              @{status=[int]$response.StatusCode;bytes=$body.Length;valid=($null -ne $data)} | ConvertTo-Json -Compress
+              $response.Dispose()
+            } catch { @{error=$_.Exception.Message} | ConvertTo-Json -Compress; $passed=$false }
+          }
+          $client.Dispose()
+          if(-not $passed){exit 1}
