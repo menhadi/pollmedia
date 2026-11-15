@@ -1,9 +1,12 @@
 import json
 import tempfile
 import unittest
+import io
+import time
+from contextlib import redirect_stdout
 import zipfile
 from pathlib import Path
-from national_egramswaraj_details import add_job, consume, finish, ingest, packed, queue, record, sha, store, unpacked, vouchers
+from national_egramswaraj_details import add_job, consume, finish, ingest, optimize, next_batch, resume_batch, requeue_batch, pending_count, packed, queue, record, sha, store, unpacked, vouchers
 
 class NationalDetailsTest(unittest.TestCase):
     def setUp(self):
@@ -63,10 +66,55 @@ class NationalDetailsTest(unittest.TestCase):
         url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan())
         job=self.c.execute('SELECT * FROM jobs WHERE id=?',(key,)).fetchone();consume(self.c,self.db,job,b'["Road (88)"]',{'captured_at':'2026-11-15T00:00:00Z'})
         child=self.c.execute("SELECT id FROM jobs WHERE kind='activity'").fetchone()[0];self.c.commit();self.db.commit()
-        result=self.work/'results.json';result.write_text(json.dumps([{'file':'detail-'+child+'.json','ok':False}]))
+        result=self.work/'results.json';result.write_text(json.dumps([{'file':'detail-'+child+'.json','ok':False,'status':404}]))
         finish(self.work,self.root/'records',result)
         row=self.db.execute("SELECT * FROM records WHERE kind='activities'").fetchone();value=unpacked(row['payload'])
         self.assertEqual('listed',row['level']);self.assertEqual('Road',value['name']);self.assertEqual('Details unavailable',value['status']);self.assertTrue(value['notes']);self.assertEqual('note',self.c.execute('SELECT status FROM jobs WHERE id=?',(child,)).fetchone()[0])
+    def test_dispatch_uses_indexes_and_counters_without_duplicate_leases(self):
+        self.c.commit();optimize(self.work)
+        for i in range(60):
+            add_job(self.c,'3','10074','activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd='+str(100+i),dict(self.plan(),activity=str(100+i)))
+        self.c.commit();self.assertEqual(60,pending_count(self.c))
+        add_job(self.c,'3','10074','activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd=100',self.plan());self.c.commit();self.assertEqual(60,pending_count(self.c))
+        plans=list(self.c.execute("EXPLAIN QUERY PLAN SELECT * FROM jobs WHERE status='queued' AND kind=? AND retry_after<=? ORDER BY gp,state,id LIMIT ?",('activity',time.time(),20)))
+        self.assertFalse(any('TEMP B-TREE' in r[3] for r in plans))
+        out=io.StringIO()
+        with redirect_stdout(out):next_batch(self.work,20)
+        batch=json.loads(out.getvalue());self.assertEqual(20,batch['requests'])
+        rows=json.loads(Path(batch['manifest']).read_text());self.assertEqual(20,len({r['file'] for r in rows}));self.assertEqual(20,self.c.execute("SELECT count(*) FROM jobs WHERE status='dispatched'").fetchone()[0]);self.assertEqual(60,pending_count(self.c))
+        actual={(r[0],r[1],r[2]):r[3] for r in self.c.execute('SELECT state,kind,status,count(*) FROM jobs GROUP BY state,kind,status')}
+        counters={(r[0],r[1],r[2]):r[3] for r in self.c.execute('SELECT * FROM job_counts WHERE total>0')};self.assertEqual(actual,counters)
+    def test_transient_timeouts_are_delayed_not_published_as_missing_or_retried_immediately(self):
+        optimize(self.work)
+        key=add_job(self.c,'3','10074','activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd=88',dict(self.plan(),activity='88'));self.c.commit()
+        result=self.work/'timeouts.json';result.write_text(json.dumps([{'file':'detail-'+key+'.json','ok':False,'status':None}]))
+        finish(self.work,self.root/'records',result)
+        row=self.c.execute('SELECT status,retry_after,fetch_attempts FROM jobs WHERE id=?',(key,)).fetchone();self.assertEqual('queued',row['status']);self.assertEqual(1,row['fetch_attempts']);self.assertGreater(row['retry_after'],time.time()+590)
+        out=io.StringIO()
+        with redirect_stdout(out):next_batch(self.work,20)
+        self.assertEqual(0,json.loads(out.getvalue())['requests']);self.assertEqual(1,json.loads(out.getvalue())['pending'])
+        self.assertEqual(0,self.db.execute('SELECT count(*) FROM requests').fetchone()[0])
+    def test_resume_never_downloads_already_committed_records_again(self):
+        optimize(self.work)
+        ids=[add_job(self.c,'3','10074','activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd='+str(i),dict(self.plan(),activity=str(i))) for i in [88,89]]
+        batch='batch-20261115T010203000000'
+        self.c.execute("UPDATE jobs SET status='dispatched',batch=?",(batch,));self.c.execute("UPDATE jobs SET status='done' WHERE id=?",(ids[0],));self.c.commit()
+        out=io.StringIO()
+        with redirect_stdout(out):resume_batch(self.work,batch)
+        result=json.loads(out.getvalue());rows=json.loads(Path(result['manifest']).read_text());self.assertEqual(1,result['requests']);self.assertEqual('detail-'+ids[1]+'.json',rows[0]['file']);self.assertEqual('done',self.c.execute('SELECT status FROM jobs WHERE id=?',(ids[0],)).fetchone()[0])
+    def test_financial_and_activity_lanes_lease_disjoint_requests(self):
+        optimize(self.work)
+        for kind,url in [('voucher','voucherWiseReport.do?state=3&village=10074&finYear=2026-2027'),('plan','getActivityList.do?planCd=1234&activityStts=0'),('activity','activitySectionData.do?activityCd=88')]:
+            add_job(self.c,'3','10074',kind,'https://egramswaraj.gov.in/'+url,self.plan())
+        self.c.commit();out=io.StringIO()
+        with redirect_stdout(out):next_batch(self.work,20,'financial')
+        financial=json.loads(out.getvalue());self.assertEqual(1,financial['requests'])
+        out=io.StringIO()
+        with redirect_stdout(out):next_batch(self.work,20,'activities')
+        activities=json.loads(out.getvalue());self.assertEqual(2,activities['requests'])
+        left={x['file'] for x in json.loads(Path(financial['manifest']).read_text())};right={x['file'] for x in json.loads(Path(activities['manifest']).read_text())};self.assertFalse(left&right)
+        self.assertEqual(1,pending_count(self.c,'financial'));self.assertEqual(2,pending_count(self.c,'activities'))
+        requeue_batch(self.work,financial['batch']);self.assertEqual(1,self.c.execute("SELECT count(*) FROM jobs WHERE status='queued'").fetchone()[0]);self.assertEqual(2,self.c.execute("SELECT count(*) FROM jobs WHERE status='dispatched'").fetchone()[0])
     def test_archive_url_binding_and_idempotent_ingestion(self):
         url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan());self.c.commit()
         archive=self.work/'test.zip';filename='detail-'+key+'.json'

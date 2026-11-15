@@ -9,6 +9,7 @@ import html as html_lib
 import json
 import re
 import sqlite3
+import time
 import shutil
 from functools import lru_cache
 import zipfile
@@ -55,6 +56,9 @@ def connect(path):
 def queue(work):
     c=connect(work/'queue.sqlite')
     c.executescript("\nCREATE TABLE IF NOT EXISTS gps(state TEXT,gp TEXT,name TEXT,legacy INTEGER DEFAULT 0,PRIMARY KEY(state,gp));\nCREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY,state TEXT,gp TEXT,kind TEXT,url TEXT,context BLOB,status TEXT DEFAULT 'queued',batch TEXT,error TEXT,captured_on TEXT,source_sha256 TEXT);\nCREATE INDEX IF NOT EXISTS jobs_dispatch ON jobs(status,kind,state,id);\nCREATE INDEX IF NOT EXISTS jobs_gp ON jobs(state,gp,status);\nCREATE INDEX IF NOT EXISTS jobs_state ON jobs(state,status);\nCREATE TABLE IF NOT EXISTS archives(name TEXT PRIMARY KEY,sha TEXT);\nCREATE TABLE IF NOT EXISTS preparation(name TEXT PRIMARY KEY,value TEXT);\n")
+    columns={r[1] for r in c.execute('PRAGMA table_info(jobs)')}
+    for name,definition in [('retry_after','REAL NOT NULL DEFAULT 0'),('fetch_attempts','INTEGER NOT NULL DEFAULT 0')]:
+        if name not in columns:c.execute('ALTER TABLE jobs ADD COLUMN '+name+' '+definition)
     return c
 
 def store(root,state):
@@ -274,34 +278,108 @@ def ingest(work,root,archive):
     for db in stores.values():db.commit();db.close()
     c.execute('INSERT INTO archives VALUES(?,?)',(archive.name,digest));c.commit();c.close();print(json.dumps({'archive':archive.name,'processed':dict(changed)}),flush=True)
 
-def next_batch(work,limit):
+def optimized(c):
+    return bool(c.execute("SELECT 1 FROM preparation WHERE name='dispatch-v2'").fetchone())
+
+def pending_count(c,pool='all'):
+    if pool!='all':
+        clause="kind='voucher'" if pool=='financial' else "kind IN ('activity','plan')"
+        if optimized(c):return c.execute("SELECT COALESCE(sum(total),0) FROM job_counts WHERE status IN ('queued','dispatched') AND "+clause).fetchone()[0]
+        return c.execute("SELECT count(*) FROM jobs WHERE status IN ('queued','dispatched') AND "+clause).fetchone()[0]
+    if optimized(c):return c.execute("SELECT COALESCE(sum(total),0) FROM job_counts WHERE status IN ('queued','dispatched')").fetchone()[0]
+    return c.execute("SELECT count(*) FROM jobs WHERE status IN ('queued','dispatched')").fetchone()[0]
+
+def optimize(work):
+    c=queue(work)
+    if optimized(c):
+        c.close();print('Queue indexes and counters already ready',flush=True);return
+    c.execute('BEGIN IMMEDIATE')
+    c.execute('CREATE INDEX IF NOT EXISTS jobs_ready_state ON jobs(status,kind,state,gp,id)')
+    c.execute('CREATE INDEX IF NOT EXISTS jobs_ready_kind ON jobs(status,kind,gp,state,id)')
+    c.execute('CREATE TABLE IF NOT EXISTS job_counts(state TEXT,kind TEXT,status TEXT,total INTEGER NOT NULL,PRIMARY KEY(state,kind,status))')
+    c.execute('DELETE FROM job_counts')
+    c.execute('INSERT INTO job_counts SELECT state,kind,status,count(*) FROM jobs GROUP BY state,kind,status')
+    c.execute("""CREATE TRIGGER IF NOT EXISTS jobs_count_insert AFTER INSERT ON jobs BEGIN
+        INSERT INTO job_counts VALUES(new.state,new.kind,new.status,1)
+        ON CONFLICT(state,kind,status) DO UPDATE SET total=total+1; END""")
+    c.execute("""CREATE TRIGGER IF NOT EXISTS jobs_count_update AFTER UPDATE OF status ON jobs WHEN old.status!=new.status BEGIN
+        UPDATE job_counts SET total=total-1 WHERE state=old.state AND kind=old.kind AND status=old.status;
+        INSERT INTO job_counts VALUES(new.state,new.kind,new.status,1)
+        ON CONFLICT(state,kind,status) DO UPDATE SET total=total+1; END""")
+    c.execute("""CREATE TRIGGER IF NOT EXISTS jobs_count_delete AFTER DELETE ON jobs BEGIN
+        UPDATE job_counts SET total=total-1 WHERE state=old.state AND kind=old.kind AND status=old.status; END""")
+    c.execute("INSERT OR REPLACE INTO preparation VALUES('dispatch-v2',?)",(now(),));c.commit();c.close()
+    print('Queue indexes and transactional counters ready',flush=True)
+
+def next_batch(work,limit,pool='all'):
     if shutil.disk_usage(work).free<10*1024**3:raise ValueError('Server disk reserve reached; collection paused before requesting more records')
     c=queue(work);batch='batch-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f');rows=[]
-    for kind,fraction in [('voucher',.5),('plan',.25),('activity',.25)]:
+    if (work/'pause-dispatch').exists():
+        print(json.dumps({'batch':'paused','manifest':None,'requests':0,'pending':pending_count(c,pool),'preparation_complete':True}));c.close();return
+    # Bound discovery backlog: finish existing individual records before growing it.
+    activity_backlog=c.execute("SELECT COALESCE(sum(total),0) FROM job_counts WHERE kind='activity' AND status='queued'").fetchone()[0] if optimized(c) else 0
+    weights=[('voucher',.4),('activity',.6)] if activity_backlog>100000 else [('voucher',.4),('activity',.4),('plan',.2)]
+    allowed={'voucher'} if pool=='financial' else ({'activity','plan'} if pool=='activities' else {'voucher','activity','plan'})
+    if pool=='financial':weights=[('voucher',1)]
+    elif pool=='activities':weights=[('activity',1)] if activity_backlog>100000 else [('activity',.8),('plan',.2)]
+    ready=time.time()
+    for kind,fraction in weights:
         target=max(1,int(limit*fraction))
         states=[r[0] for r in c.execute("SELECT DISTINCT state FROM jobs WHERE status='queued' AND kind=?",(kind,))]
         quota=max(1,target//max(1,len(states)))
         for state in states:
-            rows.extend(c.execute("SELECT * FROM jobs WHERE status='queued' AND kind=? AND state=? ORDER BY gp LIMIT ?",(kind,state,quota)).fetchall())
+            rows.extend(c.execute("SELECT * FROM jobs WHERE status='queued' AND kind=? AND state=? AND retry_after<=? ORDER BY gp,id LIMIT ?",(kind,state,ready,quota)).fetchall())
     if len(rows)<limit:
         chosen={r['id'] for r in rows}
-        for r in c.execute("SELECT * FROM jobs WHERE status='queued' ORDER BY CASE kind WHEN 'activity' THEN 0 ELSE 1 END,gp,state LIMIT ?",(limit*2,)):
-            if r['id'] not in chosen:rows.append(r)
+        for kind in ['activity','voucher','plan']:
+            if kind not in allowed:continue
+            if kind=='plan' and activity_backlog>100000:continue
+            for r in c.execute("SELECT * FROM jobs WHERE status='queued' AND kind=? AND retry_after<=? ORDER BY gp,state,id LIMIT ?",(kind,ready,limit+len(chosen))):
+                if r['id'] not in chosen:rows.append(r);chosen.add(r['id'])
+                if len(rows)>=limit:break
             if len(rows)>=limit:break
+    # Spread concurrent requests across states instead of hitting one GP repeatedly.
+    from collections import defaultdict,deque
+    groups=defaultdict(deque)
+    for row in rows:groups[row['state']].append(row)
+    ordered=[]
+    while any(groups.values()):
+        for group in groups.values():
+            if group:ordered.append(group.popleft())
+    rows=ordered
     requests=[{'file':'detail-'+r['id']+('.html' if r['kind']=='voucher' else '.json'),'url':r['url']} for r in rows]
     path=work/'outgoing'/(batch+'.json');path.parent.mkdir(exist_ok=True);path.write_text(json.dumps(requests))
-    c.executemany("UPDATE jobs SET status='dispatched',batch=? WHERE id=?",[(batch,r['id']) for r in rows]);c.commit()
-    prepared=bool(c.execute("SELECT 1 FROM preparation WHERE name='complete'").fetchone());pending=c.execute("SELECT count(*) FROM jobs WHERE status IN ('queued','dispatched')").fetchone()[0]
-    print(json.dumps({'batch':batch,'manifest':str(path),'requests':len(rows),'pending':pending,'preparation_complete':prepared}));c.close()
+    c.executemany("UPDATE jobs SET status='dispatched',batch=? WHERE id=? AND status='queued'",[(batch,r['id']) for r in rows]);c.commit()
+    prepared=bool(c.execute("SELECT 1 FROM preparation WHERE name='complete'").fetchone())
+    print(json.dumps({'batch':batch,'manifest':str(path),'requests':len(rows),'pending':pending_count(c,pool),'preparation_complete':prepared}));c.close()
+
+def resume_batch(work,batch,pool='all'):
+    if not re.fullmatch(r'batch-[0-9]{8}T[0-9]{12}',batch):raise ValueError('Invalid batch')
+    c=queue(work);rows=c.execute("SELECT id,kind,url FROM jobs WHERE batch=? AND status='dispatched' ORDER BY id",(batch,)).fetchall()
+    path=work/'outgoing'/(batch+'-resume.json');path.parent.mkdir(exist_ok=True)
+    path.write_text(json.dumps([{'file':'detail-'+r['id']+('.html' if r['kind']=='voucher' else '.json'),'url':r['url']} for r in rows]))
+    print(json.dumps({'batch':batch,'manifest':str(path),'requests':len(rows),'pending':pending_count(c,pool),'preparation_complete':True}));c.close()
+
+def requeue_batch(work,batch):
+    if not re.fullmatch(r'batch-[0-9]{8}T[0-9]{12}',batch):raise ValueError('Invalid batch')
+    c=queue(work);count=c.execute("UPDATE jobs SET status='queued',batch=NULL WHERE batch=? AND status='dispatched'",(batch,)).rowcount;c.commit();c.close()
+    print(json.dumps({'resumable_requests_requeued':count}))
 
 def finish(work,root,result):
-    c=queue(work);stores={};bad=0
+    c=queue(work);stores={};bad=0;retried=0
     for row in json.loads(result.read_text(encoding='utf-8-sig')):
         if row['ok']:continue
         m=re.fullmatch(r'detail-([a-f0-9]{64})\.(?:html|json)',row['file'])
         if not m:raise ValueError('Invalid failure identity')
         j=c.execute('SELECT * FROM jobs WHERE id=?',(m[1],)).fetchone()
         if not j or j['status'] in ['done','note']:continue
+        status=row.get('status')
+        transient=status in [None,0,408,425,429] or (isinstance(status,int) and status>=500)
+        if transient and j['fetch_attempts']<3:
+            attempts=j['fetch_attempts']+1
+            delay=600*(2**(attempts-1))
+            c.execute("UPDATE jobs SET status='queued',batch=NULL,fetch_attempts=?,retry_after=?,error=? WHERE id=?",(attempts,time.time()+delay,'Transient source/network failure; retry scheduled',j['id']))
+            retried+=1;continue
         note='Official report could not be retrieved after retries; its source link is retained.';day=datetime.now(ZoneInfo('Asia/Kolkata')).date().isoformat()
         db=stores.get(j['state'])
         if db is None:db=store(root,j['state']);stores[j['state']]=db
@@ -309,12 +387,12 @@ def finish(work,root,result):
         db.execute('INSERT OR REPLACE INTO requests VALUES(?,?,?,?,?,?,?,?)',(j['id'],j['gp'],j['kind'],'note',j['url'],None,day,note))
         c.execute("UPDATE jobs SET status='note',error=?,captured_on=? WHERE id=?",(note,day,j['id']));bad+=1
     for db in stores.values():db.commit();db.close()
-    c.commit();c.close();print(json.dumps({'retrieval_notes':bad}))
+    c.commit();c.close();print(json.dumps({'retrieval_notes':bad,'scheduled_retries':retried}))
 
 def publish(work,root,fixtures):
     root.mkdir(parents=True,exist_ok=True);c=queue(work);names=json.loads((fixtures/'egramswaraj-national/index.json').read_text())['states'];states={};totals=Counter()
     for state,entry in names.items():
-        jobs={r[0]:r[1] for r in c.execute('SELECT status,count(*) FROM jobs WHERE state=? GROUP BY status',(state,))}
+        jobs={r[0]:r[1] for r in c.execute('SELECT status,sum(total) FROM job_counts WHERE state=? AND total>0 GROUP BY status',(state,))} if optimized(c) else {r[0]:r[1] for r in c.execute('SELECT status,count(*) FROM jobs WHERE state=? GROUP BY status',(state,))}
         counts={};path=root/('state-'+state+'.sqlite')
         if path.exists():
             db=store(root,state)
@@ -322,15 +400,18 @@ def publish(work,root,fixtures):
         for k,v in counts.items():totals[k]+=v
         legacy=c.execute('SELECT count(*) FROM gps WHERE state=? AND legacy=1',(state,)).fetchone()[0]
         states[state]={'name':entry['name'],'jobs':jobs,'records':counts,'existing_detailed_retained':legacy}
-    prepared=bool(c.execute("SELECT 1 FROM preparation WHERE name='complete'").fetchone());jobs={r[0]:r[1] for r in c.execute('SELECT status,count(*) FROM jobs GROUP BY status')};c.close()
+    prepared=bool(c.execute("SELECT 1 FROM preparation WHERE name='complete'").fetchone());jobs={r[0]:r[1] for r in c.execute('SELECT status,sum(total) FROM job_counts WHERE total>0 GROUP BY status')} if optimized(c) else {r[0]:r[1] for r in c.execute('SELECT status,count(*) FROM jobs GROUP BY status')};c.close()
     index={'schema':1,'publication_enabled':True,'financial_year':YEAR,'updated_at':now(),'preparation_complete':prepared,'jobs':jobs,'records':dict(totals),'states':states}
     temp=root/'.index.json.tmp';temp.write_text(json.dumps(index,ensure_ascii=False,separators=(',',':')));temp.replace(root/'index.json')
     print(json.dumps({'jobs':jobs,'records':dict(totals),'preparation_complete':prepared}),flush=True)
 
 def main():
-    a=argparse.ArgumentParser();a.add_argument('action',choices=['prepare','next','ingest','finish','publish']);a.add_argument('--work',type=Path,required=True);a.add_argument('--root',type=Path,default=Path('application/storage/app/egramswaraj-national-details'));a.add_argument('--summaries',type=Path,default=Path('/home/pollmedia/tmp/national-egs-summary-20261114'));a.add_argument('--fixtures',type=Path,default=Path('application/database/fixtures'));a.add_argument('--archive',type=Path);a.add_argument('--result',type=Path);a.add_argument('--limit',type=int,default=2000);args=a.parse_args();args.work.mkdir(parents=True,exist_ok=True)
-    if args.action=='prepare':prepare(args.work,args.summaries,args.fixtures)
-    elif args.action=='next':next_batch(args.work,args.limit)
+    a=argparse.ArgumentParser();a.add_argument('action',choices=['prepare','next','ingest','finish','publish','optimize','resume','requeue']);a.add_argument('--work',type=Path,required=True);a.add_argument('--root',type=Path,default=Path('application/storage/app/egramswaraj-national-details'));a.add_argument('--summaries',type=Path,default=Path('/home/pollmedia/tmp/national-egs-summary-20261114'));a.add_argument('--fixtures',type=Path,default=Path('application/database/fixtures'));a.add_argument('--archive',type=Path);a.add_argument('--result',type=Path);a.add_argument('--batch');a.add_argument('--pool',choices=['all','financial','activities'],default='all');a.add_argument('--limit',type=int,default=2000);args=a.parse_args();args.work.mkdir(parents=True,exist_ok=True)
+    if args.action=='requeue':requeue_batch(args.work,args.batch)
+    elif args.action=='resume':resume_batch(args.work,args.batch,args.pool)
+    elif args.action=='optimize':optimize(args.work)
+    elif args.action=='prepare':prepare(args.work,args.summaries,args.fixtures)
+    elif args.action=='next':next_batch(args.work,args.limit,args.pool)
     elif args.action=='ingest':ingest(args.work,args.root,args.archive)
     elif args.action=='finish':finish(args.work,args.root,args.result)
     else:publish(args.work,args.root,args.fixtures)
