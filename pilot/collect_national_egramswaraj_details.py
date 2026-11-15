@@ -28,7 +28,7 @@ def main():
     else:
         import fcntl
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-    ssh=['ssh','-o','BatchMode=yes','-o','ConnectTimeout=10','-o','ServerAliveInterval=20','-o','ServerAliveCountMax=3','-i',a.identity,HOST]
+    ssh=['ssh','-n','-T','-o','BatchMode=yes','-o','ConnectTimeout=10','-o','ServerAliveInterval=20','-o','ServerAliveCountMax=3','-i',a.identity,HOST]
     scp=['scp','-o','BatchMode=yes','-o','ConnectTimeout=10','-o','ServerAliveInterval=20','-o','ServerAliveCountMax=3','-i',a.identity]
     io_lock=threading.Lock();state_lock=threading.Lock();stop=threading.Event();publish_needed=threading.Event()
     lanes={};children={};errors=[];finished={name:threading.Event() for name in ['financial','activities']}
@@ -42,27 +42,33 @@ def main():
         emit(body)
     def run(cmd):
         for attempt in range(6):
-            result=subprocess.run(cmd,capture_output=True,text=True)
+            try:result=subprocess.run(cmd,capture_output=True,text=True,stdin=subprocess.DEVNULL,timeout=180)
+            except subprocess.TimeoutExpired:
+                emit({'retry':attempt+1,'error':'Transport command timed out; acknowledged captures remain resumable'});time.sleep(min(30,5*(attempt+1)));continue
             if result.returncode==0:return result.stdout.strip()
             emit({'retry':attempt+1,'error':(result.stderr or result.stdout)[-1200:]});time.sleep(min(30,5*(attempt+1)))
         raise RuntimeError('Command failed after retries: '+str(cmd[:3]))
     def command(action,extra=''):
         started=time.monotonic()
-        result=run(ssh+['cd '+REPO+' && ionice -c2 -n7 nice -n15 runuser -u pollmedia -- python3 '+SCRIPT+' '+action+' --work '+REMOTE+' '+extra])
+        lock_name=('dispatch-'+('financial' if '--pool financial' in extra else 'activities')) if action=='next' else ('publication' if action in ['ingest','publish','finish'] else action)
+        result=run(ssh+['cd '+REPO+' && exec flock -w 90 '+REMOTE+'/'+lock_name+'.lock ionice -c2 -n7 nice -n15 runuser -u pollmedia -- python3 '+SCRIPT+' '+action+' --work '+REMOTE+' '+extra])
         emit({'operation':action,'seconds':round(time.monotonic()-started,3)})
         return result
     sent=set(json.loads((a.root/'sent.json').read_text())) if (a.root/'sent.json').exists() else set()
     def forward():
         # Called only by the main thread: no concurrent application imports.
-        for file in sorted(a.root.glob('capture-*.zip')):
-            if file.name in sent:continue
+        changed=False
+        for file in sorted(a.root.glob('capture-*.zip'))[:4]:
+            if file.name in sent:
+                file.unlink();continue
             if shutil.disk_usage(a.root).free<512*1024**2:raise RuntimeError('Local collector disk reserve reached')
             run(scp+[str(file),HOST+':'+REMOTE+'/raw/'+file.name])
             emit(command('ingest','--archive '+REMOTE+'/raw/'+file.name))
             sent.add(file.name);(a.root/'sent.json').write_text(json.dumps(sorted(sent)))
-            emit(command('publish'));file.unlink()
+            file.unlink();changed=True
+        if changed:emit(command('publish'))
     run(ssh+['mkdir -p '+REMOTE+'/raw && chown pollmedia:pollmedia '+REMOTE+'/raw'])
-    emit(command('optimize'));forward()
+    emit(command('optimize'));forward();emit(command('publish'))
     legacy=a.root/'active.json'
     if legacy.exists():
         old=json.loads(legacy.read_text());emit(command('requeue','--batch '+old['batch']))
@@ -76,7 +82,9 @@ def main():
                     saved=json.loads(checkpoint.read_text());batch=json.loads(command('resume','--batch '+saved['batch']+' --pool '+pool))
                     if not batch['requests']:
                         checkpoint.unlink();continue
-                else:batch=json.loads(command('next','--limit '+str(a.limit)+' --pool '+pool))
+                else:
+                    requested_batch='batch-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
+                    batch=json.loads(command('next','--limit '+str(a.limit)+' --pool '+pool+' --batch '+requested_batch))
                 if not batch['requests']:
                     if batch['preparation_complete'] and not batch['pending']:
                         heartbeat(pool,'complete');finished[pool].set();return
@@ -87,7 +95,7 @@ def main():
                 prefix='capture-'+pool+'-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
                 slots=16 if finished[other].is_set() else 8
                 log=open(a.root/(prefix+'.log'),'w');heartbeat(pool,'collecting',batch=batch['batch'],requests=batch['requests'],connections=slots)
-                child=subprocess.Popen(['pwsh','-NoProfile','-File',str(a.collector),'-Root',str(a.root),'-Manifest',manifest.name,'-Prefix',prefix,'-Concurrency',str(slots)],stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+                child=subprocess.Popen(['pwsh','-NoProfile','-File',str(a.collector),'-Root',str(a.root),'-Manifest',manifest.name,'-Prefix',prefix,'-Concurrency',str(slots),'-BatchSize','50' if pool=='financial' else '500','-FlushSeconds','120'],stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
                 with state_lock:children[pool]=child
                 while child.poll() is None and not stop.wait(1):pass
                 if stop.is_set() and child.poll() is None:child.terminate()

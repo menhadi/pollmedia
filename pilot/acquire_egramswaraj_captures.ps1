@@ -1,4 +1,4 @@
-param([string]$Root,[string]$Manifest,[string]$Prefix,[int]$Concurrency=16)
+param([string]$Root,[string]$Manifest,[string]$Prefix,[int]$Concurrency=16,[int]$BatchSize=500,[int]$FlushSeconds=120)
 Add-Type -TypeDefinition @"
 using System;
 using System.IO;
@@ -11,8 +11,14 @@ public sealed class EgsCaptureArchive : IDisposable {
  private FileStream stream;
  private StringBuilder index=new StringBuilder();
  private int part=0,count=0;
+ private readonly int batchSize,flushSeconds;
+ private readonly System.Threading.Timer timer;
+ private DateTime openedAt;
+ private bool disposed;
+ private Exception fault;
  private string openName;
- public EgsCaptureArchive(string root,string prefix){this.root=root;this.prefix=prefix;}
+ public EgsCaptureArchive(string root,string prefix,int batchSize,int flushSeconds){if(batchSize<1||flushSeconds<1)throw new ArgumentException("Invalid batch limits");this.root=root;this.prefix=prefix;this.batchSize=batchSize;this.flushSeconds=flushSeconds;timer=new System.Threading.Timer(_=>FlushExpired(),null,1000,1000);}
+ private void FlushExpired(){lock(gate){if(disposed||archive==null||count==0)return;try{if((DateTime.UtcNow-openedAt).TotalSeconds>=flushSeconds)ClosePart();}catch(Exception ex){fault=ex;}}}
  private void ClosePart(){
   if(archive==null)return;
   var metadata=archive.CreateEntry("_capture-"+prefix+"-"+part.ToString("D4")+".jsonl",CompressionLevel.Fastest);
@@ -24,13 +30,14 @@ public sealed class EgsCaptureArchive : IDisposable {
  public void Save(string name,byte[] bytes,string metadata){
   if(Path.GetFileName(name)!=name)throw new Exception("Unsafe capture filename");
   lock(gate){
-   if(archive==null){part++;openName=Path.Combine(root,prefix+"-"+part.ToString("D4")+".part");stream=new FileStream(openName,FileMode.CreateNew,FileAccess.ReadWrite,FileShare.Read);archive=new ZipArchive(stream,ZipArchiveMode.Create,true);}
+   if(disposed)throw new ObjectDisposedException("EgsCaptureArchive");if(fault!=null)throw new IOException("Capture archive failed",fault);
+   if(archive==null){openedAt=DateTime.UtcNow;part++;openName=Path.Combine(root,prefix+"-"+part.ToString("D4")+".part");stream=new FileStream(openName,FileMode.CreateNew,FileAccess.ReadWrite,FileShare.Read);archive=new ZipArchive(stream,ZipArchiveMode.Create,true);}
    var entry=archive.CreateEntry(name,CompressionLevel.Fastest);
    using(var s=entry.Open()){s.Write(bytes,0,bytes.Length);}
-   index.AppendLine(metadata);count++;if(count>=500)ClosePart();
+   index.AppendLine(metadata);count++;if(count>=batchSize)ClosePart();
   }
  }
- public void Dispose(){lock(gate){ClosePart();}}
+ public void Dispose(){lock(gate){disposed=true;timer.Dispose();ClosePart();}}
 }
 "@
 $requests=Get-Content (Join-Path $Root $Manifest) -Raw | ConvertFrom-Json
@@ -40,12 +47,13 @@ $handler.AutomaticDecompression=[System.Net.DecompressionMethods]::GZip -bor [Sy
 $http=[System.Net.Http.HttpClient]::new($handler)
 $http.Timeout=[TimeSpan]::FromSeconds(45)
 $http.DefaultRequestHeaders.UserAgent.ParseAdd('PollmediaPublicRecords/1.0')
-$writer=[EgsCaptureArchive]::new($Root,$Prefix)
+$writer=[EgsCaptureArchive]::new($Root,$Prefix,$BatchSize,$FlushSeconds)
 $timer=[System.Diagnostics.Stopwatch]::StartNew()
 try {
  $results=$requests | ForEach-Object -Parallel {
   $client=$using:http;$archive=$using:writer;$task=$_
   for($attempt=0;$attempt -lt 3;$attempt++){
+   $status=$null;$response=$null
    try{
     $response=$client.GetAsync($task.url).GetAwaiter().GetResult()
     $status=[int]$response.StatusCode
@@ -56,7 +64,7 @@ try {
     $archive.Save($task.file,$bytes,$meta)
     $response.Dispose()
     [pscustomobject]@{file=$task.file;ok=$true;bytes=$bytes.Length};return
-   }catch{$last=$_.Exception.Message;if($status -eq 404){break}}
+   }catch{$last=$_.Exception.Message;if($status -eq 404){break}}finally{if($null -ne $response){$response.Dispose()}}
   }
   [pscustomobject]@{file=$task.file;ok=$false;error=$last;status=$status}
  } -ThrottleLimit $Concurrency

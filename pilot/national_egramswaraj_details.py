@@ -78,6 +78,8 @@ def add_job(c,state,gp,kind,url,context):
     return identity
 
 def record(db,gp,kind,key,value,source,level='complete'):
+    if source.get('capture_precision'):
+        value=dict(value,capture_precision=source['capture_precision'],capture_window=source['capture_window'])
     old=db.execute('SELECT payload,source_sha256,level FROM records WHERE gp=? AND kind=? AND record_key=?',(gp,kind,key)).fetchone()
     if old and old['level']=='complete' and level!='complete':return
     if old and old['payload']!=packed(value):
@@ -175,6 +177,9 @@ def amount(text):
     if not re.fullmatch(r'[0-9]+(?:\.[0-9]{1,2})?',s):raise ValueError('Unrecognised rupee amount')
     return int(Decimal(s)*100)
 
+class IncompleteVoucherReport(ValueError):
+    pass
+
 def vouchers(raw,context):
     doc=table_document(raw)
     if 'Voucher Wise Summary Report' not in doc.body or 'Voucher Amount (in Rs.)' not in doc.body:raise ValueError('Source did not return a rupee voucher report')
@@ -213,6 +218,8 @@ def vouchers(raw,context):
             value={'kind':kind,'date':date,'voucher':number,'voucher_type':cells[ti]['text'] if ti is not None else None,'amount_paise':amount(cells[ai]['text']),'unit':'INR','detail_url':detail,'report_date':reported,'notes':notes,'source_row':n+1,'month':context['month']}
             key=identifier or sha(json.dumps([kind,date,number,value['amount_paise'],context['month'],n]).encode())
             result.append((kind,key,value))
+    if not result and 'No Data Found' in doc.body and not re.search(r'Financial Year\s*:\s*2026\s*-\s*2027',doc.body):
+        raise IncompleteVoucherReport('Official payment report returned no rows and omitted its financial-year context; no zero payment total inferred.')
     return result
 
 def unavailable_detail(db,gp,key,note):
@@ -225,6 +232,7 @@ def unavailable_detail(db,gp,key,note):
 def consume(c,db,job,raw,meta):
     context=unpacked(job['context']);day=datetime.fromisoformat(re.sub(r'(\.\d{6})\d+',r'\1',meta['captured_at']).replace('Z','+00:00')).astimezone(ZoneInfo('Asia/Kolkata')).date().isoformat()
     source={'url':job['url'],'sha':sha(raw),'day':day};gp=job['gp'];kind=job['kind'];note=None
+    if meta.get('captured_at_precision')=='day':source['capture_precision']='day';source['capture_window']={'start':meta['capture_window_start'],'end':meta['capture_window_end']}
     if kind=='voucher':
         for record_kind,key,value in vouchers(raw,dict(context,captured_on=source['day'])):record(db,gp,record_kind,key,value,source)
     elif kind=='plan':
@@ -268,12 +276,17 @@ def ingest(work,root,archive):
             raw=z.read(filename);status='done';note=None
             db.execute('SAVEPOINT record_response')
             try:source,note=consume(c,db,job,raw,meta)
+            except IncompleteVoucherReport as e:
+                db.execute('ROLLBACK TO record_response');status='queued' if job['fetch_attempts']<3 else 'note';note=str(e)
+                source={'url':job['url'],'sha':sha(raw),'day':meta['captured_at'][:10]}
             except (ValueError,KeyError,TypeError,InvalidOperation) as e:
                 db.execute('ROLLBACK TO record_response');status='note';note=str(e)
                 source={'url':job['url'],'sha':sha(raw),'day':meta['captured_at'][:10]}
             db.execute('RELEASE record_response')
             if status=='note' and job['kind']=='activity':unavailable_detail(db,job['gp'],unpacked(job['context'])['activity'],note)
             db.execute('INSERT OR REPLACE INTO requests VALUES(?,?,?,?,?,?,?,?)',(job['id'],job['gp'],job['kind'],status,job['url'],source['sha'],source['day'],note))
+            if status=='queued':
+                c.execute('UPDATE jobs SET batch=NULL,fetch_attempts=fetch_attempts+1,retry_after=? WHERE id=?',(time.time()+21600,job['id']))
             c.execute('UPDATE jobs SET status=?,captured_on=?,source_sha256=?,error=? WHERE id=?',(status,source['day'],source['sha'],note,job['id']));changed[status]+=1
     for db in stores.values():db.commit();db.close()
     c.execute('INSERT INTO archives VALUES(?,?)',(archive.name,digest));c.commit();c.close();print(json.dumps({'archive':archive.name,'processed':dict(changed)}),flush=True)
@@ -291,6 +304,7 @@ def pending_count(c,pool='all'):
 
 def optimize(work):
     c=queue(work)
+    c.execute('CREATE INDEX IF NOT EXISTS jobs_batch ON jobs(batch,id)')
     if optimized(c):
         c.close();print('Queue indexes and counters already ready',flush=True);return
     c.execute('BEGIN IMMEDIATE')
@@ -311,9 +325,13 @@ def optimize(work):
     c.execute("INSERT OR REPLACE INTO preparation VALUES('dispatch-v2',?)",(now(),));c.commit();c.close()
     print('Queue indexes and transactional counters ready',flush=True)
 
-def next_batch(work,limit,pool='all'):
+def next_batch(work,limit,pool='all',batch=None):
     if shutil.disk_usage(work).free<10*1024**3:raise ValueError('Server disk reserve reached; collection paused before requesting more records')
-    c=queue(work);batch='batch-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f');rows=[]
+    if batch is not None and not re.fullmatch(r'batch-[0-9]{8}T[0-9]{12}',batch):raise ValueError('Invalid batch')
+    c=queue(work)
+    if batch is not None and c.execute('SELECT 1 FROM jobs WHERE batch=? LIMIT 1',(batch,)).fetchone():
+        c.close();resume_batch(work,batch,pool);return
+    batch=batch or 'batch-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f');rows=[]
     if (work/'pause-dispatch').exists():
         print(json.dumps({'batch':'paused','manifest':None,'requests':0,'pending':pending_count(c,pool),'preparation_complete':True}));c.close();return
     # Bound discovery backlog: finish existing individual records before growing it.
@@ -411,7 +429,7 @@ def main():
     elif args.action=='resume':resume_batch(args.work,args.batch,args.pool)
     elif args.action=='optimize':optimize(args.work)
     elif args.action=='prepare':prepare(args.work,args.summaries,args.fixtures)
-    elif args.action=='next':next_batch(args.work,args.limit,args.pool)
+    elif args.action=='next':next_batch(args.work,args.limit,args.pool,args.batch)
     elif args.action=='ingest':ingest(args.work,args.root,args.archive)
     elif args.action=='finish':finish(args.work,args.root,args.result)
     else:publish(args.work,args.root,args.fixtures)

@@ -13,6 +13,18 @@ class NationalDetailsTest(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.work=self.root/'work';self.work.mkdir();self.c=queue(self.work);self.db=store(self.root/'records','3');self.db.commit()
     def tearDown(self):
         self.db.close();self.c.close();self.temp.cleanup()
+    def test_blank_context_payment_report_is_retried_without_zero_records(self):
+        raw=b'<h1>Voucher Wise Summary Report</h1><p>Financial Year : Month : Scheme :</p><p>Voucher Amount (in Rs.)</p><table><tr><th>Receipts</th><th>Payments</th></tr><tr><td>No Data Found!!</td></tr></table>'
+        url='https://egramswaraj.gov.in/voucherWiseReport.do?state=3&village=10074'
+        key=add_job(self.c,'3','10074','voucher',url,dict(self.plan(),month='2026-04'));self.c.commit()
+        archive=self.work/'blank.zip'
+        with zipfile.ZipFile(archive,'w') as z:
+            name='detail-'+key+'.html';z.writestr(name,raw)
+            z.writestr('_capture-test.jsonl',json.dumps({'file':name,'url':url,'captured_at':'2026-11-15T10:00:00+00:00'}))
+        ingest(self.work,self.root/'records',archive)
+        row=self.c.execute('SELECT * FROM jobs WHERE id=?',(key,)).fetchone()
+        self.assertEqual('queued',row['status']);self.assertEqual(1,row['fetch_attempts']);self.assertGreater(row['retry_after'],time.time()+21000)
+        self.assertEqual(0,self.db.execute('SELECT count(*) FROM records').fetchone()[0])
     def plan(self):
         return {'state':'3','gp':'10074','plan':'1234','gp_cd':10074,'plan_cd':1234,'plantype':'Main Plan'}
     def test_plan_membership_then_detail_preserves_source_evidence_and_exact_cost(self):
@@ -115,6 +127,24 @@ class NationalDetailsTest(unittest.TestCase):
         left={x['file'] for x in json.loads(Path(financial['manifest']).read_text())};right={x['file'] for x in json.loads(Path(activities['manifest']).read_text())};self.assertFalse(left&right)
         self.assertEqual(1,pending_count(self.c,'financial'));self.assertEqual(2,pending_count(self.c,'activities'))
         requeue_batch(self.work,financial['batch']);self.assertEqual(1,self.c.execute("SELECT count(*) FROM jobs WHERE status='queued'").fetchone()[0]);self.assertEqual(2,self.c.execute("SELECT count(*) FROM jobs WHERE status='dispatched'").fetchone()[0])
+    def test_dispatch_retry_reuses_the_same_batch_instead_of_leasing_more_records(self):
+        optimize(self.work)
+        for i in range(50):add_job(self.c,'3','10074','activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd='+str(100+i),self.plan())
+        self.c.commit();batch='batch-20261115T010203000001';one=io.StringIO();two=io.StringIO()
+        with redirect_stdout(one):next_batch(self.work,20,'activities',batch)
+        with redirect_stdout(two):next_batch(self.work,20,'activities',batch)
+        a=json.loads(one.getvalue());b=json.loads(two.getvalue());self.assertEqual(json.loads(Path(a['manifest']).read_text()),json.loads(Path(b['manifest']).read_text()));self.assertEqual(20,self.c.execute("SELECT count(*) FROM jobs WHERE status='dispatched'").fetchone()[0])
+    def test_recovered_voucher_is_bound_to_its_source_and_retains_day_precision(self):
+        from recover_egramswaraj_capture import recover
+        from datetime import datetime,timezone
+        import os
+        url='https://egramswaraj.gov.in/voucherWiseReport.do?state=3&village=10074&finYear=2026-2027&month=11';key=add_job(self.c,'3','10074','voucher',url,{'state':'3','gp':'10074','month':'2026-11'});self.c.commit();self.db.commit()
+        part=self.work/'capture-financial-20261115T010203000000-0001.part';filename='detail-'+key+'.html';body=self.voucher_html()
+        with zipfile.ZipFile(part,'w',compression=zipfile.ZIP_DEFLATED) as z:z.writestr(filename,body)
+        with zipfile.ZipFile(part) as z:end=z.start_dir
+        part.write_bytes(part.read_bytes()[:end]);stamp=datetime(2026,11,15,2,tzinfo=timezone.utc).timestamp();os.utime(part,(stamp,stamp));before=part.read_bytes()
+        manifest=self.work/'recover-manifest.json';manifest.write_text(json.dumps([{'file':filename,'url':url}]));archive=self.work/'recovered.zip';recover(part,manifest,archive);ingest(self.work,self.root/'records',archive)
+        row=self.db.execute("SELECT payload,source_sha256,captured_on FROM records WHERE kind='payments'").fetchone();value=unpacked(row['payload']);self.assertEqual(123456,value['amount_paise']);self.assertEqual('day',value['capture_precision']);self.assertEqual('2026-11-15',row['captured_on']);self.assertEqual(sha(body),row['source_sha256']);self.assertEqual(before,part.read_bytes())
     def test_archive_url_binding_and_idempotent_ingestion(self):
         url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan());self.c.commit()
         archive=self.work/'test.zip';filename='detail-'+key+'.json'
