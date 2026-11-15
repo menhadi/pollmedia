@@ -38,4 +38,21 @@ class CaptureFlushTest(unittest.TestCase):
                 self.assertEqual({r['file']:r['url'] for r in manifest},{r['file']:r['url'] for r in records});self.assertEqual(3,len(records));self.assertFalse(list(root.glob('*.part')))
         finally:server.shutdown();server.server_close()
 
+@unittest.skipUnless(shutil.which('pwsh'),'PowerShell is required for source gate integration')
+class CaptureGateTest(unittest.TestCase):
+    def test_source_errors_and_backlog_reduce_concurrency(self):
+        source=Path(__file__).with_name('acquire_egramswaraj_captures.ps1').read_text()
+        code=source.split('Add-Type -TypeDefinition @"',1)[1].split('"@',1)[0]
+        script="Add-Type -TypeDefinition @'\n"+code+"\n'@\n"+"""
+$gate=[EgsRequestGate]::new(12,$null)
+$gate.Enter();$gate.Leave(429)
+if(($gate.Stats()|ConvertFrom-Json).current_limit -ne 8){throw 'Rate limit did not reduce concurrency'}
+if(($gate.Stats()|ConvertFrom-Json).rate_limits -ne 1){throw 'Rate limit not recorded'}
+$gate2=[EgsRequestGate]::new(12,$null)
+1..3 | ForEach-Object {$gate2.Enter();$gate2.Leave(0)}
+if(($gate2.Stats()|ConvertFrom-Json).current_limit -ne 8){throw 'Repeated timeouts did not reduce concurrency'}
+"""
+        result=subprocess.run(['pwsh','-NoProfile','-Command',script],capture_output=True,text=True,timeout=30)
+        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+
 if __name__=='__main__':unittest.main()

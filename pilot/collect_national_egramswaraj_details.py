@@ -1,7 +1,8 @@
 """Resumable network bridge with two bounded download lanes and one publisher.
 
 All source captures and authoritative queue state remain on the live server.
-Financial and activity downloads share a maximum of sixteen connections. Only
+Financial downloads use up to twelve connections and activities use eight.
+Source errors and capture backlogs reduce payment concurrency automatically. Only
 one thread imports/publishes captures, at low server CPU and I/O priority.
 """
 import argparse
@@ -18,6 +19,20 @@ HOST='root@5.183.35.118'
 REPO='/home/pollmedia/app'
 REMOTE='/home/pollmedia/tmp/national-egs-details-20261115'
 SCRIPT='pilot/national_egramswaraj_details.py'
+
+def capture_files(root,limit=4):
+    from collections import deque
+    files=sorted(root.glob('capture-*.zip'))
+    finance=deque(p for p in files if 'financial' in p.name)
+    activities=deque(p for p in files if 'financial' not in p.name)
+    chosen=[]
+    while (finance or activities) and len(chosen)<limit:
+        for group in [finance,activities]:
+            if group and len(chosen)<limit:chosen.append(group.popleft())
+    return chosen
+
+def payment_budget(backlog):
+    return 8 if backlog>=8 else 12
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--identity',required=True);p.add_argument('--collector',type=Path,required=True);p.add_argument('--limit',type=int,default=2000);a=p.parse_args();a.root.mkdir(parents=True,exist_ok=True)
@@ -50,25 +65,30 @@ def main():
         raise RuntimeError('Command failed after retries: '+str(cmd[:3]))
     def command(action,extra=''):
         started=time.monotonic()
-        lock_name=('dispatch-'+('financial' if '--pool financial' in extra else 'activities')) if action=='next' else ('publication' if action in ['ingest','publish','finish'] else action)
+        lock_name=('dispatch-'+('financial' if '--pool financial' in extra else 'activities')) if action=='next' else ('publication' if action in ['ingest','ingest-batch','publish','finish'] else action)
         result=run(ssh+['cd '+REPO+' && exec flock -w 90 '+REMOTE+'/'+lock_name+'.lock ionice -c2 -n7 nice -n15 runuser -u pollmedia -- python3 '+SCRIPT+' '+action+' --work '+REMOTE+' '+extra])
         emit({'operation':action,'seconds':round(time.monotonic()-started,3)})
         return result
     sent=set(json.loads((a.root/'sent.json').read_text())) if (a.root/'sent.json').exists() else set()
     def forward():
         # Called only by the main thread: no concurrent application imports.
-        changed=False
-        for file in sorted(a.root.glob('capture-*.zip'))[:4]:
-            if file.name in sent:
-                file.unlink();continue
-            if shutil.disk_usage(a.root).free<512*1024**2:raise RuntimeError('Local collector disk reserve reached')
-            run(scp+[str(file),HOST+':'+REMOTE+'/raw/'+file.name])
-            emit(command('ingest','--archive '+REMOTE+'/raw/'+file.name))
-            sent.add(file.name);(a.root/'sent.json').write_text(json.dumps(sorted(sent)))
-            file.unlink();changed=True
-        if changed:emit(command('publish'))
+        files=[]
+        for file in capture_files(a.root,2):
+            if file.name in sent:file.unlink()
+            else:files.append(file)
+        if not files:return
+        if shutil.disk_usage(a.root).free<512*1024**2:raise RuntimeError('Local collector disk reserve reached')
+        run(scp+[str(file) for file in files]+[HOST+':'+REMOTE+'/raw/'])
+        emit(command('ingest-batch','--archives '+' '.join(REMOTE+'/raw/'+file.name for file in files)))
+        sent.update(file.name for file in files)
+        ledger=a.root/'sent.tmp';ledger.write_text(json.dumps(sorted(sent)));ledger.replace(a.root/'sent.json')
+        for file in files:file.unlink()
+        emit(command('publish'))
     run(ssh+['mkdir -p '+REMOTE+'/raw && chown pollmedia:pollmedia '+REMOTE+'/raw'])
-    emit(command('optimize'));forward();emit(command('publish'))
+    emit(command('optimize'))
+    while any(a.root.glob('capture-*.zip')):
+        heartbeat('publisher','draining_captures',pending=sum(1 for _ in a.root.glob('capture-*.zip')));forward()
+    emit(command('publish'))
     legacy=a.root/'active.json'
     if legacy.exists():
         old=json.loads(legacy.read_text());emit(command('requeue','--batch '+old['batch']))
@@ -93,9 +113,9 @@ def main():
                 if shutil.disk_usage(a.root).free<2*1024**3:raise RuntimeError('Collector disk reserve reached; batch remains resumable')
                 manifest=a.root/(batch['batch']+'.json');run(scp+[HOST+':'+batch['manifest'],str(manifest)])
                 prefix='capture-'+pool+'-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
-                slots=16 if finished[other].is_set() else 8
+                slots=12 if pool=='financial' else 8
                 log=open(a.root/(prefix+'.log'),'w');heartbeat(pool,'collecting',batch=batch['batch'],requests=batch['requests'],connections=slots)
-                child=subprocess.Popen(['pwsh','-NoProfile','-File',str(a.collector),'-Root',str(a.root),'-Manifest',manifest.name,'-Prefix',prefix,'-Concurrency',str(slots),'-BatchSize','50' if pool=='financial' else '500','-FlushSeconds','120'],stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+                child=subprocess.Popen(['pwsh','-NoProfile','-File',str(a.collector),'-Root',str(a.root),'-Manifest',manifest.name,'-Prefix',prefix,'-Concurrency',str(slots),'-BatchSize','250' if pool=='financial' else '500','-FlushSeconds','120']+(['-TargetFile',str(a.root/'financial-concurrency.txt')] if pool=='financial' else []),stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
                 with state_lock:children[pool]=child
                 while child.poll() is None and not stop.wait(1):pass
                 if stop.is_set() and child.poll() is None:child.terminate()

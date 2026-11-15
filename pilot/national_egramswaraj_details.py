@@ -432,7 +432,7 @@ def publish(work,root,fixtures):
     print(json.dumps({'jobs':jobs,'records':dict(totals),'preparation_complete':prepared}),flush=True)
 
 def main():
-    a=argparse.ArgumentParser();a.add_argument('action',choices=['prepare','next','ingest','finish','publish','optimize','resume','requeue','focus']);a.add_argument('--work',type=Path,required=True);a.add_argument('--root',type=Path,default=Path('application/storage/app/egramswaraj-national-details'));a.add_argument('--summaries',type=Path,default=Path('/home/pollmedia/tmp/national-egs-summary-20261114'));a.add_argument('--fixtures',type=Path,default=Path('application/database/fixtures'));a.add_argument('--archive',type=Path);a.add_argument('--result',type=Path);a.add_argument('--batch');a.add_argument('--pool',choices=['all','financial','activities'],default='all');a.add_argument('--limit',type=int,default=2000);args=a.parse_args();args.work.mkdir(parents=True,exist_ok=True)
+    a=argparse.ArgumentParser();a.add_argument('action',choices=['prepare','next','ingest','finish','publish','optimize','resume','requeue','focus','ingest-batch']);a.add_argument('--work',type=Path,required=True);a.add_argument('--root',type=Path,default=Path('application/storage/app/egramswaraj-national-details'));a.add_argument('--summaries',type=Path,default=Path('/home/pollmedia/tmp/national-egs-summary-20261114'));a.add_argument('--fixtures',type=Path,default=Path('application/database/fixtures'));a.add_argument('--archive',type=Path);a.add_argument('--archives',type=Path,nargs='+');a.add_argument('--result',type=Path);a.add_argument('--batch');a.add_argument('--pool',choices=['all','financial','activities'],default='all');a.add_argument('--limit',type=int,default=2000);args=a.parse_args();args.work.mkdir(parents=True,exist_ok=True)
     if args.action=='focus':
         c=queue(args.work);policy=activate_focus(c,args.fixtures,YEAR);c.commit();c.close();print(json.dumps(policy),flush=True)
     elif args.action=='requeue':requeue_batch(args.work,args.batch)
@@ -441,6 +441,8 @@ def main():
     elif args.action=='prepare':prepare(args.work,args.summaries,args.fixtures)
     elif args.action=='next':next_batch(args.work,args.limit,args.pool,args.batch)
     elif args.action=='ingest':ingest(args.work,args.root,args.archive)
+    elif args.action=='ingest-batch':
+        for archive in args.archives or []:ingest(args.work,args.root,archive)
     elif args.action=='finish':finish(args.work,args.root,args.result)
     else:publish(args.work,args.root,args.fixtures)
 if __name__=='__main__':main()

@@ -145,6 +145,25 @@ class NationalDetailsTest(unittest.TestCase):
         part.write_bytes(part.read_bytes()[:end]);stamp=datetime(2026,11,15,2,tzinfo=timezone.utc).timestamp();os.utime(part,(stamp,stamp));before=part.read_bytes()
         manifest=self.work/'recover-manifest.json';manifest.write_text(json.dumps([{'file':filename,'url':url}]));archive=self.work/'recovered.zip';recover(part,manifest,archive);ingest(self.work,self.root/'records',archive)
         row=self.db.execute("SELECT payload,source_sha256,captured_on FROM records WHERE kind='payments'").fetchone();value=unpacked(row['payload']);self.assertEqual(123456,value['amount_paise']);self.assertEqual('day',value['capture_precision']);self.assertEqual('2026-11-15',row['captured_on']);self.assertEqual(sha(body),row['source_sha256']);self.assertEqual(before,part.read_bytes())
+    def test_batch_ingestion_retries_after_partial_success_without_losing_records(self):
+        import subprocess,sys
+        archives=[];keys=[]
+        for n in [1,2]:
+            url='https://egramswaraj.gov.in/getActivityList.do?planCd='+str(n)+'&activityStts=0'
+            key=add_job(self.c,'3','10074','plan',url,dict(self.plan(),plan=str(n)));keys.append(key)
+            path=self.work/('batch-'+str(n)+'.zip');archives.append(path)
+            with zipfile.ZipFile(path,'w') as z:
+                name='detail-'+key+'.json';z.writestr(name,'[]')
+                z.writestr('_capture-test.jsonl',json.dumps({'file':name,'url':url if n==1 else url+'&wrong=1','captured_at':'2026-11-15T00:00:00Z'}))
+        self.c.commit()
+        cmd=[sys.executable,str(Path(__file__).with_name('national_egramswaraj_details.py')),'ingest-batch','--work',str(self.work),'--root',str(self.root/'records'),'--archives']+[str(p) for p in archives]
+        first=subprocess.run(cmd,capture_output=True,text=True);self.assertNotEqual(0,first.returncode)
+        self.assertEqual('done',self.c.execute('SELECT status FROM jobs WHERE id=?',(keys[0],)).fetchone()[0]);self.assertEqual('queued',self.c.execute('SELECT status FROM jobs WHERE id=?',(keys[1],)).fetchone()[0])
+        url=self.c.execute('SELECT url FROM jobs WHERE id=?',(keys[1],)).fetchone()[0]
+        with zipfile.ZipFile(archives[1],'w') as z:
+            name='detail-'+keys[1]+'.json';z.writestr(name,'[]');z.writestr('_capture-test.jsonl',json.dumps({'file':name,'url':url,'captured_at':'2026-11-15T00:00:00Z'}))
+        second=subprocess.run(cmd,capture_output=True,text=True);self.assertEqual(0,second.returncode,second.stderr)
+        self.assertEqual(2,self.c.execute("SELECT count(*) FROM jobs WHERE status='done'").fetchone()[0]);self.assertEqual(2,self.c.execute('SELECT count(*) FROM archives').fetchone()[0]);self.assertEqual(2,self.db.execute('SELECT count(*) FROM requests').fetchone()[0])
     def test_archive_url_binding_and_idempotent_ingestion(self):
         url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan());self.c.commit()
         archive=self.work/'test.zip';filename='detail-'+key+'.json'
