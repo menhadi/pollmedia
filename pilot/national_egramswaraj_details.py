@@ -211,6 +211,13 @@ def vouchers(raw,context):
             result.append((kind,key,value))
     return result
 
+def unavailable_detail(db,gp,key,note):
+    row=db.execute("SELECT payload FROM records WHERE gp=? AND kind='activities' AND record_key=? AND level='listed'",(gp,key)).fetchone()
+    if row:
+        value=unpacked(row['payload']);value['status']='Details unavailable'
+        if note not in value.setdefault('notes',[]):value['notes'].append(note)
+        db.execute("UPDATE records SET payload=? WHERE gp=? AND kind='activities' AND record_key=? AND level='listed'",(packed(value),gp,key))
+
 def consume(c,db,job,raw,meta):
     context=unpacked(job['context']);day=datetime.fromisoformat(re.sub(r'(\.\d{6})\d+',r'\1',meta['captured_at']).replace('Z','+00:00')).astimezone(ZoneInfo('Asia/Kolkata')).date().isoformat()
     source={'url':job['url'],'sha':sha(raw),'day':day};gp=job['gp'];kind=job['kind'];note=None
@@ -261,6 +268,7 @@ def ingest(work,root,archive):
                 db.execute('ROLLBACK TO record_response');status='note';note=str(e)
                 source={'url':job['url'],'sha':sha(raw),'day':meta['captured_at'][:10]}
             db.execute('RELEASE record_response')
+            if status=='note' and job['kind']=='activity':unavailable_detail(db,job['gp'],unpacked(job['context'])['activity'],note)
             db.execute('INSERT OR REPLACE INTO requests VALUES(?,?,?,?,?,?,?,?)',(job['id'],job['gp'],job['kind'],status,job['url'],source['sha'],source['day'],note))
             c.execute('UPDATE jobs SET status=?,captured_on=?,source_sha256=?,error=? WHERE id=?',(status,source['day'],source['sha'],note,job['id']));changed[status]+=1
     for db in stores.values():db.commit();db.close()
@@ -297,6 +305,7 @@ def finish(work,root,result):
         note='Official report could not be retrieved after retries; its source link is retained.';day=datetime.now(ZoneInfo('Asia/Kolkata')).date().isoformat()
         db=stores.get(j['state'])
         if db is None:db=store(root,j['state']);stores[j['state']]=db
+        if j['kind']=='activity':unavailable_detail(db,j['gp'],unpacked(j['context'])['activity'],note)
         db.execute('INSERT OR REPLACE INTO requests VALUES(?,?,?,?,?,?,?,?)',(j['id'],j['gp'],j['kind'],'note',j['url'],None,day,note))
         c.execute("UPDATE jobs SET status='note',error=?,captured_on=? WHERE id=?",(note,day,j['id']));bad+=1
     for db in stores.values():db.commit();db.close()

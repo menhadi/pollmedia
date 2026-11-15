@@ -3,7 +3,7 @@ import tempfile
 import unittest
 import zipfile
 from pathlib import Path
-from national_egramswaraj_details import add_job, consume, ingest, packed, queue, record, sha, store, unpacked, vouchers
+from national_egramswaraj_details import add_job, consume, finish, ingest, packed, queue, record, sha, store, unpacked, vouchers
 
 class NationalDetailsTest(unittest.TestCase):
     def setUp(self):
@@ -59,6 +59,14 @@ class NationalDetailsTest(unittest.TestCase):
         self.assertEqual(1,self.db.execute('SELECT count(*) FROM records').fetchone()[0]);self.assertEqual('1',self.db.execute("SELECT value FROM metadata WHERE key='count:payments'").fetchone()[0])
         record(self.db,'10074','payments','77',dict(row,amount_paise=200),dict(source,sha='b'*64))
         self.assertEqual(100,unpacked(self.db.execute('SELECT payload FROM versions').fetchone()[0])['amount_paise'])
+    def test_failed_individual_fetch_keeps_listing_but_does_not_claim_it_is_still_queued(self):
+        url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan())
+        job=self.c.execute('SELECT * FROM jobs WHERE id=?',(key,)).fetchone();consume(self.c,self.db,job,b'["Road (88)"]',{'captured_at':'2026-11-15T00:00:00Z'})
+        child=self.c.execute("SELECT id FROM jobs WHERE kind='activity'").fetchone()[0];self.c.commit();self.db.commit()
+        result=self.work/'results.json';result.write_text(json.dumps([{'file':'detail-'+child+'.json','ok':False}]))
+        finish(self.work,self.root/'records',result)
+        row=self.db.execute("SELECT * FROM records WHERE kind='activities'").fetchone();value=unpacked(row['payload'])
+        self.assertEqual('listed',row['level']);self.assertEqual('Road',value['name']);self.assertEqual('Details unavailable',value['status']);self.assertTrue(value['notes']);self.assertEqual('note',self.c.execute('SELECT status FROM jobs WHERE id=?',(child,)).fetchone()[0])
     def test_archive_url_binding_and_idempotent_ingestion(self):
         url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan());self.c.commit()
         archive=self.work/'test.zip';filename='detail-'+key+'.json'
