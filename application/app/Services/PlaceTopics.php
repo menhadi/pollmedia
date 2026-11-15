@@ -7,10 +7,10 @@ final class PlaceTopics
     public const GROUPS = [
         'source' => ['overview', 'map', 'places', 'elections', 'sources'],
         'district' => ['overview', 'people', 'places', 'panchayats', 'map', 'water', 'soil', 'rainfall', 'history', 'elections', 'authorities', 'markets', 'issues', 'sources'],
-        'village' => ['overview', 'places', 'people', 'map', 'water', 'soil', 'rainfall', 'history', 'markets', 'issues', 'sources'],
+        'village' => ['overview', 'panchayats', 'places', 'people', 'map', 'water', 'soil', 'rainfall', 'history', 'markets', 'issues', 'sources'],
         'census' => ['overview', 'places', 'people', 'map', 'water', 'soil', 'rainfall', 'history', 'elections', 'markets', 'issues', 'sources'],
         'gp' => ['overview', 'villages', 'records', 'village-data'],
-        'member' => ['overview', 'places', 'people', 'map', 'water', 'soil', 'rainfall', 'history', 'markets', 'sources'],
+        'member' => ['overview', 'panchayats', 'places', 'people', 'map', 'water', 'soil', 'rainfall', 'history', 'markets', 'sources'],
         'my' => ['overview', 'places', 'water', 'gram-panchayat', 'schools-services', 'local-markets', 'government-schemes', 'agri-insight', 'local-issues', 'sources'],
         'pilot' => ['overview', 'places', 'water', 'schools-services', 'sources'],
     ];

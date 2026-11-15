@@ -128,4 +128,20 @@ class NationalPanchayatSummaries
 
         return $record;
     }
+
+    public function forVillage(int $state, int $village): ?array
+    {
+        $directory = app(GramPanchayatDirectory::class);
+        $membership = $directory->forVillage($state, $village);
+        if (! $membership) {
+            return null;
+        }
+        $profile = $directory->profile($state, (int) $membership['gp']);
+        $member = collect($profile['villages'])->first(fn ($row) => (string) $row['village'] === (string) $village);
+        if (! $member) {
+            return null;
+        }
+
+        return $this->forSelection(['state' => ['code' => (string) $state], 'district' => ['code' => (string) $member['district']], 'village' => ['code' => (string) $village]], (string) $membership['gp']);
+    }
 }

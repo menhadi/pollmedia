@@ -63,4 +63,9 @@
 <p class="notice">Historical geography: Census {{ $census['year'] }}. Current directory records matched by official Census code appear separately below. Available electoral connections are shown with their own source date; polling-part relationships remain pending.</p>
 <?php endif; ?>
 </div>
+@if($topic==='panchayats')
+@if(!empty($mapVillageCode))
+@include('national-village-panchayat',['accountVillage'=>app(\App\Services\ElectoralVillageMap::class)->village((string)$mapVillageCode,true)])
+@else<p class="place-note">A verified current village membership is not available for this Census record.</p>@endif
+@endif
 @endsection

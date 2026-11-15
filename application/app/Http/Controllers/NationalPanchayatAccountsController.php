@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\NationalPanchayatDetails;
 use App\Services\NationalPanchayatSummaries;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -18,7 +19,9 @@ class NationalPanchayatAccountsController extends Controller
         $page = (int) ($input['page'] ?? 1);
         $listing = $state === null ? ['items' => [], 'more' => false] : $summaries->listing($state, $q, $page);
 
-        return view('national-panchayat-accounts', compact('coverage', 'state', 'q', 'page', 'listing'));
+        $detailCounts = $state === null ? [] : app(NationalPanchayatDetails::class)->listingCounts($state, array_column($listing['items'], 'gp'));
+
+        return view('national-panchayat-accounts', compact('coverage', 'state', 'q', 'page', 'listing', 'detailCounts'));
     }
 
     public function show(NationalPanchayatSummaries $summaries, string $state, string $gp): View
@@ -28,5 +31,14 @@ class NationalPanchayatAccountsController extends Controller
         $coverage = $summaries->coverage();
 
         return view('national-panchayat-account', compact('sourceRecord', 'coverage'));
+    }
+
+    public function activity(NationalPanchayatSummaries $summaries, NationalPanchayatDetails $details, string $state, string $gp, string $activity): View
+    {
+        $sourceRecord = $summaries->record($state, $gp);
+        $activityRecord = $details->activity($state, $gp, $activity);
+        abort_unless($sourceRecord && $activityRecord, 404);
+
+        return view('national-panchayat-activity', compact('sourceRecord', 'activityRecord'));
     }
 }

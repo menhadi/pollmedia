@@ -33,3 +33,5 @@ Route::get('/india/gram-panchayats/{state}/{gp}', [MyPlacePanchayatController::c
 
 Route::get('/india/panchayat-accounts', [NationalPanchayatAccountsController::class, 'index'])->name('panchayat-accounts.index');
 Route::get('/india/panchayat-accounts/{state}/{gp}', [NationalPanchayatAccountsController::class, 'show'])->whereNumber('state')->whereNumber('gp')->name('panchayat-accounts.show');
+
+Route::get('/india/panchayat-accounts/{state}/{gp}/activities/{activity}', [NationalPanchayatAccountsController::class, 'activity'])->whereNumber('state')->whereNumber('gp')->whereNumber('activity')->name('panchayat-accounts.activity');

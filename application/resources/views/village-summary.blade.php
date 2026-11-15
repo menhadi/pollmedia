@@ -37,7 +37,7 @@
 @if($lgd && ($gp || filled($lgd['subdistrict']??null) || filled($district)))<section class="pb-panel pb-record-card" data-village-panel="places"><h2>{{ $tr('Local administration','स्थानीय प्रशासन') }}</h2><table class="pb-metrics"><tbody>
 @foreach([[$tr('District','ज़िला'),$lgd['district']??null],[$tr('Subdistrict','उपज़िला'),$lgd['subdistrict']??null]] as [$label,$value])@if(filled($value))<tr><th scope="row">{{ $label }}</th><td>{{ $value }}</td></tr>@endif @endforeach
 @if($gp)<tr><th scope="row">{{ $tr('Gram Panchayat','ग्राम पंचायत') }}</th><td><a href="{{ $gp['url'] }}">{{ $gp['name'] }}</a></td></tr>@endif
-</tbody></table><a class="pb-more" href="{{ $topic('places') }}">{{ $tr('Explore linked places','संबंधित स्थान देखें') }} →</a></section>@endif
+</tbody></table>@if($gp)<a class="pb-more" href="{{ $topic('panchayats') }}">{{ $tr('Panchayat accounts & activities','पंचायत खाते और गतिविधियाँ') }} →</a>@endif<a class="pb-more" href="{{ $topic('places') }}">{{ $tr('Explore linked places','संबंधित स्थान देखें') }} →</a></section>@endif
 @if($rain)<section class="pb-panel pb-record-card" data-village-panel="rainfall"><h2>{{ $tr('Annual rainfall','वार्षिक वर्षा') }}</h2><p>{{ $tr('Estimate for the mapped village area','मानचित्रित गाँव क्षेत्र के लिए अनुमान') }}</p>
 @foreach($rain as $y=>$mm)<div class="pb-rain-row"><span>{{ $y }}</span><div class="pb-track" aria-hidden="true"><i style="width:{{ $mm*100/max(1,max($rain)) }}%"></i></div><strong>{{ $fmt($mm) }} {{ $tr('mm','मिमी') }}</strong></div>@endforeach
 <a class="pb-more" href="{{ $topic('rainfall') }}">{{ $tr('Explore rainfall records','वर्षा रिकॉर्ड देखें') }} →</a></section>@endif

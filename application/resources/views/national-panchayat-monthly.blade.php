@@ -13,3 +13,4 @@
 <p class="place-note"><a href="{{ $summary['source_url'] }}" target="_blank" rel="noopener noreferrer">Official eGramSwaraj report ↗</a>@if($summary['report_date']) · Report: {{ $summary['report_date'] }}@endif · Retrieved: {{ $summary['captured_on'] }}</p>
 </section>
 @endif
+@include('national-panchayat-details',['detailsState'=>$nationalSummary['state'],'detailsGp'=>$nationalSummary['gp']])

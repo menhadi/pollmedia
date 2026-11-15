@@ -70,3 +70,7 @@
 <?php if (in_array($topic, ['water'], true)): ?>
 @include('jjm-water-village',['onlyTopic'=>'water'])
 <?php endif; ?>
+
+@if($topic==='panchayats')
+@include('national-village-panchayat',['accountVillage'=>$village])
+@endif
