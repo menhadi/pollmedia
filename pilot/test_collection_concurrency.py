@@ -16,6 +16,12 @@ class CollectionConcurrencyTest(unittest.TestCase):
             root=Path(tmp)
             for n in range(6):(root/('capture-financial-'+str(n)+'.zip')).touch()
             self.assertEqual(4,len(capture_files(root)))
+    def test_focused_activity_count_uses_small_index(self):
+        from national_egramswaraj_details import queue,optimize
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);c=queue(root);c.commit();c.close();optimize(root);c=queue(root)
+            plan=list(c.execute("EXPLAIN QUERY PLAN SELECT count(*) FROM jobs WHERE state=? AND gp=? AND kind='activity' AND status!='deferred'",('3','10074')))
+            self.assertTrue(any('jobs_focused_activity_count' in row[3] for row in plan));c.close()
     def test_backlog_reduces_payment_budget_without_stopping_activities(self):
         self.assertEqual(12,payment_budget(0));self.assertEqual(12,payment_budget(7));self.assertEqual(8,payment_budget(8));self.assertEqual(8,payment_budget(100))
 if __name__=='__main__':unittest.main()

@@ -308,6 +308,8 @@ def pending_count(c,pool='all'):
 def optimize(work):
     c=queue(work)
     c.execute('CREATE INDEX IF NOT EXISTS jobs_batch ON jobs(batch,id)')
+    c.execute("CREATE INDEX IF NOT EXISTS jobs_focused_activity_count ON jobs(state,gp,kind,status) WHERE kind='activity' AND status!='deferred'")
+    c.execute('DROP INDEX IF EXISTS jobs_focused_activity')
     if optimized(c):
         c.close();print('Queue indexes and counters already ready',flush=True);return
     c.execute('BEGIN IMMEDIATE')

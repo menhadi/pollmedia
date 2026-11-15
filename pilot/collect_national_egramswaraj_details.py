@@ -57,7 +57,7 @@ def main():
         emit(body)
     def run(cmd):
         for attempt in range(6):
-            try:result=subprocess.run(cmd,capture_output=True,text=True,stdin=subprocess.DEVNULL,timeout=180)
+            try:result=subprocess.run(cmd,capture_output=True,text=True,stdin=subprocess.DEVNULL,timeout=600 if any('ingest-batch' in str(part) or ' optimize ' in str(part) for part in cmd) else 180)
             except subprocess.TimeoutExpired:
                 emit({'retry':attempt+1,'error':'Transport command timed out; acknowledged captures remain resumable'});time.sleep(min(30,5*(attempt+1)));continue
             if result.returncode==0:return result.stdout.strip()
@@ -65,8 +65,9 @@ def main():
         raise RuntimeError('Command failed after retries: '+str(cmd[:3]))
     def command(action,extra=''):
         started=time.monotonic()
-        lock_name=('dispatch-'+('financial' if '--pool financial' in extra else 'activities')) if action=='next' else ('publication' if action in ['ingest','ingest-batch','publish','finish'] else action)
-        result=run(ssh+['cd '+REPO+' && exec flock -w 90 '+REMOTE+'/'+lock_name+'.lock ionice -c2 -n7 nice -n15 runuser -u pollmedia -- python3 '+SCRIPT+' '+action+' --work '+REMOTE+' '+extra])
+        lock_name=('dispatch-'+('financial' if '--pool financial' in extra else 'activities')) if action=='next' else ('publication' if action in ['ingest','ingest-batch','publish','finish','optimize'] else action)
+        wait='300' if action in ['ingest-batch','optimize'] else '90'
+        result=run(ssh+['cd '+REPO+' && exec flock -w '+wait+' '+REMOTE+'/'+lock_name+'.lock ionice -c2 -n7 nice -n15 runuser -u pollmedia -- python3 '+SCRIPT+' '+action+' --work '+REMOTE+' '+extra])
         emit({'operation':action,'seconds':round(time.monotonic()-started,3)})
         return result
     sent=set(json.loads((a.root/'sent.json').read_text())) if (a.root/'sent.json').exists() else set()
