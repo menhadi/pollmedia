@@ -21,6 +21,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urljoin, urlparse
 from zoneinfo import ZoneInfo
 from expand_pilibhit_panchayat_reports import Tables
+from focus_egramswaraj_collection import enabled as focused, apply_new_job, activate as activate_focus, POLICY as FOCUS_POLICY
 
 YEAR = '2026-2027'
 BASE = 'https://egramswaraj.gov.in/'
@@ -74,7 +75,8 @@ def add_job(c,state,gp,kind,url,context):
     if u.scheme!='https' or u.netloc!='egramswaraj.gov.in':
         raise ValueError('Non-official source URL')
     identity=sha((kind+'|'+state+'|'+gp+'|'+url).encode())
-    c.execute('INSERT OR IGNORE INTO jobs(id,state,gp,kind,url,context) VALUES(?,?,?,?,?,?)',(identity,state,gp,kind,url,packed(context)))
+    inserted=c.execute('INSERT OR IGNORE INTO jobs(id,state,gp,kind,url,context) VALUES(?,?,?,?,?,?)',(identity,state,gp,kind,url,packed(context))).rowcount
+    if inserted:apply_new_job(c,identity,state,gp,kind,context)
     return identity
 
 def record(db,gp,kind,key,value,source,level='complete'):
@@ -242,8 +244,9 @@ def consume(c,db,job,raw,meta):
             m=re.fullmatch(r'(.*?)\s*\(([0-9]+)\)\s*',label)
             if not m:raise ValueError('Unrecognised activity membership identifier')
             name,activity=m.groups();ctx=dict(context,activity=activity,label=name.strip(),plan_membership_url=job['url'],plan_membership_sha256=source['sha'])
-            add_job(c,job['state'],gp,'activity',BASE+'activitySectionData.do?activityCd='+activity,ctx)
-            record(db,gp,'activities',activity,{'name':name.strip(),'status':'Details queued','plan':context['plan'],'notes':[]},source,'listed')
+            identity=add_job(c,job['state'],gp,'activity',BASE+'activitySectionData.do?activityCd='+activity,ctx)
+            detail_status=c.execute('SELECT status FROM jobs WHERE id=?',(identity,)).fetchone()[0]
+            record(db,gp,'activities',activity,{'name':name.strip(),'status':'Listed in current-year plan' if detail_status=='deferred' else 'Details queued','plan':context['plan'],'notes':[]},source,'listed')
     elif kind=='activity':
         data=json.loads(raw.decode('utf-8-sig'),parse_float=Decimal)
         if not isinstance(data,dict) or str(data.get('activityCd'))!=context['activity'] or str(data.get('plnUntCd'))!=gp or str(data.get('fnclYr'))!='2026':raise ValueError('Activity source identifier/Panchayat/year differs; no record assigned')
@@ -277,7 +280,7 @@ def ingest(work,root,archive):
             db.execute('SAVEPOINT record_response')
             try:source,note=consume(c,db,job,raw,meta)
             except IncompleteVoucherReport as e:
-                db.execute('ROLLBACK TO record_response');status='queued' if job['fetch_attempts']<3 else 'note';note=str(e)
+                db.execute('ROLLBACK TO record_response');status='deferred' if job['status']=='deferred' else ('queued' if job['fetch_attempts']<3 else 'note');note=str(e)
                 source={'url':job['url'],'sha':sha(raw),'day':meta['captured_at'][:10]}
             except (ValueError,KeyError,TypeError,InvalidOperation) as e:
                 db.execute('ROLLBACK TO record_response');status='note';note=str(e)
@@ -340,6 +343,9 @@ def next_batch(work,limit,pool='all',batch=None):
     allowed={'voucher'} if pool=='financial' else ({'activity','plan'} if pool=='activities' else {'voucher','activity','plan'})
     if pool=='financial':weights=[('voucher',1)]
     elif pool=='activities':weights=[('activity',1)] if activity_backlog>100000 else [('activity',.8),('plan',.2)]
+    if focused(c):
+        activity_backlog=0
+        weights=[('voucher',1)] if pool=='financial' else ([('plan',.8),('activity',.2)] if pool=='activities' else [('voucher',.4),('plan',.48),('activity',.12)])
     ready=time.time()
     for kind,fraction in weights:
         target=max(1,int(limit*fraction))
@@ -390,7 +396,7 @@ def finish(work,root,result):
         m=re.fullmatch(r'detail-([a-f0-9]{64})\.(?:html|json)',row['file'])
         if not m:raise ValueError('Invalid failure identity')
         j=c.execute('SELECT * FROM jobs WHERE id=?',(m[1],)).fetchone()
-        if not j or j['status'] in ['done','note']:continue
+        if not j or j['status'] in ['done','note','deferred']:continue
         status=row.get('status')
         transient=status in [None,0,408,425,429] or (isinstance(status,int) and status>=500)
         if transient and j['fetch_attempts']<3:
@@ -419,13 +425,17 @@ def publish(work,root,fixtures):
         legacy=c.execute('SELECT count(*) FROM gps WHERE state=? AND legacy=1',(state,)).fetchone()[0]
         states[state]={'name':entry['name'],'jobs':jobs,'records':counts,'existing_detailed_retained':legacy}
     prepared=bool(c.execute("SELECT 1 FROM preparation WHERE name='complete'").fetchone());jobs={r[0]:r[1] for r in c.execute('SELECT status,sum(total) FROM job_counts WHERE total>0 GROUP BY status')} if optimized(c) else {r[0]:r[1] for r in c.execute('SELECT status,count(*) FROM jobs GROUP BY status')};c.close()
-    index={'schema':1,'publication_enabled':True,'financial_year':YEAR,'updated_at':now(),'preparation_complete':prepared,'jobs':jobs,'records':dict(totals),'states':states}
+    scope_row=None
+    with sqlite3.connect(work/'queue.sqlite') as scope_db:scope_row=scope_db.execute('SELECT value FROM preparation WHERE name=?',(FOCUS_POLICY,)).fetchone()
+    index={'collection_scope':json.loads(scope_row[0]) if scope_row else None,'schema':1,'publication_enabled':True,'financial_year':YEAR,'updated_at':now(),'preparation_complete':prepared,'jobs':jobs,'records':dict(totals),'states':states}
     temp=root/'.index.json.tmp';temp.write_text(json.dumps(index,ensure_ascii=False,separators=(',',':')));temp.replace(root/'index.json')
     print(json.dumps({'jobs':jobs,'records':dict(totals),'preparation_complete':prepared}),flush=True)
 
 def main():
-    a=argparse.ArgumentParser();a.add_argument('action',choices=['prepare','next','ingest','finish','publish','optimize','resume','requeue']);a.add_argument('--work',type=Path,required=True);a.add_argument('--root',type=Path,default=Path('application/storage/app/egramswaraj-national-details'));a.add_argument('--summaries',type=Path,default=Path('/home/pollmedia/tmp/national-egs-summary-20261114'));a.add_argument('--fixtures',type=Path,default=Path('application/database/fixtures'));a.add_argument('--archive',type=Path);a.add_argument('--result',type=Path);a.add_argument('--batch');a.add_argument('--pool',choices=['all','financial','activities'],default='all');a.add_argument('--limit',type=int,default=2000);args=a.parse_args();args.work.mkdir(parents=True,exist_ok=True)
-    if args.action=='requeue':requeue_batch(args.work,args.batch)
+    a=argparse.ArgumentParser();a.add_argument('action',choices=['prepare','next','ingest','finish','publish','optimize','resume','requeue','focus']);a.add_argument('--work',type=Path,required=True);a.add_argument('--root',type=Path,default=Path('application/storage/app/egramswaraj-national-details'));a.add_argument('--summaries',type=Path,default=Path('/home/pollmedia/tmp/national-egs-summary-20261114'));a.add_argument('--fixtures',type=Path,default=Path('application/database/fixtures'));a.add_argument('--archive',type=Path);a.add_argument('--result',type=Path);a.add_argument('--batch');a.add_argument('--pool',choices=['all','financial','activities'],default='all');a.add_argument('--limit',type=int,default=2000);args=a.parse_args();args.work.mkdir(parents=True,exist_ok=True)
+    if args.action=='focus':
+        c=queue(args.work);policy=activate_focus(c,args.fixtures,YEAR);c.commit();c.close();print(json.dumps(policy),flush=True)
+    elif args.action=='requeue':requeue_batch(args.work,args.batch)
     elif args.action=='resume':resume_batch(args.work,args.batch,args.pool)
     elif args.action=='optimize':optimize(args.work)
     elif args.action=='prepare':prepare(args.work,args.summaries,args.fixtures)
