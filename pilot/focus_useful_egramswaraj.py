@@ -22,10 +22,10 @@ def publication_lock(work):
 
 def plan_scope(c,path):
     if path.exists():
-        d=sqlite3.connect(path)
+        d=sqlite3.connect(path,uri=True)
         if d.execute("SELECT value FROM metadata WHERE key='planned'").fetchone():return d
         d.close();raise ValueError('Incomplete plan retained; use a new plan filename')
-    d=sqlite3.connect(path);d.execute('PRAGMA journal_mode=WAL')
+    d=sqlite3.connect(path,uri=True);d.execute('PRAGMA journal_mode=WAL')
     d.executescript('CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT);CREATE TABLE defer_jobs(seq INTEGER PRIMARY KEY,id TEXT NOT NULL);')
     candidates={};reserved=defaultdict(set);scanned=0;pending=0
     indexed=c.execute("SELECT 1 FROM sqlite_master WHERE name='jobs_ready_kind'").fetchone()
@@ -53,16 +53,34 @@ def plan_scope(c,path):
     d.execute('INSERT INTO metadata VALUES(?,?)',('planned',json.dumps(policy)));d.commit()
     print(json.dumps(policy),flush=True);return d
 
+def map_queue_rows(work,d,last):
+    if d.execute("SELECT 1 FROM metadata WHERE key='row_map_ready'").fetchone():return
+    print(json.dumps({'mapping_stage':'Binding retained audit IDs to current queue rows'}),flush=True)
+    d.execute('PRAGMA cache_size=-262144')
+    d.execute('CREATE INDEX IF NOT EXISTS defer_by_id ON defer_jobs(id)')
+    d.execute('CREATE TABLE IF NOT EXISTS queue_rows(seq INTEGER PRIMARY KEY,queue_rowid INTEGER NOT NULL)')
+    d.execute('ATTACH DATABASE ? AS collection',('file:'+str(work/'queue.sqlite')+'?mode=ro',))
+    d.execute('PRAGMA collection.cache_size=-32768')
+    d.execute('DELETE FROM queue_rows')
+    d.execute("""INSERT INTO queue_rows
+        SELECT p.seq,q.rowid FROM collection.jobs AS q INDEXED BY jobs_ready_kind
+        CROSS JOIN main.defer_jobs AS p INDEXED BY defer_by_id
+        WHERE q.status='queued' AND q.kind='activity' AND p.id=q.id AND p.seq>?""",(last,))
+    d.execute("INSERT OR REPLACE INTO metadata VALUES('row_map_ready','1')");d.commit();d.execute('DETACH DATABASE collection')
+    print(json.dumps({'mapped_queued_requests':d.execute('SELECT count(*) FROM queue_rows').fetchone()[0]}),flush=True)
+
 def apply_plan(work,d,chunk=2000,guard=publication_lock):
     previous=d.execute("SELECT value FROM metadata WHERE key='last_seq'").fetchone();last=int(previous[0]) if previous else 0;moved=0;checkpoint=last
-    d.execute('PRAGMA synchronous=NORMAL')
+    d.execute('PRAGMA synchronous=NORMAL');map_queue_rows(work,d,last)
     c=queue(work);c.execute('PRAGMA cache_size=-65536');c.execute('PRAGMA wal_autocheckpoint=0')
     try:
         while True:
-            rows=d.execute('SELECT seq,id FROM defer_jobs WHERE seq>? ORDER BY seq LIMIT ?',(last,chunk)).fetchall()
+            rows=d.execute('SELECT m.seq,m.queue_rowid,p.id FROM queue_rows m JOIN defer_jobs p ON p.seq=m.seq WHERE m.seq>? ORDER BY m.seq LIMIT ?',(last,chunk)).fetchall()
             if not rows:break
             with guard(work):
-                moved+=c.executemany("UPDATE jobs SET status='deferred' WHERE id=? AND kind='activity' AND status='queued'",[(identity,) for _,identity in rows]).rowcount
+                updated=c.executemany("UPDATE jobs SET status='deferred' WHERE rowid=? AND id=? AND kind='activity' AND status='queued'",[(rowid,identity) for _,rowid,identity in rows]).rowcount
+                if updated<len(rows):updated+=c.executemany("UPDATE jobs SET status='deferred' WHERE id=? AND kind='activity' AND status='queued'",[(identity,) for _,_,identity in rows]).rowcount
+                moved+=updated
                 c.commit()
             last=rows[-1][0];d.execute("INSERT OR REPLACE INTO metadata VALUES('last_seq',?)",(str(last),));d.commit()
             if last-checkpoint>=100000:
