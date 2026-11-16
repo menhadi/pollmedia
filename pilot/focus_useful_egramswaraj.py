@@ -54,21 +54,26 @@ def plan_scope(c,path):
     print(json.dumps(policy),flush=True);return d
 
 def apply_plan(work,d,chunk=2000,guard=publication_lock):
-    previous=d.execute("SELECT value FROM metadata WHERE key='last_seq'").fetchone();last=int(previous[0]) if previous else 0;moved=0
-    while True:
-        rows=d.execute('SELECT seq,id FROM defer_jobs WHERE seq>? ORDER BY seq LIMIT ?',(last,chunk)).fetchall()
-        if not rows:break
+    previous=d.execute("SELECT value FROM metadata WHERE key='last_seq'").fetchone();last=int(previous[0]) if previous else 0;moved=0;checkpoint=last
+    d.execute('PRAGMA synchronous=NORMAL')
+    c=queue(work);c.execute('PRAGMA cache_size=-65536');c.execute('PRAGMA wal_autocheckpoint=0')
+    try:
+        while True:
+            rows=d.execute('SELECT seq,id FROM defer_jobs WHERE seq>? ORDER BY seq LIMIT ?',(last,chunk)).fetchall()
+            if not rows:break
+            with guard(work):
+                moved+=c.executemany("UPDATE jobs SET status='deferred' WHERE id=? AND kind='activity' AND status='queued'",[(identity,) for _,identity in rows]).rowcount
+                c.commit()
+            last=rows[-1][0];d.execute("INSERT OR REPLACE INTO metadata VALUES('last_seq',?)",(str(last),));d.commit()
+            if last-checkpoint>=100000:
+                c.execute('PRAGMA wal_checkpoint(PASSIVE)');checkpoint=last
+                print(json.dumps({'applied_through':last,'new_deferrals':moved}),flush=True)
+            time.sleep(.05)
+        policy=json.loads(d.execute("SELECT value FROM metadata WHERE key='planned'").fetchone()[0]);policy['activated_at']=now()
         with guard(work):
-            c=queue(work)
-            for _,identity in rows:moved+=c.execute("UPDATE jobs SET status='deferred' WHERE id=? AND kind='activity' AND status='queued'",(identity,)).rowcount
-            c.commit();c.close()
-        last=rows[-1][0];d.execute("INSERT OR REPLACE INTO metadata VALUES('last_seq',?)",(str(last),));d.commit()
-        if last%100000<chunk:print(json.dumps({'applied_through':last,'new_deferrals':moved}),flush=True)
-        time.sleep(.05)
-    policy=json.loads(d.execute("SELECT value FROM metadata WHERE key='planned'").fetchone()[0]);policy['activated_at']=now()
-    with guard(work):
-        c=queue(work);c.execute('INSERT OR REPLACE INTO preparation VALUES(?,?)',(USEFUL_POLICY,json.dumps(policy)));c.commit();c.close()
-    print(json.dumps({'scope_active':policy,'new_deferrals_this_run':moved}),flush=True)
+            c.execute('INSERT OR REPLACE INTO preparation VALUES(?,?)',(USEFUL_POLICY,json.dumps(policy)));c.commit()
+        print(json.dumps({'scope_active':policy,'new_deferrals_this_run':moved}),flush=True)
+    finally:c.close()
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);p.add_argument('--plan',type=Path,required=True);a=p.parse_args()

@@ -41,6 +41,21 @@ class UsefulWorkTest(unittest.TestCase):
         key=add_job(self.c,'9','1','voucher','https://egramswaraj.gov.in/voucherWiseReport.do?month=10',{'month':'2026-10'});self.c.commit();plan=plan_scope(self.c,self.root/'plan.sqlite')
         plan.execute('INSERT INTO defer_jobs(id) VALUES(?)',(key,));plan.commit();apply_plan(self.root,plan)
         self.assertEqual('queued',self.c.execute('SELECT status FROM jobs WHERE id=?',(key,)).fetchone()[0]);plan.close()
+    def test_interrupted_chunked_rollout_resumes_without_reapplying_committed_changes(self):
+        from contextlib import contextmanager
+        for number in range(1,9):self.add('1',number,'Work '+str(number))
+        self.c.commit();plan=plan_scope(self.c,self.root/'plan.sqlite');calls=0
+        @contextmanager
+        def interrupt(work):
+            nonlocal calls
+            calls+=1
+            if calls==2:raise RuntimeError('Simulated interruption')
+            yield
+        with self.assertRaisesRegex(RuntimeError,'Simulated'):
+            apply_plan(self.root,plan,chunk=1,guard=interrupt)
+        self.assertEqual(1,self.c.execute("SELECT count(*) FROM jobs WHERE status='deferred'").fetchone()[0]);self.assertIsNone(self.c.execute('SELECT value FROM preparation WHERE name=?',(USEFUL_POLICY,)).fetchone())
+        apply_plan(self.root,plan,chunk=2)
+        self.assertEqual(5,self.c.execute("SELECT count(*) FROM jobs WHERE status='deferred'").fetchone()[0]);self.assertEqual(3,self.c.execute("SELECT count(*) FROM jobs WHERE status='queued'").fetchone()[0]);self.assertEqual(8,self.c.execute('SELECT sum(total) FROM job_counts').fetchone()[0]);plan.close()
     def test_normalization_preserves_language_and_location_numbers(self):
         self.assertEqual(work_name('ROAD repair'),work_name('Road-repair!'));self.assertNotEqual(work_name('Ward 1 road'),work_name('Ward 2 road'));self.assertIsNotNone(work_name('पेयजल कार्य'));self.assertIsNone(work_name('12345'));self.assertNotEqual(work_name('काम'),work_name('कम'))
 if __name__=='__main__':unittest.main()
