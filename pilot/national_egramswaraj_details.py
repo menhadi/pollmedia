@@ -21,7 +21,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urljoin, urlparse
 from zoneinfo import ZoneInfo
 from expand_pilibhit_panchayat_reports import Tables
-from focus_egramswaraj_collection import enabled as focused, apply_new_job, activate as activate_focus, POLICY as FOCUS_POLICY
+from focus_egramswaraj_collection import enabled as focused, apply_new_job, activate as activate_focus, POLICY as FOCUS_POLICY, USEFUL_POLICY
 
 YEAR = '2026-2027'
 BASE = 'https://egramswaraj.gov.in/'
@@ -428,7 +428,7 @@ def publish(work,root,fixtures):
         states[state]={'name':entry['name'],'jobs':jobs,'records':counts,'existing_detailed_retained':legacy}
     prepared=bool(c.execute("SELECT 1 FROM preparation WHERE name='complete'").fetchone());jobs={r[0]:r[1] for r in c.execute('SELECT status,sum(total) FROM job_counts WHERE total>0 GROUP BY status')} if optimized(c) else {r[0]:r[1] for r in c.execute('SELECT status,count(*) FROM jobs GROUP BY status')};c.close()
     scope_row=None
-    with sqlite3.connect(work/'queue.sqlite') as scope_db:scope_row=scope_db.execute('SELECT value FROM preparation WHERE name=?',(FOCUS_POLICY,)).fetchone()
+    with sqlite3.connect(work/'queue.sqlite') as scope_db:scope_row=scope_db.execute('SELECT value FROM preparation WHERE name=?',(USEFUL_POLICY,)).fetchone() or scope_db.execute('SELECT value FROM preparation WHERE name=?',(FOCUS_POLICY,)).fetchone()
     index={'collection_scope':json.loads(scope_row[0]) if scope_row else None,'schema':1,'publication_enabled':True,'financial_year':YEAR,'updated_at':now(),'preparation_complete':prepared,'jobs':jobs,'records':dict(totals),'states':states}
     temp=root/'.index.json.tmp';temp.write_text(json.dumps(index,ensure_ascii=False,separators=(',',':')));temp.replace(root/'index.json')
     print(json.dumps({'jobs':jobs,'records':dict(totals),'preparation_complete':prepared}),flush=True)

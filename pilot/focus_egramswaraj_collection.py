@@ -3,11 +3,19 @@ import json
 import re
 import sqlite3
 import zlib
+import unicodedata
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
 POLICY='focused-current-year-v1'
 ACTIVITY_LIMIT=10
+USEFUL_POLICY='focused-useful-works-v2'
+USEFUL_LIMIT=3
+
+def work_name(value):
+    if not isinstance(value,str) or not any(c.isalpha() for c in value):return None
+    return ''.join(c for c in unicodedata.normalize('NFKC',value).casefold() if unicodedata.category(c)[0] in ['L','M','N'])
+
 DEFERRED_NOTE='Retained for later collection; outside the initial current-year coverage scope.'
 
 def enabled(c):
@@ -17,8 +25,15 @@ def apply_new_job(c,identity,state,gp,kind,context):
     if not enabled(c):return
     defer=False
     if kind=='activity':
-        count=c.execute("SELECT count(*) FROM jobs WHERE state=? AND gp=? AND kind='activity' AND status!='deferred'",(state,gp)).fetchone()[0]
-        defer=count>ACTIVITY_LIMIT
+        if c.execute('SELECT 1 FROM preparation WHERE name=?',(USEFUL_POLICY,)).fetchone():
+            name=work_name(context.get('label'));seen=set()
+            for row in c.execute("SELECT context FROM jobs WHERE state=? AND gp=? AND kind='activity' AND status IN ('done','dispatched','queued') AND id!=?",(state,gp,identity)):
+                old=work_name(json.loads(zlib.decompress(row[0])).get('label'))
+                if old:seen.add(old)
+            defer=not name or name in seen or len(seen)>=USEFUL_LIMIT
+        else:
+            count=c.execute("SELECT count(*) FROM jobs WHERE state=? AND gp=? AND kind='activity' AND status!='deferred'",(state,gp)).fetchone()[0]
+            defer=count>ACTIVITY_LIMIT
     elif kind=='voucher':
         row=c.execute('SELECT payment_month FROM focus_gp WHERE state=? AND gp=?',(state,gp)).fetchone()
         defer=row is None or row[0]!=context.get('month')
