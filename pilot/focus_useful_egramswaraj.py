@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 from contextlib import contextmanager
 from pathlib import Path
-from national_egramswaraj_details import queue,unpacked,now,YEAR
+from national_egramswaraj_details import queue,unpacked,now,YEAR,publish
 from focus_egramswaraj_collection import USEFUL_POLICY,USEFUL_LIMIT,work_name,enabled
 
 @contextmanager
@@ -93,9 +93,23 @@ def apply_plan(work,d,chunk=2000,guard=publication_lock):
         print(json.dumps({'scope_active':policy,'new_deferrals_this_run':moved}),flush=True)
     finally:c.close()
 
+def publish_scope(work,root,fixtures):
+    with publication_lock(work):publish(work,root,fixtures)
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);p.add_argument('--plan',type=Path,required=True);a=p.parse_args()
-    c=queue(a.work)
-    if not enabled(c):raise ValueError('Current-year focused collection must be enabled first')
-    d=plan_scope(c,a.plan);c.close();apply_plan(a.work,d);d.close()
+    repo=Path(__file__).resolve().parents[1]
+    p=argparse.ArgumentParser();p.add_argument('--work',type=Path,required=True);p.add_argument('--plan',type=Path,required=True);p.add_argument('--root',type=Path,default=repo/'application/storage/app/egramswaraj-national-details');p.add_argument('--fixtures',type=Path,default=repo/'application/database/fixtures');a=p.parse_args()
+    for attempt in range(6):
+        c=None;d=None
+        try:
+            c=queue(a.work)
+            if not enabled(c):raise ValueError('Current-year focused collection must be enabled first')
+            d=plan_scope(c,a.plan);c.close();c=None;apply_plan(a.work,d);d.close();d=None
+            publish_scope(a.work,a.root,a.fixtures);return
+        except sqlite3.OperationalError as error:
+            if attempt==5:raise
+            print(json.dumps({'rollout_retry':attempt+1,'error':str(error)}),flush=True);time.sleep(10*(attempt+1))
+        finally:
+            if c is not None:c.close()
+            if d is not None:d.close()
 if __name__=='__main__':main()

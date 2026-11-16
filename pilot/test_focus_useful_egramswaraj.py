@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from national_egramswaraj_details import queue,add_job,store,record,unpacked,optimize
 from focus_egramswaraj_collection import work_name,USEFUL_POLICY
-from focus_useful_egramswaraj import plan_scope,apply_plan,map_queue_rows
+from focus_useful_egramswaraj import plan_scope,apply_plan,map_queue_rows,publish_scope
 
 class UsefulWorkTest(unittest.TestCase):
     def setUp(self):
@@ -61,6 +61,12 @@ class UsefulWorkTest(unittest.TestCase):
         keeper=self.c.execute('SELECT rowid FROM jobs WHERE id=?',(ids[0],)).fetchone()[0]
         plan.execute('UPDATE queue_rows SET queue_rowid=?',(keeper,));plan.commit();apply_plan(self.root,plan)
         self.assertEqual('queued',self.c.execute('SELECT status FROM jobs WHERE id=?',(ids[0],)).fetchone()[0]);self.assertEqual(2,self.c.execute("SELECT count(*) FROM jobs WHERE status='deferred'").fetchone()[0]);self.assertEqual(5,self.c.execute('SELECT sum(total) FROM job_counts').fetchone()[0]);plan.close()
+    def test_finished_scope_is_published_with_current_counts(self):
+        for n in range(1,6):self.add('1',n,'Work '+str(n))
+        self.c.commit();plan=plan_scope(self.c,self.root/'plan.sqlite');apply_plan(self.root,plan)
+        fixtures=self.root/'fixtures';(fixtures/'egramswaraj-national').mkdir(parents=True);(fixtures/'egramswaraj-national/index.json').write_text(json.dumps({'states':{'9':{'name':'Uttar Pradesh'}}}))
+        publish_scope(self.root,self.root/'records',fixtures)
+        index=json.loads((self.root/'records/index.json').read_text());self.assertEqual(3,index['collection_scope']['activity_details_per_gp']);self.assertEqual(3,index['jobs']['queued']);self.assertEqual(2,index['jobs']['deferred']);plan.close()
     def test_normalization_preserves_language_and_location_numbers(self):
         self.assertEqual(work_name('ROAD repair'),work_name('Road-repair!'));self.assertNotEqual(work_name('Ward 1 road'),work_name('Ward 2 road'));self.assertIsNotNone(work_name('पेयजल कार्य'));self.assertIsNone(work_name('12345'));self.assertNotEqual(work_name('काम'),work_name('कम'))
 if __name__=='__main__':unittest.main()
