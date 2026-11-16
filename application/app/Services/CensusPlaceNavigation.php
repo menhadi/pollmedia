@@ -20,6 +20,13 @@ class CensusPlaceNavigation
                 ->where('e.status', 'published')->where('e.year', $year)->where('c.level', 'STATE')->where('c.residence', 'Total')
                 ->select('c.id', 'c.name', 'c.state_code')->orderByRaw("CASE WHEN e.source_key LIKE 'india-basic-%-total' THEN 0 ELSE 1 END")->orderBy('c.id')->get();
             $groups = $rows->groupBy(fn ($row) => PlaceFactTables::stateSlug($row->name));
+            foreach ($rows as $row) {
+                $legacy = PlaceFactTables::legacyStateSlug($row->name);
+                $slug = PlaceFactTables::stateSlug($row->name);
+                if ($legacy !== $slug) {
+                    $groups[$legacy] = $groups[$legacy] ?? collect([$row]);
+                }
+            }
             $groups['delhi'] = $rows->filter(fn ($row) => (int) $row->state_code === 7 || PlaceFactTables::stateSlug($row->name) === 'delhi');
 
             return $groups->filter(fn ($group) => $group->pluck('state_code')->unique()->count() === 1)->map->first()->all();

@@ -231,6 +231,15 @@ class PlaceFactTables
 
     public static function stateSlug(string $name): string
     {
+        $name = preg_replace('/^the\s+/i', '', str_replace('&', 'and', $name));
+        $name = preg_replace('/[\s@*#†‡]+$/u', '', $name);
+        $name = preg_replace('/\s+@@\s*/u', ' ', $name);
+
+        return Str::slug(trim(preg_replace('/\s+/', ' ', $name)));
+    }
+
+    public static function legacyStateSlug(string $name): string
+    {
         return Str::slug(preg_replace('/^the\s+/i', '', str_replace('&', 'and', $name)));
     }
 
