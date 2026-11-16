@@ -164,6 +164,16 @@ class NationalDetailsTest(unittest.TestCase):
             name='detail-'+keys[1]+'.json';z.writestr(name,'[]');z.writestr('_capture-test.jsonl',json.dumps({'file':name,'url':url,'captured_at':'2026-11-15T00:00:00Z'}))
         second=subprocess.run(cmd,capture_output=True,text=True);self.assertEqual(0,second.returncode,second.stderr)
         self.assertEqual(2,self.c.execute("SELECT count(*) FROM jobs WHERE status='done'").fetchone()[0]);self.assertEqual(2,self.c.execute('SELECT count(*) FROM archives').fetchone()[0]);self.assertEqual(2,self.db.execute('SELECT count(*) FROM requests').fetchone()[0])
+    def test_single_report_result_object_is_accepted_for_success_and_retry(self):
+        key=add_job(self.c,'3','10074','activity','https://egramswaraj.gov.in/activitySectionData.do?activityCd=88',dict(self.plan(),activity='88'));self.c.commit()
+        result=self.work/'singleton.json';result.write_text(json.dumps({'file':'detail-'+key+'.json','ok':True}))
+        finish(self.work,self.root/'records',result)
+        self.assertEqual(0,self.c.execute('SELECT fetch_attempts FROM jobs WHERE id=?',(key,)).fetchone()[0])
+        result.write_text(json.dumps({'file':'detail-'+key+'.json','ok':False,'status':None}));finish(self.work,self.root/'records',result)
+        self.assertEqual(('queued',1),tuple(self.c.execute('SELECT status,fetch_attempts FROM jobs WHERE id=?',(key,)).fetchone()))
+        result.write_text(json.dumps('invalid'))
+        with self.assertRaisesRegex(ValueError,'Invalid capture result'):finish(self.work,self.root/'records',result)
+        self.assertEqual(1,self.c.execute('SELECT fetch_attempts FROM jobs WHERE id=?',(key,)).fetchone()[0])
     def test_archive_url_binding_and_idempotent_ingestion(self):
         url='https://egramswaraj.gov.in/getActivityList.do?planCd=1234&activityStts=0';key=add_job(self.c,'3','10074','plan',url,self.plan());self.c.commit()
         archive=self.work/'test.zip';filename='detail-'+key+'.json'

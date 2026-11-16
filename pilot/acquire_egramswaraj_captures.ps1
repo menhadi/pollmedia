@@ -91,7 +91,7 @@ try {
   [pscustomobject]@{file=$task.file;ok=$false;error=$last;status=$status}
  } -ThrottleLimit $Concurrency
 } finally {$writer.Dispose();$http.Dispose()}
-$results | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $Root "$Prefix-results.json")
+ConvertTo-Json -InputObject @($results) -Depth 4 | Set-Content (Join-Path $Root "$Prefix-results.json")
 $results | Group-Object ok | Select-Object Name,Count
 Write-Output ($gate.Stats())
 Write-Output "Elapsed seconds $($timer.Elapsed.TotalSeconds)"

@@ -393,7 +393,10 @@ def requeue_batch(work,batch):
 
 def finish(work,root,result):
     c=queue(work);stores={};bad=0;retried=0
-    for row in json.loads(result.read_text(encoding='utf-8-sig')):
+    rows=json.loads(result.read_text(encoding='utf-8-sig'))
+    if isinstance(rows,dict):rows=[rows]
+    if not isinstance(rows,list) or any(not isinstance(row,dict) or not isinstance(row.get('ok'),bool) or not isinstance(row.get('file'),str) for row in rows):raise ValueError('Invalid capture result document; no jobs changed')
+    for row in rows:
         if row['ok']:continue
         m=re.fullmatch(r'detail-([a-f0-9]{64})\.(?:html|json)',row['file'])
         if not m:raise ValueError('Invalid failure identity')
