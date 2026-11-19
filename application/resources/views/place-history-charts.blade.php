@@ -17,10 +17,12 @@ $chartRows=$chartInputRows->sortBy('entry.year')->values()->map(function($row){
  return ['entry_id'=>$row['entry']->id??null,'year'=>$row['entry']->year,'turnout'=>$summary['turnout']??null,'margin'=>$summary['margin']??null,'polled'=>$summary['polled']??null,'electors'=>$summary['electors']??null,'parties'=>$summary['parties']??[],'review'=>max($summary['turnout_review_count']??0,$summary['margin_review_count']??0,$summary['party_review_count']??0)];
 })->groupBy('year')->map(function($group){
  $point=['entry_id'=>$group->pluck('entry_id')->filter()->unique()->count()===1?$group->first()['entry_id']:null,'year'=>$group->first()['year'],'review'=>$group->max('review')];
- foreach(['turnout','margin','polled','electors','parties'] as $key){
+ foreach(['turnout','margin','polled','electors'] as $key){
   $values=$group->pluck($key)->unique(fn($value)=>json_encode($value));
-  $point[$key]=$values->count()===1?$values->first():($key==='parties'?[]:null);
+  $point[$key]=$values->count()===1?$values->first():null;
  }
+ $partySets=$group->pluck('parties')->filter(fn($value)=>!empty($value));
+ $point['parties']=$partySets->isEmpty()?[]:$partySets->sortByDesc(fn($value)=>collect($value)->sum('votes'))->first();
  return $point;
 })->values();
 $partyTotals=[];

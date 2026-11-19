@@ -78,7 +78,42 @@ class HistoricalElectionAnalytics
                 'has_warning' => $record['has_warning'], 'note' => $record['error'] ?? null];
         })->sortBy('name')->values()->all();
 
-        return $this->summarize($records) + ['constituency_results' => $constituencyResults, 'review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
+        $summary = $this->summarize($records);
+        if (($summary['parties'] ?? []) === []) {
+            $fallback = [];
+            $seatsWithVotes = 0;
+            foreach ($records as $record) {
+                $rowVotes = [];
+                foreach ($record['candidates'] ?? [] as $candidate) {
+                    if (($candidate['is_nota'] ?? false) || strtoupper(trim((string) ($candidate['party_at_election'] ?? ''))) === 'NOTA' || ! is_numeric($candidate['votes'] ?? null)) {
+                        continue;
+                    }
+                    $party = trim((string) ($candidate['party_at_election'] ?? ''));
+                    if ($party === '') {
+                        continue;
+                    }
+                    $rowVotes[$party] = ($rowVotes[$party] ?? 0) + (int) $candidate['votes'];
+                }
+                if (count($rowVotes) >= 2) {
+                    $seatsWithVotes++;
+                    foreach ($rowVotes as $party => $votes) {
+                        $fallback[$party] = ($fallback[$party] ?? 0) + $votes;
+                    }
+                }
+            }
+            $total = array_sum($fallback);
+            if ($fallback !== [] && $total > 0) {
+                arsort($fallback);
+                $summary['parties'] = [];
+                foreach ($fallback as $party => $votes) {
+                    $summary['parties'][] = ['party' => (string) $party, 'votes' => $votes, 'share' => 100 * $votes / $total];
+                }
+                $summary['party_count'] = $seatsWithVotes;
+                $summary['party_review_count'] = 1;
+            }
+        }
+
+        return $summary + ['constituency_results' => $constituencyResults, 'review_count' => collect($records)->where('has_warning', true)->count(), 'id' => $id, 'year' => $data['year'], 'label' => $label, 'source_url' => $url, 'state' => $sourceState];
     }
 
     private function refreshStateSummaryIfDue(string $key, string $path, string $url, string $label, string $state, string $kind, string $id): void
@@ -99,7 +134,7 @@ class HistoricalElectionAnalytics
                 }
                 $body = app(ArchiveFiles::class)->get($path);
                 $reviewVersion = DB::table('historical_election_reviews')->where('archive', $id)->max('id') ?? 0;
-                $currentKey = 'election-analysis-v14:'.hash('sha256', $body.$state.$kind.$reviewVersion);
+                $currentKey = 'election-analysis-v15:'.hash('sha256', $body.$state.$kind.$reviewVersion);
                 $summary = $this->stateSummary($body, $url, $label, $state, $kind, $id);
                 Cache::put($currentKey, $summary, 900);
                 Cache::put($currentKey.':built', now()->getTimestamp(), 900);
@@ -140,14 +175,14 @@ class HistoricalElectionAnalytics
                 $body = $disk->get($path);
                 $digest = hash('sha256', $body.$suffix);
             }
-            $key = 'election-analysis-v14:'.$digest;
+            $key = 'election-analysis-v15:'.$digest;
             $summary = Cache::get($key);
             if ($summary !== null) {
                 $this->refreshStateSummaryIfDue($key, $path, $url, $label, $state, $kind, $id);
             }
             if ($summary === null) {
                 $body ??= $disk->get($path);
-                $key = 'election-analysis-v14:'.hash('sha256', $body.$suffix);
+                $key = 'election-analysis-v15:'.hash('sha256', $body.$suffix);
                 $build = function () use ($body, $url, $label, $state, $kind, $id, $key): array {
                     $summary = $this->stateSummary($body, $url, $label, $state, $kind, $id);
                     Cache::put($key.':built', now()->getTimestamp(), 900);
