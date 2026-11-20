@@ -29,11 +29,11 @@ Provide only information necessary to explain a problem. Do not submit passwords
 
 ## Updates and questions
 These terms may be updated as the platform develops. Use Report a problem for questions about a page or its permitted use. These terms do not purport to remove rights that cannot lawfully be excluded.', 'published' => true, 'order' => 20],
-    'privacy' => ['title' => 'Privacy policy', 'summary' => 'How website forms, administration and third-party resources use information.', 'content' => '## Information you provide
+    'privacy' => ['title' => 'Privacy policy', 'summary' => 'How accounts, public contributions, cookies and third-party resources use information.', 'content' => '## Information you provide
 The problem-report form stores the selected category, page path, message, submission time and subsequent review status. These reports are shown to administrators rather than published as a public discussion. Avoid including sensitive or unnecessary personal details. Citizen-issue submissions use a separate moderation workflow and may appear publicly after review.
 
 ## Accounts and technical information
-Administrator accounts are used to control editing access and associate changes with an administrator. Sessions and security cookies support sign-in and form protection. Request limits may use an IP address temporarily, and the hosting system may record technical request and error information.
+Community accounts use the information you provide to support sign-in, account management and your submissions. Administrator accounts control editing access and associate changes with an administrator. Public issue posts, listings and other contributions may be visible to other visitors according to the relevant feature and review process; avoid including sensitive or unnecessary personal information. Sessions and security cookies support sign-in and form protection. Request limits may use an IP address temporarily, and the hosting system may record technical request and error information.
 
 ## Why information is used
 Reports support investigation and correction of website or data problems. Account and technical information support access control, troubleshooting and protection against misuse. Original public-source records and correction histories help readers trace the evidence behind a figure.
@@ -45,7 +45,18 @@ Some pages load maps, map tiles or other resources from external providers. Your
 This application does not currently set an automatic deletion period for problem reports and correction histories. Administrators should review retained reports against the need to resolve the issue, retain an accountable correction record and meet applicable obligations. Access to private reports is restricted through administrator controls.
 
 ## Privacy questions
-Use Report a problem and choose Other to identify a privacy concern or request a review of information you supplied. Include the report reference or affected page, but do not send identity documents through the form. You can also use the public contact email in the footer. This policy will be updated as our practices change.', 'published' => true, 'order' => 30],
+Use Report a problem and choose Other to identify a privacy concern or request a review of information you supplied. Include the report reference or affected page, but do not send identity documents through the form. You can also use the public contact email in the footer. This policy will be updated as our practices change.
+
+## Cookies and browser storage
+Session and security cookies help keep sign-in and forms working. Browser storage may also retain interface or place preferences. Browser controls can clear or restrict stored data, but blocking essential cookies can prevent account features from working.
+
+## Advertising if enabled
+Pollmedia may introduce Google AdSense in the future. If advertising is enabled, Google and participating third-party advertising providers may use cookies or similar technologies to choose ads using visits to Pollmedia and other websites. Advertising cookies can let Google and its partners personalize ads across those visits.
+
+Manage personalized advertising through [Google My Ad Center](https://myadcenter.google.com/) or use [YourAdChoices](https://www.aboutads.info/choices/) for participating providers. These choices do not necessarily remove every ad. Read [how Google uses information from partner sites](https://policies.google.com/technologies/partner-sites) and the relevant providers’ own policies for further information.
+
+Advertising technologies will need to respect applicable consent requirements and choices before they are activated. Browsing this page is not, by itself, consent to every optional advertising technology.
+', 'published' => true, 'order' => 30, 'updated_at' => '2026-11-21T00:00:00+05:30'],
     'corrections' => ['title' => 'Sources & corrections', 'summary' => 'How to read source notes, review status and administrative corrections.', 'content' => '## Read the source and the year
 Tables can represent different periods, boundaries and population groups. Consult the linked PDF, workbook or catalogue definitions before combining values. Similar names do not by themselves establish a geographic match.
 
